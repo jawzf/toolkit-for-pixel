@@ -68,7 +68,6 @@ import com.jawzf.pixeltoolkit.ui.features.system.ActivityLauncherSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.ButtonRemapSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.LockscreenShortcutsSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.CaffeinateSettingsUI
-import com.jawzf.pixeltoolkit.ui.features.system.CalendarSyncSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.display.AodWallpaperPreviewCard
 import com.jawzf.pixeltoolkit.ui.features.display.AodWallpaperSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.display.DuoSettingsUI
@@ -111,7 +110,6 @@ import com.jawzf.pixeltoolkit.ui.features.system.AppVolumeSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.PowerAndBatterySettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.QuickSettingsTilesSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.RefreshRateSettingsUI
-import com.jawzf.pixeltoolkit.ui.features.system.RemoteLockSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.ScreenLockedSecuritySettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.ScreenOffWidgetSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.ShutUpSettingsUI
@@ -121,13 +119,6 @@ import com.jawzf.pixeltoolkit.ui.features.system.SoundModeTileSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.StandbyAppsSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.StatusBarIconSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.TextAnimationsSettingsUI
-import com.jawzf.pixeltoolkit.ui.features.watch.ComplicationsSettingsUI
-import com.jawzf.pixeltoolkit.ui.features.watch.WatchControlsSettingsUI
-import com.jawzf.pixeltoolkit.ui.features.watch.WatchEsimInstallSheet
-import com.jawzf.pixeltoolkit.ui.features.watch.WatchNotificationSettingsUI
-import com.jawzf.pixeltoolkit.ui.features.watch.WatchSettingsUI
-import com.jawzf.pixeltoolkit.ui.features.watch.WatchWirelessDebuggingSettingsUI
-import com.jawzf.pixeltoolkit.ui.features.watch.WatchfaceSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.widgets.WidgetStackSettingsUI
 import com.jawzf.pixeltoolkit.ui.modifiers.BlurDirection
 import com.jawzf.pixeltoolkit.ui.modifiers.highlight
@@ -140,7 +131,6 @@ import com.jawzf.pixeltoolkit.utils.HapticUtil
 import com.jawzf.pixeltoolkit.viewmodels.CaffeinateViewModel
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 import com.jawzf.pixeltoolkit.viewmodels.StatusBarIconViewModel
-import com.jawzf.pixeltoolkit.viewmodels.WatchViewModel
 import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -200,7 +190,6 @@ class FeatureSettingsActivity : AppCompatActivity() {
             val viewModel: MainViewModel = viewModel()
             val statusBarViewModel: StatusBarIconViewModel = viewModel()
             val caffeinateViewModel: CaffeinateViewModel = viewModel()
-            val watchViewModel: WatchViewModel = viewModel()
 
             // Automatic refresh on resume
             val lifecycleOwner = androidx.lifecycle.compose.LocalLifecycleOwner.current
@@ -214,9 +203,6 @@ class FeatureSettingsActivity : AppCompatActivity() {
                             }
                             if (featureId == "Caffeinate") {
                                 caffeinateViewModel.check(context)
-                            }
-                            if (featureId == "Watch") {
-                                watchViewModel.check(context)
                             }
                         }
                     }
@@ -281,37 +267,6 @@ class FeatureSettingsActivity : AppCompatActivity() {
                     val isReadPhoneStateEnabled by viewModel.isReadPhoneStateEnabled
                     val isShizukuPermissionGranted by viewModel.isShizukuPermissionGranted
 
-                    var watchAdbWifiEnabled by remember {
-                        mutableStateOf(prefs.getBoolean("watch_adb_wifi_enabled", false))
-                    }
-                    var watchSyncSoundModeEnabled by remember {
-                        mutableStateOf(prefs.getBoolean("watch_sync_sound_mode_enabled", false))
-                    }
-                    var watchSyncLocationReachedEnabled by remember {
-                        mutableStateOf(
-                            prefs.getBoolean(
-                                "watch_sync_location_reached_enabled",
-                                false,
-                            ),
-                        )
-                    }
-                    androidx.compose.runtime.DisposableEffect(prefs) {
-                        val listener =
-                            android.content.SharedPreferences.OnSharedPreferenceChangeListener { p, key ->
-                                if (key == "watch_adb_wifi_enabled") {
-                                    watchAdbWifiEnabled = p.getBoolean(key, false)
-                                } else if (key == "watch_sync_sound_mode_enabled") {
-                                    watchSyncSoundModeEnabled = p.getBoolean(key, false)
-                                } else if (key == "watch_sync_location_reached_enabled") {
-                                    watchSyncLocationReachedEnabled = p.getBoolean(key, false)
-                                }
-                            }
-                        prefs.registerOnSharedPreferenceChangeListener(listener)
-                        onDispose {
-                            prefs.unregisterOnSharedPreferenceChangeListener(listener)
-                        }
-                    }
-
                     // FAB State for Notification Lighting
                     var fabExpanded by remember { mutableStateOf(true) }
                     LaunchedEffect(featureId) {
@@ -320,30 +275,11 @@ class FeatureSettingsActivity : AppCompatActivity() {
                             delay(3000)
                             fabExpanded = false
                         }
-                        if (featureId == "Watch") {
-                            val messageClient =
-                                com.google.android.gms.wearable.Wearable
-                                    .getMessageClient(context)
-                            val nodeClient =
-                                com.google.android.gms.wearable.Wearable
-                                    .getNodeClient(context)
-                            nodeClient.connectedNodes.addOnSuccessListener { nodes ->
-                                for (node in nodes) {
-                                    messageClient.sendMessage(
-                                        node.id,
-                                        "/request_watch_status",
-                                        byteArrayOf(),
-                                    )
-                                }
-                            }
-                        }
                     }
 
                     // Help Sheet State
                     var showHelpSheet by remember { mutableStateOf(false) }
-                    var showWatchEsimSheet by remember { mutableStateOf(false) }
                     var showInstructionsSheet by remember { mutableStateOf(false) }
-                    var showWatchInstallHelpSheet by remember { mutableStateOf(false) }
                     var selectedHelpFeature by remember {
                         mutableStateOf<com.jawzf.pixeltoolkit.domain.model.Feature?>(
                             null,
@@ -372,11 +308,9 @@ class FeatureSettingsActivity : AppCompatActivity() {
                                         !isNotificationListenerEnabled
                                 "Flashlight pulse" -> !isNotificationListenerEnabled
                                 "Hilight", "Hilight notifications", "Hilight live progress" -> !isNotificationListenerEnabled || !isShizukuPermissionGranted
-                                "Notification Sync" -> !isNotificationListenerEnabled
                                 "Button remap" -> !isAccessibilityEnabled
                                 "Face unlock brightness" -> !isAccessibilityEnabled
                                 "Screenshots" -> !isAccessibilityEnabled || !viewModel.isStoragePermissionGranted.value
-                                "Watch Wireless Debugging" -> android.os.Build.VERSION.SDK_INT >= 37 && !viewModel.isLocalNetworkGranted.value
                                 "Lock screen shortcuts" -> !isAccessibilityEnabled
                                 "Volume steps" -> !isAccessibilityEnabled
                                 "App volume" -> !isAccessibilityEnabled || !isShizukuPermissionGranted
@@ -481,9 +415,6 @@ class FeatureSettingsActivity : AppCompatActivity() {
                         }
                     }
 
-                    if (showWatchEsimSheet) {
-                        WatchEsimInstallSheet(onDismissRequest = { showWatchEsimSheet = false })
-                    }
 
                     if (showHelpSheet && selectedHelpFeature != null) {
                         com.jawzf.pixeltoolkit.ui.core.sheets.FeatureHelpBottomSheet(
@@ -501,11 +432,6 @@ class FeatureSettingsActivity : AppCompatActivity() {
                         )
                     }
 
-                    if (showWatchInstallHelpSheet) {
-                        com.jawzf.pixeltoolkit.ui.features.watch.sheets.WatchInstallHelpBottomSheet(
-                            onDismissRequest = { showWatchInstallHelpSheet = false },
-                        )
-                    }
 
                     ShakeForHelp(feature = featureObj, viewModel = viewModel)
 
@@ -593,8 +519,7 @@ class FeatureSettingsActivity : AppCompatActivity() {
                             featureId != "Sound mode tile" &&
                                 featureId != "Activity launcher" &&
                                 featureId != "Quick settings tiles" &&
-                                featureId != "Location reached" &&
-                                featureId != "Watch Controls"
+                                featureId != "Location reached"
                         Column(
                             modifier =
                                 Modifier
@@ -648,16 +573,6 @@ class FeatureSettingsActivity : AppCompatActivity() {
                                 )
                             }
 
-                            if (featureId == "Watch") {
-                                val context = LocalContext.current
-                                LaunchedEffect(Unit) {
-                                    watchViewModel.check(context)
-                                }
-                                WatchSettingsUI(
-                                    viewModel = watchViewModel,
-                                    modifier = Modifier.padding(top = 16.dp),
-                                )
-                            }
 
                             val children =
                                 FeatureRegistry
@@ -753,26 +668,6 @@ class FeatureSettingsActivity : AppCompatActivity() {
                                                         ),
                                                     )
 
-                                                "Watch" ->
-                                                    listOf(
-                                                        listOf(
-                                                            "Watchface",
-                                                            "Complications",
-                                                            "Watch Controls",
-                                                            "Lock from Watch",
-                                                        ),
-                                                        listOf(
-                                                            "Calendar Sync",
-                                                            "Sync sound mode",
-                                                            "Notification Sync",
-                                                            "Call Sync",
-                                                            "Sync location reached status",
-                                                        ),
-                                                        listOf(
-                                                            "Watch Wireless Debugging",
-                                                            "Watch eSIM Installer",
-                                                        ),
-                                                    )
 
                                                 "Security" ->
                                                     listOf(
@@ -810,19 +705,11 @@ class FeatureSettingsActivity : AppCompatActivity() {
                                     }
 
                                 sectionChildLists.forEach { sectionChildren ->
-                                    if (featureId == "Watch" && sectionChildren.any { it.id == "Calendar Sync" }) {
-                                        Text(
-                                            text = stringResource(R.string.cat_sync),
-                                            style = MaterialTheme.typography.titleMedium,
-                                            modifier = Modifier.padding(start = 32.dp, top = 24.dp, bottom = 4.dp),
-                                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                        )
-                                    }
                                     RoundedCardContainer(
                                         modifier =
                                             Modifier
                                                 .padding(horizontal = 16.dp)
-                                                .padding(top = if (featureId == "Watch" && sectionChildren.any { it.id == "Calendar Sync" }) 0.dp else 16.dp),
+                                                .padding(top = 16.dp),
                                     ) {
                                         sectionChildren.forEach { child ->
                                             val permissionAwareToggle: (Boolean) -> Unit =
@@ -840,7 +727,6 @@ class FeatureSettingsActivity : AppCompatActivity() {
                                                             "Button remap" -> !isAccessibilityEnabled
                                                             "Face unlock brightness" -> !isAccessibilityEnabled
                                                             "Screenshots" -> !isAccessibilityEnabled || !viewModel.isStoragePermissionGranted.value
-                                                            "Watch Wireless Debugging" -> android.os.Build.VERSION.SDK_INT >= 37 && !viewModel.isLocalNetworkGranted.value
                                                             "Lock screen shortcuts" -> !isAccessibilityEnabled
                                                             "Volume steps" -> !isAccessibilityEnabled
                                                             "App volume" -> !isAccessibilityEnabled || !isShizukuPermissionGranted
@@ -871,16 +757,6 @@ class FeatureSettingsActivity : AppCompatActivity() {
                                                                 !isAccessibilityEnabled ||
                                                                     !isNotificationListenerEnabled
                                                             "Call vibrations" -> !isReadPhoneStateEnabled || !isNotificationListenerEnabled
-                                                            "Calendar Sync" ->
-                                                                arrayOf(
-                                                                    android.Manifest.permission.READ_CALENDAR,
-                                                                    android.Manifest.permission.WRITE_CALENDAR,
-                                                                ).any {
-                                                                    androidx.core.content.ContextCompat.checkSelfPermission(
-                                                                        context,
-                                                                        it,
-                                                                    ) != android.content.pm.PackageManager.PERMISSION_GRANTED
-                                                                }
 
                                                             "Batteries" -> (
                                                                 Build.VERSION.SDK_INT >= Build.VERSION_CODES.S &&
@@ -952,13 +828,7 @@ class FeatureSettingsActivity : AppCompatActivity() {
                                                 title = child.title,
                                                 description = child.description,
                                                 iconRes = child.iconRes,
-                                                isEnabled =
-                                                    when (child.id) {
-                                                        "Watch Wireless Debugging" -> watchAdbWifiEnabled
-                                                        "Sync sound mode" -> watchSyncSoundModeEnabled
-                                                        "Sync location reached status" -> watchSyncLocationReachedEnabled
-                                                        else -> child.isEnabled(viewModel)
-                                                    },
+                                                isEnabled = child.isEnabled(viewModel),
                                                 isToggleEnabled =
                                                     child.isToggleEnabled(
                                                         viewModel,
@@ -978,9 +848,7 @@ class FeatureSettingsActivity : AppCompatActivity() {
                                                 isUnsupported = !child.isDeviceSupported(context),
                                                 onToggle = permissionAwareToggle,
                                                 onClick = {
-                                                    if (child.id == "Watch eSIM Installer") {
-                                                        showWatchEsimSheet = true
-                                                    } else if (child.hasMoreSettings) {
+                                                    if (child.hasMoreSettings) {
                                                         BiometricSecurityHelper.runWithAuth(
                                                             activity = this@FeatureSettingsActivity,
                                                             feature = child,
@@ -1272,55 +1140,6 @@ class FeatureSettingsActivity : AppCompatActivity() {
                                         )
                                     }
 
-                                    "Calendar Sync" -> {
-                                        CalendarSyncSettingsUI(
-                                            viewModel = viewModel,
-                                            modifier = Modifier.padding(top = 16.dp),
-                                            highlightKey = highlightSetting,
-                                        )
-                                    }
-
-                                    "Watchface" -> {
-                                        WatchfaceSettingsUI(
-                                            modifier = Modifier.padding(top = 16.dp),
-                                        )
-                                    }
-
-                                    "Complications" -> {
-                                        ComplicationsSettingsUI(
-                                            modifier = Modifier.padding(top = 16.dp),
-                                        )
-                                    }
-
-                                    "Notification Sync" -> {
-                                        WatchNotificationSettingsUI(
-                                            modifier = Modifier.padding(top = 16.dp),
-                                        )
-                                    }
-
-                                    "Watch Controls" -> {
-                                        WatchControlsSettingsUI(
-                                            modifier = Modifier.padding(top = 16.dp),
-                                            highlightSetting = highlightSetting,
-                                        )
-                                    }
-
-                                    "Lock from Watch" -> {
-                                        RemoteLockSettingsUI(
-                                            mainViewModel = viewModel,
-                                            watchViewModel = watchViewModel,
-                                            modifier = Modifier.padding(top = 16.dp),
-                                            highlightSetting = highlightSetting,
-                                        )
-                                    }
-
-                                    "Watch Wireless Debugging" -> {
-                                        WatchWirelessDebuggingSettingsUI(
-                                            viewModel = viewModel,
-                                            modifier = Modifier.padding(top = 16.dp),
-                                        )
-                                    }
-
                                     "Maps power saving mode" -> {
                                         MapsPowerSavingSettingsUI(
                                             viewModel = viewModel,
@@ -1568,9 +1387,7 @@ class FeatureSettingsActivity : AppCompatActivity() {
                                     null
                                 } else {
                                     {
-                                        if (featureId == "Watch") {
-                                            showWatchInstallHelpSheet = true
-                                        } else if (hasMenu) {
+                                        if (hasMenu) {
                                             selectedHelpFeature = featureObj
                                             showHelpSheet = true
                                         } else {

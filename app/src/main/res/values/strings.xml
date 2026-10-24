@@ -989,14 +989,6 @@
     <string name="feat_always_on_display_desc">Show time and info while screen off</string>
     <string name="feat_calendar_sync_title">Calendars</string>
     <string name="feat_calendar_sync_desc">Sync your schedule</string>
-    <string name="feat_lock_from_watch_title">Lock from Watch</string>
-    <string name="feat_lock_from_watch_desc">Lock your phone remotely</string>
-    <string name="remote_lock_mode_title">Lock Mode</string>
-    <string name="remote_lock_mode_screen_off">Screen off</string>
-    <string name="remote_lock_mode_lock">Lock</string>
-    <string name="remote_lock_mode_admin_note">Using device admin lock will disable biometrics</string>
-    <string name="watch_connected_status">Connected</string>
-    <string name="watch_unknown_name">Unknown Watch</string>
     <string name="watermark_style_overlay">Overlay</string>
     <string name="watermark_style_frame">Frame</string>
     <string name="watermark_show_brand">Device Brand</string>
@@ -1034,14 +1026,6 @@
     <string name="action_next">Next</string>
     <string name="action_ok">OK</string>
     <string name="action_save_changes">Save Changes</string>
-    <string name="calendar_sync_settings_title">Calendar Sync Settings</string>
-    <string name="calendar_sync_select_calendars">Sync specific calendars</string>
-    <string name="calendar_sync_periodic_title">Periodic Sync</string>
-    <string name="calendar_sync_periodic_desc">Sync every 15 minutes if changes found</string>
-    <string name="calendar_sync_sync_now">Sync Now</string>
-    <string name="calendar_sync_manual_sync_desc">Trigger immediate sync to watch</string>
-    <string name="calendar_sync_no_calendars">No local calendars found</string>
-    <string name="calendar_sync_sync_started">Calendar sync started</string>
 
     <!-- Search Settings -->
     <string name="search_haptic_title">Widget Haptic feedback</string>
@@ -1372,7 +1356,6 @@
     <string name="about_desc_system_keyboard">A custom input method no-one asked for.\n\nIt is just an experiment. Multiple languages may not get support as it is a very complex and time consuming implementation.</string>
     <string name="about_desc_batteries">Monitor battery levels of all your connected devices.\n\nSee the battery status of your Bluetooth headphones, watch, and other accessories in one place. Connect with AirSync application to display your mac battery level as well.</string>
     <string name="about_desc_watermark">Add a custom caption/ watermark to your photos with EXIF data and device information.\n\nShare an image directly from other app to Essentials to easily add a watermark.</string>
-    <string name="about_desc_calendar_sync">Sync all your upcoming calendar schedule not matter the restrictions on Google accounts not letting to be added to wearOS devices due to work or school policies. \n\nMake sure to install the wearOS Essentials companion app to display the schedule in the app as well as in a tile or a complication.</string>
     <string name="about_desc_app_updates">Keep track of updates for your installed apps.\n\nGet notified about available updates, view changelogs and install them easily with a tap.</string>
     <string name="about_desc_call_vibrations">Add haptic feedback to your calls.\n\nVibrate when a call is connected, disconnected, or accepted, giving you tactile confirmation without looking at the screen.</string>
     <string name="about_desc_sound_mode_tile">Quickly toggle between Sound, Vibrate, and Silent modes.\n\nA convenient tile to change your ringer mode without using the volume buttons or settings. You can re-order the modes or disable any if not needed to customize the tile toggle to cycle behavior.</string>
@@ -2241,22 +2224,6 @@
     <string name="feat_display_visuals_title">Display</string>
     <string name="feat_display_visuals_desc">Visuals to enhance your experience</string>
 
-    <string name="feat_watch_title">Watch</string>
-    <string name="feat_watch_desc">Integrations with WearOS</string>
-    <string name="watch_no_companion_title">No Watch detected</string>
-    <string name="watch_no_companion_desc">It looks like you do not have the Essentials Wear companion app installed on your watch.</string>
-    <string name="watch_install_companion_action">Install Companion</string>
-    <string name="action_download_from_github">Download from GitHub</string>
-    <string name="watch_help_title">Install on Watch</string>
-    <string name="watch_help_description">To use Watch features, you need to install the Essentials companion app on your Wear OS watch. Click the button below to open the Play Store directly on your watch.</string>
-    <string name="watch_help_open_play_store">Open on Watch</string>
-    <string name="watch_update_required_title">Update Essentials Wear</string>
-    <string name="watch_update_required_desc">A new version of Essentials Wear is available for your watch. Update to ensure full compatibility.</string>
-    <string name="watch_update_action">Update App</string>
-    <string name="feat_watch_controls_title">Customize</string>
-    <string name="feat_watch_controls_desc">Customize controls</string>
-    <string name="watch_controls_long_press_hint">Long press to enable or disable buttons</string>
-    <string name="watch_controls_reorder_title">Reorder watch controls</string>
     <string name="feat_watch_wireless_debugging_title">Wireless Debugging</string>
     <string name="watch_esim_install_title">Install eSIM</string>
     <string name="watch_esim_install_desc">Even in unsupported regions</string>

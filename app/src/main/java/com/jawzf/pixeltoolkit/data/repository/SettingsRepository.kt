@@ -413,10 +413,6 @@ class SettingsRepository(
             "ambient_music_glance_force_fill_while_charging"
         const val KEY_AMBIENT_MUSIC_GLANCE_RESPECT_NOTIFICATIONS =
             "ambient_music_glance_respect_notifications"
-        const val KEY_CALENDAR_SYNC_ENABLED = "calendar_sync_enabled"
-        const val KEY_CALENDAR_SYNC_SELECTED_CALENDARS = "calendar_sync_selected_calendars"
-        const val KEY_CALENDAR_SYNC_PERIODIC_ENABLED = "calendar_sync_periodic_enabled"
-        const val KEY_REMOTE_LOCK_MODE = "remote_lock_mode" // 0: Screen off, 1: Lock
         const val KEY_LOCATION_REACHED_FULL_SCREEN_ALARM_ENABLED =
             "location_reached_full_screen_alarm_enabled"
 
@@ -1319,46 +1315,6 @@ class SettingsRepository(
     fun setAppIcon(appIcon: AppIcon) {
         putString(KEY_APP_ICON, appIcon.key)
     }
-
-    /**
-     * Executes the get calendar sync selected calendars operation.
-     * @return The resulting Set<String> data.
-     */
-    fun getCalendarSyncSelectedCalendars(): Set<String> {
-        val json = prefs.getString(KEY_CALENDAR_SYNC_SELECTED_CALENDARS, null)
-        return if (json != null) {
-            try {
-                gson.fromJson(json, Array<String>::class.java).toSet()
-            } catch (e: Exception) {
-                emptySet()
-            }
-        } else {
-            emptySet()
-        }
-    }
-
-    /**
-     * Executes the save calendar sync selected calendars operation.
-     *
-     * @param calendarIds [Set<String>] Target calendar ids.
-     */
-    fun saveCalendarSyncSelectedCalendars(calendarIds: Set<String>) {
-        val json = gson.toJson(calendarIds)
-        putString(KEY_CALENDAR_SYNC_SELECTED_CALENDARS, json)
-    }
-
-    /**
-     * Executes the is calendar sync periodic enabled operation.
-     * @return The resulting Boolean data.
-     */
-    fun isCalendarSyncPeriodicEnabled(): Boolean = getBoolean(KEY_CALENDAR_SYNC_PERIODIC_ENABLED, false)
-
-    /**
-     * Executes the set calendar sync periodic enabled operation.
-     *
-     * @param enabled [Boolean] Target enabled.
-     */
-    fun setCalendarSyncPeriodicEnabled(enabled: Boolean) = putBoolean(KEY_CALENDAR_SYNC_PERIODIC_ENABLED, enabled)
 
     // App Selection Helper Generic
     private fun loadAppSelection(key: String): List<AppSelection> {

@@ -197,7 +197,6 @@ class LocationReachedService : Service() {
             val isSyncEnabled = prefs.getBoolean("watch_sync_location_reached_enabled", false)
             if (isSyncEnabled) {
                 lastSyncTime = now
-                DeviceInfoSyncManager.forceSync(this)
             }
         }
     }

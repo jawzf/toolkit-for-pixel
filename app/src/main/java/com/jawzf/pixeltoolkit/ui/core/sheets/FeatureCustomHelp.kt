@@ -4,8 +4,6 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
-import com.jawzf.pixeltoolkit.R
-import com.jawzf.pixeltoolkit.ui.features.watch.sheets.WatchInstallHelpBottomSheet
 
 class FeatureCustomHelp(
     @StringRes val label: Int,
@@ -13,15 +11,7 @@ class FeatureCustomHelp(
     val sheet: @Composable (onDismissRequest: () -> Unit) -> Unit,
 ) {
     companion object {
-        private val entries =
-            mapOf(
-                "Watch" to
-                    FeatureCustomHelp(
-                        label = R.string.watch_help_title,
-                        iconRes = R.drawable.rounded_watch_24,
-                        sheet = { WatchInstallHelpBottomSheet(onDismissRequest = it) },
-                    ),
-            )
+        private val entries = emptyMap<String, FeatureCustomHelp>()
 
         fun forFeature(featureId: String): FeatureCustomHelp? = entries[featureId]
     }
