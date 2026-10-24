@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace = "com.sameerasw.island.sdk"
+    namespace = "com.jawzf.pixeltoolkit.island.sdk"
     compileSdk = 37
     compileSdkMinor = 1
 

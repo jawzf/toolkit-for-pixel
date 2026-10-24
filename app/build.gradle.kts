@@ -47,7 +47,7 @@ kotlin {
 }
 
 android {
-    namespace = "com.sameerasw.essentials"
+    namespace = "com.jawzf.pixeltoolkit"
     compileSdk = 37
     compileSdkMinor = 1
 
@@ -112,7 +112,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.sameerasw.essentials"
+        applicationId = "com.jawzf.pixeltoolkit"
         minSdk = 26
         targetSdk = 37
         versionCode = 69

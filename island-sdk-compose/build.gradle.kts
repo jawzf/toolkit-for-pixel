@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.sameerasw.island.sdk.compose"
+    namespace = "com.jawzf.pixeltoolkit.island.sdk.compose"
     compileSdk = 37
     compileSdkMinor = 1
 

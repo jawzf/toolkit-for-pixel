@@ -1,2 +1,2 @@
--keep class com.sameerasw.island.sdk.** { *; }
--keepclassmembers class com.sameerasw.island.sdk.** { *; }
+-keep class com.jawzf.pixeltoolkit.island.sdk.** { *; }
+-keepclassmembers class com.jawzf.pixeltoolkit.island.sdk.** { *; }

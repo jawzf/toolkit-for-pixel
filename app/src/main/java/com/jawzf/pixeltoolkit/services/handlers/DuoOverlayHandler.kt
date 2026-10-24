@@ -1,0 +1,1415 @@
+/*
+ * Copyright (c) 2026 sameerasw.com
+ * License: MIT License
+ *
+ * Feature Module: Background Services & Handlers
+ * File: DuoOverlayHandler.kt
+ * Description: Background handler managing the Duo ambient camera overlay with media playback.
+ */
+
+package com.jawzf.pixeltoolkit.services.handlers
+
+import android.accessibilityservice.AccessibilityService
+import android.content.BroadcastReceiver
+import android.content.ComponentName
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
+import android.content.res.Configuration
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.PixelFormat
+import android.hardware.camera2.CameraCharacteristics
+import android.hardware.camera2.CameraManager
+import android.media.MediaMetadata
+import android.media.session.MediaController
+import android.media.session.MediaSession
+import android.media.session.MediaSessionManager
+import android.media.session.PlaybackState
+import android.net.ConnectivityManager
+import android.net.Network
+import android.net.NetworkCapabilities
+import android.net.wifi.WifiInfo
+import android.net.wifi.WifiManager
+import android.os.BatteryManager
+import android.os.Build
+import android.os.Handler
+import android.os.Looper
+import android.os.PowerManager
+import android.os.SystemClock
+import android.telephony.PhoneStateListener
+import android.telephony.SignalStrength
+import android.telephony.TelephonyCallback
+import android.telephony.TelephonyManager
+import android.text.format.DateFormat
+import android.util.DisplayMetrics
+import android.util.Log
+import android.view.Gravity
+import android.view.View
+import android.view.WindowManager
+import androidx.core.content.ContextCompat
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import com.jawzf.pixeltoolkit.R
+import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
+import com.jawzf.pixeltoolkit.domain.model.ActiveNotificationAlert
+import com.jawzf.pixeltoolkit.domain.model.AppSelection
+import com.jawzf.pixeltoolkit.domain.model.ProgressNotificationData
+import com.jawzf.pixeltoolkit.services.NotificationListener
+import com.jawzf.pixeltoolkit.utils.AppUtil
+import com.jawzf.pixeltoolkit.utils.DuoOverlayView
+import com.jawzf.pixeltoolkit.utils.FlashlightUtil
+import com.jawzf.pixeltoolkit.utils.OverlayHelper
+import java.io.File
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+
+class DuoOverlayHandler(
+    private val service: AccessibilityService,
+) {
+    private var windowManager: WindowManager? = null
+    private var overlayView: DuoOverlayView? = null
+    private var isOverlayAdded = false
+    private var touchAnchorView: View? = null
+    private var isTouchAnchorAdded = false
+    private var duoTouchHandler: DuoTouchHandler? = null
+    private val mainHandler = Handler(Looper.getMainLooper())
+
+    private var currentCenterX = 0f
+    private var currentCenterY = 0f
+    private var currentCameraRadiusPx = 36f
+
+    private val settingsRepository by lazy { SettingsRepository(service) }
+    private val telephonyManager by lazy { service.getSystemService(Context.TELEPHONY_SERVICE) as? TelephonyManager }
+    private val connectivityManager by lazy { service.getSystemService(Context.CONNECTIVITY_SERVICE) as? ConnectivityManager }
+    private val wifiManager by lazy { service.applicationContext.getSystemService(Context.WIFI_SERVICE) as? WifiManager }
+    private val cameraManager by lazy { service.getSystemService(Context.CAMERA_SERVICE) as CameraManager }
+    private val powerManager by lazy { service.getSystemService(Context.POWER_SERVICE) as? PowerManager }
+
+    private var isFlashlightOn = false
+    private var currentFlashlightLevel = 1
+    private var flashlightIconBitmap: Bitmap? = null
+    private var isTorchCallbackRegistered = false
+
+    private val torchCallback = object : CameraManager.TorchCallback() {
+        override fun onTorchModeChanged(cameraId: String, enabled: Boolean) {
+            val primaryId = getCameraId()
+            if (cameraId != primaryId) return
+            mainHandler.post {
+                isFlashlightOn = enabled
+                checkAndApplyFlashlightState()
+            }
+        }
+
+        override fun onTorchStrengthLevelChanged(cameraId: String, newStrengthLevel: Int) {
+            val primaryId = getCameraId()
+            if (cameraId != primaryId) return
+            mainHandler.post {
+                currentFlashlightLevel = newStrengthLevel
+                checkAndApplyFlashlightState()
+            }
+        }
+    }
+
+    private var telephonyCallback: Any? = null
+    private var isTelephonyRegistered = false
+    private var isNetworkCallbackRegistered = false
+
+    private var mediaSessionManager: MediaSessionManager? = null
+    private val monitoredControllers = mutableListOf<MediaController>()
+    private val controllerCallbacks = mutableMapOf<MediaSession.Token, MediaController.Callback>()
+    private var activeMediaController: MediaController? = null
+    private var isMediaListenerRegistered = false
+    private var currentArtOrIconBitmap: Bitmap? = null
+    private var currentMediaKey: String? = null
+    private var isMediaPlaying = false
+    private var isProgressListenerRegistered = false
+
+    private val handlerScope = CoroutineScope(Dispatchers.Main + Job())
+    private var lastMediaChangeTimestamp = 0L
+    private val MEDIA_UPDATE_DEBOUNCE_MS = 2000L
+
+    private val mediaUpdateRunnable = Runnable {
+        checkAndApplyMediaState()
+    }
+
+    private fun scheduleMediaUpdate() {
+        val now = SystemClock.elapsedRealtime()
+        if (now - lastMediaChangeTimestamp < MEDIA_UPDATE_DEBOUNCE_MS) {
+            return
+        }
+        lastMediaChangeTimestamp = now
+        mainHandler.removeCallbacks(mediaUpdateRunnable)
+        mainHandler.postDelayed(mediaUpdateRunnable, MEDIA_UPDATE_DEBOUNCE_MS)
+    }
+
+    private val progressNotificationListener = object : NotificationListener.ProgressNotificationListener {
+        override fun onProgressNotificationUpdated(data: ProgressNotificationData?) {
+            mainHandler.post {
+                checkAndApplyProgressNotificationState(data)
+            }
+        }
+    }
+
+    private val activeSessionsListener =
+        MediaSessionManager.OnActiveSessionsChangedListener { controllers ->
+            updateActiveMediaSession(controllers)
+        }
+
+    private val mediaProgressTicker = object : Runnable {
+        override fun run() {
+            if (isMediaPlaying && isOverlayAdded) {
+                updateMediaProgress()
+                mainHandler.postDelayed(this, 500L)
+            }
+        }
+    }
+
+    private val networkCallback = object : ConnectivityManager.NetworkCallback() {
+        override fun onCapabilitiesChanged(network: Network, networkCapabilities: NetworkCapabilities) {
+            updateCurrentSignal()
+        }
+        override fun onLost(network: Network) {
+            updateCurrentSignal()
+        }
+    }
+
+    private var isChargingState = false
+    private var isFastChargingState = false
+
+    private fun isFastCharging(intent: Intent?, plugged: Int): Boolean {
+        if (intent == null) return plugged == BatteryManager.BATTERY_PLUGGED_AC
+
+        try {
+            // 1. Samsung One UI specific charging extras (guarded against ClassCastException on non-Samsung OEMs)
+            val chargerType = try { intent.getIntExtra("charger_type", -1) } catch (_: Exception) { -1 }
+            if (chargerType >= 2) return true
+
+            val chargeType = try { intent.getIntExtra("charge_type", -1) } catch (_: Exception) { -1 }
+            if (chargeType >= 3) return true
+
+            val isFastExtra = try {
+                intent.getBooleanExtra("fast_charge", false) || intent.getBooleanExtra("is_fast_charge", false)
+            } catch (_: Exception) { false }
+            if (isFastExtra) return true
+
+            // 2. Standard Android / AOSP charging wattage check (Pixel, Motorola, Xiaomi, Sony, etc.)
+            val maxCurrent = try { intent.getIntExtra("max_charging_current", -1) } catch (_: Exception) { -1 }
+            val maxVoltage = try { intent.getIntExtra("max_charging_voltage", -1) } catch (_: Exception) { -1 }
+            if (maxCurrent > 0 && maxVoltage > 0) {
+                val watts = (maxCurrent.toDouble() / 1_000_000.0) * (maxVoltage.toDouble() / 1_000_000.0)
+                if (watts >= 10.0) return true
+                if (watts > 0 && watts < 7.5) return false
+            } else if (maxCurrent >= 2_000_000) {
+                return true
+            }
+
+            // 3. Fallback based on power source
+            // USB port charging (PC/laptop) is standard/slow charging (green)
+            if (plugged == BatteryManager.BATTERY_PLUGGED_USB) return false
+
+            // AC wall chargers are predominantly fast charging on modern devices (cyan)
+            return plugged == BatteryManager.BATTERY_PLUGGED_AC
+        } catch (_: Exception) {
+            return plugged == BatteryManager.BATTERY_PLUGGED_AC
+        }
+    }
+
+    private val batteryReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            val action = intent?.action ?: return
+            if (action == PowerManager.ACTION_POWER_SAVE_MODE_CHANGED) {
+                overlayView?.isPowerSaveMode = powerManager?.isPowerSaveMode ?: false
+                return
+            }
+            if (action == Intent.ACTION_BATTERY_CHANGED ||
+                action == Intent.ACTION_POWER_CONNECTED ||
+                action == Intent.ACTION_POWER_DISCONNECTED
+            ) {
+                overlayView?.isPowerSaveMode = powerManager?.isPowerSaveMode ?: false
+                val batteryIntent = if (action == Intent.ACTION_BATTERY_CHANGED) {
+                    intent
+                } else {
+                    service.registerReceiver(null, IntentFilter(Intent.ACTION_BATTERY_CHANGED))
+                }
+
+                val level = batteryIntent?.getIntExtra(BatteryManager.EXTRA_LEVEL, -1) ?: -1
+                val scale = batteryIntent?.getIntExtra(BatteryManager.EXTRA_SCALE, 100) ?: 100
+                if (level >= 0 && scale > 0) {
+                    val batteryPct = (level * 100) / scale
+                    overlayView?.batteryLevel = batteryPct
+                }
+
+                val status = batteryIntent?.getIntExtra(BatteryManager.EXTRA_STATUS, -1) ?: -1
+                val plugged = batteryIntent?.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1) ?: -1
+                val isPlugged = plugged > 0
+                val isChargingStatus = isPlugged && (status == BatteryManager.BATTERY_STATUS_CHARGING ||
+                    status == BatteryManager.BATTERY_STATUS_FULL)
+                val currentLevel = if (level >= 0 && scale > 0) (level * 100) / scale else 0
+                val isLimitShield =
+                    com.jawzf.pixeltoolkit.utils.battery.ChargeLimitUtil.isShielded(service, currentLevel, isChargingStatus || action == Intent.ACTION_POWER_CONNECTED)
+
+                val isNowCharging = when (action) {
+                    Intent.ACTION_POWER_DISCONNECTED -> false
+                    Intent.ACTION_POWER_CONNECTED -> !isLimitShield
+                    else -> isChargingStatus && !isLimitShield
+                }
+
+                val isFastCharging = isFastCharging(batteryIntent, plugged)
+                isFastChargingState = isFastCharging
+
+                if (action == Intent.ACTION_POWER_CONNECTED) {
+                    isChargingState = true
+                    overlayView?.triggerChargingAnimation(isFastCharging)
+                } else if (action == Intent.ACTION_POWER_DISCONNECTED) {
+                    isChargingState = false
+                    overlayView?.setCharging(false)
+                } else if (isNowCharging != isChargingState) {
+                    isChargingState = isNowCharging
+                    if (isNowCharging) {
+                        overlayView?.triggerChargingAnimation(isFastCharging)
+                    } else {
+                        overlayView?.setCharging(false)
+                    }
+                } else if (isNowCharging) {
+                    overlayView?.setCharging(true, isFastCharging)
+                }
+            }
+        }
+    }
+    private var isBatteryReceiverRegistered = false
+
+    private val timeReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            updateCurrentTime()
+        }
+    }
+    private var isTimeReceiverRegistered = false
+
+    private fun updateCurrentTime() {
+        val is24Hour = DateFormat.is24HourFormat(service)
+        val pattern = if (is24Hour) "H:mm" else "h:mm"
+        val formattedTime = SimpleDateFormat(pattern, Locale.getDefault()).format(Date())
+        overlayView?.currentTimeText = formattedTime
+    }
+
+    private fun registerTimeReceiver() {
+        if (!isTimeReceiverRegistered) {
+            val filter = IntentFilter().apply {
+                addAction(Intent.ACTION_TIME_TICK)
+                addAction(Intent.ACTION_TIME_CHANGED)
+                addAction(Intent.ACTION_TIMEZONE_CHANGED)
+            }
+            try {
+                ContextCompat.registerReceiver(
+                    service,
+                    timeReceiver,
+                    filter,
+                    ContextCompat.RECEIVER_NOT_EXPORTED
+                )
+                isTimeReceiverRegistered = true
+            } catch (_: Exception) {
+                try {
+                    service.registerReceiver(timeReceiver, filter)
+                    isTimeReceiverRegistered = true
+                } catch (_: Exception) {}
+            }
+        }
+    }
+
+    private fun unregisterTimeReceiver() {
+        if (isTimeReceiverRegistered) {
+            try {
+                service.unregisterReceiver(timeReceiver)
+            } catch (_: Exception) {}
+            isTimeReceiverRegistered = false
+        }
+    }
+
+    private var isScreenOff: Boolean = false
+    var isFullscreen: Boolean = false
+        private set
+
+    private var isIslandVisible = false
+    private var isShadeExpanded = false
+
+    fun setShadeExpanded(expanded: Boolean) {
+        mainHandler.post {
+            isShadeExpanded = expanded
+            overlayView?.isShadeHidden = shouldHideForShade()
+        }
+    }
+
+    private fun shouldHideForShade(): Boolean = isShadeExpanded && settingsRepository.isDuoHideOnShadeEnabled()
+
+    fun setIslandVisible(visible: Boolean) {
+        isIslandVisible = visible
+        mainHandler.post { overlayView?.isYieldingToIsland = shouldYieldToIsland() }
+    }
+
+    private fun shouldYieldToIsland(): Boolean = isIslandVisible && settingsRepository.isDuoIslandCombined()
+
+    fun setFullscreen(fullscreen: Boolean) {
+        if (isFullscreen != fullscreen) {
+            isFullscreen = fullscreen
+            overlayView?.isFullscreen = shouldHideForFullscreen()
+            if (settingsRepository.isDuoKeepInFullscreenEnabled()) updateState()
+        }
+    }
+
+    private fun shouldHideForFullscreen(): Boolean = isFullscreen && !settingsRepository.isDuoKeepInFullscreenEnabled()
+
+    private fun shouldBlockTouchForFullscreen(): Boolean =
+        isFullscreen &&
+            settingsRepository.isDuoKeepInFullscreenEnabled() &&
+            settingsRepository.isDuoDisableInteractionsInFullscreenEnabled()
+
+    var openBrief: (() -> Unit)? = null
+
+    fun init() {
+        windowManager = service.getSystemService(AccessibilityService.WINDOW_SERVICE) as? WindowManager
+        updateState()
+    }
+
+    fun onScreenOn() {
+        isScreenOff = false
+        overlayView?.isScreenOff = false
+        updateState()
+    }
+
+    fun onUserPresent() {
+        overlayView?.isLockedHidden = shouldHideForLock()
+    }
+
+    private fun shouldHideForLock(): Boolean =
+        settingsRepository.isDuoHideWhenLockedEnabled() &&
+            (service.getSystemService(android.content.Context.KEYGUARD_SERVICE) as? android.app.KeyguardManager)?.isKeyguardLocked == true
+
+    fun onScreenOff() {
+        isScreenOff = true
+        overlayView?.isScreenOff = true
+        updateState()
+    }
+
+    private fun syncScreenOffFromDisplay() {
+        val displayManager = service.getSystemService(Context.DISPLAY_SERVICE) as? android.hardware.display.DisplayManager ?: return
+        val state = displayManager.getDisplay(android.view.Display.DEFAULT_DISPLAY)?.state ?: return
+        val off = state == android.view.Display.STATE_OFF ||
+            state == android.view.Display.STATE_DOZE ||
+            state == android.view.Display.STATE_DOZE_SUSPEND
+        if (off == isScreenOff) return
+        isScreenOff = off
+        overlayView?.isScreenOff = off
+        overlayView?.isLockedHidden = shouldHideForLock()
+    }
+
+    private var lastKnownRotation = -1
+    private var lastKnownDisplayProfile: String? = null
+    private var isRotationListenerRegistered = false
+    private val displayChangeRefreshRunnable = Runnable { showOrUpdateOverlay() }
+    private val rotationListener =
+        object : android.hardware.display.DisplayManager.DisplayListener {
+            override fun onDisplayAdded(displayId: Int) {}
+
+            override fun onDisplayRemoved(displayId: Int) {}
+
+            override fun onDisplayChanged(displayId: Int) {
+                if (displayId != android.view.Display.DEFAULT_DISPLAY) return
+                syncScreenOffFromDisplay()
+                @Suppress("DEPRECATION")
+                val rotation = windowManager?.defaultDisplay?.rotation ?: return
+                val profile = settingsRepository.getDisplayProfileId()
+                val profileChanged = profile != lastKnownDisplayProfile
+                if (rotation != lastKnownRotation || profileChanged) {
+                    lastKnownRotation = rotation
+                    lastKnownDisplayProfile = profile
+                    showOrUpdateOverlay()
+                    if (profileChanged) {
+                        // Fold/unfold transitions settle (cutout, metrics) slightly after the first change event.
+                        mainHandler.removeCallbacks(displayChangeRefreshRunnable)
+                        mainHandler.postDelayed(displayChangeRefreshRunnable, 400L)
+                    }
+                }
+            }
+        }
+
+    private fun registerRotationListener() {
+        if (isRotationListenerRegistered) return
+        val displayManager = service.getSystemService(Context.DISPLAY_SERVICE) as? android.hardware.display.DisplayManager
+        displayManager?.registerDisplayListener(rotationListener, mainHandler)
+        isRotationListenerRegistered = true
+    }
+
+    private fun unregisterRotationListener() {
+        if (!isRotationListenerRegistered) return
+        val displayManager = service.getSystemService(Context.DISPLAY_SERVICE) as? android.hardware.display.DisplayManager
+        displayManager?.unregisterDisplayListener(rotationListener)
+        isRotationListenerRegistered = false
+        mainHandler.removeCallbacks(displayChangeRefreshRunnable)
+        lastKnownRotation = -1
+        lastKnownDisplayProfile = null
+    }
+
+    fun onConfigurationChanged(newConfig: Configuration) {
+        val isNightMode = (newConfig.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
+        overlayView?.isDarkTheme = isNightMode
+        updateState()
+    }
+
+    fun updateState() {
+        if (!settingsRepository.isDuoEnabled()) {
+            removeOverlay()
+            return
+        }
+        showOrUpdateOverlay()
+    }
+
+    private fun updateCurrentSignal() {
+        mainHandler.post {
+            var level = -1
+            var isWifi = false
+
+            val activeNetwork = connectivityManager?.activeNetwork
+            val capabilities = activeNetwork?.let { connectivityManager?.getNetworkCapabilities(it) }
+            if (capabilities?.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) == true) {
+                isWifi = true
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    val transportInfo = capabilities.transportInfo
+                    if (transportInfo is WifiInfo) {
+                        val rssi = transportInfo.rssi
+                        if (rssi > -127) {
+                            level = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && wifiManager != null) {
+                                wifiManager?.calculateSignalLevel(rssi)?.coerceIn(0, 4) ?: 0
+                            } else {
+                                @Suppress("DEPRECATION")
+                                WifiManager.calculateSignalLevel(rssi, 5).coerceIn(0, 4)
+                            }
+                        }
+                    }
+                }
+                if (level == -1 && wifiManager != null && Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+                    @Suppress("DEPRECATION")
+                    val info = wifiManager?.connectionInfo
+                    if (info != null && info.rssi > -127) {
+                        level = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                            wifiManager?.calculateSignalLevel(info.rssi)?.coerceIn(0, 4) ?: 0
+                        } else {
+                            @Suppress("DEPRECATION")
+                            WifiManager.calculateSignalLevel(info.rssi, 5).coerceIn(0, 4)
+                        }
+                    }
+                }
+            }
+
+            if (level == -1) {
+                isWifi = false
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    try {
+                        val signalStrength = telephonyManager?.signalStrength
+                        if (signalStrength != null) {
+                            level = signalStrength.level.coerceIn(0, 4)
+                        }
+                    } catch (_: Exception) {}
+                }
+            }
+
+            overlayView?.isWifi = isWifi
+            if (level >= 0) {
+                overlayView?.signalLevel = level
+            }
+        }
+    }
+
+    private fun getExcludedPackages(): Set<String> {
+        val excludedAppsJson = settingsRepository.getString(SettingsRepository.KEY_AOD_WALLPAPER_MEDIA_EXCLUDED_APPS, null)
+        return if (!excludedAppsJson.isNullOrBlank()) {
+            try {
+                val listType = object : TypeToken<List<AppSelection>>() {}.type
+                val apps: List<AppSelection> = Gson().fromJson(excludedAppsJson, listType) ?: emptyList()
+                apps.filter { it.isEnabled }.map { it.packageName }.toSet()
+            } catch (_: Exception) {
+                emptySet()
+            }
+        } else {
+            emptySet()
+        }
+    }
+
+    private fun reEvaluateAndApplyMedia(isInitial: Boolean = false) {
+        mainHandler.post {
+            val excludedPackages = getExcludedPackages()
+            val valid = monitoredControllers.filter { !excludedPackages.contains(it.packageName) }
+
+            val currentIsPlaying = activeMediaController?.let { current ->
+                valid.any { it.sessionToken == current.sessionToken } &&
+                    current.playbackState?.state == PlaybackState.STATE_PLAYING
+            } ?: false
+
+            val target = if (currentIsPlaying) {
+                activeMediaController
+            } else {
+                val playingController = valid.firstOrNull {
+                    it.playbackState?.state == PlaybackState.STATE_PLAYING
+                }
+                playingController
+                    ?: valid.firstOrNull { it.sessionToken == activeMediaController?.sessionToken }
+                    ?: valid.firstOrNull()
+            }
+
+            activeMediaController = target
+
+            if (isInitial) {
+                checkAndApplyMediaState()
+            } else {
+                scheduleMediaUpdate()
+            }
+        }
+    }
+
+    private fun updateActiveMediaSession(controllers: List<MediaController>?, isInitial: Boolean = false) {
+        mainHandler.post {
+            val excludedPackages = getExcludedPackages()
+            val validControllers = controllers?.filter { !excludedPackages.contains(it.packageName) } ?: emptyList()
+
+            val currentTokens = validControllers.map { it.sessionToken }.toSet()
+            val iterator = controllerCallbacks.entries.iterator()
+            while (iterator.hasNext()) {
+                val entry = iterator.next()
+                if (!currentTokens.contains(entry.key)) {
+                    val controller = monitoredControllers.find { it.sessionToken == entry.key }
+                    try {
+                        controller?.unregisterCallback(entry.value)
+                    } catch (_: Exception) {}
+                    iterator.remove()
+                }
+            }
+            monitoredControllers.removeAll { !currentTokens.contains(it.sessionToken) }
+
+            for (controller in validControllers) {
+                if (!controllerCallbacks.containsKey(controller.sessionToken)) {
+                    val callback = object : MediaController.Callback() {
+                        override fun onPlaybackStateChanged(state: PlaybackState?) {
+                            reEvaluateAndApplyMedia()
+                        }
+
+                        override fun onMetadataChanged(metadata: MediaMetadata?) {
+                            reEvaluateAndApplyMedia()
+                        }
+
+                        override fun onSessionDestroyed() {
+                            mainHandler.post {
+                                try {
+                                    controller.unregisterCallback(this)
+                                } catch (_: Exception) {}
+                                controllerCallbacks.remove(controller.sessionToken)
+                                monitoredControllers.removeAll { it.sessionToken == controller.sessionToken }
+                                reEvaluateAndApplyMedia()
+                            }
+                        }
+                    }
+                    try {
+                        controller.registerCallback(callback, mainHandler)
+                        controllerCallbacks[controller.sessionToken] = callback
+                        monitoredControllers.add(controller)
+                    } catch (_: Exception) {}
+                }
+            }
+
+            reEvaluateAndApplyMedia(isInitial = isInitial)
+        }
+    }
+
+    private fun checkAndApplyMediaState() {
+        mainHandler.post {
+            val showMedia = settingsRepository.isDuoShowMediaEnabled()
+            val controller = activeMediaController
+            val excludedPackages = getExcludedPackages()
+
+            val isExcluded = controller != null && excludedPackages.contains(controller.packageName)
+            val state = controller?.playbackState
+            val isPlaying = showMedia && !isExcluded && state?.state == PlaybackState.STATE_PLAYING
+
+            isMediaPlaying = isPlaying
+
+            if (!isPlaying) {
+                currentMediaKey = null
+                currentArtOrIconBitmap = null
+                mainHandler.removeCallbacks(mediaProgressTicker)
+                overlayView?.setMediaState(isPlaying = false, progress = 0f, appIcon = null)
+                checkAndApplyProgressNotificationState()
+                return@post
+            }
+
+            val title = controller.metadata?.getString(MediaMetadata.METADATA_KEY_TITLE) ?: ""
+            val artist = controller.metadata?.getString(MediaMetadata.METADATA_KEY_ARTIST) ?: ""
+            val pkg = controller.packageName
+            val mediaKey = "${pkg}_${title}_$artist"
+
+            if (currentMediaKey != mediaKey || currentArtOrIconBitmap == null) {
+                currentMediaKey = mediaKey
+                handlerScope.launch(Dispatchers.IO) {
+                    val artOrIcon = extractMediaArtworkOrAppIcon(controller.metadata, controller)
+                    withContext(Dispatchers.Main) {
+                        if (currentMediaKey == mediaKey && isMediaPlaying) {
+                            currentArtOrIconBitmap = artOrIcon
+                            updateMediaProgress()
+                            checkAndApplyProgressNotificationState()
+                        }
+                    }
+                }
+            }
+
+            updateMediaProgress()
+            checkAndApplyProgressNotificationState()
+
+            mainHandler.removeCallbacks(mediaProgressTicker)
+            mainHandler.postDelayed(mediaProgressTicker, 500L)
+        }
+    }
+
+    private fun extractMediaArtworkOrAppIcon(metadata: MediaMetadata?, controller: MediaController): Bitmap? {
+        var bitmap = metadata?.getBitmap(MediaMetadata.METADATA_KEY_ALBUM_ART)
+        if (bitmap == null) {
+            bitmap = metadata?.getBitmap(MediaMetadata.METADATA_KEY_ART)
+        }
+
+        if (bitmap == null) {
+            val title = metadata?.getString(MediaMetadata.METADATA_KEY_TITLE)
+            val artist = metadata?.getString(MediaMetadata.METADATA_KEY_ARTIST)
+            if (!title.isNullOrBlank()) {
+                val hashToUse = kotlin.math.abs("${title}_$artist".hashCode().toLong())
+                bitmap = NotificationListener.getCachedBitmap(hashToUse)
+                if (bitmap == null) {
+                    val artFile = File(service.cacheDir, "art_$hashToUse.png")
+                    if (artFile.exists()) {
+                        try {
+                            bitmap = BitmapFactory.decodeFile(artFile.absolutePath)
+                        } catch (_: Exception) {}
+                    }
+                }
+            }
+        }
+
+        if (bitmap == null) {
+            bitmap = NotificationListener.getLatestArtBitmap()
+        }
+        if (bitmap == null) {
+            val tempArtFile = File(service.cacheDir, "temp_album_art.png")
+            if (tempArtFile.exists()) {
+                try {
+                    bitmap = BitmapFactory.decodeFile(tempArtFile.absolutePath)
+                } catch (_: Exception) {}
+            }
+        }
+
+        if (bitmap == null) {
+            bitmap = getAppIconBitmap(service, controller.packageName)
+        }
+
+        return bitmap
+    }
+
+    private fun updateMediaProgress() {
+        val controller = activeMediaController ?: return
+        val state = controller.playbackState ?: return
+        val duration = controller.metadata?.getLong(MediaMetadata.METADATA_KEY_DURATION) ?: 0L
+
+        var currentPos = state.position
+        if (state.state == PlaybackState.STATE_PLAYING) {
+            val lastUpdate = state.lastPositionUpdateTime
+            val now = SystemClock.elapsedRealtime()
+            if (lastUpdate > 0 && now > lastUpdate) {
+                val speed = if (state.playbackSpeed > 0f) state.playbackSpeed else 1f
+                currentPos += ((now - lastUpdate) * speed).toLong()
+            }
+        }
+
+        val progressPct = if (duration > 0) {
+            ((currentPos.toFloat() / duration.toFloat()) * 100f).coerceIn(0f, 100f)
+        } else {
+            0f
+        }
+
+        overlayView?.setMediaState(
+            isPlaying = true,
+            progress = progressPct,
+            appIcon = currentArtOrIconBitmap
+        )
+    }
+
+    private fun getAppIconBitmap(context: Context, packageName: String): Bitmap? {
+        return try {
+            val pm = context.packageManager
+            val drawable = pm.getApplicationIcon(packageName)
+            val density = context.resources.displayMetrics.density
+            val sizePx = (24 * density).toInt().coerceAtLeast(24)
+            val bitmap = Bitmap.createBitmap(sizePx, sizePx, Bitmap.Config.ARGB_8888)
+            val canvas = Canvas(bitmap)
+            drawable.setBounds(0, 0, canvas.width, canvas.height)
+            drawable.draw(canvas)
+            bitmap
+        } catch (_: Exception) {
+            null
+        }
+    }
+
+    private fun registerMediaSessionListener() {
+        if (!isMediaListenerRegistered) {
+            try {
+                val msm = service.getSystemService(Context.MEDIA_SESSION_SERVICE) as? MediaSessionManager
+                mediaSessionManager = msm
+                if (msm != null) {
+                    val componentName = ComponentName(service, NotificationListener::class.java)
+                    msm.addOnActiveSessionsChangedListener(activeSessionsListener, componentName)
+                    isMediaListenerRegistered = true
+                    val initialSessions = msm.getActiveSessions(componentName)
+                    updateActiveMediaSession(initialSessions, isInitial = true)
+                }
+            } catch (e: Exception) {
+                Log.e("DuoOverlayHandler", "Failed to register media session listener", e)
+            }
+        }
+    }
+
+    private fun unregisterMediaSessionListener() {
+        mainHandler.removeCallbacks(mediaProgressTicker)
+        mainHandler.removeCallbacks(mediaUpdateRunnable)
+        if (isMediaListenerRegistered) {
+            try {
+                mediaSessionManager?.removeOnActiveSessionsChangedListener(activeSessionsListener)
+            } catch (_: Exception) {}
+            for (controller in monitoredControllers) {
+                val callback = controllerCallbacks[controller.sessionToken]
+                if (callback != null) {
+                    try {
+                        controller.unregisterCallback(callback)
+                    } catch (_: Exception) {}
+                }
+            }
+            controllerCallbacks.clear()
+            monitoredControllers.clear()
+            activeMediaController = null
+            isMediaListenerRegistered = false
+            isMediaPlaying = false
+            currentMediaKey = null
+            currentArtOrIconBitmap = null
+            overlayView?.setMediaState(isPlaying = false, progress = 0f, appIcon = null)
+        }
+    }
+
+    private fun showOrUpdateOverlay() {
+        mainHandler.post {
+            val wm = windowManager ?: return@post
+            val hideForOrientation = settingsRepository.isFoldableDevice() &&
+                settingsRepository.isDuoHiddenInCurrentOrientation()
+
+            val displayMetrics = DisplayMetrics()
+            @Suppress("DEPRECATION")
+            wm.defaultDisplay.getRealMetrics(displayMetrics)
+            val screenWidth = displayMetrics.widthPixels.toFloat()
+            val screenHeight = displayMetrics.heightPixels.toFloat()
+            val density = displayMetrics.density
+
+            var centerX = screenWidth * (settingsRepository.getDuoCameraOffsetX() / 100f)
+            var centerY = screenHeight * (settingsRepository.getDuoCameraOffsetY() / 100f)
+            var cameraRadiusPx = 18f * density * settingsRepository.getDuoCameraSize()
+
+            @Suppress("DEPRECATION")
+            val rotation = wm.defaultDisplay.rotation
+            lastKnownRotation = rotation
+            lastKnownDisplayProfile = settingsRepository.getDisplayProfileId()
+            settingsRepository.markDisplayProfileSeen()
+
+            if (settingsRepository.isDuoAutoDetectEnabled() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                @Suppress("DEPRECATION")
+                val cutout = wm.defaultDisplay.cutout
+                if (cutout != null && cutout.boundingRects.isNotEmpty()) {
+                    // Cutout rects are in the current orientation's coordinates; pick the one closest to the
+                    // edge the camera sits on for this rotation (ties broken by closeness to that edge's center).
+                    val targetRect = when (rotation) {
+                        android.view.Surface.ROTATION_90 ->
+                            cutout.boundingRects.minByOrNull { it.left * 4f + kotlin.math.abs(it.centerY() - screenHeight / 2f) }
+                        android.view.Surface.ROTATION_270 ->
+                            cutout.boundingRects.minByOrNull { (screenWidth - it.right) * 4f + kotlin.math.abs(it.centerY() - screenHeight / 2f) }
+                        android.view.Surface.ROTATION_180 ->
+                            cutout.boundingRects.minByOrNull { (screenHeight - it.bottom) * 4f + kotlin.math.abs(it.centerX() - screenWidth / 2f) }
+                        else ->
+                            cutout.boundingRects.minByOrNull { it.top * 4f + kotlin.math.abs(it.centerX() - screenWidth / 2f) }
+                    }
+
+                    if (targetRect != null) {
+                        centerX = targetRect.centerX().toFloat()
+                        centerY = targetRect.centerY().toFloat()
+                        val computedRadius = (targetRect.width().coerceAtLeast(targetRect.height()) / 2f) * settingsRepository.getDuoCameraSize()
+                        if (computedRadius > 0) {
+                            cameraRadiusPx = computedRadius
+                        }
+                    }
+                }
+            } else if (!settingsRepository.isDuoAutoDetectEnabled()) {
+                val rawXRatio = settingsRepository.getDuoCameraOffsetX() / 100f
+                val rawYRatio = settingsRepository.getDuoCameraOffsetY() / 100f
+
+                when (rotation) {
+                    android.view.Surface.ROTATION_90 -> {
+                        centerX = screenWidth * rawYRatio
+                        centerY = screenHeight * (1f - rawXRatio)
+                    }
+                    android.view.Surface.ROTATION_270 -> {
+                        centerX = screenWidth * (1f - rawYRatio)
+                        centerY = screenHeight * rawXRatio
+                    }
+                    android.view.Surface.ROTATION_180 -> {
+                        centerX = screenWidth * (1f - rawXRatio)
+                        centerY = screenHeight * (1f - rawYRatio)
+                    }
+                    else -> {
+                        centerX = screenWidth * rawXRatio
+                        centerY = screenHeight * rawYRatio
+                    }
+                }
+            }
+
+            currentCenterX = centerX
+            currentCenterY = centerY
+            currentCameraRadiusPx = cameraRadiusPx
+
+            val isNightMode = (service.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
+
+            if (overlayView == null) {
+                overlayView = DuoOverlayView(service)
+            }
+
+            overlayView?.apply {
+                this.cameraCenterX = centerX
+                this.cameraCenterY = centerY
+                this.cameraRadiusPx = cameraRadiusPx
+                this.ringRadiusScale = settingsRepository.getDuoRingRadius()
+                this.timeTextScale = settingsRepository.getDuoTimeTextScale()
+                this.arcThicknessPx = settingsRepository.getDuoArcThickness() * density
+                this.dotRadiusPx = settingsRepository.getDuoDotSize() * density
+                this.isDarkTheme = isNightMode
+                this.isScreenOff = this@DuoOverlayHandler.isScreenOff
+                this.isFullscreen = shouldHideForFullscreen()
+                this.isYieldingToIsland = shouldYieldToIsland()
+                this.isShadeHidden = shouldHideForShade()
+                this.isLockedHidden = shouldHideForLock()
+                val areUnsupportedFeaturesEnabled = settingsRepository.isEnableUnsupportedFeatures()
+                this.hideWhenScreenOff = if (areUnsupportedFeaturesEnabled) settingsRepository.isDuoHideWhenScreenOffEnabled() else true
+                this.hideWhenScreenOffOnlyIdle = if (areUnsupportedFeaturesEnabled) settingsRepository.isDuoHideWhenScreenOffOnlyIdleEnabled() else false
+                this.useMaterialYouColors = settingsRepository.isDuoUseMaterialYouEnabled()
+                try {
+                    this.customColor = Color.parseColor(settingsRepository.getDuoCustomColor())
+                } catch (_: Exception) {}
+                this.isBatteryChargingColorEnabled = settingsRepository.isDuoBatteryChargingColorEnabled()
+                val chargingColorStr = settingsRepository.getDuoBatteryChargingColor()
+                if (chargingColorStr.equals("auto", ignoreCase = true)) {
+                    this.isChargingColorAuto = true
+                } else {
+                    this.isChargingColorAuto = false
+                    try {
+                        this.batteryChargingColor = Color.parseColor(chargingColorStr)
+                    } catch (_: Exception) {}
+                }
+                this.isBatteryPowerSaveColorEnabled = settingsRepository.isDuoBatteryPowerSaveColorEnabled()
+                try {
+                    this.batteryPowerSaveColor = Color.parseColor(settingsRepository.getDuoBatteryPowerSaveColor())
+                } catch (_: Exception) {}
+                this.batteryLowLevel = settingsRepository.getDuoBatteryLowLevel()
+                this.batteryCriticalLevel = settingsRepository.getDuoBatteryCriticalLevel()
+                this.isBatteryLowColorEnabled = settingsRepository.isDuoBatteryLowColorEnabled()
+                try {
+                    this.batteryLowColor = Color.parseColor(settingsRepository.getDuoBatteryLowColor())
+                } catch (_: Exception) {}
+                this.isBatteryCriticalColorEnabled = settingsRepository.isDuoBatteryCriticalColorEnabled()
+                try {
+                    this.batteryCriticalColor = Color.parseColor(settingsRepository.getDuoBatteryCriticalColor())
+                } catch (_: Exception) {}
+                this.isPowerSaveMode = powerManager?.isPowerSaveMode ?: false
+                this.showBattery = settingsRepository.isDuoShowBatteryEnabled()
+                this.showBatteryPercentage = settingsRepository.isDuoShowBatteryPercentageEnabled()
+                this.isBatteryPercentageOnlyColored = settingsRepository.isDuoBatteryPercentageOnlyColoredEnabled()
+                this.showNetworks = settingsRepository.isDuoShowNetworksEnabled()
+                this.isDifferentiateWifi = settingsRepository.isDuoDifferentiateWifiEnabled()
+                this.showTime = settingsRepository.isDuoShowTimeEnabled()
+                this.showMedia = settingsRepository.isDuoShowMediaEnabled()
+                this.isRotateAlbumArt = settingsRepository.isDuoRotateAlbumArtEnabled()
+                this.showProgress = settingsRepository.isDuoShowProgressEnabled()
+                this.showFlashlight = settingsRepository.isDuoShowFlashlightEnabled()
+                this.setCharging(this@DuoOverlayHandler.isChargingState, this@DuoOverlayHandler.isFastChargingState)
+            }
+
+            if (!isOverlayAdded) {
+                val params = OverlayHelper.createOverlayLayoutParams(
+                    WindowManager.LayoutParams.TYPE_ACCESSIBILITY_OVERLAY,
+                    WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
+                        WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE or
+                        WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN or
+                        WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+                    isTouchable = false
+                )
+                try {
+                    overlayView?.let { runCatching { wm.removeViewImmediate(it) } }
+                    overlayView?.playEnter()
+                    wm.addView(overlayView, params)
+                    isOverlayAdded = true
+                    registerRotationListener()
+                } catch (e: Exception) {
+                    Log.e("DuoOverlayHandler", "Failed to add Duo overlay", e)
+                }
+            } else {
+                overlayView?.invalidate()
+            }
+            overlayView?.visibility = if (hideForOrientation) View.GONE else View.VISIBLE
+
+            if (settingsRepository.isDuoShowTimeEnabled()) {
+                registerTimeReceiver()
+                updateCurrentTime()
+            } else {
+                unregisterTimeReceiver()
+            }
+
+            val isTouchEnabled = !hideForOrientation && !shouldBlockTouchForFullscreen() && (settingsRepository.getDuoTapAction() != null ||
+                settingsRepository.isDuoTapForBriefActive() ||
+                settingsRepository.getDuoDoubleTapAction() != null ||
+                settingsRepository.getDuoLongPressAction() != null ||
+                settingsRepository.getDuoSwipeDownAction() != null ||
+                settingsRepository.getDuoSlideMode() != "none" ||
+                settingsRepository.isDuoSlideTrackEnabled())
+
+            if (isTouchEnabled) {
+                if (duoTouchHandler == null) {
+                    duoTouchHandler = DuoTouchHandler(service)
+                }
+                duoTouchHandler?.apply {
+                    this.overlayView = this@DuoOverlayHandler.overlayView
+                    this.cameraCenterX = centerX
+                    this.cameraCenterY = centerY
+                    this.cameraRadiusPx = cameraRadiusPx
+                    this.ringRadiusScale = settingsRepository.getDuoRingRadius()
+                    this.openBrief = this@DuoOverlayHandler.openBrief
+                }
+
+                if (touchAnchorView == null) {
+                    touchAnchorView = View(service).apply {
+                        setOnTouchListener { _, event ->
+                            duoTouchHandler?.onTouchEvent(event) ?: false
+                        }
+                    }
+                }
+
+                val diameter = (((cameraRadiusPx + 20f * density) * 2 * settingsRepository.getDuoRingRadius()).toInt()).coerceAtLeast((44f * density).toInt())
+                @Suppress("DEPRECATION")
+                val touchParams = WindowManager.LayoutParams(
+                    diameter,
+                    diameter,
+                    WindowManager.LayoutParams.TYPE_ACCESSIBILITY_OVERLAY,
+                    WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
+                        WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL or
+                        WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN or
+                        WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS or
+                        WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED or
+                        WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD,
+                    PixelFormat.TRANSLUCENT
+                ).apply {
+                    gravity = Gravity.TOP or Gravity.START
+                    x = (centerX - diameter / 2f).toInt()
+                    y = (centerY - diameter / 2f).toInt()
+                }
+
+                if (!isTouchAnchorAdded) {
+                    try {
+                        wm.addView(touchAnchorView, touchParams)
+                        isTouchAnchorAdded = true
+                    } catch (e: Exception) {
+                        Log.e("DuoOverlayHandler", "Failed to add Duo touch anchor", e)
+                    }
+                } else {
+                    try {
+                        wm.updateViewLayout(touchAnchorView, touchParams)
+                    } catch (e: Exception) {
+                        Log.e("DuoOverlayHandler", "Failed to update Duo touch anchor", e)
+                    }
+                }
+            } else {
+                if (isTouchAnchorAdded && touchAnchorView != null) {
+                    try {
+                        wm.removeView(touchAnchorView)
+                    } catch (_: Exception) {}
+                    isTouchAnchorAdded = false
+                }
+            }
+
+            registerBatteryReceiver()
+            registerSignalListeners()
+            updateCurrentSignal()
+
+            if (settingsRepository.isDuoShowMediaEnabled()) {
+                registerMediaSessionListener()
+            } else {
+                unregisterMediaSessionListener()
+            }
+
+            if (settingsRepository.isDuoShowProgressEnabled()) {
+                registerProgressNotificationListener()
+            } else {
+                unregisterProgressNotificationListener()
+            }
+
+            if (settingsRepository.isDuoShowFlashlightEnabled()) {
+                registerTorchCallback()
+            } else {
+                unregisterTorchCallback()
+            }
+        }
+    }
+
+    private var primaryCameraId: String? = null
+    private var maxFlashlightLevel: Int = -1
+
+    private fun getCameraId(): String? {
+        if (com.jawzf.pixeltoolkit.utils.DeviceUtils.isTorchAccessRestricted()) return null
+        if (primaryCameraId != null) return primaryCameraId
+        return try {
+            val id = cameraManager.cameraIdList.firstOrNull { camId ->
+                val chars = cameraManager.getCameraCharacteristics(camId)
+                val flashAvailable = chars.get(CameraCharacteristics.FLASH_INFO_AVAILABLE) == true
+                val facing = chars.get(CameraCharacteristics.LENS_FACING)
+                flashAvailable && facing == CameraCharacteristics.LENS_FACING_BACK
+            } ?: cameraManager.cameraIdList.firstOrNull()
+            primaryCameraId = id
+            if (id != null) {
+                maxFlashlightLevel = FlashlightUtil.getMaxLevel(service, id)
+            }
+            id
+        } catch (_: Exception) {
+            null
+        }
+    }
+
+    private fun getFlashlightIcon(): Bitmap? {
+        if (flashlightIconBitmap == null) {
+            try {
+                val drawable = ContextCompat.getDrawable(service, R.drawable.rounded_flashlight_on_24)?.mutate()
+                drawable?.setTint(Color.WHITE)
+                if (drawable != null) {
+                    flashlightIconBitmap = AppUtil.drawableToBitmap(drawable, 64)
+                }
+            } catch (_: Exception) {}
+        }
+        return flashlightIconBitmap
+    }
+
+    private fun checkAndApplyFlashlightState() {
+        mainHandler.post {
+            val showFlashlight = settingsRepository.isDuoShowFlashlightEnabled()
+            val isOn = isFlashlightOn && showFlashlight
+            if (isOn) {
+                if (primaryCameraId == null) {
+                    getCameraId()
+                }
+                val maxLevel = if (maxFlashlightLevel > 1) maxFlashlightLevel else 1
+                val progress = if (maxLevel > 1) {
+                    (currentFlashlightLevel.toFloat() / maxLevel.toFloat() * 100f).coerceIn(0f, 100f)
+                } else {
+                    100f
+                }
+                overlayView?.setFlashlightState(
+                    isOn = true,
+                    brightnessProgress = progress,
+                    icon = getFlashlightIcon()
+                )
+            } else {
+                overlayView?.setFlashlightState(
+                    isOn = false,
+                    brightnessProgress = 0f,
+                    icon = null
+                )
+            }
+        }
+    }
+
+    private fun registerTorchCallback() {
+        if (com.jawzf.pixeltoolkit.utils.DeviceUtils.isTorchAccessRestricted()) return
+        if (!isTorchCallbackRegistered) {
+            try {
+                cameraManager.registerTorchCallback(torchCallback, mainHandler)
+                isTorchCallbackRegistered = true
+                checkAndApplyFlashlightState()
+            } catch (e: Exception) {
+                Log.e("DuoOverlayHandler", "Failed to register torch callback", e)
+            }
+        }
+    }
+
+    private fun unregisterTorchCallback() {
+        if (isTorchCallbackRegistered) {
+            try {
+                cameraManager.unregisterTorchCallback(torchCallback)
+            } catch (_: Exception) {}
+            isTorchCallbackRegistered = false
+            checkAndApplyFlashlightState()
+        }
+    }
+
+    private fun checkAndApplyProgressNotificationState(incomingData: ProgressNotificationData? = null) {
+        mainHandler.post {
+            val showProgress = settingsRepository.isDuoShowProgressEnabled()
+            val data = incomingData ?: if (showProgress) NotificationListener.getLatestProgressNotification() else null
+            val isActive = showProgress && data != null && !isMediaPlaying
+
+            if (data != null && isActive) {
+                overlayView?.setProgressNotificationState(
+                    isActive = true,
+                    progress = data.progress,
+                    icon = data.icon
+                )
+            } else {
+                overlayView?.setProgressNotificationState(
+                    isActive = false,
+                    progress = 0f,
+                    icon = null
+                )
+            }
+        }
+    }
+
+    private fun registerProgressNotificationListener() {
+        if (!isProgressListenerRegistered) {
+            NotificationListener.addProgressNotificationListener(progressNotificationListener)
+            isProgressListenerRegistered = true
+            checkAndApplyProgressNotificationState()
+        }
+    }
+
+    private fun unregisterProgressNotificationListener() {
+        if (isProgressListenerRegistered) {
+            NotificationListener.removeProgressNotificationListener(progressNotificationListener)
+            isProgressListenerRegistered = false
+            checkAndApplyProgressNotificationState(null)
+        }
+    }
+
+
+
+    private fun restoreTouchAnchor() {
+        val wm = windowManager ?: return
+        val anchor = touchAnchorView ?: return
+        if (!isTouchAnchorAdded) return
+
+        val gesturesEnabled = settingsRepository.getDuoTapAction() != null ||
+                settingsRepository.isDuoTapForBriefActive() ||
+            settingsRepository.getDuoDoubleTapAction() != null ||
+            settingsRepository.getDuoLongPressAction() != null ||
+            settingsRepository.getDuoSwipeDownAction() != null ||
+            settingsRepository.getDuoSlideMode() != "none" ||
+            settingsRepository.isDuoSlideTrackEnabled()
+
+        if (!gesturesEnabled) {
+            try {
+                wm.removeView(anchor)
+                isTouchAnchorAdded = false
+            } catch (_: Exception) {}
+            return
+        }
+
+        val density = service.resources.displayMetrics.density
+        val diameter = (((currentCameraRadiusPx + 20f * density) * 2 * settingsRepository.getDuoRingRadius()).toInt()).coerceAtLeast((44f * density).toInt())
+        val touchParams = WindowManager.LayoutParams(
+            diameter,
+            diameter,
+            WindowManager.LayoutParams.TYPE_ACCESSIBILITY_OVERLAY,
+            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
+                WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL or
+                WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN or
+                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS or
+                WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED or
+                WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD,
+            PixelFormat.TRANSLUCENT
+        ).apply {
+            gravity = Gravity.TOP or Gravity.START
+            x = (currentCenterX - diameter / 2f).toInt()
+            y = (currentCenterY - diameter / 2f).toInt()
+        }
+        try {
+            wm.updateViewLayout(anchor, touchParams)
+        } catch (_: Exception) {}
+    }
+
+    private fun registerBatteryReceiver() {
+        if (!isBatteryReceiverRegistered) {
+            try {
+                val filter = IntentFilter().apply {
+                    addAction(Intent.ACTION_BATTERY_CHANGED)
+                    addAction(Intent.ACTION_POWER_CONNECTED)
+                    addAction(Intent.ACTION_POWER_DISCONNECTED)
+                    addAction(PowerManager.ACTION_POWER_SAVE_MODE_CHANGED)
+                }
+                val intent = service.registerReceiver(
+                    batteryReceiver,
+                    filter
+                )
+                isBatteryReceiverRegistered = true
+                overlayView?.isPowerSaveMode = powerManager?.isPowerSaveMode ?: false
+                intent?.let {
+                    val level = it.getIntExtra(BatteryManager.EXTRA_LEVEL, -1)
+                    val scale = it.getIntExtra(BatteryManager.EXTRA_SCALE, 100)
+                    if (level >= 0 && scale > 0) {
+                        overlayView?.batteryLevel = (level * 100) / scale
+                    }
+                    val status = it.getIntExtra(BatteryManager.EXTRA_STATUS, -1)
+                    val plugged = it.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1)
+                    val isPlugged = plugged > 0
+                    val isChargingStatus = isPlugged && (status == BatteryManager.BATTERY_STATUS_CHARGING ||
+                        status == BatteryManager.BATTERY_STATUS_FULL)
+                    val initialLevel = if (level >= 0 && scale > 0) (level * 100) / scale else 0
+                    if (isChargingStatus && !com.jawzf.pixeltoolkit.utils.battery.ChargeLimitUtil.isShielded(service, initialLevel, true)) {
+                        isChargingState = true
+                        val isFast = isFastCharging(it, plugged)
+                        isFastChargingState = isFast
+                        overlayView?.setCharging(true, isFast)
+                    } else {
+                        isChargingState = false
+                        overlayView?.setCharging(false)
+                    }
+                }
+            } catch (e: Exception) {
+                Log.e("DuoOverlayHandler", "Failed to register battery receiver", e)
+            }
+        }
+    }
+
+    private fun unregisterBatteryReceiver() {
+        if (isBatteryReceiverRegistered) {
+            try {
+                service.unregisterReceiver(batteryReceiver)
+            } catch (_: Exception) {}
+            isBatteryReceiverRegistered = false
+        }
+    }
+
+    private fun registerSignalListeners() {
+        if (!isNetworkCallbackRegistered) {
+            try {
+                connectivityManager?.registerDefaultNetworkCallback(networkCallback)
+                isNetworkCallbackRegistered = true
+            } catch (e: Exception) {
+                Log.e("DuoOverlayHandler", "Failed to register network callback", e)
+            }
+        }
+
+        if (!isTelephonyRegistered && telephonyManager != null) {
+            try {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    val callback = object : TelephonyCallback(), TelephonyCallback.SignalStrengthsListener {
+                        override fun onSignalStrengthsChanged(signalStrength: SignalStrength) {
+                            val lvl = signalStrength.level.coerceIn(0, 4)
+                            overlayView?.signalLevel = lvl
+                        }
+                    }
+                    telephonyManager?.registerTelephonyCallback(service.mainExecutor, callback)
+                    telephonyCallback = callback
+                    isTelephonyRegistered = true
+                } else {
+                    @Suppress("DEPRECATION")
+                    val listener = object : PhoneStateListener() {
+                        @Deprecated("Deprecated in Java")
+                        override fun onSignalStrengthsChanged(signalStrength: SignalStrength?) {
+                            if (signalStrength != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                                val lvl = signalStrength.level.coerceIn(0, 4)
+                                overlayView?.signalLevel = lvl
+                            }
+                        }
+                    }
+                    @Suppress("DEPRECATION")
+                    telephonyManager?.listen(listener, PhoneStateListener.LISTEN_SIGNAL_STRENGTHS)
+                    telephonyCallback = listener
+                    isTelephonyRegistered = true
+                }
+            } catch (e: Exception) {
+                Log.e("DuoOverlayHandler", "Failed to register telephony listener", e)
+            }
+        }
+    }
+
+    private fun unregisterSignalListeners() {
+        if (isNetworkCallbackRegistered) {
+            try {
+                connectivityManager?.unregisterNetworkCallback(networkCallback)
+            } catch (_: Exception) {}
+            isNetworkCallbackRegistered = false
+        }
+
+        if (isTelephonyRegistered && telephonyCallback != null) {
+            try {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    val callback = telephonyCallback as? TelephonyCallback
+                    if (callback != null) {
+                        telephonyManager?.unregisterTelephonyCallback(callback)
+                    }
+                } else {
+                    @Suppress("DEPRECATION")
+                    val listener = telephonyCallback as? PhoneStateListener
+                    if (listener != null) {
+                        @Suppress("DEPRECATION")
+                        telephonyManager?.listen(listener, PhoneStateListener.LISTEN_NONE)
+                    }
+                }
+            } catch (_: Exception) {}
+            telephonyCallback = null
+            isTelephonyRegistered = false
+        }
+    }
+
+    fun removeOverlay(animate: Boolean = true) {
+        mainHandler.post {
+            val fading = overlayView
+            if (isOverlayAdded && fading != null) {
+                isOverlayAdded = false
+                val remove = {
+                    if (!isOverlayAdded) {
+                        try {
+                            windowManager?.removeView(fading)
+                        } catch (_: Exception) {}
+                    }
+                }
+                if (animate) fading.playExit(remove) else remove()
+            }
+            if (isTouchAnchorAdded && touchAnchorView != null) {
+                try {
+                    windowManager?.removeView(touchAnchorView)
+                } catch (_: Exception) {}
+                isTouchAnchorAdded = false
+            }
+            unregisterRotationListener()
+            unregisterBatteryReceiver()
+            unregisterTimeReceiver()
+            unregisterSignalListeners()
+            unregisterMediaSessionListener()
+            unregisterProgressNotificationListener()
+            unregisterTorchCallback()
+        }
+    }
+
+    fun restart() {
+        removeOverlay(animate = false)
+        updateState()
+    }
+
+    fun destroy() {
+        removeOverlay(animate = false)
+        overlayView = null
+        touchAnchorView = null
+        currentArtOrIconBitmap = null
+        currentMediaKey = null
+        flashlightIconBitmap = null
+    }
+}

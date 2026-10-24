@@ -24,22 +24,22 @@
 
 # Kotlin Reflect
 -keep class kotlin.reflect.** { *; }
--keep class com.sameerasw.essentials.domain.model.** { *; }
--keep class com.sameerasw.essentials.domain.diy.** { *; }
+-keep class com.jawzf.pixeltoolkit.domain.model.** { *; }
+-keep class com.jawzf.pixeltoolkit.domain.diy.** { *; }
 
 # Prevent over-minification of settings and registry classes
--keep class com.sameerasw.essentials.data.repository.** { *; }
--keep class com.sameerasw.essentials.domain.registry.** { *; }
+-keep class com.jawzf.pixeltoolkit.data.repository.** { *; }
+-keep class com.jawzf.pixeltoolkit.domain.registry.** { *; }
 
 # Keep IME related models and suggestion logic
--keep class com.sameerasw.essentials.ime.** { *; }
--keep class com.sameerasw.essentials.ui.ime.** { *; }
--keepclassmembers class com.sameerasw.essentials.ime.** { *; }
--keepclassmembers class com.sameerasw.essentials.ui.ime.** { *; }
+-keep class com.jawzf.pixeltoolkit.ime.** { *; }
+-keep class com.jawzf.pixeltoolkit.ui.ime.** { *; }
+-keepclassmembers class com.jawzf.pixeltoolkit.ime.** { *; }
+-keepclassmembers class com.jawzf.pixeltoolkit.ui.ime.** { *; }
 
 # Data models for Gson
--keep class com.sameerasw.essentials.data.model.** { *; }
--keepclassmembers class com.sameerasw.essentials.data.model.** { *; }
+-keep class com.jawzf.pixeltoolkit.data.model.** { *; }
+-keepclassmembers class com.jawzf.pixeltoolkit.data.model.** { *; }
 
 # Keep ViewModel constructors for reflection-based instantiation
 -keepclassmembers class * extends androidx.lifecycle.ViewModel {
@@ -56,11 +56,11 @@
 -keep class org.slf4j.** { *; }
 
 # Keep R.string class and fields for runtime translation key reflection lookup
--keep class com.sameerasw.essentials.R$string { *; }
--keepclassmembers class com.sameerasw.essentials.R$string {
+-keep class com.jawzf.pixeltoolkit.R$string { *; }
+-keepclassmembers class com.jawzf.pixeltoolkit.R$string {
     public static <fields>;
 }
--keep class com.sameerasw.essentials.domain.genai.** { *; }
--keep class com.sameerasw.essentials.appfunctions.** { *; }
+-keep class com.jawzf.pixeltoolkit.domain.genai.** { *; }
+-keep class com.jawzf.pixeltoolkit.appfunctions.** { *; }
 -keep class androidx.appfunctions.** { *; }
 

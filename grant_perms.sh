@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Configuration
-RELEASE_PKG="com.sameerasw.essentials"
-DEBUG_PKG="com.sameerasw.essentials.debug"
+RELEASE_PKG="com.jawzf.pixeltoolkit"
+DEBUG_PKG="com.jawzf.pixeltoolkit.debug"
 
 # Function to grant permissions to a specific package
 grant_permissions() {
@@ -41,11 +41,11 @@ grant_permissions() {
 
     # Enable Services
     # Notification Listener
-    LISTENER="$PKG/com.sameerasw.essentials.services.NotificationListener"
+    LISTENER="$PKG/com.jawzf.pixeltoolkit.services.NotificationListener"
     adb shell settings put secure enabled_notification_listeners $LISTENER
 
     # Accessibility Service
-    ACCESSIBILITY="$PKG/com.sameerasw.essentials.services.tiles.ScreenOffAccessibilityService"
+    ACCESSIBILITY="$PKG/com.jawzf.pixeltoolkit.services.tiles.ScreenOffAccessibilityService"
     adb shell settings put secure enabled_accessibility_services $ACCESSIBILITY
     adb shell settings put secure accessibility_enabled 1
 
