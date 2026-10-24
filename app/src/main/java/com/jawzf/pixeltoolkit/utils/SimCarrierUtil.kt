@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Telephony Utilities
- * File: SimCarrierUtil.kt
- * Description: Utilities to query SIM cards, read current carrier configuration, and override carrier names via Shizuku.
- */
-
 package com.jawzf.pixeltoolkit.utils
 
 import android.annotation.SuppressLint

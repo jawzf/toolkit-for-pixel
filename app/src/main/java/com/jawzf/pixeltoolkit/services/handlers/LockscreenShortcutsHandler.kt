@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Background Services & Receivers
- * File: LockscreenShortcutsHandler.kt
- * Description: Draws Essentials shortcut buttons on the lock screen when System UI shows none of its own.
- */
-
 package com.jawzf.pixeltoolkit.services.handlers
 
 import android.accessibilityservice.AccessibilityService

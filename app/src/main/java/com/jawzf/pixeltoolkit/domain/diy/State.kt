@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Domain Layer Models & Registries
- * File: State.kt
- * Description: Domain model and business logic entry for State.kt.
- */
-
 package com.jawzf.pixeltoolkit.domain.diy
 
 import androidx.annotation.DrawableRes

@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Core UI Sheets
- * File: SystemMetricSheet.kt
- * Description: Bottom sheet editor for system metric triggers and states.
- */
-
 package com.jawzf.pixeltoolkit.ui.core.sheets
 
 import android.content.BroadcastReceiver

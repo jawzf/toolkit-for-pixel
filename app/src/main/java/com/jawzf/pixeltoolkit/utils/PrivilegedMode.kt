@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Core Utilities
- * File: PrivilegedMode.kt
- * Description: Privileged access backends selectable by the user.
- */
-
 package com.jawzf.pixeltoolkit.utils
 
 import com.jawzf.pixeltoolkit.R

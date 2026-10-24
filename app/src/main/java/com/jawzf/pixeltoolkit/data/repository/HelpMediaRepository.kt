@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Data & Repository Layer
- * File: HelpMediaRepository.kt
- * Description: Data repository for fetching and caching online help media mappings.
- */
-
 package com.jawzf.pixeltoolkit.data.repository
 
 import android.content.Context

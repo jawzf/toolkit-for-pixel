@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Domain Model
- * File: AppIcon.kt
- * Description: Model enum representing customizable app launcher icons.
- */
-
 package com.jawzf.pixeltoolkit.domain.model
 
 import androidx.annotation.DrawableRes

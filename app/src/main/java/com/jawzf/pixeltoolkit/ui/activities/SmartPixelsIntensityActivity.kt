@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Application Activities
- * File: SmartPixelsIntensityActivity.kt
- * Description: Activity component for controlling Smart Pixels intensity dialog overlay.
- */
-
 package com.jawzf.pixeltoolkit.ui.activities
 
 import android.os.Bundle

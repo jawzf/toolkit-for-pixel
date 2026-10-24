@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Domain Layer Registries
- * File: QSTileRegistry.kt
- * Description: Canonical registry and metadata for all Quick Settings tiles.
- */
-
 package com.jawzf.pixeltoolkit.domain.registry
 
 import android.content.Context

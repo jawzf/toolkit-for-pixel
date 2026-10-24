@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Translation
- * File: TranslatableText.kt
- * Description: Component file for TranslatableText.kt.
- */
-
 package com.jawzf.pixeltoolkit.translation
 
 import androidx.compose.foundation.ExperimentalFoundationApi

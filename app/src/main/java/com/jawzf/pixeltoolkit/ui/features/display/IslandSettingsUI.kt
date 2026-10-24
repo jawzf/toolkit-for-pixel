@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Feature - Display
- * File: IslandSettingsUI.kt
- * Description: UI settings composable for Island dynamic notifications feature.
- */
-
 package com.jawzf.pixeltoolkit.ui.features.display
 
 import androidx.compose.runtime.key

@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Data & Repository Layer
- * File: ProjectDetailsRepository.kt
- * Description: Repository to fetch and cache project details from sameerasw.com.
- */
-
 package com.jawzf.pixeltoolkit.data.repository
 
 import android.content.Context

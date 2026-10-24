@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Module
- * File: HysteresisSelector.kt
- * Description: Prevents edge-sliding jitter between keys.
- */
-
 package com.jawzf.pixeltoolkit.ui.ime.touch
 
 import kotlin.math.hypot

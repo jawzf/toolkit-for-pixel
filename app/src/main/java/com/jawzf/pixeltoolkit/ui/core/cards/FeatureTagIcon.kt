@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Core UI Components
- * File: FeatureTagIcon.kt
- * Description: Small icon-only status chip used to mark beta, unsupported, and legacy features.
- */
-
 package com.jawzf.pixeltoolkit.ui.core.cards
 
 import androidx.annotation.DrawableRes

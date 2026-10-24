@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Background Services & Receivers
- * File: DuoTileService.kt
- * Description: Quick Settings tile service component for the Duo overlay feature.
- */
-
 package com.jawzf.pixeltoolkit.services.tiles
 
 import android.graphics.drawable.Icon

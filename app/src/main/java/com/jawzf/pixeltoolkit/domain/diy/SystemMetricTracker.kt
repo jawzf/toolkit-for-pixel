@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Domain Layer Models & Registries
- * File: SystemMetricTracker.kt
- * Description: Pure Kotlin tracker for numeric value triggers, states, holds, and loop breaking.
- */
-
 package com.jawzf.pixeltoolkit.domain.diy
 
 import kotlin.math.abs

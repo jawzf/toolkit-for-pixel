@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Background Services & Receivers
- * File: StackPositions.kt
- * Description: Restores and validates widget stack positions.
- */
-
 package com.jawzf.pixeltoolkit.services.widgets
 
 import com.jawzf.pixeltoolkit.domain.model.WidgetStackConfig

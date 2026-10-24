@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Background Services & Receivers
- * File: CalendarModule.kt
- * Description: Runs calendar event based state automations.
- */
-
 package com.jawzf.pixeltoolkit.services.automation.modules
 
 import android.Manifest

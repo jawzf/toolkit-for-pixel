@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Feature - Location
- * File: LocationReachedSettingsUI.kt
- * Description: UI component and settings composable for Location feature domain.
- */
-
 package com.jawzf.pixeltoolkit.ui.features.system
 
 import android.content.Intent

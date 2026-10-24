@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Utilities - URL Shortener
- * File: UrlShortener.kt
- * Description: Zero-cost, high-speed URL shortener client with on-device history, user settings, tracking parameter removal, configurable TTL expiration (1h, 2h, 12h, 24h, 48h, Never), and offline stateless fallback.
- */
-
 package com.jawzf.pixeltoolkit.utils
 
 import android.app.NotificationChannel

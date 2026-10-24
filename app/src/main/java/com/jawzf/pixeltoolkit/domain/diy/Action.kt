@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Domain Layer Models & Registries
- * File: Action.kt
- * Description: Domain model and business logic entry for Action.kt.
- */
-
 package com.jawzf.pixeltoolkit.domain.diy
 
 import android.os.Build

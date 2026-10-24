@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Translation
- * File: TranslationValidator.kt
- * Description: Real-time validator for string placeholders, Android XML escaping, and specifier safety.
- */
-
 package com.jawzf.pixeltoolkit.translation
 
 import java.util.regex.Pattern

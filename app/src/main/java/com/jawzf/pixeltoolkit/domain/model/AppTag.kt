@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Domain Layer Models & Registries
- * File: AppTag.kt
- * Description: Domain model and business logic entry for AppTag.kt.
- */
-
 package com.jawzf.pixeltoolkit.domain.model
 
 data class AppTag(

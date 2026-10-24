@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Data & Repository Layer
- * File: ContributorsRepository.kt
- * Description: Data repository for fetching and caching repository contributors.
- */
-
 package com.jawzf.pixeltoolkit.data.repository
 
 import android.content.Context

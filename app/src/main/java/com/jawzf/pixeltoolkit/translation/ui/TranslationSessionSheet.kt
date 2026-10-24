@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Translation
- * File: TranslationSessionSheet.kt
- * Description: Component file for TranslationSessionSheet.kt.
- */
-
 package com.jawzf.pixeltoolkit.translation.ui
 
 import android.util.Log

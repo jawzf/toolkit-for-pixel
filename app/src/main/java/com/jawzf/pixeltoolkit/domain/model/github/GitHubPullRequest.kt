@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Domain Layer Models & Registries
- * File: GitHubPullRequest.kt
- * Description: Domain model and business logic entry for GitHubPullRequest.kt.
- */
-
 package com.jawzf.pixeltoolkit.domain.model.github
 
 import com.google.gson.annotations.SerializedName

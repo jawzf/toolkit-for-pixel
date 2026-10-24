@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: ViewModel State Holders
- * File: RippleSettings.kt
- * Description: Observable settings holder for the notification lighting ripple effect.
- */
-
 package com.jawzf.pixeltoolkit.viewmodels.state
 
 import androidx.compose.runtime.MutableFloatState

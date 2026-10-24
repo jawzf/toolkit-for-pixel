@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Domain Layer Registries
- * File: PermissionRegistry.kt
- * Description: Registry containing system permission declarations, intent actions, and guidance strings.
- */
-
 package com.jawzf.pixeltoolkit.domain.registry
 
 import com.jawzf.pixeltoolkit.R

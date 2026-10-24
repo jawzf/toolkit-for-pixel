@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Application Activities
- * File: DebuggingSettingsActivity.kt
- * Description: Bottom sheet dialog activity for toggling USB and Wireless Debugging, launched on long-pressing the Debugging QS Tile.
- */
-
 package com.jawzf.pixeltoolkit.ui.activities
 
 import android.content.Intent

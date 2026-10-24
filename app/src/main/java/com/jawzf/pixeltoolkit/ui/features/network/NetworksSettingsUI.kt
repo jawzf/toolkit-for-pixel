@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Network & Connectivity
- * File: NetworksSettingsUI.kt
- * Description: Composable screen for DNS presets and network tiles.
- */
-
 package com.jawzf.pixeltoolkit.ui.features.system
 
 import android.Manifest

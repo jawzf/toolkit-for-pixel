@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Feature - System
- * File: FaceUnlockBrightnessSettingsUI.kt
- * Description: Settings for the Face unlock brightness feature.
- */
-
 package com.jawzf.pixeltoolkit.ui.features.system
 
 import androidx.compose.animation.AnimatedVisibility

@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Core Components
- * File: FeatureCustomHelp.kt
- * Description: Registry of feature specific help sheets and open-sheet tracking for shake to help.
- */
-
 package com.jawzf.pixeltoolkit.ui.core.sheets
 
 import androidx.annotation.DrawableRes

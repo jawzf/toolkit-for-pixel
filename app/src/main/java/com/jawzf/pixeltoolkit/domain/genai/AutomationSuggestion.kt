@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Domain Layer Models & Registries
- * File: AutomationSuggestion.kt
- * Description: Domain model and business logic entry for AutomationSuggestion.kt.
- */
-
 package com.jawzf.pixeltoolkit.domain.genai
 
 import androidx.annotation.Keep

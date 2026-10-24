@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Background Services & Receivers
- * File: StackHostWorker.kt
- * Description: Restarts widget stack hosting if the system stopped the app.
- */
-
 package com.jawzf.pixeltoolkit.services.widgets
 
 import android.content.Context

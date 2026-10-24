@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Feature - Display
- * File: IslandTimeOptionsBottomSheet.kt
- * Description: Bottom sheet for configuring the Island time indicator.
- */
-
 package com.jawzf.pixeltoolkit.ui.features.display.sheets
 
 import androidx.compose.animation.AnimatedVisibility

@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Hardware Utilities
- * File: WifiUtil.kt
- * Description: Helper utility for managing Wi-Fi state and network scanning.
- */
-
 package com.jawzf.pixeltoolkit.utils
 
 import android.content.Context

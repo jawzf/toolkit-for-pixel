@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Background Services & Receivers
- * File: LocationAutomationWorker.kt
- * Description: Runs the actions of arrive and leave location automations after a geofence transition.
- */
-
 package com.jawzf.pixeltoolkit.services.automation
 
 import android.content.Context

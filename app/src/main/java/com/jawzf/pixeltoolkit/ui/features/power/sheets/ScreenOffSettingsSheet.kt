@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Feature - Power
- * File: ScreenOffSettingsSheet.kt
- * Description: UI component and settings composable for Power feature domain.
- */
-
 package com.jawzf.pixeltoolkit.ui.core.sheets
 
 import android.os.Build

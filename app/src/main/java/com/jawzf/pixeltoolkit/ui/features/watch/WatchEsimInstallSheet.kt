@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: WearOS Companion
- * File: WatchEsimInstallSheet.kt
- * Description: Bottom sheet to scan or enter an eSIM activation code and continue in the Pixel Watch app.
- */
-
 package com.jawzf.pixeltoolkit.ui.features.watch
 
 import android.content.ActivityNotFoundException

@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Utilities - General
- * File: AutomationNotificationPoster.kt
- * Description: Posts user-configured notifications for automation actions.
- */
-
 package com.jawzf.pixeltoolkit.utils
 
 import android.app.NotificationChannel

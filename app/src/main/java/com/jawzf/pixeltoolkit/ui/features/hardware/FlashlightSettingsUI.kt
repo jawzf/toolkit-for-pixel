@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Hardware Features
- * File: FlashlightSettingsUI.kt
- * Description: Composable screen for flashlight shortcuts and intensity controls.
- */
-
 package com.jawzf.pixeltoolkit.ui.features.system
 
 import androidx.compose.foundation.layout.Arrangement

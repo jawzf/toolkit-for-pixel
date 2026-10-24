@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Unit Tests - Services
- * File: StackPositionsTest.kt
- * Description: Unit tests for StackPositions restore logic.
- */
-
 package com.jawzf.pixeltoolkit.services
 
 import com.jawzf.pixeltoolkit.domain.model.WidgetStackConfig

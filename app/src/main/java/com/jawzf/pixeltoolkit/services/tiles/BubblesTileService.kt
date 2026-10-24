@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Background Services & Receivers
- * File: BubblesTileService.kt
- * Description: Background service component for BubblesTileService.kt.
- */
-
 package com.jawzf.pixeltoolkit.services.tiles
 
 import android.Manifest

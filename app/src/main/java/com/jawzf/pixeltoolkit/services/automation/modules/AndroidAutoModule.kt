@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Background Services & Receivers
- * File: AndroidAutoModule.kt
- * Description: Fires automations when Android Auto starts or stops projecting.
- */
-
 package com.jawzf.pixeltoolkit.services.automation.modules
 
 import android.content.Context

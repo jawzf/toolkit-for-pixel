@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Utilities - Overlays
- * File: DuoOverlayView.kt
- * Description: Ambient camera ring and dots overlay view with media playback seekbar support.
- */
-
 package com.jawzf.pixeltoolkit.utils
 
 import android.animation.ArgbEvaluator

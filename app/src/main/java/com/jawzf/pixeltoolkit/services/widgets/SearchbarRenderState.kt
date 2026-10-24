@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Background Services & Receivers
- * File: SearchbarRenderState.kt
- * Description: Snapshot state that makes the running searchbar widget composition redraw.
- */
-
 package com.jawzf.pixeltoolkit.services.widgets
 
 import androidx.compose.runtime.getValue

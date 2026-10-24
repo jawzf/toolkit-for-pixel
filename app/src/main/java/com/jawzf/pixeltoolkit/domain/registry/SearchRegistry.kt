@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Domain Layer Registries
- * File: SearchRegistry.kt
- * Description: Registry indexing searchable features, settings items, and in-app action shortcuts.
- */
-
 package com.jawzf.pixeltoolkit.domain.registry
 
 import android.content.Context

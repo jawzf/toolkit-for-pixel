@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Background Services & Receivers
- * File: NestedWidgetSupport.kt
- * Description: Helpers for showing another app's widget inside one of our own widgets.
- */
-
 package com.jawzf.pixeltoolkit.services.widgets
 
 import android.appwidget.AppWidgetManager

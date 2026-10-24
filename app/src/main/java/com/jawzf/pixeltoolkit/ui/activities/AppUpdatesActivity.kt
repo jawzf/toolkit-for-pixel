@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Application Activities
- * File: AppUpdatesActivity.kt
- * Description: Activity component for AppUpdatesActivity.kt.
- */
-
 package com.jawzf.pixeltoolkit
 
 import android.os.Build

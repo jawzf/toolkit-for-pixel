@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Utilities - General
- * File: AppColorUtil.kt
- * Description: Utility helper for AppColorUtil.kt.
- */
-
 package com.jawzf.pixeltoolkit.utils
 
 import android.content.Context

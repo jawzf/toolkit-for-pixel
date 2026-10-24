@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Background Services & Receivers
- * File: IslandTileService.kt
- * Description: Quick Settings tile service component for the Island feature.
- */
-
 package com.jawzf.pixeltoolkit.services.tiles
 
 import android.graphics.drawable.Icon

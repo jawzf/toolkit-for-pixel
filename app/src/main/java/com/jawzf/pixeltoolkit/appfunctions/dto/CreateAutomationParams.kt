@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Appfunctions
- * File: CreateAutomationParams.kt
- * Description: Component file for CreateAutomationParams.kt.
- */
-
 package com.jawzf.pixeltoolkit.appfunctions.dto
 
 import androidx.annotation.Keep

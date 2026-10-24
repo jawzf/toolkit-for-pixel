@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Domain Layer - GitHub
- * File: ProjectDetails.kt
- * Description: Data model representing GitHub project statistics from sameerasw.com.
- */
-
 package com.jawzf.pixeltoolkit.domain.model.github
 
 import com.google.gson.annotations.SerializedName

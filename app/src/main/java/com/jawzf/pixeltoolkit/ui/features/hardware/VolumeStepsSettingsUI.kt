@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Feature - Hardware
- * File: VolumeStepsSettingsUI.kt
- * Description: Settings page for volume steps with the enable toggle and steps per press.
- */
-
 package com.jawzf.pixeltoolkit.ui.features.system
 
 import androidx.compose.foundation.layout.Arrangement

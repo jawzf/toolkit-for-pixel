@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Unit Tests - Services
- * File: StackSmartPickTest.kt
- * Description: Unit tests for StackSmartPick logic.
- */
-
 package com.jawzf.pixeltoolkit.services
 
 import com.jawzf.pixeltoolkit.services.widgets.StackSmartPick

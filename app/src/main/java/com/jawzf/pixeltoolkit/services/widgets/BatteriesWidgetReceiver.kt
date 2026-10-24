@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Background Services & Receivers
- * File: BatteriesWidgetReceiver.kt
- * Description: Background service component for BatteriesWidgetReceiver.kt.
- */
-
 package com.jawzf.pixeltoolkit.services.widgets
 
 import android.content.Context

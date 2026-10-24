@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Background Services & Receivers
- * File: CallReceiver.kt
- * Description: BroadcastReceiver that listens for telephony state changes and passes call info to WatchCallSyncManager.
- */
-
 package com.jawzf.pixeltoolkit.services
 
 import com.jawzf.pixeltoolkit.utils.call.CallStateRepository

@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Input
- * File: InputDeviceScanner.kt
- * Description: Component file for InputDeviceScanner.kt.
- */
-
 package com.jawzf.pixeltoolkit.input
 
 import android.content.Context

@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Background Services & Receivers
- * File: WatchCallSyncManager.kt
- * Description: Manages phone call status synchronization and remote call control actions for WearOS.
- */
-
 package com.jawzf.pixeltoolkit.services
 
 import com.jawzf.pixeltoolkit.utils.call.CallerLookup

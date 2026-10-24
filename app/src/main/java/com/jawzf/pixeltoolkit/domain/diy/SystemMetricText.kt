@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Domain Layer Models & Registries
- * File: SystemMetricText.kt
- * Description: Formatting functions for system metric conditions.
- */
-
 package com.jawzf.pixeltoolkit.domain.diy
 
 import android.content.Context

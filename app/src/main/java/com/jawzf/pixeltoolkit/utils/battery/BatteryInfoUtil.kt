@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Battery Utilities
- * File: BatteryInfoUtil.kt
- * Description: System helper utility for querying battery status, health, and design stats.
- */
-
 package com.jawzf.pixeltoolkit.utils.battery
 
 import android.content.Context

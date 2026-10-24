@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: WearOS Companion
- * File: WatchNotificationSettingsUI.kt
- * Description: UI component for managing watch notification sync settings.
- */
-
 package com.jawzf.pixeltoolkit.ui.features.watch
 
 import android.app.Activity

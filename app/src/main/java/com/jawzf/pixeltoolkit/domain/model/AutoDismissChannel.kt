@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Domain Layer Models & Registries
- * File: AutoDismissChannel.kt
- * Description: Domain model and business logic entry for AutoDismissChannel.kt.
- */
-
 package com.jawzf.pixeltoolkit.domain.model
 
 import androidx.annotation.Keep

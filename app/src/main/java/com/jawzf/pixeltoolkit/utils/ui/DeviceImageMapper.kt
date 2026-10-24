@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Utilities
- * File: DeviceImageMapper.kt
- * Description: Maps device model codenames to hero device image assets.
- */
-
 package com.jawzf.pixeltoolkit.utils
 
 import com.jawzf.pixeltoolkit.R

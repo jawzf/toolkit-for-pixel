@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Module
- * File: SpatialTouchDecoder.kt
- * Description: Gaussian distance probability touch decoding for gap-free key hits.
- */
-
 package com.jawzf.pixeltoolkit.ui.ime.touch
 
 import kotlin.math.abs

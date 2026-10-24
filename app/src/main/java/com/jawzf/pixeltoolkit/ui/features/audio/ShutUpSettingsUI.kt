@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Audio & Sound Controls
- * File: ShutUpSettingsUI.kt
- * Description: Composable screen for media mute and ShutUp per-app rules.
- */
-
 package com.jawzf.pixeltoolkit.ui.features.system
 
 import androidx.compose.foundation.layout.Arrangement

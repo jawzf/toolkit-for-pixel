@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Background Services & Receivers
- * File: LocationReachedService.kt
- * Description: Background service component for LocationReachedService.kt.
- */
-
 package com.jawzf.pixeltoolkit.services
 
 import android.app.Notification

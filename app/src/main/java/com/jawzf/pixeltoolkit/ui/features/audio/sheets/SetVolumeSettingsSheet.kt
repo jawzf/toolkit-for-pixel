@@ -1,14 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Feature - Audio
- * File: SetVolumeSettingsSheet.kt
- * Description: Configuration bottom sheet for the SetVolume automation action.
- *              Lets the user pick a sound channel (icon-only segmented picker)
- *              and set the target level (0–100%) with a slider.
- */
-
 package com.jawzf.pixeltoolkit.ui.features.audio.sheets
 
 import androidx.compose.foundation.layout.Arrangement

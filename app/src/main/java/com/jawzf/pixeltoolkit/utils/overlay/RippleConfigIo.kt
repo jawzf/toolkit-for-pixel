@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Utilities - Overlay
- * File: RippleConfigIo.kt
- * Description: Utility helper for RippleConfigIo.kt.
- */
-
 package com.jawzf.pixeltoolkit.utils.overlay
 
 import android.content.Intent

@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Core Components
- * File: FeatureHelpBottomSheet.kt
- * Description: Reusable core UI component for FeatureHelpBottomSheet.kt.
- */
-
 package com.jawzf.pixeltoolkit.ui.core.sheets
 
 import android.content.Intent

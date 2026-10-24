@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Domain Layer Models & Registries
- * File: RemapSlot.kt
- * Description: Identifies a Button Remap slot (physical input + screen state) and its preference key.
- */
-
 package com.jawzf.pixeltoolkit.domain.model
 
 import android.view.KeyEvent

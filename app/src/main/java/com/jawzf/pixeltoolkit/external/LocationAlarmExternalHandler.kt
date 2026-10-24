@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: External
- * File: LocationAlarmExternalHandler.kt
- * Description: Component file for LocationAlarmExternalHandler.kt.
- */
-
 package com.jawzf.pixeltoolkit.external
 
 import android.content.Context

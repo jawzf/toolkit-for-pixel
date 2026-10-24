@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Background Services & Handlers
- * File: StatusGlanceTouchHandler.kt
- * Description: Touch handler managing gestures on Status Glance ambient chip.
- */
-
 package com.jawzf.pixeltoolkit.services.handlers
 
 import android.accessibilityservice.AccessibilityService

@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Background Services & Receivers
- * File: BatteryNotificationService.kt
- * Description: Background service component for BatteryNotificationService.kt.
- */
-
 package com.jawzf.pixeltoolkit.services
 
 import android.app.Notification

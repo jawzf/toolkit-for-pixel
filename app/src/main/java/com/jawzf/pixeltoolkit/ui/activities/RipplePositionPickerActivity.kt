@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Application Activities
- * File: RipplePositionPickerActivity.kt
- * Description: Activity component for RipplePositionPickerActivity.kt dialog overlay.
- */
-
 package com.jawzf.pixeltoolkit.ui.activities
 
 import android.os.Build

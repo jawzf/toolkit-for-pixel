@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Utilities
- * File: SettingsRecorder.kt
- * Description: Utility to snapshot and diff Android Settings tables (System, Secure, Global).
- */
-
 package com.jawzf.pixeltoolkit.utils
 
 import android.content.Context

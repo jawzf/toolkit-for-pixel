@@ -1,13 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Quick Settings Tiles
- * File: QuickSettingsTilesViewModel.kt
- * Description: Manages QS tile status synchronization, tile action dispatching,
- * and user tile customization preferences.
- */
-
 package com.jawzf.pixeltoolkit.viewmodels
 
 import android.content.Context

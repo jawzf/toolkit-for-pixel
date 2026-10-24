@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Core Utilities
- * File: CarConnectionMonitor.kt
- * Description: Tracks live Android Auto/Automotive projection state via androidx.car.app's CarConnection.
- */
-
 package com.jawzf.pixeltoolkit.utils
 
 import android.content.Context

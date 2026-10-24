@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Application Activities
- * File: PixelSearchResultsActivity.kt
- * Description: Activity displaying categorized search results from Pixel Launcher search bar.
- */
-
 package com.jawzf.pixeltoolkit.ui.activities
 
 import android.app.SearchManager

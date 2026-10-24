@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Activities
- * File: LockscreenActionActivity.kt
- * Description: Invisible trampoline that unlocks the device before running a lock screen shortcut that opens UI.
- */
-
 package com.jawzf.pixeltoolkit.ui.activities
 
 import android.app.KeyguardManager

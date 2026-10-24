@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Utilities - Island
- * File: IslandStatusBarHider.kt
- * Description: Utility helper for IslandStatusBarHider.kt.
- */
-
 package com.jawzf.pixeltoolkit.island.service
 
 import android.content.Context

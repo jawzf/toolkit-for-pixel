@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Module
- * File: ScrollMotionBlurModifier.kt
- * Description: AGSL directional motion blur modifier for scrollable content.
- */
-
 package com.jawzf.pixeltoolkit.ui.modifiers
 
 import android.content.Context

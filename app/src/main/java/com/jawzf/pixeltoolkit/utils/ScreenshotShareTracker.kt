@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Utilities - Screenshots
- * File: ScreenshotShareTracker.kt
- * Description: Follows a screenshot share from the preview's Share tap through the share sheet to the target app.
- */
-
 package com.jawzf.pixeltoolkit.utils
 
 class ScreenshotShareTracker(

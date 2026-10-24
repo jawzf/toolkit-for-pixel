@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Background Services & Receivers
- * File: ScreenshotTrashWorker.kt
- * Description: Moves a scheduled screenshot to the trash when its cleanup delay runs out.
- */
-
 package com.jawzf.pixeltoolkit.services
 
 import android.content.Context

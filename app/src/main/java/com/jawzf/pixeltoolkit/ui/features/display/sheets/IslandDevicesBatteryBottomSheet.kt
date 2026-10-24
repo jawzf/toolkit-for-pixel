@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Feature - Display
- * File: IslandDevicesBatteryBottomSheet.kt
- * Description: Bottom sheet for the Island device battery options, with a link to the Batteries settings.
- */
-
 package com.jawzf.pixeltoolkit.ui.features.display.sheets
 
 import android.content.Intent

@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Application Activities
- * File: AppLockActivity.kt
- * Description: Activity component for AppLockActivity.kt.
- */
-
 package com.jawzf.pixeltoolkit
 
 import android.content.Intent

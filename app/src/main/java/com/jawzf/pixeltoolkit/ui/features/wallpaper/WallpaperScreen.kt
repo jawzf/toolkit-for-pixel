@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Feature - Wallpaper
- * File: WallpaperScreen.kt
- * Description: UI component and settings composable for Wallpaper feature domain.
- */
-
 package com.jawzf.pixeltoolkit.ui.composables.wallpaper
 
 import android.content.Intent

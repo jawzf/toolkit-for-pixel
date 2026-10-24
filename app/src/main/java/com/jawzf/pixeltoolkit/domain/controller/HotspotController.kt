@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Domain Controllers
- * File: HotspotController.kt
- * Description: Starts and stops Wi-Fi tethering through the tethering service over Shizuku.
- */
-
 package com.jawzf.pixeltoolkit.domain.controller
 
 import android.content.Context

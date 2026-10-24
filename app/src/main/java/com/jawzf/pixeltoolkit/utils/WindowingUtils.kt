@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Utilities - Windowing & Native Bubbles
- * File: WindowingUtils.kt
- * Description: Helper utility for launching private and standard web previews using native Android Bubbles API.
- */
-
 package com.jawzf.pixeltoolkit.utils
 
 import android.app.NotificationChannel

@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Translation
- * File: TranslationMenuItems.kt
- * Description: Component file for TranslationMenuItems.kt.
- */
-
 package com.jawzf.pixeltoolkit.translation.ui
 
 import androidx.compose.material3.Icon

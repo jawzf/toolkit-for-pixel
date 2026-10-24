@@ -1,13 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: System & Security Permissions
- * File: PermissionViewModel.kt
- * Description: Manages permission checks, Shizuku availability, system accessibility states,
- * and overlay permissions across the Essentials app.
- */
-
 package com.jawzf.pixeltoolkit.viewmodels
 
 import android.content.Context

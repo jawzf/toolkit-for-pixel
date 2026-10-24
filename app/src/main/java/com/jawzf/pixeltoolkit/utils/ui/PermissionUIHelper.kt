@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Utilities
- * File: PermissionUIHelper.kt
- * Description: Renders permission guidance dialogs and bottom sheets.
- */
-
 package com.jawzf.pixeltoolkit.utils
 
 import android.app.Activity

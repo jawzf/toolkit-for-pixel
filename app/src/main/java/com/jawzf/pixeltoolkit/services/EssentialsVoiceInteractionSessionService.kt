@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Background Services & Receivers
- * File: EssentialsVoiceInteractionSessionService.kt
- * Description: Voice interaction session service routing assistant invocations to search results.
- */
-
 package com.jawzf.pixeltoolkit.services
 
 import android.content.Context

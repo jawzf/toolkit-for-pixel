@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Background Services & Receivers
- * File: StackHost.kt
- * Description: Hosts the widgets placed in widget stacks and rotates each stack on its timer.
- */
-
 package com.jawzf.pixeltoolkit.services.widgets
 
 import android.appwidget.AppWidgetHost

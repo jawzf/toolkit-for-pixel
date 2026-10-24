@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Domain Layer Models & Registries
- * File: UpdateInfo.kt
- * Description: Domain model and business logic entry for UpdateInfo.kt.
- */
-
 package com.jawzf.pixeltoolkit.domain.model
 
 import androidx.annotation.Keep

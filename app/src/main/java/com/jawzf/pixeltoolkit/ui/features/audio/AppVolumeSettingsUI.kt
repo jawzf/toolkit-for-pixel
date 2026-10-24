@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Feature - Audio
- * File: AppVolumeSettingsUI.kt
- * Description: Settings page for per-app volume levels.
- */
-
 package com.jawzf.pixeltoolkit.ui.features.system
 
 import androidx.compose.foundation.layout.Arrangement

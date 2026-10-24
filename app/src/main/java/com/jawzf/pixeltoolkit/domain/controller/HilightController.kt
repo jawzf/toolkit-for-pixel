@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Domain Controllers
- * File: HilightController.kt
- * Description: Plays short effects on the Pixel Hilight LED array and hands it back to the system afterwards.
- */
-
 package com.jawzf.pixeltoolkit.domain.controller
 
 import android.content.Context

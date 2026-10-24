@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Background Services & Receivers
- * File: VolumeStepsHandler.kt
- * Description: Moves media volume by several steps per volume key press and while a key is held.
- */
-
 package com.jawzf.pixeltoolkit.services.handlers
 
 import android.content.Context

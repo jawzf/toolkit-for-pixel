@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Widget Settings
- * File: WidgetPickerSheet.kt
- * Description: Picks a widget for a stack from every installed app, grouped by app.
- */
-
 package com.jawzf.pixeltoolkit.ui.features.widgets
 
 import android.appwidget.AppWidgetManager

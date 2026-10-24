@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Translation
- * File: TranslationManager.kt
- * Description: Component file for TranslationManager.kt.
- */
-
 package com.jawzf.pixeltoolkit.translation
 
 import android.content.Context

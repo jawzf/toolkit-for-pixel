@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Feature - Lighting
- * File: NotificationLightingActionSheet.kt
- * Description: Config sheet for the "Trigger notification lighting" DIY automation action.
- */
-
 package com.jawzf.pixeltoolkit.ui.core.sheets
 
 import androidx.compose.foundation.layout.Arrangement

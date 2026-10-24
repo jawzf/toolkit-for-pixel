@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Domain Layer Models & Registries
- * File: NotificationApp.kt
- * Description: Domain model and business logic entry for NotificationApp.kt.
- */
-
 package com.jawzf.pixeltoolkit.domain.model
 
 import androidx.compose.runtime.Immutable

@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Feature - Display
- * File: AodWallpaperPreviewCard.kt
- * Description: Live preview of the AOD wallpaper (clock, wallpaper, blur, vignette) shown in the feature header.
- */
-
 package com.jawzf.pixeltoolkit.ui.features.display
 
 import androidx.activity.compose.rememberLauncherForActivityResult

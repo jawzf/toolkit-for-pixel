@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Core UI Pickers
- * File: ColorSwatchPicker.kt
- * Description: Reusable solid color swatch picker row with preset palettes and haptic feedback.
- */
-
 package com.jawzf.pixeltoolkit.ui.core.pickers
 
 import androidx.compose.foundation.background

@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Core UI Sheets
- * File: AppColorSelectionSheet.kt
- * Description: Shared bottom sheet for assigning a custom color to individual apps.
- */
-
 package com.jawzf.pixeltoolkit.ui.core.sheets
 
 import android.content.Context

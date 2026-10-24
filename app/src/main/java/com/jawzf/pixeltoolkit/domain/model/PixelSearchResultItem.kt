@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Domain Layer Models & Registries
- * File: PixelSearchResultItem.kt
- * Description: Data classes representing categorized results for Pixel search.
- */
-
 package com.jawzf.pixeltoolkit.domain.model
 
 import android.content.Intent

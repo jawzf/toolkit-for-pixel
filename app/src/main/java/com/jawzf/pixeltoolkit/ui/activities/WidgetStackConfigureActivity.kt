@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Application Activities
- * File: WidgetStackConfigureActivity.kt
- * Description: Chooses which widgets a widget stack holds and how it switches between them.
- */
-
 package com.jawzf.pixeltoolkit.ui.activities
 
 import android.Manifest

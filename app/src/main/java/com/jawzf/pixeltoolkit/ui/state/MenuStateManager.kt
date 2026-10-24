@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Module
- * File: MenuStateManager.kt
- * Description: UI layout element for MenuStateManager.kt.
- */
-
 package com.jawzf.pixeltoolkit.ui.state
 
 import androidx.compose.runtime.compositionLocalOf

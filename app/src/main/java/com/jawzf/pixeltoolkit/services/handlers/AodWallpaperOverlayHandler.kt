@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Background Services & Receivers
- * File: AodWallpaperOverlayHandler.kt
- * Description: Background service component managing AOD wallpaper overlay at 30% opacity.
- */
-
 package com.jawzf.pixeltoolkit.services.handlers
 
 import android.accessibilityservice.AccessibilityService

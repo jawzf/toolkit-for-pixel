@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Core UI Components
- * File: RoundedCardContainer.kt
- * Description: Material 3 Expressive 24.dp rounded card container wrapper for grouping settings items.
- */
-
 package com.jawzf.pixeltoolkit.ui.core.containers
 
 import androidx.compose.foundation.background

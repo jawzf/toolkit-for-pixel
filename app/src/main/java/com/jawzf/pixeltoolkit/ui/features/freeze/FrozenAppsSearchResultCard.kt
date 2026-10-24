@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Feature - Freeze
- * File: FrozenAppsSearchResultCard.kt
- * Description: Grouped frozen apps card for in-app search results with quick launch, unfreeze actions, and view all navigation.
- */
-
 package com.jawzf.pixeltoolkit.ui.features.freeze
 
 import android.content.Context

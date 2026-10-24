@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Background Services & Receivers
- * File: ScreenLockedSecurityTileService.kt
- * Description: Background service component for ScreenLockedSecurityTileService.kt.
- */
-
 package com.jawzf.pixeltoolkit.services.tiles
 
 import android.app.PendingIntent

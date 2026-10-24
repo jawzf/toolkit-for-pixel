@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Module
- * File: ConfigSliderItem.kt
- * Description: UI layout element for ConfigSliderItem.kt.
- */
-
 package com.jawzf.pixeltoolkit.ui.components.sliders
 
 import androidx.compose.foundation.ExperimentalFoundationApi

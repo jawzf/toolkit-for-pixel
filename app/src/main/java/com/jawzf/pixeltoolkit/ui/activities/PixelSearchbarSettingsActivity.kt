@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Application Activities
- * File: PixelSearchbarSettingsActivity.kt
- * Description: Activity component for PixelSearchbarSettingsActivity.kt.
- */
-
 package com.jawzf.pixeltoolkit.ui.activities
 
 import android.Manifest

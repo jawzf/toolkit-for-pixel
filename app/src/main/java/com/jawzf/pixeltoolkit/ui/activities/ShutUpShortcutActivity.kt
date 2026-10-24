@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Application Activities
- * File: ShutUpShortcutActivity.kt
- * Description: Activity component for ShutUpShortcutActivity.kt.
- */
-
 package com.jawzf.pixeltoolkit
 
 import android.content.ContentResolver

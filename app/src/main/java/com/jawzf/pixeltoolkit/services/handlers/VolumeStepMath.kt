@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Background Services & Receivers
- * File: VolumeStepMath.kt
- * Description: Target volume and key repeat timing for the volume steps feature.
- */
-
 package com.jawzf.pixeltoolkit.services.handlers
 
 internal object VolumeStepMath {

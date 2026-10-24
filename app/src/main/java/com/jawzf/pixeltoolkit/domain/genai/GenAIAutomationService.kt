@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Domain Layer Models & Registries
- * File: GenAIAutomationService.kt
- * Description: Domain model and business logic entry for GenAIAutomationService.kt.
- */
-
 package com.jawzf.pixeltoolkit.domain.genai
 
 import android.content.Context

@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Domain Layer Models & Registries
- * File: HilightProgress.kt
- * Description: Colour modes and frame maths for showing live notification progress on the Hilight LEDs.
- */
-
 package com.jawzf.pixeltoolkit.domain.model
 
 import androidx.annotation.StringRes

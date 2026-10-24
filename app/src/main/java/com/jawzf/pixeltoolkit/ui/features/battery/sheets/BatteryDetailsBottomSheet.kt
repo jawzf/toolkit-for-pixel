@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Feature - Battery
- * File: BatteryDetailsBottomSheet.kt
- * Description: UI component and settings composable for Battery feature domain.
- */
-
 package com.jawzf.pixeltoolkit.ui.core.sheets
 
 import androidx.compose.animation.AnimatedVisibility

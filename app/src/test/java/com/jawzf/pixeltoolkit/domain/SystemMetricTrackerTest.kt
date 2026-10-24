@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Domain Layer Tests
- * File: SystemMetricTrackerTest.kt
- * Description: Unit tests for SystemMetricTracker, Comparison, and state lifecycle.
- */
-
 package com.jawzf.pixeltoolkit.domain
 
 import com.jawzf.pixeltoolkit.domain.diy.Action

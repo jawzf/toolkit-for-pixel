@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Security Utilities
- * File: DeviceLockUtils.kt
- * Description: Utility for locking the device screen programmatically.
- */
-
 package com.jawzf.pixeltoolkit.utils
 
 import android.accessibilityservice.AccessibilityService

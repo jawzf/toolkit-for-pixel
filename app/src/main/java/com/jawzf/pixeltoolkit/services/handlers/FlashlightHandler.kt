@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Background Services & Receivers
- * File: FlashlightHandler.kt
- * Description: Background service component for FlashlightHandler.kt.
- */
-
 package com.jawzf.pixeltoolkit.services.handlers
 
 import android.accessibilityservice.AccessibilityService

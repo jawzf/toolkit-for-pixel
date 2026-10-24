@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Utilities
- * File: LockscreenShortcutDetector.kt
- * Description: Reads the System UI lock screen through accessibility to find the system's own shortcut buttons.
- */
-
 package com.jawzf.pixeltoolkit.utils
 
 import android.accessibilityservice.AccessibilityService

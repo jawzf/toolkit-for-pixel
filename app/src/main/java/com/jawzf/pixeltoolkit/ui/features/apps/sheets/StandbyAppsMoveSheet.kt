@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Feature - Apps
- * File: StandbyAppsMoveSheet.kt
- * Description: UI bottom sheet for selecting a target App Standby Bucket to move selected apps.
- */
-
 package com.jawzf.pixeltoolkit.ui.features.apps.sheets
 
 import androidx.compose.foundation.layout.Arrangement

@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Core Components
- * File: BugReportBottomSheet.kt
- * Description: Bottom sheet for submitting bug reports, attaching crash logs, and exporting diagnostic reports.
- */
-
 package com.jawzf.pixeltoolkit.ui.core.sheets
 
 import android.content.Intent

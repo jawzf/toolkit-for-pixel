@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Core Utilities
- * File: PermissionUtils.kt
- * Description: System permission validation and settings navigation helpers.
- */
-
 package com.jawzf.pixeltoolkit.utils
 
 import android.app.admin.DevicePolicyManager

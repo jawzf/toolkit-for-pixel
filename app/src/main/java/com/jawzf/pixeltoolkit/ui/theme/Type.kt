@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Module
- * File: Type.kt
- * Description: UI layout element for Type.kt.
- */
-
 package com.jawzf.pixeltoolkit.ui.theme
 
 import androidx.compose.material3.Typography

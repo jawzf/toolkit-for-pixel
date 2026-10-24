@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Background Services & Receivers
- * File: LocationModule.kt
- * Description: Registers a geofence for each arrive and leave location trigger.
- */
-
 package com.jawzf.pixeltoolkit.services.automation.modules
 
 import android.Manifest

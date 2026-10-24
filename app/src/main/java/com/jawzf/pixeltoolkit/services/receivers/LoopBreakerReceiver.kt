@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Background Services & Receivers
- * File: LoopBreakerReceiver.kt
- * Description: Receiver to re-enable automations paused by the loop breaker.
- */
-
 package com.jawzf.pixeltoolkit.services.receivers
 
 import android.app.NotificationManager

@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Background Services & Receivers
- * File: EssentialsOnDisplayTileService.kt
- * Description: Quick Settings Tile Service to toggle and cycle through Essentials on Display modes (Off -> On -> Docked).
- */
-
 package com.jawzf.pixeltoolkit.services.tiles
 
 import android.graphics.drawable.Icon

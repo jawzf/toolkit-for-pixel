@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: System Features
- * File: LockscreenShortcutsSettingsUI.kt
- * Description: Settings screen for Essentials lock screen shortcut buttons.
- */
-
 package com.jawzf.pixeltoolkit.ui.features.system
 
 import android.content.Intent

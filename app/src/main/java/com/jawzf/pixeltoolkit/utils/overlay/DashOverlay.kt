@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Utilities - Overlay
- * File: DashOverlay.kt
- * Description: Utility helper for DashOverlay.kt.
- */
-
 package com.jawzf.pixeltoolkit.utils.overlay
 
 import android.animation.Animator

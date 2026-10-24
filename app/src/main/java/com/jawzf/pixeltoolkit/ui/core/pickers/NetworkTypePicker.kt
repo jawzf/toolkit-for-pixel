@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Core Components
- * File: NetworkTypePicker.kt
- * Description: Reusable core UI component for NetworkTypePicker.kt.
- */
-
 package com.jawzf.pixeltoolkit.ui.core.pickers
 
 import androidx.compose.foundation.background

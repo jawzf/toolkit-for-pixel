@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Core Components
- * File: FeatureHelpMediaViewer.kt
- * Description: Seamlessly shared help media player supporting in-sheet preview and edge-to-edge immersive full-screen pinch-to-zoom.
- */
-
 package com.jawzf.pixeltoolkit.ui.core.media
 
 import android.content.Context

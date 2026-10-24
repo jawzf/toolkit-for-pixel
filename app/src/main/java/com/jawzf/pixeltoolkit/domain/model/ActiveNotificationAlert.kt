@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Domain Models
- * File: ActiveNotificationAlert.kt
- * Description: Data class representing an incoming notification alert for Duo notification island.
- */
-
 package com.jawzf.pixeltoolkit.domain.model
 
 import android.app.PendingIntent

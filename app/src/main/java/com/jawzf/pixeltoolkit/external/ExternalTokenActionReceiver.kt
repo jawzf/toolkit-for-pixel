@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: External
- * File: ExternalTokenActionReceiver.kt
- * Description: Receiver for automation apps that cannot hold the external control permission, authorised by a user-set token.
- */
-
 package com.jawzf.pixeltoolkit.external
 
 import android.content.BroadcastReceiver

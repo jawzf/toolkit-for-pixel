@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Domain Models
- * File: ProgressNotificationData.kt
- * Description: Data class representing active progress notification details.
- */
-
 package com.jawzf.pixeltoolkit.domain.model
 
 import android.app.PendingIntent

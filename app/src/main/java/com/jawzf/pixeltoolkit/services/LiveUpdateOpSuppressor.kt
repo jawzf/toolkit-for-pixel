@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Background Services & Receivers
- * File: LiveUpdateOpSuppressor.kt
- * Description: Demotes live updates by toggling the per-app POST_PROMOTED_NOTIFICATIONS app op through the shell.
- */
-
 package com.jawzf.pixeltoolkit.services
 
 import android.app.Notification

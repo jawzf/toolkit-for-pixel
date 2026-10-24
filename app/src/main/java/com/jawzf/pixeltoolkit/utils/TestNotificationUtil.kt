@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Utilities
- * File: TestNotificationUtil.kt
- * Description: Realistic test notification generator for Dynamic Island preview with rich apps and actions.
- */
-
 package com.jawzf.pixeltoolkit.utils
 
 import android.content.Context

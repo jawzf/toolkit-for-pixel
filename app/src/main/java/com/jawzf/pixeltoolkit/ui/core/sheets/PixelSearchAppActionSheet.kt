@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Sheets
- * File: PixelSearchAppActionSheet.kt
- * Description: Contextual bottom sheet providing app actions (Open, Unfreeze, App info, Play Store, Share).
- */
-
 package com.jawzf.pixeltoolkit.ui.core.sheets
 
 import android.content.Context

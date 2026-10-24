@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Feature - Automation
- * File: SendNotificationSettingsSheet.kt
- * Description: UI bottom sheet for configuring the Send Notification automation action.
- */
-
 package com.jawzf.pixeltoolkit.ui.core.sheets
 
 import androidx.compose.foundation.background

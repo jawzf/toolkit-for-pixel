@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Data & Repository Layer
- * File: SettingsRepository.kt
- * Description: Data repository and storage component for SettingsRepository.kt.
- */
-
 package com.jawzf.pixeltoolkit.data.repository
 
 import com.jawzf.pixeltoolkit.ui.core.pickers.NetworkType

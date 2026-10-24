@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Domain Layer Models & Registries
- * File: ActivityIconSource.kt
- * Description: Where the icon of an Open Activity shortcut comes from.
- */
-
 package com.jawzf.pixeltoolkit.domain.model
 
 import androidx.annotation.StringRes

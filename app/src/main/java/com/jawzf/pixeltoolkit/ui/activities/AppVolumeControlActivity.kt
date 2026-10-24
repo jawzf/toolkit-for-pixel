@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Activities
- * File: AppVolumeControlActivity.kt
- * Description: Bottom sheet with a volume slider for every app that is playing audio.
- */
-
 package com.jawzf.pixeltoolkit.ui.activities
 
 import android.content.BroadcastReceiver

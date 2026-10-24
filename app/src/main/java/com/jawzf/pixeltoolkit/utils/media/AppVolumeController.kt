@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Utilities - Media
- * File: AppVolumeController.kt
- * Description: Applies saved per-app volume levels to each app's audio players through Shizuku.
- */
-
 package com.jawzf.pixeltoolkit.utils.media
 
 import android.content.Context

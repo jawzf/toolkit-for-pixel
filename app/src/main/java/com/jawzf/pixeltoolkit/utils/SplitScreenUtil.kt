@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Utilities - Windowing
- * File: SplitScreenUtil.kt
- * Description: Toggles split screen for the foreground app through the WMShell shell command.
- */
-
 package com.jawzf.pixeltoolkit.utils
 
 import android.content.ComponentName

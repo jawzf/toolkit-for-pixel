@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Domain Layer Models & Registries
- * File: WatermarkRepository.kt
- * Description: Domain model and business logic entry for WatermarkRepository.kt.
- */
-
 package com.jawzf.pixeltoolkit.domain.watermark
 
 import android.content.Context

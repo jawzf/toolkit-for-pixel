@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Feature - System
- * File: ActivityLauncherSettingsUI.kt
- * Description: Full page app browser that opens an app's activities in a bottom sheet.
- */
-
 package com.jawzf.pixeltoolkit.ui.features.system
 
 import androidx.compose.foundation.Image

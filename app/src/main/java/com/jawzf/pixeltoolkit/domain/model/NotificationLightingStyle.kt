@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Domain Layer Models & Registries
- * File: NotificationLightingStyle.kt
- * Description: Domain model and business logic entry for NotificationLightingStyle.kt.
- */
-
 package com.jawzf.pixeltoolkit.domain.model
 
 enum class NotificationLightingStyle {

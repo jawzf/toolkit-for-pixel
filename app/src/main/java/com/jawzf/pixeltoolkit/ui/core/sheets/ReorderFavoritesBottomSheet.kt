@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Core Components
- * File: ReorderFavoritesBottomSheet.kt
- * Description: Bottom sheet allowing users to reorder and unpin favorite features.
- */
-
 package com.jawzf.pixeltoolkit.ui.core.sheets
 
 import androidx.compose.foundation.background

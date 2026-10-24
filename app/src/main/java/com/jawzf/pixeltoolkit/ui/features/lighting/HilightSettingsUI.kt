@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Lighting Features
- * File: HilightSettingsUI.kt
- * Description: Hilight settings: the hub page, per-app notification effects and live notification progress.
- */
-
 package com.jawzf.pixeltoolkit.ui.features.system
 
 import android.content.Context

@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Domain Layer Models
- * File: AppPermission.kt
- * Description: Enum defining all app permissions with keys, localized titles, and icons.
- */
-
 package com.jawzf.pixeltoolkit.domain.model
 
 import android.content.Context

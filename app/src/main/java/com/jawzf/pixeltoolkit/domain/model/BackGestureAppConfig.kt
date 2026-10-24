@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Domain Layer Models & Registries
- * File: BackGestureAppConfig.kt
- * Description: Per-app back gesture edge widths.
- */
-
 package com.jawzf.pixeltoolkit.domain.model
 
 import androidx.annotation.Keep

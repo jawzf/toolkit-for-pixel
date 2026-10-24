@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Feature - Automation
- * File: DIYScreen.kt
- * Description: UI component and settings composable for Automation feature domain.
- */
-
 package com.jawzf.pixeltoolkit.ui.composables
 
 import android.content.Context
