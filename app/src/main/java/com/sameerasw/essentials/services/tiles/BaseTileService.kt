@@ -1,0 +1,263 @@
+/*
+ * Copyright (c) 2026 sameerasw.com
+ * License: MIT License
+ *
+ * Feature Module: Background Services & Receivers
+ * File: BaseTileService.kt
+ * Description: Background service component for BaseTileService.kt.
+ */
+
+package com.sameerasw.essentials.services.tiles
+
+import android.app.PendingIntent
+import android.content.Intent
+import android.graphics.drawable.Icon
+import android.os.Build
+import android.provider.Settings
+import android.service.quicksettings.Tile
+import android.service.quicksettings.TileService
+import android.widget.Toast
+import androidx.core.content.edit
+import com.sameerasw.essentials.R
+import com.sameerasw.essentials.data.repository.SettingsRepository
+import com.sameerasw.essentials.utils.HapticUtil
+import com.sameerasw.essentials.utils.ShellUtils
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+
+abstract class BaseTileService : TileService() {
+    private val serviceJob = Job()
+    protected val serviceScope = CoroutineScope(Dispatchers.Main + serviceJob)
+    private val secureSettingsCache = mutableMapOf<String, Int>()
+
+    protected var isProcessing = false
+
+    open val isSensitiveTile: Boolean = false
+
+    abstract fun onTileClick()
+
+    abstract fun getTileLabel(): String
+
+    abstract fun getTileSubtitle(): String
+
+    abstract fun hasFeaturePermission(): Boolean
+
+    open fun isDeviceSupported(): Boolean = true
+
+    open val clickHaptic: Boolean = true
+
+    open fun getTileIcon(): Icon? = null
+
+    override fun onStartListening() {
+        super.onStartListening()
+        secureSettingsCache.clear()
+        setTileAddedState(true)
+        updateTile()
+    }
+
+    override fun onDestroy() {
+        serviceJob.cancel()
+        super.onDestroy()
+    }
+
+    override fun onTileAdded() {
+        super.onTileAdded()
+        setTileAddedState(true)
+        updateTile()
+    }
+
+    override fun onTileRemoved() {
+        super.onTileRemoved()
+        setTileAddedState(false)
+        secureSettingsCache.clear()
+    }
+
+    private fun setTileAddedState(isAdded: Boolean) {
+        getSharedPreferences("essentials_prefs", MODE_PRIVATE)
+            .edit {
+                putBoolean("${this::class.java.name}_is_added", isAdded)
+            }
+    }
+
+    override fun onClick() {
+        super.onClick()
+
+        if (!isDeviceSupported() && !areUnsupportedFeaturesEnabled()) {
+            return
+        }
+
+        // Immediate feedback 1: Haptics
+        if (clickHaptic) HapticUtil.performHapticForService(this)
+
+        if (!hasFeaturePermission() || isProcessing) {
+            return
+        }
+
+        val settingsRepository = SettingsRepository(this)
+        if (isSensitiveTile && settingsRepository.isSecureSensitiveTilesEnabled() && isLocked) {
+            Toast.makeText(
+                this,
+                getString(R.string.qs_tile_unlock_to_use, getTileLabel()),
+                Toast.LENGTH_SHORT,
+            ).show()
+            unlockAndRun {
+                executeTileClick()
+            }
+            return
+        }
+
+        executeTileClick()
+    }
+
+    private fun executeTileClick() {
+        // Immediate feedback 2: Processing state
+        isProcessing = true
+        updateTile()
+
+        // Offload actual work to background
+        serviceScope.launch {
+            try {
+                onTileClick()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            } finally {
+                withContext(Dispatchers.Main) {
+                    isProcessing = false
+                    updateTile()
+                }
+            }
+        }
+    }
+
+    protected fun areUnsupportedFeaturesEnabled(): Boolean = SettingsRepository(this).isEnableUnsupportedFeatures()
+
+    protected fun startActivityAndCollapseCompat(intent: Intent) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            startActivityAndCollapse(PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE))
+        } else {
+            @Suppress("DEPRECATION")
+            startActivityAndCollapse(intent)
+        }
+    }
+
+    protected fun openTilesSettings() {
+        val intent =
+            Intent(this, com.sameerasw.essentials.FeatureSettingsActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+                putExtra("feature", "Quick settings tiles")
+            }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            startActivityAndCollapse(PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE))
+        } else {
+            @Suppress("DEPRECATION")
+            startActivityAndCollapse(intent)
+        }
+    }
+
+    protected fun updateTile() {
+        val tile = qsTile ?: return
+        val unsupportedDisabled = !isDeviceSupported() && !areUnsupportedFeaturesEnabled()
+        val hasPerm = hasFeaturePermission()
+        tile.state =
+            when {
+                unsupportedDisabled || !hasPerm || isProcessing -> Tile.STATE_UNAVAILABLE
+                else -> getTileState()
+            }
+        tile.label = getTileLabel()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            tile.subtitle =
+                when {
+                    unsupportedDisabled -> getString(R.string.disabled_on_this_device)
+                    !hasPerm -> getString(R.string.permission_missing)
+                    isProcessing -> "Working..."
+                    else -> getTileSubtitle()
+                }
+        }
+
+        getTileIcon()?.let { tile.icon = it }
+        tile.updateTile()
+    }
+
+    protected abstract fun getTileState(): Int
+
+    protected fun getSecureInt(
+        key: String,
+        def: Int,
+    ): Int {
+        secureSettingsCache[key]?.let { return it }
+
+        try {
+            val value = Settings.Secure.getInt(contentResolver, key)
+            secureSettingsCache[key] = value
+            return value
+        } catch (_: SecurityException) {
+            // Only fallback to shell on SecurityException
+            return try {
+                val output = ShellUtils.runCommandWithOutput(this, "settings get secure $key", featureName = getTileLabel(), notifyOnError = false)
+                val result = output?.toIntOrNull() ?: def
+                secureSettingsCache[key] = result
+                result
+            } catch (_: Exception) {
+                def
+            }
+        } catch (_: Exception) {
+            return def
+        }
+        return def
+    }
+
+    protected fun putSecureInt(
+        key: String,
+        value: Int,
+    ) {
+        secureSettingsCache[key] = value // Update cache immediately
+        try {
+            Settings.Secure.putInt(contentResolver, key, value)
+        } catch (_: Exception) {
+            // Fallback to shell if standard API fails
+            ShellUtils.runCommand(this, "settings put secure $key $value", featureName = getTileLabel())
+        }
+    }
+
+    protected fun getGlobalInt(
+        key: String,
+        def: Int,
+    ): Int {
+        secureSettingsCache[key]?.let { return it }
+
+        try {
+            val value = Settings.Global.getInt(contentResolver, key)
+            secureSettingsCache[key] = value
+            return value
+        } catch (_: SecurityException) {
+            // Only fallback to shell on SecurityException
+            return try {
+                val output = ShellUtils.runCommandWithOutput(this, "settings get global $key", featureName = getTileLabel(), notifyOnError = false)
+                val result = output?.toIntOrNull() ?: def
+                secureSettingsCache[key] = result
+                result
+            } catch (_: Exception) {
+                def
+            }
+        } catch (_: Exception) {
+            return def
+        }
+        return def
+    }
+
+    protected fun putGlobalInt(
+        key: String,
+        value: Int,
+    ) {
+        secureSettingsCache[key] = value // Update cache immediately
+        try {
+            Settings.Global.putInt(contentResolver, key, value)
+        } catch (_: Exception) {
+            // Fallback to shell if standard API fails
+            ShellUtils.runCommand(this, "settings put global $key $value", featureName = getTileLabel())
+        }
+    }
+}

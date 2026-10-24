@@ -1,0 +1,349 @@
+/*
+ * Copyright (c) 2026 sameerasw.com
+ * License: MIT License
+ *
+ * Feature Module: Background Services & Receivers
+ * File: PixelSearchbarWidget.kt
+ * Description: Background service component for PixelSearchbarWidget.kt.
+ */
+
+package com.sameerasw.essentials.services.widgets
+
+import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.produceState
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.glance.GlanceId
+import androidx.glance.GlanceModifier
+import androidx.glance.GlanceTheme
+import androidx.glance.Image
+import androidx.glance.ImageProvider
+import androidx.glance.action.actionStartActivity
+import androidx.glance.action.clickable
+import androidx.glance.appwidget.AndroidRemoteViews
+import androidx.glance.appwidget.GlanceAppWidget
+import com.sameerasw.essentials.ui.activities.PixelSearchResultsActivity
+import com.sameerasw.essentials.ui.activities.PixelSearchbarTapActivity
+import androidx.glance.appwidget.action.actionRunCallback
+import androidx.glance.appwidget.cornerRadius
+import androidx.glance.appwidget.provideContent
+import androidx.glance.background
+import androidx.glance.ColorFilter
+import androidx.glance.layout.Row
+import androidx.glance.layout.Spacer
+import androidx.glance.layout.size
+import com.sameerasw.essentials.R
+import androidx.glance.layout.Alignment
+import androidx.glance.layout.Box
+import androidx.glance.layout.Column
+import androidx.glance.layout.ContentScale
+import androidx.glance.layout.fillMaxSize
+import androidx.glance.layout.padding
+import androidx.glance.text.FontWeight
+import androidx.glance.text.Text
+import androidx.glance.text.TextAlign
+import androidx.glance.text.TextStyle
+import androidx.glance.unit.ColorProvider
+import com.sameerasw.essentials.data.repository.SettingsRepository
+import com.sameerasw.essentials.domain.diy.Automation
+import com.sameerasw.essentials.domain.diy.DIYRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import java.io.File
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+
+class PixelSearchbarWidget : GlanceAppWidget() {
+    override val sizeMode = androidx.glance.appwidget.SizeMode.Exact
+
+    override suspend fun provideGlance(
+        context: Context,
+        id: GlanceId,
+    ) {
+        val settingsRepository = SettingsRepository(context)
+
+        provideContent {
+            val revision = SearchbarRenderState.revision
+            val type = settingsRepository.getPixelSearchbarType()
+            val tapActionEnabled = settingsRepository.getPixelSearchbarTapActionEnabled()
+            val paddingH = settingsRepository.getPixelSearchbarWidgetPaddingH().dp
+            val paddingV = settingsRepository.getPixelSearchbarWidgetPaddingV().dp
+
+            val musicBitmapState by produceState<Bitmap?>(null, revision, type) {
+                value =
+                    if (type == "music") {
+                        withContext(Dispatchers.IO) {
+                            runCatching {
+                                val file = File(context.filesDir, "music_artwork.png")
+                                if (file.exists()) BitmapFactory.decodeFile(file.absolutePath) else null
+                            }.getOrNull()
+                        }
+                    } else {
+                        null
+                    }
+            }
+            val musicBitmap = musicBitmapState
+
+            val globalTapAction =
+                if (tapActionEnabled) {
+                    actionStartActivity(PixelSearchbarTapActivity::class.java)
+                } else {
+                    actionStartActivity(PixelSearchResultsActivity::class.java)
+                }
+
+            GlanceTheme {
+                val boxModifier =
+                    GlanceModifier
+                        .fillMaxSize()
+                        .background(Color.Transparent)
+                        .padding(horizontal = paddingH, vertical = paddingV)
+                        .clickable(globalTapAction)
+
+                when (type) {
+                    "empty" -> {
+                        Box(
+                            modifier = boxModifier,
+                        ) {}
+                    }
+
+                    "widget" -> {
+                        val remoteViews = WidgetScraperService.currentRemoteViews
+                        val hasCustomTapAction =
+                            tapActionEnabled &&
+                                run {
+                                    DIYRepository.init(context)
+                                    DIYRepository.automations.value.any {
+                                        it.type == Automation.Type.PIXEL_SEARCHBAR && it.isEnabled && it.actionList.isNotEmpty()
+                                    }
+                                }
+                        val widgetModifier =
+                            GlanceModifier
+                                .fillMaxSize()
+                                .background(Color.Transparent)
+                                .padding(horizontal = paddingH, vertical = paddingV)
+                        Box(
+                            modifier =
+                                (
+                                    if (hasCustomTapAction) {
+                                        widgetModifier.clickable(actionStartActivity(PixelSearchbarTapActivity::class.java))
+                                    } else {
+                                        widgetModifier
+                                    }
+                                ).cornerRadius(28.dp),
+                            contentAlignment = Alignment.Center,
+                        ) {
+                            if (remoteViews != null) {
+                                AndroidRemoteViews(
+                                    remoteViews = remoteViews,
+                                    modifier = GlanceModifier.fillMaxSize(),
+                                )
+                            } else {
+                                val providerName = settingsRepository.getPixelSearchbarWidgetProvider()
+                                val providerLabel = providerName?.substringAfterLast(".")?.takeIf { it.isNotEmpty() } ?: context.getString(R.string.pixel_searchbar_style_widget)
+                                val label =
+                                    if (WidgetScraperService.isUnsupported) {
+                                        context.getString(R.string.pixel_searchbar_widget_unsupported, providerLabel)
+                                    } else {
+                                        providerLabel
+                                    }
+                                Row(
+                                    modifier =
+                                        GlanceModifier
+                                            .fillMaxSize()
+                                            .background(GlanceTheme.colors.surfaceVariant)
+                                            .cornerRadius(28.dp)
+                                            .padding(horizontal = 16.dp, vertical = 8.dp),
+                                    verticalAlignment = Alignment.Vertical.CenterVertically,
+                                    horizontalAlignment = Alignment.Horizontal.CenterHorizontally,
+                                ) {
+                                    Image(
+                                        provider = ImageProvider(R.drawable.rounded_widgets_24),
+                                        contentDescription = null,
+                                        colorFilter = ColorFilter.tint(GlanceTheme.colors.primary),
+                                        modifier = GlanceModifier.size(20.dp),
+                                    )
+                                    Spacer(modifier = GlanceModifier.size(8.dp))
+                                    Text(
+                                        text = label,
+                                        style =
+                                            TextStyle(
+                                                color = GlanceTheme.colors.onSurfaceVariant,
+                                                fontSize = 14.sp,
+                                                fontWeight = FontWeight.Medium,
+                                                fontFamily = androidx.glance.text.FontFamily("google_sans_flex_round"),
+                                                textAlign = TextAlign.Center,
+                                            ),
+                                    )
+                                }
+                            }
+                        }
+                    }
+
+                    "music" -> {
+                        val title = settingsRepository.getPixelSearchbarMusicTitle()
+                        val artist = settingsRepository.getPixelSearchbarMusicArtist()
+
+                        if (title.isNotEmpty() || artist.isNotEmpty()) {
+                            Box(
+                                modifier =
+                                    boxModifier
+                                        .cornerRadius(28.dp)
+                                        .background(GlanceTheme.colors.background)
+                                        .clickable(actionRunCallback<MusicClickActionCallback>()),
+                                contentAlignment = Alignment.Center,
+                            ) {
+                                if (musicBitmap != null) {
+                                    Image(
+                                        provider = ImageProvider(musicBitmap),
+                                        contentDescription = null,
+                                        modifier = GlanceModifier.fillMaxSize(),
+                                        contentScale = ContentScale.Crop,
+                                    )
+                                    Box(
+                                        modifier =
+                                            GlanceModifier
+                                                .fillMaxSize()
+                                                .background(Color(0, 0, 0, 120)),
+                                    ) {}
+                                }
+
+                                Column(
+                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                    modifier = GlanceModifier.padding(horizontal = 16.dp),
+                                ) {
+                                    Text(
+                                        text = title,
+                                        style =
+                                            TextStyle(
+                                                color =
+                                                    if (musicBitmap != null) {
+                                                        ColorProvider(Color.White)
+                                                    } else {
+                                                        GlanceTheme.colors.onSurface
+                                                    },
+                                                fontSize = 18.sp,
+                                                fontWeight = FontWeight.Medium,
+                                                fontFamily = androidx.glance.text.FontFamily("google_sans_flex_round"),
+                                                textAlign = TextAlign.Center,
+                                            ),
+                                        maxLines = 1,
+                                    )
+                                    if (artist.isNotEmpty()) {
+                                        Text(
+                                            text = artist,
+                                            style =
+                                                TextStyle(
+                                                    color =
+                                                        if (musicBitmap != null) {
+                                                            ColorProvider(Color.LightGray)
+                                                        } else {
+                                                            GlanceTheme.colors.onSurfaceVariant
+                                                        },
+                                                    fontSize = 13.sp,
+                                                    fontWeight = FontWeight.Normal,
+                                                    fontFamily = androidx.glance.text.FontFamily("google_sans_flex_round"),
+                                                    textAlign = TextAlign.Center,
+                                                ),
+                                            maxLines = 1,
+                                        )
+                                    }
+                                }
+                            }
+                        } else {
+                            Box(
+                                modifier = boxModifier,
+                            ) {}
+                        }
+                    }
+
+                    "date" -> {
+                        val dateFormat = settingsRepository.getPixelSearchbarDateFormat()
+                        val hasPill = settingsRepository.getPixelSearchbarBackgroundPill()
+                        val dateStr =
+                            SimpleDateFormat(dateFormat, Locale.getDefault()).format(Date())
+                        Box(
+                            modifier = boxModifier,
+                            contentAlignment = Alignment.Center,
+                        ) {
+                            if (hasPill) {
+                                Box(
+                                    modifier =
+                                        GlanceModifier
+                                            .background(GlanceTheme.colors.surfaceVariant)
+                                            .cornerRadius(28.dp)
+                                            .padding(horizontal = 24.dp, vertical = 12.dp),
+                                    contentAlignment = Alignment.Center,
+                                ) {
+                                    Text(
+                                        text = dateStr,
+                                        style =
+                                            TextStyle(
+                                                color = GlanceTheme.colors.onSurfaceVariant,
+                                                fontSize = 20.sp,
+                                                fontWeight = FontWeight.Medium,
+                                                fontFamily = androidx.glance.text.FontFamily("google_sans_flex_round"),
+                                                textAlign = TextAlign.Center,
+                                            ),
+                                    )
+                                }
+                            } else {
+                                Text(
+                                    text = dateStr,
+                                    style =
+                                        TextStyle(
+                                            color = GlanceTheme.colors.onSurface,
+                                            fontSize = 20.sp,
+                                            fontWeight = FontWeight.Medium,
+                                            fontFamily = androidx.glance.text.FontFamily("google_sans_flex_round"),
+                                            textAlign = TextAlign.Center,
+                                        ),
+                                )
+                            }
+                        }
+                    }
+
+                    else -> { // "searchbar" (default)
+                        Row(
+                            modifier =
+                                boxModifier
+                                    .cornerRadius(28.dp)
+                                    .background(GlanceTheme.colors.surfaceVariant)
+                                    .padding(horizontal = 16.dp, vertical = 10.dp),
+                            verticalAlignment = Alignment.Vertical.CenterVertically,
+                        ) {
+                            Image(
+                                provider = ImageProvider(R.drawable.rounded_search_24),
+                                contentDescription = null,
+                                colorFilter = ColorFilter.tint(GlanceTheme.colors.primary),
+                                modifier = GlanceModifier.size(24.dp),
+                            )
+                            Spacer(modifier = GlanceModifier.size(12.dp))
+                            Text(
+                                text = context.getString(R.string.pixel_searchbar_placeholder),
+                                style =
+                                    TextStyle(
+                                        color = GlanceTheme.colors.onSurfaceVariant,
+                                        fontSize = 16.sp,
+                                        fontWeight = FontWeight.Normal,
+                                        fontFamily = androidx.glance.text.FontFamily("google_sans_flex_round"),
+                                    ),
+                                modifier = GlanceModifier.defaultWeight(),
+                            )
+                            Image(
+                                provider = ImageProvider(R.drawable.rounded_image_search_24),
+                                contentDescription = null,
+                                colorFilter = ColorFilter.tint(GlanceTheme.colors.onSurfaceVariant),
+                                modifier = GlanceModifier.size(22.dp),
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

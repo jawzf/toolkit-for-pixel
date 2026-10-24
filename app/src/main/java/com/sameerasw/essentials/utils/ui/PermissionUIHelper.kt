@@ -1,0 +1,690 @@
+/*
+ * Copyright (c) 2026 sameerasw.com
+ * License: MIT License
+ *
+ * Feature Module: UI Utilities
+ * File: PermissionUIHelper.kt
+ * Description: Renders permission guidance dialogs and bottom sheets.
+ */
+
+package com.sameerasw.essentials.utils
+
+import android.app.Activity
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
+import android.content.Context.CLIPBOARD_SERVICE
+import android.content.Intent
+import android.os.Build
+import android.provider.Settings
+import androidx.core.app.ActivityCompat
+import com.sameerasw.essentials.R
+import com.sameerasw.essentials.domain.model.AppPermission
+import com.sameerasw.essentials.domain.registry.PermissionRegistry
+import com.sameerasw.essentials.ui.core.sheets.PermissionItem
+import com.sameerasw.essentials.utils.PermissionUtils
+import kotlinx.coroutines.launch
+import com.sameerasw.essentials.viewmodels.MainViewModel
+
+object PermissionUIHelper {
+    fun getPermissionItem(
+        permission: AppPermission,
+        context: Context,
+        viewModel: MainViewModel,
+        activity: Activity? = null,
+    ): PermissionItem? =
+        when (permission) {
+            AppPermission.ACCESSIBILITY ->
+                PermissionItem(
+                    iconRes = permission.iconRes,
+                    title = permission.titleRes,
+                    description = R.string.perm_accessibility_desc_common,
+                    dependentFeatures = PermissionRegistry.getFeatures(permission),
+                    actionLabel = if (viewModel.isAccessibilityEnabled.value) R.string.label_enabled else R.string.perm_action_enable,
+                    action = {
+                        PermissionUtils.openAccessibilitySettings(context)
+                    },
+                    isGranted = viewModel.isAccessibilityEnabled.value,
+                )
+
+            AppPermission.WRITE_SECURE_SETTINGS ->
+                PermissionItem(
+                    iconRes = permission.iconRes,
+                    title = permission.titleRes,
+                    description = R.string.perm_write_secure_desc_common,
+                    dependentFeatures = PermissionRegistry.getFeatures(permission),
+                    actionLabel = if (viewModel.isWriteSecureSettingsEnabled.value) R.string.perm_action_granted else R.string.perm_action_copy_adb,
+                    action = {
+                        val adbCommand =
+                            "adb shell pm grant ${context.packageName} android.permission.WRITE_SECURE_SETTINGS"
+                        val clipboard = context.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+                        val clip = ClipData.newPlainText("adb_command", adbCommand)
+                        clipboard.setPrimaryClip(clip)
+                    },
+                    secondaryActionLabel = R.string.perm_action_check,
+                    secondaryAction = {
+                        viewModel.check(context)
+                    },
+                    isGranted = viewModel.isWriteSecureSettingsEnabled.value,
+                    shizukuActionLabel = if (viewModel.isRootEnabled.value) R.string.perm_action_grant_root else R.string.perm_action_grant_shizuku,
+                    shizukuActionEnabled =
+                        if (viewModel.isRootEnabled.value) {
+                            viewModel.isRootAvailable.value
+                        } else {
+                            ShizukuUtils
+                                .hasPermission()
+                        },
+                    shizukuAction = {
+                        if (viewModel.isRootEnabled.value) {
+                            if (RootUtils.runCommand("pm grant ${context.packageName} android.permission.WRITE_SECURE_SETTINGS")) {
+                                viewModel.check(context)
+                            }
+                        } else {
+                            if (ShizukuUtils.grantWriteSecureSettingsPermission()) {
+                                viewModel.check(context)
+                            }
+                        }
+                    },
+                    instructions = R.string.perm_write_secure_instructions,
+                )
+
+            AppPermission.NOTIFICATION_LISTENER ->
+                PermissionItem(
+                    iconRes = permission.iconRes,
+                    title = permission.titleRes,
+                    description =
+                        if (PermissionRegistry
+                                .getFeatures(permission)
+                                .contains(R.string.feat_freeze_title)
+                        ) {
+                            R.string.perm_notif_listener_desc_freeze
+                        } else {
+                            R.string.perm_notif_listener_desc_lighting
+                        },
+                    dependentFeatures = PermissionRegistry.getFeatures(permission),
+                    actionLabel = if (viewModel.isNotificationListenerEnabled.value) R.string.perm_action_granted else R.string.perm_action_grant,
+                    action = { viewModel.requestNotificationListenerPermission(context) },
+                    isGranted = viewModel.isNotificationListenerEnabled.value,
+                )
+
+            AppPermission.DRAW_OVERLAYS ->
+                PermissionItem(
+                    iconRes = permission.iconRes,
+                    title = permission.titleRes,
+                    description = R.string.perm_overlay_desc,
+                    dependentFeatures = PermissionRegistry.getFeatures(permission),
+                    actionLabel = if (viewModel.isOverlayPermissionGranted.value) R.string.perm_action_granted else R.string.perm_action_grant,
+                    action = { PermissionUtils.openOverlaySettings(context) },
+                    isGranted = viewModel.isOverlayPermissionGranted.value,
+                )
+
+            AppPermission.WRITE_SETTINGS ->
+                PermissionItem(
+                    iconRes = permission.iconRes,
+                    title = permission.titleRes,
+                    description = R.string.perm_write_settings_desc,
+                    dependentFeatures = PermissionRegistry.getFeatures(permission),
+                    actionLabel = if (viewModel.isWriteSettingsEnabled.value) R.string.perm_action_granted else R.string.perm_action_grant,
+                    action = { PermissionUtils.openWriteSettings(context) },
+                    isGranted = viewModel.isWriteSettingsEnabled.value,
+                )
+
+            AppPermission.NOTIFICATION_POLICY ->
+                PermissionItem(
+                    iconRes = permission.iconRes,
+                    title = permission.titleRes,
+                    description = R.string.perm_notif_policy_desc,
+                    dependentFeatures = PermissionRegistry.getFeatures(permission),
+                    actionLabel = if (viewModel.isNotificationPolicyAccessGranted.value) R.string.perm_action_granted else R.string.perm_action_grant,
+                    action = { PermissionUtils.openNotificationPolicySettings(context) },
+                    isGranted = viewModel.isNotificationPolicyAccessGranted.value,
+                )
+
+            AppPermission.POST_NOTIFICATIONS ->
+                PermissionItem(
+                    iconRes = permission.iconRes,
+                    title = permission.titleRes,
+                    description = R.string.permission_post_notifications_desc,
+                    dependentFeatures = PermissionRegistry.getFeatures(permission),
+                    actionLabel = if (viewModel.isPostNotificationsEnabled.value) R.string.perm_action_granted else R.string.perm_action_grant,
+                    action = {
+                        if (activity != null) {
+                            com.sameerasw.essentials.utils.PermissionUtils.requestPermissionsSafely(
+                                activity,
+                                arrayOf(android.Manifest.permission.POST_NOTIFICATIONS),
+                                103,
+                            )
+                        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                            val intent =
+                                Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).apply {
+                                    putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName)
+                                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                }
+                            context.startActivity(intent)
+                        }
+                    },
+                    isGranted = viewModel.isPostNotificationsEnabled.value,
+                )
+
+            AppPermission.READ_PHONE_STATE ->
+                PermissionItem(
+                    iconRes = permission.iconRes,
+                    title = permission.titleRes,
+                    description = R.string.permission_read_phone_state_desc_call_vibrations,
+                    dependentFeatures = PermissionRegistry.getFeatures(permission),
+                    actionLabel = if (viewModel.isReadPhoneStateEnabled.value) R.string.perm_action_granted else R.string.perm_action_grant,
+                    action = {
+                        if (activity != null) {
+                            com.sameerasw.essentials.utils.PermissionUtils.requestPermissionsSafely(
+                                activity,
+                                arrayOf(android.Manifest.permission.READ_PHONE_STATE),
+                                102,
+                            )
+                        }
+                    },
+                    isGranted = viewModel.isReadPhoneStateEnabled.value,
+                )
+
+            AppPermission.LOCATION ->
+                PermissionItem(
+                    iconRes = permission.iconRes,
+                    title = permission.titleRes,
+                    description = R.string.perm_location_desc,
+                    dependentFeatures = PermissionRegistry.getFeatures(permission),
+                    actionLabel = if (viewModel.isLocationPermissionGranted.value) R.string.perm_action_granted else R.string.perm_action_grant,
+                    action = {
+                        (activity as? androidx.activity.ComponentActivity)?.let {
+                            viewModel.requestLocationPermission(
+                                it,
+                            )
+                        }
+                    },
+                    isGranted = viewModel.isLocationPermissionGranted.value,
+                )
+
+            AppPermission.BACKGROUND_LOCATION ->
+                PermissionItem(
+                    iconRes = permission.iconRes,
+                    title = permission.titleRes,
+                    description = R.string.perm_bg_location_desc,
+                    dependentFeatures = PermissionRegistry.getFeatures(permission),
+                    actionLabel = if (viewModel.isBackgroundLocationPermissionGranted.value) R.string.perm_action_granted else R.string.perm_action_grant,
+                    action = {
+                        (activity as? androidx.activity.ComponentActivity)?.let {
+                            viewModel.requestBackgroundLocationPermission(
+                                it,
+                            )
+                        }
+                    },
+                    isGranted = viewModel.isBackgroundLocationPermissionGranted.value,
+                )
+
+            AppPermission.DEVICE_ADMIN ->
+                PermissionItem(
+                    iconRes = permission.iconRes,
+                    title = permission.titleRes,
+                    description = R.string.perm_device_admin_desc,
+                    dependentFeatures = PermissionRegistry.getFeatures(permission),
+                    actionLabel = if (viewModel.isDeviceAdminEnabled.value) R.string.label_enabled else R.string.action_enable_in_settings,
+                    action = { viewModel.requestDeviceAdmin(context) },
+                    isGranted = viewModel.isDeviceAdminEnabled.value,
+                )
+
+            AppPermission.ROOT ->
+                PermissionItem(
+                    iconRes = permission.iconRes,
+                    title = permission.titleRes,
+                    description = R.string.perm_root_desc,
+                    dependentFeatures = PermissionRegistry.getFeatures(permission),
+                    actionLabel = if (viewModel.isRootPermissionGranted.value) R.string.perm_action_granted else R.string.perm_action_grant,
+                    action = { viewModel.check(context) },
+                    isGranted = viewModel.isRootPermissionGranted.value,
+                )
+
+            AppPermission.SHIZUKU ->
+                PermissionItem(
+                    iconRes = if (viewModel.isRootEnabled.value) R.drawable.rounded_numbers_24 else permission.iconRes,
+                    title = if (viewModel.isRootEnabled.value) R.string.perm_root_title else permission.titleRes,
+                    description = if (viewModel.isRootEnabled.value) R.string.perm_root_desc else R.string.perm_shizuku_desc,
+                    dependentFeatures = PermissionRegistry.getFeatures(permission),
+                    actionLabel =
+                        if (viewModel.isRootEnabled.value) {
+                            if (viewModel.isRootPermissionGranted.value) R.string.perm_action_granted else R.string.perm_action_grant
+                        } else {
+                            if (viewModel.isShizukuPermissionGranted.value) R.string.perm_action_granted else R.string.perm_action_grant
+                        },
+                    action = {
+                        if (viewModel.isRootEnabled.value) {
+                            viewModel.check(context)
+                        } else {
+                            viewModel.requestShizukuPermission()
+                        }
+                    },
+                    isGranted = if (viewModel.isRootEnabled.value) viewModel.isRootPermissionGranted.value else viewModel.isShizukuPermissionGranted.value,
+                )
+
+            AppPermission.READ_CALENDAR ->
+                PermissionItem(
+                    iconRes = permission.iconRes,
+                    title = permission.titleRes,
+                    description = R.string.feat_calendar_sync_desc,
+                    dependentFeatures = PermissionRegistry.getFeatures(permission),
+                    actionLabel = if (viewModel.isCalendarPermissionGranted.value) R.string.perm_action_granted else R.string.perm_action_grant,
+                    action = {
+                        if (activity != null) {
+                            com.sameerasw.essentials.utils.PermissionUtils.requestPermissionsSafely(
+                                activity,
+                                arrayOf(
+                                    android.Manifest.permission.READ_CALENDAR,
+                                    android.Manifest.permission.WRITE_CALENDAR,
+                                ),
+                                104,
+                            )
+                        }
+                    },
+                    isGranted = viewModel.isCalendarPermissionGranted.value,
+                )
+
+            AppPermission.USAGE_STATS ->
+                PermissionItem(
+                    iconRes = permission.iconRes,
+                    title = permission.titleRes,
+                    description =
+                        if (viewModel.isUseUsageAccess.value) {
+                            R.string.perm_usage_stats_desc_app_lock
+                        } else {
+                            R.string.perm_usage_stats_desc
+                        },
+                    dependentFeatures = PermissionRegistry.getFeatures(permission),
+                    actionLabel = if (viewModel.isUsageStatsPermissionGranted.value) R.string.perm_action_granted else R.string.perm_action_grant,
+                    action = { PermissionUtils.openUsageStatsSettings(context) },
+                    isGranted = viewModel.isUsageStatsPermissionGranted.value,
+                )
+
+            AppPermission.DEFAULT_BROWSER ->
+                PermissionItem(
+                    iconRes = permission.iconRes,
+                    title = permission.titleRes,
+                    description = R.string.perm_default_browser_desc,
+                    dependentFeatures = PermissionRegistry.getFeatures(permission),
+                    actionLabel = if (viewModel.isDefaultBrowserSet.value) R.string.perm_action_granted else R.string.perm_action_grant,
+                    action = {
+                        val intent = Intent(Settings.ACTION_MANAGE_DEFAULT_APPS_SETTINGS)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        try {
+                            context.startActivity(intent)
+                        } catch (e: Exception) {
+                            val settingsIntent = Intent(Settings.ACTION_SETTINGS)
+                            settingsIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            context.startActivity(settingsIntent)
+                        }
+                    },
+                    isGranted = viewModel.isDefaultBrowserSet.value,
+                )
+
+            AppPermission.BLUETOOTH ->
+                PermissionItem(
+                    iconRes = permission.iconRes,
+                    title = permission.titleRes,
+                    description = R.string.perm_nearby_devices_desc,
+                    dependentFeatures = PermissionRegistry.getFeatures(permission),
+                    actionLabel = if (viewModel.isBluetoothPermissionGranted.value) R.string.perm_action_granted else R.string.perm_action_grant,
+                    action = {
+                        if (activity != null) {
+                            val permissions =
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                                    arrayOf(
+                                        android.Manifest.permission.BLUETOOTH_CONNECT,
+                                        android.Manifest.permission.BLUETOOTH_SCAN,
+                                    )
+                                } else {
+                                    arrayOf(
+                                        android.Manifest.permission.BLUETOOTH,
+                                        android.Manifest.permission.BLUETOOTH_ADMIN,
+                                    )
+                                }
+                            com.sameerasw.essentials.utils.PermissionUtils.requestPermissionsSafely(activity, permissions, 105)
+                        }
+                    },
+                    isGranted = viewModel.isBluetoothPermissionGranted.value,
+                )
+
+            AppPermission.REQUEST_INSTALL_PACKAGES -> {
+                val isGranted =
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        context.packageManager.canRequestPackageInstalls()
+                    } else {
+                        true
+                    }
+                PermissionItem(
+                    iconRes = permission.iconRes,
+                    title = permission.titleRes,
+                    description = R.string.perm_install_packages_desc,
+                    dependentFeatures = PermissionRegistry.getFeatures(permission),
+                    actionLabel = if (isGranted) R.string.perm_action_granted else R.string.perm_action_grant,
+                    action = {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            val intent =
+                                Intent(
+                                    Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES,
+                                    android.net.Uri.parse("package:${context.packageName}"),
+                                ).apply {
+                                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                }
+                            context.startActivity(intent)
+                        }
+                    },
+                    isGranted = isGranted,
+                )
+            }
+
+            AppPermission.READ_CONTACTS -> {
+                val isGranted =
+                    androidx.core.content.ContextCompat.checkSelfPermission(
+                        context,
+                        android.Manifest.permission.READ_CONTACTS,
+                    ) == android.content.pm.PackageManager.PERMISSION_GRANTED
+
+                var targetActivity: Activity? = activity
+                if (targetActivity == null) {
+                    var ctx: Context? = context
+                    while (ctx is android.content.ContextWrapper) {
+                        if (ctx is Activity) {
+                            targetActivity = ctx
+                            break
+                        }
+                        ctx = ctx.baseContext
+                    }
+                }
+
+                PermissionItem(
+                    iconRes = permission.iconRes,
+                    title = permission.titleRes,
+                    description = R.string.perm_contacts_desc,
+                    dependentFeatures = listOf(R.string.pixel_search_results_contacts_title),
+                    actionLabel = if (isGranted) R.string.perm_action_granted else R.string.perm_action_grant,
+                    action = {
+                        if (targetActivity != null) {
+                            com.sameerasw.essentials.utils.PermissionUtils.requestPermissionsSafely(
+                                targetActivity,
+                                arrayOf(android.Manifest.permission.READ_CONTACTS),
+                                110,
+                            )
+                        } else {
+                            val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                                data = android.net.Uri.fromParts("package", context.packageName, null)
+                                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            }
+                            context.startActivity(intent)
+                        }
+                    },
+                    isGranted = isGranted,
+                )
+            }
+
+            AppPermission.WATCH_CALL_SYNC -> {
+                val hasReadPhoneState =
+                    androidx.core.content.ContextCompat
+                        .checkSelfPermission(context, android.Manifest.permission.READ_PHONE_STATE) ==
+                        android.content.pm.PackageManager.PERMISSION_GRANTED
+                val hasAnswerCalls =
+                    Build.VERSION.SDK_INT < Build.VERSION_CODES.O ||
+                        androidx.core.content.ContextCompat
+                            .checkSelfPermission(context, android.Manifest.permission.ANSWER_PHONE_CALLS) ==
+                        android.content.pm.PackageManager.PERMISSION_GRANTED
+                val hasContacts =
+                    androidx.core.content.ContextCompat
+                        .checkSelfPermission(context, android.Manifest.permission.READ_CONTACTS) ==
+                        android.content.pm.PackageManager.PERMISSION_GRANTED
+                val isGranted = hasReadPhoneState && hasAnswerCalls && hasContacts
+
+                var targetActivity: Activity? = activity
+                if (targetActivity == null) {
+                    var ctx: Context? = context
+                    while (ctx is android.content.ContextWrapper) {
+                        if (ctx is Activity) {
+                            targetActivity = ctx
+                            break
+                        }
+                        ctx = ctx.baseContext
+                    }
+                }
+
+                PermissionItem(
+                    iconRes = permission.iconRes,
+                    title = permission.titleRes,
+                    description = R.string.watch_call_sync_desc,
+                    dependentFeatures = PermissionRegistry.getFeatures(AppPermission.READ_PHONE_STATE),
+                    actionLabel = if (isGranted) R.string.perm_action_granted else R.string.perm_action_grant,
+                    action = {
+                        if (targetActivity != null) {
+                            val perms =
+                                mutableListOf(
+                                    android.Manifest.permission.READ_PHONE_STATE,
+                                    android.Manifest.permission.READ_CONTACTS,
+                                    android.Manifest.permission.READ_CALL_LOG,
+                                )
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                perms.add(android.Manifest.permission.ANSWER_PHONE_CALLS)
+                            }
+                            com.sameerasw.essentials.utils.PermissionUtils.requestPermissionsSafely(targetActivity, perms.toTypedArray(), 109)
+                        }
+                    },
+                    isGranted = isGranted,
+                )
+            }
+
+            AppPermission.STORAGE -> {
+                val isGranted = PermissionUtils.hasStoragePermission(context)
+                var targetActivity: Activity? = activity
+                if (targetActivity == null) {
+                    var ctx: Context? = context
+                    while (ctx is android.content.ContextWrapper) {
+                        if (ctx is Activity) {
+                            targetActivity = ctx
+                            break
+                        }
+                        ctx = ctx.baseContext
+                    }
+                }
+
+                val descriptionRes =
+                    if (PermissionRegistry.getFeatures(permission).contains(R.string.pixel_search_results_files_title)) {
+                        R.string.perm_files_media_desc
+                    } else {
+                        R.string.perm_storage_desc
+                    }
+
+                PermissionItem(
+                    iconRes = permission.iconRes,
+                    title = permission.titleRes,
+                    description = descriptionRes,
+                    dependentFeatures = PermissionRegistry.getFeatures(permission),
+                    actionLabel = if (isGranted) R.string.perm_action_granted else R.string.perm_action_grant,
+                    action = {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                            PermissionUtils.openManageExternalStorageSettings(context)
+                        } else if (targetActivity != null) {
+                            com.sameerasw.essentials.utils.PermissionUtils.requestPermissionsSafely(
+                                targetActivity,
+                                arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE),
+                                110,
+                            )
+                        } else {
+                            PermissionUtils.openManageExternalStorageSettings(context)
+                        }
+                    },
+                    isGranted = isGranted,
+                )
+            }
+
+            AppPermission.LOCAL_NETWORK ->
+                PermissionItem(
+                    iconRes = permission.iconRes,
+                    title = permission.titleRes,
+                    description = R.string.perm_local_network_desc,
+                    dependentFeatures = PermissionRegistry.getFeatures(permission),
+                    actionLabel = if (viewModel.isLocalNetworkGranted.value) R.string.perm_action_granted else R.string.perm_action_grant,
+                    action = { PermissionUtils.requestLocalNetwork(context, activity) },
+                    isGranted = viewModel.isLocalNetworkGranted.value,
+                )
+
+            AppPermission.SENSITIVE_NOTIFICATIONS ->
+                PermissionItem(
+                    iconRes = permission.iconRes,
+                    title = permission.titleRes,
+                    description = R.string.perm_sensitive_notifications_desc,
+                    dependentFeatures = PermissionRegistry.getFeatures(permission),
+                    actionLabel = if (viewModel.isSensitiveNotificationsGranted.value) R.string.perm_action_granted else R.string.perm_action_copy_adb,
+                    action = {
+                        val adbCommand = "adb shell appops set ${context.packageName} RECEIVE_SENSITIVE_NOTIFICATIONS allow"
+                        val clipboard = context.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+                        clipboard.setPrimaryClip(ClipData.newPlainText("adb_command", adbCommand))
+                    },
+                    secondaryActionLabel = R.string.perm_action_check,
+                    secondaryAction = { viewModel.check(context) },
+                    isGranted = viewModel.isSensitiveNotificationsGranted.value,
+                    shizukuActionLabel = if (viewModel.isRootEnabled.value) R.string.perm_action_grant_root else R.string.perm_action_grant_shizuku,
+                    shizukuActionEnabled =
+                        if (viewModel.isRootEnabled.value) {
+                            viewModel.isRootAvailable.value
+                        } else {
+                            ShizukuUtils.hasPermission()
+                        },
+                    shizukuAction = {
+                        kotlinx.coroutines.CoroutineScope(kotlinx.coroutines.Dispatchers.IO).launch {
+                            PermissionGrantUtil.grantSensitiveNotifications(context)
+                            kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Main) { viewModel.check(context) }
+                        }
+                    },
+                    instructions = R.string.perm_sensitive_notifications_instructions,
+                )
+
+            AppPermission.NOTIFICATION_BUBBLES ->
+                PermissionItem(
+                    iconRes = permission.iconRes,
+                    title = permission.titleRes,
+                    description = R.string.perm_bubbles_desc,
+                    dependentFeatures = PermissionRegistry.getFeatures(permission),
+                    actionLabel = if (viewModel.isBubblePermissionGranted.value) R.string.perm_action_granted else R.string.perm_action_grant,
+                    action = {
+                        PermissionUtils.openBubbleSettings(context)
+                    },
+                    secondaryActionLabel = R.string.perm_action_copy_adb,
+                    secondaryAction = {
+                        val adbCommand =
+                            "cmd notification set_bubbles ${context.packageName} 1 && cmd notification set_bubbles_channel ${context.packageName} bubble_web_preview_channel true"
+                        val clipboard = context.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+                        val clip = ClipData.newPlainText("adb_command", adbCommand)
+                        clipboard.setPrimaryClip(clip)
+                    },
+                    isGranted = viewModel.isBubblePermissionGranted.value,
+                    shizukuActionLabel = if (viewModel.isRootEnabled.value) R.string.perm_action_grant_root else R.string.perm_action_grant_shizuku,
+                    shizukuActionEnabled =
+                        if (viewModel.isRootEnabled.value) {
+                            viewModel.isRootAvailable.value
+                        } else {
+                            ShizukuUtils.hasPermission()
+                        },
+                    shizukuAction = {
+                        val command =
+                            "cmd notification set_bubbles ${context.packageName} 1 && cmd notification set_bubbles_channel ${context.packageName} bubble_web_preview_channel true"
+                        if (viewModel.isRootEnabled.value) {
+                            if (RootUtils.runCommand(command)) {
+                                viewModel.check(context)
+                            }
+                        } else {
+                            ShizukuUtils.runCommand(command)
+                            viewModel.check(context)
+                        }
+                    },
+                    instructions = R.string.perm_bubbles_instructions,
+                )
+        }
+
+    fun getPermissionItem(
+        key: String,
+        context: Context,
+        viewModel: MainViewModel,
+        activity: Activity? = null,
+    ): PermissionItem? {
+        val perm = AppPermission.fromKey(key) ?: return null
+        return getPermissionItem(perm, context, viewModel, activity ?: context.findActivity())
+    }
+
+    private fun Context.findActivity(): Activity? {
+        var ctx: Context? = this
+        while (ctx is android.content.ContextWrapper) {
+            if (ctx is Activity) return ctx
+            ctx = ctx.baseContext
+        }
+        return null
+    }
+
+    @JvmName("getPermissionItemsFromKeys")
+    fun getPermissionItems(
+        keys: List<String>,
+        context: Context,
+        viewModel: MainViewModel,
+        activity: Activity? = null,
+    ): List<PermissionItem> = keys.mapNotNull { getPermissionItem(it, context, viewModel, activity) }.distinctBy { it.title }
+
+    @JvmName("getPermissionItemsFromEnums")
+    fun getPermissionItems(
+        permissions: List<AppPermission>,
+        context: Context,
+        viewModel: MainViewModel,
+        activity: Activity? = null,
+    ): List<PermissionItem> = permissions.mapNotNull { getPermissionItem(it, context, viewModel, activity) }.distinctBy { it.title }
+
+    fun getAllPermissionItems(
+        context: Context,
+        viewModel: MainViewModel,
+        activity: Activity? = null,
+    ): List<PermissionItem> = getPermissionItems(AppPermission.entries, context, viewModel, activity)
+
+    fun searchPermissions(
+        context: Context,
+        query: String,
+        viewModel: MainViewModel,
+        activity: Activity? = null,
+    ): List<PermissionItem> {
+        val trimmedQuery = query.trim()
+        if (trimmedQuery.isEmpty()) return emptyList()
+
+        return getAllPermissionItems(context, viewModel, activity).filter { item ->
+            val titleStr =
+                when (val t = item.title) {
+                    is Int -> context.getString(t)
+                    is String -> t
+                    else -> ""
+                }
+            val descStr =
+                when (val d = item.description) {
+                    is Int -> context.getString(d)
+                    is String -> d
+                    else -> ""
+                }
+            val dependentFeaturesMatch =
+                item.dependentFeatures.any { featureRes ->
+                    val featureName =
+                        when (featureRes) {
+                            is Int -> {
+                                try {
+                                    context.getString(featureRes)
+                                } catch (e: Exception) {
+                                    ""
+                                }
+                            }
+                            is String -> featureRes
+                            else -> ""
+                        }
+                    featureName.contains(trimmedQuery, ignoreCase = true)
+                }
+
+            titleStr.contains(trimmedQuery, ignoreCase = true) ||
+                descStr.contains(trimmedQuery, ignoreCase = true) ||
+                dependentFeaturesMatch
+        }
+    }
+}

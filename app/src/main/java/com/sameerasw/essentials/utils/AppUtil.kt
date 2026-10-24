@@ -1,0 +1,450 @@
+/*
+ * Copyright (c) 2026 sameerasw.com
+ * License: MIT License
+ *
+ * Feature Module: Core Utilities
+ * File: AppUtil.kt
+ * Description: General application helper methods for installed package details.
+ */
+
+package com.sameerasw.essentials.utils
+
+import android.content.Context
+import android.content.pm.ApplicationInfo
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.drawable.BitmapDrawable
+import android.net.Uri
+import android.util.Log
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.core.graphics.createBitmap
+import androidx.palette.graphics.Palette
+import com.sameerasw.essentials.domain.model.AppSelection
+import com.sameerasw.essentials.domain.model.NotificationApp
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+
+object AppUtil {
+    fun hasSystemFlag(
+        context: Context,
+        packageName: String,
+    ): Boolean =
+        try {
+            (context.packageManager.getApplicationInfo(packageName, 0).flags and ApplicationInfo.FLAG_SYSTEM) != 0
+        } catch (_: Exception) {
+            false
+        }
+
+    private const val TAG = "AppUtil"
+
+    // Cache for extracted brand colors
+    private val colorCache = mutableMapOf<String, Int>()
+
+    // Cache for app icons to prevent repeated system calls
+    private val iconCache = mutableMapOf<String, Bitmap>()
+
+    // Target size for app icons to balance quality and performance
+    private const val ICON_SIZE = 64
+    private const val SHORTCUT_ICON_SIZE = 192
+
+    /**
+     * Get all installed apps (not just launcher apps)
+     */
+    suspend fun getInstalledApps(context: Context, includeSelf: Boolean = false): List<NotificationApp> =
+        withContext(Dispatchers.IO) {
+            try {
+                val pm = context.packageManager
+
+                // Get all installed applications
+                val allApps =
+                    pm
+                        .getInstalledApplications(0)
+                        .filter { appInfo ->
+                            // Filter out our own app unless requested
+                            includeSelf || !appInfo.packageName.contains("essentials")
+                        }
+
+                val apps =
+                    allApps.mapNotNull { appInfo ->
+                        try {
+                            // More accurate system app detection
+                            val flags = appInfo.flags
+                            val isSystemApp =
+                                (flags and ApplicationInfo.FLAG_SYSTEM) != 0 &&
+                                    (flags and ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) == 0
+
+                            val app =
+                                NotificationApp(
+                                    packageName = appInfo.packageName,
+                                    appName = pm.getApplicationLabel(appInfo).toString(),
+                                    isEnabled = false,
+                                    icon = getLowQualityIcon(context, appInfo.packageName).asImageBitmap(),
+                                    isSystemApp = isSystemApp,
+                                    lastUpdated = System.currentTimeMillis(),
+                                )
+                            app
+                        } catch (e: Exception) {
+                            Log.w(TAG, "Error loading app ${appInfo.packageName}: ${e.message}")
+                            null
+                        }
+                    }
+
+                // Log some examples
+                apps.filter { !it.isSystemApp }.take(5).map { it.appName }
+                apps.filter { it.isSystemApp }.take(5).map { it.appName }
+
+                apps.sortedBy { it.appName.lowercase() }
+            } catch (e: Exception) {
+                Log.e(TAG, "Error getting installed apps: ${e.message}")
+                emptyList()
+            }
+        }
+
+    /**
+     * Get specific apps by package names (more efficient for picked lists)
+     */
+    suspend fun getAppsByPackageNames(
+        context: Context,
+        packageNames: List<String>,
+    ): List<NotificationApp> =
+        withContext(Dispatchers.IO) {
+            try {
+                val pm = context.packageManager
+                val apps =
+                    packageNames.mapNotNull { packageName ->
+                        try {
+                            val appInfo = pm.getApplicationInfo(packageName, 0)
+                            val flags = appInfo.flags
+                            val isSystemApp =
+                                (flags and ApplicationInfo.FLAG_SYSTEM) != 0 &&
+                                    (flags and ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) == 0
+
+                            NotificationApp(
+                                packageName = appInfo.packageName,
+                                appName = pm.getApplicationLabel(appInfo).toString(),
+                                isEnabled = false,
+                                icon = getLowQualityIcon(context, packageName).asImageBitmap(),
+                                isSystemApp = isSystemApp,
+                                lastUpdated = System.currentTimeMillis(),
+                            )
+                        } catch (e: Exception) {
+                            Log.w(TAG, "Error loading app $packageName: ${e.message}")
+                            null
+                        }
+                    }
+                apps.sortedBy { it.appName.lowercase() }
+            } catch (e: Exception) {
+                Log.e(TAG, "Error getting apps by package name: ${e.message}")
+                emptyList()
+            }
+        }
+
+    /**
+     * Merge installed apps with saved app selections, keeping user settings and adding new apps
+     */
+    fun mergeWithSavedApps(
+        installedApps: List<NotificationApp>,
+        savedSelections: List<AppSelection>,
+        defaultEnabled: Boolean = false,
+    ): List<NotificationApp> {
+        val savedSelectionsMap = savedSelections.associateBy { it.packageName }
+
+        return installedApps
+            .map { installedApp ->
+                val savedSelection = savedSelectionsMap[installedApp.packageName]
+                installedApp.copy(isEnabled = savedSelection?.isEnabled ?: defaultEnabled)
+            }.sortedBy { it.appName.lowercase() }
+    }
+
+    /**
+     * Extracts the brand color from an app's icon using the Palette API.
+     * Uses internal cache for efficiency.
+     */
+    fun getAppBrandColor(
+        context: Context,
+        packageName: String,
+        callback: (Int) -> Unit,
+    ) {
+        // Check cache first
+        colorCache[packageName]?.let {
+            callback(it)
+            return
+        }
+
+        try {
+            context.packageManager
+            // Extract bitmap from drawable, handling AdaptiveIcons
+            val bitmap = getLowQualityIcon(context, packageName)
+
+            // Generate palette asynchronously
+            Palette.from(bitmap).generate { palette ->
+                val color =
+                    palette?.getVibrantColor(Color.TRANSPARENT)
+                        ?: palette?.getDominantColor(Color.GRAY)
+                        ?: Color.GRAY
+
+                // Cache the result
+                colorCache[packageName] = color
+                callback(color)
+            }
+        } catch (e: Exception) {
+            Log.w(TAG, "Error extracting color for $packageName: ${e.message}")
+            callback(Color.GRAY)
+        }
+    }
+
+    /**
+     * Helper to load and scale an app icon to a lower resolution for better performance.
+     */
+    private fun getLowQualityIcon(
+        context: Context,
+        packageName: String,
+    ): Bitmap {
+        // Check cache first
+        iconCache[packageName]?.let { return it }
+
+        val drawable =
+            try {
+                context.packageManager.getApplicationIcon(packageName)
+            } catch (e: Exception) {
+                context.packageManager.defaultActivityIcon
+            }
+
+        val bitmap =
+            when (drawable) {
+                is BitmapDrawable -> {
+                    val b = drawable.bitmap
+                    if (b.width > ICON_SIZE || b.height > ICON_SIZE) {
+                        Bitmap.createScaledBitmap(b, ICON_SIZE, ICON_SIZE, true)
+                    } else {
+                        b
+                    }
+                }
+
+                else -> {
+                    val bmp = createBitmap(ICON_SIZE, ICON_SIZE)
+                    val canvas = Canvas(bmp)
+                    drawable.setBounds(0, 0, ICON_SIZE, ICON_SIZE)
+                    drawable.draw(canvas)
+                    bmp
+                }
+            }
+
+        // Cache the result
+        iconCache[packageName] = bitmap
+        return bitmap
+    }
+
+    /**
+     * Executes the drawable to bitmap operation.
+     *
+     * @param drawable [android.graphics.drawable.Drawable] Target drawable.
+     * @param size [Int?] Target size.
+     * @return The resulting Bitmap data.
+     */
+    fun drawableToBitmap(
+        drawable: android.graphics.drawable.Drawable,
+        size: Int? = null,
+    ): Bitmap {
+        if (drawable is BitmapDrawable && size == null) {
+            return drawable.bitmap
+        }
+
+        val width = size ?: drawable.intrinsicWidth.coerceAtLeast(1)
+        val height = size ?: drawable.intrinsicHeight.coerceAtLeast(1)
+
+        val bitmap =
+            Bitmap.createBitmap(
+                width,
+                height,
+                Bitmap.Config.ARGB_8888,
+            )
+        val canvas = Canvas(bitmap)
+        drawable.setBounds(0, 0, width, height)
+        drawable.draw(canvas)
+        return bitmap
+    }
+
+    /**
+     * Decodes a downsampled bitmap from a file path to prevent OOM errors with high resolution images.
+     */
+    fun decodeSampledBitmapFromFile(
+        filePath: String,
+        reqWidth: Int = 1440,
+        reqHeight: Int = 3200,
+    ): Bitmap? {
+        return try {
+            val options = BitmapFactory.Options().apply {
+                inJustDecodeBounds = true
+            }
+            BitmapFactory.decodeFile(filePath, options)
+            if (options.outWidth <= 0 || options.outHeight <= 0) return null
+
+            var inSampleSize = 1
+            val halfHeight = options.outHeight / 2
+            val halfWidth = options.outWidth / 2
+            while ((halfHeight / inSampleSize) >= reqHeight || (halfWidth / inSampleSize) >= reqWidth) {
+                inSampleSize *= 2
+            }
+
+            options.inJustDecodeBounds = false
+            options.inSampleSize = inSampleSize
+            options.inPreferredConfig = Bitmap.Config.ARGB_8888
+            BitmapFactory.decodeFile(filePath, options)
+        } catch (e: Throwable) {
+            Log.e(TAG, "Error decoding sampled bitmap from file: $filePath", e)
+            null
+        }
+    }
+
+    /**
+     * Decodes a downsampled bitmap from a content URI to prevent OOM errors with high resolution images.
+     */
+    fun decodeSampledBitmapFromUri(
+        context: Context,
+        uri: Uri,
+        reqWidth: Int = 1440,
+        reqHeight: Int = 3200,
+    ): Bitmap? {
+        return try {
+            val options = BitmapFactory.Options().apply {
+                inJustDecodeBounds = true
+            }
+            context.contentResolver.openInputStream(uri)?.use { input ->
+                BitmapFactory.decodeStream(input, null, options)
+            }
+            if (options.outWidth <= 0 || options.outHeight <= 0) return null
+
+            var inSampleSize = 1
+            val halfHeight = options.outHeight / 2
+            val halfWidth = options.outWidth / 2
+            while ((halfHeight / inSampleSize) >= reqHeight || (halfWidth / inSampleSize) >= reqWidth) {
+                inSampleSize *= 2
+            }
+
+            options.inJustDecodeBounds = false
+            options.inSampleSize = inSampleSize
+            options.inPreferredConfig = Bitmap.Config.ARGB_8888
+            context.contentResolver.openInputStream(uri)?.use { input ->
+                BitmapFactory.decodeStream(input, null, options)
+            }
+        } catch (e: Throwable) {
+            Log.e(TAG, "Error decoding sampled bitmap from uri: $uri", e)
+            null
+        }
+    }
+
+    /**
+     * Get a properly sized icon for shortcuts
+     */
+    fun getShortcutIcon(
+        context: Context,
+        packageName: String,
+    ): Bitmap {
+        val drawable =
+            try {
+                context.packageManager.getApplicationIcon(packageName)
+            } catch (e: Exception) {
+                context.packageManager.defaultActivityIcon
+            }
+        return drawableToBitmap(drawable, SHORTCUT_ICON_SIZE)
+    }
+
+    /**
+     * Executes the get app version operation.
+     *
+     * @param context [Context] Target context.
+     * @param packageName [String] Target package name.
+     * @return The resulting String? data.
+     */
+    fun getAppVersion(
+        context: Context,
+        packageName: String,
+    ): String? =
+        try {
+            val pInfo = context.packageManager.getPackageInfo(packageName, 0)
+            pInfo.versionName
+        } catch (e: Exception) {
+            null
+        }
+
+    /**
+     * Resolves the human-readable label for a single package name.
+     *
+     * @param context [Context] Target context.
+     * @param packageName [String] Target package name.
+     * @return The app's display label, or the raw package name if it can't be resolved.
+     */
+    fun getAppLabel(
+        context: Context,
+        packageName: String,
+    ): String =
+        try {
+            val appInfo = context.packageManager.getApplicationInfo(packageName, 0)
+            context.packageManager.getApplicationLabel(appInfo).toString()
+        } catch (e: Exception) {
+            packageName
+        }
+
+    /**
+     * Checks if the device is currently in Car Mode or projecting Android Auto
+     */
+    fun isAndroidAutoRunning(context: Context): Boolean {
+        if (CarConnectionMonitor.isProjecting) return true
+
+        // 1. Check UiModeManager
+        val uiModeManager =
+            context.getSystemService(Context.UI_MODE_SERVICE) as? android.app.UiModeManager
+        if (uiModeManager?.currentModeType == android.content.res.Configuration.UI_MODE_TYPE_CAR) return true
+
+        // 2. Check Configuration
+        val config = context.resources.configuration
+        if ((config.uiMode and android.content.res.Configuration.UI_MODE_TYPE_MASK) ==
+            android.content.res.Configuration.UI_MODE_TYPE_CAR
+        ) {
+            return true
+        }
+
+        // 3. Check for Android Auto Projection (Virtual Displays)
+        val displayManager =
+            context.getSystemService(Context.DISPLAY_SERVICE) as? android.hardware.display.DisplayManager
+        val displays = displayManager?.displays
+        if (displays != null) {
+            for (display in displays) {
+                val name = display.name ?: ""
+                if (name.contains("Android Auto", ignoreCase = true) ||
+                    name.contains("Wireless Projector", ignoreCase = true) ||
+                    name.contains("Car", ignoreCase = true)
+                ) {
+                    return true
+                }
+            }
+        }
+
+        // 4. Check for active Car packages
+        try {
+            val carPackages =
+                listOf(
+                    "com.google.android.projection.gearhead",
+                    "com.google.android.apps.auto.carservice",
+                )
+            val activityManager =
+                context.getSystemService(Context.ACTIVITY_SERVICE) as? android.app.ActivityManager
+            val processes = activityManager?.runningAppProcesses
+            if (processes != null) {
+                for (process in processes) {
+                    if (carPackages.contains(process.processName)) {
+                        if (process.importance <= android.app.ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND_SERVICE) {
+                            return true
+                        }
+                    }
+                }
+            }
+        } catch (_: Exception) {
+        }
+
+        return false
+    }
+}

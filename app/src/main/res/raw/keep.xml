@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools"
+    tools:keep="@drawable/round_navigation_24,
+        @drawable/rounded_home_24,
+        @drawable/rounded_work_24,
+        @drawable/rounded_apartment_24,
+        @drawable/rounded_shopping_cart_24,
+        @drawable/rounded_school_24,
+        @drawable/rounded_storefront_24,
+        @drawable/rounded_fork_spoon_24,
+        @drawable/rounded_favorite_24,
+        @drawable/rounded_account_balance_24,
+        @drawable/rounded_garage_home_24,
+        @drawable/rounded_beach_access_24,
+        @drawable/rounded_local_pizza_24,
+        @drawable/rounded_train_24,
+        @drawable/rounded_directions_bus_24,
+        @drawable/rounded_flight_24,
+        @drawable/rounded_directions_boat_24,
+        @drawable/round_play_arrow_24" />

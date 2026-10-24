@@ -1,0 +1,376 @@
+/*
+ * Copyright (c) 2026 sameerasw.com
+ * License: MIT License
+ *
+ * Feature Module: Background Services & Receivers
+ * File: AutomationManager.kt
+ * Description: Background service component for AutomationManager.kt.
+ */
+
+package com.sameerasw.essentials.services.automation
+
+import android.content.Context
+import android.content.Intent
+import com.sameerasw.essentials.domain.diy.Automation
+import com.sameerasw.essentials.domain.diy.DIYRepository
+import com.sameerasw.essentials.domain.diy.Trigger
+import com.sameerasw.essentials.services.automation.executors.CombinedActionExecutor
+import com.sameerasw.essentials.services.automation.modules.AndroidAutoModule
+import com.sameerasw.essentials.services.automation.modules.AutomationModule
+import com.sameerasw.essentials.services.automation.modules.BluetoothModule
+import com.sameerasw.essentials.services.automation.modules.DisplayModule
+import com.sameerasw.essentials.services.automation.modules.NotificationModule
+import com.sameerasw.essentials.services.automation.modules.LocationModule
+import com.sameerasw.essentials.services.automation.modules.PowerModule
+import com.sameerasw.essentials.services.automation.modules.TimeModule
+import com.sameerasw.essentials.services.automation.modules.CalendarModule
+import com.sameerasw.essentials.services.automation.modules.SoundModule
+import com.sameerasw.essentials.services.automation.modules.WifiModule
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.util.concurrent.ConcurrentHashMap
+import com.sameerasw.essentials.domain.diy.State as DIYState
+
+object AutomationManager {
+    private val scope = CoroutineScope(Dispatchers.Main)
+    private var service: AutomationService? = null
+    private var applicationContext: Context? = null
+
+    // Active modules map: ModuleID -> Module Instance
+    private val activeModules = ConcurrentHashMap<String, AutomationModule>()
+
+    fun init(context: Context) {
+        applicationContext = context.applicationContext
+
+        // Observe repository
+        scope.launch {
+            DIYRepository.automations.collect { automations ->
+                refreshModules(automations)
+            }
+        }
+    }
+
+    fun onServiceConnected(serviceInstance: AutomationService) {
+        service = serviceInstance
+        // Re-apply modules if needed
+        val automations = DIYRepository.automations.value
+        refreshModules(automations)
+    }
+
+    fun onServiceDisconnected(serviceInstance: AutomationService) {
+        if (service == serviceInstance) {
+            service = null
+            stopAllModules()
+        }
+    }
+
+    fun trigger(context: Context, trigger: Trigger) {
+        scope.launch(Dispatchers.IO) {
+            val automations = DIYRepository.automations.value
+            automations
+                .filter { it.isEnabled && it.type == Automation.Type.TRIGGER && it.trigger == trigger }
+                .forEach { automation ->
+                    CombinedActionExecutor.executeAll(context, automation.actionList)
+                }
+        }
+    }
+
+    fun triggerAccessibilityShortcut(context: Context, slot: Int = 1) {
+        scope.launch(Dispatchers.IO) {
+            val automations = DIYRepository.automations.value
+            val targetType = when (slot) {
+                1 -> Automation.Type.ACCESSIBILITY_SHORTCUT_1
+                2 -> Automation.Type.ACCESSIBILITY_SHORTCUT_2
+                3 -> Automation.Type.ACCESSIBILITY_SHORTCUT_3
+                else -> Automation.Type.ACCESSIBILITY_SHORTCUT_1
+            }
+            automations
+                .filter {
+                    it.isEnabled && (
+                        it.type == targetType ||
+                        (slot == 1 && it.type == Automation.Type.ACCESSIBILITY_SHORTCUT)
+                    )
+                }
+                .forEach { automation ->
+                    CombinedActionExecutor.executeAll(context, automation.actionList)
+                }
+        }
+    }
+
+    private fun stopAllModules() {
+        val context = applicationContext ?: return
+        activeModules.values.forEach { it.stop(context) }
+        activeModules.clear()
+    }
+
+    private fun refreshModules(automations: List<Automation>) {
+        val context = applicationContext ?: return
+        val enabledAutomations = automations.filter { it.isEnabled }
+
+        // Determine required modules
+        val requiredModuleIds = mutableSetOf<String>()
+        val powerAutomations = mutableListOf<Automation>()
+        val displayAutomations = mutableListOf<Automation>()
+        val timeAutomations = mutableListOf<Automation>()
+        val bluetoothAutomations = mutableListOf<Automation>()
+        val wifiAutomations = mutableListOf<Automation>()
+        val calendarAutomations = mutableListOf<Automation>()
+        val notificationAutomations = mutableListOf<Automation>()
+        val soundAutomations = mutableListOf<Automation>()
+        val locationAutomations = mutableListOf<Automation>()
+        val androidAutoAutomations = mutableListOf<Automation>()
+
+        enabledAutomations.forEach { automation ->
+            when (automation.type) {
+                Automation.Type.TRIGGER -> {
+                    when (automation.trigger) {
+                        is Trigger.ChargerConnected, is Trigger.ChargerDisconnected, is Trigger.PowerSavingOn, is Trigger.PowerSavingOff, is Trigger.SystemMetric -> {
+                            requiredModuleIds.add(PowerModule.ID)
+                            powerAutomations.add(automation)
+                        }
+
+                        is Trigger.ScreenOn, is Trigger.ScreenOff, is Trigger.DeviceUnlock -> {
+                            requiredModuleIds.add(DisplayModule.ID)
+                            displayAutomations.add(automation)
+                        }
+
+                        is Trigger.Schedule -> {
+                            requiredModuleIds.add(TimeModule.ID)
+                            timeAutomations.add(automation)
+                        }
+
+                        is Trigger.BluetoothConnected, is Trigger.BluetoothDisconnected -> {
+                            requiredModuleIds.add(BluetoothModule.ID)
+                            bluetoothAutomations.add(automation)
+                        }
+
+                        is Trigger.WifiConnected, is Trigger.WifiDisconnected -> {
+                            requiredModuleIds.add(WifiModule.ID)
+                            wifiAutomations.add(automation)
+                        }
+
+                        is Trigger.NotificationReceived, is Trigger.DndOn, is Trigger.DndOff -> {
+                            requiredModuleIds.add(NotificationModule.ID)
+                            notificationAutomations.add(automation)
+                        }
+
+                        is Trigger.SoundModeChanged -> {
+                            requiredModuleIds.add(SoundModule.ID)
+                            soundAutomations.add(automation)
+                        }
+
+                        is Trigger.ArriveAtLocation, is Trigger.LeaveLocation -> {
+                            requiredModuleIds.add(LocationModule.ID)
+                            locationAutomations.add(automation)
+                        }
+
+                        is Trigger.AndroidAutoConnected, is Trigger.AndroidAutoDisconnected -> {
+                            requiredModuleIds.add(AndroidAutoModule.ID)
+                            androidAutoAutomations.add(automation)
+                        }
+
+                        else -> {}
+                    }
+                }
+
+                Automation.Type.STATE -> {
+                    when (automation.state) {
+                        is DIYState.Charging, is DIYState.PowerSaving, is DIYState.BatteryLevel, is DIYState.SystemMetric -> {
+                            requiredModuleIds.add(PowerModule.ID)
+                            powerAutomations.add(automation)
+                        }
+
+                        is DIYState.ScreenOn -> {
+                            requiredModuleIds.add(DisplayModule.ID)
+                            displayAutomations.add(automation)
+                        }
+
+                        is DIYState.TimePeriod -> {
+                            requiredModuleIds.add(TimeModule.ID)
+                            timeAutomations.add(automation)
+                        }
+
+                        is DIYState.CalendarEvent -> {
+                            requiredModuleIds.add(CalendarModule.ID)
+                            calendarAutomations.add(automation)
+                        }
+
+                        is DIYState.Dnd -> {
+                            requiredModuleIds.add(NotificationModule.ID)
+                            notificationAutomations.add(automation)
+                        }
+
+                        is DIYState.SoundMode -> {
+                            requiredModuleIds.add(SoundModule.ID)
+                            soundAutomations.add(automation)
+                        }
+
+                        else -> {}
+                    }
+                }
+
+                Automation.Type.APP -> {
+                    // Handled by AppFlowHandler
+                }
+
+                Automation.Type.ACTION_SHORTCUT,
+                Automation.Type.ACCESSIBILITY_SHORTCUT,
+                Automation.Type.ACCESSIBILITY_SHORTCUT_1,
+                Automation.Type.ACCESSIBILITY_SHORTCUT_2,
+                Automation.Type.ACCESSIBILITY_SHORTCUT_3,
+                Automation.Type.PIXEL_SEARCHBAR -> {
+                    // Triggered manually on tap/click or via accessibility shortcut
+                }
+            }
+        }
+
+        // Service Lifecycle Management
+        if (requiredModuleIds.isNotEmpty()) {
+            startService(context)
+        } else {
+            stopService(context)
+            stopAllModules()
+            return
+        }
+
+        // Module Management
+
+        // Power Module
+        if (requiredModuleIds.contains(PowerModule.ID)) {
+            val module =
+                activeModules.getOrPut(PowerModule.ID) {
+                    PowerModule().also { it.start(context) }
+                }
+            module.updateAutomations(powerAutomations)
+        } else {
+            activeModules.remove(PowerModule.ID)?.stop(context)
+        }
+
+        // Display Module
+        if (requiredModuleIds.contains(DisplayModule.ID)) {
+            val module =
+                activeModules.getOrPut(DisplayModule.ID) {
+                    DisplayModule().also { it.start(context) }
+                }
+            module.updateAutomations(displayAutomations)
+        } else {
+            activeModules.remove(DisplayModule.ID)?.stop(context)
+        }
+
+        // Time Module
+        if (requiredModuleIds.contains(TimeModule.ID)) {
+            val module =
+                activeModules.getOrPut(TimeModule.ID) {
+                    TimeModule().also { it.start(context) }
+                }
+            module.updateAutomations(timeAutomations)
+        } else {
+            activeModules.remove(TimeModule.ID)?.stop(context)
+        }
+
+        // Bluetooth Module
+        if (requiredModuleIds.contains(BluetoothModule.ID)) {
+            val module =
+                activeModules.getOrPut(BluetoothModule.ID) {
+                    BluetoothModule().also { it.start(context) }
+                }
+            module.updateAutomations(bluetoothAutomations)
+        } else {
+            activeModules.remove(BluetoothModule.ID)?.stop(context)
+        }
+
+        // Wifi Module
+        if (requiredModuleIds.contains(WifiModule.ID)) {
+            val module =
+                activeModules.getOrPut(WifiModule.ID) {
+                    WifiModule().also { it.start(context) }
+                }
+            module.updateAutomations(wifiAutomations)
+        } else {
+            activeModules.remove(WifiModule.ID)?.stop(context)
+        }
+
+        // Calendar Module
+        if (requiredModuleIds.contains(CalendarModule.ID)) {
+            val module =
+                activeModules.getOrPut(CalendarModule.ID) {
+                    CalendarModule().also { it.start(context) }
+                }
+            module.updateAutomations(calendarAutomations)
+        } else {
+            activeModules.remove(CalendarModule.ID)?.stop(context)
+        }
+
+        // Notification Module
+        if (requiredModuleIds.contains(NotificationModule.ID)) {
+            val module =
+                activeModules.getOrPut(NotificationModule.ID) {
+                    NotificationModule().also { it.start(context) }
+                }
+            module.updateAutomations(notificationAutomations)
+        } else {
+            activeModules.remove(NotificationModule.ID)?.stop(context)
+        }
+
+        // Sound Module
+        if (requiredModuleIds.contains(SoundModule.ID)) {
+            val module =
+                activeModules.getOrPut(SoundModule.ID) {
+                    SoundModule().also { it.start(context) }
+                }
+            module.updateAutomations(soundAutomations)
+        } else {
+            activeModules.remove(SoundModule.ID)?.stop(context)
+        }
+
+        if (requiredModuleIds.contains(LocationModule.ID)) {
+            val module =
+                activeModules.getOrPut(LocationModule.ID) {
+                    LocationModule().also { it.start(context) }
+                }
+            module.updateAutomations(locationAutomations)
+        } else {
+            activeModules.remove(LocationModule.ID)?.stop(context)
+        }
+
+        if (requiredModuleIds.contains(AndroidAutoModule.ID)) {
+            val module =
+                activeModules.getOrPut(AndroidAutoModule.ID) {
+                    AndroidAutoModule().also { it.start(context) }
+                }
+            module.updateAutomations(androidAutoAutomations)
+        } else {
+            activeModules.remove(AndroidAutoModule.ID)?.stop(context)
+        }
+    }
+
+    private fun startService(context: Context) {
+        if (!AutomationService.isRunning) {
+            val intent =
+                Intent(context, AutomationService::class.java).apply {
+                    putExtra("is_foreground_start", true)
+                }
+            try {
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                    context.startForegroundService(intent)
+                } else {
+                    context.startService(intent)
+                }
+            } catch (e: Exception) {
+                // On Android 14+, startForegroundService() might be disallowed from background.
+                try {
+                    context.startService(intent.apply { putExtra("is_foreground_start", false) })
+                } catch (e2: Exception) {
+                    e2.printStackTrace()
+                }
+            }
+        }
+    }
+
+    private fun stopService(context: Context) {
+        if (AutomationService.isRunning) {
+            context.stopService(Intent(context, AutomationService::class.java))
+        }
+    }
+}

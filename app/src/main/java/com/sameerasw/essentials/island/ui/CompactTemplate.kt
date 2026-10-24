@@ -1,0 +1,195 @@
+package com.sameerasw.essentials.island.ui
+
+import kotlin.math.roundToInt
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.core.MutableTransitionState
+import androidx.compose.animation.expandHorizontally
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
+import androidx.compose.animation.shrinkHorizontally
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.key
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.Layout
+import androidx.compose.ui.layout.Placeable
+import androidx.compose.ui.unit.Constraints
+import com.sameerasw.essentials.island.model.CompactCell
+import com.sameerasw.essentials.island.state.IslandUiState
+
+private class CellEntry(val itemKey: String, val cell: CompactCell, val before: Boolean)
+
+@Composable
+fun CompactTemplate(
+    state: IslandUiState,
+    spec: IslandLayoutSpec,
+    onCellTap: (String) -> Unit,
+    onCellLongPress: (String) -> Unit,
+    sideBubble: () -> Float = { 0f },
+    bubbleExtent: () -> Int = { 0 },
+    onSlack: (Int) -> Unit = {},
+    onBaseWidth: (Int) -> Unit = {},
+    onNeedLeft: (Int) -> Unit = {},
+) {
+    val cells = buildMap {
+        state.items.values.forEach { item -> item.compact.forEach { put(it.key, item.key to it) } }
+    }
+    val current = state.arrangement.before.reversed().mapNotNull { k -> cells[k]?.let { CellEntry(it.first, it.second, true) } } +
+        state.arrangement.after.mapNotNull { k -> cells[k]?.let { CellEntry(it.first, it.second, false) } }
+
+    // Cells that just left stay composed until their exit animation finishes.
+    val transitions = remember { HashMap<String, MutableTransitionState<Boolean>>() }
+    val previous = remember { arrayListOf<CellEntry>() }
+    // Cells present when the template first appears show immediately; only later arrivals animate in.
+    val settled = remember { booleanArrayOf(false) }
+    val currentKeys = current.map { it.cell.key }.toSet()
+    val merged = current.toMutableList()
+    previous.forEachIndexed { index, entry ->
+        if (entry.cell.key in currentKeys) return@forEachIndexed
+        val exitState = transitions[entry.cell.key] ?: return@forEachIndexed
+        if (exitState.isIdle && !exitState.currentState) {
+            transitions.remove(entry.cell.key)
+            return@forEachIndexed
+        }
+        exitState.targetState = false
+        merged.add(index.coerceAtMost(merged.size), entry)
+    }
+    current.forEach { entry ->
+        transitions.getOrPut(entry.cell.key) { MutableTransitionState(!settled[0]) }.targetState = true
+    }
+    previous.clear()
+    previous.addAll(merged)
+    SideEffect { settled[0] = true }
+    val beforeCount = merged.count { it.before }
+    val ordered = merged.filter { it.before } + merged.filterNot { it.before }
+
+    Layout(
+        modifier = Modifier.height(spec.compactHeight),
+        content = {
+            ordered.forEach { entry ->
+                key(entry.cell.key) {
+                    val visibleState = transitions[entry.cell.key] ?: remember { MutableTransitionState(true) }
+                    val cameraOnEnd = if (spec.growDirection != 0) spec.growDirection < 0 else entry.before
+                    val cameraEdge = if (cameraOnEnd) Alignment.End else Alignment.Start
+                    val towardCamera: (Int) -> Int = { if (cameraOnEnd) it / 2 else -it / 2 }
+                    val edgeAnchored = spec.growDirection != 0
+                    AnimatedVisibility(
+                        visibleState = visibleState,
+                        enter = fadeIn(IslandMotion.contentIn()) +
+                            expandHorizontally(IslandMotion.compactSize, expandFrom = cameraEdge) +
+                            (if (edgeAnchored) EnterTransition.None else slideInHorizontally(IslandMotion.compactOffset, towardCamera)) +
+                            scaleIn(IslandMotion.compactFloat(), initialScale = 0.6f),
+                        exit = fadeOut(IslandMotion.contentOut()) +
+                            shrinkHorizontally(IslandMotion.compactSize, shrinkTowards = cameraEdge) +
+                            (if (edgeAnchored) ExitTransition.None else slideOutHorizontally(IslandMotion.compactOffset, towardCamera)) +
+                            scaleOut(IslandMotion.compactFloat(), targetScale = 0.6f),
+                        modifier = Modifier
+                            .animatePlacement(fromEnd = spec.growDirection == 0 && !entry.before)
+                            .pointerInput(entry.itemKey) {
+                                detectTapGestures(
+                                    onTap = { onCellTap(entry.itemKey) },
+                                    onLongPress = { onCellLongPress(entry.itemKey) },
+                                )
+                            },
+                    ) {
+                        Box(
+                            modifier = Modifier.height(spec.cellSize).defaultMinSize(minWidth = spec.cellSize),
+                            contentAlignment = Alignment.Center,
+                        ) { entry.cell.content() }
+                    }
+                }
+            }
+        },
+    ) { measurables, constraints ->
+        val loose = Constraints(maxHeight = constraints.maxHeight)
+        val placeables = measurables.map { it.measure(loose) }
+        val spacing = spec.cellSpacing.roundToPx()
+        val cameraSlot = spec.cameraSlotWidth.roundToPx()
+        val left = placeables.take(beforeCount).filter { it.width > 0 }
+        val right = placeables.drop(beforeCount).filter { it.width > 0 }
+        fun content(list: List<Placeable>) = if (list.isEmpty()) 0 else list.sumOf { it.width } + spacing * (list.size - 1)
+        val height = spec.compactHeight.roundToPx()
+        
+        val squareCell = spec.cellSize.roundToPx()
+        val opticalInset = (height * OPTICAL_INSET_RATIO).toInt()
+        fun edgeInset(outer: Placeable?) = if (outer != null && outer.width > squareCell) opticalInset else 0
+        if (cameraSlot == 0) {
+            val cells = left + right
+            onSlack(if (spec.balanceCompact) bubbleExtent().coerceAtLeast(0) else 0)
+            if (cells.isEmpty()) return@Layout layout(0, height) {}
+            val pad = ((height - squareCell) / 2).coerceAtLeast(0)
+            val startInset = edgeInset(cells.first())
+            val endInset = edgeInset(cells.last())
+            val width = pad * 2 + startInset + endInset + content(cells)
+            onBaseWidth(width)
+            onNeedLeft(-1)
+            return@Layout layout(width, height) {
+                var x = pad + startInset
+                cells.forEach {
+                    it.place(x, (height - it.height) / 2)
+                    x += it.width + spacing
+                }
+            }
+        }
+        if (spec.growDirection != 0) {
+            val cells = left + right
+            val inset = edgeInset(if (spec.growDirection > 0) cells.lastOrNull() else cells.firstOrNull())
+            val body = content(cells) + if (cells.isEmpty()) 0 else spacing + inset
+            val width = cameraSlot + body
+            onBaseWidth(width)
+            onNeedLeft(-1)
+            return@Layout layout(width, height) {
+                var x = if (spec.growDirection > 0) cameraSlot else spacing + inset
+                cells.forEach {
+                    it.place(x, (height - it.height) / 2)
+                    x += it.width + spacing
+                }
+            }
+        }
+        // Cells hug the outer ends with the same edge padding on both sides; the slack sits around the camera.
+        val leftInset = edgeInset(left.firstOrNull())
+        val rightInset = edgeInset(right.lastOrNull())
+        val hasCells = left.isNotEmpty() || right.isNotEmpty()
+        val edge = if (hasCells) spacing else 0
+        val needLeft = content(left) + leftInset + edge
+        val needRight = content(right) + rightInset + edge
+        val t = if (hasCells) sideBubble().coerceIn(0f, 1f) else 0f
+        val mirrored = maxOf(needLeft, needRight)
+        val extent = if (spec.balanceCompact) bubbleExtent().coerceAtLeast(0) else 0
+        val balancedLeft = if (spec.balanceCompact) maxOf(needLeft, needRight - extent) else needLeft
+        val balancedRight = if (spec.balanceCompact) balancedLeft + extent else needRight
+        onSlack(if (spec.balanceCompact) extent else needRight - needLeft)
+        val leftSide = (mirrored + (balancedLeft - mirrored) * t).roundToInt()
+        val rightSide = (mirrored + (balancedRight - mirrored) * t).roundToInt()
+        onBaseWidth(mirrored * 2 + cameraSlot)
+        onNeedLeft(needLeft)
+        val width = leftSide + rightSide + cameraSlot
+        layout(width, height) {
+            var x = spacing + leftInset
+            left.forEach {
+                it.place(x, (height - it.height) / 2)
+                x += it.width + spacing
+            }
+            x = width - spacing - rightInset - content(right)
+            right.forEach {
+                it.place(x, (height - it.height) / 2)
+                x += it.width + spacing
+            }
+        }
+    }
+}
+
+internal const val OPTICAL_INSET_RATIO = 0.15f

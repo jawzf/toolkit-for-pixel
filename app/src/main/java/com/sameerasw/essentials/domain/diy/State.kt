@@ -1,0 +1,99 @@
+/*
+ * Copyright (c) 2026 sameerasw.com
+ * License: MIT License
+ *
+ * Feature Module: Domain Layer Models & Registries
+ * File: State.kt
+ * Description: Domain model and business logic entry for State.kt.
+ */
+
+package com.sameerasw.essentials.domain.diy
+
+import androidx.annotation.DrawableRes
+import androidx.annotation.Keep
+import androidx.annotation.StringRes
+import com.google.gson.annotations.SerializedName
+import com.sameerasw.essentials.R
+
+@Keep
+sealed interface State {
+    @get:StringRes
+    val title: Int
+
+    @get:DrawableRes
+    val icon: Int
+
+    @Keep
+    data object Charging : State {
+        override val title: Int = R.string.diy_state_charging
+        override val icon: Int = R.drawable.rounded_charger_24
+    }
+
+    @Keep
+    data class BatteryLevel(
+        @SerializedName("minLevel") val minLevel: Int = 0,
+        @SerializedName("maxLevel") val maxLevel: Int = 20,
+    ) : State {
+        override val title: Int get() = R.string.diy_state_battery_level
+        override val icon: Int get() = R.drawable.rounded_battery_android_frame_3_24
+    }
+
+    @Keep
+    data object ScreenOn : State {
+        override val title: Int = R.string.diy_state_screen_on
+        override val icon: Int = R.drawable.rounded_mobile_text_2_24
+    }
+
+    @Keep
+    data object PowerSaving : State {
+        override val title: Int = R.string.diy_state_power_saving
+        override val icon: Int = R.drawable.rounded_battery_android_frame_shield_24
+    }
+
+    @Keep
+    data class TimePeriod(
+        @SerializedName("startHour") val startHour: Int = 0,
+        @SerializedName("startMinute") val startMinute: Int = 0,
+        @SerializedName("endHour") val endHour: Int = 0,
+        @SerializedName("endMinute") val endMinute: Int = 0,
+        @SerializedName("days") val days: Set<Int> = emptySet(),
+    ) : State {
+        override val title: Int get() = R.string.diy_state_time_period
+        override val icon: Int get() = R.drawable.rounded_timelapse_24
+    }
+
+    // Active while a matching calendar event is in progress; empty calendarIds means all calendars
+    @Keep
+    data class CalendarEvent(
+        @SerializedName("calendarIds") val calendarIds: Set<Long> = emptySet(),
+        @SerializedName("includeAllDay") val includeAllDay: Boolean = false,
+        @SerializedName("includeDeclined") val includeDeclined: Boolean = false,
+        @SerializedName("includeTentative") val includeTentative: Boolean = true,
+        @SerializedName("includeFree") val includeFree: Boolean = true,
+    ) : State {
+        override val title: Int get() = R.string.diy_state_calendar_event
+        override val icon: Int get() = R.drawable.rounded_calendar_today_24
+    }
+
+    @Keep
+    data class SystemMetric(
+        @SerializedName("metric") val metric: Metric = Metric.BATTERY_LEVEL,
+        @SerializedName("comparison") val comparison: Comparison = Comparison(),
+    ) : State {
+        override val title: Int get() = metric.title
+        override val icon: Int get() = metric.icon
+    }
+
+    data object Dnd : State {
+        override val title: Int = R.string.diy_state_dnd
+        override val icon: Int = R.drawable.rounded_do_not_disturb_on_24
+    }
+
+    @Keep
+    data class SoundMode(
+        @SerializedName("mode") val mode: Action.SoundModeType = Action.SoundModeType.SILENT,
+    ) : State {
+        override val title: Int get() = R.string.diy_state_sound_mode
+        override val icon: Int get() = mode.icon
+    }
+}

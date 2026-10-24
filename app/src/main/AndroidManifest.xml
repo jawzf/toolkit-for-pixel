@@ -1,0 +1,1783 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_LOCAL_NETWORK" />
+    <uses-permission android:name="android.permission.READ_CALENDAR" />
+    <uses-permission android:name="android.permission.WRITE_CALENDAR" />
+    <uses-permission android:name="android.permission.DETECT_SCREEN_RECORDING" />
+    <uses-permission
+        android:name="android.permission.PACKAGE_USAGE_STATS"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
+
+    <uses-feature
+        android:name="android.hardware.camera.flashlight"
+        android:required="false" />
+
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
+
+    <uses-permission android:name="android.permission.BIND_ACCESSIBILITY_SERVICE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ANSWER_PHONE_CALLS" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.READ_CALL_LOG" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
+    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
+    <uses-permission android:name="android.permission.READ_WALLPAPER_INTERNAL" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+    <uses-permission
+        android:name="android.permission.INTERACT_ACROSS_USERS_FULL"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="moe.shizuku.manager.permission.API_V23" />
+    <uses-permission android:name="moe.shizuku.privileged.api.permission.BIND_SHIZUKU_SERVICE" />
+    <uses-permission
+        android:name="android.permission.BLUETOOTH"
+        android:maxSdkVersion="30" />
+    <uses-permission
+        android:name="android.permission.BLUETOOTH_ADMIN"
+        android:maxSdkVersion="30" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    <uses-permission
+        android:name="android.permission.BLUETOOTH_SCAN"
+        android:usesPermissionFlags="neverForLocation" />
+
+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="28" />
+    <uses-permission
+        android:name="android.permission.POST_PROMOTED_NOTIFICATIONS"
+        tools:ignore="UnusedAttribute" />
+    <uses-permission
+        android:name="android.permission.BIND_APPWIDGET"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+
+    <permission
+        android:name="com.sameerasw.permission.ESSENTIALS_AIRSYNC_BRIDGE"
+        android:protectionLevel="signature" />
+    <uses-permission android:name="com.sameerasw.permission.ESSENTIALS_AIRSYNC_BRIDGE" />
+
+    <permission-group
+        android:name="com.sameerasw.essentials.permission-group.EXTERNAL_CONTROL"
+        android:description="@string/perm_external_control_desc"
+        android:icon="@drawable/app_logo"
+        android:label="@string/perm_external_control_label" />
+
+    <permission
+        android:name="com.sameerasw.essentials.permission.EXTERNAL_CONTROL"
+        android:description="@string/perm_external_control_desc"
+        android:icon="@drawable/app_logo"
+        android:label="@string/perm_external_control_label"
+        android:permissionGroup="com.sameerasw.essentials.permission-group.EXTERNAL_CONTROL"
+        android:protectionLevel="dangerous" />
+
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+
+
+    <uses-permission
+        android:name="android.permission.WRITE_SETTINGS"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <uses-permission android:name="android.permission.SET_WALLPAPER" />
+
+    <queries>
+        <package android:name="com.sameerasw.overcast" />
+        <package android:name="eu.darken.porter" />
+        <package android:name="com.google.android.apps.wear.companion" />
+        <intent>
+            <action android:name="com.sameerasw.island.PROVIDER" />
+        </intent>
+    </queries>
+
+    <application
+        android:name=".EssentialsApp"
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:enableOnBackInvokedCallback="true"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="Essentials"
+        android:localeConfig="@xml/locales_config"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Essentials">
+
+        <!-- Disable Sentry auto-init as it's handled manually in EssentialsApp -->
+        <meta-data
+            android:name="io.sentry.auto-init"
+            android:value="false" />
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:label="Essentials"
+            android:theme="@style/Theme.Essentials.Splash">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <!-- Handle shared locations -->
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="geo" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts" />
+        </activity>
+
+        <activity-alias
+            android:name=".MainActivityLegacy"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_legacy"
+            android:roundIcon="@mipmap/ic_launcher_legacy_round"
+            android:label="Essentials"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="geo" />
+            </intent-filter>
+            <meta-data
+                android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts" />
+        </activity-alias>
+
+        <activity-alias
+            android:name=".MainActivityBlack"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_black"
+            android:roundIcon="@mipmap/ic_launcher_black_round"
+            android:label="Essentials"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="geo" />
+            </intent-filter>
+            <meta-data
+                android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts" />
+        </activity-alias>
+
+        <activity-alias
+            android:name=".MainActivityGta"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_gta"
+            android:roundIcon="@mipmap/ic_launcher_gta_round"
+            android:label="Essentials"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="geo" />
+            </intent-filter>
+            <meta-data
+                android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts" />
+        </activity-alias>
+
+        <activity-alias
+            android:name=".MainActivityGoogle"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_google"
+            android:roundIcon="@mipmap/ic_launcher_google_round"
+            android:label="Essentials"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="geo" />
+            </intent-filter>
+            <meta-data
+                android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts" />
+        </activity-alias>
+
+        <activity
+            android:name=".PixelSearchActivity"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:noHistory="true"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.WEB_SEARCH" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".ui.activities.PixelSearchResultsActivity"
+            android:autoRemoveFromRecents="true"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:label="@string/essential_search_label"
+            android:launchMode="singleInstance"
+            android:taskAffinity="com.sameerasw.essentials.search"
+            android:theme="@style/Theme.Essentials.WallpaperTranslucent"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+
+        <activity
+            android:name=".ui.activities.PixelSearchbarSettingsActivity"
+            android:exported="true"
+            android:label="@string/pixel_searchbar_settings_title" />
+
+        <activity
+            android:name=".FeatureSettingsActivity"
+            android:exported="false"
+            android:label="Feature Settings"
+            android:theme="@style/Theme.Essentials"></activity>
+
+        <activity
+            android:name=".ui.activities.YourAndroidActivity"
+            android:exported="false"
+            android:label="@string/tab_your_android"
+            android:theme="@style/Theme.Essentials"></activity>
+
+        <activity
+            android:name=".SettingsActivity"
+            android:exported="false"
+            android:label="Settings"
+            android:theme="@style/Theme.Essentials"></activity>
+        <activity
+            android:name=".AppUpdatesActivity"
+            android:exported="false"
+            android:label="@string/tab_app_updates_title"
+            android:theme="@style/Theme.Essentials"></activity>
+        <activity
+            android:name=".ui.activities.ColorPickerActivity"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:launchMode="singleInstance"
+            android:noHistory="true"
+            android:taskAffinity=""
+            android:theme="@style/Theme.Essentials.Translucent"></activity>
+
+        <activity
+            android:name=".ui.activities.LocationAlarmActivity"
+            android:exported="true"
+            android:launchMode="singleInstance"
+            android:theme="@style/Theme.Essentials.FullScreenAlarm" />
+
+        <activity
+            android:name=".ui.activities.TravelCompassActivity"
+            android:exported="false"
+            android:launchMode="singleTop"
+            android:theme="@style/Theme.Essentials" />
+
+
+        <activity
+            android:name=".ui.activities.BubbleWebActivity"
+            android:allowEmbedded="true"
+            android:documentLaunchMode="always"
+            android:exported="true"
+            android:resizeableActivity="true"
+            android:theme="@style/Theme.Essentials">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".ui.activities.AutomationEditorActivity"
+            android:exported="false"
+            android:label="@string/diy_editor_new_title"
+            android:theme="@style/Theme.Essentials" />
+
+        <activity
+            android:name=".ui.activities.MacroEditorActivity"
+            android:exported="false"
+            android:label="@string/diy_new_macro"
+            android:theme="@style/Theme.Essentials" />
+
+
+        <service
+            android:name=".services.LocationReachedService"
+            android:enabled="true"
+            android:exported="false"
+            android:foregroundServiceType="location" />
+
+        <activity
+            android:name=".ui.activities.AppFreezingActivity"
+            android:exported="true"
+            android:icon="@drawable/rounded_mode_cool_24"
+            android:label="@string/freeze_shortcut_short_label"
+            android:launchMode="singleTask"
+            android:taskAffinity="com.sameerasw.essentials.freezing"
+            android:theme="@style/Theme.Essentials" />
+
+        <activity-alias
+            android:name=".AppFreezingLauncher"
+            android:enabled="true"
+            android:exported="true"
+            android:icon="@drawable/rounded_mode_cool_24"
+            android:label="@string/freeze_shortcut_short_label"
+            android:targetActivity=".ui.activities.AppFreezingActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity
+            android:name=".ui.activities.ActionShortcutActivity"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:icon="@drawable/rounded_rocket_launch_24"
+            android:label="@string/action_shortcut_short_label"
+            android:launchMode="singleTask"
+            android:taskAffinity="com.sameerasw.essentials.action"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <activity
+            android:name=".ui.activities.PixelSearchbarTapActivity"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:icon="@drawable/rounded_search_24"
+            android:label="@string/feat_pixel_searchbar_title"
+            android:launchMode="singleTask"
+            android:taskAffinity="com.sameerasw.essentials.pixelsearchbar"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar">
+            <intent-filter>
+                <action android:name="android.intent.action.ASSIST" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.GLOBAL_SEARCH" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VOICE_ASSIST" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH_LONG_PRESS" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity-alias
+            android:name=".ActionShortcutLauncher"
+            android:enabled="true"
+            android:exported="true"
+            android:icon="@drawable/rounded_rocket_launch_24"
+            android:label="@string/action_shortcut_short_label"
+            android:targetActivity=".ui.activities.ActionShortcutActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity
+            android:name=".LinkPickerActivity"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:label="Open Link"
+            android:launchMode="singleInstance"
+            android:noHistory="true"
+            android:taskAffinity=""
+            android:theme="@style/Theme.Essentials.Translucent"
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:scheme="http" />
+                <data android:scheme="https" />
+                <data android:scheme="about" />
+                <data android:scheme="javascript" />
+                <data android:scheme="mailto" />
+                <data android:scheme="geo" />
+                <data android:scheme="file" />
+                <data android:scheme="rtsp" />
+                <data android:scheme="rtmp" />
+                <data android:scheme="ftp" />
+                <data android:scheme="sftp" />
+                <data android:scheme="skype" />
+                <data android:scheme="sms" />
+                <data android:scheme="smsto" />
+                <data android:scheme="mms" />
+                <data android:scheme="mmsto" />
+                <data android:scheme="spotify" />
+                <data android:scheme="tel" />
+                <data android:scheme="voicemail" />
+                <data android:scheme="view-source" />
+                <data android:scheme="sqlite" />
+                <data android:scheme="store" />
+                <data android:scheme="android" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".AppLockActivity"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:noHistory="true"
+            android:taskAffinity=""
+            android:theme="@style/Theme.Essentials.Translucent" />
+
+        <activity
+            android:name=".ui.activities.ConsciousGateActivity"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:noHistory="true"
+            android:taskAffinity=""
+            android:theme="@style/Theme.Essentials.Translucent" />
+
+        <activity
+            android:name=".ui.activities.TileAuthActivity"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:noHistory="true"
+            android:taskAffinity=""
+            android:theme="@style/Theme.Essentials.Translucent" />
+
+        <!-- Exported for launchers; pinned shortcuts only carry an id resolved from app storage -->
+        <activity
+            android:name=".ui.activities.PinnedActionActivity"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:noHistory="true"
+            android:taskAffinity=""
+            android:theme="@style/Theme.Essentials.Translucent" />
+
+        <activity
+            android:name=".ui.activities.LockscreenActionActivity"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:noHistory="true"
+            android:taskAffinity=""
+            android:theme="@style/Theme.Essentials.Translucent" />
+
+        <activity
+            android:name=".ui.activities.QSPreferencesActivity"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:noHistory="true"
+            android:taskAffinity=""
+            android:theme="@android:style/Theme.Translucent.NoTitleBar">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE_PREFERENCES" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".ShortcutHandlerActivity"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:label="@string/frozen_app_shortcut_label"
+            android:noHistory="true"
+            android:taskAffinity=""
+            android:theme="@style/Theme.Essentials.Translucent">
+            <intent-filter>
+                <action android:name="android.intent.action.CREATE_SHORTCUT" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".ShutUpShortcutActivity"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:noHistory="true"
+            android:taskAffinity=""
+            android:theme="@style/Theme.Essentials.Translucent" />
+
+        <activity
+            android:name=".ui.activities.AppVolumeControlActivity"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:noHistory="true"
+            android:taskAffinity=""
+            android:theme="@style/Theme.Essentials.Translucent" />
+
+        <activity
+            android:name=".ui.activities.FlashlightIntensityActivity"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:noHistory="true"
+            android:taskAffinity=""
+            android:theme="@style/Theme.Essentials.Translucent" />
+
+        <activity
+            android:name=".ui.activities.RipplePositionPickerActivity"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:noHistory="true"
+            android:taskAffinity=""
+            android:theme="@style/Theme.Essentials.Translucent" />
+
+        <activity
+            android:name=".ui.activities.SmartPixelsIntensityActivity"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:noHistory="true"
+            android:taskAffinity=""
+            android:theme="@style/Theme.Essentials.Translucent" />
+
+        <activity
+            android:name=".ui.activities.PrivateDnsSettingsActivity"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:noHistory="true"
+            android:taskAffinity=""
+            android:theme="@style/Theme.Essentials.Translucent" />
+
+        <activity
+            android:name=".ui.activities.DefaultLauncherSettingsActivity"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:noHistory="true"
+            android:taskAffinity=""
+            android:theme="@style/Theme.Essentials.Translucent" />
+
+        <activity
+            android:name=".ui.activities.DebuggingSettingsActivity"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:noHistory="true"
+            android:taskAffinity=""
+            android:theme="@style/Theme.Essentials.Translucent" />
+
+        <activity
+            android:name=".ui.activities.BatteryDetailsActivity"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:noHistory="true"
+            android:taskAffinity=""
+            android:theme="@style/Theme.Essentials.Translucent" />
+
+        <activity
+            android:name=".ui.activities.WatermarkActivity"
+            android:exported="true"
+            android:label="@string/feat_watermark_title"
+            android:theme="@style/Theme.Essentials">
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="image/*" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".ui.activities.WallpaperActivity"
+            android:exported="false"
+            android:label="@string/feat_daily_wallpaper_title"
+            android:theme="@style/Theme.Essentials" />
+
+        <activity
+            android:name=".ui.activities.WallpaperStagingActivity"
+            android:exported="false"
+            android:label="@string/feat_wallpaper_staging_title"
+            android:theme="@style/Theme.Essentials" />
+
+        <service
+            android:name=".services.tiles.ScreenOffAccessibilityService"
+            android:exported="true"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/accessibility_service_config" />
+        </service>
+
+        <service
+            android:name=".services.AccessibilityShortcutService1"
+            android:exported="true"
+            android:icon="@drawable/rounded_circle_24"
+            android:label="@string/accessibility_shortcut_service_1_name"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/accessibility_shortcut_service_config" />
+        </service>
+
+        <service
+            android:name=".services.AccessibilityShortcutService2"
+            android:exported="true"
+            android:icon="@drawable/rounded_pentagon_24"
+            android:label="@string/accessibility_shortcut_service_2_name"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/accessibility_shortcut_service_config" />
+        </service>
+
+        <service
+            android:name=".services.AccessibilityShortcutService3"
+            android:exported="true"
+            android:icon="@drawable/rounded_square_24"
+            android:label="@string/accessibility_shortcut_service_3_name"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/accessibility_shortcut_service_config" />
+        </service>
+
+        <service
+            android:name=".services.SplitScreenShortcutService"
+            android:exported="true"
+            android:icon="@drawable/rounded_splitscreen_24"
+            android:label="@string/split_screen_shortcut_service_name"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/split_screen_shortcut_service_config" />
+        </service>
+
+        <service
+            android:name=".services.NotificationListener"
+            android:exported="true"
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
+            <intent-filter>
+                <action android:name="android.service.notification.NotificationListenerService" />
+            </intent-filter>
+        </service>
+
+        <provider
+            android:name="rikka.shizuku.ShizukuProvider"
+            android:authorities="${applicationId}.shizuku"
+            android:enabled="true"
+            android:exported="true"
+            android:multiprocess="false"
+            android:permission="android.permission.INTERACT_ACROSS_USERS_FULL" />
+
+        <receiver
+            android:name="moe.shizuku.api.SystemServiceHelper$Receiver"
+            android:exported="true" />
+
+        <service
+            android:name=".services.InputEventListenerService"
+            android:exported="false"
+            android:foregroundServiceType="specialUse" />
+
+        <service
+            android:name=".services.EssentialsWearableListenerService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.android.gms.wearable.MESSAGE_RECEIVED" />
+                <data
+                    android:host="*"
+                    android:pathPrefix="/"
+                    android:scheme="wear" />
+            </intent-filter>
+        </service>
+
+        <receiver
+            android:name=".services.widgets.PixelSearchbarWidgetReceiver"
+            android:exported="true"
+            android:label="@string/feat_pixel_searchbar_title">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="android.intent.action.CONFIGURATION_CHANGED" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/pixel_searchbar_widget_info" />
+        </receiver>
+
+        <service
+            android:name=".services.widgets.WidgetScraperService"
+            android:exported="false"
+            android:foregroundServiceType="specialUse"
+            android:permission="android.permission.BIND_APPWIDGET">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="widgetScraper" />
+        </service>
+
+        <!-- Voice Interaction & System Digital Assistant Service -->
+        <service
+            android:name=".services.EssentialsVoiceInteractionService"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:permission="android.permission.BIND_VOICE_INTERACTION">
+            <meta-data
+                android:name="android.voice_interaction"
+                android:resource="@xml/voice_interaction_service" />
+            <intent-filter>
+                <action android:name="android.service.voice.VoiceInteractionService" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".services.EssentialsVoiceInteractionSessionService"
+            android:permission="android.permission.BIND_VOICE_INTERACTION" />
+
+        <service
+            android:name=".services.EssentialsRecognitionService"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:permission="android.permission.BIND_RECOGNITION_SERVICE">
+            <intent-filter>
+                <action android:name="android.speech.RecognitionService" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <meta-data
+                android:name="android.speech"
+                android:resource="@xml/recognition_service" />
+        </service>
+
+        <receiver
+            android:name=".services.ScreenOffWidgetProvider"
+            android:exported="false"
+            android:label="@string/screen_off_widget_label">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/screen_off_widget_info" />
+        </receiver>
+
+        <activity
+            android:name=".ui.activities.BatteriesWidgetConfigureActivity"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:noHistory="true"
+            android:taskAffinity=""
+            android:theme="@style/Theme.Essentials.Translucent">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".ui.activities.ScreenOffWidgetConfigureActivity"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:noHistory="true"
+            android:taskAffinity=""
+            android:theme="@style/Theme.Essentials.Translucent">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>
+        </activity>
+
+        <receiver
+            android:name=".services.widgets.BatteriesWidgetReceiver"
+            android:exported="true"
+            android:label="@string/batteries_widget_label">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
+                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
+                <action android:name="android.intent.action.BATTERY_LOW" />
+                <action android:name="android.intent.action.BATTERY_OKAY" />
+                <action android:name="android.intent.action.BATTERY_CHANGED" />
+                <action android:name="android.bluetooth.device.action.BATTERY_LEVEL_CHANGED" />
+                <action android:name="android.bluetooth.device.action.ACL_CONNECTED" />
+                <action android:name="android.bluetooth.device.action.ACL_DISCONNECTED" />
+                <action android:name="android.bluetooth.adapter.action.STATE_CHANGED" />
+                <action android:name="android.intent.action.CONFIGURATION_CHANGED" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/batteries_widget_info" />
+        </receiver>
+
+        <receiver
+            android:name=".services.widgets.FavoritesWidgetReceiver"
+            android:exported="true"
+            android:label="@string/favorites_widget_name">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="android.intent.action.CONFIGURATION_CHANGED" />
+                <action android:name="com.sameerasw.essentials.action.FAVORITES_WIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/favorites_widget_info" />
+        </receiver>
+
+        <activity
+            android:name=".ui.activities.QsTilesWidgetConfigurationActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>
+        </activity>
+
+        <receiver
+            android:name=".services.widgets.QsTilesWidgetReceiver"
+            android:exported="true"
+            android:label="@string/qs_tiles_widget_name">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="android.intent.action.CONFIGURATION_CHANGED" />
+                <action android:name="com.sameerasw.essentials.action.QS_TILES_WIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/qs_tiles_widget_info" />
+        </receiver>
+
+        <activity
+            android:name=".ui.activities.WidgetStackConfigureActivity"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:label="@string/widget_stack_settings_title"
+            android:taskAffinity=""
+            android:theme="@style/Theme.Essentials.Translucent">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>
+        </activity>
+
+        <receiver
+            android:name=".services.widgets.StackWidgetProvider"
+            android:exported="true"
+            android:label="@string/widget_stack_label">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_stack_info" />
+        </receiver>
+
+        <receiver
+            android:name=".services.receivers.QsTileActionRouter"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.sameerasw.essentials.action.TRIGGER_QS_TILE" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name=".services.tiles.CaffeinateTileService"
+            android:exported="true"
+            android:icon="@drawable/rounded_coffee_24"
+            android:label="Caffeinate"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.TILE_CATEGORY"
+                android:value="android.service.quicksettings.CATEGORY_UTILITIES" />
+        </service>
+        <service
+            android:name=".services.CaffeinateWakeLockService"
+            android:exported="false"
+            android:foregroundServiceType="specialUse">
+            <property
+                android:name="android.app.property.FOREGROUND_SERVICE_TYPE_SPECIAL_USE_DESCRIPTION"
+                android:value="Caffeinate Service" />
+        </service>
+        <service
+            android:name=".services.BatteryNotificationService"
+            android:enabled="true"
+            android:exported="false"
+            android:foregroundServiceType="specialUse">
+            <property
+                android:name="android.app.property.FOREGROUND_SERVICE_TYPE_SPECIAL_USE_DESCRIPTION"
+                android:value="Battery Notification Service" />
+        </service>
+        <service
+            android:name=".services.tiles.SoundModeTileService"
+            android:exported="true"
+            android:icon="@drawable/rounded_volume_up_24"
+            android:label="Sound Mode"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.TILE_CATEGORY"
+                android:value="android.service.quicksettings.CATEGORY_UTILITIES" />
+        </service>
+
+        <service
+            android:name=".services.tiles.UiBlurTileService"
+            android:exported="true"
+            android:icon="@drawable/rounded_blur_on_24"
+            android:label="UI Blur"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.TILE_CATEGORY"
+                android:value="android.service.quicksettings.CATEGORY_DISPLAY" />
+        </service>
+
+        <service
+            android:name=".services.tiles.BubblesTileService"
+            android:exported="true"
+            android:icon="@drawable/rounded_bubble_24"
+            android:label="Bubbles"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.TILE_CATEGORY"
+                android:value="android.service.quicksettings.CATEGORY_UTILITIES" />
+        </service>
+
+        <service
+            android:name=".services.tiles.MonoAudioTileService"
+            android:exported="true"
+            android:icon="@drawable/rounded_headphones_24"
+            android:label="Mono Audio"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.TILE_CATEGORY"
+                android:value="android.service.quicksettings.CATEGORY_ACCESSIBILITY" />
+        </service>
+
+        <service
+            android:name=".services.tiles.PrivateNotificationsTileService"
+            android:exported="true"
+            android:icon="@drawable/rounded_notifications_off_24"
+            android:label="Sensitive Content"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.TILE_CATEGORY"
+                android:value="android.service.quicksettings.CATEGORY_PRIVACY" />
+        </service>
+
+        <service
+            android:name=".services.tiles.HeadsUpNotificationsTileService"
+            android:exported="true"
+            android:icon="@drawable/rounded_ad_units_24"
+            android:label="@string/tile_heads_up_notifications"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.TILE_CATEGORY"
+                android:value="android.service.quicksettings.CATEGORY_UTILITIES" />
+        </service>
+
+        <service
+            android:name=".services.tiles.TapToWakeTileService"
+            android:exported="true"
+            android:icon="@drawable/rounded_touch_app_24"
+            android:label="Tap to Wake"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.TILE_CATEGORY"
+                android:value="android.service.quicksettings.CATEGORY_DISPLAY" />
+        </service>
+
+        <service
+            android:name=".services.tiles.NotificationLightingTileService"
+            android:exported="true"
+            android:icon="@drawable/rounded_blur_linear_24"
+            android:label="Notification Lighting"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.TILE_CATEGORY"
+                android:value="android.service.quicksettings.CATEGORY_UTILITIES" />
+        </service>
+
+        <service
+            android:name=".services.tiles.DynamicNightLightTileService"
+            android:exported="true"
+            android:icon="@drawable/rounded_nightlight_24"
+            android:label="Dynamic Night Light"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.TILE_CATEGORY"
+                android:value="android.service.quicksettings.CATEGORY_DISPLAY" />
+        </service>
+        <service
+            android:name=".services.tiles.DuoTileService"
+            android:exported="true"
+            android:icon="@drawable/rounded_motion_play_24"
+            android:label="@string/duo_title"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.TILE_CATEGORY"
+                android:value="android.service.quicksettings.CATEGORY_DISPLAY" />
+        </service>
+        <service
+            android:name=".services.tiles.IslandTileService"
+            android:exported="true"
+            android:icon="@drawable/rounded_upcoming_24"
+            android:label="@string/island_title"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.TILE_CATEGORY"
+                android:value="android.service.quicksettings.CATEGORY_DISPLAY" />
+        </service>
+        <service
+            android:name=".services.tiles.SmartPixelsTileService"
+            android:exported="true"
+            android:icon="@drawable/rounded_grain_24"
+            android:label="@string/feat_smart_pixels_title"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.TILE_CATEGORY"
+                android:value="android.service.quicksettings.CATEGORY_DISPLAY" />
+        </service>
+        <service
+            android:name=".services.tiles.EssentialsOnDisplayTileService"
+            android:exported="true"
+            android:icon="@drawable/rounded_live_tv_24"
+            android:label="@string/tile_essentials_on_display"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.TILE_CATEGORY"
+                android:value="android.service.quicksettings.CATEGORY_DISPLAY" />
+        </service>
+        <service
+            android:name=".services.tiles.ScreenLockedSecurityTileService"
+            android:exported="true"
+            android:icon="@drawable/rounded_security_24"
+            android:label="Locked Security"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.TILE_CATEGORY"
+                android:value="android.service.quicksettings.CATEGORY_PRIVACY" />
+        </service>
+        <service
+            android:name=".services.tiles.AppLockTileService"
+            android:exported="true"
+            android:icon="@drawable/rounded_shield_lock_24"
+            android:label="App Lock"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.TILE_CATEGORY"
+                android:value="android.service.quicksettings.CATEGORY_PRIVACY" />
+        </service>
+
+        <service
+            android:name=".services.NotificationLightingService"
+            android:exported="false"
+            android:foregroundServiceType="specialUse" />
+
+        <service
+            android:name=".ime.EssentialsInputMethodService"
+            android:exported="true"
+            android:label="@string/input_method_label"
+            android:permission="android.permission.BIND_INPUT_METHOD">
+            <intent-filter>
+                <action android:name="android.view.InputMethod" />
+            </intent-filter>
+            <meta-data
+                android:name="android.view.im"
+                android:resource="@xml/method" />
+        </service>
+
+        <service
+            android:name=".services.automation.AutomationService"
+            android:enabled="true"
+            android:exported="false"
+            android:foregroundServiceType="specialUse">
+            <property
+                android:name="android.app.property.FOREGROUND_SERVICE_TYPE_SPECIAL_USE_DESCRIPTION"
+                android:value="Automation Service" />
+        </service>
+
+        <service
+            android:name=".services.AppDetectionService"
+            android:enabled="true"
+            android:exported="false"
+            android:foregroundServiceType="specialUse">
+            <property
+                android:name="android.app.property.FOREGROUND_SERVICE_TYPE_SPECIAL_USE_DESCRIPTION"
+                android:value="App Detection Service" />
+        </service>
+
+        <service
+            android:name=".services.EssentialsConditionProvider"
+            android:exported="true"
+            android:label="Essentials Focus"
+            android:permission="android.permission.BIND_CONDITION_PROVIDER_SERVICE">
+            <intent-filter>
+                <action android:name="android.service.notification.ConditionProviderService" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".services.tiles.AppFreezingTileService"
+            android:exported="true"
+            android:icon="@drawable/rounded_mode_cool_24"
+            android:label="@string/app_freezing_tile_label"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.TILE_CATEGORY"
+                android:value="android.service.quicksettings.CATEGORY_UTILITIES" />
+        </service>
+
+        <service
+            android:name=".services.tiles.FlashlightPulseTileService"
+            android:exported="true"
+            android:icon="@drawable/outline_backlight_high_24"
+            android:label="@string/flashlight_pulse_tile_label"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.TILE_CATEGORY"
+                android:value="android.service.quicksettings.CATEGORY_UTILITIES" />
+        </service>
+
+        <service
+            android:name=".services.tiles.FlashlightTileService"
+            android:exported="true"
+            android:icon="@drawable/rounded_flashlight_on_24"
+            android:label="Flashlight"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.TILE_CATEGORY"
+                android:value="android.service.quicksettings.CATEGORY_UTILITIES" />
+        </service>
+
+        <service
+            android:name=".services.tiles.NfcTileService"
+            android:exported="true"
+            android:icon="@drawable/rounded_nfc_24"
+            android:label="@string/nfc_tile_label"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.TILE_CATEGORY"
+                android:value="android.service.quicksettings.CATEGORY_CONNECTIVITY" />
+        </service>
+
+        <service
+            android:name=".services.tiles.StayAwakeTileService"
+            android:exported="true"
+            android:icon="@drawable/rounded_battery_charging_60_24"
+            android:label="@string/tile_stay_awake"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.TILE_CATEGORY"
+                android:value="android.service.quicksettings.CATEGORY_DISPLAY" />
+        </service>
+
+        <service
+            android:name=".services.tiles.AdaptiveBrightnessTileService"
+            android:exported="true"
+            android:icon="@drawable/rounded_brightness_auto_24"
+            android:label="@string/tile_adaptive_brightness"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.TILE_CATEGORY"
+                android:value="android.service.quicksettings.CATEGORY_DISPLAY" />
+        </service>
+
+        <service
+            android:name=".services.tiles.HapticsTileService"
+            android:exported="true"
+            android:icon="@drawable/rounded_mobile_vibrate_24"
+            android:label="@string/tile_haptics"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.TOGGLEABLE_TILE"
+                android:value="true" />
+            <meta-data
+                android:name="android.service.quicksettings.TILE_CATEGORY"
+                android:value="android.service.quicksettings.CATEGORY_UTILITIES" />
+        </service>
+
+        <service
+            android:name=".services.tiles.DataSimTileService"
+            android:exported="true"
+            android:icon="@drawable/rounded_sim_card_24"
+            android:label="@string/tile_data_sim"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.TILE_CATEGORY"
+                android:value="android.service.quicksettings.CATEGORY_CONNECTIVITY" />
+        </service>
+
+        <service
+            android:name=".services.tiles.MapsPowerSavingTileService"
+            android:exported="true"
+            android:icon="@drawable/rounded_navigation_24"
+            android:label="@string/tile_maps_power_saving"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.TILE_CATEGORY"
+                android:value="android.service.quicksettings.CATEGORY_UTILITIES" />
+        </service>
+
+        <service
+            android:name=".services.tiles.PrivateDnsTileService"
+            android:exported="true"
+            android:icon="@drawable/rounded_dns_24"
+            android:label="@string/tile_private_dns"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.TILE_CATEGORY"
+                android:value="android.service.quicksettings.CATEGORY_CONNECTIVITY" />
+        </service>
+
+        <service
+            android:name=".services.tiles.UsbDebuggingTileService"
+            android:exported="true"
+            android:icon="@drawable/rounded_adb_24"
+            android:label="@string/tile_usb_debugging"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+                <action android:name="android.service.quicksettings.action.QS_TILE_PREFERENCES" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.TILE_CATEGORY"
+                android:value="android.service.quicksettings.CATEGORY_UTILITIES" />
+        </service>
+
+        <service
+            android:name=".services.tiles.ColorPickerTileService"
+            android:exported="true"
+            android:icon="@drawable/rounded_colorize_24"
+            android:label="@string/tile_color_picker"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.TILE_CATEGORY"
+                android:value="android.service.quicksettings.CATEGORY_DISPLAY" />
+        </service>
+
+        <service
+            android:name=".services.tiles.DefaultLauncherTileService"
+            android:exported="true"
+            android:icon="@drawable/rounded_home_24"
+            android:label="@string/tile_default_launcher"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.TILE_CATEGORY"
+                android:value="android.service.quicksettings.CATEGORY_UTILITIES" />
+        </service>
+
+        <service
+            android:name=".services.tiles.DeveloperOptionsTileService"
+            android:exported="true"
+            android:icon="@drawable/rounded_mobile_code_24"
+            android:label="@string/tile_developer_options"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.TILE_CATEGORY"
+                android:value="android.service.quicksettings.CATEGORY_UTILITIES" />
+        </service>
+
+        <receiver
+            android:name=".services.receivers.FlashlightActionReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.sameerasw.essentials.ACTION_FLASHLIGHT_INCREASE" />
+                <action android:name="com.sameerasw.essentials.ACTION_FLASHLIGHT_DECREASE" />
+                <action android:name="com.sameerasw.essentials.ACTION_FLASHLIGHT_OFF" />
+                <action android:name="com.sameerasw.essentials.ACTION_FLASHLIGHT_TOGGLE" />
+                <action android:name="com.sameerasw.essentials.ACTION_SET_INTENSITY" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name=".services.tiles.BatteryNotificationTileService"
+            android:exported="true"
+            android:icon="@drawable/rounded_battery_charging_60_24"
+            android:label="@string/feat_battery_notification_title"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.TILE_CATEGORY"
+                android:value="android.service.quicksettings.CATEGORY_UTILITIES" />
+        </service>
+
+        <service
+            android:name=".services.tiles.ChargeQuickTileService"
+            android:exported="true"
+            android:icon="@drawable/rounded_battery_android_frame_shield_24"
+            android:label="@string/tile_charge_optimization"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.TILE_CATEGORY"
+                android:value="android.service.quicksettings.CATEGORY_UTILITIES" />
+        </service>
+
+        <service
+            android:name=".services.tiles.AlwaysOnDisplayTileService"
+            android:exported="true"
+            android:icon="@drawable/rounded_mobile_text_2_24"
+            android:label="@string/feat_always_on_display_title"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+                <action android:name="android.service.quicksettings.action.QS_TILE_PREFERENCES" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.TILE_CATEGORY"
+                android:value="android.service.quicksettings.CATEGORY_DISPLAY" />
+        </service>
+
+        <service
+            android:name=".services.tiles.PocketModeTileService"
+            android:exported="true"
+            android:icon="@drawable/ic_pocket_mode"
+            android:label="@string/feat_pocket_mode_title"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.TILE_CATEGORY"
+                android:value="android.service.quicksettings.CATEGORY_DISPLAY" />
+        </service>
+
+        <receiver
+            android:name=".services.receivers.SecurityDeviceAdminReceiver"
+            android:exported="true"
+            android:permission="android.permission.BIND_DEVICE_ADMIN">
+            <meta-data
+                android:name="android.app.device_admin"
+                android:resource="@xml/device_admin_rules" />
+            <intent-filter>
+                <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name=".services.receivers.AirSyncBridgeReceiver"
+            android:exported="true"
+            android:permission="com.sameerasw.permission.ESSENTIALS_AIRSYNC_BRIDGE">
+            <intent-filter>
+                <action android:name="com.sameerasw.essentials.action.UPDATE_MAC_BATTERY" />
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name=".services.receivers.CallVibrationReceiver"
+            android:exported="true"
+            android:permission="android.permission.READ_PHONE_STATE">
+            <intent-filter>
+                <action android:name="android.intent.action.PHONE_STATE" />
+                <action android:name="android.intent.action.NEW_OUTGOING_CALL" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".services.receivers.StatusBarAutomationReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
+                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name=".services.receivers.BatteryAutomationReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
+                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
+                <action android:name="android.intent.action.BATTERY_CHANGED" />
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name=".services.receivers.LoopBreakerReceiver"
+            android:exported="false" />
+
+        <receiver
+            android:name=".services.receivers.AppBootReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name=".services.receivers.ShizukuActionReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.sameerasw.essentials.ACTION_RESTART_SHIZUKU" />
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name=".services.receivers.DownloadUpdateReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.sameerasw.essentials.ACTION_DOWNLOAD_UPDATE" />
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name=".services.automation.receivers.TimeAutomationReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.sameerasw.essentials.ACTION_TIME_AUTOMATION_TRIGGER" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".services.automation.receivers.GeofenceReceiver"
+            android:exported="false" />
+
+
+        <service
+            android:name=".services.dreams.AmbientDreamService"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher"
+            android:label="Ambience"
+            android:permission="android.permission.BIND_DREAM_SERVICE">
+            <intent-filter>
+                <action android:name="android.service.dreams.DreamService" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".services.LiveWallpaperService"
+            android:exported="true"
+            android:label="@string/live_wallpaper_label"
+            android:permission="android.permission.BIND_WALLPAPER">
+            <intent-filter>
+                <action android:name="android.service.wallpaper.WallpaperService" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.wallpaper"
+                android:resource="@xml/live_wallpaper_info" />
+        </service>
+
+        <activity
+            android:name=".ui.activities.LiveWallpaperActivity"
+            android:exported="true"
+            android:label="@string/live_wallpaper_label" />
+
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+        <service
+            android:name="androidx.appcompat.app.AppLocalesMetadataHolderService"
+            android:enabled="false"
+            android:exported="false">
+            <meta-data
+                android:name="autoStoreLocales"
+                android:value="true" />
+        </service>
+        <service
+            android:name=".services.tiles.ScaleAnimationsTileService"
+            android:exported="true"
+            android:icon="@drawable/rounded_settings_24"
+            android:label="@string/tile_scale_animations"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".services.tiles.RefreshRateTileService"
+            android:exported="true"
+            android:icon="@drawable/rounded_shutter_speed_24"
+            android:label="@string/tile_refresh_rate"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.TILE_CATEGORY"
+                android:value="android.service.quicksettings.CATEGORY_DISPLAY" />
+        </service>
+
+        <service
+            android:name=".services.tiles.RestartSystemUiTileService"
+            android:exported="true"
+            android:icon="@drawable/reopen_window_24px"
+            android:label="@string/tile_restart_systemui"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.TILE_CATEGORY"
+                android:value="android.service.quicksettings.CATEGORY_UTILITIES" />
+        </service>
+
+        <service
+            android:name=".services.tiles.LockdownTileService"
+            android:exported="true"
+            android:icon="@drawable/rounded_lock_24"
+            android:label="@string/tile_lock"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.service.quicksettings.ACTION_QS_TILE_PREFERENCES"
+                android:value="com.sameerasw.essentials.ui.activities.QSPreferencesActivity" />
+            <meta-data
+                android:name="android.service.quicksettings.TILE_CATEGORY"
+                android:value="android.service.quicksettings.CATEGORY_UTILITIES" />
+        </service>
+
+        <service
+            android:name=".services.tiles.UrlShortenerTileService"
+            android:exported="true"
+            android:icon="@drawable/rounded_link_24"
+            android:label="@string/tile_url_shortener"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.service.quicksettings.ACTION_QS_TILE_PREFERENCES"
+                android:value="com.sameerasw.essentials.ui.activities.QSPreferencesActivity" />
+            <meta-data
+                android:name="android.service.quicksettings.TILE_CATEGORY"
+                android:value="android.service.quicksettings.CATEGORY_UTILITIES" />
+        </service>
+
+        <provider
+            android:name=".external.ExternalControlProvider"
+            android:authorities="${applicationId}.external"
+            android:exported="true"
+            android:permission="com.sameerasw.essentials.permission.EXTERNAL_CONTROL" />
+
+        <receiver
+            android:name=".external.ExternalTokenActionReceiver"
+            android:exported="true" />
+
+        <receiver
+            android:name=".external.ExternalActionReceiver"
+            android:exported="true"
+            android:permission="com.sameerasw.essentials.permission.EXTERNAL_CONTROL">
+            <intent-filter>
+                <action android:name="com.sameerasw.essentials.action.EXTERNAL_CONTROL" />
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name=".services.CallReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.PHONE_STATE" />
+                <action android:name="android.intent.action.NEW_OUTGOING_CALL" />
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name=".receivers.UrlShortenerActionReceiver"
+            android:exported="false" />
+
+        <receiver
+            android:name=".receivers.ScreenshotCleanupActionReceiver"
+            android:exported="false" />
+
+        <service
+            android:name=".appfunctions.EssentialsAppFunctionService"
+            android:exported="true"
+            android:permission="android.permission.BIND_APP_FUNCTION_SERVICE"
+            tools:targetApi="36">
+            <property
+                android:name="android.app.appfunctions.schema"
+                android:value="app_functions_schema.xsd" />
+            <property
+                android:name="android.app.appfunctions.v2"
+                android:value="essentials_app_function_service.xml" />
+
+            <intent-filter>
+                <action android:name="android.app.appfunctions.AppFunctionService" />
+            </intent-filter>
+        </service>
+        <property
+            android:name="android.app.appfunctions.app_metadata"
+            android:resource="@xml/app_metadata" />
+
+    </application>
+
+    <instrumentation
+        android:name=".shizuku.CarrierConfigModifier"
+        android:label="CarrierConfigModifier"
+        android:targetPackage="${applicationId}" />
+
+</manifest>
