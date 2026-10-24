@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Background Services & Receivers
- * File: StateEntries.kt
- * Description: Background service component for StateEntries.kt.
- */
-
 package com.jawzf.pixeltoolkit.services.automation.modules
 
 import com.jawzf.pixeltoolkit.domain.diy.Action

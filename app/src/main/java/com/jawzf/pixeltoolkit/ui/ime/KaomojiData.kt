@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Module
- * File: KaomojiData.kt
- * Description: UI layout element for KaomojiData.kt.
- */
-
 package com.jawzf.pixeltoolkit.ui.ime
 
 import android.content.Context

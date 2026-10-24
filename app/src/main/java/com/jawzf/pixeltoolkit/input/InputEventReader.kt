@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Input
- * File: InputEventReader.kt
- * Description: Component file for InputEventReader.kt.
- */
-
 package com.jawzf.pixeltoolkit.input
 
 import java.io.InputStream

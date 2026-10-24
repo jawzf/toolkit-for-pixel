@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Domain Layer Models & Registries
- * File: PixelSearchTab.kt
- * Description: Category filter tab enumeration for Pixel Search results.
- */
-
 package com.jawzf.pixeltoolkit.domain.model
 
 import androidx.annotation.DrawableRes

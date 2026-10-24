@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Utilities
- * File: HilightLights.kt
- * Description: Shizuku-backed access to the lights service for the Pixel Hilight LED array.
- */
-
 package com.jawzf.pixeltoolkit.utils.hardware
 
 import android.hardware.lights.Light

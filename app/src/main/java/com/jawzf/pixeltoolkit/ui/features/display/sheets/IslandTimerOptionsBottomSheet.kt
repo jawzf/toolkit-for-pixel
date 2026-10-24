@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Feature - Display
- * File: IslandTimerOptionsBottomSheet.kt
- * Description: Bottom sheet for configuring Island timer and stopwatch options.
- */
-
 package com.jawzf.pixeltoolkit.ui.features.display.sheets
 
 import androidx.compose.foundation.layout.Arrangement

@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Utilities - General
- * File: OmniTriggerUtil.kt
- * Description: Utility helper for OmniTriggerUtil.kt.
- */
-
 package com.jawzf.pixeltoolkit.utils
 
 import android.annotation.SuppressLint

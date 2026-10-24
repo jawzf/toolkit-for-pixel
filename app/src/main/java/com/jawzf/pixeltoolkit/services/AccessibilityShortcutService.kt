@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Background Services & Receivers
- * File: AccessibilityShortcutService.kt
- * Description: Background accessibility service component dedicated to the accessibility button and volume shortcut trigger.
- */
-
 package com.jawzf.pixeltoolkit.services
 
 import android.accessibilityservice.AccessibilityButtonController

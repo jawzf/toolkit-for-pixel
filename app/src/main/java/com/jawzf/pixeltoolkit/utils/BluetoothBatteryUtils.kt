@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Utilities - General
- * File: BluetoothBatteryUtils.kt
- * Description: Utility helper for BluetoothBatteryUtils.kt.
- */
-
 package com.jawzf.pixeltoolkit.utils
 
 import android.annotation.SuppressLint

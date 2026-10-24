@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Core Components
- * File: ShakeForHelp.kt
- * Description: Drop-in host that opens the contextual help sheet when the device is shaken.
- */
-
 package com.jawzf.pixeltoolkit.ui.core.sheets
 
 import androidx.compose.runtime.Composable

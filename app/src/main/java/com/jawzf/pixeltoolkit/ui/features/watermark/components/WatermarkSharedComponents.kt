@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Feature - Watermark
- * File: WatermarkSharedComponents.kt
- * Description: UI component and settings composable for Watermark feature domain.
- */
-
 package com.jawzf.pixeltoolkit.ui.components.watermark
 
 import androidx.compose.foundation.background

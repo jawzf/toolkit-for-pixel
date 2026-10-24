@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Feature - Network
- * File: DynamicNightLightSettingsUI.kt
- * Description: UI component and settings composable for Network feature domain.
- */
-
 package com.jawzf.pixeltoolkit.ui.features.system
 
 import androidx.compose.foundation.layout.Arrangement

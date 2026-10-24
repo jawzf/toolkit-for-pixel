@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Background Services & Receivers
- * File: StackWidgetProvider.kt
- * Description: Homescreen widget that shows one widget of a stack at a time.
- */
-
 package com.jawzf.pixeltoolkit.services.widgets
 
 import android.app.PendingIntent

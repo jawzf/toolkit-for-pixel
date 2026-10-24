@@ -1,14 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Feature - Conscious Gate
- * File: ConsciousGateSettingsUI.kt
- * Description: Composable UI for configuring Conscious Gate's target applications, pause
- * delay, reappear-after-usage timer, countdown style, pause-screen icon/text, and a live
- * preview of the resulting pause screen.
- */
-
 package com.jawzf.pixeltoolkit.ui.features.consciousgate
 
 import androidx.compose.foundation.background

@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Utilities
- * File: AppIconUtil.kt
- * Description: Utility to safely switch app launcher icon aliases.
- */
-
 package com.jawzf.pixeltoolkit.utils
 
 import android.content.ComponentName

@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Domain Controllers
- * File: ZenRuleParser.kt
- * Description: Reads the getAutomaticZenRules result, which is a Map on Android 15 and a ParceledListSlice of AzrWithId from Android 16.
- */
-
 package com.jawzf.pixeltoolkit.domain.controller
 
 @Suppress("UNCHECKED_CAST")

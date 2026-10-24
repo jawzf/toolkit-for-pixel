@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Background Services & Receivers
- * File: DynamicNightLightTileService.kt
- * Description: Background service component for DynamicNightLightTileService.kt.
- */
-
 package com.jawzf.pixeltoolkit.services.tiles
 
 import android.graphics.drawable.Icon

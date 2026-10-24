@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Feature - Display
- * File: AodWallpaperSettingsUI.kt
- * Description: UI settings composable for the AOD wallpaper feature.
- */
-
 package com.jawzf.pixeltoolkit.ui.features.display
 
 import androidx.compose.animation.AnimatedVisibility

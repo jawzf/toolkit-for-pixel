@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Background Services & Receivers
- * File: AppVolumeOverlayHandler.kt
- * Description: Shows a button under the system volume panel that opens volume controls for the apps playing now.
- */
-
 package com.jawzf.pixeltoolkit.services.handlers
 
 import android.accessibilityservice.AccessibilityService

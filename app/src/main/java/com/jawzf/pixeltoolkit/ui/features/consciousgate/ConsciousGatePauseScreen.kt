@@ -1,13 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Feature - Conscious Gate
- * File: ConsciousGatePauseScreen.kt
- * Description: Shared full-screen Conscious Gate screen UI, used both by the real
- * ConsciousGateActivity and by the live preview shown in the settings screen.
- */
-
 package com.jawzf.pixeltoolkit.ui.features.consciousgate
 
 import androidx.activity.compose.BackHandler

@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Battery Settings
- * File: BatteriesSettingsUI.kt
- * Description: UI settings composable screen for battery stats, rings, and charging options.
- */
-
 package com.jawzf.pixeltoolkit.ui.features.battery
 
 import android.content.Intent

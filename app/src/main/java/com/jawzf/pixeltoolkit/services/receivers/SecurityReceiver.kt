@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Background Services & Receivers
- * File: SecurityReceiver.kt
- * Description: Background service component for SecurityReceiver.kt.
- */
-
 package com.jawzf.pixeltoolkit.services.receivers
 
 import android.app.KeyguardManager

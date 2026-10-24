@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Utilities - General
- * File: UpdateNotificationHelper.kt
- * Description: Utility helper for UpdateNotificationHelper.kt.
- */
-
 package com.jawzf.pixeltoolkit.utils
 
 import android.app.NotificationChannel

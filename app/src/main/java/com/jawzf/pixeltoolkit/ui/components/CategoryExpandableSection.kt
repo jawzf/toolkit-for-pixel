@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Core UI Components
- * File: CategoryExpandableSection.kt
- * Description: Material 3 Expressive expandable section container with header, item count badge, chevron animation, and haptic feedback.
- */
-
 package com.jawzf.pixeltoolkit.ui.components
 
 import androidx.compose.animation.AnimatedVisibility

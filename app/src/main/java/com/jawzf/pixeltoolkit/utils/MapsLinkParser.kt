@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Utilities - General
- * File: MapsLinkParser.kt
- * Description: Reads coordinates and a place name from Google Maps links and shared text.
- */
-
 package com.jawzf.pixeltoolkit.utils
 
 import android.content.Context

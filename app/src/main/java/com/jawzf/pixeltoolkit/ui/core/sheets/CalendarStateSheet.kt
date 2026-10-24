@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Core UI Sheets
- * File: CalendarStateSheet.kt
- * Description: Configures the calendar event DIY state: calendars and event filters.
- */
-
 package com.jawzf.pixeltoolkit.ui.core.sheets
 
 import android.Manifest

@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Core Components
- * File: UnsupportedFeaturesConfirmationSheet.kt
- * Description: Reusable core UI component for UnsupportedFeaturesConfirmationSheet.kt.
- */
-
 package com.jawzf.pixeltoolkit.ui.core.sheets
 
 import androidx.compose.animation.core.Animatable

@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Module
- * File: FloatingWithFragment.kt
- * Description: UI layout for the Tools tab built entirely with Essentials core design components (RoundedCardContainer, EssentialsBottomSheet), featuring Floating Web Window, High-Contrast QR Code generator, Zero-Cost Expiring URL Shortener, and on-device History & Settings.
- */
-
 package com.jawzf.pixeltoolkit.ui.components.linkActions
 
 import android.content.ClipData

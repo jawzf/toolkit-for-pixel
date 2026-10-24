@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Unit Tests - Utilities
- * File: MathEvaluatorTest.kt
- * Description: Unit tests for MathEvaluator arithmetic expression parser.
- */
-
 package com.jawzf.pixeltoolkit.utils
 
 import org.junit.Assert.assertEquals

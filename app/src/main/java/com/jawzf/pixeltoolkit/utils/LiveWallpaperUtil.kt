@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Utilities - General
- * File: LiveWallpaperUtil.kt
- * Description: Helper for opening the system live wallpaper preview.
- */
-
 package com.jawzf.pixeltoolkit.utils
 
 import android.app.WallpaperManager

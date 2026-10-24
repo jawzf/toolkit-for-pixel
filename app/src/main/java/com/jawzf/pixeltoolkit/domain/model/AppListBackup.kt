@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Domain Model - Apps
- * File: AppListBackup.kt
- * Description: Data model representing an exported backup of installed application details and device metadata.
- */
-
 package com.jawzf.pixeltoolkit.domain.model
 
 import com.google.gson.annotations.SerializedName

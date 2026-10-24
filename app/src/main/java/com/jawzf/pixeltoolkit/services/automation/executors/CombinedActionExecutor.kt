@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Background Services & Receivers
- * File: CombinedActionExecutor.kt
- * Description: Background service component for CombinedActionExecutor.kt.
- */
-
 package com.jawzf.pixeltoolkit.services.automation.executors
 
 import android.app.ActivityManager

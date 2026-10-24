@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Core UI Components
- * File: HilightEffectSheet.kt
- * Description: Pattern, colour, timing and brightness editor for Hilight effects, with a live try-out.
- */
-
 package com.jawzf.pixeltoolkit.ui.core.sheets
 
 import android.graphics.Color

@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Security Utilities
- * File: ShizukuUtils.kt
- * Description: Wrapper utility for interacting with Shizuku binder and privileged commands.
- */
-
 package com.jawzf.pixeltoolkit.utils
 
 import android.content.Context

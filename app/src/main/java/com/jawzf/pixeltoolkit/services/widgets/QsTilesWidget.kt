@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Background Services & Receivers
- * File: QsTilesWidget.kt
- * Description: Background service component for QsTilesWidget.kt.
- */
-
 package com.jawzf.pixeltoolkit.services.widgets
 
 import android.content.Context

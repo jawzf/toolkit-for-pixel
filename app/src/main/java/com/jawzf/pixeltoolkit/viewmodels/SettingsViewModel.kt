@@ -1,13 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: App Settings & Configuration
- * File: SettingsViewModel.kt
- * Description: Manages user preferences persistence, default tabs, pinned features,
- * and app-wide UI customization settings.
- */
-
 package com.jawzf.pixeltoolkit.viewmodels
 
 import android.content.Context

@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Utilities - QR Code
- * File: QrCodeGenerator.kt
- * Description: Unique Material 3 styled QR Code generator with rounded data modules, precision finder patterns, centered app logo badge, and high scan reliability.
- */
-
 package com.jawzf.pixeltoolkit.utils
 
 import android.content.Context

@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Feature - System
- * File: BackGestureSettingsUI.kt
- * Description: Back gesture edge widths, per-app overrides and the on-screen width preview.
- */
-
 package com.jawzf.pixeltoolkit.ui.features.system
 
 import android.content.Intent

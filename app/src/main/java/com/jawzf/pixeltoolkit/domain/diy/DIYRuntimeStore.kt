@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Domain Layer Models & Registries
- * File: DIYRuntimeStore.kt
- * Description: Storage for device-local DIY runtime state.
- */
-
 package com.jawzf.pixeltoolkit.domain.diy
 
 import android.content.Context

@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Utilities
- * File: CallControlUtil.kt
- * Description: Utility functions to programmatically answer, end, and mute phone calls.
- */
-
 package com.jawzf.pixeltoolkit.utils
 
 import android.media.AudioDeviceInfo

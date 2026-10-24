@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Translation
- * File: TranslationLongPressMenu.kt
- * Description: Component file for TranslationLongPressMenu.kt.
- */
-
 package com.jawzf.pixeltoolkit.translation.ui
 
 import androidx.compose.foundation.layout.Column

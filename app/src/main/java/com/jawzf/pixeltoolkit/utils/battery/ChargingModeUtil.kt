@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Battery Utilities
- * File: ChargingModeUtil.kt
- * Description: Reads and writes the Off/Adaptive/Limited charging mode secure settings.
- */
-
 package com.jawzf.pixeltoolkit.utils.battery
 
 import android.content.Context

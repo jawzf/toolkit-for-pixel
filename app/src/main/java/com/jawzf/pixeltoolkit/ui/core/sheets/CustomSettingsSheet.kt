@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Feature - System
- * File: CustomSettingsSheet.kt
- * Description: Bottom sheet allowing recording, editing, and saving of custom Android settings entries.
- */
-
 package com.jawzf.pixeltoolkit.ui.core.sheets
 
 import androidx.compose.animation.AnimatedVisibility

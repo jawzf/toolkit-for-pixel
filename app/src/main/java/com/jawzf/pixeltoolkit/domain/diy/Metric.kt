@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Domain Layer Models & Registries
- * File: Metric.kt
- * Description: Measurable numeric values for value conditions.
- */
-
 package com.jawzf.pixeltoolkit.domain.diy
 
 import androidx.annotation.DrawableRes

@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Background Services & Receivers
- * File: ScreenshotShareCleanupHandler.kt
- * Description: Moves a screenshot to the trash after it is shared from the screenshot preview, right away or after a delay.
- */
-
 package com.jawzf.pixeltoolkit.services.handlers
 
 import android.accessibilityservice.AccessibilityService

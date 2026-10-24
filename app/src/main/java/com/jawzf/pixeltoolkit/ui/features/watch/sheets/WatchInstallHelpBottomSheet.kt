@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: WearOS Companion
- * File: WatchInstallHelpBottomSheet.kt
- * Description: Guidance bottom sheet for installing the WearOS companion APK via ADB commands.
- */
-
 package com.jawzf.pixeltoolkit.ui.features.watch.sheets
 
 import androidx.compose.foundation.background

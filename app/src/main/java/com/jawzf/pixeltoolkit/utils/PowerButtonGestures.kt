@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Core Utilities
- * File: PowerButtonGestures.kt
- * Description: Helpers for synchronizing power button gestures with Android system settings.
- */
-
 package com.jawzf.pixeltoolkit.utils
 
 import android.content.Context

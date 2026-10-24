@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: WearOS Companion
- * File: WatchSettingsUI.kt
- * Description: Composable screen for Smartwatch sync and remote lock options.
- */
-
 package com.jawzf.pixeltoolkit.ui.features.watch
 
 import androidx.compose.foundation.background

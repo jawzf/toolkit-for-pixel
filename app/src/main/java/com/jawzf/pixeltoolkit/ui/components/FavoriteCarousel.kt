@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Module
- * File: FavoriteCarousel.kt
- * Description: UI layout element for FavoriteCarousel.kt.
- */
-
 package com.jawzf.pixeltoolkit.ui.components
 
 import androidx.compose.animation.core.animateDpAsState

@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Domain Layer Models & Registries
- * File: Comparison.kt
- * Description: Comparison operators and threshold evaluations with hysteresis.
- */
-
 package com.jawzf.pixeltoolkit.domain.diy
 
 import androidx.annotation.Keep

@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Feature - Permissions
- * File: PermissionsSearchResultCard.kt
- * Description: Grouped permissions card for in-app search results with grant/granted actions and view all navigation.
- */
-
 package com.jawzf.pixeltoolkit.ui.features.permissions
 
 import android.app.Activity

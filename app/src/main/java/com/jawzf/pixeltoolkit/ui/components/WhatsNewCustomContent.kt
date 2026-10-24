@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Components
- * File: WhatsNewCustomContent.kt
- * Description: UI layout element for WhatsNewCustomContent.kt.
- */
-
 package com.jawzf.pixeltoolkit.ui.components
 
 import androidx.compose.animation.animateContentSize

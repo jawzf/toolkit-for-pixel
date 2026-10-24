@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Utilities - General
- * File: PermissionGrantUtil.kt
- * Description: Grants as many of the app's permissions as possible through Shizuku/root.
- */
-
 package com.jawzf.pixeltoolkit.utils
 
 import android.app.AppOpsManager

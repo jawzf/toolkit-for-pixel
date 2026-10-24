@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Components
- * File: EssentialsWatchfacePromoContent.kt
- * Description: Reusable modular component showcasing the Essentials Watchface app promotion.
- */
-
 package com.jawzf.pixeltoolkit.ui.components
 
 import androidx.compose.foundation.layout.fillMaxWidth

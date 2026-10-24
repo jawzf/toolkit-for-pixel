@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Location Alarms & Geofencing
- * File: LocationTriggerSheet.kt
- * Description: Picks the place and distance for arrive and leave location triggers from a Google Maps link.
- */
-
 package com.jawzf.pixeltoolkit.ui.features.location.sheets
 
 import android.content.ClipboardManager

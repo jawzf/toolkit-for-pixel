@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Background Services & Receivers
- * File: BatteriesWidget.kt
- * Description: Glance battery rings widget for the phone, Mac and Bluetooth devices.
- */
-
 package com.jawzf.pixeltoolkit.services.widgets
 
 import android.content.Context

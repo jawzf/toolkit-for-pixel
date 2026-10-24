@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Input
- * File: PowerPressDetector.kt
- * Description: Component file for PowerPressDetector.kt.
- */
-
 package com.jawzf.pixeltoolkit.input
 
 import android.os.SystemClock

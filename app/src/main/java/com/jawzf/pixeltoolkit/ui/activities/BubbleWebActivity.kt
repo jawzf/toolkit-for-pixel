@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Module - Native Bubble Web Preview
- * File: BubbleWebActivity.kt
- * Description: Dedicated resizable bubble activity for private web previews using native Android Bubbles API.
- */
-
 package com.jawzf.pixeltoolkit.ui.activities
 
 import android.content.ClipData

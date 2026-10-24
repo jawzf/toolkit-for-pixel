@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Background Services & Receivers
- * File: EssentialsRecognitionService.kt
- * Description: Speech recognition service stub required for system assistant integration.
- */
-
 package com.jawzf.pixeltoolkit.services
 
 import android.content.Intent

@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Module
- * File: ContributorsCarousel.kt
- * Description: Material 3 Carousel displaying repository contributors.
- */
-
 package com.jawzf.pixeltoolkit.ui.components.dialogs
 
 import android.content.Intent

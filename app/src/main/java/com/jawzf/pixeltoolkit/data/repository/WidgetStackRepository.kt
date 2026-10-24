@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Data & Repository Layer
- * File: WidgetStackRepository.kt
- * Description: Stores the configuration of every widget stack on the homescreen.
- */
-
 package com.jawzf.pixeltoolkit.data.repository
 
 import android.content.Context

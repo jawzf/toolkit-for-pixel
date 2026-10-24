@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Components
- * File: StackedActionCard.kt
- * Description: Card with an icon, title and status on top and a full width action button on its own row below.
- */
-
 package com.jawzf.pixeltoolkit.ui.components
 
 import androidx.compose.foundation.layout.Arrangement

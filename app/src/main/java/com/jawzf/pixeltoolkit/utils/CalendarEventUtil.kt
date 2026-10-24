@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Utilities
- * File: CalendarEventUtil.kt
- * Description: Shared calendar-provider query for the next upcoming event.
- */
-
 package com.jawzf.pixeltoolkit.utils
 
 import android.content.ContentUris

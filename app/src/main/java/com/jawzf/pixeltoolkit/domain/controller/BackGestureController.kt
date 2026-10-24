@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Domain Controllers
- * File: BackGestureController.kt
- * Description: Applies per-app and automation back gesture widths and restores the system widths afterwards.
- */
-
 package com.jawzf.pixeltoolkit.domain.controller
 
 import com.jawzf.pixeltoolkit.domain.model.BackGestureAppConfig

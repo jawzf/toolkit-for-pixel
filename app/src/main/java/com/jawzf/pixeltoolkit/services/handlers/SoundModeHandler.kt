@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Background Services & Receivers
- * File: SoundModeHandler.kt
- * Description: Background service component for SoundModeHandler.kt.
- */
-
 package com.jawzf.pixeltoolkit.services.handlers
 
 import android.app.NotificationManager

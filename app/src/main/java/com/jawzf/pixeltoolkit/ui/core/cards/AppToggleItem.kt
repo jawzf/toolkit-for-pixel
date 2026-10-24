@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Core Components
- * File: AppToggleItem.kt
- * Description: Reusable core UI component for AppToggleItem.kt.
- */
-
 package com.jawzf.pixeltoolkit.ui.core.cards
 
 import androidx.compose.foundation.Image

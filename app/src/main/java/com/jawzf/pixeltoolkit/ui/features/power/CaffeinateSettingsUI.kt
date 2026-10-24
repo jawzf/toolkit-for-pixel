@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Power & Battery Features
- * File: CaffeinateSettingsUI.kt
- * Description: Composable screen for Caffeinate display timeout settings.
- */
-
 package com.jawzf.pixeltoolkit.ui.features.system
 
 import android.Manifest

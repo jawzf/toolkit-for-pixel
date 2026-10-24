@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Background Services & Receivers
- * File: StatusBarIconHandler.kt
- * Description: Background service component for StatusBarIconHandler.kt.
- */
-
 package com.jawzf.pixeltoolkit.services.handlers
 
 import android.content.BroadcastReceiver

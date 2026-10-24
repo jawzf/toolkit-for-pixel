@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Application Activities
- * File: ShortcutHandlerActivity.kt
- * Description: Activity component for ShortcutHandlerActivity.kt.
- */
-
 package com.jawzf.pixeltoolkit
 
 import android.content.Intent

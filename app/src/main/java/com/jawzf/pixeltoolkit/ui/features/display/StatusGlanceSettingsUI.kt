@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Feature - Display
- * File: StatusGlanceSettingsUI.kt
- * Description: UI settings composable for Status Glance ambient indicator feature.
- */
-
 package com.jawzf.pixeltoolkit.ui.features.display
 
 import android.os.Build

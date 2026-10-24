@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Activities
- * File: PinnedActionActivity.kt
- * Description: Invisible entry point for home screen shortcuts pinned from Essentials actions.
- */
-
 package com.jawzf.pixeltoolkit.ui.activities
 
 import android.os.Bundle

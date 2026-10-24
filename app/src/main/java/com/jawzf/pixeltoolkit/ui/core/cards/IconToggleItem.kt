@@ -1,13 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Core UI Components
- * File: IconToggleItem.kt
- * Description: Standard settings item composable with leading icon, title, supporting text,
- * and trailing switch control.
- */
-
 package com.jawzf.pixeltoolkit.ui.core.cards
 
 import androidx.compose.animation.togetherWith

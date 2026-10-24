@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Module
- * File: ProgressiveBlurModifier.kt
- * Description: UI layout element for ProgressiveBlurModifier.kt.
- */
-
 package com.jawzf.pixeltoolkit.ui.modifiers
 
 import androidx.compose.material3.MaterialTheme

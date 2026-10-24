@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Feature - Tiles
- * File: QSTilesSearchResultCard.kt
- * Description: Grouped Quick Settings tiles card for in-app search results with smooth 2x2 grid expansion.
- */
-
 package com.jawzf.pixeltoolkit.ui.features.tiles
 
 import android.app.Activity

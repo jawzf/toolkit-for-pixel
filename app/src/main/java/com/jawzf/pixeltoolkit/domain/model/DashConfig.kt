@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Domain Layer Models & Registries
- * File: DashConfig.kt
- * Description: Domain model and business logic entry for DashConfig.kt.
- */
-
 package com.jawzf.pixeltoolkit.domain.model
 
 data class DashConfig(

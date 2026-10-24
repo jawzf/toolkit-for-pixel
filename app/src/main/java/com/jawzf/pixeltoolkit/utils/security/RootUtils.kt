@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Security Utilities
- * File: RootUtils.kt
- * Description: Helper methods for executing root shell actions and verifying superuser access.
- */
-
 package com.jawzf.pixeltoolkit.utils
 
 import java.io.DataOutputStream

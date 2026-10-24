@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Utilities - General
- * File: AutomationFailureNotifier.kt
- * Description: Checks automation action requirements and posts a notification when an action fails.
- */
-
 package com.jawzf.pixeltoolkit.utils
 
 import android.app.NotificationChannel

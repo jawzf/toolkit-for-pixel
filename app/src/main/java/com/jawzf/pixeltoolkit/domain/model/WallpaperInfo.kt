@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Domain Layer Models
- * File: WallpaperInfo.kt
- * Description: Domain model representing live wallpaper metadata, resolution, author, and preview assets.
- */
-
 package com.jawzf.pixeltoolkit.domain.model
 
 data class WallpaperInfo(

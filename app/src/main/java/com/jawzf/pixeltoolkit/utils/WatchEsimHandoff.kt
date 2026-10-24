@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: WearOS Companion
- * File: WatchEsimHandoff.kt
- * Description: Validates eSIM activation codes and hands them to the Pixel Watch app. Based on Watch eSIM Helper (Apache-2.0).
- */
-
 package com.jawzf.pixeltoolkit.utils
 
 import android.content.ComponentName

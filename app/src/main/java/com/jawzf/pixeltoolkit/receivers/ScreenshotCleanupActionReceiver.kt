@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Background Services & Receivers
- * File: ScreenshotCleanupActionReceiver.kt
- * Description: Handles the Keep and Trash now actions on the screenshot cleanup notification.
- */
-
 package com.jawzf.pixeltoolkit.receivers
 
 import android.content.BroadcastReceiver

@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Background Services & Receivers
- * File: GeofenceReceiver.kt
- * Description: Hands arrive and leave location transitions from Play services to LocationAutomationWorker.
- */
-
 package com.jawzf.pixeltoolkit.services.automation.receivers
 
 import android.content.BroadcastReceiver

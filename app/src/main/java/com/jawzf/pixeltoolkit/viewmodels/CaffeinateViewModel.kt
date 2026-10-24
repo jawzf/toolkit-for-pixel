@@ -1,13 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Screen Awake / Caffeinate
- * File: CaffeinateViewModel.kt
- * Description: ViewModel managing display awake timers, wake lock background service triggers,
- * and timeout preset configurations.
- */
-
 package com.jawzf.pixeltoolkit.viewmodels
 
 import android.Manifest

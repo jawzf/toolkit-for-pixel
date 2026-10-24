@@ -1,13 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Status Bar Customization
- * File: StatusBarIconViewModel.kt
- * Description: ViewModel managing status bar icon visibility, blacklist state,
- * smart Wi-Fi/Data icon hiding, and tile synchronization.
- */
-
 package com.jawzf.pixeltoolkit.viewmodels
 
 import android.content.Context

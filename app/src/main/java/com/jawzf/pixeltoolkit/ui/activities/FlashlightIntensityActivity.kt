@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Application Activities
- * File: FlashlightIntensityActivity.kt
- * Description: Activity component for FlashlightIntensityActivity.kt dialog overlay.
- */
-
 package com.jawzf.pixeltoolkit.ui.activities
 
 import android.content.Context

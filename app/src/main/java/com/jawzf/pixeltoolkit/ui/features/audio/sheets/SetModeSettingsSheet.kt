@@ -1,13 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Feature - Audio
- * File: SetModeSettingsSheet.kt
- * Description: Config sheet for the "Set Mode" DIY automation action. Pick one of the system Modes
- *              and whether to turn it on or off.
- */
-
 package com.jawzf.pixeltoolkit.ui.features.audio.sheets
 
 import android.os.Build

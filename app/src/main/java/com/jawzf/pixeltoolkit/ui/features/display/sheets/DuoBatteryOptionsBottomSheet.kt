@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Feature - Display
- * File: DuoBatteryOptionsBottomSheet.kt
- * Description: Bottom sheet for configuring Duo battery threshold and charging color options.
- */
-
 package com.jawzf.pixeltoolkit.ui.features.display.sheets
 
 import androidx.compose.animation.AnimatedVisibility

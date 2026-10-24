@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Background Services & Receivers
- * File: SmartPixelsTileService.kt
- * Description: Quick Settings tile service component for Smart Pixels feature.
- */
-
 package com.jawzf.pixeltoolkit.services.tiles
 
 import android.graphics.drawable.Icon

@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: System Customization
- * File: StatusBarIconSettingsUI.kt
- * Description: Composable screen for system status bar icon blacklist controls.
- */
-
 package com.jawzf.pixeltoolkit.ui.features.system
 
 import android.Manifest

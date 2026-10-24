@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Feature - Automation
- * File: MacroItem.kt
- * Description: UI component and settings composable for Automation feature domain.
- */
-
 package com.jawzf.pixeltoolkit.ui.components.diy
 
 import androidx.compose.foundation.ExperimentalFoundationApi

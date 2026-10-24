@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Module
- * File: RepoDetailsRow.kt
- * Description: UI row displaying repository info and stats from sameerasw.com.
- */
-
 package com.jawzf.pixeltoolkit.ui.components.dialogs
 
 import android.content.Intent

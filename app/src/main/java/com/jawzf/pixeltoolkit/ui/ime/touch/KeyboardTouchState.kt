@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Module
- * File: KeyboardTouchState.kt
- * Description: State tracking and coordinator for keyboard panel gestures.
- */
-
 package com.jawzf.pixeltoolkit.ui.ime.touch
 
 internal enum class PointerMode {

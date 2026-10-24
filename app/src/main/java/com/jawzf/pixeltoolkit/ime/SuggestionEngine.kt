@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Ime
- * File: SuggestionEngine.kt
- * Description: Component file for SuggestionEngine.kt.
- */
-
 package com.jawzf.pixeltoolkit.ime
 
 import android.content.Context

@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Background Services & Receivers
- * File: StackSmartPick.kt
- * Description: Picks the most relevant widget to show in a stack.
- */
-
 package com.jawzf.pixeltoolkit.services.widgets
 
 object StackSmartPick {

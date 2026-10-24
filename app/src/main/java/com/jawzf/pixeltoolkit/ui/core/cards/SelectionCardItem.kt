@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Core Components
- * File: SelectionCardItem.kt
- * Description: Reusable core UI component for SelectionCardItem.kt.
- */
-
 package com.jawzf.pixeltoolkit.ui.core.cards
 
 import androidx.compose.foundation.clickable

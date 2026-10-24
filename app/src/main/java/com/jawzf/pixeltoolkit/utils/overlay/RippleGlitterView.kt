@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Utilities - Overlay
- * File: RippleGlitterView.kt
- * Description: Utility helper for RippleGlitterView.kt.
- */
-
 package com.jawzf.pixeltoolkit.utils.overlay
 
 import android.content.Context

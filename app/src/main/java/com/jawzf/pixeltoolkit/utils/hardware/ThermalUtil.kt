@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Hardware Utilities
- * File: ThermalUtil.kt
- * Description: Hardware helper for monitoring device thermal zones and CPU throttling states.
- */
-
 package com.jawzf.pixeltoolkit.utils.hardware
 
 import android.content.Context

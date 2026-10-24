@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Translation
- * File: TranslationModels.kt
- * Description: Component file for TranslationModels.kt.
- */
-
 package com.jawzf.pixeltoolkit.translation.model
 
 import androidx.compose.runtime.mutableStateListOf

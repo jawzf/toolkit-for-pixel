@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: ViewModel State Holders
- * File: DashSettings.kt
- * Description: Observable settings holder for the notification lighting edge dash effect.
- */
-
 package com.jawzf.pixeltoolkit.viewmodels.state
 
 import androidx.compose.runtime.MutableFloatState

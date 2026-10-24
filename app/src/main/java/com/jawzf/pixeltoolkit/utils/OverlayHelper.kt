@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Utilities - General
- * File: OverlayHelper.kt
- * Description: Utility helper for OverlayHelper.kt.
- */
-
 package com.jawzf.pixeltoolkit.utils
 
 import android.animation.Animator

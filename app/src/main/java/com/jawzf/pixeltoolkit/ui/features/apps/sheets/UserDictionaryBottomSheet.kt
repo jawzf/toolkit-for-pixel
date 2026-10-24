@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Feature - Apps
- * File: UserDictionaryBottomSheet.kt
- * Description: UI component and settings composable for Apps feature domain.
- */
-
 package com.jawzf.pixeltoolkit.ui.features.apps.sheets
 
 import androidx.compose.foundation.background

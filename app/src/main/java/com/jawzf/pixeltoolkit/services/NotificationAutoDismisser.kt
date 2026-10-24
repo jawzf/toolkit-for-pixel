@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Service Handlers
- * File: NotificationAutoDismisser.kt
- * Description: Helper object for auto-dismissing app notifications after a set time.
- */
-
 package com.jawzf.pixeltoolkit.services
 
 import android.app.Notification

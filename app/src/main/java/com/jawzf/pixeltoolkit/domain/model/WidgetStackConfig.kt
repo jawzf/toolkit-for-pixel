@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Domain Models
- * File: WidgetStackConfig.kt
- * Description: Configuration of a single widget stack placed on the homescreen.
- */
-
 package com.jawzf.pixeltoolkit.domain.model
 
 import androidx.annotation.Keep

@@ -1,13 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Security & Device Admin
- * File: SecurityViewModel.kt
- * Description: Handles state management for AppLock, RemoteLock, Biometric security,
- * and lock screen security features.
- */
-
 package com.jawzf.pixeltoolkit.viewmodels
 
 import android.content.Context

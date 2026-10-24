@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Domain Controllers
- * File: HilightProgressTracker.kt
- * Description: Shows live notification progress on the Hilight LEDs each time it reaches a new LED.
- */
-
 package com.jawzf.pixeltoolkit.domain.controller
 
 import android.content.Context

@@ -1,13 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Photo Watermark & EXIF Processing
- * File: WatermarkViewModel.kt
- * Description: ViewModel managing camera photo watermark options, EXIF metadata extraction,
- * and image rendering engine parameters.
- */
-
 package com.jawzf.pixeltoolkit.viewmodels
 
 import android.content.Context

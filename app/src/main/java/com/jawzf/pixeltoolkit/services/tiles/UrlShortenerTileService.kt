@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Background Services & Receivers - URL Shortener Tile
- * File: UrlShortenerTileService.kt
- * Description: Quick Settings pull-down tile to instantly shorten web URLs from the clipboard with haptic feedback, auto-copy, and action notifications.
- */
-
 package com.jawzf.pixeltoolkit.services.tiles
 
 import android.content.ClipData

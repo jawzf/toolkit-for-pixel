@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Translation
- * File: TranslatableCardContainer.kt
- * Description: Component file for TranslatableCardContainer.kt.
- */
-
 package com.jawzf.pixeltoolkit.translation.ui
 
 import androidx.compose.foundation.gestures.awaitEachGesture

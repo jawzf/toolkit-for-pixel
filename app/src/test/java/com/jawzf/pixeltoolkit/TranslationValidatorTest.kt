@@ -1,8 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- */
-
 package com.jawzf.pixeltoolkit
 
 import com.jawzf.pixeltoolkit.translation.TranslationValidator

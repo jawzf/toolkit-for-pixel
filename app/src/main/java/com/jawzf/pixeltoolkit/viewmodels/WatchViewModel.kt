@@ -1,13 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: WearOS Smartwatch Sync
- * File: WatchViewModel.kt
- * Description: ViewModel managing Wearable Data API node detection, companion app version checks,
- * and smartwatch remote lock preferences.
- */
-
 package com.jawzf.pixeltoolkit.viewmodels
 
 import android.content.Context

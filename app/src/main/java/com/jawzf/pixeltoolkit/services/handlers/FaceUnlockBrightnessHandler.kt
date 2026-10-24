@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Background Services & Receivers
- * File: FaceUnlockBrightnessHandler.kt
- * Description: Shows an Illuminate pill on the lock screen in low light that boosts brightness for face unlock.
- */
-
 package com.jawzf.pixeltoolkit.services.handlers
 
 import android.accessibilityservice.AccessibilityService

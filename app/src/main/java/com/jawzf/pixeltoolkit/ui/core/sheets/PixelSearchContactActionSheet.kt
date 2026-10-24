@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Sheets
- * File: PixelSearchContactActionSheet.kt
- * Description: Contextual bottom sheet providing contact actions (Call, SMS, View contact, Copy number).
- */
-
 package com.jawzf.pixeltoolkit.ui.core.sheets
 
 import android.content.ClipData

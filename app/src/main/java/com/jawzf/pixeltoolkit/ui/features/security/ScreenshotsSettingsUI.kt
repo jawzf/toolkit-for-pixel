@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Feature - Security
- * File: ScreenshotsSettingsUI.kt
- * Description: Settings for cleaning up shared and old screenshots.
- */
-
 package com.jawzf.pixeltoolkit.ui.features.security
 
 import android.text.format.Formatter

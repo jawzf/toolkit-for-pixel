@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Core UI Components
- * File: ActivityPickerSheet.kt
- * Description: App then activity picker for the Open activity action, with pin to home screen.
- */
-
 package com.jawzf.pixeltoolkit.ui.core.sheets
 
 import android.content.pm.ShortcutManager

@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Sheets
- * File: PixelSearchFileActionSheet.kt
- * Description: Contextual bottom sheet providing file actions (Open, Open with, Show in folder, Share, Copy path).
- */
-
 package com.jawzf.pixeltoolkit.ui.core.sheets
 
 import android.content.ClipData

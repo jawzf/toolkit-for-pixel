@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Feature - Battery
- * File: BatteryAppsTabContent.kt
- * Description: UI component and settings composable for Battery feature domain.
- */
-
 package com.jawzf.pixeltoolkit.ui.components.battery
 
 import android.view.View

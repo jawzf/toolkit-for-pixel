@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Core Components
- * File: PrivilegedModePicker.kt
- * Description: Dropdown picker for the privileged access backend.
- */
-
 package com.jawzf.pixeltoolkit.ui.core.pickers
 
 import androidx.compose.foundation.layout.Box

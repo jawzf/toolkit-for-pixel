@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Module
- * File: KeyGeometry.kt
- * Description: Geometry constants and bounds models for intelligent touch decoding.
- */
-
 package com.jawzf.pixeltoolkit.ui.ime.touch
 
 internal object KeyGeometry {

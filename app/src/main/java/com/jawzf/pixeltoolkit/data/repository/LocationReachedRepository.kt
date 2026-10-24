@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Data & Repository Layer
- * File: LocationReachedRepository.kt
- * Description: Data repository and storage component for LocationReachedRepository.kt.
- */
-
 package com.jawzf.pixeltoolkit.data.repository
 
 import android.content.Context

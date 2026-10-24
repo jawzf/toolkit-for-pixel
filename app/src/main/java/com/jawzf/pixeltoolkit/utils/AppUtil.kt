@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Core Utilities
- * File: AppUtil.kt
- * Description: General application helper methods for installed package details.
- */
-
 package com.jawzf.pixeltoolkit.utils
 
 import android.content.Context

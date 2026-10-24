@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Background Services & Receivers
- * File: HeadsUpNotificationsTileService.kt
- * Description: Quick Settings tile that toggles system heads-up notifications.
- */
-
 package com.jawzf.pixeltoolkit.services.tiles
 
 import android.Manifest

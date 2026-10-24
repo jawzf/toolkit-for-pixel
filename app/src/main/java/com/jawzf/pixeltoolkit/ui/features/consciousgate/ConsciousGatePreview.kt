@@ -1,14 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Feature - Conscious Gate
- * File: ConsciousGatePreview.kt
- * Description: Full-screen, live-looping preview of the Conscious Gate pause screen, shown
- * as a dialog on top of the settings screen, reusing the real ConsciousGatePauseScreen
- * composable.
- */
-
 package com.jawzf.pixeltoolkit.ui.features.consciousgate
 
 import androidx.compose.animation.core.LinearEasing

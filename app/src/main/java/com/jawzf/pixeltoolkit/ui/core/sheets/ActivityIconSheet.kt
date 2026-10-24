@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Core UI Components
- * File: ActivityIconSheet.kt
- * Description: Chooses the icon of an Open Activity shortcut: the activity's, the app's, or an image from storage.
- */
-
 package com.jawzf.pixeltoolkit.ui.core.sheets
 
 import android.graphics.Bitmap

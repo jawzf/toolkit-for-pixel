@@ -1,13 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Security & Device Protection
- * File: AppLockSettingsUI.kt
- * Description: Composable UI for configuring AppLock authentication, target applications,
- * usage access permissions, and auto-lock delay intervals.
- */
-
 package com.jawzf.pixeltoolkit.ui.features.security
 
 import androidx.compose.foundation.layout.Arrangement

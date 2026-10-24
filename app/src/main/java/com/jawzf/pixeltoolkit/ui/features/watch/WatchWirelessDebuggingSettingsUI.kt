@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: WearOS Companion
- * File: WatchWirelessDebuggingSettingsUI.kt
- * Description: Settings screen displaying watch IP, available ADB port, tap-to-copy, and manual refresh for Wireless Debugging.
- */
-
 package com.jawzf.pixeltoolkit.ui.features.watch
 
 import android.content.ClipData

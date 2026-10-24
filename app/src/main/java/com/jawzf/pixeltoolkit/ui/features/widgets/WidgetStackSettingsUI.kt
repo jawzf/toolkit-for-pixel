@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Widget Settings
- * File: WidgetStackSettingsUI.kt
- * Description: Lists the widget stacks on the homescreen and adds new ones.
- */
-
 package com.jawzf.pixeltoolkit.ui.features.widgets
 
 import android.app.PendingIntent

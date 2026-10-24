@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Background Services & Receivers
- * File: QsTileActionRouter.kt
- * Description: Background service component for QsTileActionRouter.kt.
- */
-
 package com.jawzf.pixeltoolkit.services.receivers
 
 import android.content.BroadcastReceiver

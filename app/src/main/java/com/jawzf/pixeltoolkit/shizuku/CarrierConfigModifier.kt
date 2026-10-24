@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Shizuku / Telephony
- * File: CarrierConfigModifier.kt
- * Description: Privileged Instrumentation to override CarrierConfig (e.g. Carrier Name) via Shizuku shell delegation.
- */
-
 package com.jawzf.pixeltoolkit.shizuku
 
 import android.app.Activity

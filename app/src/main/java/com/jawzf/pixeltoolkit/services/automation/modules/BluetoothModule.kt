@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Background Services & Receivers
- * File: BluetoothModule.kt
- * Description: Background service component for BluetoothModule.kt.
- */
-
 package com.jawzf.pixeltoolkit.services.automation.modules
 
 import android.annotation.SuppressLint

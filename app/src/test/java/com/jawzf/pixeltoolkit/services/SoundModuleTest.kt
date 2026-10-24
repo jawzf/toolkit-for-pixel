@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Unit Tests - Services
- * File: SoundModuleTest.kt
- * Description: Unit tests for SoundModule ringer mode mapping.
- */
-
 package com.jawzf.pixeltoolkit.services
 
 import android.media.AudioManager

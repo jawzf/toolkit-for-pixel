@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Background Services & Receivers
- * File: ScreenshotAutoCleanHandler.kt
- * Description: Schedules every new screenshot for the trash and posts a notification to keep it.
- */
-
 package com.jawzf.pixeltoolkit.services.handlers
 
 import android.content.Context

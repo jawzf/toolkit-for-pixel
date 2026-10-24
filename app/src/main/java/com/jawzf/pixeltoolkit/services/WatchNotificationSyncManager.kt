@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Background Services & Receivers
- * File: WatchNotificationSyncManager.kt
- * Description: Manages syncing phone notifications to WearOS launcher shade via Wearable MessageClient.
- */
-
 package com.jawzf.pixeltoolkit.services
 
 import android.app.Notification

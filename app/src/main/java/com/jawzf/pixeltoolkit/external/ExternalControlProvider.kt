@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: External
- * File: ExternalControlProvider.kt
- * Description: Component file for ExternalControlProvider.kt.
- */
-
 package com.jawzf.pixeltoolkit.external
 
 import android.content.ContentProvider

@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Utilities - Screenshots
- * File: ScreenshotCleaner.kt
- * Description: Finds screenshots in MediaStore, moves them to the trash and schedules delayed cleanups.
- */
-
 package com.jawzf.pixeltoolkit.utils
 
 import android.content.ContentUris

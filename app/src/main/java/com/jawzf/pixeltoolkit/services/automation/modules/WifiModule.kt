@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Background Services & Receivers
- * File: WifiModule.kt
- * Description: Background service component for WifiModule.kt.
- */
-
 package com.jawzf.pixeltoolkit.services.automation.modules
 
 import android.content.Context

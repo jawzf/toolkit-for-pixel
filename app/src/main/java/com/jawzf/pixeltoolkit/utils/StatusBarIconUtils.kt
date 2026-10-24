@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Utilities - General
- * File: StatusBarIconUtils.kt
- * Description: Utility helper for StatusBarIconUtils.kt.
- */
-
 package com.jawzf.pixeltoolkit.utils
 
 import android.content.Context

@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Data & Repository Layer
- * File: WallpaperStagingRepository.kt
- * Description: Repository for staging tomorrow's wallpaper and synchronizing with GitHub & Unsplash.
- */
-
 package com.jawzf.pixeltoolkit.data.repository
 
 import com.google.gson.Gson

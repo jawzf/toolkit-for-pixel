@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Input
- * File: VolumeLongPressDetector.kt
- * Description: Component file for VolumeLongPressDetector.kt.
- */
-
 package com.jawzf.pixeltoolkit.input
 
 import kotlinx.coroutines.CoroutineScope

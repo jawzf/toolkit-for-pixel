@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Domain Layer Models & Registries
- * File: ActionRegistry.kt
- * Description: Central registry providing categorised action lists for both DIY automation and Button Remap.
- */
-
 package com.jawzf.pixeltoolkit.domain.diy
 
 import android.os.Build

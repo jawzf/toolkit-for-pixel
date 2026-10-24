@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Feature - Apps
- * File: AppSelectionSheets.kt
- * Description: UI component and settings composable for Apps feature domain.
- */
-
 package com.jawzf.pixeltoolkit.ui.core.sheets
 
 import android.content.Context

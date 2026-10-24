@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Utilities - URL Shortener
- * File: UrlShortenerActionReceiver.kt
- * Description: BroadcastReceiver for instant Copy & Share actions from the URL Shortener Android notification.
- */
-
 package com.jawzf.pixeltoolkit.receivers
 
 import android.app.NotificationManager

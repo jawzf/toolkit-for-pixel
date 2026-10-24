@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Core Components
- * File: PreReleaseConfirmationSheet.kt
- * Description: Reusable confirmation bottom sheet for enabling or disabling pre-releases.
- */
-
 package com.jawzf.pixeltoolkit.ui.core.sheets
 
 import androidx.compose.foundation.layout.Arrangement

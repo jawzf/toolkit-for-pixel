@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Utilities - Security
- * File: BiometricSecurityHelper.kt
- * Description: Utility helper for BiometricSecurityHelper.kt.
- */
-
 package com.jawzf.pixeltoolkit.utils
 
 import androidx.fragment.app.FragmentActivity

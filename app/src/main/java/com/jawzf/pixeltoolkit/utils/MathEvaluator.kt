@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Utilities - Pixel Search
- * File: MathEvaluator.kt
- * Description: Recursive descent mathematical expression evaluator supporting basic arithmetic, percentages, and exponentiation.
- */
-
 package com.jawzf.pixeltoolkit.utils
 
 import java.text.DecimalFormat

@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Background Services & Receivers
- * File: AutomationManager.kt
- * Description: Background service component for AutomationManager.kt.
- */
-
 package com.jawzf.pixeltoolkit.services.automation
 
 import android.content.Context

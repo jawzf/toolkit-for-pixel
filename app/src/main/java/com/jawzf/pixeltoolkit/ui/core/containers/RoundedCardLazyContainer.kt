@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Core Components
- * File: RoundedCardLazyContainer.kt
- * Description: Reusable core UI component for RoundedCardLazyContainer.kt.
- */
-
 package com.jawzf.pixeltoolkit.ui.core.containers
 
 import android.content.Context

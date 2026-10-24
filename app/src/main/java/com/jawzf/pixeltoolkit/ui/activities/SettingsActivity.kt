@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Application Activities
- * File: SettingsActivity.kt
- * Description: Activity component for SettingsActivity.kt.
- */
-
 package com.jawzf.pixeltoolkit
 
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository

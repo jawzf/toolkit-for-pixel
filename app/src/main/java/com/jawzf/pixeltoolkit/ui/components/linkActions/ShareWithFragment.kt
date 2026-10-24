@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Module
- * File: ShareWithFragment.kt
- * Description: UI layout element for ShareWithFragment.kt.
- */
-
 package com.jawzf.pixeltoolkit.ui.components.linkActions
 
 import android.content.Intent

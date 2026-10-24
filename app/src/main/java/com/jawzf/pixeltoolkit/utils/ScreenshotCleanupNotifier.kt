@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Utilities - Screenshots
- * File: ScreenshotCleanupNotifier.kt
- * Description: Quiet notification for a newly scheduled screenshot with Keep and Trash now actions.
- */
-
 package com.jawzf.pixeltoolkit.utils
 
 import android.Manifest

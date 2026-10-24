@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Feature - Display
- * File: StatusGlanceCalendarOptionsBottomSheet.kt
- * Description: Bottom sheet for configuring Status Glance upcoming calendar event timeframe and selected calendars.
- */
-
 package com.jawzf.pixeltoolkit.ui.features.display.sheets
 
 import androidx.compose.foundation.layout.Arrangement

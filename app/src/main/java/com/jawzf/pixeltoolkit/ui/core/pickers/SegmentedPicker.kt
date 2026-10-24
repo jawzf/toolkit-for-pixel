@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Core UI Components
- * File: SegmentedPicker.kt
- * Description: Connected button group segmented picker control following Material 3 Expressive design.
- */
-
 package com.jawzf.pixeltoolkit.ui.core.pickers
 
 import androidx.compose.foundation.background

@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Domain Layer Models & Registries
- * File: LockscreenShortcut.kt
- * Description: Lock screen shortcut sides and the detected state of the system's own shortcuts.
- */
-
 package com.jawzf.pixeltoolkit.domain.model
 
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository

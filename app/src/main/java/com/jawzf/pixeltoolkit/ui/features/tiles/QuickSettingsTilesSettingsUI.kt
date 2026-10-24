@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Feature - Tiles
- * File: QuickSettingsTilesSettingsUI.kt
- * Description: UI component and settings composable for Tiles feature domain.
- */
-
 package com.jawzf.pixeltoolkit.ui.features.system
 
 import android.app.Activity

@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Unit Tests - Services
- * File: StateEntriesTest.kt
- * Description: Unit tests for StateEntries.
- */
-
 package com.jawzf.pixeltoolkit.services
 
 import com.jawzf.pixeltoolkit.domain.diy.Action

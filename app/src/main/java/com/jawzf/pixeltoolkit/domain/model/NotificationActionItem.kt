@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Domain Models
- * File: NotificationActionItem.kt
- * Description: Data class representing an interactive notification action (button or inline reply).
- */
-
 package com.jawzf.pixeltoolkit.domain.model
 
 import android.app.PendingIntent

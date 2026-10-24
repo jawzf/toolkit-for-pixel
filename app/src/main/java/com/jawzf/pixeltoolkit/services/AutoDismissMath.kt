@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Background Services & Receivers
- * File: AutoDismissMath.kt
- * Description: Pure calculation logic for notification auto-dismiss deadlines.
- */
-
 package com.jawzf.pixeltoolkit.services
 
 import com.jawzf.pixeltoolkit.domain.model.AutoDismissAppConfig

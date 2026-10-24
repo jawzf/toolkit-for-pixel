@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Feature - Wallpaper Staging
- * File: WallpaperStagingScreen.kt
- * Description: UI Screen for previewing, skipping, and staging tomorrow's mobile wallpaper.
- */
-
 package com.jawzf.pixeltoolkit.ui.features.wallpaper
 
 import android.content.Intent

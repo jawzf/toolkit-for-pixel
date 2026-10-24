@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Domain Layer - GitHub
- * File: GitHubContributor.kt
- * Description: Data model representing a repository contributor.
- */
-
 package com.jawzf.pixeltoolkit.domain.model.github
 
 import com.google.gson.annotations.SerializedName

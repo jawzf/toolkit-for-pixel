@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Hardware Features
- * File: ActionSequenceEditor.kt
- * Description: Reusable editor for an ordered sequence of DIY actions (add, configure, reorder, remove).
- */
-
 package com.jawzf.pixeltoolkit.ui.features.system
 
 import android.os.Build

@@ -1,13 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Battery & Power Management
- * File: BatteryViewModel.kt
- * Description: ViewModel managing state for battery statistics, charging history,
- * ring drawer overlays, and power saving notification toggles.
- */
-
 package com.jawzf.pixeltoolkit.viewmodels
 
 import android.content.Context

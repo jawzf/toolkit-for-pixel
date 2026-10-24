@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Module
- * File: KeyboardLayoutBuilder.kt
- * Description: Places keys with zero-gap logical tiles, edge expansion, and spacebar boundary stealing.
- */
-
 package com.jawzf.pixeltoolkit.ui.ime.touch
 
 internal object KeyboardLayoutBuilder {

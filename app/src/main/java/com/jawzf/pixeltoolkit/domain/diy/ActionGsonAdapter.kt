@@ -1,13 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Domain Layer Models & Registries
- * File: ActionGsonAdapter.kt
- * Description: Shared Gson serializer/deserializer for the Action sealed interface.
- *              Used by both DIYRepository and SettingsRepository.
- */
-
 package com.jawzf.pixeltoolkit.domain.diy
 
 import com.google.gson.GsonBuilder

@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Core Utilities
- * File: CameraFlipButton.kt
- * Description: Helpers for finding and clicking camera flip buttons via accessibility.
- */
-
 package com.jawzf.pixeltoolkit.utils
 
 import android.accessibilityservice.AccessibilityService

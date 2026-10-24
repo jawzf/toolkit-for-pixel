@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Domain Layer Models & Registries
- * File: GitHubUser.kt
- * Description: Domain model and business logic entry for GitHubUser.kt.
- */
-
 package com.jawzf.pixeltoolkit.domain.model.github
 
 import androidx.annotation.Keep

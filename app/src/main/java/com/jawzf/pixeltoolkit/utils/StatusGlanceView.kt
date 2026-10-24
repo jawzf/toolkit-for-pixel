@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Utilities - Overlays
- * File: StatusGlanceView.kt
- * Description: Status Glance ambient chip indicator canvas view for status bar display.
- */
-
 package com.jawzf.pixeltoolkit.utils
 
 import android.animation.Animator

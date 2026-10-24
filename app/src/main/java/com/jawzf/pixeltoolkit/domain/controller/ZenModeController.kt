@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Domain Controllers
- * File: ZenModeController.kt
- * Description: Lists and switches the system Modes (Do Not Disturb rules) through the system modes service over Shizuku.
- */
-
 package com.jawzf.pixeltoolkit.domain.controller
 
 import android.app.AutomaticZenRule

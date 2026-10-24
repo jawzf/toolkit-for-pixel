@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Feature - Display
- * File: StatusGlanceBatteryOptionsBottomSheet.kt
- * Description: Bottom sheet for configuring Status Glance battery display mode, icon size, and dynamic visibility conditions.
- */
-
 package com.jawzf.pixeltoolkit.ui.features.display.sheets
 
 import androidx.compose.animation.AnimatedVisibility

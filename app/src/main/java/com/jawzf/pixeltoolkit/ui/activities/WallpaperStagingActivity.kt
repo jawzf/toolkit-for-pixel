@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Application Activities
- * File: WallpaperStagingActivity.kt
- * Description: Activity component for reviewing and staging tomorrow's mobile wallpaper pick.
- */
-
 package com.jawzf.pixeltoolkit.ui.activities
 
 import android.os.Bundle

@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Utilities
- * File: FileSearchUtil.kt
- * Description: Fast indexed universal file and media search utility utilizing MediaStore.
- */
-
 package com.jawzf.pixeltoolkit.utils
 
 import android.content.ContentUris

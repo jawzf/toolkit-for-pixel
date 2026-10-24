@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Feature - Battery
- * File: ChargingModeSettingsSheet.kt
- * Description: Config sheet for the "Set Charging Mode" DIY automation action.
- */
-
 package com.jawzf.pixeltoolkit.ui.core.sheets
 
 import androidx.compose.foundation.background

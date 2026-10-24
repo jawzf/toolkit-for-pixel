@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Utilities
- * File: ActivityLauncherUtil.kt
- * Description: Lists an app's activities for the Open activity action and resolves their icons.
- */
-
 package com.jawzf.pixeltoolkit.utils
 
 import android.content.ComponentName

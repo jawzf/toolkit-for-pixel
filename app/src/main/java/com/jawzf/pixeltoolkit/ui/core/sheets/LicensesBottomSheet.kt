@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Core Components
- * File: LicensesBottomSheet.kt
- * Description: Bottom sheet displaying open source licenses and credits, replicating Help & Guides sheet layout.
- */
-
 package com.jawzf.pixeltoolkit.ui.core.sheets
 
 import android.content.Intent

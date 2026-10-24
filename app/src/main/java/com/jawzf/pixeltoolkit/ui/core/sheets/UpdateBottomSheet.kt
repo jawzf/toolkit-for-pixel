@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Core Components
- * File: UpdateBottomSheet.kt
- * Description: Reusable core UI component for UpdateBottomSheet.kt.
- */
-
 package com.jawzf.pixeltoolkit.ui.core.sheets
 
 import android.content.Intent

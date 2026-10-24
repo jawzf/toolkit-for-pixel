@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Hardware Features
- * File: ButtonRemapSettingsUI.kt
- * Description: Composable screen for remapping volume and hardware keys with unified DIY actions.
- */
-
 package com.jawzf.pixeltoolkit.ui.features.system
 
 import android.content.ActivityNotFoundException

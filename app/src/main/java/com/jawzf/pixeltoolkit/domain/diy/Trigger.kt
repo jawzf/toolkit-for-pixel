@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Domain Layer Models & Registries
- * File: Trigger.kt
- * Description: Domain model and business logic entry for Trigger.kt.
- */
-
 package com.jawzf.pixeltoolkit.domain.diy
 
 import androidx.annotation.Keep

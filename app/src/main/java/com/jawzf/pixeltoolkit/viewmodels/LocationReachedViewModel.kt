@@ -1,13 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Location Alarms & Geofencing
- * File: LocationReachedViewModel.kt
- * Description: ViewModel managing destination geofencing alarms, GPS location tracking,
- * and background alarm service triggers.
- */
-
 package com.jawzf.pixeltoolkit.viewmodels
 
 import android.app.Application

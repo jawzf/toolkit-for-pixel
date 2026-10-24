@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Hardware Utilities
- * File: ShakeDetector.kt
- * Description: Accelerometer based shake gesture detector.
- */
-
 package com.jawzf.pixeltoolkit.utils.hardware
 
 import android.content.Context

@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: WearOS Companion
- * File: WatchfaceSettingsUI.kt
- * Description: Composable settings screen for configuring Essentials Watchface preferences.
- */
-
 package com.jawzf.pixeltoolkit.ui.features.watch
 
 import android.content.Context

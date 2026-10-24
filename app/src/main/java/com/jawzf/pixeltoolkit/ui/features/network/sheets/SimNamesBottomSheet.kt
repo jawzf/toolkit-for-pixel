@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: UI Feature - Network
- * File: SimNamesBottomSheet.kt
- * Description: Bottom sheet allowing users to view, customize, and reset carrier names per active SIM card.
- */
-
 package com.jawzf.pixeltoolkit.ui.features.network.sheets
 
 import androidx.compose.foundation.background

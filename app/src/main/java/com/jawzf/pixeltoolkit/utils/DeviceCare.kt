@@ -1,12 +1,3 @@
-/*
- * Copyright (c) 2026 sameerasw.com
- * License: MIT License
- *
- * Feature Module: Utilities - General
- * File: DeviceCare.kt
- * Description: Clears app caches and closes idle background apps.
- */
-
 package com.jawzf.pixeltoolkit.utils
 
 import android.content.Context
