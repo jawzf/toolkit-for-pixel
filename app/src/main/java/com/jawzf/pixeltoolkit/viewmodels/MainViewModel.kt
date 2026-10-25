@@ -34,13 +34,9 @@ import androidx.core.content.ContextCompat
 import androidx.core.os.LocaleListCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.work.ExistingPeriodicWorkPolicy
-import androidx.work.PeriodicWorkRequestBuilder
-import androidx.work.WorkManager
 import com.jawzf.pixeltoolkit.EssentialsApp
 import com.jawzf.pixeltoolkit.R
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.data.repository.UpdateRepository
 import com.jawzf.pixeltoolkit.utils.LogManager
 import com.jawzf.pixeltoolkit.domain.HapticFeedbackType
 import com.jawzf.pixeltoolkit.domain.MapsState
@@ -69,9 +65,7 @@ import com.jawzf.pixeltoolkit.domain.model.RemapSlot
 import com.jawzf.pixeltoolkit.domain.model.ScaleAnimationsProfile
 import com.jawzf.pixeltoolkit.domain.model.SearchableItem
 import com.jawzf.pixeltoolkit.domain.model.SystemShortcutsState
-import com.jawzf.pixeltoolkit.domain.model.UpdateInfo
 import com.jawzf.pixeltoolkit.domain.registry.SearchRegistry
-import com.jawzf.pixeltoolkit.services.AppUpdateWorker
 import com.jawzf.pixeltoolkit.services.CaffeinateWakeLockService
 import com.jawzf.pixeltoolkit.services.NotificationLightingService
 import com.jawzf.pixeltoolkit.services.receivers.FlashlightActionReceiver
@@ -95,7 +89,6 @@ import com.jawzf.pixeltoolkit.utils.ShizukuUtils
 import com.jawzf.pixeltoolkit.utils.SplitScreenUtil
 import com.jawzf.pixeltoolkit.utils.SurfaceFlingerControl
 import com.jawzf.pixeltoolkit.utils.TestNotificationUtil
-import com.jawzf.pixeltoolkit.utils.UpdateNotificationHelper
 import com.jawzf.pixeltoolkit.island.service.IslandStatusBarHider
 import com.jawzf.pixeltoolkit.utils.overlay.writeTo
 import com.jawzf.pixeltoolkit.viewmodels.state.DashSettings
@@ -427,7 +420,6 @@ class MainViewModel : ViewModel() {
     val isNotificationGlanceSameAsLightingEnabled = mutableStateOf(true)
     val isOnboardingCompleted =
         mutableStateOf(true) // Default to true so it doesn't flash on first check if not loaded
-    val isWhatsNewVisible = mutableStateOf(false)
     val dnsPresets = mutableStateListOf<DnsPreset>()
     val addedQSTiles = mutableStateOf<Set<String>>(emptySet())
     val isHideGestureBarEnabled = mutableStateOf(false)
@@ -556,13 +548,6 @@ class MainViewModel : ViewModel() {
     val recentSearches = mutableStateOf<List<SearchableItem>>(emptyList())
     private var searchJob: Job? = null
 
-    // Update state
-    val updateInfo = mutableStateOf<UpdateInfo?>(null)
-    val isUpdateAvailable = mutableStateOf(false)
-    val isCheckingUpdate = mutableStateOf(false)
-    val isAutoUpdateEnabled = mutableStateOf(true)
-    val isUpdateNotificationEnabled = mutableStateOf(true)
-    val isPreReleaseCheckEnabled = mutableStateOf(false)
     val isRootEnabled = mutableStateOf(false)
     val privilegedMode = mutableStateOf(PrivilegedMode.AUTO)
     val usesAuthToken = mutableStateOf(true)
@@ -662,9 +647,7 @@ class MainViewModel : ViewModel() {
     val notificationSnoozeDefault = mutableIntStateOf(60)
     val notificationSnoozeOptions = mutableStateOf<List<Int>>(listOf(15, 30, 60, 120))
 
-    private var lastUpdateCheckTime: Long = 0
     lateinit var settingsRepository: SettingsRepository
-    private lateinit var updateRepository: UpdateRepository
     private var appContext: Context? = null
 
     val gitHubToken = mutableStateOf<String?>(null)
@@ -1182,10 +1165,6 @@ class MainViewModel : ViewModel() {
                     }
 
                     SettingsRepository.KEY_USE_ROOT, SettingsRepository.KEY_PRIVILEGED_MODE -> refreshPrivilegedMode()
-
-                    SettingsRepository.KEY_CHECK_PRE_RELEASES_ENABLED ->
-                        isPreReleaseCheckEnabled.value =
-                            settingsRepository.getBoolean(key)
 
                     SettingsRepository.KEY_DEVELOPER_MODE_ENABLED -> {
                         isDeveloperModeEnabled.value = settingsRepository.getBoolean(key)
@@ -1955,7 +1934,6 @@ class MainViewModel : ViewModel() {
     fun check(context: Context) {
         appContext = context.applicationContext
         settingsRepository = SettingsRepository(context)
-        updateRepository = UpdateRepository()
         gitHubUser.value = settingsRepository.getGitHubUser()
 
         // Sync with system per-app language settings
@@ -1981,10 +1959,6 @@ class MainViewModel : ViewModel() {
         isLocalNetworkGranted.value = PermissionUtils.hasLocalNetworkPermission(context)
         isShizukuAvailable.value = ShizukuUtils.isShizukuAvailable()
         isShizukuPermissionGranted.value = ShizukuUtils.hasPermission()
-        if (cachedIsUpdateAvailable) {
-            isUpdateAvailable.value = true
-            updateInfo.value = cachedUpdateInfo
-        }
         isAutoAccessibilityEnabled.value =
             settingsRepository.getBoolean(SettingsRepository.KEY_AUTO_ACCESSIBILITY_ENABLED)
         isHideGestureBarEnabled.value =
@@ -2083,7 +2057,6 @@ class MainViewModel : ViewModel() {
         loadAutoDismissChannels()
         loadAutoDismissStats()
         recentSearches.value = settingsRepository.getRecentSearches()
-        schedulePeriodicAppUpdateCheck(context)
 
         if (isHideGestureBarEnabled.value) {
             applyHideGestureBar(context, true)
@@ -2374,12 +2347,6 @@ class MainViewModel : ViewModel() {
             settingsRepository.getBoolean(SettingsRepository.KEY_HIDDEN_DEBUGGING_SUPPORT)
         isOnboardingCompleted.value =
             settingsRepository.getBoolean(SettingsRepository.KEY_ONBOARDING_COMPLETED, false)
-
-        val lastShownCounter =
-            settingsRepository.getInt(SettingsRepository.KEY_WHATS_NEW_LAST_SHOWN_COUNTER, 0)
-        isWhatsNewVisible.value =
-            isOnboardingCompleted.value &&
-            lastShownCounter < com.jawzf.pixeltoolkit.BuildConfig.WHATS_NEW_COUNTER
 
         notificationLightingCustomColor.intValue =
             settingsRepository.getInt(
@@ -2846,14 +2813,7 @@ class MainViewModel : ViewModel() {
             settingsRepository.getBoolean(SettingsRepository.KEY_SCREEN_LOCKED_DISABLE_ON_EXTENDED_UNLOCK, false)
         isDeviceAdminEnabled.value = isDeviceAdminActive(context)
 
-        isAutoUpdateEnabled.value =
-            settingsRepository.getBoolean(SettingsRepository.KEY_AUTO_UPDATE_ENABLED, true)
-
-        isUpdateNotificationEnabled.value =
-            settingsRepository.getBoolean(SettingsRepository.KEY_UPDATE_NOTIFICATION_ENABLED, true)
         freezeMode.intValue = settingsRepository.getFreezeMode()
-        lastUpdateCheckTime =
-            settingsRepository.getLong(SettingsRepository.KEY_LAST_UPDATE_CHECK_TIME)
         isAppLockEnabled.value =
             settingsRepository.getBoolean(SettingsRepository.KEY_APP_LOCK_ENABLED)
         appLockAutoLockDelayIndex.intValue =
@@ -2906,8 +2866,6 @@ class MainViewModel : ViewModel() {
         dnsPresets.clear()
         dnsPresets.addAll(settingsRepository.getPrivateDnsPresets())
 
-        isPreReleaseCheckEnabled.value =
-            settingsRepository.getBoolean(SettingsRepository.KEY_CHECK_PRE_RELEASES_ENABLED)
         pinnedFeatureKeys.value = settingsRepository.getPinnedFeatures()
         pinnedQsTileKeys.value = settingsRepository.getPinnedQsTiles()
         isLikeSongToastEnabled.value =
@@ -3218,51 +3176,6 @@ class MainViewModel : ViewModel() {
                 }
             context.sendBroadcast(intent)
         }
-    }
-
-    /**
-     * Executes the set auto update enabled operation.
-     *
-     * @param enabled [Boolean] Target enabled.
-     * @param context [Context] Target context.
-     */
-    fun setAutoUpdateEnabled(
-        enabled: Boolean,
-        context: Context,
-    ) {
-        isAutoUpdateEnabled.value = enabled
-        settingsRepository.putBoolean(SettingsRepository.KEY_AUTO_UPDATE_ENABLED, enabled)
-    }
-
-    /**
-     * Executes the set update notification enabled operation.
-     *
-     * @param enabled [Boolean] Target enabled.
-     * @param context [Context] Target context.
-     */
-    fun setUpdateNotificationEnabled(
-        enabled: Boolean,
-        context: Context,
-    ) {
-        isUpdateNotificationEnabled.value = enabled
-        settingsRepository.putBoolean(SettingsRepository.KEY_UPDATE_NOTIFICATION_ENABLED, enabled)
-    }
-
-    /**
-     * Executes the set pre release check enabled operation.
-     *
-     * @param enabled [Boolean] Target enabled.
-     * @param context [Context] Target context.
-     */
-    fun setPreReleaseCheckEnabled(
-        enabled: Boolean,
-        context: Context,
-    ) {
-        isPreReleaseCheckEnabled.value = enabled
-        settingsRepository.putBooleanSync(SettingsRepository.KEY_CHECK_PRE_RELEASES_ENABLED, enabled)
-        // Enabling pre-releases automatically enables Developer Mode; disabling turns it off
-        isDeveloperModeEnabled.value = enabled
-        settingsRepository.putBooleanSync(SettingsRepository.KEY_DEVELOPER_MODE_ENABLED, enabled)
     }
 
     /**
@@ -3649,75 +3562,6 @@ class MainViewModel : ViewModel() {
         isMotionBlurSettingEnabled.value = useMotionBlurSetting
         isMotionBlurEnabled.value = useMotionBlurSetting && !isPowerSave
         motionBlurScale.floatValue = settingsRepository.getFloat(SettingsRepository.KEY_MOTION_BLUR_SCALE, 1.0f)
-    }
-
-    /**
-     * Executes the check for updates operation.
-     *
-     * @param context [Context] Target context.
-     * @param manual [Boolean] Target manual.
-     */
-    fun checkForUpdates(
-        context: Context,
-        manual: Boolean = false,
-    ) {
-        if (isCheckingUpdate.value) return
-        if (isUpdateAvailable.value && !manual) return
-
-        if (!manual) {
-            if (!isAutoUpdateEnabled.value) return
-            val currentTime = System.currentTimeMillis()
-            if (currentTime - lastUpdateCheckTime < 900000) return
-        }
-
-        isCheckingUpdate.value = true
-        updateInfo.value = null // Clear stale data before checking
-        viewModelScope.launch {
-            try {
-                val currentVersion =
-                    try {
-                        context.packageManager.getPackageInfo(context.packageName, 0).versionName
-                    } catch (e: Exception) {
-                        "0.0"
-                    } ?: "0.0"
-
-                val updateInfoResult =
-                    updateRepository.checkForUpdates(
-                        context,
-                        isPreReleaseCheckEnabled.value,
-                        currentVersion,
-                    )
-
-                if (updateInfoResult != null) {
-                    updateInfo.value = updateInfoResult
-                    isUpdateAvailable.value = updateInfoResult.isUpdateAvailable
-                    if (updateInfoResult.isUpdateAvailable) {
-                        cachedIsUpdateAvailable = true
-                        cachedUpdateInfo = updateInfoResult
-                    }
-
-                    if (updateInfoResult.isUpdateAvailable && updateInfoResult.downloadUrl.isNotEmpty()) {
-                        if (isUpdateNotificationEnabled.value) {
-                            UpdateNotificationHelper.showUpdateNotification(
-                                context,
-                                updateInfoResult.versionName,
-                                updateInfoResult.downloadUrl,
-                            )
-                        }
-                    }
-
-                    lastUpdateCheckTime = System.currentTimeMillis()
-                    settingsRepository.putLong(
-                        SettingsRepository.KEY_LAST_UPDATE_CHECK_TIME,
-                        lastUpdateCheckTime,
-                    )
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
-            } finally {
-                isCheckingUpdate.value = false
-            }
-        }
     }
 
     /**
@@ -9830,23 +9674,6 @@ class MainViewModel : ViewModel() {
     ) {
         isOnboardingCompleted.value = completed
         settingsRepository.putBoolean(SettingsRepository.KEY_ONBOARDING_COMPLETED, completed)
-        if (completed) {
-            settingsRepository.putInt(
-                SettingsRepository.KEY_WHATS_NEW_LAST_SHOWN_COUNTER,
-                com.jawzf.pixeltoolkit.BuildConfig.WHATS_NEW_COUNTER,
-            )
-        }
-    }
-
-    /**
-     * Executes the complete whats new operation.
-     */
-    fun completeWhatsNew() {
-        isWhatsNewVisible.value = false
-        settingsRepository.putInt(
-            SettingsRepository.KEY_WHATS_NEW_LAST_SHOWN_COUNTER,
-            com.jawzf.pixeltoolkit.BuildConfig.WHATS_NEW_COUNTER,
-        )
     }
 
     /**
@@ -9858,15 +9685,6 @@ class MainViewModel : ViewModel() {
         setOnboardingCompleted(false, context)
         // Reset tab to ESSENTIALS
         setDefaultTab(com.jawzf.pixeltoolkit.domain.DIYTabs.ESSENTIALS, context)
-    }
-
-    /**
-     * Executes the reset update note operation.
-     *
-     * @param context [Context] Target context.
-     */
-    fun resetUpdateNote(context: Context) {
-        settingsRepository.putInt(SettingsRepository.KEY_WHATS_NEW_LAST_SHOWN_COUNTER, 0)
     }
 
     /**
@@ -9936,28 +9754,6 @@ class MainViewModel : ViewModel() {
                 .toSet()
 
         addedQSTiles.value = fromSecureSettings + fromPrefs
-    }
-
-    private fun schedulePeriodicAppUpdateCheck(context: Context) {
-        val constraints =
-            androidx.work.Constraints
-                .Builder()
-                .setRequiredNetworkType(androidx.work.NetworkType.CONNECTED)
-                .build()
-
-        val workRequest =
-            androidx.work
-                .PeriodicWorkRequestBuilder<AppUpdateWorker>(
-                    12,
-                    java.util.concurrent.TimeUnit.HOURS,
-                ).setConstraints(constraints)
-                .build()
-
-        androidx.work.WorkManager.getInstance(context).enqueueUniquePeriodicWork(
-            "app_update_check_work",
-            androidx.work.ExistingPeriodicWorkPolicy.KEEP,
-            workRequest,
-        )
     }
 
     /**
@@ -10202,11 +9998,6 @@ class MainViewModel : ViewModel() {
         } catch (e: Exception) {
             e.printStackTrace()
         }
-    }
-
-    companion object {
-        var cachedIsUpdateAvailable: Boolean = false
-        var cachedUpdateInfo: UpdateInfo? = null
     }
 
     val isLockdownModeEnabled = mutableStateOf(false)

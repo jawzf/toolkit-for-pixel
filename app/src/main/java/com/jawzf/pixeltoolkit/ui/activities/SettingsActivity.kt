@@ -103,10 +103,9 @@ import com.jawzf.pixeltoolkit.ui.core.pickers.LanguagePicker
 import com.jawzf.pixeltoolkit.ui.core.sheets.GitHubAuthSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.ImportConfigConfirmationSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.InstructionsBottomSheet
-import com.jawzf.pixeltoolkit.ui.core.sheets.PreReleaseConfirmationSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.ShakeForHelp
 import com.jawzf.pixeltoolkit.ui.core.sheets.UnsupportedFeaturesConfirmationSheet
-import com.jawzf.pixeltoolkit.ui.core.sheets.UpdateBottomSheet
+
 import androidx.compose.ui.geometry.Offset
 import com.jawzf.pixeltoolkit.ui.modifiers.BlurDirection
 import com.jawzf.pixeltoolkit.ui.modifiers.liquidRipple
@@ -319,13 +318,6 @@ fun SettingsContent(
     val context = LocalContext.current
     val hapticMode by HapticUtil.hapticMode
     var isPermissionsExpanded by remember { mutableStateOf(expandPermissionsInitial) }
-    var showUpdateSheet by remember { mutableStateOf(false) }
-    val updateInfo by viewModel.updateInfo
-    val isUpdateAvailable by viewModel.isUpdateAvailable
-    val isAutoUpdateEnabled by viewModel.isAutoUpdateEnabled
-
-    val isUpdateNotificationEnabled by viewModel.isUpdateNotificationEnabled
-    val isPreReleaseCheckEnabled by viewModel.isPreReleaseCheckEnabled
     val isRootEnabled by viewModel.isRootEnabled
     val isRootPermissionGranted by viewModel.isRootPermissionGranted
     val isDeveloperModeEnabled by viewModel.isDeveloperModeEnabled
@@ -334,8 +326,6 @@ fun SettingsContent(
     var showShizukuHelpBottomSheet by remember { mutableStateOf(false) }
     var showHiddenDebuggingHelpSheet by remember { mutableStateOf(false) }
     var showUnsupportedFeaturesSheet by remember { mutableStateOf(false) }
-    var showPreReleaseConfirmSheet by remember { mutableStateOf(false) }
-    var pendingPreReleaseState by remember { mutableStateOf(false) }
     var showImportConfirmSheet by remember { mutableStateOf(false) }
     var showImportBackupPicker by remember { mutableStateOf(false) }
     var selectedImportUri by remember { mutableStateOf<Uri?>(null) }
@@ -438,14 +428,6 @@ fun SettingsContent(
             }
         }
 
-    if (showUpdateSheet) {
-        UpdateBottomSheet(
-            updateInfo = updateInfo,
-            isChecking = viewModel.isCheckingUpdate.value,
-            onDismissRequest = { showUpdateSheet = false },
-        )
-    }
-
     if (showInstructionsSheet) {
         InstructionsBottomSheet(
             onDismissRequest = { showInstructionsSheet = false },
@@ -478,24 +460,6 @@ fun SettingsContent(
                 }
             },
             featureTitleResIds = FeatureRegistry.getUnsupportedFeatures(context).map { it.title },
-        )
-    }
-
-    if (showPreReleaseConfirmSheet) {
-        PreReleaseConfirmationSheet(
-            isEnabling = pendingPreReleaseState,
-            onDismissRequest = { showPreReleaseConfirmSheet = false },
-            onConfirmRestart = {
-                showPreReleaseConfirmSheet = false
-                viewModel.setPreReleaseCheckEnabled(pendingPreReleaseState, context)
-                val intent = context.packageManager.getLaunchIntentForPackage(context.packageName)?.apply {
-                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                }
-                if (intent != null) {
-                    context.startActivity(intent)
-                    Runtime.getRuntime().exit(0)
-                }
-            },
         )
     }
 
@@ -606,90 +570,6 @@ fun SettingsContent(
                     showInstructionsSheet = true
                 },
             )
-        }
-
-        // Updates 
-        Text(
-            text = "Updates",
-            style = MaterialTheme.typography.titleMedium,
-            modifier = Modifier.padding(start = 16.dp, top = 16.dp, bottom = 8.dp),
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-        )
-
-        RoundedCardContainer {
-            IconToggleItem(
-                iconRes = R.drawable.rounded_mobile_check_24,
-                title = "Auto check for updates",
-                description = "Check for updates at app launch",
-                isChecked = isAutoUpdateEnabled,
-                onCheckedChange = { viewModel.setAutoUpdateEnabled(it, context) },
-            )
-            IconToggleItem(
-                iconRes = R.drawable.rounded_experiment_24,
-                title = context.getString(R.string.check_pre_releases_label),
-                description = context.getString(R.string.check_pre_releases_desc),
-                isChecked = isPreReleaseCheckEnabled,
-                onCheckedChange = { targetState ->
-                    pendingPreReleaseState = targetState
-                    showPreReleaseConfirmSheet = true
-                },
-            )
-            IconToggleItem(
-                iconRes = R.drawable.rounded_notifications_unread_24,
-                title = "Notify for new updates",
-                isChecked = isUpdateNotificationEnabled,
-                onCheckedChange = { viewModel.setUpdateNotificationEnabled(it, context) },
-            )
-
-            Row(
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .background(
-                            MaterialTheme.colorScheme.surfaceBright,
-                            shape = MaterialTheme.shapes.extraSmall,
-                        ).padding(8.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-            ) {
-                val buttonText =
-                    if (isUpdateAvailable && !updateInfo?.versionName.isNullOrEmpty()) {
-                        stringResource(
-                            R.string.action_update_to_version,
-                            updateInfo?.versionName ?: "",
-                        )
-                    } else {
-                        stringResource(R.string.action_check_for_updates)
-                    }
-
-                val buttonIconRes = R.drawable.rounded_mobile_arrow_down_24
-
-                Button(
-                    onClick = {
-                        HapticUtil.performVirtualKeyHaptic(view)
-                        viewModel.checkForUpdates(context, manual = true)
-                        showUpdateSheet = true
-                    },
-                    modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .height(52.dp)
-                            .padding(horizontal = 4.dp),
-                    contentPadding = PaddingValues(vertical = 12.dp, horizontal = 16.dp),
-                ) {
-                    Icon(
-                        painter = painterResource(id = buttonIconRes),
-                        contentDescription = null,
-                        modifier = Modifier.size(24.dp),
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = buttonText,
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold,
-                    )
-                }
-            }
         }
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -1450,31 +1330,6 @@ fun SettingsContent(
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(stringResource(R.string.btn_reset_onboarding))
-                    }
-
-                    Button(
-                        onClick = {
-                            HapticUtil.performVirtualKeyHaptic(view)
-                            viewModel.resetUpdateNote(context)
-                            Toast.makeText(context, context.getString(R.string.toast_update_note_reset), Toast.LENGTH_SHORT).show()
-                        },
-                        modifier =
-                            Modifier
-                                .fillMaxWidth()
-                                .defaultMinSize(minHeight = 44.dp),
-                        colors =
-                            ButtonDefaults.buttonColors(
-                                containerColor = MaterialTheme.colorScheme.errorContainer,
-                                contentColor = MaterialTheme.colorScheme.onErrorContainer,
-                            ),
-                    ) {
-                        Icon(
-                            painter = painterResource(R.drawable.rounded_refresh_24),
-                            contentDescription = null,
-                            modifier = Modifier.size(20.dp),
-                        )
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text(stringResource(R.string.btn_reset_update_note))
                     }
 
                     Button(

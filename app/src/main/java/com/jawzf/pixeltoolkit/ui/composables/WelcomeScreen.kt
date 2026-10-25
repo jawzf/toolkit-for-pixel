@@ -36,16 +36,13 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -78,13 +75,10 @@ import coil.decode.ImageDecoderDecoder
 import coil.request.ImageRequest
 import com.jawzf.pixeltoolkit.R
 import com.jawzf.pixeltoolkit.ui.components.ShakeForHelpCard
-import com.jawzf.pixeltoolkit.ui.components.WhatsNewCustomContent
-import com.jawzf.pixeltoolkit.ui.components.text.SimpleMarkdown
 import com.jawzf.pixeltoolkit.ui.core.cards.IconToggleItem
 import com.jawzf.pixeltoolkit.ui.core.pickers.PrivilegedModePicker
 import com.jawzf.pixeltoolkit.ui.core.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.ui.core.pickers.LanguagePicker
-import com.jawzf.pixeltoolkit.ui.core.sheets.UpdateBottomSheet
 import com.jawzf.pixeltoolkit.ui.theme.AppFontFamily
 import com.jawzf.pixeltoolkit.ui.core.pickers.SegmentedPicker
 import com.jawzf.pixeltoolkit.utils.AppHapticMode
@@ -99,14 +93,12 @@ enum class OnboardingStep {
     ACKNOWLEDGEMENT,
     PREFERENCES,
     FEATURE_INTRODUCTION,
-    WHATS_NEW,
 }
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun WelcomeScreen(
     viewModel: MainViewModel,
-    isWhatsNewFlow: Boolean = false,
     onBeginClick: () -> Unit,
 ) {
     val view = LocalView.current
@@ -144,7 +136,6 @@ fun WelcomeScreen(
                     OnboardingStep.WELCOME -> {
                         WelcomeStepContent(
                             viewModel = viewModel,
-                            isWhatsNewFlow = isWhatsNewFlow,
                             rotationAnimatable = rotationAnimatable,
                             center = center,
                             onCenterChanged = { center = it },
@@ -152,11 +143,7 @@ fun WelcomeScreen(
                             onEasterEggTriggered = { hasTriggeredEasterEgg = true },
                             onNext = {
                                 HapticUtil.performVirtualKeyHaptic(view)
-                                if (isWhatsNewFlow) {
-                                    currentStep = OnboardingStep.WHATS_NEW
-                                } else {
-                                    currentStep = OnboardingStep.ACKNOWLEDGEMENT
-                                }
+                                currentStep = OnboardingStep.ACKNOWLEDGEMENT
                             },
                         )
                     }
@@ -200,20 +187,6 @@ fun WelcomeScreen(
                             },
                         )
                     }
-
-                    OnboardingStep.WHATS_NEW -> {
-                        WhatsNewStepContent(
-                            viewModel = viewModel,
-                            onBack = {
-                                HapticUtil.performVirtualKeyHaptic(view)
-                                currentStep = OnboardingStep.WELCOME
-                            },
-                            onFinish = {
-                                HapticUtil.performVirtualKeyHaptic(view)
-                                onBeginClick()
-                            },
-                        )
-                    }
                 }
             }
         }
@@ -223,7 +196,6 @@ fun WelcomeScreen(
 @Composable
 fun WelcomeStepContent(
     viewModel: MainViewModel,
-    isWhatsNewFlow: Boolean,
     rotationAnimatable: Animatable<Float, *>,
     center: Offset,
     onCenterChanged: (Offset) -> Unit,
@@ -349,7 +321,7 @@ fun WelcomeStepContent(
             Spacer(modifier = Modifier.height(18.dp))
 
             Text(
-                text = stringResource(if (isWhatsNewFlow) R.string.welcome_back_title else R.string.welcome_title),
+                text = stringResource(R.string.welcome_title),
                 style =
                     MaterialTheme.typography.headlineMedium.copy(
                         fontFamily = AppFontFamily,
@@ -401,14 +373,12 @@ fun WelcomeStepContent(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            if (!isWhatsNewFlow) {
-                val appLanguage by viewModel.appLanguage
-                RoundedCardContainer(modifier = Modifier.padding(horizontal = 16.dp)) {
-                    LanguagePicker(
-                        selectedLanguageCode = appLanguage,
-                        onLanguageSelected = { viewModel.setAppLanguage(it) },
-                    )
-                }
+            val appLanguage by viewModel.appLanguage
+            RoundedCardContainer(modifier = Modifier.padding(horizontal = 16.dp)) {
+                LanguagePicker(
+                    selectedLanguageCode = appLanguage,
+                    onLanguageSelected = { viewModel.setAppLanguage(it) },
+                )
             }
 
             Spacer(modifier = Modifier.height(2.dp))
@@ -424,7 +394,7 @@ fun WelcomeStepContent(
                     .height(56.dp),
         ) {
             Text(
-                text = stringResource(if (isWhatsNewFlow) R.string.action_see_whats_new else R.string.action_lets_begin),
+                text = stringResource(R.string.action_lets_begin),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
             )
@@ -764,175 +734,6 @@ fun GifItem(
     }
 }
 
-@Composable
-fun WhatsNewStepContent(
-    viewModel: MainViewModel,
-    onBack: () -> Unit,
-    onFinish: () -> Unit,
-) {
-    val context = LocalContext.current
-    val view = LocalView.current
-    val updateInfo by viewModel.updateInfo
-    val isCheckingUpdate by viewModel.isCheckingUpdate
-
-    LaunchedEffect(Unit) {
-        if (updateInfo == null && !isCheckingUpdate) {
-            viewModel.checkForUpdates(context)
-        }
-    }
-
-    Column(
-        modifier = Modifier.fillMaxSize(),
-    ) {
-        Column(
-            modifier =
-                Modifier
-                    .weight(1f)
-                    .fillMaxWidth()
-                    .verticalScroll(rememberScrollState()),
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            Spacer(modifier = Modifier.statusBarsPadding())
-
-            Spacer(modifier = Modifier.height(32.dp))
-
-            Text(
-                text = "Essentials v${com.jawzf.pixeltoolkit.BuildConfig.VERSION_NAME}",
-                style =
-                    MaterialTheme.typography.headlineLarge.copy(
-                        fontFamily = AppFontFamily,
-                        fontWeight = FontWeight.Bold,
-                    ),
-                textAlign = TextAlign.Center,
-                modifier = Modifier.padding(horizontal = 24.dp),
-            )
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            // Custom content slot
-            Box(modifier = Modifier.padding(horizontal = 24.dp)) {
-                WhatsNewCustomContent(mainViewModel = viewModel)
-            }
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // Release Notes / Markdown
-            Box(
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 24.dp)
-                        .clip(RoundedCornerShape(24.dp))
-                        .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f))
-                        .padding(16.dp),
-            ) {
-                if (isCheckingUpdate) {
-                    Box(
-                        modifier =
-                            Modifier
-                                .fillMaxWidth()
-                                .height(200.dp),
-                        contentAlignment = Alignment.Center,
-                    ) {
-                        CircularProgressIndicator()
-                    }
-                } else {
-                    val content = updateInfo?.releaseNotes
-                    if (content.isNullOrEmpty()) {
-                        Column(
-                            modifier =
-                                Modifier
-                                    .fillMaxWidth()
-                                    .padding(vertical = 24.dp),
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                        ) {
-                            Text(
-                                text = stringResource(R.string.msg_error_load_release_notes),
-                                style = MaterialTheme.typography.bodyLarge,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                textAlign = TextAlign.Center,
-                            )
-
-                            Spacer(modifier = Modifier.height(16.dp))
-
-                            val webUrl =
-                                updateInfo?.releaseUrl
-                                    ?: "https://github.com/sameerasw/essentials/releases"
-                            TextButton(
-                                onClick = {
-                                    HapticUtil.performVirtualKeyHaptic(view)
-                                    val intent = Intent(Intent.ACTION_VIEW, webUrl.toUri())
-                                    context.startActivity(intent)
-                                },
-                            ) {
-                                Text(
-                                    text = stringResource(R.string.action_view_on_web),
-                                    fontWeight = FontWeight.Bold,
-                                )
-                            }
-                        }
-                    } else {
-                        SimpleMarkdown(
-                            content = content,
-                            modifier = Modifier.fillMaxWidth(),
-                        )
-                    }
-                }
-            }
-
-            Spacer(modifier = Modifier.height(32.dp))
-        }
-
-        Row(
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .navigationBarsPadding()
-                    .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
-        ) {
-            OutlinedButton(
-                onClick = {
-                    HapticUtil.performVirtualKeyHaptic(view)
-                    onBack()
-                },
-                modifier = Modifier.size(56.dp),
-                shape = RoundedCornerShape(16.dp),
-                contentPadding = PaddingValues(0.dp),
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.rounded_arrow_back_24),
-                    contentDescription = stringResource(R.string.action_back),
-                    modifier = Modifier.size(24.dp),
-                )
-            }
-
-            Button(
-                onClick = onFinish,
-                modifier =
-                    Modifier
-                        .weight(1f)
-                        .height(56.dp),
-            ) {
-                Text(
-                    text = stringResource(R.string.action_let_me_in),
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold,
-                )
-
-                Spacer(modifier = Modifier.weight(1f))
-
-                Icon(
-                    painter = painterResource(id = R.drawable.rounded_mobile_check_24),
-                    contentDescription = null,
-                    modifier = Modifier.size(24.dp),
-                )
-            }
-        }
-    }
-}
-
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun PreferencesStepContent(
@@ -946,18 +747,6 @@ fun PreferencesStepContent(
     val isPitchBlackThemeEnabled by viewModel.isPitchBlackThemeEnabled
     val isBlurSettingEnabled by viewModel.isBlurSettingEnabled
     val isRootEnabled by viewModel.isRootEnabled
-    val isAutoUpdateEnabled by viewModel.isAutoUpdateEnabled
-    val updateInfo by viewModel.updateInfo
-    val isCheckingUpdate by viewModel.isCheckingUpdate
-    var showUpdateSheet by remember { mutableStateOf(false) }
-
-    if (showUpdateSheet) {
-        UpdateBottomSheet(
-            updateInfo = updateInfo,
-            isChecking = isCheckingUpdate,
-            onDismissRequest = { showUpdateSheet = false },
-        )
-    }
 
     Column(
         modifier =
@@ -1076,25 +865,6 @@ fun PreferencesStepContent(
             )
 
             RoundedCardContainer {
-                IconToggleItem(
-                    iconRes = R.drawable.rounded_mobile_check_24,
-                    title = stringResource(R.string.label_auto_check_updates),
-                    description = stringResource(R.string.desc_auto_check_updates),
-                    isChecked = isAutoUpdateEnabled,
-                    onCheckedChange = { viewModel.setAutoUpdateEnabled(it, context) },
-                )
-
-                IconToggleItem(
-                    iconRes = R.drawable.rounded_check_24,
-                    title = stringResource(R.string.action_check_whats_new),
-                    isChecked = false,
-                    showToggle = false,
-                    onCheckedChange = {
-                        HapticUtil.performVirtualKeyHaptic(view)
-                        viewModel.checkForUpdates(context, manual = true)
-                        showUpdateSheet = true
-                    },
-                )
             }
 
             Spacer(modifier = Modifier.height(24.dp))

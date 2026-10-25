@@ -19,66 +19,20 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.jawzf.pixeltoolkit.R
 import com.jawzf.pixeltoolkit.ui.core.cards.IconToggleItem
 import com.jawzf.pixeltoolkit.ui.core.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.ui.theme.AppFontFamily
-import com.jawzf.pixeltoolkit.utils.HapticUtil
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
-
-/**
- * Slot for custom content to be displayed in the "What's New" screen.
- */
-@Composable
-fun WhatsNewCustomContent(
-    mainViewModel: MainViewModel = viewModel(),
-) {
-    val context = LocalContext.current
-    val view = LocalView.current
-    var expandedSection by rememberSaveable { mutableStateOf<Int?>(null) }
-
-    LifecycleResumeEffect(Unit) {
-        mainViewModel.check(context)
-        onPauseOrDispose { }
-    }
-
-    fun toggle(section: Int) {
-        HapticUtil.performUIHaptic(view)
-        expandedSection = if (expandedSection == section) null else section
-    }
-
-    Column(
-        verticalArrangement = Arrangement.spacedBy(12.dp),
-        modifier = Modifier.fillMaxWidth(),
-    ) {
-        ShakeForHelpCard(
-            expanded = expandedSection == 0,
-            onToggle = { toggle(0) },
-            mainViewModel = mainViewModel,
-        )
-
-        Text(
-            text = stringResource(R.string.whats_new_previous_updates),
-            style = MaterialTheme.typography.titleSmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.padding(start = 8.dp, top = 8.dp),
-        )
-    }
-}
 
 @Composable
 fun ShakeForHelpCard(

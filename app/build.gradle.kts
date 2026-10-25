@@ -35,8 +35,6 @@ android {
         versionCode = 69
         versionName = "20.1-beta.3"
 
-        val whatsNewCounter = 8
-        buildConfigField("int", "WHATS_NEW_COUNTER", whatsNewCounter.toString())
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
