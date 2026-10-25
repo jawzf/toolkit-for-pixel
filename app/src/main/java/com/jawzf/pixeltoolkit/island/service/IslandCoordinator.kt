@@ -56,7 +56,6 @@ import com.jawzf.pixeltoolkit.island.plugins.progress.ProgressPlugin
 import com.jawzf.pixeltoolkit.island.plugins.soundmode.SoundModePlugin
 import com.jawzf.pixeltoolkit.island.remote.ProviderPriorities
 import com.jawzf.pixeltoolkit.island.remote.RemoteProvidersPlugin
-import com.jawzf.pixeltoolkit.island.plugins.travel.TravelPlugin
 import com.jawzf.pixeltoolkit.island.plugins.caffeinate.CaffeinatePlugin
 import com.jawzf.pixeltoolkit.island.plugins.media.MediaPlugin
 import com.jawzf.pixeltoolkit.island.plugins.notifications.NotificationsPlugin
@@ -150,7 +149,6 @@ class IslandCoordinator(
         AlarmPlugin(),
         RemoteProvidersPlugin(),
         CaffeinatePlugin(),
-        TravelPlugin(),
         NavigationPlugin(),
         NetworkPlugin(),
         SignalPlugin(),

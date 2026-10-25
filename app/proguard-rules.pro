@@ -60,7 +60,4 @@
 -keepclassmembers class com.jawzf.pixeltoolkit.R$string {
     public static <fields>;
 }
--keep class com.jawzf.pixeltoolkit.domain.genai.** { *; }
--keep class com.jawzf.pixeltoolkit.appfunctions.** { *; }
--keep class androidx.appfunctions.** { *; }
 

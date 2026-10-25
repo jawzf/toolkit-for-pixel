@@ -4,7 +4,6 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
-    alias(libs.plugins.ksp)
     alias(libs.plugins.aboutlibraries)
     alias(libs.plugins.sentry.android.gradle)
 }
@@ -134,7 +133,6 @@ dependencies {
     implementation(libs.androidx.compose.foundation.layout)
     implementation(libs.androidx.ui)
     implementation(libs.androidx.compose.foundation)
-    implementation(libs.genai.schema)
     implementation(libs.material)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.foundation.layout)
@@ -181,8 +179,6 @@ dependencies {
     implementation(libs.androidx.glance.appwidget)
     implementation(libs.androidx.glance.material3)
 
-    // Watermark dependencies
-    implementation(libs.androidx.exifinterface)
     implementation(libs.androidx.compose.material.icons.extended) // Compatible with Compose BOM
 
     // GSMArena Parsing
@@ -202,13 +198,6 @@ dependencies {
     // Lottie for animations
     implementation(libs.lottie.compose)
 
-    // ML Kit GenAI Prompt API & Structured Output Compiler
-    implementation(libs.mlkit.genai.prompt)
-    ksp(libs.mlkit.genai.schema.compiler)
-
-    // AppFunctions API
-    implementation(libs.androidx.appfunctions)
-    ksp(libs.androidx.appfunctions.compiler)
 
     // QR Code Engine
     implementation(libs.zxing.core)

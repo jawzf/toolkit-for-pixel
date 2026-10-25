@@ -335,17 +335,6 @@
             android:taskAffinity=""
             android:theme="@style/Theme.Essentials.Translucent"></activity>
 
-        <activity
-            android:name=".ui.activities.LocationAlarmActivity"
-            android:exported="true"
-            android:launchMode="singleInstance"
-            android:theme="@style/Theme.Essentials.FullScreenAlarm" />
-
-        <activity
-            android:name=".ui.activities.TravelCompassActivity"
-            android:exported="false"
-            android:launchMode="singleTop"
-            android:theme="@style/Theme.Essentials" />
 
 
         <activity
@@ -374,11 +363,6 @@
             android:theme="@style/Theme.Essentials" />
 
 
-        <service
-            android:name=".services.LocationReachedService"
-            android:enabled="true"
-            android:exported="false"
-            android:foregroundServiceType="location" />
 
         <activity
             android:name=".ui.activities.AppFreezingActivity"
@@ -638,29 +622,6 @@
             android:taskAffinity=""
             android:theme="@style/Theme.Essentials.Translucent" />
 
-        <activity
-            android:name=".ui.activities.WatermarkActivity"
-            android:exported="true"
-            android:label="@string/feat_watermark_title"
-            android:theme="@style/Theme.Essentials">
-            <intent-filter>
-                <action android:name="android.intent.action.SEND" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <data android:mimeType="image/*" />
-            </intent-filter>
-        </activity>
-
-        <activity
-            android:name=".ui.activities.WallpaperActivity"
-            android:exported="false"
-            android:label="@string/feat_daily_wallpaper_title"
-            android:theme="@style/Theme.Essentials" />
-
-        <activity
-            android:name=".ui.activities.WallpaperStagingActivity"
-            android:exported="false"
-            android:label="@string/feat_wallpaper_staging_title"
-            android:theme="@style/Theme.Essentials" />
 
         <service
             android:name=".services.tiles.ScreenOffAccessibilityService"
@@ -1607,6 +1568,12 @@
         </service>
 
         <activity
+            android:name=".ui.activities.WallpaperActivity"
+            android:exported="false"
+            android:label="@string/feat_live_wallpaper_title"
+            android:theme="@style/Theme.Essentials" />
+
+        <activity
             android:name=".ui.activities.LiveWallpaperActivity"
             android:exported="true"
             android:label="@string/live_wallpaper_label" />
@@ -1741,25 +1708,6 @@
             android:name=".receivers.ScreenshotCleanupActionReceiver"
             android:exported="false" />
 
-        <service
-            android:name=".appfunctions.EssentialsAppFunctionService"
-            android:exported="true"
-            android:permission="android.permission.BIND_APP_FUNCTION_SERVICE"
-            tools:targetApi="36">
-            <property
-                android:name="android.app.appfunctions.schema"
-                android:value="app_functions_schema.xsd" />
-            <property
-                android:name="android.app.appfunctions.v2"
-                android:value="essentials_app_function_service.xml" />
-
-            <intent-filter>
-                <action android:name="android.app.appfunctions.AppFunctionService" />
-            </intent-filter>
-        </service>
-        <property
-            android:name="android.app.appfunctions.app_metadata"
-            android:resource="@xml/app_metadata" />
 
     </application>
 

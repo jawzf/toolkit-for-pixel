@@ -100,9 +100,6 @@ fun DIYScreen(
     // MainActivity labels its + button for the section shown here
     LaunchedEffect(showMacros) { onShowMacrosChange(showMacros) }
 
-    var showGenAIPill by remember { mutableStateOf(false) }
-    val genAIState by viewModel.genAIState.collectAsState()
-
     var selectionMode by remember { mutableStateOf(false) }
     var selectedIds by remember { mutableStateOf(emptySet<String>()) }
 
@@ -377,51 +374,7 @@ fun DIYScreen(
                     onDismissNewAutomationSheet()
                     context.startActivity(AutomationEditorActivity.createIntent(context, type))
                 },
-                onAIDescribeRequested = {
-                    showGenAIPill = true
-                },
-                isGenAILoading = genAIState is com.jawzf.pixeltoolkit.viewmodels.GenAIState.Loading,
             )
-        }
-
-        if (showGenAIPill) {
-            val currentSuggestion =
-                (genAIState as? com.jawzf.pixeltoolkit.viewmodels.GenAIState.Success)?.suggestion
-            com.jawzf.pixeltoolkit.ui.components.genai.GenAIFloatingPill(
-                onSend = { prompt ->
-                    viewModel.requestGenAISuggestion(prompt, context)
-                },
-                onDismiss = {
-                    showGenAIPill = false
-                    viewModel.dismissGenAISuggestion()
-                },
-                onConfirm = { suggestion ->
-                    viewModel.confirmGenAISuggestion(suggestion)
-                    showGenAIPill = false
-                },
-                onReset = {
-                    viewModel.dismissGenAISuggestion()
-                },
-                isLoading = genAIState is com.jawzf.pixeltoolkit.viewmodels.GenAIState.Loading,
-                suggestion = currentSuggestion,
-                modifier = Modifier.align(Alignment.BottomCenter),
-            )
-        }
-
-        when (val state = genAIState) {
-            is com.jawzf.pixeltoolkit.viewmodels.GenAIState.Error -> {
-                androidx.compose.runtime.LaunchedEffect(state) {
-                    android.widget.Toast
-                        .makeText(
-                            context,
-                            state.message,
-                            android.widget.Toast.LENGTH_LONG,
-                        ).show()
-                    viewModel.dismissGenAISuggestion()
-                }
-            }
-
-            else -> {}
         }
     }
 }

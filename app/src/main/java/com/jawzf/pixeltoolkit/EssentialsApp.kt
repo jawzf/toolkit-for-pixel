@@ -57,9 +57,6 @@ class EssentialsApp : Application() {
         com.jawzf.pixeltoolkit.utils.ServiceUtils
             .startRequiredServices(this)
 
-        com.jawzf.pixeltoolkit.appfunctions.AppFunctionAvailabilityManager
-            .updateAvailability(this)
-
         initSentry()
 
         val intentFilter =

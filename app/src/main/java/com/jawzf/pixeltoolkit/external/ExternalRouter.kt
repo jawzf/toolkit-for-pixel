@@ -9,7 +9,6 @@ object ExternalRouter {
 
     init {
         registerHandler(SettingsExternalHandler())
-        registerHandler(LocationAlarmExternalHandler())
     }
 
     fun registerHandler(handler: ExternalHandler) {

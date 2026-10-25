@@ -1219,13 +1219,8 @@ fun PixelSearchResultsScreen(
                                             val intent =
                                                 if (targetFeatureKey == "Pixel Searchbar") {
                                                     Intent(context, PixelSearchbarSettingsActivity::class.java)
-                                                } else if (targetFeatureKey == "LiveWallpaper" || targetFeatureKey == "Daily Wallpaper") {
-                                                    Intent(context, WallpaperActivity::class.java).apply {
-                                                        putExtra(
-                                                            "tab",
-                                                            if (targetFeatureKey == "LiveWallpaper") "live" else "daily",
-                                                        )
-                                                    }
+                                                } else if (targetFeatureKey == "LiveWallpaper") {
+                                                    Intent(context, WallpaperActivity::class.java)
                                                 } else if (targetFeatureKey == "App updates") {
                                                     Intent(context, YourAndroidActivity::class.java)
                                                 } else {
@@ -1665,21 +1660,6 @@ private fun loadSystemSettings(query: String): List<PixelSearchResultItem.System
 private fun loadShortcuts(context: Context, query: String): List<PixelSearchResultItem.ShortcutItem> {
     val items = mutableListOf<PixelSearchResultItem.ShortcutItem>()
     val q = query.lowercase()
-
-    if ("wallpaper".contains(q) || "daily".contains(q) || "background".contains(q)) {
-        items.add(
-            PixelSearchResultItem.ShortcutItem(
-                id = "shortcut_wallpaper",
-                label = context.getString(R.string.feat_daily_wallpaper_title),
-                subtitle = "Essentials wallpaper changer",
-                iconRes = R.drawable.rounded_wallpaper_24,
-                intent = Intent(context, WallpaperActivity::class.java).apply {
-                    action = Intent.ACTION_VIEW
-                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                },
-            )
-        )
-    }
 
     if ("freeze".contains(q) || "app".contains(q) || "hibernate".contains(q)) {
         items.add(

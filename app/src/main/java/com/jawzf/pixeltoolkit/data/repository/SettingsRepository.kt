@@ -174,25 +174,9 @@ class SettingsRepository(
 
         // Keys
         const val KEY_DEBUGGING_TILE_TAP_ACTION = "debugging_tile_tap_action"
-        const val KEY_GENAI_AUTOMATION_ENABLED = "genai_automation_enabled"
         const val KEY_SMART_PIXELS_ENABLED = "smart_pixels_enabled"
         const val KEY_SMART_PIXELS_INTENSITY = "smart_pixels_intensity"
         const val KEY_SMART_PIXELS_DISABLE_ON_CAST = "smart_pixels_disable_on_cast"
-        const val KEY_DAILY_WALLPAPER_LAST_ID = "daily_wallpaper_last_id"
-
-        const val KEY_DAILY_WALLPAPER_LAST_URL_MOBILE = "daily_wallpaper_last_url_mobile"
-        const val KEY_DAILY_WALLPAPER_LAST_URL = "daily_wallpaper_last_url"
-        const val KEY_DAILY_WALLPAPER_AUTHOR_NAME = "daily_wallpaper_author_name"
-        const val KEY_DAILY_WALLPAPER_AUTHOR_LINK = "daily_wallpaper_author_link"
-        const val KEY_DAILY_WALLPAPER_PHOTO_LINK = "daily_wallpaper_photo_link"
-        const val KEY_DAILY_WALLPAPER_UPDATED_AT = "daily_wallpaper_updated_at"
-        const val KEY_DAILY_WALLPAPER_AUTO_UPDATE = "daily_wallpaper_auto_update"
-        const val KEY_DAILY_WALLPAPER_AUTO_UPDATE_TIME = "daily_wallpaper_auto_update_time"
-        const val KEY_DAILY_WALLPAPER_SHOW_LAST_TIME = "daily_wallpaper_show_last_time"
-        const val KEY_DAILY_WALLPAPER_APPLY_HOME = "daily_wallpaper_apply_home"
-        const val KEY_DAILY_WALLPAPER_APPLY_LOCK = "daily_wallpaper_apply_lock"
-        const val KEY_DAILY_WALLPAPER_RETRY_COUNT = "daily_wallpaper_retry_count"
-
         const val KEY_WIDGET_ENABLED = "widget_enabled"
         const val KEY_STATUS_BAR_ICON_CONTROL_ENABLED = "status_bar_icon_control_enabled"
         const val KEY_MAPS_POWER_SAVING_ENABLED = "maps_power_saving_enabled"
@@ -413,8 +397,6 @@ class SettingsRepository(
             "ambient_music_glance_force_fill_while_charging"
         const val KEY_AMBIENT_MUSIC_GLANCE_RESPECT_NOTIFICATIONS =
             "ambient_music_glance_respect_notifications"
-        const val KEY_LOCATION_REACHED_FULL_SCREEN_ALARM_ENABLED =
-            "location_reached_full_screen_alarm_enabled"
 
         const val KEY_GITHUB_ACCESS_TOKEN = "github_access_token"
         const val KEY_GITHUB_WORKFLOW_TOKEN = "github_workflow_token"
@@ -671,7 +653,6 @@ class SettingsRepository(
         const val KEY_ISLAND_ALARM_LAUNCHER_ONLY = "island_alarm_launcher_only"
         const val KEY_ISLAND_ALARM_WINDOW_HOURS = "island_alarm_window_hours"
         const val KEY_ISLAND_ALARM_HIDE_TIME = "island_alarm_hide_time"
-        const val KEY_ISLAND_SHOW_TRAVEL = "island_show_travel"
         const val KEY_ISLAND_SHOW_CAFFEINATE = "island_show_caffeinate"
         const val KEY_ISLAND_CAFFEINATE_SHOW_TIME = "island_caffeinate_show_time"
         const val KEY_ISLAND_SHOW_DEVICES = "island_show_devices"
@@ -2877,32 +2858,6 @@ class SettingsRepository(
     }
 
     /**
-     * Executes the get daily wallpaper apply home operation.
-     * @return The resulting Boolean data.
-     */
-    fun getDailyWallpaperApplyHome(): Boolean = getBoolean(KEY_DAILY_WALLPAPER_APPLY_HOME, true)
-
-    /**
-     * Executes the set daily wallpaper apply home operation.
-     *
-     * @param value [Boolean] Target value.
-     */
-    fun setDailyWallpaperApplyHome(value: Boolean) = putBoolean(KEY_DAILY_WALLPAPER_APPLY_HOME, value)
-
-    /**
-     * Executes the get daily wallpaper apply lock operation.
-     * @return The resulting Boolean data.
-     */
-    fun getDailyWallpaperApplyLock(): Boolean = getBoolean(KEY_DAILY_WALLPAPER_APPLY_LOCK, true)
-
-    /**
-     * Executes the set daily wallpaper apply lock operation.
-     *
-     * @param value [Boolean] Target value.
-     */
-    fun setDailyWallpaperApplyLock(value: Boolean) = putBoolean(KEY_DAILY_WALLPAPER_APPLY_LOCK, value)
-
-    /**
      * Executes the get font scale operation.
      * @return The resulting Float data.
      */
@@ -3705,10 +3660,6 @@ class SettingsRepository(
      */
     fun setLockScreenClockSeedColor(value: Int) = putInt(KEY_LOCK_SCREEN_CLOCK_SEED_COLOR, value)
 
-    fun getLocationReachedFullScreenAlarmEnabled(): Boolean = getBoolean(KEY_LOCATION_REACHED_FULL_SCREEN_ALARM_ENABLED, true)
-
-    fun setLocationReachedFullScreenAlarmEnabled(value: Boolean) = putBoolean(KEY_LOCATION_REACHED_FULL_SCREEN_ALARM_ENABLED, value)
-
     fun getAodWallpaperOpacity(): Float = getFloat(KEY_AOD_WALLPAPER_OPACITY, 0.3f)
 
     fun setAodWallpaperOpacity(value: Float) = putFloat(KEY_AOD_WALLPAPER_OPACITY, value)
@@ -4310,9 +4261,6 @@ class SettingsRepository(
 
     fun getIslandAlarmWindowHours(): Int = getInt(KEY_ISLAND_ALARM_WINDOW_HOURS, 12)
     fun setIslandAlarmWindowHours(hours: Int) = putInt(KEY_ISLAND_ALARM_WINDOW_HOURS, hours)
-
-    fun isIslandShowTravelEnabled(): Boolean = getBoolean(KEY_ISLAND_SHOW_TRAVEL, true)
-    fun setIslandShowTravelEnabled(enabled: Boolean) = putBoolean(KEY_ISLAND_SHOW_TRAVEL, enabled)
 
     fun isIslandShowCaffeinateEnabled(): Boolean = getBoolean(KEY_ISLAND_SHOW_CAFFEINATE, true)
     fun setIslandShowCaffeinateEnabled(enabled: Boolean) = putBoolean(KEY_ISLAND_SHOW_CAFFEINATE, enabled)

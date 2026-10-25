@@ -362,17 +362,6 @@ fun IslandSettingsUI(
                         onSettingsClick = { showCaffeinateOptionsSheet = true },
                         modifier = Modifier.highlight(highlightSetting == "island_show_caffeinate"),
                     )
-                    "travel" -> IconToggleItem(
-                        dragHandle = handle,
-                        iconRes = R.drawable.round_navigation_24,
-                        title = stringResource(R.string.feat_location_reached_title),
-                        isChecked = viewModel.isIslandShowTravel.value,
-                        onCheckedChange = { checked ->
-                            HapticUtil.performVirtualKeyHaptic(view)
-                            viewModel.setIslandShowTravel(checked)
-                        },
-                        modifier = Modifier.highlight(highlightSetting == "island_show_travel"),
-                    )
                     "calendar" -> IconToggleItem(
                         dragHandle = handle,
                         iconRes = R.drawable.rounded_calendar_today_24,

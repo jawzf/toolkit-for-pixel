@@ -143,11 +143,6 @@ fun initPermissionRegistry() {
 
     // Device Admin permission
 
-    // Location permission
-    PermissionRegistry.register("LOCATION", R.string.feat_location_reached_title)
-    PermissionRegistry.register("BACKGROUND_LOCATION", R.string.feat_location_reached_title)
-    PermissionRegistry.register("USE_FULL_SCREEN_INTENT", R.string.feat_location_reached_title)
-
     // Battery optimization permission
     PermissionRegistry.register("BATTERY_OPTIMIZATION", R.string.feat_caffeinate_title)
 

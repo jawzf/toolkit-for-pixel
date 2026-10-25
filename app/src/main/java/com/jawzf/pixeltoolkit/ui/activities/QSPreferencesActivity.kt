@@ -165,7 +165,6 @@ class QSPreferencesActivity : ComponentActivity() {
                     "com.jawzf.pixeltoolkit.services.tiles.BatteryNotificationTileService" -> "Batteries"
                     "com.jawzf.pixeltoolkit.services.tiles.ChargeQuickTileService" -> "Batteries"
                     "com.jawzf.pixeltoolkit.services.tiles.AlwaysOnDisplayTileService" -> "Always on Display"
-                    "com.jawzf.pixeltoolkit.services.tiles.LocationReachedTileService" -> "Location reached"
                     "com.jawzf.pixeltoolkit.services.tiles.UrlShortenerTileService" -> "URL Shortener"
                     else -> null
                 }
