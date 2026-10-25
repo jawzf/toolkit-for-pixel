@@ -53,6 +53,5 @@ class CallReceiver : BroadcastReceiver() {
         } catch (e: Exception) {
             Log.e(TAG, "Failed to update call state", e)
         }
-        WatchCallSyncManager.onCallStateChanged(context, state, numberToUse)
     }
 }

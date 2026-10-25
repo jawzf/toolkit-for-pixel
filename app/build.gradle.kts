@@ -64,7 +64,6 @@ android {
 
         val whatsNewCounter = 8
         buildConfigField("int", "WHATS_NEW_COUNTER", whatsNewCounter.toString())
-        buildConfigField("int", "REQUIRED_WEAR_VERSION_CODE", "7")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -169,8 +168,6 @@ dependencies {
 
     // Google Maps & Location
     implementation(libs.play.services.location)
-    implementation(libs.play.services.wearable)
-    implementation(libs.androidx.wear.remote.interactions)
     implementation(libs.androidx.work.runtime.ktx)
     implementation(libs.gson)
     implementation(project(":island-sdk"))
@@ -201,11 +198,6 @@ dependencies {
     implementation(libs.androidx.media3.common)
     implementation(libs.androidx.media3.ui)
 
-    // RemoteIntent support
-    implementation(libs.androidx.wear.remote.interactions.v110alpha02)
-
-    // tandard wearable library
-    implementation(libs.play.services.wearable.v1900)
 
     // Lottie for animations
     implementation(libs.lottie.compose)

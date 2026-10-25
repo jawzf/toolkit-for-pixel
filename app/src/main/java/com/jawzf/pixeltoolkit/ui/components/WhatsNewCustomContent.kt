@@ -77,21 +77,6 @@ fun WhatsNewCustomContent(
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.padding(start = 8.dp, top = 8.dp),
         )
-
-        WhatsNewSectionCard(
-            title = stringResource(R.string.whats_new_watchface_title),
-            summary = stringResource(R.string.whats_new_watchface_summary),
-            expanded = expandedSection == 1,
-            onToggle = { toggle(1) },
-            icon = { SectionIcon(R.drawable.rounded_watch_24) },
-        ) {
-            Text(
-                text = stringResource(R.string.whats_new_watchface_desc),
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-            EssentialsWatchfacePromoContent()
-        }
     }
 }
 

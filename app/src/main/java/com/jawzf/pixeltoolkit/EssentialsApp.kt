@@ -15,7 +15,6 @@ import eu.darken.porter.bridge.PorterShizukuBridge
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.launch
 import io.sentry.android.core.SentryAndroid
 import org.lsposed.hiddenapibypass.HiddenApiBypass
 
@@ -55,12 +54,6 @@ class EssentialsApp : Application() {
             .init(this)
         com.jawzf.pixeltoolkit.services.automation.AutomationManager
             .init(this)
-        com.jawzf.pixeltoolkit.services.CalendarSyncManager
-            .init(this)
-        kotlinx.coroutines.CoroutineScope(kotlinx.coroutines.Dispatchers.IO).launch {
-            com.jawzf.pixeltoolkit.services.DeviceInfoSyncManager
-                .init(this@EssentialsApp)
-        }
         com.jawzf.pixeltoolkit.utils.ServiceUtils
             .startRequiredServices(this)
 

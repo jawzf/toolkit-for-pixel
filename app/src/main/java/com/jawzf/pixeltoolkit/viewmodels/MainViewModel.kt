@@ -393,10 +393,6 @@ class MainViewModel : ViewModel() {
 
     val isBluetoothDevicesEnabled = mutableStateOf(false)
     val isCallVibrationsEnabled = mutableStateOf(false)
-    val isCalendarSyncEnabled = mutableStateOf(false)
-    val isNotificationSyncEnabled = mutableStateOf(false)
-    val isCallSyncEnabled = mutableStateOf(false)
-    val isCalendarSyncPeriodicEnabled = mutableStateOf(false)
     val isBatteryNotificationEnabled = mutableStateOf(false)
     val isAodEnabled = mutableStateOf(false)
     val isNotificationGlanceEnabled = mutableStateOf(false)
@@ -511,8 +507,6 @@ class MainViewModel : ViewModel() {
         val isSelected: Boolean,
     )
 
-    val availableCalendars = mutableStateListOf<CalendarAccount>()
-    val selectedCalendarIds = mutableStateOf(setOf<String>())
 
     val isScreenLockedSecurityEnabled = mutableStateOf(false)
     val isDisableNotificationInteractions = mutableStateOf(false)
@@ -1354,10 +1348,6 @@ class MainViewModel : ViewModel() {
                     SettingsRepository.KEY_AMBIENT_MUSIC_GLANCE_DOCKED_MODE -> {
                         isAmbientMusicGlanceDockedModeEnabled.value =
                             settingsRepository.getBoolean(key)
-                    }
-
-                    SettingsRepository.KEY_CALENDAR_SYNC_ENABLED -> {
-                        isCalendarSyncEnabled.value = settingsRepository.getBoolean(key)
                     }
 
                     SettingsRepository.KEY_ONBOARDING_COMPLETED -> {
@@ -3012,15 +3002,7 @@ class MainViewModel : ViewModel() {
             settingsRepository.isAmbientMusicGlanceForceFillWhileChargingEnabled()
         isAmbientMusicGlanceRespectNotificationsEnabled.value =
             settingsRepository.isAmbientMusicGlanceRespectNotificationsEnabled()
-        isCalendarSyncEnabled.value =
-            settingsRepository.getBoolean(SettingsRepository.KEY_CALENDAR_SYNC_ENABLED, false)
-        isNotificationSyncEnabled.value =
-            settingsRepository.getBoolean("watch_notif_sync_enabled", false)
-        isCallSyncEnabled.value =
-            settingsRepository.getBoolean("watch_call_sync_enabled", false)
-        isCalendarSyncPeriodicEnabled.value = settingsRepository.isCalendarSyncPeriodicEnabled()
         isBatteryNotificationEnabled.value = settingsRepository.isBatteryNotificationEnabled()
-        selectedCalendarIds.value = settingsRepository.getCalendarSyncSelectedCalendars()
         isNotificationGlanceEnabled.value =
             settingsRepository.getBoolean(SettingsRepository.KEY_NOTIFICATION_GLANCE_ENABLED)
         isAodForceTurnOffEnabled.value =
@@ -7491,183 +7473,8 @@ class MainViewModel : ViewModel() {
         )
     }
 
-    /**
-     * Executes the set calendar sync enabled operation.
-     *
-     * @param enabled [Boolean] Target enabled.
-     * @param context [Context] Target context.
-     */
-    fun setCalendarSyncEnabled(
-        enabled: Boolean,
-        context: Context,
-    ) {
-        isCalendarSyncEnabled.value = enabled
-        settingsRepository.putBoolean(SettingsRepository.KEY_CALENDAR_SYNC_ENABLED, enabled)
-        if (enabled) {
-            com.jawzf.pixeltoolkit.services.CalendarSyncManager
-                .forceSync(context)
-            if (isCalendarSyncPeriodicEnabled.value) {
-                schedulePeriodicCalendarSync(context)
-            }
-        } else {
-            cancelPeriodicCalendarSync(context)
-        }
-    }
 
-    fun setNotificationSyncEnabled(
-        enabled: Boolean,
-        context: Context,
-    ) {
-        isNotificationSyncEnabled.value = enabled
-        settingsRepository.putBoolean("watch_notif_sync_enabled", enabled)
-    }
 
-    fun setCallSyncEnabled(
-        enabled: Boolean,
-        context: Context,
-    ) {
-        isCallSyncEnabled.value = enabled
-        settingsRepository.putBoolean("watch_call_sync_enabled", enabled)
-    }
-
-    /**
-     * Executes the fetch calendars operation.
-     *
-     * @param context [Context] Target context.
-     */
-    fun fetchCalendars(context: Context) {
-        if (ContextCompat.checkSelfPermission(
-                context,
-                Manifest.permission.READ_CALENDAR,
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            return
-        }
-
-        viewModelScope.launch(Dispatchers.IO) {
-            val savedSelected = settingsRepository.getCalendarSyncSelectedCalendars()
-            withContext(Dispatchers.Main) {
-                selectedCalendarIds.value = savedSelected
-            }
-
-            val calendars = mutableListOf<CalendarAccount>()
-            val projection =
-                arrayOf(
-                    CalendarContract.Calendars._ID,
-                    CalendarContract.Calendars.CALENDAR_DISPLAY_NAME,
-                    CalendarContract.Calendars.ACCOUNT_NAME,
-                    CalendarContract.Calendars.CALENDAR_COLOR,
-                )
-
-            context.contentResolver
-                .query(
-                    CalendarContract.Calendars.CONTENT_URI,
-                    projection,
-                    null,
-                    null,
-                    null,
-                )?.use { cursor ->
-                    val idColumn = cursor.getColumnIndex(CalendarContract.Calendars._ID)
-                    val nameColumn = cursor.getColumnIndex(CalendarContract.Calendars.CALENDAR_DISPLAY_NAME)
-                    val accountColumn = cursor.getColumnIndex(CalendarContract.Calendars.ACCOUNT_NAME)
-
-                    while (cursor.moveToNext()) {
-                        val id = cursor.getLong(idColumn)
-                        val name = cursor.getString(nameColumn) ?: "Unnamed Calendar"
-                        val account = cursor.getString(accountColumn) ?: "Local"
-
-                        calendars.add(
-                            CalendarAccount(
-                                id,
-                                name,
-                                account,
-                                selectedCalendarIds.value.contains(id.toString()),
-                            ),
-                        )
-                    }
-                }
-
-            withContext(Dispatchers.Main) {
-                availableCalendars.clear()
-                availableCalendars.addAll(calendars)
-            }
-        }
-    }
-
-    /**
-     * Executes the toggle calendar selection operation.
-     *
-     * @param calendarId [Long] Target calendar id.
-     */
-    fun toggleCalendarSelection(calendarId: Long, context: Context? = null) {
-        val currentIds = selectedCalendarIds.value.toMutableSet()
-        val idString = calendarId.toString()
-        if (currentIds.contains(idString)) {
-            currentIds.remove(idString)
-        } else {
-            currentIds.add(idString)
-        }
-        selectedCalendarIds.value = currentIds
-        settingsRepository.saveCalendarSyncSelectedCalendars(currentIds)
-
-        // Update availableCalendars list
-        val index = availableCalendars.indexOfFirst { it.id == calendarId }
-        if (index != -1) {
-            availableCalendars[index] =
-                availableCalendars[index].copy(isSelected = currentIds.contains(idString))
-        }
-
-        context?.let {
-            com.jawzf.pixeltoolkit.services.CalendarSyncManager.forceSync(it)
-        }
-    }
-
-    /**
-     * Executes the set calendar sync periodic enabled operation.
-     *
-     * @param enabled [Boolean] Target enabled.
-     * @param context [Context] Target context.
-     */
-    fun setCalendarSyncPeriodicEnabled(
-        enabled: Boolean,
-        context: Context,
-    ) {
-        isCalendarSyncPeriodicEnabled.value = enabled
-        settingsRepository.setCalendarSyncPeriodicEnabled(enabled)
-        if (enabled && isCalendarSyncEnabled.value) {
-            schedulePeriodicCalendarSync(context)
-        } else {
-            cancelPeriodicCalendarSync(context)
-        }
-    }
-
-    private fun schedulePeriodicCalendarSync(context: Context) {
-        val workRequest =
-            PeriodicWorkRequestBuilder<com.jawzf.pixeltoolkit.services.CalendarSyncWorker>(
-                15,
-                java.util.concurrent.TimeUnit.MINUTES,
-            ).build()
-
-        WorkManager.getInstance(context).enqueueUniquePeriodicWork(
-            "calendar_sync_work",
-            ExistingPeriodicWorkPolicy.UPDATE,
-            workRequest,
-        )
-    }
-
-    private fun cancelPeriodicCalendarSync(context: Context) {
-        WorkManager.getInstance(context).cancelUniqueWork("calendar_sync_work")
-    }
-
-    /**
-     * Executes the trigger calendar sync now operation.
-     *
-     * @param context [Context] Target context.
-     */
-    fun triggerCalendarSyncNow(context: Context) {
-        com.jawzf.pixeltoolkit.services.CalendarSyncManager
-            .forceSync(context)
-    }
 
     /**
      * Executes the set freeze when locked enabled operation.
