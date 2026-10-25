@@ -22,7 +22,7 @@ This document outlines background services, Quick Settings tiles, and system per
 
 ## Privileged Permission Matrix
 
-- **`WRITE_SECURE_SETTINGS`**: Granted via ADB (`adb shell pm grant com.sameerasw.essentials android.permission.WRITE_SECURE_SETTINGS`). Allows modifying system secure settings.
+- **`WRITE_SECURE_SETTINGS`**: Granted via ADB (`adb shell pm grant com.jawzf.pixeltoolkit android.permission.WRITE_SECURE_SETTINGS`). Allows modifying system secure settings.
 - **`Shizuku` Binder Interface**: Enables executing privileged system API calls without full root access.
 - **`Root` (`su`)**: Used for direct kernel sysfs writes (e.g. charging current control, SurfaceFlinger adjustments).
 

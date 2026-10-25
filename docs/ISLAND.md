@@ -30,7 +30,7 @@ The accessibility service holds the coordinator as `ScreenOffAccessibilityServic
 
 ## File structure
 
-All paths are under `app/src/main/java/com/sameerasw/essentials/`.
+All paths are under `app/src/main/java/com/jawzf/pixeltoolkit/`.
 
 ```
 island/
@@ -74,7 +74,7 @@ utils/notification/            NotificationRepostFilter (group repost de-duplica
 
 Provider apps are hosted from `island/remote/` (discovery, trust, connections, payload validation and the surface embed) and the shared contract lives in the `island-sdk` and `island-sdk-compose` modules at the repository root. See [ISLAND_PROVIDERS.md](ISLAND_PROVIDERS.md).
 
-Tests live in `app/src/test/java/com/sameerasw/essentials/island/` and cover the controller and the compact layout engine.
+Tests live in `app/src/test/java/com/jawzf/pixeltoolkit/island/` and cover the controller and the compact layout engine.
 
 ---
 

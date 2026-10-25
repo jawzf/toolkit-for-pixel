@@ -7,7 +7,7 @@ This document outlines the package layout and file organization of the Essential
 ## High-Level Directory Overview
 
 ```
-app/src/main/java/com/sameerasw/essentials/
+app/src/main/java/com/jawzf/pixeltoolkit/
 ├── MainActivity.kt                  # Root Activity launching main Jetpack Compose UI
 ├── EssentialsApp.kt                 # Application subclass handling Sentry & global initialization
 ├── data/                            # Data access, repositories, preferences, and data sources
