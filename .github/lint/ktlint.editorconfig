@@ -1,0 +1,9 @@
+# ktlint overrides for the PM gates and format.sh (upstream has no ktlint config).
+# Composables are PascalCase by convention; upstream mixes braced and single-line `when`
+# entries, so agents match the surrounding style instead of rewriting whole blocks.
+root = true
+
+[*.{kt,kts}]
+ktlint_function_naming_ignore_when_annotated_with = Composable
+ktlint_standard_when-entry-bracing = disabled
+ktlint_standard_blank-line-between-when-conditions = disabled

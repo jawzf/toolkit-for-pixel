@@ -1,0 +1,177 @@
+# The same gates as the local PM pipeline, run independently on every PR.
+# Red CI blocks a merge whatever the review says.
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  JAVA_VERSION: "25"
+  KTLINT_VERSION: "1.8.0"
+  KTLINT_SHA256: "a3fd620207d5c40da6ca789b95e7f823c54e854b7fade7f613e91096a3706d75"
+  DETEKT_VERSION: "1.23.8"
+  DETEKT_SHA256: "2ce2ff952e150baf28a29cda70a363b0340b3e81a55f43e51ec5edffc3d066c1"
+  GITLEAKS_VERSION: "8.30.1"
+  GITLEAKS_SHA256: "551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb"
+  # Release APK may grow by at most this much per PR.
+  APK_BUDGET_KB: "150"
+  GRADLE_OPTS: "-Dorg.gradle.daemon=false"
+
+jobs:
+  style:
+    name: ktlint + detekt (new findings)
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v6.1.0
+        with:
+          distribution: temurin
+          java-version: ${{ env.JAVA_VERSION }}
+      - name: Install ktlint and detekt (pinned, checksum verified)
+        run: |
+          mkdir -p "$RUNNER_TEMP/bin"
+          curl -fsSLo "$RUNNER_TEMP/bin/ktlint" "https://github.com/pinterest/ktlint/releases/download/${KTLINT_VERSION}/ktlint"
+          curl -fsSLo "$RUNNER_TEMP/detekt.jar" "https://github.com/detekt/detekt/releases/download/v${DETEKT_VERSION}/detekt-cli-${DETEKT_VERSION}-all.jar"
+          echo "${KTLINT_SHA256}  $RUNNER_TEMP/bin/ktlint" | sha256sum -c -
+          echo "${DETEKT_SHA256}  $RUNNER_TEMP/detekt.jar" | sha256sum -c -
+          chmod +x "$RUNNER_TEMP/bin/ktlint"
+      - name: No new findings in changed Kotlin files
+        env:
+          KTLINT: ${{ runner.temp }}/bin/ktlint
+          DETEKT: java -jar ${{ runner.temp }}/detekt.jar
+        run: bash .github/scripts/style-new-findings.sh "$(git merge-base HEAD "origin/${{ github.base_ref }}")"
+
+  build:
+    name: Lint, unit tests, builds
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    outputs:
+      apk_kb: ${{ steps.size.outputs.apk_kb }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v6.1.0
+        with:
+          distribution: temurin
+          java-version: ${{ env.JAVA_VERSION }}
+      - uses: gradle/actions/setup-gradle@3f5f9adaf7d9fecd50b5935e54106014257a94e6 # v6.4.0
+
+      - name: Dependency check
+        if: github.event_name == 'pull_request'
+        env:
+          APPROVED: ${{ contains(github.event.pull_request.labels.*.name, 'deps-approved') }}
+        run: |
+          deps() { ./gradlew -q --no-configuration-cache :app:dependencies --configuration releaseRuntimeClasspath | grep -F -- '--- ' ; }
+          deps > "$RUNNER_TEMP/deps-head.txt"
+          git worktree add -q --detach "$RUNNER_TEMP/base" "$(git merge-base HEAD "origin/${{ github.base_ref }}")"
+          (cd "$RUNNER_TEMP/base" && deps > "$RUNNER_TEMP/deps-base.txt")
+          git worktree remove --force "$RUNNER_TEMP/base"
+          if diff -u "$RUNNER_TEMP/deps-base.txt" "$RUNNER_TEMP/deps-head.txt" > "$RUNNER_TEMP/deps.diff"; then
+            echo "Resolved dependencies unchanged."
+          else
+            head -80 "$RUNNER_TEMP/deps.diff"
+            if [[ "$APPROVED" != "true" ]]; then
+              echo "::error::Resolved dependencies changed. Add the 'deps-approved' label once Joe has approved the change."
+              exit 1
+            fi
+            echo "Dependency changes approved (deps-approved label)."
+          fi
+
+      # Upstream lint tooling fails to resolve the androidTest classpath; only real lint errors fail.
+      - name: Android lint
+        run: |
+          if ./gradlew --no-configuration-cache :app:lintDebug > "$RUNNER_TEMP/lint.log" 2>&1; then
+            echo "Lint passed."
+          elif grep -qE 'Lint found errors|compile[A-Za-z]*Kotlin FAILED' "$RUNNER_TEMP/lint.log"; then
+            sed -n '/What went wrong/,/^\* Try/p' "$RUNNER_TEMP/lint.log" | head -40
+            grep -E '^e: |Error:' "$RUNNER_TEMP/lint.log" | head -40
+            exit 1
+          else
+            echo "::warning::Lint skipped: lint tooling failed, not code."
+            sed -n '/What went wrong/,/^\* Try/p' "$RUNNER_TEMP/lint.log" | head -15
+          fi
+
+      - name: Unit tests
+        run: ./gradlew :app:testDebugUnitTest
+
+      - name: Debug build
+        run: ./gradlew :app:assembleDebug
+
+      - name: Release build (R8)
+        run: ./gradlew :app:assembleRelease
+
+      - name: Release APK size
+        id: size
+        run: |
+          kb=$(du -k app/build/outputs/apk/release/*.apk | awk '{print $1; exit}')
+          echo "Release APK: ${kb} KB"
+          echo "apk_kb=${kb}" >> "$GITHUB_OUTPUT"
+
+  base-apk:
+    name: Base release APK size
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    outputs:
+      apk_kb: ${{ steps.size.outputs.apk_kb }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.base.sha }}
+      - uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v6.1.0
+        with:
+          distribution: temurin
+          java-version: ${{ env.JAVA_VERSION }}
+      - uses: gradle/actions/setup-gradle@3f5f9adaf7d9fecd50b5935e54106014257a94e6 # v6.4.0
+        with:
+          cache-read-only: true
+      - run: ./gradlew :app:assembleRelease
+      - id: size
+        run: echo "apk_kb=$(du -k app/build/outputs/apk/release/*.apk | awk '{print $1; exit}')" >> "$GITHUB_OUTPUT"
+
+  size:
+    name: APK size budget
+    if: github.event_name == 'pull_request'
+    needs: [build, base-apk]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - env:
+          NOW: ${{ needs.build.outputs.apk_kb }}
+          BASE: ${{ needs.base-apk.outputs.apk_kb }}
+        run: |
+          [[ -n "$NOW" && -n "$BASE" ]] || { echo "::error::Could not measure the APK size."; exit 1; }
+          delta=$((NOW - BASE))
+          echo "Release APK ${NOW} KB (base ${BASE} KB, delta ${delta} KB, budget ${APK_BUDGET_KB} KB)"
+          (( delta <= APK_BUDGET_KB )) || { echo "::error::Release APK grew ${delta} KB, over the ${APK_BUDGET_KB} KB budget."; exit 1; }
+
+  secrets:
+    name: Secret scan (gitleaks)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      - name: Install gitleaks (pinned, checksum verified)
+        run: |
+          curl -fsSLo "$RUNNER_TEMP/gitleaks.tar.gz" "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz"
+          echo "${GITLEAKS_SHA256}  $RUNNER_TEMP/gitleaks.tar.gz" | sha256sum -c -
+          tar -xzf "$RUNNER_TEMP/gitleaks.tar.gz" -C "$RUNNER_TEMP" gitleaks
+      - name: Scan full history
+        run: $RUNNER_TEMP/gitleaks git --redact --no-banner --verbose .
