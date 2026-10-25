@@ -63,7 +63,7 @@ import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 import com.jawzf.pixeltoolkit.R
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.island.service.OverlayLifecycleOwner
-import com.jawzf.pixeltoolkit.ui.theme.GoogleSansFlexRounded
+import com.jawzf.pixeltoolkit.ui.theme.AppFontFamily
 import com.jawzf.pixeltoolkit.utils.HapticUtil
 import com.jawzf.pixeltoolkit.utils.LockscreenShortcutDetector
 import com.jawzf.pixeltoolkit.utils.ShellUtils
@@ -556,7 +556,7 @@ class FaceUnlockBrightnessHandler(
                     )
                     Text(
                         text = label,
-                        style = MaterialTheme.typography.labelLarge.copy(fontFamily = GoogleSansFlexRounded),
+                        style = MaterialTheme.typography.labelLarge.copy(fontFamily = AppFontFamily),
                         color = colors.onSurface,
                         modifier = Modifier.padding(start = 8.dp),
                     )

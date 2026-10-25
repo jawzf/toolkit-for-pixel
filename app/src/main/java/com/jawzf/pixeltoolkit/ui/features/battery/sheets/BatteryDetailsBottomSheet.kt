@@ -39,6 +39,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.DeviceFontFamilyName
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontVariation
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.R
@@ -218,19 +222,14 @@ fun BatteryDetailsBottomSheet(
                         style =
                             MaterialTheme.typography.displayMedium.copy(
                                 fontFamily =
-                                    androidx.compose.ui.text.font.FontFamily(
-                                        androidx.compose.ui.text.font.Font(
-                                            R.font.google_sans_flex,
+                                    FontFamily(
+                                        Font(
+                                            DeviceFontFamilyName("sans-serif"),
                                             variationSettings =
-                                                androidx.compose.ui.text.font.FontVariation.Settings(
-                                                    androidx.compose.ui.text.font.FontVariation
-                                                        .width(150f),
-                                                    androidx.compose.ui.text.font.FontVariation.weight(
+                                                FontVariation.Settings(
+                                                    FontVariation.width(150f),
+                                                    FontVariation.weight(
                                                         FontWeight.Normal.weight,
-                                                    ),
-                                                    androidx.compose.ui.text.font.FontVariation.Setting(
-                                                        "ROND",
-                                                        100f,
                                                     ),
                                                 ),
                                         ),

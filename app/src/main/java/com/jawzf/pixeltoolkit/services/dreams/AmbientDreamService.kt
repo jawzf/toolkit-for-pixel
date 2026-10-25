@@ -24,7 +24,6 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextClock
 import android.widget.TextView
-import androidx.core.content.res.ResourcesCompat
 import com.jawzf.pixeltoolkit.R
 import com.jawzf.pixeltoolkit.services.NotificationListener
 import java.io.File
@@ -36,22 +35,10 @@ class AmbientDreamService : DreamService() {
 
     companion object {
         var isDreaming = false
-        private var googleSansFlexStatic: Typeface? = null
-        private var googleSansStatic: Typeface? = null
 
-        fun getFontFlex(context: Context): Typeface? {
-            if (googleSansFlexStatic == null) {
-                googleSansFlexStatic = ResourcesCompat.getFont(context, R.font.google_sans_flex)
-            }
-            return googleSansFlexStatic
-        }
+        fun getFontFlex(context: Context): Typeface? = Typeface.DEFAULT
 
-        fun getFont(context: Context): Typeface? {
-            if (googleSansStatic == null) {
-                googleSansStatic = ResourcesCompat.getFont(context, R.font.google_sans_flex)
-            }
-            return googleSansStatic
-        }
+        fun getFont(context: Context): Typeface? = Typeface.DEFAULT
     }
 
     // UI Elements

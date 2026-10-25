@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.RectF
+import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import androidx.annotation.ColorInt
 import androidx.core.graphics.drawable.toBitmap
@@ -251,13 +252,12 @@ object BatteryRingDrawer {
 
     fun percentTextSize(width: Int): Float = width * 0.16f
 
-    private fun percentTypeface(context: Context): android.graphics.Typeface {
-        val base = androidx.core.content.res.ResourcesCompat.getFont(context, com.jawzf.pixeltoolkit.R.font.google_sans_flex)
-            ?: return android.graphics.Typeface.create(android.graphics.Typeface.DEFAULT, android.graphics.Typeface.BOLD)
+    private fun percentTypeface(context: Context): Typeface {
+        val base = Typeface.DEFAULT
         return if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
-            android.graphics.Typeface.create(base, 700, false)
+            Typeface.create(base, 700, false)
         } else {
-            android.graphics.Typeface.create(base, android.graphics.Typeface.BOLD)
+            Typeface.create(base, Typeface.BOLD)
         }
     }
 

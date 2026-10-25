@@ -36,6 +36,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.rememberTextMeasurer
+import androidx.compose.ui.text.font.DeviceFontFamilyName
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontVariation
@@ -44,7 +45,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.jawzf.pixeltoolkit.R
 import com.jawzf.pixeltoolkit.island.model.LineContent
 
 class LineLeading(val width: Dp, val content: @Composable () -> Unit)
@@ -228,9 +228,9 @@ private fun LineText(text: String, align: TextAlign, weight: FontWeight, modifie
 
 @OptIn(ExperimentalTextApi::class)
 private fun flexFont(weight: Int) = Font(
-    R.font.google_sans_flex,
+    DeviceFontFamilyName("sans-serif"),
     weight = FontWeight(weight),
-    variationSettings = FontVariation.Settings(FontVariation.weight(weight), FontVariation.Setting("ROND", 100f)),
+    variationSettings = FontVariation.Settings(FontVariation.weight(weight)),
 )
 
 val IslandFontFamily = FontFamily(flexFont(400), flexFont(500), flexFont(600), flexFont(700))

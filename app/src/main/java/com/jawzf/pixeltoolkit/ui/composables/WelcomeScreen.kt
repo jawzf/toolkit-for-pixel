@@ -86,7 +86,7 @@ import com.jawzf.pixeltoolkit.ui.core.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.ui.core.pickers.CrashReportingPicker
 import com.jawzf.pixeltoolkit.ui.core.pickers.LanguagePicker
 import com.jawzf.pixeltoolkit.ui.core.sheets.UpdateBottomSheet
-import com.jawzf.pixeltoolkit.ui.theme.GoogleSansFlexRounded
+import com.jawzf.pixeltoolkit.ui.theme.AppFontFamily
 import com.jawzf.pixeltoolkit.ui.core.pickers.SegmentedPicker
 import com.jawzf.pixeltoolkit.utils.AppHapticMode
 import com.jawzf.pixeltoolkit.utils.HapticUtil
@@ -356,7 +356,7 @@ fun WelcomeStepContent(
                 text = stringResource(if (isWhatsNewFlow) R.string.welcome_back_title else R.string.welcome_title),
                 style =
                     MaterialTheme.typography.headlineMedium.copy(
-                        fontFamily = GoogleSansFlexRounded,
+                        fontFamily = AppFontFamily,
                         fontWeight = FontWeight.SemiBold,
                     ),
                 textAlign = TextAlign.Center,
@@ -469,7 +469,7 @@ fun AcknowledgementStepContent(
             text = stringResource(R.string.acknowledgement_title),
             style =
                 MaterialTheme.typography.headlineLarge.copy(
-                    fontFamily = GoogleSansFlexRounded,
+                    fontFamily = AppFontFamily,
                     fontWeight = FontWeight.Bold,
                 ),
             textAlign = TextAlign.Center,
@@ -616,7 +616,7 @@ fun FeatureIntroStepContent(
                 text = stringResource(R.string.action_what_is_this),
                 style =
                     MaterialTheme.typography.headlineLarge.copy(
-                        fontFamily = GoogleSansFlexRounded,
+                        fontFamily = AppFontFamily,
                         fontWeight = FontWeight.Bold,
                     ),
                 textAlign = TextAlign.Center,
@@ -815,7 +815,7 @@ fun WhatsNewStepContent(
                 text = "Essentials v${com.jawzf.pixeltoolkit.BuildConfig.VERSION_NAME}",
                 style =
                     MaterialTheme.typography.headlineLarge.copy(
-                        fontFamily = GoogleSansFlexRounded,
+                        fontFamily = AppFontFamily,
                         fontWeight = FontWeight.Bold,
                     ),
                 textAlign = TextAlign.Center,
@@ -998,7 +998,7 @@ fun PreferencesStepContent(
                 text = stringResource(R.string.preferences_title),
                 style =
                     MaterialTheme.typography.headlineLarge.copy(
-                        fontFamily = GoogleSansFlexRounded,
+                        fontFamily = AppFontFamily,
                         fontWeight = FontWeight.Bold,
                         fontSize = 36.sp,
                     ),
