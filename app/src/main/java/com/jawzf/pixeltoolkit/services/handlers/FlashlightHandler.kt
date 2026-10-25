@@ -129,22 +129,11 @@ class FlashlightHandler(
         }
 
     fun register() {
-        if (com.jawzf.pixeltoolkit.utils.DeviceUtils
-                .isTorchAccessRestricted()
-        ) {
-            Log.w(
-                "Flashlight",
-                "Disabling flashlight handler callbacks on this device to prevent camera HAL issues",
-            )
-            return
-        }
         torchCallback.let { cameraManager.registerTorchCallback(it, handler) }
     }
 
     fun unregister() {
-        if (!com.jawzf.pixeltoolkit.utils.DeviceUtils.isTorchAccessRestricted()) {
-            torchCallback.let { cameraManager.unregisterTorchCallback(it) }
-        }
+        torchCallback.let { cameraManager.unregisterTorchCallback(it) }
         primaryCameraId = null
         stopOverheatPrevention()
     }
@@ -170,8 +159,6 @@ class FlashlightHandler(
                 } else {
                     getCameraId()?.let { id ->
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
-                            !com.jawzf.pixeltoolkit.utils.DeviceUtils
-                                .isMediatekDevice() &&
                             FlashlightUtil.isIntensitySupported(service, id)
                         ) {
                             try {

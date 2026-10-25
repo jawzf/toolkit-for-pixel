@@ -18,7 +18,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.text.font.FontWeight
 import com.jawzf.pixeltoolkit.R
-import com.jawzf.pixeltoolkit.utils.DeviceUtils
 import com.jawzf.pixeltoolkit.ui.features.consciousgate.HoldToContinueButton
 import com.jawzf.pixeltoolkit.ui.features.consciousgate.UnscaledMotion
 import kotlinx.coroutines.withContext
@@ -71,7 +70,7 @@ fun UnsupportedFeaturesConfirmationSheet(
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                     modifier = Modifier.padding(16.dp),
                 ) {
-                    items(capabilities + if (DeviceUtils.isTorchRestrictedDevice()) torchCapabilities else emptyList()) { (titleRes, descriptionRes) ->
+                    items(capabilities) { (titleRes, descriptionRes) ->
                         Column {
                             Text(
                                 text = stringResource(titleRes),
@@ -125,9 +124,4 @@ private val capabilities =
         R.string.unsupported_cap_search_title to R.string.unsupported_cap_search_desc,
         R.string.unsupported_cap_freeze_title to R.string.unsupported_cap_freeze_desc,
         R.string.unsupported_cap_duo_title to R.string.unsupported_cap_duo_desc,
-    )
-
-private val torchCapabilities =
-    listOf(
-        R.string.unsupported_cap_flashlight_title to R.string.unsupported_cap_flashlight_desc,
     )

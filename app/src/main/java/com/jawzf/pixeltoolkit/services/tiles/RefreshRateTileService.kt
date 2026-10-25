@@ -8,7 +8,6 @@ import androidx.annotation.RequiresApi
 import com.jawzf.pixeltoolkit.FeatureSettingsActivity
 import com.jawzf.pixeltoolkit.R
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.utils.DeviceUtils
 import com.jawzf.pixeltoolkit.utils.RefreshRateUtils
 import com.jawzf.pixeltoolkit.utils.ShellUtils
 
@@ -55,8 +54,6 @@ class RefreshRateTileService : BaseTileService() {
     override fun getTileLabel(): String = getString(R.string.tile_refresh_rate)
 
     override fun getTileSubtitle(): String = RefreshRateUtils.getDisplaySubtitle(this)
-
-    override fun isDeviceSupported(): Boolean = DeviceUtils.isGoogleDevice()
 
     override fun hasFeaturePermission(): Boolean = ShellUtils.hasPermission(this)
 

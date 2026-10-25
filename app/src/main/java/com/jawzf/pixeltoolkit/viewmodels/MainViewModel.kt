@@ -411,7 +411,6 @@ class MainViewModel : ViewModel() {
     val isAodWallpaperExtendedAppIcon = mutableStateOf(false)
     val aodWallpaperExtendedTextScale = mutableFloatStateOf(1f)
     val currentWallpaperBitmap = mutableStateOf<Bitmap?>(null)
-    val isPocketModeEnabled = mutableStateOf(false)
     val isFaceUnlockBrightnessEnabled = mutableStateOf(false)
     val isScreenshotShareCleanupEnabled = mutableStateOf(false)
     val screenshotShareCleanupDelayMinutes = mutableIntStateOf(0)
@@ -424,9 +423,6 @@ class MainViewModel : ViewModel() {
     val isFaceUnlockTriggerUnlock = mutableStateOf(true)
     val isFaceUnlockAutoIlluminate = mutableStateOf(false)
     val isFaceUnlockLightTint = mutableStateOf(false)
-    val isPocketModeUseLightSensor = mutableStateOf(false)
-    val pocketModeTriggerDelay = mutableFloatStateOf(3f) // seconds
-    val isPocketModeLockScreenOnly = mutableStateOf(false)
     val isAutoAccessibilityEnabled = mutableStateOf(false)
     val isNotificationGlanceSameAsLightingEnabled = mutableStateOf(true)
     val isOnboardingCompleted =
@@ -577,7 +573,6 @@ class MainViewModel : ViewModel() {
     val isPitchBlackThemeEnabled = mutableStateOf(false)
 
     val isEnableUnsupportedFeatures = mutableStateOf(false)
-    val isForceFlashlightControls = mutableStateOf(false)
     val isShowLegacyFeatures = mutableStateOf(true)
     val isSecureSensitiveTilesEnabled = mutableStateOf(true)
     val isBlurEnabled = mutableStateOf(true)
@@ -1446,10 +1441,6 @@ class MainViewModel : ViewModel() {
                         aodWallpaperExtendedTextScale.floatValue =
                             settingsRepository.getAodWallpaperExtendedTextScale()
 
-                    SettingsRepository.KEY_POCKET_MODE_ENABLED ->
-                        isPocketModeEnabled.value =
-                            settingsRepository.getBoolean(key)
-
                     SettingsRepository.KEY_FACE_UNLOCK_BRIGHTNESS_ENABLED ->
                         isFaceUnlockBrightnessEnabled.value = settingsRepository.isFaceUnlockBrightnessEnabled()
 
@@ -1485,14 +1476,6 @@ class MainViewModel : ViewModel() {
 
                     SettingsRepository.KEY_FACE_UNLOCK_LIGHT_TINT ->
                         isFaceUnlockLightTint.value = settingsRepository.isFaceUnlockLightTintEnabled()
-
-                    SettingsRepository.KEY_POCKET_MODE_USE_LIGHT_SENSOR ->
-                        isPocketModeUseLightSensor.value =
-                            settingsRepository.getBoolean(key)
-
-                    SettingsRepository.KEY_POCKET_MODE_LOCK_SCREEN_ONLY ->
-                        isPocketModeLockScreenOnly.value =
-                            settingsRepository.getBoolean(key)
 
                     SettingsRepository.KEY_NOTIFICATION_GLANCE_SAME_AS_LIGHTING ->
                         isNotificationGlanceSameAsLightingEnabled.value =
@@ -2802,7 +2785,6 @@ class MainViewModel : ViewModel() {
         isPitchBlackThemeEnabled.value =
             settingsRepository.getBoolean(SettingsRepository.KEY_PITCH_BLACK_THEME_ENABLED)
         isEnableUnsupportedFeatures.value = settingsRepository.isEnableUnsupportedFeatures()
-        isForceFlashlightControls.value = settingsRepository.isForceFlashlightControls()
         isShowLegacyFeatures.value = settingsRepository.isShowLegacyFeatures()
         isSecureSensitiveTilesEnabled.value = settingsRepository.isSecureSensitiveTilesEnabled()
 
@@ -3025,8 +3007,6 @@ class MainViewModel : ViewModel() {
         pixelSearchResultWeb.value = settingsRepository.isPixelSearchResultWebEnabled()
         pixelSearchBubblesWeb.value = settingsRepository.isPixelSearchBubblesWebEnabled()
         pixelSearchEngine.value = settingsRepository.getPixelSearchEngine()
-        isPocketModeEnabled.value =
-            settingsRepository.getBoolean(SettingsRepository.KEY_POCKET_MODE_ENABLED)
         isFaceUnlockBrightnessEnabled.value = settingsRepository.isFaceUnlockBrightnessEnabled()
         isScreenshotShareCleanupEnabled.value = settingsRepository.isScreenshotShareCleanupEnabled()
         screenshotShareCleanupDelayMinutes.intValue = settingsRepository.getScreenshotShareCleanupDelayMinutes()
@@ -3039,12 +3019,6 @@ class MainViewModel : ViewModel() {
         isFaceUnlockTriggerUnlock.value = settingsRepository.isFaceUnlockTriggerUnlockEnabled()
         isFaceUnlockAutoIlluminate.value = settingsRepository.isFaceUnlockAutoIlluminateEnabled()
         isFaceUnlockLightTint.value = settingsRepository.isFaceUnlockLightTintEnabled()
-        isPocketModeUseLightSensor.value =
-            settingsRepository.getBoolean(SettingsRepository.KEY_POCKET_MODE_USE_LIGHT_SENSOR)
-        pocketModeTriggerDelay.floatValue =
-            settingsRepository.getFloat(SettingsRepository.KEY_POCKET_MODE_TRIGGER_DELAY, 3f)
-        isPocketModeLockScreenOnly.value =
-            settingsRepository.getBoolean(SettingsRepository.KEY_POCKET_MODE_LOCK_SCREEN_ONLY)
         isNotificationGlanceSameAsLightingEnabled.value =
             settingsRepository.getBoolean(
                 SettingsRepository.KEY_NOTIFICATION_GLANCE_SAME_AS_LIGHTING,
@@ -3116,11 +3090,6 @@ class MainViewModel : ViewModel() {
         if (searchQuery.value.isNotBlank()) {
             onSearchQueryChanged(searchQuery.value, context)
         }
-    }
-
-    fun setForceFlashlightControls(enabled: Boolean) {
-        isForceFlashlightControls.value = enabled
-        settingsRepository.setForceFlashlightControls(enabled)
     }
 
     fun setShowLegacyFeatures(
@@ -3677,11 +3646,10 @@ class MainViewModel : ViewModel() {
 
     private fun updateBlurState(context: Context) {
         val useBlurSetting = settingsRepository.getBoolean(SettingsRepository.KEY_USE_BLUR, true)
-        val isProblematic = DeviceUtils.isBlurProblematicDevice()
         val isPowerSave = DeviceUtils.isPowerSaveMode(context)
 
         isBlurSettingEnabled.value = useBlurSetting
-        isBlurEnabled.value = useBlurSetting && !isProblematic && !isPowerSave
+        isBlurEnabled.value = useBlurSetting && !isPowerSave
     }
 
     private fun updateRippleState(context: Context) {
@@ -3694,11 +3662,10 @@ class MainViewModel : ViewModel() {
 
     private fun updateMotionBlurState(context: Context) {
         val useMotionBlurSetting = settingsRepository.getBoolean(SettingsRepository.KEY_MOTION_BLUR, false)
-        val isProblematic = DeviceUtils.isBlurProblematicDevice()
         val isPowerSave = DeviceUtils.isPowerSaveMode(context)
 
         isMotionBlurSettingEnabled.value = useMotionBlurSetting
-        isMotionBlurEnabled.value = useMotionBlurSetting && !isProblematic && !isPowerSave
+        isMotionBlurEnabled.value = useMotionBlurSetting && !isPowerSave
         motionBlurScale.floatValue = settingsRepository.getFloat(SettingsRepository.KEY_MOTION_BLUR_SCALE, 1.0f)
     }
 
@@ -9811,46 +9778,6 @@ class MainViewModel : ViewModel() {
     }
 
     /**
-     * Executes the set pocket mode enabled operation.
-     *
-     * @param enabled [Boolean] Target enabled.
-     */
-    fun setPocketModeEnabled(enabled: Boolean) {
-        settingsRepository.putBoolean(SettingsRepository.KEY_POCKET_MODE_ENABLED, enabled)
-        isPocketModeEnabled.value = enabled
-    }
-
-    /**
-     * Executes the set pocket mode use light sensor operation.
-     *
-     * @param enabled [Boolean] Target enabled.
-     */
-    fun setPocketModeUseLightSensor(enabled: Boolean) {
-        settingsRepository.putBoolean(SettingsRepository.KEY_POCKET_MODE_USE_LIGHT_SENSOR, enabled)
-        isPocketModeUseLightSensor.value = enabled
-    }
-
-    /**
-     * Executes the set pocket mode trigger delay operation.
-     *
-     * @param seconds [Float] Target seconds.
-     */
-    fun setPocketModeTriggerDelay(seconds: Float) {
-        pocketModeTriggerDelay.floatValue = seconds
-        settingsRepository.putFloat(SettingsRepository.KEY_POCKET_MODE_TRIGGER_DELAY, seconds)
-    }
-
-    /**
-     * Executes the set pocket mode lock screen only operation.
-     *
-     * @param enabled [Boolean] Target enabled.
-     */
-    fun setPocketModeLockScreenOnly(enabled: Boolean) {
-        settingsRepository.putBoolean(SettingsRepository.KEY_POCKET_MODE_LOCK_SCREEN_ONLY, enabled)
-        isPocketModeLockScreenOnly.value = enabled
-    }
-
-    /**
      * Executes the set notification glance same as lighting enabled operation.
      *
      * @param enabled [Boolean] Target enabled.
@@ -9890,35 +9817,6 @@ class MainViewModel : ViewModel() {
         enabled: Boolean,
     ) {
         settingsRepository.updateNotificationGlanceAppSelection(packageName, enabled)
-    }
-
-    /**
-     * Executes the load pocket mode excluded apps operation.
-     *
-     * @param context [Context] Target context.
-     * @return The resulting List<AppSelection> data.
-     */
-    fun loadPocketModeExcludedApps(context: Context): List<AppSelection> = settingsRepository.loadPocketModeExcludedApps()
-
-    /**
-     * Executes the save pocket mode excluded apps operation.
-     *
-     * @param context [Context] Target context.
-     * @param apps [List<AppSelection>] Target apps.
-     */
-    fun savePocketModeExcludedApps(
-        context: Context,
-        apps: List<AppSelection>,
-    ) {
-        settingsRepository.savePocketModeExcludedApps(apps)
-    }
-
-    fun updatePocketModeExcludedAppEnabled(
-        context: Context,
-        packageName: String,
-        enabled: Boolean,
-    ) {
-        settingsRepository.updatePocketModeExcludedAppSelection(packageName, enabled)
     }
 
     override fun onCleared() {

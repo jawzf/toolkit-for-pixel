@@ -206,27 +206,6 @@ object BatteryInfoUtil {
         val dumpsysOutput = ShellUtils.runCommandWithOutput(context, "dumpsys battery", notifyOnError = false)
         val dumpsysMap = parseDumpsysBattery(dumpsysOutput)
 
-        // SAMSUNG SPECIFIC: mSavedBattery... fields
-        val samsungCycleCount =
-            (
-                dumpsysMap["mSavedBatteryUsage"]?.cleanNumericValue()?.toIntOrNull()
-                    ?: dumpsysMap["mUsage"]?.cleanNumericValue()?.toIntOrNull()
-            )?.let {
-                if (it > 10000) it / 100 else it // Handle cumulative percentage vs cycles
-            } ?: dumpsysMap["mSavedBatteryCycle"]?.cleanNumericValue()?.toIntOrNull()
-                ?: dumpsysMap["mCycle"]?.cleanNumericValue()?.toIntOrNull()
-                ?: dumpsysMap["CycleCount"]?.cleanNumericValue()?.toIntOrNull()
-                ?: readSysfsLong(context, "/sys/class/power_supply/battery/cycle_count")?.toInt()
-                ?: readSysfsLong(context, "/efs/FactoryApp/batt_discharge_level")
-                    ?.toInt()
-                    ?.let { if (it > 0) it / 100 else null }
-                ?: readSysfsLong(context, "/sys/class/power_supply/battery/battery_cycle")?.toInt()
-
-        val samsungSoH =
-            dumpsysMap["mSavedBatteryAsoc"]?.cleanNumericValue()?.toIntOrNull()
-                ?: dumpsysMap["mAsoc"]?.cleanNumericValue()?.toIntOrNull()
-                ?: readSysfsLong(context, "/sys/class/power_supply/battery/fg_asoc")?.toInt()
-
         if (chargeFull == null) {
             dumpsysMap["mSavedBatteryMax"]
                 ?.cleanNumericValue()
@@ -252,16 +231,6 @@ object BatteryInfoUtil {
         val chargingPolicy = dumpsysMap["Charging policy"]?.cleanNumericValue()?.toIntOrNull()
         val capacityLevel = dumpsysMap["Capacity level"]?.cleanNumericValue()?.toIntOrNull()
 
-        val samsungSerial =
-            dumpsysMap["serial_number"] ?: dumpsysMap["mSerialNumber"]
-                ?: dumpsysMap["Serial number"]
-        val samsungPartStatus =
-            dumpsysMap["mSavedBatteryEfuse"]
-                ?.cleanNumericValue()
-                ?.toIntOrNull()
-                ?.let { if (it == 0) 1 else 2 }
-                ?: dumpsysMap["Part status"]?.cleanNumericValue()?.toIntOrNull()
-
         val settingsOutput =
             ShellUtils.runCommandWithOutput(context, "dumpsys batterystats --settings", notifyOnError = false)
         val enforceLevel = parseSettingsEnforceLevel(settingsOutput)
@@ -278,10 +247,6 @@ object BatteryInfoUtil {
             currentNow = currentNow,
             voltageNow = voltageNow,
             batteryChargingEnforceLevel = enforceLevel,
-            cycleCount = samsungCycleCount?.takeIf { it > 0 } ?: basic.cycleCount,
-            stateOfHealth = samsungSoH?.takeIf { it > 0 } ?: basic.stateOfHealth,
-            serialNumber = samsungSerial ?: basic.serialNumber,
-            partStatus = samsungPartStatus ?: basic.partStatus,
             thermalInfo = ThermalUtil.getThermalInfo(context),
         )
     }

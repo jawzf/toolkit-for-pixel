@@ -103,7 +103,6 @@ import com.jawzf.pixeltoolkit.ui.features.system.NotificationLightingSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.NotificationSnoozingSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.OtherCustomizationsSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.FaceUnlockBrightnessSettingsUI
-import com.jawzf.pixeltoolkit.ui.features.system.PocketModeSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.VolumeStepsSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.AppVolumeSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.PowerAndBatterySettingsUI
@@ -313,7 +312,6 @@ class FeatureSettingsActivity : AppCompatActivity() {
                                 "Lock screen shortcuts" -> !isAccessibilityEnabled
                                 "Volume steps" -> !isAccessibilityEnabled
                                 "App volume" -> !isAccessibilityEnabled || !isShizukuPermissionGranted
-                                "Pocket mode" -> !isAccessibilityEnabled
                                 "Dynamic night light" ->
                                     (if (viewModel.isUseUsageAccess.value) !viewModel.isUsageStatsPermissionGranted.value else !isAccessibilityEnabled) ||
                                         !isWriteSecureSettingsEnabled
@@ -1053,14 +1051,6 @@ class FeatureSettingsActivity : AppCompatActivity() {
 
                                     "Screenshots" -> {
                                         ScreenshotsSettingsUI(
-                                            viewModel = viewModel,
-                                            modifier = Modifier.padding(top = 16.dp),
-                                            highlightSetting = highlightSetting,
-                                        )
-                                    }
-
-                                    "Pocket mode" -> {
-                                        PocketModeSettingsUI(
                                             viewModel = viewModel,
                                             modifier = Modifier.padding(top = 16.dp),
                                             highlightSetting = highlightSetting,

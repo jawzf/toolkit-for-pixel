@@ -4,8 +4,6 @@ import android.service.quicksettings.Tile
 import androidx.core.content.edit
 
 class FlashlightPulseTileService : BaseTileService() {
-    override fun isDeviceSupported(): Boolean = !com.jawzf.pixeltoolkit.utils.DeviceUtils.isTorchRestrictedDevice()
-
     override fun onTileClick() {
         val prefs = getSharedPreferences("essentials_prefs", MODE_PRIVATE)
         val enabled = prefs.getBoolean("flashlight_pulse_enabled", false)

@@ -11,8 +11,6 @@ import com.jawzf.pixeltoolkit.services.receivers.FlashlightActionReceiver
 
 @RequiresApi(Build.VERSION_CODES.N)
 class FlashlightTileService : BaseTileService() {
-    override fun isDeviceSupported(): Boolean = !com.jawzf.pixeltoolkit.utils.DeviceUtils.isTorchRestrictedDevice()
-
     private var isTorchOn = false
     private val cameraManager by lazy { getSystemService(CAMERA_SERVICE) as CameraManager }
 

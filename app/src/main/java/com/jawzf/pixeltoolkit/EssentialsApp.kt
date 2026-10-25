@@ -28,7 +28,6 @@ class EssentialsApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        com.jawzf.pixeltoolkit.data.repository.SettingsRepository(this).syncTorchRestriction()
         context = applicationContext
         com.jawzf.pixeltoolkit.utils.HapticUtil.initialize(this)
 

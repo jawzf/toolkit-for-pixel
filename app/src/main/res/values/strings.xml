@@ -629,8 +629,6 @@
     <string name="debugging_tap_action_usb">USB</string>
     <string name="debugging_tap_action_wireless">Wireless</string>
     <string name="tile_color_picker">Color Picker</string>
-    <string name="setting_force_flashlight_controls_title">Force enable flashlight controls</string>
-    <string name="setting_force_flashlight_controls_desc">This may break camera app or cause anomalies</string>
     <string name="auto_backup_title">Auto backup configs</string>
     <string name="auto_backup_folder">Backup folder</string>
     <string name="auto_backup_never">Never</string>
@@ -747,8 +745,6 @@
     <string name="icon_privacy">Privacy &amp; Secure Folder</string>
     <string name="icon_security_status">Security Status (SU)</string>
     <string name="icon_otg">OTG Mouse / Keyboard</string>
-    <string name="icon_samsung_smart">Samsung Smart Features</string>
-    <string name="icon_samsung_services">Samsung Services</string>
     <string name="icon_ethernet">Ethernet</string>
     <string name="icon_network_speed">Network Speed</string>
     <string name="icon_glove_mode">Glove Mode</string>
@@ -844,8 +840,6 @@
     <string name="unsupported_cap_freeze_desc">Allows picking system apps for freezing. Freezing the wrong one can break your device.</string>
     <string name="unsupported_cap_duo_title">Duo screen-off controls</string>
     <string name="unsupported_cap_duo_desc">Lets you change when Duo hides on a dark screen. This can misbehave with always-on display on some devices.</string>
-    <string name="unsupported_cap_flashlight_title">Flashlight access</string>
-    <string name="unsupported_cap_flashlight_desc">Flashlight features and tile are turned off on this device because they can lock up the camera. Enabling this lifts that block.</string>
     <string name="unsupported_please_wait">Please wait</string>
     <string name="unsupported_hold_to_enable">Hold to enable</string>
     <string name="unsupported_auth_title">Confirm it\'s you</string>
@@ -2440,7 +2434,6 @@
     <string name="label_motion_blur_amount">Amount</string>
     <string name="label_online_help_media">Online help media</string>
     <string name="label_shake_for_help">Shake for help</string>
-    <string name="msg_blur_compatibility_error">Blur is disabled on this device to prevent a known display bug on Samsung devices with Android 15 or below.</string>
     <string name="setting_swipe_tabs_title">Swipe between tabs</string>
     <string name="setting_swipe_tabs_desc">In home screen</string>
 
@@ -2662,20 +2655,6 @@
     <string name="action_restart_shizuku">Restart Shizuku</string>
     <string name="toast_enter_shizuku_token">Please enter Shizuku auth token in settings first</string>
 
-    <!-- Pocket Mode -->
-    <string name="feat_pocket_mode_title">Pocket mode</string>
-    <string name="feat_pocket_mode_desc">Prevent accidental touches while in pocket</string>
-    <string name="about_desc_pocket_mode">Prevents accidental touches while your phone is in your pocket or bag.\n\nWhen the proximity sensor is covered, Pocket mode shows a blocking screen so stray touches do nothing. Press any volume key to dismiss it. You can also use the light sensor along with proximity for better accuracy, add a trigger delay, and choose to only trigger while the device is locked.\n\nExclude apps where it should not trigger. It does not work while streaming or gaming by default.\n\nAccessibility permission is required. On some devices with missing sensors, enabling it may break deep sleep and cause higher battery drain.</string>
-    <string name="pocket_mode_use_light_title">Use light sensor</string>
-    <string name="pocket_mode_use_light_desc">Use ambient light level in addition to proximity for better accuracy</string>
-    <string name="pocket_mode_active">Pocket mode active</string>
-    <string name="pocket_mode_dismiss_hint">Press any volume key to dismiss</string>
-    <string name="pocket_mode_warning">Warning: On some devices with missing sensors, enabling Pocket Mode may break deep sleep and cause higher battery drain</string>
-    <string name="pocket_mode_exclude_apps_title">Exclude apps</string>
-    <string name="pocket_mode_exclude_apps_desc">Choose apps where Pocket Mode should not trigger. Pocket mode will not work when streaming or gaming by default</string>
-    <string name="pocket_mode_trigger_delay_title">Trigger delay</string>
-    <string name="pocket_mode_lock_screen_only_title">Lock screen only</string>
-    <string name="pocket_mode_lock_screen_only_desc">Only trigger pocket mode when the device is locked</string>
 
     <!-- Developer Settings & Wallpaper Check -->
     <string name="btn_clear_search_history">Clear search history</string>

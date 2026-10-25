@@ -6,17 +6,14 @@ import android.graphics.drawable.Icon
 import android.provider.Settings
 import android.service.quicksettings.Tile
 import com.jawzf.pixeltoolkit.R
-import com.jawzf.pixeltoolkit.utils.DeviceUtils
 
 class UiBlurTileService : BaseTileService() {
     override fun getTileLabel(): String = "UI Blur"
 
     override fun getTileSubtitle(): String = if (isBlurEnabled()) "On" else "Off"
 
-    override fun hasFeaturePermission(): Boolean {
-        if (DeviceUtils.isBlurProblematicDevice()) return false
-        return checkCallingOrSelfPermission(Manifest.permission.WRITE_SECURE_SETTINGS) == PackageManager.PERMISSION_GRANTED
-    }
+    override fun hasFeaturePermission(): Boolean =
+        checkCallingOrSelfPermission(Manifest.permission.WRITE_SECURE_SETTINGS) == PackageManager.PERMISSION_GRANTED
 
     override fun getTileIcon(): Icon {
         val iconRes =
@@ -27,7 +24,6 @@ class UiBlurTileService : BaseTileService() {
     override fun getTileState(): Int = if (isBlurEnabled()) Tile.STATE_ACTIVE else Tile.STATE_INACTIVE
 
     override fun onTileClick() {
-        if (DeviceUtils.isBlurProblematicDevice()) return
         val newState = if (isBlurEnabled()) 1 else 0 // 1 = disable blurs, 0 = enable blurs
         Settings.Global.putInt(contentResolver, "disable_window_blurs", newState)
     }

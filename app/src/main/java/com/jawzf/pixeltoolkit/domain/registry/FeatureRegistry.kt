@@ -475,8 +475,6 @@ object FeatureRegistry {
                     context: Context,
                     enabled: Boolean,
                 ) {}
-
-                override fun isDeviceSupported(context: Context) = DeviceUtils.isGoogleDevice()
             },
             object : Feature(
                 id = "Lock screen clock",
@@ -496,8 +494,6 @@ object FeatureRegistry {
                     context: Context,
                     enabled: Boolean,
                 ) {}
-
-                override fun isDeviceSupported(context: Context) = DeviceUtils.isGoogleDevice()
             },
             object : Feature(
                 id = "Networks",
@@ -660,8 +656,6 @@ object FeatureRegistry {
                 ) {
                     context.startActivity(Intent(context, PixelSearchbarSettingsActivity::class.java))
                 }
-
-                override fun isDeviceSupported(context: Context) = DeviceUtils.isGoogleDevice()
             },
             object : Feature(
                 id = "Statusbar icons",
@@ -1351,8 +1345,6 @@ object FeatureRegistry {
                 parentFeatureId = "Notifications",
                 animationRes = R.raw.flash_animation,
             ) {
-                override fun isDeviceSupported(context: Context) = !DeviceUtils.isTorchRestrictedDevice()
-
                 override fun isEnabled(viewModel: MainViewModel) = viewModel.isFlashlightPulseEnabled.value
 
                 override fun isToggleEnabled(
@@ -1450,8 +1442,6 @@ object FeatureRegistry {
                 hasMoreSettings = true,
                 animationRes = R.raw.flash_animation,
             ) {
-                override fun isDeviceSupported(context: Context) = !DeviceUtils.isTorchRestrictedDevice()
-
                 override fun isEnabled(viewModel: MainViewModel) = true
 
                 override fun onToggle(
@@ -2284,28 +2274,6 @@ object FeatureRegistry {
                 ) {}
             },
             object : Feature(
-                id = "Pocket mode",
-                title = R.string.feat_pocket_mode_title,
-                iconRes = R.drawable.ic_pocket_mode,
-                category = R.string.cat_display,
-                description = R.string.feat_pocket_mode_desc,
-                permissionKeys = listOf("ACCESSIBILITY"),
-                aboutDescription = R.string.about_desc_pocket_mode,
-                parentFeatureId = "Display",
-                hasMoreSettings = true,
-                contributors = listOf("Mudit200408"),
-            ) {
-                override fun isEnabled(viewModel: MainViewModel) = viewModel.isPocketModeEnabled.value
-
-                override fun onToggle(
-                    viewModel: MainViewModel,
-                    context: Context,
-                    enabled: Boolean,
-                ) = viewModel.setPocketModeEnabled(enabled)
-
-                override fun isDeviceSupported(context: Context) = !DeviceUtils.isGoogleDevice()
-            },
-            object : Feature(
                 id = "Freeze",
                 title = R.string.feat_freeze_title,
                 iconRes = R.drawable.rounded_mode_cool_24,
@@ -2638,8 +2606,6 @@ object FeatureRegistry {
                     context: Context,
                     enabled: Boolean,
                 ) {}
-
-                override fun isDeviceSupported(context: Context) = DeviceUtils.isGoogleDevice()
             },
             object : Feature(
                 id = "Face unlock brightness",
@@ -2699,22 +2665,20 @@ object FeatureRegistry {
                 showToggle = false,
                 searchableSettings =
                     buildList {
-                        if (DeviceUtils.isGoogleDevice()) {
-                            add(
-                                SearchSetting(
-                                    R.string.feat_screenshot_share_cleanup_title,
-                                    R.string.feat_screenshots_title,
-                                    "screenshot_share_cleanup_enabled",
-                                ),
-                            )
-                            add(
-                                SearchSetting(
-                                    R.string.screenshot_share_cleanup_delay_title,
-                                    R.string.feat_screenshots_title,
-                                    "screenshot_share_cleanup_delay",
-                                ),
-                            )
-                        }
+                        add(
+                            SearchSetting(
+                                R.string.feat_screenshot_share_cleanup_title,
+                                R.string.feat_screenshots_title,
+                                "screenshot_share_cleanup_enabled",
+                            ),
+                        )
+                        add(
+                            SearchSetting(
+                                R.string.screenshot_share_cleanup_delay_title,
+                                R.string.feat_screenshots_title,
+                                "screenshot_share_cleanup_delay",
+                            ),
+                        )
                         add(
                             SearchSetting(
                                 R.string.screenshot_auto_clean_title,
