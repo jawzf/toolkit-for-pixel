@@ -55,7 +55,7 @@ import coil.compose.AsyncImage
 import com.jawzf.pixeltoolkit.R
 import com.jawzf.pixeltoolkit.data.repository.ContributorsRepository
 import com.jawzf.pixeltoolkit.domain.model.github.GitHubContributor
-import com.jawzf.pixeltoolkit.ui.theme.GoogleSansFlexRounded
+import com.jawzf.pixeltoolkit.ui.theme.AppFontFamily
 import com.jawzf.pixeltoolkit.utils.HapticUtil
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -165,7 +165,7 @@ fun ContributorsCarousel(modifier: Modifier = Modifier) {
                                     text = "${contributor.contributions}",
                                     style =
                                         MaterialTheme.typography.labelSmall.copy(
-                                            fontFamily = GoogleSansFlexRounded,
+                                            fontFamily = AppFontFamily,
                                             fontSize = 11.sp,
                                             fontWeight = FontWeight.Medium,
                                         ),
@@ -198,7 +198,7 @@ fun ContributorsCarousel(modifier: Modifier = Modifier) {
                             text = contributor.login,
                             style =
                                 MaterialTheme.typography.labelMedium.copy(
-                                    fontFamily = GoogleSansFlexRounded,
+                                    fontFamily = AppFontFamily,
                                     fontWeight = FontWeight.Normal,
                                 ),
                             color = Color.White,

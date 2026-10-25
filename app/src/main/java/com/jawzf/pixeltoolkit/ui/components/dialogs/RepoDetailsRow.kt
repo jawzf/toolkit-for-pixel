@@ -35,7 +35,7 @@ import androidx.core.net.toUri
 import com.jawzf.pixeltoolkit.R
 import com.jawzf.pixeltoolkit.data.repository.ProjectDetailsRepository
 import com.jawzf.pixeltoolkit.domain.model.github.ProjectDetails
-import com.jawzf.pixeltoolkit.ui.theme.GoogleSansFlexRounded
+import com.jawzf.pixeltoolkit.ui.theme.AppFontFamily
 import com.jawzf.pixeltoolkit.utils.HapticUtil
 
 @Composable
@@ -91,7 +91,7 @@ fun RepoDetailsRow(
                     text = repoName,
                     style =
                         MaterialTheme.typography.labelLarge.copy(
-                            fontFamily = GoogleSansFlexRounded,
+                            fontFamily = AppFontFamily,
                             fontWeight = FontWeight.Medium,
                         ),
                     color = MaterialTheme.colorScheme.onSurface,
@@ -127,7 +127,7 @@ fun RepoDetailsRow(
                                 text = if (stars >= 1000) String.format("%.1fk", stars / 1000f) else "$stars",
                                 style =
                                     MaterialTheme.typography.labelSmall.copy(
-                                        fontFamily = GoogleSansFlexRounded,
+                                        fontFamily = AppFontFamily,
                                         fontWeight = FontWeight.Medium,
                                         fontSize = 11.sp,
                                     ),
@@ -158,7 +158,7 @@ fun RepoDetailsRow(
                                 text = if (downloads >= 1000) "${downloads / 1000}k" else "$downloads",
                                 style =
                                     MaterialTheme.typography.labelSmall.copy(
-                                        fontFamily = GoogleSansFlexRounded,
+                                        fontFamily = AppFontFamily,
                                         fontWeight = FontWeight.Medium,
                                         fontSize = 11.sp,
                                     ),

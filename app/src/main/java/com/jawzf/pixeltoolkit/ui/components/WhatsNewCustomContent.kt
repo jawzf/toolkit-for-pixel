@@ -36,7 +36,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.jawzf.pixeltoolkit.R
 import com.jawzf.pixeltoolkit.ui.core.cards.IconToggleItem
 import com.jawzf.pixeltoolkit.ui.core.containers.RoundedCardContainer
-import com.jawzf.pixeltoolkit.ui.theme.GoogleSansFlexRounded
+import com.jawzf.pixeltoolkit.ui.theme.AppFontFamily
 import com.jawzf.pixeltoolkit.utils.HapticUtil
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 
@@ -183,7 +183,7 @@ private fun WhatsNewSectionCard(
                         text = title,
                         style =
                             MaterialTheme.typography.titleLarge.copy(
-                                fontFamily = GoogleSansFlexRounded,
+                                fontFamily = AppFontFamily,
                                 fontWeight = FontWeight.Bold,
                             ),
                         color = MaterialTheme.colorScheme.onSurface,

@@ -40,7 +40,7 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.core.content.res.ResourcesCompat
+import android.graphics.Typeface
 import com.jawzf.pixeltoolkit.R
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -511,7 +511,7 @@ class AodWallpaperOverlayHandler(
 
     private fun buildExtendedLayer(): FrameLayout {
         val density = service.resources.displayMetrics.density
-        val typeface = ResourcesCompat.getFont(service, R.font.google_sans_flex)
+        val typeface = Typeface.DEFAULT
 
         fun label(
             sizeSp: Float,

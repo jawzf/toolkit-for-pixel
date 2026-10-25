@@ -40,6 +40,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.DeviceFontFamilyName
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontVariation
@@ -146,12 +147,11 @@ fun DeviceHeroCard(
                     fontFamily =
                         FontFamily(
                             Font(
-                                R.font.google_sans_flex,
+                                DeviceFontFamilyName("sans-serif"),
                                 variationSettings =
                                     FontVariation.Settings(
                                         FontVariation.width(150f),
                                         FontVariation.weight(FontWeight.Normal.weight),
-                                        FontVariation.Setting("ROND", 100f),
                                     ),
                             ),
                         ),

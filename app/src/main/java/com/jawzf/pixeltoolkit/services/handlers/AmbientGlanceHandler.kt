@@ -12,6 +12,7 @@ import android.graphics.Paint
 import android.graphics.Path
 import android.graphics.PathMeasure
 import android.graphics.PixelFormat
+import android.graphics.Typeface
 import android.media.session.MediaSessionManager
 import android.os.Build
 import android.os.Handler
@@ -25,7 +26,6 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextClock
 import android.widget.TextView
-import androidx.core.content.res.ResourcesCompat
 import com.jawzf.pixeltoolkit.R
 import com.jawzf.pixeltoolkit.services.NotificationListener
 import java.io.File
@@ -744,7 +744,7 @@ class AmbientGlanceHandler(
         // Create View
         val context = service
         // 0. Typeface
-        val googleSansFlex = ResourcesCompat.getFont(service, R.font.google_sans_flex)
+        val googleSansFlex = Typeface.DEFAULT
 
         val rootLayout =
             FrameLayout(context).apply {
