@@ -1,7 +1,6 @@
 package com.jawzf.pixeltoolkit.ui.core.sheets
 
 import android.content.Intent
-import android.net.Uri
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -27,7 +26,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
@@ -56,7 +54,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.core.content.FileProvider
 import com.jawzf.pixeltoolkit.R
@@ -65,8 +62,6 @@ import com.jawzf.pixeltoolkit.ui.theme.Shapes
 import com.jawzf.pixeltoolkit.utils.HapticUtil
 import com.jawzf.pixeltoolkit.utils.LogManager
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
-import io.sentry.Sentry
-import io.sentry.protocol.Feedback
 import org.json.JSONObject
 import java.io.File
 import java.text.SimpleDateFormat
@@ -84,7 +79,6 @@ fun BugReportBottomSheet(
 
     var deviceInfoString by remember { mutableStateOf("") }
     var feedbackMessage by remember { mutableStateOf("") }
-    var contactEmail by remember { mutableStateOf("") }
 
     var isDeviceInfoExpanded by remember { mutableStateOf(false) }
     var isCrashReportsExpanded by remember { mutableStateOf(false) }
@@ -123,11 +117,6 @@ fun BugReportBottomSheet(
             if (feedbackMessage.isNotBlank()) {
                 append("User Feedback:\n")
                 append(feedbackMessage.trim())
-                append("\n\n")
-            }
-            if (contactEmail.isNotBlank()) {
-                append("Contact Email: ")
-                append(contactEmail.trim())
                 append("\n\n")
             }
             append("--- Device Info ---\n")
@@ -187,7 +176,6 @@ fun BugReportBottomSheet(
                 style = MaterialTheme.typography.headlineMedium,
             )
 
-            // Segmented Input Fields Container (Describe issue + Contact email)
             RoundedCardContainer(spacing = 2.dp) {
                 Box(
                     modifier =
@@ -205,26 +193,6 @@ fun BugReportBottomSheet(
                         modifier = Modifier.fillMaxWidth(),
                         shape = MaterialTheme.shapes.large,
                         minLines = 3,
-                    )
-                }
-
-                Box(
-                    modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .background(
-                                color = MaterialTheme.colorScheme.surfaceBright,
-                                shape = Shapes.extraSmall,
-                            ).padding(16.dp),
-                ) {
-                    OutlinedTextField(
-                        value = contactEmail,
-                        onValueChange = { contactEmail = it },
-                        label = { Text(stringResource(R.string.bug_report_contact_email_label)) },
-                        modifier = Modifier.fillMaxWidth(),
-                        shape = MaterialTheme.shapes.large,
-                        singleLine = true,
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                     )
                 }
             }
@@ -495,162 +463,10 @@ fun BugReportBottomSheet(
                 verticalArrangement = Arrangement.spacedBy(12.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                Button(
-                    onClick = {
-                        HapticUtil.performUIHaptic(view)
-                        val feedbackText = buildString {
-                            append(feedbackMessage)
-                            if (selectedCrashReport != null) {
-                                append("\n\n--- Attached Crash Log (${selectedCrashReport?.name}) ---\n")
-                                try {
-                                    append(selectedCrashReport?.readText()?.trim())
-                                } catch (e: Exception) {
-                                    append("Failed to read crash log: ${e.message}")
-                                }
-                            }
-                        }
-                        val feedback = Feedback(feedbackText)
-                        if (contactEmail.isNotBlank()) {
-                            feedback.contactEmail = contactEmail
-                        }
-                        Sentry.captureFeedback(feedback)
-                        Toast
-                            .makeText(context, R.string.msg_feedback_sent, Toast.LENGTH_SHORT)
-                            .show()
-                        onDismissRequest()
-                    },
-                    modifier = Modifier.fillMaxWidth(),
-                    enabled = feedbackMessage.isNotBlank(),
-                ) {
-                    Icon(
-                        painter = painterResource(R.drawable.rounded_send_24),
-                        contentDescription = null,
-                        modifier = Modifier.size(24.dp),
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(stringResource(R.string.action_send_feedback))
-                }
-
-                Text(
-                    text = stringResource(R.string.label_alternatively),
-                    style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.outline,
-                    modifier = Modifier.padding(top = 4.dp),
-                )
-
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(ButtonGroupDefaults.ConnectedSpaceBetween),
                 ) {
-                    Button(
-                        onClick = {
-                            HapticUtil.performUIHaptic(view)
-                            val body = buildString {
-                                if (feedbackMessage.isNotBlank()) {
-                                    append("Feedback:\n$feedbackMessage\n\n")
-                                }
-                                if (contactEmail.isNotBlank()) {
-                                    append("Contact: $contactEmail\n\n")
-                                }
-                                append("Device Info:\n$deviceInfoString\n\n")
-                                if (selectedCrashReport != null) {
-                                    append("Crash Log (${selectedCrashReport?.name}):\n")
-                                    try {
-                                        append(selectedCrashReport?.readText()?.trim())
-                                    } catch (e: Exception) {
-                                        append("Failed to read crash log: ${e.message}")
-                                    }
-                                    append("\n\n")
-                                }
-                            }
-                            val encodedBody = Uri.encode(body)
-                            val intent =
-                                Intent(
-                                    Intent.ACTION_VIEW,
-                                    Uri.parse("https://github.com/sameerasw/essentials/issues/new?body=$encodedBody"),
-                                )
-                            context.startActivity(intent)
-                        },
-                        modifier =
-                            Modifier
-                                .weight(1f)
-                                .height(48.dp),
-                        shape = ButtonGroupDefaults.connectedLeadingButtonShapes().shape,
-                        colors =
-                            ButtonDefaults.buttonColors(
-                                containerColor = MaterialTheme.colorScheme.surfaceBright,
-                                contentColor = MaterialTheme.colorScheme.onSurface,
-                            ),
-                    ) {
-                        Icon(
-                            painter = painterResource(R.drawable.brand_github),
-                            contentDescription = stringResource(R.string.action_report_github),
-                            modifier = Modifier.size(22.dp),
-                        )
-                    }
-
-                    Button(
-                        onClick = {
-                            HapticUtil.performUIHaptic(view)
-                            val contactLine =
-                                if (contactEmail.isNotBlank()) "Contact Email: $contactEmail\n" else ""
-                            val body = buildString {
-                                if (contactLine.isNotBlank()) {
-                                    append(contactLine)
-                                }
-                                if (feedbackMessage.isNotBlank()) {
-                                    append("Feedback:\n$feedbackMessage\n\n")
-                                }
-                                append("Device Info:\n$deviceInfoString\n\n")
-                                if (selectedCrashReport != null) {
-                                    append("Crash Log (${selectedCrashReport?.name}):\n")
-                                    try {
-                                        append(selectedCrashReport?.readText()?.trim())
-                                    } catch (e: Exception) {
-                                        append("Failed to read crash log: ${e.message}")
-                                    }
-                                    append("\n\n")
-                                }
-                            }
-                            val intent =
-                                Intent(Intent.ACTION_SENDTO).apply {
-                                    data = Uri.parse("mailto:")
-                                    putExtra(Intent.EXTRA_EMAIL, arrayOf("mail@sameerasw.com"))
-                                    putExtra(
-                                        Intent.EXTRA_SUBJECT,
-                                        context.getString(R.string.bug_report_email_subject),
-                                    )
-                                    putExtra(Intent.EXTRA_TEXT, body)
-                                }
-                            try {
-                                context.startActivity(intent)
-                            } catch (e: Exception) {
-                                Toast
-                                    .makeText(
-                                        context,
-                                        context.getString(R.string.error_no_email_app),
-                                        Toast.LENGTH_SHORT,
-                                    ).show()
-                            }
-                        },
-                        modifier =
-                            Modifier
-                                .weight(1f)
-                                .height(48.dp),
-                        shape = ButtonGroupDefaults.connectedMiddleButtonShapes().shape,
-                        colors =
-                            ButtonDefaults.buttonColors(
-                                containerColor = MaterialTheme.colorScheme.surfaceBright,
-                                contentColor = MaterialTheme.colorScheme.onSurface,
-                            ),
-                    ) {
-                        Icon(
-                            painter = painterResource(R.drawable.rounded_mail_24),
-                            contentDescription = stringResource(R.string.action_report_email),
-                            modifier = Modifier.size(22.dp),
-                        )
-                    }
-
                     Button(
                         onClick = {
                             HapticUtil.performUIHaptic(view)
@@ -693,7 +509,7 @@ fun BugReportBottomSheet(
                             Modifier
                                 .weight(1f)
                                 .height(48.dp),
-                        shape = ButtonGroupDefaults.connectedMiddleButtonShapes().shape,
+                        shape = ButtonGroupDefaults.connectedLeadingButtonShapes().shape,
                         colors =
                             ButtonDefaults.buttonColors(
                                 containerColor = MaterialTheme.colorScheme.surfaceBright,
