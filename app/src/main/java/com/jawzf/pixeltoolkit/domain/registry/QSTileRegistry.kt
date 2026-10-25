@@ -41,7 +41,6 @@ import com.jawzf.pixeltoolkit.services.tiles.TapToWakeTileService
 import com.jawzf.pixeltoolkit.services.tiles.UiBlurTileService
 import com.jawzf.pixeltoolkit.services.tiles.UrlShortenerTileService
 import com.jawzf.pixeltoolkit.services.tiles.UsbDebuggingTileService
-import com.jawzf.pixeltoolkit.utils.DeviceUtils
 import com.jawzf.pixeltoolkit.utils.PermissionUtils
 import com.jawzf.pixeltoolkit.utils.ShellUtils
 
@@ -181,7 +180,6 @@ object QSTileRegistry {
                 emptyList(),
                 R.string.about_desc_flashlight_tile,
                 R.string.cat_utils,
-                isSupported = { _ -> !DeviceUtils.isTorchRestrictedDevice() },
             ),
             QSTileInfo(
                 R.string.tile_app_freezing,
@@ -206,7 +204,6 @@ object QSTileRegistry {
                 listOf("NOTIFICATION_LISTENER"),
                 R.string.about_desc_flashlight_pulse,
                 R.string.cat_utils,
-                isSupported = { _ -> !DeviceUtils.isTorchRestrictedDevice() },
             ),
             QSTileInfo(
                 R.string.tile_stay_awake,
@@ -280,7 +277,6 @@ object QSTileRegistry {
                 listOf("SHIZUKU"),
                 R.string.about_desc_refresh_rate_tile,
                 R.string.cat_visuals,
-                isSupported = { _ -> DeviceUtils.isGoogleDevice() },
             ),
             QSTileInfo(
                 R.string.feat_maps_power_saving_title,
@@ -344,7 +340,6 @@ object QSTileRegistry {
                 if (ShellUtils.isRootEnabled(context)) listOf("ROOT") else listOf("SHIZUKU"),
                 R.string.about_desc_charge_optimization,
                 R.string.cat_utils,
-                isSupported = { _ -> DeviceUtils.isGoogleDevice() },
             ),
             QSTileInfo(
                 R.string.tile_lock,

@@ -294,20 +294,6 @@ object StatusBarIconRegistry {
                 iconRes = R.drawable.rounded_settings_accessibility_24,
             ),
             StatusBarIcon(
-                id = "samsung_smart",
-                displayNameRes = R.string.icon_samsung_smart,
-                blacklistNames =
-                    listOf(
-                        "gesture",
-                        "smart_scroll",
-                        "face",
-                        "smart_network",
-                        "smart_bonding",
-                    ),
-                categoryRes = CAT_OEM_SPECIFIC,
-                iconRes = R.drawable.rounded_fiber_smart_record_24,
-            ),
-            StatusBarIcon(
                 id = "glove_mode",
                 displayNameRes = R.string.icon_glove_mode,
                 blacklistNames = listOf("glove_mode", "glove"),
@@ -327,21 +313,6 @@ object StatusBarIconRegistry {
                 blacklistNames = listOf("nosim"),
                 categoryRes = CAT_PHONE_NETWORK,
                 iconRes = R.drawable.rounded_signal_cellular_alt_24,
-            ),
-            StatusBarIcon(
-                id = "samsung_services",
-                displayNameRes = R.string.icon_samsung_services,
-                blacklistNames =
-                    listOf(
-                        "wearable_gear",
-                        "femtoicon",
-                        "com.samsung.rcs",
-                        "toddler",
-                        "keyguard_wakeup",
-                        "safezone",
-                    ),
-                categoryRes = CAT_OEM_SPECIFIC,
-                iconRes = R.drawable.rounded_interests_24,
             ),
         )
 

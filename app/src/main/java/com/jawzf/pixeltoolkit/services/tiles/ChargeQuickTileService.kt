@@ -5,12 +5,9 @@ import android.graphics.drawable.Icon
 import android.service.quicksettings.Tile
 import com.jawzf.pixeltoolkit.FeatureSettingsActivity
 import com.jawzf.pixeltoolkit.R
-import com.jawzf.pixeltoolkit.utils.DeviceUtils
 import com.jawzf.pixeltoolkit.utils.ShellUtils
 
 class ChargeQuickTileService : BaseTileService() {
-    override fun isDeviceSupported(): Boolean = DeviceUtils.isGoogleDevice()
-
     companion object {
         private const val ADAPTIVE_CHARGING_SETTING = "adaptive_charging_enabled"
         private const val CHARGE_OPTIMIZATION_MODE = "charge_optimization_mode"

@@ -115,7 +115,6 @@ import com.jawzf.pixeltoolkit.ui.modifiers.progressiveBlur
 import com.jawzf.pixeltoolkit.ui.modifiers.scrollMotionBlur
 import com.jawzf.pixeltoolkit.ui.theme.EssentialsTheme
 import com.jawzf.pixeltoolkit.ui.theme.Shapes
-import com.jawzf.pixeltoolkit.utils.DeviceUtils
 import com.jawzf.pixeltoolkit.ui.core.pickers.SegmentedPicker
 import com.jawzf.pixeltoolkit.utils.AppHapticMode
 import com.jawzf.pixeltoolkit.utils.HapticUtil
@@ -767,20 +766,12 @@ fun SettingsContent(
                 isChecked = viewModel.isPitchBlackThemeEnabled.value,
                 onCheckedChange = { viewModel.setPitchBlackThemeEnabled(it, context) },
             )
-            val isBlurProblematic = remember { DeviceUtils.isBlurProblematicDevice() }
-
             IconToggleItem(
                 iconRes = R.drawable.rounded_blur_on_24,
                 title = stringResource(R.string.label_use_blur),
-                description =
-                    if (isBlurProblematic) {
-                        stringResource(R.string.msg_blur_compatibility_error)
-                    } else {
-                        null
-                    },
+                description = null,
                 isChecked = viewModel.isBlurSettingEnabled.value,
                 onCheckedChange = { viewModel.setBlurEnabled(it, context) },
-                enabled = !isBlurProblematic,
             )
 
             IconToggleItem(
@@ -1131,16 +1122,6 @@ fun SettingsContent(
                     }
                 },
             )
-
-            if (viewModel.isEnableUnsupportedFeatures.value && DeviceUtils.isTorchRestrictedDevice()) {
-                IconToggleItem(
-                    iconRes = R.drawable.rounded_flashlight_on_24,
-                    title = stringResource(R.string.setting_force_flashlight_controls_title),
-                    description = stringResource(R.string.setting_force_flashlight_controls_desc),
-                    isChecked = viewModel.isForceFlashlightControls.value,
-                    onCheckedChange = { enabled -> viewModel.setForceFlashlightControls(enabled) },
-                )
-            }
 
             IconToggleItem(
                 iconRes = R.drawable.rounded_archive_24,

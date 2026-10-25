@@ -1,6 +1,5 @@
 package com.jawzf.pixeltoolkit.island.plugins.flashlight
 
-import com.jawzf.pixeltoolkit.utils.DeviceUtils
 import androidx.compose.material3.MaterialTheme
 import android.content.Context
 import android.hardware.camera2.CameraManager
@@ -82,7 +81,6 @@ class FlashlightPlugin : BaseIslandPlugin() {
     }
 
     override fun onStart() {
-        if (DeviceUtils.isTorchAccessRestricted()) return
         cameraId = FlashlightUtil.getCameraId(context)
         try {
             cameraManager.registerTorchCallback(callback, ctx!!.mainHandler)
@@ -92,7 +90,6 @@ class FlashlightPlugin : BaseIslandPlugin() {
 
     override fun onStop() {
         fadeJob?.cancel()
-        if (DeviceUtils.isTorchAccessRestricted()) return
         try {
             cameraManager.unregisterTorchCallback(callback)
         } catch (_: Exception) {

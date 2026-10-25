@@ -32,64 +32,8 @@ data class DeviceInfo(
 )
 
 object DeviceUtils {
-    private val isGoogleDeviceLazy: Boolean by lazy {
-        Build.MANUFACTURER.equals("google", ignoreCase = true) ||
-            Build.BRAND.equals("google", ignoreCase = true) ||
-            Build.PRODUCT.contains("pixel", ignoreCase = true)
-    }
-
-    private val isSamsungDeviceLazy: Boolean by lazy {
-        Build.MANUFACTURER.equals("samsung", ignoreCase = true) ||
-            Build.BRAND.equals("samsung", ignoreCase = true)
-    }
-
-    private val isTclDeviceLazy: Boolean by lazy {
-        Build.MANUFACTURER.equals("tcl", ignoreCase = true) ||
-            Build.BRAND.equals("tcl", ignoreCase = true) ||
-            Build.PRODUCT.contains("tcl", ignoreCase = true)
-    }
-
-    private val isMediatekDeviceLazy: Boolean by lazy {
-        val hardware = Build.HARDWARE.lowercase()
-        val board = Build.BOARD.lowercase()
-        val brand = Build.BRAND.lowercase()
-        val manufacturer = Build.MANUFACTURER.lowercase()
-        val socManufacturer =
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                Build.SOC_MANUFACTURER.lowercase()
-            } else {
-                ""
-            }
-
-        hardware.contains("mt") ||
-            hardware.contains("mediatek") ||
-            hardware.contains("dimensity") ||
-            board.contains("mt") ||
-            board.contains("mediatek") ||
-            board.contains("dimensity") ||
-            brand.contains("mediatek") ||
-            manufacturer.contains("mediatek") ||
-            socManufacturer.contains("mediatek") ||
-            socManufacturer.contains("mtk")
-    }
-
-    fun isGoogleDevice(): Boolean = isGoogleDeviceLazy
-
-    fun isSamsungDevice(): Boolean = isSamsungDeviceLazy
-
-    fun isMediatekDevice(): Boolean = isMediatekDeviceLazy
-
-    @Volatile
-    var torchRestrictionLifted: Boolean = false
-
-    fun isTorchRestrictedDevice(): Boolean = isTclDevice() || isMediatekDevice()
-
-    fun isTorchAccessRestricted(): Boolean = isTorchRestrictedDevice() && !torchRestrictionLifted
-
-    fun isTclDevice(): Boolean = isTclDeviceLazy
-
     // The Hilight LED array ships on the Pixel 11 Pro, Pro XL and Pro Fold
-    fun isHilightDevice(): Boolean = isGoogleDevice() && Build.MODEL.startsWith("Pixel 11 Pro")
+    fun isHilightDevice(): Boolean = Build.MODEL.startsWith("Pixel 11 Pro")
 
     fun getDeviceInfo(context: Context): DeviceInfo {
         val deviceName =
@@ -252,14 +196,6 @@ object DeviceUtils {
         } catch (e: Exception) {
             patchString
         }
-    }
-
-    fun isBlurProblematicDevice(): Boolean {
-        return false
-        // Samsung devices on One UI 7 (Android 15) or below have a broken blur implementation
-        // that causes a gray screen overlay. Disable it for them. (╯°□°）╯︵ ┻━┻
-        // return Build.MANUFACTURER.equalsIgnoreCase("samsung") &&
-        //     Build.VERSION.SDK_INT <= 35 // Android 15
     }
 
     fun isPowerSaveMode(context: Context): Boolean {

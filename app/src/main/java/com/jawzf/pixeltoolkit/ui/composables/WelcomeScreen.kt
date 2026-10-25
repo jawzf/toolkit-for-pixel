@@ -87,7 +87,6 @@ import com.jawzf.pixeltoolkit.ui.core.pickers.CrashReportingPicker
 import com.jawzf.pixeltoolkit.ui.core.pickers.LanguagePicker
 import com.jawzf.pixeltoolkit.ui.core.sheets.UpdateBottomSheet
 import com.jawzf.pixeltoolkit.ui.theme.GoogleSansFlexRounded
-import com.jawzf.pixeltoolkit.utils.DeviceUtils
 import com.jawzf.pixeltoolkit.ui.core.pickers.SegmentedPicker
 import com.jawzf.pixeltoolkit.utils.AppHapticMode
 import com.jawzf.pixeltoolkit.utils.HapticUtil
@@ -1064,19 +1063,12 @@ fun PreferencesStepContent(
                     isChecked = isPitchBlackThemeEnabled,
                     onCheckedChange = { viewModel.setPitchBlackThemeEnabled(it, context) },
                 )
-                val isBlurProblematic = remember { DeviceUtils.isBlurProblematicDevice() }
                 IconToggleItem(
                     iconRes = R.drawable.rounded_blur_on_24,
                     title = stringResource(R.string.label_use_blur),
-                    description =
-                        if (isBlurProblematic) {
-                            stringResource(R.string.msg_blur_compatibility_error)
-                        } else {
-                            stringResource(R.string.desc_use_blur)
-                        },
+                    description = stringResource(R.string.desc_use_blur),
                     isChecked = isBlurSettingEnabled,
                     onCheckedChange = { viewModel.setBlurEnabled(it, context) },
-                    enabled = !isBlurProblematic,
                 )
                 PrivilegedModePicker(
                     selectedMode = viewModel.privilegedMode.value,

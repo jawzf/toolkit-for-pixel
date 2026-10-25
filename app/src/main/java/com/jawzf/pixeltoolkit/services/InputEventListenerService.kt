@@ -116,23 +116,21 @@ class InputEventListenerService : Service() {
                 .build()
         startForegroundSafely(notification)
 
-        if (!com.jawzf.pixeltoolkit.utils.DeviceUtils.isTorchAccessRestricted()) {
-            val cameraManager =
-                getSystemService(CAMERA_SERVICE) as android.hardware.camera2.CameraManager
-            cameraManager.registerTorchCallback(
-                object :
-                    android.hardware.camera2.CameraManager.TorchCallback() {
-                    override fun onTorchModeChanged(
-                        cameraId: String,
-                        enabled: Boolean,
-                    ) {
-                        super.onTorchModeChanged(cameraId, enabled)
-                        isTorchOn = enabled
-                    }
-                },
-                null,
-            )
-        }
+        val cameraManager =
+            getSystemService(CAMERA_SERVICE) as android.hardware.camera2.CameraManager
+        cameraManager.registerTorchCallback(
+            object :
+                android.hardware.camera2.CameraManager.TorchCallback() {
+                override fun onTorchModeChanged(
+                    cameraId: String,
+                    enabled: Boolean,
+                ) {
+                    super.onTorchModeChanged(cameraId, enabled)
+                    isTorchOn = enabled
+                }
+            },
+            null,
+        )
 
         val powerManager = getSystemService(POWER_SERVICE) as? PowerManager
         screenOn = powerManager?.isInteractive ?: true

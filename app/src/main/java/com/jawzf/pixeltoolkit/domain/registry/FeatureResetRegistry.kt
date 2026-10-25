@@ -14,7 +14,6 @@ object FeatureResetRegistry {
             "Flashlight pulse" to listOf("flashlight_pulse_"),
             "Conscious gate" to listOf("conscious_gate_"),
             "Shut-Up!" to listOf("shut_up_"),
-            "Pocket mode" to listOf("pocket_mode_"),
             "Hilight" to listOf("hilight_"),
             "Hilight notifications" to listOf("hilight_notifications_"),
             "Hilight live progress" to listOf("hilight_progress_"),

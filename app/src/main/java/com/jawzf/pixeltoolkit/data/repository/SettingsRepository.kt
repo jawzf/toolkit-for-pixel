@@ -347,7 +347,6 @@ class SettingsRepository(
         const val KEY_PRIVILEGED_MODE = "privileged_mode"
         const val KEY_PITCH_BLACK_THEME_ENABLED = "pitch_black_theme_enabled"
         const val KEY_ENABLE_UNSUPPORTED_FEATURES = "enable_unsupported_features"
-        const val KEY_FORCE_FLASHLIGHT_CONTROLS = "force_flashlight_controls"
         const val KEY_SHOW_LEGACY_FEATURES = "show_legacy_features"
 
         const val KEY_KEYBOARD_HEIGHT = "keyboard_height"
@@ -811,7 +810,6 @@ class SettingsRepository(
         const val KEY_LOCK_SCREEN_CLOCK_SELECTED_COLOR_ID = "lock_screen_clock_selected_color_id"
         const val KEY_LOCK_SCREEN_CLOCK_SEED_COLOR = "lock_screen_clock_seed_color"
         const val KEY_RECENT_SEARCHES = "recent_searches"
-        const val KEY_POCKET_MODE_ENABLED = "pocket_mode_enabled"
         const val KEY_FACE_UNLOCK_BRIGHTNESS_ENABLED = "face_unlock_brightness_enabled"
         const val KEY_SCREENSHOT_SHARE_CLEANUP_ENABLED = "screenshot_share_cleanup_enabled"
         const val KEY_SCREENSHOT_SHARE_CLEANUP_DELAY = "screenshot_share_cleanup_delay"
@@ -825,10 +823,6 @@ class SettingsRepository(
         const val KEY_FACE_UNLOCK_AUTO_ILLUMINATE = "face_unlock_auto_illuminate"
         const val KEY_FACE_UNLOCK_AMBIENT_THRESHOLD = "face_unlock_ambient_threshold_lux"
         const val KEY_FACE_UNLOCK_LIGHT_TINT = "face_unlock_light_tint"
-        const val KEY_POCKET_MODE_USE_LIGHT_SENSOR = "pocket_mode_use_light_sensor"
-        const val KEY_POCKET_MODE_EXCLUDED_APPS = "pocket_mode_excluded_apps"
-        const val KEY_POCKET_MODE_TRIGGER_DELAY = "pocket_mode_trigger_delay"
-        const val KEY_POCKET_MODE_LOCK_SCREEN_ONLY = "pocket_mode_lock_screen_only"
         const val KEY_KEEP_PREFS = "keep_prefs"
         const val KEY_TRANSLATION_MODE_DO_NOT_SHOW_WARNING = "translation_mode_do_not_show_warning"
 
@@ -1557,29 +1551,6 @@ class SettingsRepository(
         packageName: String,
         enabled: Boolean,
     ) = updateAppSelection(KEY_NOTIFICATION_GLANCE_SELECTED_APPS, packageName, enabled)
-
-    /**
-     * Executes the load pocket mode excluded apps operation.
-     */
-    fun loadPocketModeExcludedApps() = loadAppSelection(KEY_POCKET_MODE_EXCLUDED_APPS)
-
-    /**
-     * Executes the save pocket mode excluded apps operation.
-     *
-     * @param apps [List<AppSelection>] Target apps.
-     */
-    fun savePocketModeExcludedApps(apps: List<AppSelection>) = saveAppSelection(KEY_POCKET_MODE_EXCLUDED_APPS, apps)
-
-    /**
-     * Executes the update pocket mode excluded app selection operation.
-     *
-     * @param packageName [String] Target package name.
-     * @param enabled [Boolean] Target enabled.
-     */
-    fun updatePocketModeExcludedAppSelection(
-        packageName: String,
-        enabled: Boolean,
-    ) = updateAppSelection(KEY_POCKET_MODE_EXCLUDED_APPS, packageName, enabled)
 
     fun loadAodWallpaperMediaExcludedApps() = loadAppSelection(KEY_AOD_WALLPAPER_MEDIA_EXCLUDED_APPS)
 
@@ -2716,19 +2687,6 @@ class SettingsRepository(
      */
     fun setEnableUnsupportedFeatures(enabled: Boolean) {
         putBoolean(KEY_ENABLE_UNSUPPORTED_FEATURES, enabled)
-        syncTorchRestriction()
-    }
-
-    fun isForceFlashlightControls(): Boolean = getBoolean(KEY_FORCE_FLASHLIGHT_CONTROLS, false)
-
-    fun setForceFlashlightControls(enabled: Boolean) {
-        putBoolean(KEY_FORCE_FLASHLIGHT_CONTROLS, enabled)
-        syncTorchRestriction()
-    }
-
-    fun syncTorchRestriction() {
-        com.jawzf.pixeltoolkit.utils.DeviceUtils.torchRestrictionLifted =
-            isEnableUnsupportedFeatures() && isForceFlashlightControls()
     }
 
     fun getIslandHideIcons(): Set<String> =

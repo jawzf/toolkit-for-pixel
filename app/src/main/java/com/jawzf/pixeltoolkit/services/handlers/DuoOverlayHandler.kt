@@ -1067,7 +1067,6 @@ class DuoOverlayHandler(
     private var maxFlashlightLevel: Int = -1
 
     private fun getCameraId(): String? {
-        if (com.jawzf.pixeltoolkit.utils.DeviceUtils.isTorchAccessRestricted()) return null
         if (primaryCameraId != null) return primaryCameraId
         return try {
             val id = cameraManager.cameraIdList.firstOrNull { camId ->
@@ -1129,7 +1128,6 @@ class DuoOverlayHandler(
     }
 
     private fun registerTorchCallback() {
-        if (com.jawzf.pixeltoolkit.utils.DeviceUtils.isTorchAccessRestricted()) return
         if (!isTorchCallbackRegistered) {
             try {
                 cameraManager.registerTorchCallback(torchCallback, mainHandler)
