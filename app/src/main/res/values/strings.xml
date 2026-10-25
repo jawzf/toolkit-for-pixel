@@ -1178,11 +1178,6 @@
     <string name="label_settings">Settings</string>
     <string name="action_report_bug">Report a Bug</string>
 
-    <!-- Sentry Crash Reporting -->
-    <string name="sentry_report_mode_title">Crash reporting</string>
-    <string name="sentry_mode_off">Off</string>
-    <string name="sentry_mode_auto">Auto</string>
-    <string name="sentry_crash_toast">Essentials crashed, report saved and sent</string>
     <string name="simulate_crash">Simulate crash</string>
     <string name="crash_logs_title">Crash logs</string>
     <string name="crash_logs_desc">View and share recent crash reports</string>
@@ -1983,13 +1978,10 @@
     <string name="bug_report_option_share_logs_desc">Include logs and details</string>
     <string name="bug_report_device_info">Device Info</string>
     <string name="bug_report_raw_json">Raw Report</string>
-    <string name="action_report_github">Open GitHub Issue</string>
-    <string name="action_report_email">Email Report</string>
     <string name="action_save_report">Save Report</string>
     <string name="toast_report_saved">Report saved</string>
     <string name="error_save_report">Failed to save report</string>
     <string name="action_copy_clipboard">Copy to Clipboard</string>
-    <string name="bug_report_email_subject">Essentials Bug Report</string>
     <string name="bug_report_send_via">Please enable crash reporting as it will automatically report details that would help resolving issues.</string>
 
     <!-- Location Reached -->
@@ -2444,10 +2436,6 @@
     <string name="action_add_repository">Add Repository</string>
     <!-- Bug Report Enhancement -->
     <string name="bug_report_feedback_placeholder">Describe the issue or provide feedback…</string>
-    <string name="bug_report_contact_email_label">Contact email</string>
-    <string name="action_send_feedback">Send Feedback</string>
-    <string name="msg_feedback_sent">Feedback sent successfully! Thanks for helping us improve the app.</string>
-    <string name="label_alternatively">Alternatively</string>
 
     <!-- Pixel Diagnostics -->
     <string name="label_diagnostics">Diagnostics</string>

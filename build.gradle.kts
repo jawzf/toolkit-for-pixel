@@ -4,5 +4,4 @@ plugins {
     alias(libs.plugins.android.library) apply false
     alias(libs.plugins.kotlin.compose) apply false
     alias(libs.plugins.aboutlibraries) apply false
-    alias(libs.plugins.sentry.android.gradle) apply false
 }

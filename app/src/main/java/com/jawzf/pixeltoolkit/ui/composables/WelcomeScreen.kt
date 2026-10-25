@@ -83,7 +83,6 @@ import com.jawzf.pixeltoolkit.ui.components.text.SimpleMarkdown
 import com.jawzf.pixeltoolkit.ui.core.cards.IconToggleItem
 import com.jawzf.pixeltoolkit.ui.core.pickers.PrivilegedModePicker
 import com.jawzf.pixeltoolkit.ui.core.containers.RoundedCardContainer
-import com.jawzf.pixeltoolkit.ui.core.pickers.CrashReportingPicker
 import com.jawzf.pixeltoolkit.ui.core.pickers.LanguagePicker
 import com.jawzf.pixeltoolkit.ui.core.sheets.UpdateBottomSheet
 import com.jawzf.pixeltoolkit.ui.theme.AppFontFamily
@@ -163,10 +162,7 @@ fun WelcomeScreen(
                     }
 
                     OnboardingStep.ACKNOWLEDGEMENT -> {
-                        val sentryMode by viewModel.sentryReportMode
                         AcknowledgementStepContent(
-                            sentryMode = sentryMode,
-                            onSentryModeSelected = { viewModel.setSentryReportMode(it, context) },
                             onBack = {
                                 HapticUtil.performVirtualKeyHaptic(view)
                                 currentStep = OnboardingStep.WELCOME
@@ -446,8 +442,6 @@ fun WelcomeStepContent(
 
 @Composable
 fun AcknowledgementStepContent(
-    sentryMode: String,
-    onSentryModeSelected: (String) -> Unit,
     onBack: () -> Unit,
     onNext: () -> Unit,
 ) {
@@ -514,15 +508,6 @@ fun AcknowledgementStepContent(
 
                 Spacer(modifier = Modifier.height(16.dp))
             }
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        RoundedCardContainer {
-            CrashReportingPicker(
-                selectedMode = sentryMode,
-                onModeSelected = onSentryModeSelected,
-            )
         }
 
         Spacer(modifier = Modifier.height(16.dp))

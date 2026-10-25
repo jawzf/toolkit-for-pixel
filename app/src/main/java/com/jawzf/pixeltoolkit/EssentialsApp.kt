@@ -5,17 +5,13 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Build
-import android.os.Handler
-import android.os.Looper
-import android.widget.Toast
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.services.receivers.SecurityReceiver
+import com.jawzf.pixeltoolkit.utils.LogManager
 import com.jawzf.pixeltoolkit.utils.ShizukuUtils
 import eu.darken.porter.bridge.PorterShizukuBridge
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import io.sentry.android.core.SentryAndroid
 import org.lsposed.hiddenapibypass.HiddenApiBypass
 
 class EssentialsApp : Application() {
@@ -45,8 +41,7 @@ class EssentialsApp : Application() {
         ShizukuUtils.initialize()
         com.jawzf.pixeltoolkit.utils.CarConnectionMonitor
             .initialize(this)
-        com.jawzf.pixeltoolkit.utils.LogManager
-            .init(this)
+        LogManager.init(this)
 
         // Init Automation
         com.jawzf.pixeltoolkit.domain.diy.DIYRepository
@@ -55,8 +50,6 @@ class EssentialsApp : Application() {
             .init(this)
         com.jawzf.pixeltoolkit.utils.ServiceUtils
             .startRequiredServices(this)
-
-        initSentry()
 
         val intentFilter =
             IntentFilter().apply {
@@ -75,44 +68,5 @@ class EssentialsApp : Application() {
     override fun onTerminate() {
         super.onTerminate()
         unregisterReceiver(securityReceiver)
-    }
-
-    private fun initSentry() {
-        val repository = SettingsRepository(this)
-        val mode = repository.getString(SettingsRepository.KEY_SENTRY_REPORT_MODE, "auto")
-
-        if (mode == "off") return
-
-        SentryAndroid.init(this) { options ->
-            options.dsn =
-                "https://e105699467efe3a43a16bfbad3a63b33@o4510996760887296.ingest.de.sentry.io/4510996763312208"
-            options.isEnabled = true
-
-            options.setBeforeSend { event, hint ->
-                try {
-                    val throwable = event.throwable
-                    val threadName = event.threads?.firstOrNull()?.name ?: Thread.currentThread().name
-                    val message = event.message?.formatted ?: event.exceptions?.firstOrNull()?.value
-                    com.jawzf.pixeltoolkit.utils.LogManager.saveCrashReport(
-                        context = this@EssentialsApp,
-                        threadName = threadName,
-                        throwable = throwable,
-                        customMessage = message,
-                    )
-                } catch (e: Exception) {
-                    android.util.Log.e("EssentialsApp", "Failed to save crash report locally in Sentry callback", e)
-                }
-
-                Handler(Looper.getMainLooper()).post {
-                    Toast
-                        .makeText(
-                            this@EssentialsApp,
-                            R.string.sentry_crash_toast,
-                            Toast.LENGTH_LONG,
-                        ).show()
-                }
-                event
-            }
-        }
     }
 }

@@ -450,7 +450,6 @@ class SettingsRepository(
         const val KEY_ONLINE_HELP_MEDIA = "online_help_media"
         const val KEY_SHAKE_FOR_HELP = "shake_for_help"
         const val KEY_SWIPE_TABS = "swipe_tabs"
-        const val KEY_SENTRY_REPORT_MODE = "sentry_report_mode"
         const val KEY_ONBOARDING_COMPLETED = "onboarding_completed"
         const val KEY_PRIVATE_DNS_PRESETS = "private_dns_presets"
         const val KEY_APRIL_FOOLS_SHOWN = "april_fools_shown"

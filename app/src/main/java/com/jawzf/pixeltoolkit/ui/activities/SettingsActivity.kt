@@ -98,7 +98,6 @@ import com.jawzf.pixeltoolkit.ui.core.pickers.PrivilegedModePicker
 import com.jawzf.pixeltoolkit.ui.core.cards.PermissionCard
 import com.jawzf.pixeltoolkit.ui.core.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.ui.core.pickers.AppIconPicker
-import com.jawzf.pixeltoolkit.ui.core.pickers.CrashReportingPicker
 import com.jawzf.pixeltoolkit.ui.core.pickers.DefaultTabPicker
 import com.jawzf.pixeltoolkit.ui.core.pickers.LanguagePicker
 import com.jawzf.pixeltoolkit.ui.core.sheets.GitHubAuthSheet
@@ -575,7 +574,6 @@ fun SettingsContent(
         }
     }
 
-    val sentryMode by viewModel.sentryReportMode
     val isMotionBlurEnabled by viewModel.isMotionBlurEnabled
     val scrollState = rememberScrollState()
     var permissionsSectionY by remember { mutableStateOf<Float?>(null) }
@@ -1104,11 +1102,6 @@ fun SettingsContent(
         )
 
         RoundedCardContainer {
-            CrashReportingPicker(
-                selectedMode = sentryMode,
-                onModeSelected = { viewModel.setSentryReportMode(it, context) },
-            )
-
             IconToggleItem(
                 iconRes = R.drawable.rounded_release_alert_24,
                 title = stringResource(R.string.setting_enable_unsupported_features_title),
