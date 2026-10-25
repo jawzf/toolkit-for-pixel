@@ -44,15 +44,15 @@ In `res/xml/accessibility_service_config.xml`:
 
 ## 3. Implementation Code
 
-Inside the accessibility service (e.g., [`ScreenOffAccessibilityService`](../app/src/main/java/com/sameerasw/essentials/services/tiles/ScreenOffAccessibilityService.kt)):
+Inside the accessibility service (e.g., [`ScreenOffAccessibilityService`](../app/src/main/java/com/jawzf/pixeltoolkit/services/tiles/ScreenOffAccessibilityService.kt)):
 
 ```kotlin
 import android.accessibilityservice.AccessibilityService
 import android.accessibilityservice.AccessibilityServiceInfo
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityWindowInfo
-import com.sameerasw.essentials.domain.HapticFeedbackType
-import com.sameerasw.essentials.utils.HapticUtil
+import com.jawzf.pixeltoolkit.domain.HapticFeedbackType
+import com.jawzf.pixeltoolkit.utils.HapticUtil
 
 class ScreenOffAccessibilityService : AccessibilityService() {
 
