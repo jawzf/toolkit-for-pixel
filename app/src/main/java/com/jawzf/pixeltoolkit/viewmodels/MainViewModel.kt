@@ -255,7 +255,6 @@ class MainViewModel : ViewModel() {
     val isIslandSoundModeKeepIcon = mutableStateOf(true)
     val isIslandShowAlarm = mutableStateOf(false)
     val islandAlarmWindowHours = mutableIntStateOf(12)
-    val isIslandShowTravel = mutableStateOf(true)
     val isIslandShowCaffeinate = mutableStateOf(true)
     val isIslandShowNavigation = mutableStateOf(true)
     val islandNavigationOnNew = mutableStateOf(SettingsRepository.ISLAND_NAVIGATION_ON_NEW_PEEK)
@@ -576,8 +575,6 @@ class MainViewModel : ViewModel() {
     val hasPendingUpdates = mutableStateOf(false)
 
     val isPitchBlackThemeEnabled = mutableStateOf(false)
-    val isGenAIAutomationEnabled = mutableStateOf(false)
-    val isLocationReachedFullScreenAlarmEnabled = mutableStateOf(true)
 
     val isEnableUnsupportedFeatures = mutableStateOf(false)
     val isForceFlashlightControls = mutableStateOf(false)
@@ -1203,10 +1200,6 @@ class MainViewModel : ViewModel() {
                     SettingsRepository.KEY_PITCH_BLACK_THEME_ENABLED ->
                         isPitchBlackThemeEnabled.value =
                             settingsRepository.getBoolean(key)
-
-                    SettingsRepository.KEY_LOCATION_REACHED_FULL_SCREEN_ALARM_ENABLED ->
-                        isLocationReachedFullScreenAlarmEnabled.value =
-                            settingsRepository.getLocationReachedFullScreenAlarmEnabled()
 
                     SettingsRepository.KEY_ENABLE_UNSUPPORTED_FEATURES -> {
                         isEnableUnsupportedFeatures.value =
@@ -2122,17 +2115,7 @@ class MainViewModel : ViewModel() {
         loadAutoDismissChannels()
         loadAutoDismissStats()
         recentSearches.value = settingsRepository.getRecentSearches()
-        loadCachedWallpaper()
-        isDailyWallpaperAutoUpdateEnabled.value =
-            settingsRepository.getBoolean(SettingsRepository.KEY_DAILY_WALLPAPER_AUTO_UPDATE, false)
-        if (isDailyWallpaperAutoUpdateEnabled.value) {
-            schedulePeriodicWallpaperCheck(context)
-        }
         schedulePeriodicAppUpdateCheck(context)
-        dailyWallpaperAutoUpdateTime.value =
-            settingsRepository.getString(SettingsRepository.KEY_DAILY_WALLPAPER_AUTO_UPDATE_TIME)
-        isDailyWallpaperShowLastTime.value =
-            settingsRepository.getBoolean(SettingsRepository.KEY_DAILY_WALLPAPER_SHOW_LAST_TIME)
 
         if (isHideGestureBarEnabled.value) {
             applyHideGestureBar(context, true)
@@ -2651,7 +2634,6 @@ class MainViewModel : ViewModel() {
         isIslandSoundModeKeepIcon.value = settingsRepository.isIslandSoundModeKeepIconEnabled()
         isIslandShowAlarm.value = settingsRepository.isIslandShowAlarmEnabled()
         islandAlarmWindowHours.intValue = settingsRepository.getIslandAlarmWindowHours()
-        isIslandShowTravel.value = settingsRepository.isIslandShowTravelEnabled()
         isDuoIslandCombined.value = settingsRepository.isDuoIslandCombinedSetting()
         isDuoTapForBrief.value = settingsRepository.isDuoTapForBriefEnabled()
         isDuoHideOnShade.value = settingsRepository.isDuoHideOnShadeEnabled()
@@ -2819,8 +2801,6 @@ class MainViewModel : ViewModel() {
             )
         isPitchBlackThemeEnabled.value =
             settingsRepository.getBoolean(SettingsRepository.KEY_PITCH_BLACK_THEME_ENABLED)
-        isLocationReachedFullScreenAlarmEnabled.value =
-            settingsRepository.getLocationReachedFullScreenAlarmEnabled()
         isEnableUnsupportedFeatures.value = settingsRepository.isEnableUnsupportedFeatures()
         isForceFlashlightControls.value = settingsRepository.isForceFlashlightControls()
         isShowLegacyFeatures.value = settingsRepository.isShowLegacyFeatures()
@@ -2904,8 +2884,6 @@ class MainViewModel : ViewModel() {
 
         isAutoUpdateEnabled.value =
             settingsRepository.getBoolean(SettingsRepository.KEY_AUTO_UPDATE_ENABLED, true)
-        isGenAIAutomationEnabled.value =
-            settingsRepository.getBoolean(SettingsRepository.KEY_GENAI_AUTOMATION_ENABLED, false)
 
         isUpdateNotificationEnabled.value =
             settingsRepository.getBoolean(SettingsRepository.KEY_UPDATE_NOTIFICATION_ENABLED, true)
@@ -3306,20 +3284,6 @@ class MainViewModel : ViewModel() {
     }
 
     /**
-     * Executes the set gen ai automation enabled operation.
-     *
-     * @param enabled [Boolean] Target enabled.
-     * @param context [Context] Target context.
-     */
-    fun setGenAIAutomationEnabled(
-        enabled: Boolean,
-        context: Context,
-    ) {
-        isGenAIAutomationEnabled.value = enabled
-        settingsRepository.putBoolean(SettingsRepository.KEY_GENAI_AUTOMATION_ENABLED, enabled)
-    }
-
-    /**
      * Executes the set update notification enabled operation.
      *
      * @param enabled [Boolean] Target enabled.
@@ -3639,11 +3603,6 @@ class MainViewModel : ViewModel() {
     ) {
         isPitchBlackThemeEnabled.value = enabled
         settingsRepository.putBoolean(SettingsRepository.KEY_PITCH_BLACK_THEME_ENABLED, enabled)
-    }
-
-    fun setLocationReachedFullScreenAlarmEnabled(enabled: Boolean) {
-        isLocationReachedFullScreenAlarmEnabled.value = enabled
-        settingsRepository.setLocationReachedFullScreenAlarmEnabled(enabled)
     }
 
     /**
@@ -5940,11 +5899,6 @@ class MainViewModel : ViewModel() {
     fun setIslandShowCaffeinate(enabled: Boolean) {
         isIslandShowCaffeinate.value = enabled
         settingsRepository.setIslandShowCaffeinateEnabled(enabled)
-    }
-
-    fun setIslandShowTravel(enabled: Boolean) {
-        isIslandShowTravel.value = enabled
-        settingsRepository.setIslandShowTravelEnabled(enabled)
     }
 
     fun setIslandShowAlarm(enabled: Boolean) {
@@ -10104,180 +10058,6 @@ class MainViewModel : ViewModel() {
         addedQSTiles.value = fromSecureSettings + fromPrefs
     }
 
-    // Daily Wallpaper Support
-    val dailyWallpaperInfo =
-        mutableStateOf<com.jawzf.pixeltoolkit.domain.model.WallpaperInfo?>(null)
-    val isWallpaperLoading = mutableStateOf(false)
-    private val wallpaperRepository =
-        com.jawzf.pixeltoolkit.data.repository
-            .WallpaperRepository()
-
-    /**
-     * Executes the load cached wallpaper operation.
-     */
-    fun loadCachedWallpaper() {
-        if (!::settingsRepository.isInitialized) return
-        val id =
-            settingsRepository.getString(SettingsRepository.KEY_DAILY_WALLPAPER_LAST_ID) ?: return
-        val url =
-            settingsRepository.getString(SettingsRepository.KEY_DAILY_WALLPAPER_LAST_URL) ?: ""
-        val urlMobile =
-            settingsRepository.getString(SettingsRepository.KEY_DAILY_WALLPAPER_LAST_URL_MOBILE)
-                ?: ""
-        val urlFull =
-            settingsRepository.getString(SettingsRepository.KEY_DAILY_WALLPAPER_LAST_URL) ?: ""
-        val authorName =
-            settingsRepository.getString(SettingsRepository.KEY_DAILY_WALLPAPER_AUTHOR_NAME) ?: ""
-        val authorLink =
-            settingsRepository.getString(SettingsRepository.KEY_DAILY_WALLPAPER_AUTHOR_LINK) ?: ""
-        val photoLink =
-            settingsRepository.getString(SettingsRepository.KEY_DAILY_WALLPAPER_PHOTO_LINK) ?: ""
-        val updatedAt =
-            settingsRepository.getString(SettingsRepository.KEY_DAILY_WALLPAPER_UPDATED_AT) ?: ""
-
-        dailyWallpaperInfo.value =
-            com.jawzf.pixeltoolkit.domain.model.WallpaperInfo(
-                id = id,
-                url = url,
-                urlMobile = urlMobile,
-                urlFull = urlFull,
-                authorName = authorName,
-                authorUsername = "",
-                authorLink = authorLink,
-                photoLink = photoLink,
-                updatedAt = updatedAt,
-            )
-    }
-
-    /**
-     * Executes the fetch today wallpaper operation.
-     *
-     * @param context [Context] Target context.
-     */
-    fun fetchTodayWallpaper(context: Context) {
-        viewModelScope.launch {
-            isWallpaperLoading.value = true
-            val info = wallpaperRepository.fetchTodayWallpaper()
-            if (info != null) {
-                dailyWallpaperInfo.value = info
-                settingsRepository.putString(
-                    SettingsRepository.KEY_DAILY_WALLPAPER_LAST_ID,
-                    info.id,
-                )
-                settingsRepository.putString(
-                    SettingsRepository.KEY_DAILY_WALLPAPER_LAST_URL,
-                    info.url,
-                )
-                settingsRepository.putString(
-                    SettingsRepository.KEY_DAILY_WALLPAPER_LAST_URL_MOBILE,
-                    info.urlMobile,
-                )
-                settingsRepository.putString(
-                    SettingsRepository.KEY_DAILY_WALLPAPER_AUTHOR_NAME,
-                    info.authorName,
-                )
-                settingsRepository.putString(
-                    SettingsRepository.KEY_DAILY_WALLPAPER_AUTHOR_LINK,
-                    info.authorLink,
-                )
-                settingsRepository.putString(
-                    SettingsRepository.KEY_DAILY_WALLPAPER_PHOTO_LINK,
-                    info.photoLink,
-                )
-                settingsRepository.putString(
-                    SettingsRepository.KEY_DAILY_WALLPAPER_UPDATED_AT,
-                    info.updatedAt,
-                )
-            }
-            isWallpaperLoading.value = false
-        }
-    }
-
-    /**
-     * Executes the apply wallpaper operation.
-     *
-     * @param context [Context] Target context.
-     * @param url [String] Target url.
-     * @param onResult [(Boolean] Target on result.
-     */
-    fun applyWallpaper(
-        context: Context,
-        url: String,
-        onResult: (Boolean) -> Unit,
-    ) {
-        viewModelScope.launch {
-            isWallpaperLoading.value = true
-            val success = wallpaperRepository.applyWallpaper(context, url)
-            isWallpaperLoading.value = false
-            onResult(success)
-        }
-    }
-
-    val isDailyWallpaperAutoUpdateEnabled = mutableStateOf(false)
-    val dailyWallpaperAutoUpdateTime = mutableStateOf<String?>(null)
-    val isDailyWallpaperShowLastTime = mutableStateOf(false)
-
-    /**
-     * Executes the set daily wallpaper show last time operation.
-     */
-    fun setDailyWallpaperShowLastTime() {
-        val status = !isDailyWallpaperShowLastTime.value
-        isDailyWallpaperShowLastTime.value = status
-        settingsRepository.putBoolean(SettingsRepository.KEY_DAILY_WALLPAPER_SHOW_LAST_TIME, status)
-    }
-
-    /**
-     * Executes the set daily wallpaper auto update operation.
-     *
-     * @param enabled [Boolean] Target enabled.
-     * @param context [Context] Target context.
-     */
-    fun setDailyWallpaperAutoUpdate(
-        enabled: Boolean,
-        context: Context,
-    ) {
-        isDailyWallpaperAutoUpdateEnabled.value = enabled
-        settingsRepository.putBoolean(SettingsRepository.KEY_DAILY_WALLPAPER_AUTO_UPDATE, enabled)
-        updateDailyWallpaperAutoUpdateTime(enabled)
-        if (enabled) {
-            schedulePeriodicWallpaperCheck(context)
-            triggerInstantWallpaperUpdate(context)
-        } else {
-            cancelPeriodicWallpaperCheck(context)
-        }
-    }
-
-    private fun triggerInstantWallpaperUpdate(context: Context) {
-        val data =
-            androidx.work.Data
-                .Builder()
-                .putBoolean("force", true)
-                .build()
-        val workRequest =
-            androidx.work
-                .OneTimeWorkRequestBuilder<com.jawzf.pixeltoolkit.services.DailyWallpaperWorker>()
-                .setInputData(data)
-                .build()
-        androidx.work.WorkManager
-            .getInstance(context)
-            .enqueue(workRequest)
-    }
-
-    private fun schedulePeriodicWallpaperCheck(context: Context) {
-        val workRequest =
-            androidx.work
-                .PeriodicWorkRequestBuilder<com.jawzf.pixeltoolkit.services.DailyWallpaperWorker>(
-                    24,
-                    java.util.concurrent.TimeUnit.HOURS,
-                ).build()
-
-        androidx.work.WorkManager.getInstance(context).enqueueUniquePeriodicWork(
-            "daily_wallpaper_check_work",
-            androidx.work.ExistingPeriodicWorkPolicy.UPDATE,
-            workRequest,
-        )
-    }
-
     private fun schedulePeriodicAppUpdateCheck(context: Context) {
         val constraints =
             androidx.work.Constraints
@@ -10298,31 +10078,6 @@ class MainViewModel : ViewModel() {
             androidx.work.ExistingPeriodicWorkPolicy.KEEP,
             workRequest,
         )
-    }
-
-    private fun cancelPeriodicWallpaperCheck(context: Context) {
-        androidx.work.WorkManager
-            .getInstance(context)
-            .cancelUniqueWork("daily_wallpaper_check_work")
-        androidx.work.WorkManager
-            .getInstance(context)
-            .cancelUniqueWork("daily_wallpaper_retry_work")
-    }
-
-    private fun updateDailyWallpaperAutoUpdateTime(enabled: Boolean) {
-        if (enabled) {
-            val currentTime = LocalDateTime.now().toString()
-            dailyWallpaperAutoUpdateTime.value = currentTime
-            settingsRepository.putString(
-                SettingsRepository.KEY_DAILY_WALLPAPER_AUTO_UPDATE_TIME,
-                currentTime,
-            )
-            settingsRepository.putInt(SettingsRepository.KEY_DAILY_WALLPAPER_RETRY_COUNT, 0)
-        } else {
-            dailyWallpaperAutoUpdateTime.value = null
-            settingsRepository.remove(SettingsRepository.KEY_DAILY_WALLPAPER_AUTO_UPDATE_TIME)
-            settingsRepository.remove(SettingsRepository.KEY_DAILY_WALLPAPER_RETRY_COUNT)
-        }
     }
 
     /**

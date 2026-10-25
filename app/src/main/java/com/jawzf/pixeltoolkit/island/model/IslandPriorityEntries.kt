@@ -12,7 +12,6 @@ object IslandPriorityEntries {
         Entry("media", setOf("media"), IslandPriority.MEDIA),
         Entry("conscious_gate", setOf("conscious_gate"), IslandPriority.CONSCIOUS_GATE),
         Entry("caffeinate", setOf("caffeinate"), IslandPriority.CAFFEINATE),
-        Entry("travel", setOf("travel"), IslandPriority.TRAVEL),
         Entry("calendar", setOf("calendar"), IslandPriority.CALENDAR),
         Entry("sound_mode", setOf("sound_mode"), IslandPriority.SOUND_MODE),
         Entry("network", setOf("network", "signal"), IslandPriority.SIGNAL),

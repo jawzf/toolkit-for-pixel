@@ -42,29 +42,9 @@ import com.jawzf.pixeltoolkit.utils.HapticUtil
 fun NewAutomationSheet(
     onDismiss: () -> Unit,
     onOptionSelected: (Automation.Type) -> Unit,
-    onAIDescribeRequested: ((String) -> Unit)? = null,
-    isGenAILoading: Boolean = false,
 ) {
     val context = LocalContext.current
     val view = LocalView.current
-    var aiPromptText by remember { mutableStateOf("") }
-
-    val isGenAIEnabled =
-        remember(context) {
-            SettingsRepository(context).getBoolean(
-                SettingsRepository.KEY_GENAI_AUTOMATION_ENABLED,
-                false,
-            )
-        }
-    var isGenAISupported by remember { mutableStateOf(false) }
-
-    LaunchedEffect(Unit) {
-        if (isGenAIEnabled) {
-            isGenAISupported =
-                com.jawzf.pixeltoolkit.domain.genai.GenAIAutomationService
-                    .isSupported()
-        }
-    }
 
     val isPixelSearchbarEnabled =
         remember(context) {
@@ -138,28 +118,6 @@ fun NewAutomationSheet(
                     Icon(
                         painter = painterResource(id = R.drawable.rounded_download_24),
                         contentDescription = "Import Automation",
-                    )
-                }
-            }
-
-            if (isGenAIEnabled && isGenAISupported && onAIDescribeRequested != null) {
-                RoundedCardContainer(
-                    modifier = Modifier.padding(bottom = 16.dp),
-                ) {
-                    com.jawzf.pixeltoolkit.ui.core.cards.IconToggleItem(
-                        iconRes = R.drawable.rounded_auto_awesome_24,
-                        title = stringResource(R.string.diy_genai_lazy_title),
-                        showToggle = false,
-                        onClick = {
-                            HapticUtil.performVirtualKeyHaptic(view)
-                            onDismiss()
-                            onAIDescribeRequested("")
-                        },
-                        onCheckedChange = {
-                            HapticUtil.performVirtualKeyHaptic(view)
-                            onDismiss()
-                            onAIDescribeRequested("")
-                        },
                     )
                 }
             }

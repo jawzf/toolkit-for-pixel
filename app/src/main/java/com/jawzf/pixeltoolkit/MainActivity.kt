@@ -94,14 +94,12 @@ import com.jawzf.pixeltoolkit.ui.theme.EssentialsTheme
 import com.jawzf.pixeltoolkit.utils.HapticUtil
 import com.jawzf.pixeltoolkit.viewmodels.AppUpdatesViewModel
 import com.jawzf.pixeltoolkit.viewmodels.GitHubAuthViewModel
-import com.jawzf.pixeltoolkit.viewmodels.LocationReachedViewModel
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
     val viewModel: MainViewModel by viewModels()
     val updatesViewModel: AppUpdatesViewModel by viewModels()
-    val locationViewModel: LocationReachedViewModel by viewModels()
     val gitHubAuthViewModel: GitHubAuthViewModel by viewModels()
     private var isAppReady = false
 
@@ -225,7 +223,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         Log.d("MainActivity", "onCreate with action: ${intent?.action}")
-        handleLocationIntent(intent)
 
         // Initialize HapticUtil with saved preferences
         HapticUtil.initialize(this)
@@ -954,18 +951,5 @@ class MainActivity : AppCompatActivity() {
         super.onNewIntent(intent)
         setIntent(intent)
         Log.d("MainActivity", "onNewIntent with action: ${intent.action}")
-        handleLocationIntent(intent)
-    }
-
-    private fun handleLocationIntent(intent: Intent?) {
-        intent?.let {
-            if (locationViewModel.handleIntent(it)) {
-                val settingsIntent =
-                    Intent(this, FeatureSettingsActivity::class.java).apply {
-                        putExtra("feature", "Location reached")
-                    }
-                startActivity(settingsIntent)
-            }
-        }
     }
 }

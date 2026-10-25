@@ -24,19 +24,6 @@ class LinkPickerActivity : AppCompatActivity() {
         }
         window.setBackgroundDrawableResource(android.R.color.transparent)
 
-        val locationViewModel =
-            com.jawzf.pixeltoolkit.viewmodels
-                .LocationReachedViewModel(application)
-        if (locationViewModel.handleIntent(intent)) {
-            val settingsIntent =
-                Intent(this, FeatureSettingsActivity::class.java).apply {
-                    putExtra("feature", "Location reached")
-                }
-            startActivity(settingsIntent)
-            finish()
-            return
-        }
-
         val uri =
             when (intent.action) {
                 Intent.ACTION_SEND -> {

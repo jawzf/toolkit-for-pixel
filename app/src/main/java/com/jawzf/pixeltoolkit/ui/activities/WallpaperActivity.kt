@@ -38,12 +38,9 @@ class WallpaperActivity : ComponentActivity() {
                     val viewModel: MainViewModel = viewModel()
                     viewModel.check(context)
 
-                    val initialTab = intent.getStringExtra("tab") ?: "daily"
-
                     WallpaperScreen(
                         onBack = { finish() },
                         viewModel = viewModel,
-                        initialTab = initialTab,
                     )
                 }
             }

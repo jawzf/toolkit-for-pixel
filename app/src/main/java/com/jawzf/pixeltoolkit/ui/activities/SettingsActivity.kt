@@ -1,7 +1,6 @@
 package com.jawzf.pixeltoolkit
 
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.ui.activities.WallpaperStagingActivity
 import com.jawzf.pixeltoolkit.ui.core.cards.ConfigPickerItem
 import android.Manifest
 import android.content.ClipData
@@ -326,14 +325,6 @@ fun SettingsContent(
     val updateInfo by viewModel.updateInfo
     val isUpdateAvailable by viewModel.isUpdateAvailable
     val isAutoUpdateEnabled by viewModel.isAutoUpdateEnabled
-    val isGenAIAutomationEnabled by viewModel.isGenAIAutomationEnabled
-    var isGenAISupported by remember { mutableStateOf(false) }
-
-    LaunchedEffect(Unit) {
-        isGenAISupported =
-            com.jawzf.pixeltoolkit.domain.genai.GenAIAutomationService
-                .isSupported()
-    }
 
     val isUpdateNotificationEnabled by viewModel.isUpdateNotificationEnabled
     val isPreReleaseCheckEnabled by viewModel.isPreReleaseCheckEnabled
@@ -1109,16 +1100,6 @@ fun SettingsContent(
                 isChecked = viewModel.isUseUsageAccess.value,
                 onCheckedChange = { viewModel.setUseUsageAccess(it, context) },
             )
-
-            if (isGenAISupported) {
-                IconToggleItem(
-                    iconRes = R.drawable.rounded_auto_awesome_24,
-                    title = stringResource(R.string.settings_genai_automation_title),
-                    description = stringResource(R.string.settings_genai_automation_desc),
-                    isChecked = isGenAIAutomationEnabled,
-                    onCheckedChange = { viewModel.setGenAIAutomationEnabled(it, context) },
-                )
-            }
         }
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -1832,28 +1813,6 @@ fun SettingsContent(
                                         },
                                     modifier = Modifier.align(Alignment.CenterHorizontally),
                                 )
-                            }
-
-                            Button(
-                                onClick = {
-                                    HapticUtil.performUIHaptic(view)
-                                    val intent = Intent(context, WallpaperStagingActivity::class.java)
-                                    context.startActivity(intent)
-                                },
-                                modifier = Modifier.fillMaxWidth().defaultMinSize(minHeight = 44.dp),
-                                colors =
-                                    ButtonDefaults.buttonColors(
-                                        containerColor = MaterialTheme.colorScheme.primaryContainer,
-                                        contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                                    ),
-                            ) {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.rounded_wallpaper_24),
-                                    contentDescription = null,
-                                    modifier = Modifier.size(18.dp),
-                                )
-                                Spacer(modifier = Modifier.width(8.dp))
-                                Text(text = stringResource(R.string.feat_wallpaper_staging_title))
                             }
                         }
                     }

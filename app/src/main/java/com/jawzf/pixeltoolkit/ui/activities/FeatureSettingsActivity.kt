@@ -95,7 +95,6 @@ import com.jawzf.pixeltoolkit.ui.features.system.HilightSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.HilightStatus
 import com.jawzf.pixeltoolkit.ui.features.system.KeyboardSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.LiveWallpaperSettingsUI
-import com.jawzf.pixeltoolkit.ui.features.system.LocationReachedSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.LockScreenClockSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.MapsPowerSavingSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.NavigationSettingsUI
@@ -518,8 +517,7 @@ class FeatureSettingsActivity : AppCompatActivity() {
                         val hasScroll =
                             featureId != "Sound mode tile" &&
                                 featureId != "Activity launcher" &&
-                                featureId != "Quick settings tiles" &&
-                                featureId != "Location reached"
+                                featureId != "Quick settings tiles"
                         Column(
                             modifier =
                                 Modifier
@@ -1100,14 +1098,6 @@ class FeatureSettingsActivity : AppCompatActivity() {
                                                     top = statusBarHeight,
                                                     bottom = 150.dp,
                                                 ),
-                                        )
-                                    }
-
-                                    "Location reached" -> {
-                                        LocationReachedSettingsUI(
-                                            mainViewModel = viewModel,
-                                            modifier = Modifier.fillMaxSize(),
-                                            highlightSetting = highlightSetting,
                                         )
                                     }
 

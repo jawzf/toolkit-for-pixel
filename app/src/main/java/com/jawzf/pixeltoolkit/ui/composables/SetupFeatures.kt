@@ -1418,7 +1418,6 @@ fun SetupFeatures(
                         ),
                         listOf(
                             "Location reached",
-                            "Watermark",
                         ),
                     )
 
@@ -1624,16 +1623,11 @@ private fun RecentSearchesSection(
                                 feature = feature,
                                 action = {
                                     val intent =
-                                        if (targetFeatureKey == "LiveWallpaper" || targetFeatureKey == "Daily Wallpaper") {
+                                        if (targetFeatureKey == "LiveWallpaper") {
                                             Intent(
                                                 context,
-                                                com.jawzf.pixeltoolkit.ui.activities.WallpaperActivity::class.java,
-                                            ).apply {
-                                                putExtra(
-                                                    "tab",
-                                                    if (targetFeatureKey == "LiveWallpaper") "live" else "daily",
-                                                )
-                                            }
+                                                WallpaperActivity::class.java,
+                                            )
                                         } else {
                                             Intent(
                                                 context,
@@ -1776,16 +1770,11 @@ private fun SearchResultsSection(
                                                         context,
                                                         PixelSearchbarSettingsActivity::class.java,
                                                     )
-                                                } else if (targetFeatureKey == "LiveWallpaper" || targetFeatureKey == "Daily Wallpaper") {
+                                                } else if (targetFeatureKey == "LiveWallpaper") {
                                                     Intent(
                                                         context,
                                                         WallpaperActivity::class.java,
-                                                    ).apply {
-                                                        putExtra(
-                                                            "tab",
-                                                            if (targetFeatureKey == "LiveWallpaper") "live" else "daily",
-                                                        )
-                                                    }
+                                                    )
                                                 } else if (targetFeatureKey == "App updates") {
                                                     Intent(
                                                         context,
@@ -1812,16 +1801,11 @@ private fun SearchResultsSection(
                                                 context,
                                                 PixelSearchbarSettingsActivity::class.java,
                                             )
-                                        } else if (result.featureKey == "LiveWallpaper" || result.featureKey == "Daily Wallpaper") {
+                                        } else if (result.featureKey == "LiveWallpaper") {
                                             Intent(
                                                 context,
                                                 WallpaperActivity::class.java,
-                                            ).apply {
-                                                putExtra(
-                                                    "tab",
-                                                    if (result.featureKey == "LiveWallpaper") "live" else "daily",
-                                                )
-                                            }
+                                            )
                                         } else if (result.featureKey == "App updates") {
                                             Intent(
                                                 context,

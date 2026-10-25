@@ -17,7 +17,6 @@ import com.jawzf.pixeltoolkit.domain.model.Feature
 import com.jawzf.pixeltoolkit.domain.model.SearchSetting
 import com.jawzf.pixeltoolkit.domain.model.SystemShortcutsState
 import com.jawzf.pixeltoolkit.ui.activities.PixelSearchbarSettingsActivity
-import com.jawzf.pixeltoolkit.ui.activities.WatermarkActivity
 import com.jawzf.pixeltoolkit.ui.features.consciousgate.CONSCIOUS_GATE_FEATURE_ID
 import com.jawzf.pixeltoolkit.ui.features.system.BACK_GESTURE_FEATURE_ID
 import com.jawzf.pixeltoolkit.utils.DeviceUtils
@@ -820,11 +819,6 @@ object FeatureRegistry {
                             R.string.feat_caffeinate_title,
                             R.string.caffeinate_notification_desc,
                             "island_show_caffeinate",
-                        ),
-                        SearchSetting(
-                            R.string.feat_location_reached_title,
-                            R.string.island_travel_pause,
-                            "island_show_travel",
                         ),
                         SearchSetting(
                             R.string.island_show_alarm_title,
@@ -2312,24 +2306,6 @@ object FeatureRegistry {
                 override fun isDeviceSupported(context: Context) = !DeviceUtils.isGoogleDevice()
             },
             object : Feature(
-                id = "Location reached",
-                title = R.string.feat_location_reached_title,
-                iconRes = R.drawable.rounded_navigation_24,
-                category = R.string.cat_tools,
-                description = R.string.feat_location_reached_desc,
-                aboutDescription = R.string.about_desc_location_reached,
-                permissionKeys = listOf("LOCATION", "BACKGROUND_LOCATION", "USE_FULL_SCREEN_INTENT"),
-                showToggle = false,
-            ) {
-                override fun isEnabled(viewModel: MainViewModel) = true
-
-                override fun onToggle(
-                    viewModel: MainViewModel,
-                    context: Context,
-                    enabled: Boolean,
-                ) {}
-            },
-            object : Feature(
                 id = "Freeze",
                 title = R.string.feat_freeze_title,
                 iconRes = R.drawable.rounded_mode_cool_24,
@@ -2469,59 +2445,6 @@ object FeatureRegistry {
                     context: Context,
                     enabled: Boolean,
                 ) {}
-            },
-            object : Feature(
-                id = "Watermark",
-                title = R.string.feat_watermark_title,
-                iconRes = R.drawable.rounded_draw_24,
-                category = R.string.cat_tools,
-                description = R.string.feat_watermark_desc,
-                aboutDescription = R.string.about_desc_watermark,
-                showToggle = false,
-            ) {
-                override fun isEnabled(viewModel: MainViewModel) = true
-
-                override fun onToggle(
-                    viewModel: MainViewModel,
-                    context: Context,
-                    enabled: Boolean,
-                ) {}
-
-                override fun onClick(
-                    context: Context,
-                    viewModel: MainViewModel,
-                ) {
-                    context.startActivity(Intent(context, WatermarkActivity::class.java))
-                }
-            },
-            object : Feature(
-                id = "Daily Wallpaper",
-                title = R.string.feat_daily_wallpaper_title,
-                iconRes = R.drawable.rounded_wallpaper_24,
-                category = R.string.cat_tools,
-                description = R.string.feat_daily_wallpaper_desc,
-                aboutDescription = R.string.about_desc_daily_wallpaper,
-                showToggle = false,
-            ) {
-                override fun isEnabled(viewModel: MainViewModel) = true
-
-                override fun onToggle(
-                    viewModel: MainViewModel,
-                    context: Context,
-                    enabled: Boolean,
-                ) {}
-
-                override fun onClick(
-                    context: Context,
-                    viewModel: MainViewModel,
-                ) {
-                    context.startActivity(
-                        Intent(
-                            context,
-                            com.jawzf.pixeltoolkit.ui.activities.WallpaperActivity::class.java,
-                        ),
-                    )
-                }
             },
             object : Feature(
                 id = "App updates",
