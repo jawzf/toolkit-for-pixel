@@ -170,7 +170,7 @@ class SettingsRepository(
     }
 
     companion object {
-        const val PREFS_NAME = "essentials_prefs"
+        const val PREFS_NAME = "toolkit_prefs"
 
         // Keys
         const val KEY_DEBUGGING_TILE_TAP_ACTION = "debugging_tile_tap_action"
@@ -1233,14 +1233,14 @@ class SettingsRepository(
         val tabName =
             prefs.getString(
                 KEY_DEFAULT_TAB,
-                com.jawzf.pixeltoolkit.domain.DIYTabs.ESSENTIALS.name,
+                com.jawzf.pixeltoolkit.domain.DIYTabs.TOOLKIT.name,
             )
         return try {
             com.jawzf.pixeltoolkit.domain.DIYTabs.valueOf(
-                tabName ?: com.jawzf.pixeltoolkit.domain.DIYTabs.ESSENTIALS.name,
+                tabName ?: com.jawzf.pixeltoolkit.domain.DIYTabs.TOOLKIT.name,
             )
         } catch (e: Exception) {
-            com.jawzf.pixeltoolkit.domain.DIYTabs.ESSENTIALS
+            com.jawzf.pixeltoolkit.domain.DIYTabs.TOOLKIT
         }
     }
 
@@ -1832,7 +1832,7 @@ class SettingsRepository(
             val allConfigs = mutableMapOf<String, Map<String, Map<String, Any>>>()
             val prefFiles =
                 listOf(
-                    "essentials_prefs",
+                    "toolkit_prefs",
                     "caffeinate_prefs",
                     "link_prefs",
                     "diy_automations_prefs",

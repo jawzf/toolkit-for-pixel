@@ -52,7 +52,7 @@ data class ToolbarItem(
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
-fun EssentialsFloatingToolbar(
+fun ToolkitFloatingToolbar(
     modifier: Modifier = Modifier,
     // Tabbed Mode
     items: List<ToolbarItem> = emptyList(),

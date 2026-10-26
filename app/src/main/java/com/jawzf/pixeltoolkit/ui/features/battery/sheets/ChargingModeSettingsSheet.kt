@@ -47,7 +47,7 @@ fun ChargingModeSettingsSheet(
 
     var selectedMode by remember { mutableStateOf(initialAction.mode) }
 
-    EssentialsBottomSheet(
+    ToolkitBottomSheet(
         onDismissRequest = onDismiss,
     ) {
         Column(

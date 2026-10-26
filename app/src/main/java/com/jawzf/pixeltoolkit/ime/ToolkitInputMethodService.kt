@@ -31,14 +31,14 @@ import androidx.savedstate.SavedStateRegistryOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.ui.ime.KeyboardInputView
-import com.jawzf.pixeltoolkit.ui.theme.EssentialsTheme
+import com.jawzf.pixeltoolkit.ui.theme.ToolkitTheme
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class EssentialsInputMethodService :
+class ToolkitInputMethodService :
     InputMethodService(),
     LifecycleOwner,
     ViewModelStoreOwner,
@@ -79,19 +79,19 @@ class EssentialsInputMethodService :
 
         try {
             clipboardManager = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
-            val prefs = getSharedPreferences("essentials_prefs", MODE_PRIVATE)
+            val prefs = getSharedPreferences("toolkit_prefs", MODE_PRIVATE)
             if (prefs.getBoolean(SettingsRepository.KEY_KEYBOARD_CLIPBOARD_ENABLED, true)) {
                 clipboardManager.addPrimaryClipChangedListener(this)
                 updateClipboardHistory()
-                Log.d("EssentialsIME", "Clipboard listener registered")
+                Log.d("ToolkitIME", "Clipboard listener registered")
             }
         } catch (e: Exception) {
-            Log.e("EssentialsIME", "Error init clipboard", e)
+            Log.e("ToolkitIME", "Error init clipboard", e)
         }
     }
 
     override fun onPrimaryClipChanged() {
-        Log.d("EssentialsIME", "Clipboard changed")
+        Log.d("ToolkitIME", "Clipboard changed")
         updateClipboardHistory()
     }
 
@@ -103,7 +103,7 @@ class EssentialsInputMethodService :
             val clip = clipboardManager.primaryClip ?: return
             if (clip.itemCount > 0) {
                 val text = clip.getItemAt(0).text?.toString()
-                Log.d("EssentialsIME", "Clipboard item: $text")
+                Log.d("ToolkitIME", "Clipboard item: $text")
                 if (!text.isNullOrBlank()) {
                     val current = _clipboardHistory.value.toMutableList()
                     // Remove if exists to move to top
@@ -118,7 +118,7 @@ class EssentialsInputMethodService :
                 }
             }
         } catch (e: Exception) {
-            Log.e("EssentialsIME", "Error reading clipboard", e)
+            Log.e("ToolkitIME", "Error reading clipboard", e)
         }
     }
 
@@ -139,10 +139,10 @@ class EssentialsInputMethodService :
         )
 
         view.setContent {
-            EssentialsTheme {
+            ToolkitTheme {
                 val context = androidx.compose.ui.platform.LocalContext.current
                 val prefs =
-                    remember { context.getSharedPreferences("essentials_prefs", MODE_PRIVATE) }
+                    remember { context.getSharedPreferences("toolkit_prefs", MODE_PRIVATE) }
 
                 // State variables for settings
                 var rawKeyboardHeight by remember {
@@ -373,12 +373,12 @@ class EssentialsInputMethodService :
                                         )
                                     if (isKeyboardClipboardEnabled) {
                                         if (::clipboardManager.isInitialized) {
-                                            clipboardManager.addPrimaryClipChangedListener(this@EssentialsInputMethodService)
+                                            clipboardManager.addPrimaryClipChangedListener(this@ToolkitInputMethodService)
                                             updateClipboardHistory()
                                         }
                                     } else {
                                         if (::clipboardManager.isInitialized) {
-                                            clipboardManager.removePrimaryClipChangedListener(this@EssentialsInputMethodService)
+                                            clipboardManager.removePrimaryClipChangedListener(this@ToolkitInputMethodService)
                                         }
                                     }
                                 }
@@ -424,7 +424,7 @@ class EssentialsInputMethodService :
                 val suggestions by suggestionEngine.suggestions.collectAsState()
                 val resetTrigger by kbdResetTrigger.collectAsState()
 
-                EssentialsTheme(
+                ToolkitTheme(
                     darkTheme = useDarkTheme,
                     pitchBlackTheme = isPitchBlack,
                 ) {

@@ -57,7 +57,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.R
 import com.jawzf.pixeltoolkit.services.receivers.FlashlightActionReceiver
-import com.jawzf.pixeltoolkit.ui.theme.EssentialsTheme
+import com.jawzf.pixeltoolkit.ui.theme.ToolkitTheme
 import com.jawzf.pixeltoolkit.utils.FlashlightUtil
 import com.jawzf.pixeltoolkit.utils.HapticUtil
 
@@ -98,7 +98,7 @@ class FlashlightIntensityActivity : ComponentActivity() {
                 viewModel.check(context)
             }
             val isPitchBlackThemeEnabled by viewModel.isPitchBlackThemeEnabled
-            EssentialsTheme(pitchBlackTheme = isPitchBlackThemeEnabled) {
+            ToolkitTheme(pitchBlackTheme = isPitchBlackThemeEnabled) {
                 FlashlightIntensityOverlay(onDismiss = { finish() })
             }
         }
@@ -117,7 +117,7 @@ enum class FlashlightSpecialMode {
 fun FlashlightIntensityOverlay(onDismiss: () -> Unit) {
     val context = LocalContext.current
     val view = LocalView.current
-    val prefs = remember { context.getSharedPreferences("essentials_prefs", Context.MODE_PRIVATE) }
+    val prefs = remember { context.getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE) }
 
     // Get flashlight max level
     val maxLevel =

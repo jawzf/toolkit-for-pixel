@@ -257,7 +257,7 @@ fun QSTilesSearchResultCard(
                                                     context.mainExecutor,
                                                 ) { result ->
                                                     if (result == StatusBarManager.TILE_ADD_REQUEST_RESULT_TILE_ALREADY_ADDED) {
-                                                        context.getSharedPreferences("essentials_prefs", Context.MODE_PRIVATE)
+                                                        context.getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE)
                                                             .edit()
                                                             .putBoolean("${tile.serviceClass.name}_is_added", true)
                                                             .apply()
@@ -268,7 +268,7 @@ fun QSTilesSearchResultCard(
                                                             Toast.LENGTH_SHORT,
                                                         ).show()
                                                     } else if (result == StatusBarManager.TILE_ADD_REQUEST_RESULT_TILE_ADDED) {
-                                                        context.getSharedPreferences("essentials_prefs", Context.MODE_PRIVATE)
+                                                        context.getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE)
                                                             .edit()
                                                             .putBoolean("${tile.serviceClass.name}_is_added", true)
                                                             .apply()

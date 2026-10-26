@@ -394,8 +394,8 @@ sealed interface Action {
         @SerializedName("flashlightPulseEnabled") val flashlightPulseEnabled: Boolean = true,
         @SerializedName("changeBatteryNotification") val changeBatteryNotification: Boolean = false,
         @SerializedName("batteryNotificationEnabled") val batteryNotificationEnabled: Boolean = true,
-        @SerializedName("changeEssentialsOnDisplay") val changeEssentialsOnDisplay: Boolean = false,
-        @SerializedName("essentialsOnDisplayMode") val essentialsOnDisplayMode: String = "On", // "Off", "On", "Docked"
+        @SerializedName("changeToolkitOnDisplay") val changeToolkitOnDisplay: Boolean = false,
+        @SerializedName("toolkitOnDisplayMode") val toolkitOnDisplayMode: String = "On", // "Off", "On", "Docked"
         @SerializedName("changeAlwaysOnDisplay") val changeAlwaysOnDisplay: Boolean = false,
         @SerializedName("alwaysOnDisplayMode") val alwaysOnDisplayMode: String = "On", // "Off", "Dynamic", "On"
         @SerializedName("changeGloveMode") val changeGloveMode: Boolean = false,
@@ -407,14 +407,14 @@ sealed interface Action {
         @SerializedName("changeSmartPixels") val changeSmartPixels: Boolean = false,
         @SerializedName("smartPixelsEnabled") val smartPixelsEnabled: Boolean = true,
     ) : Action {
-        override val title: Int get() = R.string.diy_action_sometimes_essentials
+        override val title: Int get() = R.string.diy_action_sometimes_toolkit
         override val icon: Int get() = R.drawable.rounded_settings_24
         override val isConfigurable: Boolean = true
         override val permissions: List<String>
             get() {
                 val perms = mutableListOf<String>()
                 if (changeNotificationLighting ||
-                    changeEssentialsOnDisplay ||
+                    changeToolkitOnDisplay ||
                     changeAlwaysOnDisplay ||
                     changeLockScreenClock ||
                     changeGloveMode

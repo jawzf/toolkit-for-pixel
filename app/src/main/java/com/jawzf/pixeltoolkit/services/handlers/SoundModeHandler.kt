@@ -13,7 +13,7 @@ class SoundModeHandler(
         val notificationManager =
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-        val prefs = context.getSharedPreferences("essentials_prefs", Context.MODE_PRIVATE)
+        val prefs = context.getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE)
         val useShizukuPref = prefs.getBoolean("sound_mode_use_shizuku", true)
         val isShizukuReady = useShizukuPref && ShizukuUtils.isShizukuAvailable() && ShizukuUtils.hasPermission()
 

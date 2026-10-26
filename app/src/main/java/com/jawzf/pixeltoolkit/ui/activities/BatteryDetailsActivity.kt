@@ -9,7 +9,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import com.jawzf.pixeltoolkit.ui.core.sheets.BatteryDetailsBottomSheet
-import com.jawzf.pixeltoolkit.ui.theme.EssentialsTheme
+import com.jawzf.pixeltoolkit.ui.theme.ToolkitTheme
 import com.jawzf.pixeltoolkit.utils.battery.BatteryInfoUtil
 
 class BatteryDetailsActivity : ComponentActivity() {
@@ -25,7 +25,7 @@ class BatteryDetailsActivity : ComponentActivity() {
                 viewModel.check(context)
             }
             val isPitchBlackThemeEnabled by viewModel.isPitchBlackThemeEnabled
-            EssentialsTheme(pitchBlackTheme = isPitchBlackThemeEnabled) {
+            ToolkitTheme(pitchBlackTheme = isPitchBlackThemeEnabled) {
                 val basicDetails = remember { BatteryInfoUtil.getBasicDetails(context) }
                 BatteryDetailsBottomSheet(
                     initialDetails = basicDetails,

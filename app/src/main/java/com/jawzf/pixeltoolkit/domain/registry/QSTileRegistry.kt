@@ -17,7 +17,7 @@ import com.jawzf.pixeltoolkit.services.tiles.DefaultLauncherTileService
 import com.jawzf.pixeltoolkit.services.tiles.DeveloperOptionsTileService
 import com.jawzf.pixeltoolkit.services.tiles.DuoTileService
 import com.jawzf.pixeltoolkit.services.tiles.DynamicNightLightTileService
-import com.jawzf.pixeltoolkit.services.tiles.EssentialsOnDisplayTileService
+import com.jawzf.pixeltoolkit.services.tiles.ToolkitOnDisplayTileService
 import com.jawzf.pixeltoolkit.services.tiles.FlashlightPulseTileService
 import com.jawzf.pixeltoolkit.services.tiles.FlashlightTileService
 import com.jawzf.pixeltoolkit.services.tiles.HapticsTileService
@@ -358,11 +358,11 @@ object QSTileRegistry {
                 R.string.cat_visuals,
             ),
             QSTileInfo(
-                R.string.feat_essentials_on_display_title,
+                R.string.feat_toolkit_on_display_title,
                 R.drawable.rounded_live_tv_24,
-                EssentialsOnDisplayTileService::class.java,
+                ToolkitOnDisplayTileService::class.java,
                 listOf("ACCESSIBILITY", "NOTIFICATION_LISTENER"),
-                R.string.feat_essentials_on_display_desc,
+                R.string.feat_toolkit_on_display_desc,
                 R.string.cat_visuals,
             ),
             QSTileInfo(

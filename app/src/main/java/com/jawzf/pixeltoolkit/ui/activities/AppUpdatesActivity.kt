@@ -54,7 +54,7 @@ import com.jawzf.pixeltoolkit.ui.core.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.ui.core.sheets.AddRepoBottomSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.UpdateBottomSheet
 import com.jawzf.pixeltoolkit.ui.modifiers.scrollMotionBlur
-import com.jawzf.pixeltoolkit.ui.theme.EssentialsTheme
+import com.jawzf.pixeltoolkit.ui.theme.ToolkitTheme
 import com.jawzf.pixeltoolkit.utils.HapticUtil
 import com.jawzf.pixeltoolkit.viewmodels.AppUpdatesViewModel
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
@@ -177,7 +177,7 @@ class AppUpdatesActivity : AppCompatActivity() {
                 viewModel.check(context)
             }
 
-            EssentialsTheme(pitchBlackTheme = isPitchBlackThemeEnabled) {
+            ToolkitTheme(pitchBlackTheme = isPitchBlackThemeEnabled) {
                 val scrollBehavior =
                     TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
 
@@ -560,7 +560,7 @@ private fun ImportExportButtons(
                         "yyyyMMdd_HHmmss",
                         Locale.getDefault(),
                     ).format(Date())
-                exportLauncher.launch("essentials_updates_$timeStamp.json")
+                exportLauncher.launch("toolkit_updates_$timeStamp.json")
             },
             modifier = Modifier.weight(1f),
             colors =

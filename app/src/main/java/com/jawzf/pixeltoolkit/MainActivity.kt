@@ -60,7 +60,7 @@ import androidx.core.view.WindowCompat
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.domain.DIYTabs
 import com.jawzf.pixeltoolkit.domain.registry.initPermissionRegistry
-import com.jawzf.pixeltoolkit.ui.components.EssentialsFloatingToolbar
+import com.jawzf.pixeltoolkit.ui.components.ToolkitFloatingToolbar
 import com.jawzf.pixeltoolkit.ui.components.ToolbarItem
 import com.jawzf.pixeltoolkit.ui.components.menus.SegmentedDropdownMenu
 import com.jawzf.pixeltoolkit.ui.components.menus.SegmentedDropdownMenuItem
@@ -77,7 +77,7 @@ import com.jawzf.pixeltoolkit.ui.core.sheets.UpdateBottomSheet
 import com.jawzf.pixeltoolkit.ui.modifiers.BlurDirection
 import com.jawzf.pixeltoolkit.ui.modifiers.progressiveBlur
 import com.jawzf.pixeltoolkit.ui.modifiers.scrollMotionBlur
-import com.jawzf.pixeltoolkit.ui.theme.EssentialsTheme
+import com.jawzf.pixeltoolkit.ui.theme.ToolkitTheme
 import com.jawzf.pixeltoolkit.utils.HapticUtil
 import com.jawzf.pixeltoolkit.viewmodels.AppUpdatesViewModel
 import com.jawzf.pixeltoolkit.viewmodels.GitHubAuthViewModel
@@ -221,7 +221,7 @@ class MainActivity : AppCompatActivity() {
             val isPitchBlackThemeEnabled by viewModel.isPitchBlackThemeEnabled
             val isBlurEnabled by viewModel.isBlurEnabled
             val isSwipeTabsEnabled by viewModel.isSwipeTabsEnabled
-            EssentialsTheme(pitchBlackTheme = isPitchBlackThemeEnabled) {
+            ToolkitTheme(pitchBlackTheme = isPitchBlackThemeEnabled) {
                 androidx.compose.runtime.CompositionLocalProvider(
                     com.jawzf.pixeltoolkit.ui.state.LocalMenuStateManager provides
                         remember {
@@ -509,10 +509,10 @@ class MainActivity : AppCompatActivity() {
                                 val currentTab =
                                     remember(tabs, pagerState.currentPage) {
                                         tabs.getOrNull(pagerState.currentPage) ?: tabs.firstOrNull()
-                                            ?: DIYTabs.ESSENTIALS
+                                            ?: DIYTabs.TOOLKIT
                                     }
 
-                                EssentialsFloatingToolbar(
+                                ToolkitFloatingToolbar(
                                     modifier =
                                         Modifier
                                             .align(Alignment.BottomCenter)
@@ -541,7 +541,7 @@ class MainActivity : AppCompatActivity() {
                                                 onClick = {
                                                     HapticUtil.performVirtualKeyHaptic(view)
                                                     when (currentTab) {
-                                                        DIYTabs.ESSENTIALS -> {
+                                                        DIYTabs.TOOLKIT -> {
                                                             startActivity(
                                                                 Intent(
                                                                     context,
@@ -572,7 +572,7 @@ class MainActivity : AppCompatActivity() {
                                                     ),
                                             ) {
                                                 when (currentTab) {
-                                                    DIYTabs.ESSENTIALS -> {
+                                                    DIYTabs.TOOLKIT -> {
                                                         Icon(
                                                             painter = painterResource(id = R.drawable.rounded_settings_heart_24),
                                                             contentDescription = stringResource(R.string.content_desc_settings),
@@ -751,7 +751,7 @@ class MainActivity : AppCompatActivity() {
                                         )
 
                                     when (tabs[targetPage]) {
-                                        DIYTabs.ESSENTIALS -> {
+                                        DIYTabs.TOOLKIT -> {
                                             SetupFeatures(
                                                 viewModel = viewModel,
                                                 modifier = Modifier.fillMaxSize(),

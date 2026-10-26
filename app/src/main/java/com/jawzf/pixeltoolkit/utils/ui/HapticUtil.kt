@@ -529,7 +529,7 @@ object HapticUtil {
     }
 
     fun loadHapticMode(context: Context): AppHapticMode {
-        val prefs = context.getSharedPreferences("essentials_prefs", Context.MODE_PRIVATE)
+        val prefs = context.getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE)
         val stored = prefs.getString("app_haptics_mode", null)
         if (stored != null) return runCatching { AppHapticMode.valueOf(stored) }.getOrDefault(AppHapticMode.ENABLED)
         return if (prefs.getBoolean("app_haptics_enabled", true)) AppHapticMode.ENABLED else AppHapticMode.DISABLED
@@ -539,7 +539,7 @@ object HapticUtil {
         context: Context,
         mode: AppHapticMode,
     ) {
-        val prefs = context.getSharedPreferences("essentials_prefs", Context.MODE_PRIVATE)
+        val prefs = context.getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE)
         prefs.edit().putString("app_haptics_mode", mode.name).apply()
         applyMode(mode)
     }

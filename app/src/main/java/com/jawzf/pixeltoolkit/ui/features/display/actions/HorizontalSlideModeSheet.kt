@@ -13,7 +13,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.R
 import com.jawzf.pixeltoolkit.ui.core.containers.RoundedCardContainer
-import com.jawzf.pixeltoolkit.ui.core.sheets.EssentialsBottomSheet
+import com.jawzf.pixeltoolkit.ui.core.sheets.ToolkitBottomSheet
 import com.jawzf.pixeltoolkit.ui.features.system.RemapActionItem
 
 val HORIZONTAL_SLIDE_MODES = listOf(
@@ -40,7 +40,7 @@ fun HorizontalSlideModeSheet(
     onModeSelected: (String) -> Unit,
     onDismissRequest: () -> Unit,
 ) {
-    EssentialsBottomSheet(onDismissRequest = onDismissRequest) {
+    ToolkitBottomSheet(onDismissRequest = onDismissRequest) {
         Column(
             modifier = Modifier
                 .padding(16.dp)

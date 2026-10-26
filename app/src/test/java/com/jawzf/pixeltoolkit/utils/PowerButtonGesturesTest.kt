@@ -21,12 +21,12 @@ class PowerButtonGesturesTest {
     }
 
     @Test
-    fun handledByEssentialsCombinations() {
-        assertFalse(PowerButtonGestures.isHandledByEssentials(PowerChoice.ASSISTANT, PowerChoice.ASSISTANT))
-        assertFalse(PowerButtonGestures.isHandledByEssentials(PowerChoice.POWER_MENU, PowerChoice.POWER_MENU))
-        assertTrue(PowerButtonGestures.isHandledByEssentials(PowerChoice.ASSISTANT, PowerChoice.POWER_MENU))
-        assertTrue(PowerButtonGestures.isHandledByEssentials(PowerChoice.ACTIONS, PowerChoice.ACTIONS))
-        assertTrue(PowerButtonGestures.isHandledByEssentials(PowerChoice.ASSISTANT, PowerChoice.ACTIONS))
+    fun handledByToolkitCombinations() {
+        assertFalse(PowerButtonGestures.isHandledByToolkit(PowerChoice.ASSISTANT, PowerChoice.ASSISTANT))
+        assertFalse(PowerButtonGestures.isHandledByToolkit(PowerChoice.POWER_MENU, PowerChoice.POWER_MENU))
+        assertTrue(PowerButtonGestures.isHandledByToolkit(PowerChoice.ASSISTANT, PowerChoice.POWER_MENU))
+        assertTrue(PowerButtonGestures.isHandledByToolkit(PowerChoice.ACTIONS, PowerChoice.ACTIONS))
+        assertTrue(PowerButtonGestures.isHandledByToolkit(PowerChoice.ASSISTANT, PowerChoice.ACTIONS))
     }
 
     @Test

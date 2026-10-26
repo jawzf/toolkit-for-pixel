@@ -131,7 +131,7 @@ private object Api33ScrollBlur {
         isHorizontal: Boolean,
     ): Modifier {
         val context = LocalContext.current
-        val prefs = remember(context) { context.getSharedPreferences("essentials_prefs", Context.MODE_PRIVATE) }
+        val prefs = remember(context) { context.getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE) }
         var blurScale by remember { mutableFloatStateOf(prefs.getFloat("motion_blur_scale", 1.0f)) }
 
         DisposableEffect(prefs) {

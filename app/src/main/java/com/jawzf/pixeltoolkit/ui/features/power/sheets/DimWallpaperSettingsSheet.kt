@@ -49,7 +49,7 @@ fun DimWallpaperSettingsSheet(
 
     var dimAmount by remember { mutableFloatStateOf(initialAction.dimAmount) }
 
-    EssentialsBottomSheet(
+    ToolkitBottomSheet(
         onDismissRequest = onDismiss,
         dragHandle = null,
     ) {

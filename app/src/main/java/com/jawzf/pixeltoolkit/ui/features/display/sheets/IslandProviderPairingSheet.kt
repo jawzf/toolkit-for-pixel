@@ -36,7 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.graphics.drawable.toBitmap
 import com.jawzf.pixeltoolkit.R
 import com.jawzf.pixeltoolkit.island.remote.ProviderInfo
-import com.jawzf.pixeltoolkit.ui.core.sheets.EssentialsBottomSheet
+import com.jawzf.pixeltoolkit.ui.core.sheets.ToolkitBottomSheet
 import com.jawzf.pixeltoolkit.utils.HapticUtil
 import com.jawzf.pixeltoolkit.island.sdk.IslandIdentity
 
@@ -58,7 +58,7 @@ fun IslandProviderPairingSheet(
         IslandIdentity.fingerprint(context, provider.packageName)?.let(IslandIdentity::shortFingerprint).orEmpty()
     }
 
-    EssentialsBottomSheet(onDismissRequest = onDismissRequest) {
+    ToolkitBottomSheet(onDismissRequest = onDismissRequest) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()

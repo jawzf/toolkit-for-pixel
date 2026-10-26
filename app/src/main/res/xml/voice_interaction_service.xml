@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <voice-interaction-service xmlns:android="http://schemas.android.com/apk/res/android"
-    android:sessionService="com.jawzf.pixeltoolkit.services.EssentialsVoiceInteractionSessionService"
-    android:recognitionService="com.jawzf.pixeltoolkit.services.EssentialsRecognitionService"
+    android:sessionService="com.jawzf.pixeltoolkit.services.ToolkitVoiceInteractionSessionService"
+    android:recognitionService="com.jawzf.pixeltoolkit.services.ToolkitRecognitionService"
     android:settingsActivity="com.jawzf.pixeltoolkit.ui.activities.PixelSearchbarSettingsActivity"
     android:supportsAssist="true"
     android:supportsLocalInteraction="true" />

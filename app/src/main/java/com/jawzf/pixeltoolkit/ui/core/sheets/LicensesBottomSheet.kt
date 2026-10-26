@@ -136,7 +136,7 @@ fun LicensesBottomSheet(onDismissRequest: () -> Unit) {
         customSections + libList
     }
 
-    EssentialsBottomSheet(
+    ToolkitBottomSheet(
         onDismissRequest = onDismissRequest,
         sheetState = sheetState,
     ) {

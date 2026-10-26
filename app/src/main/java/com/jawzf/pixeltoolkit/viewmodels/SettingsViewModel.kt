@@ -11,7 +11,7 @@ class SettingsViewModel : ViewModel() {
     val pinnedFeatureKeys = mutableStateOf<List<String>>(emptyList())
     val pinnedQsTileKeys = mutableStateOf<List<String>>(emptyList())
     val hapticFeedbackType = mutableStateOf(HapticFeedbackType.SUBTLE)
-    val defaultTab = mutableStateOf(DIYTabs.ESSENTIALS)
+    val defaultTab = mutableStateOf(DIYTabs.TOOLKIT)
 
     /**
      * Loads saved pinned features and user settings from repository.

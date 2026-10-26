@@ -42,7 +42,7 @@ import com.jawzf.pixeltoolkit.R
 import com.jawzf.pixeltoolkit.services.ScreenOffWidgetProvider
 import com.jawzf.pixeltoolkit.ui.core.cards.IconToggleItem
 import com.jawzf.pixeltoolkit.ui.core.containers.RoundedCardContainer
-import com.jawzf.pixeltoolkit.ui.theme.EssentialsTheme
+import com.jawzf.pixeltoolkit.ui.theme.ToolkitTheme
 import com.jawzf.pixeltoolkit.utils.HapticUtil
 
 class ScreenOffWidgetConfigureActivity : ComponentActivity() {
@@ -82,7 +82,7 @@ class ScreenOffWidgetConfigureActivity : ComponentActivity() {
                 viewModel.check(context)
             }
             val isPitchBlackThemeEnabled by viewModel.isPitchBlackThemeEnabled
-            EssentialsTheme(pitchBlackTheme = isPitchBlackThemeEnabled) {
+            ToolkitTheme(pitchBlackTheme = isPitchBlackThemeEnabled) {
                 ScreenOffWidgetConfigureOverlay(
                     appWidgetId = appWidgetId,
                     onConfigured = { isDoubleTapRequired ->
@@ -102,7 +102,7 @@ class ScreenOffWidgetConfigureActivity : ComponentActivity() {
     }
 
     private fun saveWidgetPrefs(isDoubleTapRequired: Boolean) {
-        val prefs = getSharedPreferences("essentials_prefs", Context.MODE_PRIVATE)
+        val prefs = getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE)
         prefs.edit().putBoolean("screen_off_double_tap_$appWidgetId", isDoubleTapRequired).apply()
     }
 
@@ -125,7 +125,7 @@ fun ScreenOffWidgetConfigureOverlay(
 
     val prefs =
         remember {
-            context.getSharedPreferences("essentials_prefs", Context.MODE_PRIVATE)
+            context.getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE)
         }
 
     var isDoubleTapRequired by remember {

@@ -58,7 +58,7 @@ object ShizukuUtils {
             binder = Shizuku.getBinder()
             try {
                 if (hasPermission()) {
-                    val appCtx = com.jawzf.pixeltoolkit.EssentialsApp.context
+                    val appCtx = com.jawzf.pixeltoolkit.ToolkitApp.context
                     StatusBarManager.update(appCtx)
                 }
             } catch (_: Throwable) {

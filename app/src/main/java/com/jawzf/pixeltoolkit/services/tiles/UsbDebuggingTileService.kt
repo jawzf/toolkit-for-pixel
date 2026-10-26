@@ -96,7 +96,7 @@ class UsbDebuggingTileService : BaseTileService() {
     }
 
     private fun getDefaultAction(): String {
-        val prefs = getSharedPreferences("essentials_prefs", MODE_PRIVATE)
+        val prefs = getSharedPreferences("toolkit_prefs", MODE_PRIVATE)
         return prefs.getString("debugging_tile_tap_action", "both") ?: "both"
     }
 

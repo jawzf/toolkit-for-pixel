@@ -8,12 +8,12 @@ import android.service.notification.ConditionProviderService
 import android.util.Log
 
 @Suppress("DEPRECATION")
-class EssentialsConditionProvider : ConditionProviderService() {
+class ToolkitConditionProvider : ConditionProviderService() {
     companion object {
-        private const val TAG = "EssentialsCPS"
+        private const val TAG = "ToolkitCPS"
         val CONDITION_URI: Uri = Uri.parse("condition://com.jawzf.pixeltoolkit/focus")
 
-        private var instance: EssentialsConditionProvider? = null
+        private var instance: ToolkitConditionProvider? = null
 
         fun setConditionState(
             context: Context,
@@ -25,7 +25,7 @@ class EssentialsConditionProvider : ConditionProviderService() {
                 provider.notifyChange(isActive)
             } else {
                 try {
-                    requestRebind(ComponentName(context, EssentialsConditionProvider::class.java))
+                    requestRebind(ComponentName(context, ToolkitConditionProvider::class.java))
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
@@ -59,7 +59,7 @@ class EssentialsConditionProvider : ConditionProviderService() {
     private fun notifyChange(active: Boolean) {
         Log.d(TAG, "notifyChange: active=$active")
         val state = if (active) Condition.STATE_TRUE else Condition.STATE_FALSE
-        val condition = Condition(CONDITION_URI, "Essentials Focus", state)
+        val condition = Condition(CONDITION_URI, "Toolkit Focus", state)
         try {
             notifyCondition(condition)
         } catch (e: Exception) {

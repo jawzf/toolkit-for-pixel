@@ -69,7 +69,7 @@ class ButtonRemapHandler(
             return false
         }
 
-        val prefs = service.getSharedPreferences("essentials_prefs", Context.MODE_PRIVATE)
+        val prefs = service.getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE)
         val isPauseOnVolumeDialogEnabled = prefs.getBoolean("button_remap_pause_on_volume_dialog", true)
         if (isPauseOnVolumeDialogEnabled && isVolumeDialogVisible) {
             return false
@@ -207,7 +207,7 @@ class ButtonRemapHandler(
     }
 
     fun handlePowerGesture(intent: Intent) {
-        val prefs = service.getSharedPreferences("essentials_prefs", Context.MODE_PRIVATE)
+        val prefs = service.getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE)
         if (!prefs.getBoolean("button_remap_enabled", false)) return
 
         val gestureName = intent.getStringExtra(InputEventListenerService.EXTRA_POWER_GESTURE)
@@ -320,7 +320,7 @@ class ButtonRemapHandler(
 
             if (vibrator != null) {
                 // Use default from Button Remap preference
-                val prefs = service.getSharedPreferences("essentials_prefs", Context.MODE_PRIVATE)
+                val prefs = service.getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE)
                 val typeName =
                     prefs.getString("button_remap_haptic_type", HapticFeedbackType.DOUBLE.name)
                 val type =

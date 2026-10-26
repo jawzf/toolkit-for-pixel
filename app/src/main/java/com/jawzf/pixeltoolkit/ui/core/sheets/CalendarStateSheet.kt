@@ -68,7 +68,7 @@ fun CalendarStateSheet(
         onStateChange(next)
     }
 
-    EssentialsBottomSheet(onDismissRequest = onDismiss) {
+    ToolkitBottomSheet(onDismissRequest = onDismiss) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()

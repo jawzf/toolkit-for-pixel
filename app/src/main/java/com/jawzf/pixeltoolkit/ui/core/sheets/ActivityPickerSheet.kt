@@ -129,7 +129,7 @@ fun ActivityPickerSheet(
             requiresRoot = activity.requiresRoot,
         )
 
-    EssentialsBottomSheet(onDismissRequest = onDismiss) {
+    ToolkitBottomSheet(onDismissRequest = onDismiss) {
         Column(
             modifier =
                 Modifier

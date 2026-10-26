@@ -3,7 +3,7 @@ package com.jawzf.pixeltoolkit.services
 import android.content.Intent
 import android.speech.RecognitionService
 
-class EssentialsRecognitionService : RecognitionService() {
+class ToolkitRecognitionService : RecognitionService() {
     override fun onStartListening(
         recognizerIntent: Intent?,
         listener: Callback?,

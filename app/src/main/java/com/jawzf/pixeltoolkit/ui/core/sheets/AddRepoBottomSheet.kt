@@ -124,7 +124,7 @@ fun AddRepoBottomSheet(
     }
 
     if (showReadme && readmeContent != null) {
-        EssentialsBottomSheet(
+        ToolkitBottomSheet(
             onDismissRequest = {
                 HapticUtil.performUIHaptic(view)
                 showReadme = false
@@ -158,7 +158,7 @@ fun AddRepoBottomSheet(
         )
     }
 
-    EssentialsBottomSheet(
+    ToolkitBottomSheet(
         onDismissRequest = onDismissRequest,
         sheetState = sheetState,
     ) {

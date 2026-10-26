@@ -129,7 +129,7 @@ class ScreenOffAccessibilityService :
         }
 
     private fun updateCameraLensTracking() {
-        val prefs = getSharedPreferences("essentials_prefs", MODE_PRIVATE)
+        val prefs = getSharedPreferences("toolkit_prefs", MODE_PRIVATE)
         val shouldTrack = prefs.getBoolean(SettingsRepository.KEY_BUTTON_REMAP_POWER_CAMERA_FLIP, false)
         val cameraManager = getSystemService(CameraManager::class.java) ?: return
         if (shouldTrack && !isCameraCallbackRegistered) {
@@ -162,7 +162,7 @@ class ScreenOffAccessibilityService :
     private val pocketFlashlightHandler = Handler(Looper.getMainLooper())
     private val pocketFlashlightRunnable =
         Runnable {
-            val prefs = getSharedPreferences("essentials_prefs", MODE_PRIVATE)
+            val prefs = getSharedPreferences("toolkit_prefs", MODE_PRIVATE)
             val pocketTurnOffEnabled = prefs.getBoolean("flashlight_pocket_turn_off_enabled", false)
             // Re-check at fire time — guards against external torch-off between scheduling and firing
             if (pocketTurnOffEnabled && flashlightHandler.isProximityBlocked && flashlightHandler.isTorchOn) {
@@ -180,7 +180,7 @@ class ScreenOffAccessibilityService :
     }
 
     private fun updateProximitySensorRegistration() {
-        val prefs = getSharedPreferences("essentials_prefs", MODE_PRIVATE)
+        val prefs = getSharedPreferences("toolkit_prefs", MODE_PRIVATE)
         val pocketTurnOffEnabled = prefs.getBoolean("flashlight_pocket_turn_off_enabled", false)
         val flashlightNeedsProximity = pocketTurnOffEnabled && flashlightHandler.isTorchOn
 
@@ -473,7 +473,7 @@ class ScreenOffAccessibilityService :
             }
         registerReceiver(screenReceiver, filter, RECEIVER_EXPORTED)
 
-        getSharedPreferences("essentials_prefs", MODE_PRIVATE)
+        getSharedPreferences("toolkit_prefs", MODE_PRIVATE)
             .registerOnSharedPreferenceChangeListener(preferenceChangeListener)
 
         val powerManager = getSystemService(POWER_SERVICE) as? android.os.PowerManager
@@ -484,7 +484,7 @@ class ScreenOffAccessibilityService :
     }
 
     private fun scheduleFreeze() {
-        val prefs = getSharedPreferences("essentials_prefs", MODE_PRIVATE)
+        val prefs = getSharedPreferences("toolkit_prefs", MODE_PRIVATE)
         val isFreezeWhenLockedEnabled = prefs.getBoolean("freeze_when_locked_enabled", false)
 
         if (isFreezeWhenLockedEnabled) {
@@ -520,7 +520,7 @@ class ScreenOffAccessibilityService :
     }
 
     private fun updateOmniOverlay() {
-        val prefs = getSharedPreferences("essentials_prefs", MODE_PRIVATE)
+        val prefs = getSharedPreferences("toolkit_prefs", MODE_PRIVATE)
         val isGestureEnabled = prefs.getBoolean("circle_to_search_gesture_enabled", false)
         val height =
             try {
@@ -583,7 +583,7 @@ class ScreenOffAccessibilityService :
         windowHandler.removeCallbacksAndMessages(null)
         windowThread.quitSafely()
         serviceScope.cancel()
-        getSharedPreferences("essentials_prefs", MODE_PRIVATE)
+        getSharedPreferences("toolkit_prefs", MODE_PRIVATE)
             .unregisterOnSharedPreferenceChangeListener(preferenceChangeListener)
         instance = null
         super.onDestroy()
@@ -648,7 +648,7 @@ class ScreenOffAccessibilityService :
         }
     }
 
-    private val windowThread = HandlerThread("essentials-windows").apply { start() }
+    private val windowThread = HandlerThread("toolkit-windows").apply { start() }
     private val windowHandler = Handler(windowThread.looper)
     private val uiHandler = Handler(Looper.getMainLooper())
     private val windowScanQueued = AtomicBoolean(false)
@@ -678,7 +678,7 @@ class ScreenOffAccessibilityService :
             false
         }
         val volumeDialogVisible = try {
-            val prefs = getSharedPreferences("essentials_prefs", MODE_PRIVATE)
+            val prefs = getSharedPreferences("toolkit_prefs", MODE_PRIVATE)
             prefs.getBoolean("button_remap_pause_on_volume_dialog", true) &&
                 snapshot?.any(VolumePanelDetector::isVolumePanel) == true
         } catch (_: Exception) {
@@ -743,7 +743,7 @@ class ScreenOffAccessibilityService :
 
             flashlightHandler.isProximityBlocked = isBlocked
 
-            val prefs = getSharedPreferences("essentials_prefs", MODE_PRIVATE)
+            val prefs = getSharedPreferences("toolkit_prefs", MODE_PRIVATE)
             val pocketTurnOffEnabled = prefs.getBoolean("flashlight_pocket_turn_off_enabled", false)
 
             if (pocketTurnOffEnabled && isBlocked && flashlightHandler.isTorchOn) {
@@ -860,7 +860,7 @@ class ScreenOffAccessibilityService :
 
         when (action) {
             "LOCK_SCREEN" -> {
-                val prefs = getSharedPreferences("essentials_prefs", MODE_PRIVATE)
+                val prefs = getSharedPreferences("toolkit_prefs", MODE_PRIVATE)
                 val hapticTypeStr =
                     prefs.getString("haptic_feedback_type", HapticFeedbackType.NONE.name)
                 val hapticType =
@@ -923,7 +923,7 @@ class ScreenOffAccessibilityService :
     private var isInputEventListenerRequested = false
 
     private fun updateInputEventListener() {
-        val prefs = getSharedPreferences("essentials_prefs", MODE_PRIVATE)
+        val prefs = getSharedPreferences("toolkit_prefs", MODE_PRIVATE)
         val isEnabled = prefs.getBoolean("button_remap_enabled", false)
         val useShizuku = prefs.getBoolean("button_remap_use_shizuku", false)
         val needed =
@@ -933,7 +933,7 @@ class ScreenOffAccessibilityService :
     }
 
     private fun startInputEventListenerIfEnabled() {
-        val prefs = getSharedPreferences("essentials_prefs", MODE_PRIVATE)
+        val prefs = getSharedPreferences("toolkit_prefs", MODE_PRIVATE)
         val isEnabled = prefs.getBoolean("button_remap_enabled", false)
         val useShizuku = prefs.getBoolean("button_remap_use_shizuku", false)
 

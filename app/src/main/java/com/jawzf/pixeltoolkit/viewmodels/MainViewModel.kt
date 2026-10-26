@@ -34,7 +34,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.os.LocaleListCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jawzf.pixeltoolkit.EssentialsApp
+import com.jawzf.pixeltoolkit.ToolkitApp
 import com.jawzf.pixeltoolkit.R
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.utils.LogManager
@@ -121,7 +121,7 @@ class MainViewModel : ViewModel() {
     val isOverlayPermissionGranted = mutableStateOf(false)
     val isNotificationLightingAccessibilityEnabled = mutableStateOf(false)
     val hapticFeedbackType = mutableStateOf(HapticFeedbackType.SUBTLE)
-    val defaultTab = mutableStateOf(com.jawzf.pixeltoolkit.domain.DIYTabs.ESSENTIALS)
+    val defaultTab = mutableStateOf(com.jawzf.pixeltoolkit.domain.DIYTabs.TOOLKIT)
     val selectedAppIcon = mutableStateOf(AppIcon.DEFAULT)
     val isDefaultBrowserSet = mutableStateOf(false)
     val onlyShowWhenScreenOff = mutableStateOf(true)
@@ -3153,7 +3153,7 @@ class MainViewModel : ViewModel() {
     }
 
     private fun refreshPrivilegedMode() {
-        val ctx = EssentialsApp.context
+        val ctx = ToolkitApp.context
         privilegedMode.value = ShellUtils.getSelectedMode(ctx)
         isRootEnabled.value = ShellUtils.isRootEnabled(ctx)
         usesAuthToken.value = ShellUtils.usesAuthToken(ctx)
@@ -3207,7 +3207,7 @@ class MainViewModel : ViewModel() {
      * @param context [Context] Target context.
      */
     fun loadUserDictionaryWords(context: Context) {
-        context.applicationContext as? com.jawzf.pixeltoolkit.ime.EssentialsInputMethodService
+        context.applicationContext as? com.jawzf.pixeltoolkit.ime.ToolkitInputMethodService
 
         viewModelScope.launch(Dispatchers.IO) {
             val file = java.io.File(context.filesDir, "user_dict.txt")
@@ -9478,8 +9478,8 @@ class MainViewModel : ViewModel() {
      */
     fun resetOnboarding(context: Context) {
         setOnboardingCompleted(false, context)
-        // Reset tab to ESSENTIALS
-        setDefaultTab(com.jawzf.pixeltoolkit.domain.DIYTabs.ESSENTIALS, context)
+        // Reset tab to TOOLKIT
+        setDefaultTab(com.jawzf.pixeltoolkit.domain.DIYTabs.TOOLKIT, context)
     }
 
     /**
@@ -9540,7 +9540,7 @@ class MainViewModel : ViewModel() {
                 .filter { it.isNotBlank() }
                 .toSet()
 
-        val prefs = context.getSharedPreferences("essentials_prefs", Context.MODE_PRIVATE)
+        val prefs = context.getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE)
         val fromPrefs =
             prefs.all
                 .filter { (key, value) -> key.endsWith("_is_added") && value == true }

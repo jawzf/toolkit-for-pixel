@@ -56,7 +56,7 @@ fun DeviceEffectsSettingsSheet(
     var dimWallpaper by remember { mutableStateOf(initialAction.dimWallpaper) }
     var nightMode by remember { mutableStateOf(initialAction.nightMode) }
 
-    EssentialsBottomSheet(
+    ToolkitBottomSheet(
         onDismissRequest = onDismiss,
         dragHandle = null,
     ) {

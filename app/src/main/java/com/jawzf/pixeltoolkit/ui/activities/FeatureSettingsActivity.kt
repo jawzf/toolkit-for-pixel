@@ -49,7 +49,7 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.jawzf.pixeltoolkit.domain.HapticFeedbackType
 import com.jawzf.pixeltoolkit.domain.registry.FeatureRegistry
-import com.jawzf.pixeltoolkit.ui.components.EssentialsFloatingToolbar
+import com.jawzf.pixeltoolkit.ui.components.ToolkitFloatingToolbar
 import com.jawzf.pixeltoolkit.ui.components.animations.LottieFeatureAnimation
 import com.jawzf.pixeltoolkit.ui.components.linkActions.LinkPickerScreen
 import com.jawzf.pixeltoolkit.ui.core.cards.FeatureCard
@@ -85,7 +85,7 @@ import com.jawzf.pixeltoolkit.ui.features.display.IslandSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.display.IslandVisualsSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.display.StatusGlanceSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.DynamicNightLightSettingsUI
-import com.jawzf.pixeltoolkit.ui.features.system.EssentialsOnDisplaySettingsUI
+import com.jawzf.pixeltoolkit.ui.features.system.ToolkitOnDisplaySettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.FlashlightPulseSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.FlashlightSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.FreezeSettingsUI
@@ -122,7 +122,7 @@ import com.jawzf.pixeltoolkit.ui.modifiers.BlurDirection
 import com.jawzf.pixeltoolkit.ui.modifiers.highlight
 import com.jawzf.pixeltoolkit.ui.modifiers.progressiveBlur
 import com.jawzf.pixeltoolkit.ui.modifiers.scrollMotionBlur
-import com.jawzf.pixeltoolkit.ui.theme.EssentialsTheme
+import com.jawzf.pixeltoolkit.ui.theme.ToolkitTheme
 import com.jawzf.pixeltoolkit.utils.BiometricSecurityHelper
 import com.jawzf.pixeltoolkit.utils.DeviceUtils
 import com.jawzf.pixeltoolkit.utils.HapticUtil
@@ -169,7 +169,7 @@ class FeatureSettingsActivity : AppCompatActivity() {
                     viewModel.check(context)
                 }
                 val isPitchBlackThemeEnabled by viewModel.isPitchBlackThemeEnabled
-                EssentialsTheme(pitchBlackTheme = isPitchBlackThemeEnabled) {
+                ToolkitTheme(pitchBlackTheme = isPitchBlackThemeEnabled) {
                     LinkPickerScreen(
                         uri = "https://example.com".toUri(),
                         onFinish = { finish() },
@@ -217,7 +217,7 @@ class FeatureSettingsActivity : AppCompatActivity() {
             val isBlurEnabled by viewModel.isBlurEnabled
             val pinnedFeatureKeys by viewModel.pinnedFeatureKeys
 
-            EssentialsTheme(pitchBlackTheme = isPitchBlackThemeEnabled) {
+            ToolkitTheme(pitchBlackTheme = isPitchBlackThemeEnabled) {
                 androidx.compose.runtime.CompositionLocalProvider(
                     com.jawzf.pixeltoolkit.ui.state.LocalMenuStateManager provides
                         remember {
@@ -226,7 +226,7 @@ class FeatureSettingsActivity : AppCompatActivity() {
                         },
                 ) {
                     LocalView.current
-                    val prefs = context.getSharedPreferences("essentials_prefs", MODE_PRIVATE)
+                    val prefs = context.getSharedPreferences("toolkit_prefs", MODE_PRIVATE)
 
                     val vibrator =
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
@@ -344,7 +344,7 @@ class FeatureSettingsActivity : AppCompatActivity() {
                                         context,
                                     )
                                 // Top level checks for other features (rarely hit if they are children, but safe to add)
-                                "Essentials On Display" -> !isAccessibilityEnabled || !isNotificationListenerEnabled
+                                "Toolkit On Display" -> !isAccessibilityEnabled || !isNotificationListenerEnabled
                                 "Call vibrations" -> !isReadPhoneStateEnabled || !isNotificationListenerEnabled
                                 "Maps power saving mode" ->
                                     !isNotificationListenerEnabled ||
@@ -590,7 +590,7 @@ class FeatureSettingsActivity : AppCompatActivity() {
                                                         listOf(
                                                             "Always on Display",
                                                             "AOD wallpaper",
-                                                            "Essentials On Display",
+                                                            "Toolkit On Display",
                                                             "Lock screen clock",
                                                             "Maps power saving mode",
                                                         ),
@@ -749,7 +749,7 @@ class FeatureSettingsActivity : AppCompatActivity() {
                                                                     context,
                                                                 )
 
-                                                            "Essentials On Display" ->
+                                                            "Toolkit On Display" ->
                                                                 !isAccessibilityEnabled ||
                                                                     !isNotificationListenerEnabled
                                                             "Call vibrations" -> !isReadPhoneStateEnabled || !isNotificationListenerEnabled
@@ -1112,8 +1112,8 @@ class FeatureSettingsActivity : AppCompatActivity() {
                                         )
                                     }
 
-                                    "Essentials On Display" -> {
-                                        EssentialsOnDisplaySettingsUI(
+                                    "Toolkit On Display" -> {
+                                        ToolkitOnDisplaySettingsUI(
                                             viewModel = viewModel,
                                             modifier = Modifier.padding(top = 16.dp),
                                             highlightSetting = highlightSetting,
@@ -1321,7 +1321,7 @@ class FeatureSettingsActivity : AppCompatActivity() {
 
                         val isStandbyMultiSelecting = featureId == "Standby apps" && standbyAppsSelectedPackages.isNotEmpty()
 
-                        EssentialsFloatingToolbar(
+                        ToolkitFloatingToolbar(
                             title =
                                 if (isStandbyMultiSelecting) {
                                     stringResource(R.string.standby_apps_selected_count, standbyAppsSelectedPackages.size)

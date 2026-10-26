@@ -173,7 +173,7 @@ class InputEventListenerService : Service() {
 
             if (devices.isEmpty()) {
                 Log.e("InputEventListener", "No devices found")
-                getSharedPreferences("essentials_prefs", MODE_PRIVATE)
+                getSharedPreferences("toolkit_prefs", MODE_PRIVATE)
                     .edit()
                     .remove("shizuku_detected_device_path")
                     .apply()
@@ -183,7 +183,7 @@ class InputEventListenerService : Service() {
             val devicePath = devices.first().path
             Log.d("InputEventListener", "Listening on device: $devicePath")
 
-            getSharedPreferences("essentials_prefs", MODE_PRIVATE)
+            getSharedPreferences("toolkit_prefs", MODE_PRIVATE)
                 .edit()
                 .putString("shizuku_detected_device_path", devicePath)
                 .apply()
@@ -220,7 +220,7 @@ class InputEventListenerService : Service() {
                         if (isTorchOn) {
                             val prefs =
                                 getSharedPreferences(
-                                    "essentials_prefs",
+                                    "toolkit_prefs",
                                     MODE_PRIVATE,
                                 )
                             val isAdjustEnabled =

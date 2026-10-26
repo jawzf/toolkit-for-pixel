@@ -45,7 +45,7 @@ import com.jawzf.pixeltoolkit.ui.core.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.ui.core.sheets.AppSelectionSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.CustomSettingsSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.DimWallpaperSettingsSheet
-import com.jawzf.pixeltoolkit.ui.core.sheets.EssentialsBottomSheet
+import com.jawzf.pixeltoolkit.ui.core.sheets.ToolkitBottomSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.HilightEffectSettingsSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.ScreenOffSettingsSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.OpenActivityPicker
@@ -836,7 +836,7 @@ private fun RemapAddActionSheet(
         mutableStateOf(actionCategories.firstOrNull()?.titleRes)
     }
 
-    EssentialsBottomSheet(onDismissRequest = onDismiss) {
+    ToolkitBottomSheet(onDismissRequest = onDismiss) {
         Column(
             modifier =
                 Modifier

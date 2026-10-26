@@ -8,7 +8,7 @@ import com.jawzf.pixeltoolkit.utils.PermissionUtils
 
 class DynamicNightLightTileService : BaseTileService() {
     override fun onTileClick() {
-        val prefs = getSharedPreferences("essentials_prefs", MODE_PRIVATE)
+        val prefs = getSharedPreferences("toolkit_prefs", MODE_PRIVATE)
         val isEnabled = prefs.getBoolean("dynamic_night_light_enabled", false)
         prefs.edit { putBoolean("dynamic_night_light_enabled", !isEnabled) }
     }
@@ -27,7 +27,7 @@ class DynamicNightLightTileService : BaseTileService() {
 
     override fun getTileState(): Int {
         val enabled =
-            getSharedPreferences("essentials_prefs", MODE_PRIVATE)
+            getSharedPreferences("toolkit_prefs", MODE_PRIVATE)
                 .getBoolean("dynamic_night_light_enabled", false)
         return if (enabled) Tile.STATE_ACTIVE else Tile.STATE_INACTIVE
     }

@@ -117,7 +117,7 @@ import com.jawzf.pixeltoolkit.ui.components.menus.SegmentedDropdownMenu
 import com.jawzf.pixeltoolkit.ui.components.menus.SegmentedDropdownMenuItem
 import com.jawzf.pixeltoolkit.ui.core.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.ui.core.pickers.SegmentedPicker
-import com.jawzf.pixeltoolkit.ui.core.sheets.EssentialsBottomSheet
+import com.jawzf.pixeltoolkit.ui.core.sheets.ToolkitBottomSheet
 import com.jawzf.pixeltoolkit.utils.HapticUtil
 import com.jawzf.pixeltoolkit.utils.PermissionUtils
 import com.jawzf.pixeltoolkit.utils.WindowingUtils
@@ -414,12 +414,12 @@ fun LinkPickerScreen(
 
         val isMotionBlurEnabled =
             remember(context) {
-                context.getSharedPreferences("essentials_prefs", Context.MODE_PRIVATE)
+                context.getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE)
                     .getBoolean("motion_blur", false)
             }
         val sheetScrollState = rememberScrollState()
 
-        EssentialsBottomSheet(
+        ToolkitBottomSheet(
             onDismissRequest = onFinish,
             sheetState = sheetState,
             scrimColor = dynamicScrimColor,

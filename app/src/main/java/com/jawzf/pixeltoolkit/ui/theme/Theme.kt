@@ -28,7 +28,7 @@ private val LightColorScheme =
     )
 
 @Composable
-fun EssentialsTheme(
+fun ToolkitTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     pitchBlackTheme: Boolean = false,
     // Dynamic color is available on Android 12+

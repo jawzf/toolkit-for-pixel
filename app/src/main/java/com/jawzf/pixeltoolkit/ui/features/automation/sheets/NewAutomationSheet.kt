@@ -87,7 +87,7 @@ fun NewAutomationSheet(
             }
         }
 
-    EssentialsBottomSheet(
+    ToolkitBottomSheet(
         onDismissRequest = onDismiss,
     ) {
         Column(

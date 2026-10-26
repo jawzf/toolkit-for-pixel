@@ -74,7 +74,7 @@ fun ShutUpPerAppSettingsSheet(
         )
     }
 
-    EssentialsBottomSheet(
+    ToolkitBottomSheet(
         onDismissRequest = onDismissRequest,
         sheetState = sheetState,
     ) {
@@ -140,7 +140,7 @@ fun ShutUpPerAppSettingsSheet(
                                 android.widget.Toast
                                     .makeText(
                                         context,
-                                        "Please enter the Shizuku auth token in Essentials settings",
+                                        "Please enter the Shizuku auth token in Toolkit settings",
                                         android.widget.Toast.LENGTH_LONG,
                                     ).show()
                             }

@@ -169,7 +169,7 @@ class FlashlightPlugin : BaseIslandPlugin() {
 
     private fun turnOff() {
         val id = cameraId ?: return
-        val fade = context.getSharedPreferences("essentials_prefs", Context.MODE_PRIVATE).getBoolean("flashlight_fade_enabled", false)
+        val fade = context.getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE).getBoolean("flashlight_fade_enabled", false)
         if (fade && FlashlightUtil.isIntensitySupported(context, id)) {
             fadeJob?.cancel()
             fadeJob = ctx?.scope?.launch { FlashlightUtil.fadeFlashlight(context, id, targetOn = false) }

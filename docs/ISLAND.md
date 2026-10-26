@@ -135,7 +135,7 @@ Expanded content owns its own padding so backgrounds can go full-bleed. It must 
 
 ## Provider apps
 
-Features that live in another app do not belong in this module. Instead of adding a plugin, the other app implements an island provider and Essentials hosts it through `RemoteProvidersPlugin`: the app sends compact and line data and draws its own expanded view, and the user approves it once. Weather comes from Overcast this way. The full contract, security model and a worked example are in [ISLAND_PROVIDERS.md](ISLAND_PROVIDERS.md).
+Features that live in another app do not belong in this module. Instead of adding a plugin, the other app implements an island provider and Toolkit for Pixel hosts it through `RemoteProvidersPlugin`: the app sends compact and line data and draws its own expanded view, and the user approves it once. Weather comes from Overcast this way. The full contract, security model and a worked example are in [ISLAND_PROVIDERS.md](ISLAND_PROVIDERS.md).
 
 ---
 

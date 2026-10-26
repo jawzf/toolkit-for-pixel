@@ -124,7 +124,7 @@ fun AppColorSelectionSheet(
             .filterNot { overrides.containsKey(it.packageName) }
             .sortedBy { it.appName.lowercase() }
 
-    EssentialsBottomSheet(
+    ToolkitBottomSheet(
         onDismissRequest = onDismissRequest,
         sheetState = sheetState,
     ) {

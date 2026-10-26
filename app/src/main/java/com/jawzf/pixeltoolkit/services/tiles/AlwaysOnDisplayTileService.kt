@@ -62,11 +62,11 @@ class AlwaysOnDisplayTileService : BaseTileService() {
     }
 
     private fun isGlanceEnabled(): Boolean =
-        getSharedPreferences("essentials_prefs", MODE_PRIVATE)
+        getSharedPreferences("toolkit_prefs", MODE_PRIVATE)
             .getBoolean(SettingsRepository.KEY_NOTIFICATION_GLANCE_ENABLED, false)
 
     private fun setGlanceEnabled(enabled: Boolean) {
-        getSharedPreferences("essentials_prefs", MODE_PRIVATE).edit().apply {
+        getSharedPreferences("toolkit_prefs", MODE_PRIVATE).edit().apply {
             putBoolean(SettingsRepository.KEY_NOTIFICATION_GLANCE_ENABLED, enabled)
             apply()
         }

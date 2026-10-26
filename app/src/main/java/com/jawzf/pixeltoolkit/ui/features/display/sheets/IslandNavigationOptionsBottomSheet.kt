@@ -20,7 +20,7 @@ import com.jawzf.pixeltoolkit.ui.core.cards.ConfigPickerItem
 import com.jawzf.pixeltoolkit.ui.core.cards.IconToggleItem
 import com.jawzf.pixeltoolkit.ui.core.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.ui.core.pickers.SegmentedPicker
-import com.jawzf.pixeltoolkit.ui.core.sheets.EssentialsBottomSheet
+import com.jawzf.pixeltoolkit.ui.core.sheets.ToolkitBottomSheet
 import com.jawzf.pixeltoolkit.utils.HapticUtil
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 
@@ -38,7 +38,7 @@ fun IslandNavigationOptionsBottomSheet(
     fun distanceLabel(meters: Int) =
         if (meters == 0) stringResource(R.string.island_navigation_expand_off) else stringResource(R.string.island_navigation_expand_meters, meters)
 
-    EssentialsBottomSheet(onDismissRequest = onDismissRequest) {
+    ToolkitBottomSheet(onDismissRequest = onDismissRequest) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()

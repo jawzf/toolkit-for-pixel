@@ -88,7 +88,7 @@ import com.jawzf.pixeltoolkit.R
 import com.jawzf.pixeltoolkit.ui.core.cards.IconToggleItem
 import com.jawzf.pixeltoolkit.ui.core.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.ui.core.pickers.SegmentedPicker
-import com.jawzf.pixeltoolkit.ui.core.sheets.EssentialsBottomSheet
+import com.jawzf.pixeltoolkit.ui.core.sheets.ToolkitBottomSheet
 import com.jawzf.pixeltoolkit.utils.HapticUtil
 import com.jawzf.pixeltoolkit.utils.PermissionUtils
 import com.jawzf.pixeltoolkit.utils.QrCodeGenerator
@@ -238,7 +238,7 @@ fun ShortenUrlSheet(
     }
 
     val shortenScrollState = rememberScrollState()
-    EssentialsBottomSheet(
+    ToolkitBottomSheet(
         onDismissRequest = onDismiss,
         containerColor = MaterialTheme.colorScheme.surfaceContainer,
     ) {
@@ -1034,9 +1034,9 @@ fun ShortenUrlSheet(
             }
         }
 
-    // Shortener Settings Bottom Sheet (Structured as standard Essentials IconToggleItems in RoundedCardContainer)
+    // Shortener Settings Bottom Sheet (Structured as standard Toolkit IconToggleItems in RoundedCardContainer)
     if (showSettingsSheet) {
-        EssentialsBottomSheet(
+        ToolkitBottomSheet(
             onDismissRequest = { showSettingsSheet = false },
             containerColor = MaterialTheme.colorScheme.surfaceContainer,
         ) {
@@ -1152,7 +1152,7 @@ fun QrCodeSheet(
         )
     }
 
-    EssentialsBottomSheet(
+    ToolkitBottomSheet(
         onDismissRequest = onDismiss,
         containerColor = MaterialTheme.colorScheme.surfaceContainer,
     ) {

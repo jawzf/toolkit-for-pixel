@@ -127,7 +127,7 @@ import com.jawzf.pixeltoolkit.ui.core.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.ui.features.tiles.QSTilesSearchResultCard
 import com.jawzf.pixeltoolkit.ui.modifiers.BlurDirection
 import com.jawzf.pixeltoolkit.ui.modifiers.progressiveBlur
-import com.jawzf.pixeltoolkit.ui.theme.EssentialsTheme
+import com.jawzf.pixeltoolkit.ui.theme.ToolkitTheme
 import com.jawzf.pixeltoolkit.ui.core.sheets.PixelSearchFileActionSheet
 import com.jawzf.pixeltoolkit.utils.AppUtil
 import com.jawzf.pixeltoolkit.utils.ColorUtil
@@ -183,7 +183,7 @@ class PixelSearchResultsActivity : ComponentActivity() {
             val repository = remember { SettingsRepository(this) }
             val isPitchBlack by repository.isPitchBlackThemeEnabled.collectAsState(initial = false)
 
-            EssentialsTheme(pitchBlackTheme = isPitchBlack) {
+            ToolkitTheme(pitchBlackTheme = isPitchBlack) {
                 PixelSearchResultsScreen(
                     initialQuery = initialQuery,
                     onFinish = { finish() },
@@ -571,8 +571,8 @@ fun PixelSearchResultsScreen(
     val hasMedia = !hasApps && !hasContacts && (isAllTab || selectedTab == PixelSearchTab.MEDIA) && isMediaEnabled && mediaResults.isNotEmpty()
     val hasFiles = !hasApps && !hasContacts && !hasMedia && (isAllTab || selectedTab == PixelSearchTab.FILES) && isFilesEnabled && fileResults.isNotEmpty()
     val hasSystemSettings = !hasApps && !hasContacts && !hasMedia && !hasFiles && (isAllTab || selectedTab == PixelSearchTab.SETTINGS) && isSettingsEnabled && systemSettingResults.isNotEmpty()
-    val hasEssentials = !hasApps && !hasContacts && !hasMedia && !hasFiles && !hasSystemSettings && (isAllTab || selectedTab == PixelSearchTab.SETTINGS) && isSettingsEnabled && (matchingQsTiles.isNotEmpty() || settingResults.isNotEmpty())
-    val hasShortcuts = !hasApps && !hasContacts && !hasMedia && !hasFiles && !hasSystemSettings && !hasEssentials && (isAllTab || selectedTab == PixelSearchTab.SETTINGS) && isShortcutsEnabled && shortcutResults.isNotEmpty()
+    val hasToolkit = !hasApps && !hasContacts && !hasMedia && !hasFiles && !hasSystemSettings && (isAllTab || selectedTab == PixelSearchTab.SETTINGS) && isSettingsEnabled && (matchingQsTiles.isNotEmpty() || settingResults.isNotEmpty())
+    val hasShortcuts = !hasApps && !hasContacts && !hasMedia && !hasFiles && !hasSystemSettings && !hasToolkit && (isAllTab || selectedTab == PixelSearchTab.SETTINGS) && isShortcutsEnabled && shortcutResults.isNotEmpty()
 
     val highlightColor = MaterialTheme.colorScheme.secondaryContainer
     val normalCardColor = MaterialTheme.colorScheme.surfaceBright
@@ -605,7 +605,7 @@ fun PixelSearchResultsScreen(
                 context.startActivity(systemSettingResults.first().intent)
                 onFinish()
             }
-            hasEssentials -> {
+            hasToolkit -> {
                 val setting = settingResults.first().searchableItem
                 val intent = Intent(context, FeatureSettingsActivity::class.java).apply {
                     putExtra("feature", setting.featureKey)
@@ -1180,19 +1180,19 @@ fun PixelSearchResultsScreen(
                     }
                 }
 
-                // ESSENTIALS
+                // TOOLKIT
                 if ((isAllTab || selectedTab == PixelSearchTab.SETTINGS) && isSettingsEnabled && (matchingQsTiles.isNotEmpty() || settingResults.isNotEmpty())) {
-                    item(key = "essentials_header") {
+                    item(key = "toolkit_header") {
                         SearchSectionHeader(
-                            stringResource(R.string.pixel_search_section_essentials),
+                            stringResource(R.string.pixel_search_section_toolkit),
                             modifier = Modifier.animateItem(),
                         )
                     }
                     if (settingResults.isNotEmpty()) {
-                        item(key = "essentials_cards") {
+                        item(key = "toolkit_cards") {
                             RoundedCardContainer(modifier = Modifier.animateItem()) {
                                 settingResults.forEachIndexed { index, item ->
-                                    val isTopmost = index == 0 && hasEssentials
+                                    val isTopmost = index == 0 && hasToolkit
                                     val setting = item.searchableItem
                                     FeatureCard(
                                         title = setting.title,
@@ -1254,7 +1254,7 @@ fun PixelSearchResultsScreen(
                         }
                     }
                     if (matchingQsTiles.isNotEmpty()) {
-                        item(key = "essentials_qs_tiles") {
+                        item(key = "toolkit_qs_tiles") {
                             QSTilesSearchResultCard(
                                 tiles = matchingQsTiles,
                                 viewModel = viewModel,
@@ -1298,7 +1298,7 @@ fun PixelSearchResultsScreen(
 
                 // WEB SEARCH
                 if ((isAllTab || selectedTab == PixelSearchTab.WEB) && isWebEnabled && query.isNotBlank()) {
-                    val isTopmost = !hasApps && !hasContacts && !hasMedia && !hasFiles && !hasSystemSettings && !hasEssentials && !hasShortcuts
+                    val isTopmost = !hasApps && !hasContacts && !hasMedia && !hasFiles && !hasSystemSettings && !hasToolkit && !hasShortcuts
                     item(key = "web_header") {
                         SearchSectionHeader(
                             stringResource(R.string.pixel_search_section_web),

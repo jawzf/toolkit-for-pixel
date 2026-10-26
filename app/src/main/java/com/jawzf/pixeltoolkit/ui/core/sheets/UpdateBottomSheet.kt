@@ -89,7 +89,7 @@ fun UpdateBottomSheet(
         }
     }
 
-    EssentialsBottomSheet(
+    ToolkitBottomSheet(
         onDismissRequest = onDismissRequest,
         sheetState = sheetState,
     ) {
@@ -284,7 +284,7 @@ fun UpdateBottomSheet(
                                             )
                                         helper.downloadAndInstallApk(
                                             apkUrl = updateInfo.downloadUrl,
-                                            apkName = "Essentials_$cleanVersion",
+                                            apkName = "Toolkit_$cleanVersion",
                                             onProgressUpdate = { progress ->
                                                 downloadProgress = progress
                                                 if (progress >= 100) {

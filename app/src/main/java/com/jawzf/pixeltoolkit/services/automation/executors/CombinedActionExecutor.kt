@@ -79,7 +79,7 @@ object CombinedActionExecutor {
         context: Context,
         action: Action.TriggerNotificationLighting,
     ) {
-        val prefs = context.getSharedPreferences("essentials_prefs", Context.MODE_PRIVATE)
+        val prefs = context.getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE)
         if (action.style == NotificationLightingStyle.SYSTEM) {
             if (!ShellUtils.hasPermission(context)) return
             val metrics = context.resources.displayMetrics
@@ -248,7 +248,7 @@ object CombinedActionExecutor {
                                     val effects = effectsBuilder.build()
 
                                     val existingRule =
-                                        nm.automaticZenRules.values.find { it.name == "Essentials Focus" }
+                                        nm.automaticZenRules.values.find { it.name == "Toolkit Focus" }
                                     val ruleKey =
                                         existingRule?.let {
                                             nm.automaticZenRules.entries
@@ -259,15 +259,15 @@ object CombinedActionExecutor {
                                     val componentName =
                                         android.content.ComponentName(
                                             context,
-                                            com.jawzf.pixeltoolkit.services.EssentialsConditionProvider::class.java,
+                                            com.jawzf.pixeltoolkit.services.ToolkitConditionProvider::class.java,
                                         )
                                     val conditionUri =
-                                        com.jawzf.pixeltoolkit.services.EssentialsConditionProvider.CONDITION_URI
+                                        com.jawzf.pixeltoolkit.services.ToolkitConditionProvider.CONDITION_URI
 
                                     val ruleBuilder =
                                         android.app.AutomaticZenRule
                                             .Builder(
-                                                "Essentials Focus",
+                                                "Toolkit Focus",
                                                 conditionUri,
                                             ).setOwner(componentName)
                                             .setDeviceEffects(effects)
@@ -292,7 +292,7 @@ object CombinedActionExecutor {
                                     }
 
                                     // Trigger the condition to be TRUE
-                                    com.jawzf.pixeltoolkit.services.EssentialsConditionProvider.setConditionState(
+                                    com.jawzf.pixeltoolkit.services.ToolkitConditionProvider.setConditionState(
                                         context,
                                         true,
                                     )
@@ -304,14 +304,14 @@ object CombinedActionExecutor {
                                 } else {
                                     // DISABLE EFFECTS
                                     val existingRuleEntry =
-                                        nm.automaticZenRules.entries.find { it.value.name == "Essentials Focus" }
+                                        nm.automaticZenRules.entries.find { it.value.name == "Toolkit Focus" }
                                     existingRuleEntry?.let { entry ->
                                         val rule = entry.value
                                         rule.isEnabled = false
                                         nm.updateAutomaticZenRule(entry.key, rule)
                                     }
                                     // Also notify condition false just in case
-                                    com.jawzf.pixeltoolkit.services.EssentialsConditionProvider.setConditionState(
+                                    com.jawzf.pixeltoolkit.services.ToolkitConditionProvider.setConditionState(
                                         context,
                                         false,
                                     )
@@ -442,7 +442,7 @@ object CombinedActionExecutor {
                     val am = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
                     val currentVolume = am.getStreamVolume(AudioManager.STREAM_MUSIC)
                     val prefs =
-                        context.getSharedPreferences("essentials_prefs", Context.MODE_PRIVATE)
+                        context.getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE)
 
                     if (currentVolume > 0) {
                         prefs.edit().putInt("last_media_volume", currentVolume).apply()
@@ -674,8 +674,8 @@ object CombinedActionExecutor {
                         )
                     }
 
-                    if (action.changeEssentialsOnDisplay) {
-                        when (action.essentialsOnDisplayMode) {
+                    if (action.changeToolkitOnDisplay) {
+                        when (action.toolkitOnDisplayMode) {
                             "Off" -> {
                                 repository.putBoolean(
                                     com.jawzf.pixeltoolkit.data.repository.SettingsRepository.KEY_AMBIENT_MUSIC_GLANCE_ENABLED,
@@ -788,7 +788,7 @@ object CombinedActionExecutor {
 
                     if (action.changeSyncSoundModeWatch) {
                         val prefs =
-                            context.getSharedPreferences("essentials_prefs", Context.MODE_PRIVATE)
+                            context.getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE)
                         prefs
                             .edit()
                             .putBoolean(

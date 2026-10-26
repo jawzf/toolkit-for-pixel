@@ -11,7 +11,7 @@ import com.jawzf.pixeltoolkit.utils.PermissionUtils
 
 class AppLockTileService : BaseTileService() {
     override fun onTileClick() {
-        val prefs = getSharedPreferences("essentials_prefs", MODE_PRIVATE)
+        val prefs = getSharedPreferences("toolkit_prefs", MODE_PRIVATE)
         val isEnabled = prefs.getBoolean("app_lock_enabled", false)
 
         val intent =
@@ -52,7 +52,7 @@ class AppLockTileService : BaseTileService() {
 
     override fun getTileState(): Int {
         val enabled =
-            getSharedPreferences("essentials_prefs", MODE_PRIVATE)
+            getSharedPreferences("toolkit_prefs", MODE_PRIVATE)
                 .getBoolean("app_lock_enabled", false)
         return if (enabled) Tile.STATE_ACTIVE else Tile.STATE_INACTIVE
     }

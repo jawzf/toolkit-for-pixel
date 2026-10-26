@@ -23,13 +23,13 @@ object PowerButtonGestures {
             0
         }
 
-    fun isHandledByEssentials(
+    fun isHandledByToolkit(
         off: PowerChoice,
         on: PowerChoice,
     ): Boolean = off != on || off == PowerChoice.ACTIONS || on == PowerChoice.ACTIONS
 
     fun isHoldHandled(repo: SettingsRepository): Boolean =
-        isHandledByEssentials(
+        isHandledByToolkit(
             repo.getPowerChoice(RemapSlot(RemapInput.POWER_HOLD, RemapScreenState.OFF)),
             repo.getPowerChoice(RemapSlot(RemapInput.POWER_HOLD, RemapScreenState.ON)),
         )

@@ -64,8 +64,8 @@ import androidx.core.content.ContextCompat
 import com.jawzf.pixeltoolkit.R
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.island.ui.components.EqualizerBars
-import com.jawzf.pixeltoolkit.ui.core.sheets.EssentialsBottomSheet
-import com.jawzf.pixeltoolkit.ui.theme.EssentialsTheme
+import com.jawzf.pixeltoolkit.ui.core.sheets.ToolkitBottomSheet
+import com.jawzf.pixeltoolkit.ui.theme.ToolkitTheme
 import com.jawzf.pixeltoolkit.utils.AppUtil
 import com.jawzf.pixeltoolkit.utils.HapticUtil
 import com.jawzf.pixeltoolkit.utils.media.AppVolumeController
@@ -77,7 +77,7 @@ class AppVolumeControlActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            EssentialsTheme {
+            ToolkitTheme {
                 NowPlayingSheet(onDismiss = {
                     AppVolumeController.refresh()
                     finish()
@@ -128,7 +128,7 @@ private fun NowPlayingSheet(onDismiss: () -> Unit) {
         rows.removeAll { !it.isPresent }
     }
 
-    EssentialsBottomSheet(onDismissRequest = onDismiss) {
+    ToolkitBottomSheet(onDismissRequest = onDismiss) {
         Column(
             modifier =
                 Modifier

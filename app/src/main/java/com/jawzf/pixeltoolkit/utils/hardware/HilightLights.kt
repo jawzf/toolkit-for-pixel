@@ -4,7 +4,7 @@ import android.hardware.lights.Light
 import android.hardware.lights.LightState
 import android.os.Binder
 import android.os.IBinder
-import com.jawzf.pixeltoolkit.EssentialsApp
+import com.jawzf.pixeltoolkit.ToolkitApp
 import android.content.Context
 import com.jawzf.pixeltoolkit.utils.PrivilegedMode
 import com.jawzf.pixeltoolkit.utils.ShellUtils
@@ -43,7 +43,7 @@ object HilightLights {
 
     fun isAccessGranted(): Boolean =
         try {
-            isModeSupported(EssentialsApp.context) && ShizukuUtils.isShizukuAvailable() && ShizukuUtils.hasPermission()
+            isModeSupported(ToolkitApp.context) && ShizukuUtils.isShizukuAvailable() && ShizukuUtils.hasPermission()
         } catch (_: Exception) {
             false
         }

@@ -71,7 +71,7 @@ import com.jawzf.pixeltoolkit.services.widgets.StackHost
 import com.jawzf.pixeltoolkit.services.widgets.StackWidgetProvider
 import com.jawzf.pixeltoolkit.ui.core.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.ui.features.widgets.WidgetPickerSheet
-import com.jawzf.pixeltoolkit.ui.theme.EssentialsTheme
+import com.jawzf.pixeltoolkit.ui.theme.ToolkitTheme
 import com.jawzf.pixeltoolkit.utils.HapticUtil
 import com.jawzf.pixeltoolkit.utils.PermissionUtils
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
@@ -139,7 +139,7 @@ class WidgetStackConfigureActivity : ComponentActivity() {
                 }
             }
             val isPitchBlackThemeEnabled by viewModel.isPitchBlackThemeEnabled
-            EssentialsTheme(pitchBlackTheme = isPitchBlackThemeEnabled) {
+            ToolkitTheme(pitchBlackTheme = isPitchBlackThemeEnabled) {
                 StackSettingsSheet()
                 if (showPicker) {
                     WidgetPickerSheet(

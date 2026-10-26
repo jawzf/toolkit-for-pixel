@@ -63,7 +63,7 @@ fun ReorderFavoritesBottomSheet(
             hapticFeedback.performHapticFeedback(HapticFeedbackType.SegmentFrequentTick)
         }
 
-    EssentialsBottomSheet(
+    ToolkitBottomSheet(
         onDismissRequest = onDismissRequest,
     ) {
         Column(

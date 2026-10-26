@@ -96,7 +96,7 @@ class StatusBarIconHandler(
 
     fun updateAll() {
         scope.launch {
-            val prefs = context.getSharedPreferences("essentials_prefs", Context.MODE_PRIVATE)
+            val prefs = context.getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE)
             if (!prefs.getBoolean(SettingsRepository.KEY_STATUS_BAR_ICON_CONTROL_ENABLED, false)) return@launch
             val isSmartWiFiEnabled =
                 prefs.getBoolean(StatusBarIconViewModel.PREF_SMART_WIFI_ENABLED, false)
@@ -112,7 +112,7 @@ class StatusBarIconHandler(
         isSmartWiFiEnabled: Boolean,
         isSmartDataEnabled: Boolean,
     ) {
-        val prefs = context.getSharedPreferences("essentials_prefs", Context.MODE_PRIVATE)
+        val prefs = context.getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE)
 
         // 1. Get current states
         val isWifiConnected = isWifiConnected()
@@ -163,7 +163,7 @@ class StatusBarIconHandler(
     }
 
     private fun updateBatteryPercentage() {
-        val prefs = context.getSharedPreferences("essentials_prefs", Context.MODE_PRIVATE)
+        val prefs = context.getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE)
         val mode = prefs.getInt(StatusBarIconViewModel.PREF_BATTERY_PERCENT_MODE, 0)
 
         if (mode != 2) return // Only handle "Charging Only" mode here

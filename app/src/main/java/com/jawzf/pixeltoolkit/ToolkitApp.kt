@@ -14,7 +14,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import org.lsposed.hiddenapibypass.HiddenApiBypass
 
-class EssentialsApp : Application() {
+class ToolkitApp : Application() {
     companion object {
         lateinit var context: Context
             private set

@@ -104,7 +104,7 @@ class AodForceTurnOffHandler(
         val wakeLock =
             powerManager.newWakeLock(
                 PowerManager.SCREEN_BRIGHT_WAKE_LOCK or PowerManager.ACQUIRE_CAUSES_WAKEUP,
-                "Essentials:ForceTurnOffWake",
+                "Toolkit:ForceTurnOffWake",
             )
         wakeLock.acquire(100)
     }

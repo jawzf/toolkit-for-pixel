@@ -583,7 +583,7 @@ private fun PowerGestureSection(
             )
         }
 
-        if (PowerButtonGestures.isHandledByEssentials(offChoice, onChoice)) {
+        if (PowerButtonGestures.isHandledByToolkit(offChoice, onChoice)) {
             RoundedCardContainer {
                 Text(
                     text =

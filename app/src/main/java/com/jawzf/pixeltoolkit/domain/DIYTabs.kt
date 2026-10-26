@@ -8,8 +8,8 @@ enum class DIYTabs(
     val subtitle: Any,
     val iconRes: Int,
 ) {
-    ESSENTIALS(
-        R.string.tab_essentials,
+    TOOLKIT(
+        R.string.tab_toolkit,
         if (com.jawzf.pixeltoolkit.BuildConfig.DEBUG) "=^._.^= ∫ Debug" else "=^..^=",
         R.drawable.ic_stat_name,
     ),

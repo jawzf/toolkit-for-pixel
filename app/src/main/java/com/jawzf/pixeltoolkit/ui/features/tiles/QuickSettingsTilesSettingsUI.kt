@@ -57,7 +57,7 @@ import com.jawzf.pixeltoolkit.services.tiles.CaffeinateTileService
 import com.jawzf.pixeltoolkit.services.tiles.ChargeQuickTileService
 import com.jawzf.pixeltoolkit.services.tiles.DeveloperOptionsTileService
 import com.jawzf.pixeltoolkit.services.tiles.DynamicNightLightTileService
-import com.jawzf.pixeltoolkit.services.tiles.EssentialsOnDisplayTileService
+import com.jawzf.pixeltoolkit.services.tiles.ToolkitOnDisplayTileService
 import com.jawzf.pixeltoolkit.services.tiles.FlashlightPulseTileService
 import com.jawzf.pixeltoolkit.services.tiles.FlashlightTileService
 import com.jawzf.pixeltoolkit.services.tiles.LockdownTileService
@@ -322,7 +322,7 @@ fun QuickSettingsTilesSettingsUI(
                                             context.mainExecutor,
                                         ) { result ->
                                             if (result == StatusBarManager.TILE_ADD_REQUEST_RESULT_TILE_ALREADY_ADDED) {
-                                                context.getSharedPreferences("essentials_prefs", Context.MODE_PRIVATE)
+                                                context.getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE)
                                                     .edit()
                                                     .putBoolean("${tile.serviceClass.name}_is_added", true)
                                                     .apply()
@@ -334,7 +334,7 @@ fun QuickSettingsTilesSettingsUI(
                                                         Toast.LENGTH_SHORT,
                                                     ).show()
                                             } else if (result == StatusBarManager.TILE_ADD_REQUEST_RESULT_TILE_ADDED) {
-                                                context.getSharedPreferences("essentials_prefs", Context.MODE_PRIVATE)
+                                                context.getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE)
                                                     .edit()
                                                     .putBoolean("${tile.serviceClass.name}_is_added", true)
                                                     .apply()

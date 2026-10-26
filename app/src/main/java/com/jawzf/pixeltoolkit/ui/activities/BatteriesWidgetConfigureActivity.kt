@@ -36,8 +36,8 @@ import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.services.widgets.BatteriesWidget
 import com.jawzf.pixeltoolkit.ui.core.cards.IconToggleItem
 import com.jawzf.pixeltoolkit.ui.core.containers.RoundedCardContainer
-import com.jawzf.pixeltoolkit.ui.core.sheets.EssentialsBottomSheet
-import com.jawzf.pixeltoolkit.ui.theme.EssentialsTheme
+import com.jawzf.pixeltoolkit.ui.core.sheets.ToolkitBottomSheet
+import com.jawzf.pixeltoolkit.ui.theme.ToolkitTheme
 import com.jawzf.pixeltoolkit.utils.HapticUtil
 import kotlinx.coroutines.launch
 
@@ -56,7 +56,7 @@ class BatteriesWidgetConfigureActivity : ComponentActivity() {
         }
         enableEdgeToEdge()
         setContent {
-            EssentialsTheme {
+            ToolkitTheme {
                 BatteriesWidgetConfigureSheet(
                     appWidgetId = appWidgetId,
                     onDone = {
@@ -95,7 +95,7 @@ private fun BatteriesWidgetConfigureSheet(
         }
     }
 
-    EssentialsBottomSheet(onDismissRequest = onDismiss) {
+    ToolkitBottomSheet(onDismissRequest = onDismiss) {
         Column(
             modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp).padding(bottom = 24.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),

@@ -108,7 +108,7 @@ class ConsciousGatePlugin : BaseIslandPlugin() {
 
         if (lastHapticSecond != totalSec) {
             lastHapticSecond = totalSec
-            val prefs = context.getSharedPreferences("essentials_prefs", Context.MODE_PRIVATE)
+            val prefs = context.getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE)
             val interactive = context.getSystemService(PowerManager::class.java)?.isInteractive != false
             if (interactive && prefs.getBoolean("conscious_gate_feel_every_second", false)) {
                 HapticUtil.performHapticForService(context, HapticFeedbackType.SUBTLE)

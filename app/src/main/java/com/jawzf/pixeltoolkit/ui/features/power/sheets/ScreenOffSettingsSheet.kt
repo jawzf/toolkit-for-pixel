@@ -51,7 +51,7 @@ fun ScreenOffSettingsSheet(
     var selectedMethod by remember { mutableStateOf(initialAction.method) }
     var selectedHaptic by remember { mutableStateOf(initialAction.haptic) }
 
-    EssentialsBottomSheet(
+    ToolkitBottomSheet(
         onDismissRequest = onDismiss,
     ) {
         Column(
