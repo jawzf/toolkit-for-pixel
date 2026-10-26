@@ -55,7 +55,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.jawzf.pixeltoolkit.R
 import com.jawzf.pixeltoolkit.domain.model.Feature
-import com.jawzf.pixeltoolkit.translation.TranslatableText
 import com.jawzf.pixeltoolkit.ui.core.cards.FeatureTagIcon
 import com.jawzf.pixeltoolkit.ui.core.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.utils.ColorUtil
@@ -133,8 +132,8 @@ fun FeatureHelpBottomSheet(
                 }
 
                 Column(modifier = Modifier.weight(1f)) {
-                    TranslatableText(
-                        stringResId = feature.title,
+                    Text(
+                        text = stringResource(feature.title),
                         style = MaterialTheme.typography.titleMedium,
                     )
                 }
@@ -175,8 +174,8 @@ fun FeatureHelpBottomSheet(
                 Column(modifier = Modifier.padding(16.dp)) {
                     val descRes = feature.aboutDescription ?: feature.description
 
-                    TranslatableText(
-                        stringResId = descRes,
+                    Text(
+                        text = stringResource(descRes),
                         style = MaterialTheme.typography.bodyLarge,
                     )
                 }

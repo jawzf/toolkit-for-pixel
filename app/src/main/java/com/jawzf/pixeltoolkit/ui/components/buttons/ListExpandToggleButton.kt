@@ -17,8 +17,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
@@ -28,10 +26,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.R
-import com.jawzf.pixeltoolkit.translation.TranslationManager
-import com.jawzf.pixeltoolkit.translation.ui.TranslationBottomSheet
-import com.jawzf.pixeltoolkit.translation.ui.TranslationMenuItems
-import com.jawzf.pixeltoolkit.ui.components.menus.SegmentedDropdownMenu
 import com.jawzf.pixeltoolkit.utils.HapticUtil
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -46,12 +40,7 @@ fun ListExpandToggleButton(
     collapsedText: String? = null,
     iconRes: Int? = null,
 ) {
-    val context = androidx.compose.ui.platform.LocalContext.current
     val view = LocalView.current
-    val isTranslationModeActive by TranslationManager.isTranslationModeEnabled
-
-    var showMenu by remember { mutableStateOf(false) }
-    var translationSheetKey by remember { mutableStateOf<String?>(null) }
 
     val rotationDegree by animateFloatAsState(
         targetValue = if (isExpanded) 180f else 0f,
@@ -78,15 +67,6 @@ fun ListExpandToggleButton(
                 .fillMaxWidth()
                 .combinedClickable(
                     onClick = {},
-                    onLongClick =
-                        if (isTranslationModeActive) {
-                            {
-                                HapticUtil.performVirtualKeyHaptic(view)
-                                showMenu = true
-                            }
-                        } else {
-                            null
-                        },
                 ),
     ) {
         Button(
@@ -127,31 +107,5 @@ fun ListExpandToggleButton(
                 fontWeight = FontWeight.SemiBold,
             )
         }
-
-        SegmentedDropdownMenu(
-            expanded = showMenu,
-            onDismissRequest = { showMenu = false },
-        ) {
-            TranslationMenuItems(
-                title = title,
-                description = description,
-                onSelectKey = { key ->
-                    showMenu = false
-                    translationSheetKey = key
-                },
-            )
-        }
-    }
-
-    val targetKey = translationSheetKey
-    if (targetKey != null) {
-        val resolvedKey =
-            remember(targetKey) {
-                TranslationManager.resolveKey(context, targetKey) ?: targetKey
-            }
-        TranslationBottomSheet(
-            stringKey = resolvedKey,
-            onDismissRequest = { translationSheetKey = null },
-        )
     }
 }

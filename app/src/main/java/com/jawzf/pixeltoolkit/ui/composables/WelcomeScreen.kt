@@ -76,7 +76,6 @@ import com.jawzf.pixeltoolkit.ui.components.ShakeForHelpCard
 import com.jawzf.pixeltoolkit.ui.core.cards.IconToggleItem
 import com.jawzf.pixeltoolkit.ui.core.pickers.PrivilegedModePicker
 import com.jawzf.pixeltoolkit.ui.core.containers.RoundedCardContainer
-import com.jawzf.pixeltoolkit.ui.core.pickers.LanguagePicker
 import com.jawzf.pixeltoolkit.ui.theme.AppFontFamily
 import com.jawzf.pixeltoolkit.ui.core.pickers.SegmentedPicker
 import com.jawzf.pixeltoolkit.utils.AppHapticMode
@@ -334,18 +333,6 @@ fun WelcomeStepContent(
             )
 
             Spacer(modifier = Modifier.weight(1f))
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            val appLanguage by viewModel.appLanguage
-            RoundedCardContainer(modifier = Modifier.padding(horizontal = 16.dp)) {
-                LanguagePicker(
-                    selectedLanguageCode = appLanguage,
-                    onLanguageSelected = { viewModel.setAppLanguage(it) },
-                )
-            }
-
-            Spacer(modifier = Modifier.height(2.dp))
         }
 
         Button(

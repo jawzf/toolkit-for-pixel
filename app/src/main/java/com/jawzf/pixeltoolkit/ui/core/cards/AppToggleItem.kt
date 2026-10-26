@@ -17,21 +17,16 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.R
-import com.jawzf.pixeltoolkit.translation.TranslationManager
-import com.jawzf.pixeltoolkit.translation.ui.TranslationBottomSheet
-import com.jawzf.pixeltoolkit.ui.components.menus.SegmentedDropdownMenu
 import com.jawzf.pixeltoolkit.utils.HapticUtil
 
 private val GOOGLE_SYSTEM_USER_APPS =
@@ -88,11 +83,6 @@ fun AppToggleItem(
     isSystemApp: Boolean = false,
 ) {
     val view = LocalView.current
-    val context = LocalContext.current
-    val isTranslationModeActive by TranslationManager.isTranslationModeEnabled
-
-    var showMenu by remember { mutableStateOf(false) }
-    var translationSheetKey by remember { mutableStateOf<String?>(null) }
 
     val shouldShowSystemTag =
         remember(packageName) {
@@ -109,32 +99,6 @@ fun AppToggleItem(
         }
     }
 
-    val onLongClickAction: (() -> Unit)? =
-        if (isTranslationModeActive) {
-            {
-                HapticUtil.performVirtualKeyHaptic(view)
-                showMenu = true
-            }
-        } else {
-            null
-        }
-
-    val renderMenu: @Composable () -> Unit = {
-        SegmentedDropdownMenu(
-            expanded = showMenu,
-            onDismissRequest = { showMenu = false },
-        ) {
-            com.jawzf.pixeltoolkit.translation.ui.TranslationMenuItems(
-                title = title,
-                description = description,
-                onSelectKey = { key ->
-                    showMenu = false
-                    translationSheetKey = key
-                },
-            )
-        }
-    }
-
     if (showToggle) {
         ListItem(
             checked = isChecked && enabled,
@@ -147,7 +111,7 @@ fun AppToggleItem(
                     onDisabledClick()
                 }
             },
-            onLongClick = onLongClickAction,
+            onLongClick = null,
             enabled = enabled,
             modifier = modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
@@ -221,13 +185,12 @@ fun AppToggleItem(
                         }
                     }
                 }
-                renderMenu()
             },
         )
     } else {
         ListItem(
             onClick = onClickAction,
-            onLongClick = onLongClickAction,
+            onLongClick = null,
             enabled = enabled,
             modifier = modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
@@ -294,15 +257,7 @@ fun AppToggleItem(
                         }
                     }
                 }
-                renderMenu()
             },
-        )
-    }
-
-    if (translationSheetKey != null) {
-        TranslationBottomSheet(
-            stringKey = translationSheetKey!!,
-            onDismissRequest = { translationSheetKey = null },
         )
     }
 }

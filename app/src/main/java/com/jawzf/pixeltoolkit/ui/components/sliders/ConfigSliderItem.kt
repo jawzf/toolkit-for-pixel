@@ -23,7 +23,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.foundation.layout.width
@@ -40,8 +39,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.R
-import com.jawzf.pixeltoolkit.translation.TranslationManager
-import com.jawzf.pixeltoolkit.translation.ui.TranslationBottomSheet
 import com.jawzf.pixeltoolkit.ui.components.menus.SegmentedDropdownMenu
 import com.jawzf.pixeltoolkit.utils.HapticUtil
 import java.math.BigDecimal
@@ -69,14 +66,10 @@ fun ConfigSliderItem(
     trailingContent: (@Composable () -> Unit)? = null,
 ) {
     val view = LocalView.current
-    val context = LocalContext.current
     val finalIconRes = icon ?: iconRes
     val finalDescription = subtitle ?: description
-    val isTranslationModeActive by TranslationManager.isTranslationModeEnabled
 
-    var showMenu by remember { mutableStateOf(false) }
     var showValueEntry by remember { mutableStateOf(false) }
-    var translationSheetKey by remember { mutableStateOf<String?>(null) }
 
     val decimals = allowDecimals
 
@@ -90,20 +83,13 @@ fun ConfigSliderItem(
                 ).combinedClickable(
                     onClick = {},
                     onLongClick =
-                        when {
-                            isTranslationModeActive -> {
-                                {
-                                    HapticUtil.performVirtualKeyHaptic(view)
-                                    showMenu = true
-                                }
+                        if (enabled) {
+                            {
+                                HapticUtil.performVirtualKeyHaptic(view)
+                                showValueEntry = true
                             }
-                            enabled -> {
-                                {
-                                    HapticUtil.performVirtualKeyHaptic(view)
-                                    showValueEntry = true
-                                }
-                            }
-                            else -> null
+                        } else {
+                            null
                         },
                 ).padding(top = 16.dp, start = 16.dp, end = 16.dp, bottom = 8.dp),
     ) {
@@ -163,22 +149,6 @@ fun ConfigSliderItem(
                             HapticUtil.performVirtualKeyHaptic(view)
                             onValueChange(entered.coerceIn(valueRange))
                             onValueChangeFinished?.invoke()
-                        },
-                    )
-                }
-            }
-
-            if (showMenu) {
-                SegmentedDropdownMenu(
-                    expanded = showMenu,
-                    onDismissRequest = { showMenu = false },
-                ) {
-                    com.jawzf.pixeltoolkit.translation.ui.TranslationMenuItems(
-                        title = title,
-                        description = finalDescription,
-                        onSelectKey = { key ->
-                            showMenu = false
-                            translationSheetKey = key
                         },
                     )
                 }
@@ -250,13 +220,6 @@ fun ConfigSliderItem(
                 )
             }
         }
-    }
-
-    if (translationSheetKey != null) {
-        TranslationBottomSheet(
-            stringKey = translationSheetKey!!,
-            onDismissRequest = { translationSheetKey = null },
-        )
     }
 }
 

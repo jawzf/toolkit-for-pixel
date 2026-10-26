@@ -809,7 +809,6 @@ class SettingsRepository(
         const val KEY_FACE_UNLOCK_AMBIENT_THRESHOLD = "face_unlock_ambient_threshold_lux"
         const val KEY_FACE_UNLOCK_LIGHT_TINT = "face_unlock_light_tint"
         const val KEY_KEEP_PREFS = "keep_prefs"
-        const val KEY_TRANSLATION_MODE_DO_NOT_SHOW_WARNING = "translation_mode_do_not_show_warning"
 
         const val KEY_LOCKDOWN_MODE = "lockdown_mode"
         const val KEY_BUBBLE_WEB_FULLSCREEN = "bubble_web_fullscreen"
@@ -840,19 +839,6 @@ class SettingsRepository(
     fun isPowerSavingApplyOnBootEnabled(): Boolean = getBoolean(KEY_POWER_SAVING_APPLY_ON_BOOT, false)
 
     fun setPowerSavingApplyOnBootEnabled(enabled: Boolean) = putBoolean(KEY_POWER_SAVING_APPLY_ON_BOOT, enabled)
-
-    /**
-     * Executes the is translation mode warning suppressed operation.
-     * @return The resulting Boolean data.
-     */
-    fun isTranslationModeWarningSuppressed(): Boolean = getBoolean(KEY_TRANSLATION_MODE_DO_NOT_SHOW_WARNING, false)
-
-    /**
-     * Executes the set translation mode warning suppressed operation.
-     *
-     * @param suppressed [Boolean] Target suppressed.
-     */
-    fun setTranslationModeWarningSuppressed(suppressed: Boolean) = putBoolean(KEY_TRANSLATION_MODE_DO_NOT_SHOW_WARNING, suppressed)
 
     // Observe changes
     fun observeKeyChanges(): Flow<String?> =
