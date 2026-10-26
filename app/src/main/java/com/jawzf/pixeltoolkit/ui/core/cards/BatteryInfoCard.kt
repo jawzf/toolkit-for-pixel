@@ -97,10 +97,6 @@ fun BatteryInfoCard(modifier: Modifier = Modifier) {
         )
     }
 
-    val isTranslationModeActive by com.jawzf.pixeltoolkit.translation.TranslationManager.isTranslationModeEnabled
-    var showMenu by remember { mutableStateOf(false) }
-    var translationSheetKey by remember { mutableStateOf<String?>(null) }
-
     val onClickAction = {
         if (hasPermission) {
             HapticUtil.performVirtualKeyHaptic(view)
@@ -117,15 +113,6 @@ fun BatteryInfoCard(modifier: Modifier = Modifier) {
                     shape = Shapes.extraSmall,
                 ).combinedClickable(
                     onClick = onClickAction,
-                    onLongClick =
-                        if (isTranslationModeActive) {
-                            {
-                                HapticUtil.performVirtualKeyHaptic(view)
-                                showMenu = true
-                            }
-                        } else {
-                            null
-                        },
                 ).padding(vertical = 20.dp, horizontal = 16.dp),
         contentAlignment = Alignment.Center,
     ) {
@@ -164,32 +151,5 @@ fun BatteryInfoCard(modifier: Modifier = Modifier) {
                         .size(20.dp),
             )
         }
-
-        com.jawzf.pixeltoolkit.ui.components.menus.SegmentedDropdownMenu(
-            expanded = showMenu,
-            onDismissRequest = { showMenu = false },
-        ) {
-            com.jawzf.pixeltoolkit.translation.ui.TranslationMenuItems(
-                title = R.string.label_device_battery,
-                onSelectKey = { key ->
-                    showMenu = false
-                    translationSheetKey = key
-                },
-            )
-        }
-    }
-
-    val targetKey = translationSheetKey
-    if (targetKey != null) {
-        val resolvedKey =
-            remember(targetKey) {
-                com.jawzf.pixeltoolkit.translation.TranslationManager
-                    .resolveKey(context, targetKey)
-                    ?: targetKey
-            }
-        com.jawzf.pixeltoolkit.translation.ui.TranslationBottomSheet(
-            stringKey = resolvedKey,
-            onDismissRequest = { translationSheetKey = null },
-        )
     }
 }

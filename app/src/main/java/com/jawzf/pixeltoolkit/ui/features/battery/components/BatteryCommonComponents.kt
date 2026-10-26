@@ -54,12 +54,6 @@ fun SectionHeaderTitle(
     title: Any,
     modifier: Modifier = Modifier,
 ) {
-    val context = androidx.compose.ui.platform.LocalContext.current
-    val view = LocalView.current
-    val isTranslationModeActive by com.jawzf.pixeltoolkit.translation.TranslationManager.isTranslationModeEnabled
-    var showMenu by remember { mutableStateOf(false) }
-    var translationSheetKey by remember { mutableStateOf<String?>(null) }
-
     val displayTitle =
         when (title) {
             is Int -> stringResource(title)
@@ -76,37 +70,7 @@ fun SectionHeaderTitle(
                 Modifier
                     .combinedClickable(
                         onClick = {},
-                        onLongClick =
-                            if (isTranslationModeActive) {
-                                {
-                                    HapticUtil.performVirtualKeyHaptic(view)
-                                    showMenu = true
-                                }
-                            } else {
-                                null
-                            },
                     ).padding(start = 8.dp),
-        )
-
-        com.jawzf.pixeltoolkit.ui.components.menus.SegmentedDropdownMenu(
-            expanded = showMenu,
-            onDismissRequest = { showMenu = false },
-        ) {
-            com.jawzf.pixeltoolkit.translation.ui.TranslationMenuItems(
-                title = title,
-                onSelectKey = { key ->
-                    showMenu = false
-                    translationSheetKey = key
-                },
-            )
-        }
-    }
-
-    val keyForSheet1 = translationSheetKey
-    if (keyForSheet1 != null) {
-        com.jawzf.pixeltoolkit.translation.ui.TranslationBottomSheet(
-            stringKey = keyForSheet1,
-            onDismissRequest = { translationSheetKey = null },
         )
     }
 }
@@ -119,11 +83,7 @@ fun InfoDetailRow(
     iconRes: Int,
     onClick: (() -> Unit)? = null,
 ) {
-    val context = androidx.compose.ui.platform.LocalContext.current
     val view = LocalView.current
-    val isTranslationModeActive by com.jawzf.pixeltoolkit.translation.TranslationManager.isTranslationModeEnabled
-    var showMenu by remember { mutableStateOf(false) }
-    var translationSheetKey by remember { mutableStateOf<String?>(null) }
 
     val displayTitle =
         when (title) {
@@ -147,15 +107,6 @@ fun InfoDetailRow(
                                 onClick()
                             }
                         },
-                        onLongClick =
-                            if (isTranslationModeActive) {
-                                {
-                                    HapticUtil.performVirtualKeyHaptic(view)
-                                    showMenu = true
-                                }
-                            } else {
-                                null
-                            },
                     ).padding(16.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
@@ -204,27 +155,6 @@ fun InfoDetailRow(
                 )
             }
         }
-
-        com.jawzf.pixeltoolkit.ui.components.menus.SegmentedDropdownMenu(
-            expanded = showMenu,
-            onDismissRequest = { showMenu = false },
-        ) {
-            com.jawzf.pixeltoolkit.translation.ui.TranslationMenuItems(
-                title = title,
-                onSelectKey = { key ->
-                    showMenu = false
-                    translationSheetKey = key
-                },
-            )
-        }
-    }
-
-    val keyForSheet2 = translationSheetKey
-    if (keyForSheet2 != null) {
-        com.jawzf.pixeltoolkit.translation.ui.TranslationBottomSheet(
-            stringKey = keyForSheet2,
-            onDismissRequest = { translationSheetKey = null },
-        )
     }
 }
 

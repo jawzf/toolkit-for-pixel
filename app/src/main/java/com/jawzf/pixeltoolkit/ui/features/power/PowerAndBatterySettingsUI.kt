@@ -76,8 +76,8 @@ fun PowerAndBatterySettingsUI(
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         // --- SECTION: GENERAL ---
-        com.jawzf.pixeltoolkit.translation.TranslatableText(
-            stringResId = R.string.title_battery_saver_general,
+        Text(
+            text = stringResource(R.string.title_battery_saver_general),
             style = MaterialTheme.typography.titleMedium,
             modifier = Modifier.padding(start = 16.dp),
         )

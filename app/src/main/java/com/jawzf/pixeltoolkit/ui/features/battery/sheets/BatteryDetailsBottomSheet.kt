@@ -175,10 +175,6 @@ fun BatteryDetailsBottomSheet(
             isPowerSave = isPowerSave,
         )
 
-    val isTranslationModeActive by com.jawzf.pixeltoolkit.translation.TranslationManager.isTranslationModeEnabled
-    var showTabMenu by remember { mutableStateOf(false) }
-    var tabTranslationSheetKey by remember { mutableStateOf<String?>(null) }
-
     val tabResIds =
         remember {
             listOf(
@@ -290,21 +286,6 @@ fun BatteryDetailsBottomSheet(
                     onItemSelected = { selectedTab = tabResIds.indexOf(it) },
                     labelProvider = { context.getString(it) },
                     modifier = Modifier.fillMaxWidth(),
-                )
-            }
-
-            val targetTabKey = tabTranslationSheetKey
-            if (targetTabKey != null) {
-                val resolvedTabKey =
-                    remember(targetTabKey) {
-                        com.jawzf.pixeltoolkit.translation.TranslationManager.resolveKey(
-                            context,
-                            targetTabKey,
-                        ) ?: targetTabKey
-                    }
-                com.jawzf.pixeltoolkit.translation.ui.TranslationBottomSheet(
-                    stringKey = resolvedTabKey,
-                    onDismissRequest = { tabTranslationSheetKey = null },
                 )
             }
 

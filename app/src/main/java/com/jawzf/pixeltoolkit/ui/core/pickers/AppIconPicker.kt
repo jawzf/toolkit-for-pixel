@@ -41,10 +41,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.R
 import com.jawzf.pixeltoolkit.domain.model.AppIcon
-import com.jawzf.pixeltoolkit.translation.TranslationManager
-import com.jawzf.pixeltoolkit.translation.ui.TranslationBottomSheet
-import com.jawzf.pixeltoolkit.translation.ui.TranslationMenuItems
-import com.jawzf.pixeltoolkit.ui.components.menus.SegmentedDropdownMenu
 import com.jawzf.pixeltoolkit.utils.HapticUtil
 
 @Composable
@@ -56,23 +52,6 @@ fun AppIconPicker(
     onIconSelectedWithPosition: ((AppIcon, Offset) -> Unit)? = null,
 ) {
     val view = LocalView.current
-    val isTranslationModeActive by TranslationManager.isTranslationModeEnabled
-
-    var showMenu by remember { mutableStateOf(false) }
-    var translationSheetKey by remember { mutableStateOf<String?>(null) }
-
-    val onLongClickAction: (() -> Unit)? =
-        if (isTranslationModeActive) {
-            {
-                HapticUtil.performVirtualKeyHaptic(view)
-                showMenu = true
-            }
-        } else {
-            null
-        }
-
-    val optionTitleRes = options.map { it.titleRes }
-
     Column(
         modifier =
             modifier
@@ -83,7 +62,7 @@ fun AppIconPicker(
     ) {
         ListItem(
             onClick = {},
-            onLongClick = onLongClickAction,
+            onLongClick = null,
             modifier = Modifier.fillMaxWidth(),
             leadingContent = {
                 Icon(
@@ -104,36 +83,17 @@ fun AppIconPicker(
                     containerColor = MaterialTheme.colorScheme.surfaceBright,
                 ),
             content = {
-                Box {
-                    Column {
-                        Text(
-                            text = stringResource(R.string.setting_app_icon_title),
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurface,
-                        )
-                        Text(
-                            text = stringResource(R.string.setting_app_icon_desc),
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        )
-                    }
-
-                    if (showMenu) {
-                        SegmentedDropdownMenu(
-                            expanded = showMenu,
-                            onDismissRequest = { showMenu = false },
-                        ) {
-                            TranslationMenuItems(
-                                title = R.string.setting_app_icon_title,
-                                description = R.string.setting_app_icon_desc,
-                                options = optionTitleRes,
-                                onSelectKey = { key ->
-                                    showMenu = false
-                                    translationSheetKey = key
-                                },
-                            )
-                        }
-                    }
+                Column {
+                    Text(
+                        text = stringResource(R.string.setting_app_icon_title),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurface,
+                    )
+                    Text(
+                        text = stringResource(R.string.setting_app_icon_desc),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
                 }
             },
         )
@@ -220,12 +180,5 @@ fun AppIconPicker(
                 }
             }
         }
-    }
-
-    if (translationSheetKey != null) {
-        TranslationBottomSheet(
-            stringKey = translationSheetKey!!,
-            onDismissRequest = { translationSheetKey = null },
-        )
     }
 }

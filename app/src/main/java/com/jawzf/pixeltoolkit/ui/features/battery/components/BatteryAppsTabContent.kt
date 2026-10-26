@@ -84,9 +84,7 @@ fun BatteryAppsTabContent(
                         String.format(Locale.getDefault(), "%.2f mAh", app.powerMah)
                     }
 
-                val isTranslationModeActive by com.jawzf.pixeltoolkit.translation.TranslationManager.isTranslationModeEnabled
                 var showMenu by remember { mutableStateOf(false) }
-                var translationSheetKey by remember { mutableStateOf<String?>(null) }
 
                 val context = LocalContext.current
                 val canOpenAppInfo =
@@ -108,7 +106,7 @@ fun BatteryAppsTabContent(
                                         onToggleUnit()
                                     },
                                     onLongClick =
-                                        if (isTranslationModeActive || canOpenAppInfo) {
+                                        if (canOpenAppInfo) {
                                             {
                                                 HapticUtil.performVirtualKeyHaptic(view)
                                                 showMenu = true
@@ -209,24 +207,7 @@ fun BatteryAppsTabContent(
                                 },
                             )
                         }
-
-                        if (isTranslationModeActive) {
-                            com.jawzf.pixeltoolkit.translation.ui.TranslationMenuItems(
-                                title = app.appName,
-                                onSelectKey = { key ->
-                                    showMenu = false
-                                    translationSheetKey = key
-                                },
-                            )
-                        }
                     }
-                }
-
-                if (translationSheetKey != null) {
-                    com.jawzf.pixeltoolkit.translation.ui.TranslationBottomSheet(
-                        stringKey = translationSheetKey!!,
-                        onDismissRequest = { translationSheetKey = null },
-                    )
                 }
             }
         }

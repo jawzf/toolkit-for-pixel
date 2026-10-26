@@ -72,11 +72,6 @@ fun DeviceHeroCard(
 
     var showFlashbangDialog by remember { mutableStateOf(false) }
 
-    val isTranslationModeActive by com.jawzf.pixeltoolkit.translation.TranslationManager.isTranslationModeEnabled
-    var showStorageMemoryMenu by remember { mutableStateOf(false) }
-    var storageMemoryTranslationKey by remember { mutableStateOf<String?>(null) }
-    val smOptionIds = remember { listOf(R.string.label_device_storage, R.string.label_device_ram) }
-
     val launchIntent = { packageName: String, className: String ->
         try {
             val intent =
@@ -232,15 +227,6 @@ fun DeviceHeroCard(
                         ).fillMaxWidth()
                         .combinedClickable(
                             onClick = {},
-                            onLongClick =
-                                if (isTranslationModeActive) {
-                                    {
-                                        HapticUtil.performVirtualKeyHaptic(view)
-                                        showStorageMemoryMenu = true
-                                    }
-                                } else {
-                                    null
-                                },
                         ).padding(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
@@ -305,35 +291,6 @@ fun DeviceHeroCard(
                     }
                 }
             }
-
-            com.jawzf.pixeltoolkit.ui.components.menus.SegmentedDropdownMenu(
-                expanded = showStorageMemoryMenu,
-                onDismissRequest = { showStorageMemoryMenu = false },
-            ) {
-                com.jawzf.pixeltoolkit.translation.ui.TranslationMenuItems(
-                    options = smOptionIds,
-                    title = R.string.label_device_storage,
-                    onSelectKey = { key ->
-                        showStorageMemoryMenu = false
-                        storageMemoryTranslationKey = key
-                    },
-                )
-            }
-        }
-
-        val targetSmKey = storageMemoryTranslationKey
-        if (targetSmKey != null) {
-            val resolvedSmKey =
-                remember(targetSmKey) {
-                    com.jawzf.pixeltoolkit.translation.TranslationManager.resolveKey(
-                        context,
-                        targetSmKey,
-                    ) ?: targetSmKey
-                }
-            com.jawzf.pixeltoolkit.translation.ui.TranslationBottomSheet(
-                stringKey = resolvedSmKey,
-                onDismissRequest = { storageMemoryTranslationKey = null },
-            )
         }
 
         com.jawzf.pixeltoolkit.ui.core.cards

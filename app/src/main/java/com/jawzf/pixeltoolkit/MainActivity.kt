@@ -26,12 +26,10 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.material3.Badge
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -715,31 +713,6 @@ class MainActivity : AppCompatActivity() {
                                                                 modifier = Modifier.size(18.dp),
                                                             )
                                                         },
-                                                    )
-                                                }
-                                            }
-
-                                            val isTranslationModeActive by com.jawzf.pixeltoolkit.translation.TranslationManager.isTranslationModeEnabled
-
-                                            if (isTranslationModeActive &&
-                                                (currentTab == DIYTabs.ESSENTIALS || currentTab == DIYTabs.FREEZE)
-                                            ) {
-                                                Badge(
-                                                    modifier =
-                                                        Modifier
-                                                            .align(Alignment.TopEnd)
-                                                            .offset(x = 6.dp, y = (-6).dp)
-                                                            .size(28.dp),
-                                                    containerColor = MaterialTheme.colorScheme.tertiary,
-                                                    contentColor = MaterialTheme.colorScheme.onTertiary,
-                                                ) {
-                                                    Icon(
-                                                        painter = painterResource(id = R.drawable.rounded_translate_24),
-                                                        contentDescription = "Translation Mode Active",
-                                                        modifier =
-                                                            Modifier
-                                                                .fillMaxSize()
-                                                                .padding(4.dp),
                                                     )
                                                 }
                                             }

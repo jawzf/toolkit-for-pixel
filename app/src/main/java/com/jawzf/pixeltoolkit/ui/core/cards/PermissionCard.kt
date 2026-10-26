@@ -21,24 +21,17 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.R
-import com.jawzf.pixeltoolkit.translation.TranslationManager
-import com.jawzf.pixeltoolkit.translation.ui.TranslationBottomSheet
 import com.jawzf.pixeltoolkit.ui.theme.Shapes
-import com.jawzf.pixeltoolkit.ui.components.menus.SegmentedDropdownMenu
-import com.jawzf.pixeltoolkit.ui.components.menus.SegmentedDropdownMenuItem
 import com.jawzf.pixeltoolkit.utils.HapticUtil
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
@@ -104,10 +97,6 @@ fun PermissionCard(
             else -> null
         }
 
-    var showMenu by remember { mutableStateOf(false) }
-    var translationSheetKey by remember { mutableStateOf<String?>(null) }
-    val isTranslationModeActive by TranslationManager.isTranslationModeEnabled
-
     Card(
         modifier = modifier.fillMaxWidth(),
         shape = Shapes.extraSmall,
@@ -122,12 +111,7 @@ fun PermissionCard(
         ) {
             Box {
                 ListItem(
-                    onClick = {
-                        if (isTranslationModeActive) {
-                            HapticUtil.performVirtualKeyHaptic(view)
-                            showMenu = true
-                        }
-                    },
+                    onClick = {},
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
                     colors =
@@ -185,79 +169,6 @@ fun PermissionCard(
                         )
                     },
                 )
-
-                if (isTranslationModeActive) {
-                    SegmentedDropdownMenu(
-                        expanded = showMenu,
-                        onDismissRequest = { showMenu = false },
-                    ) {
-                        val context = LocalContext.current
-                        val keyTitle =
-                            remember(title) { TranslationManager.resolveKey(context, title) }
-                        val keyDesc =
-                            remember(description) {
-                                TranslationManager.resolveKey(
-                                    context,
-                                    description,
-                                )
-                            }
-                        val keyInst =
-                            remember(instructions) {
-                                TranslationManager.resolveKey(
-                                    context,
-                                    instructions,
-                                )
-                            }
-
-                        if (keyTitle != null) {
-                            SegmentedDropdownMenuItem(
-                                text = { Text("Translate Title ($keyTitle)") },
-                                onClick = {
-                                    showMenu = false
-                                    translationSheetKey = keyTitle
-                                },
-                                leadingIcon = {
-                                    Icon(
-                                        painter = painterResource(id = R.drawable.rounded_translate_24),
-                                        contentDescription = null,
-                                    )
-                                },
-                            )
-                        }
-
-                        if (keyDesc != null) {
-                            SegmentedDropdownMenuItem(
-                                text = { Text("Translate Description ($keyDesc)") },
-                                onClick = {
-                                    showMenu = false
-                                    translationSheetKey = keyDesc
-                                },
-                                leadingIcon = {
-                                    Icon(
-                                        painter = painterResource(id = R.drawable.rounded_translate_24),
-                                        contentDescription = null,
-                                    )
-                                },
-                            )
-                        }
-
-                        if (keyInst != null) {
-                            SegmentedDropdownMenuItem(
-                                text = { Text("Translate Instructions ($keyInst)") },
-                                onClick = {
-                                    showMenu = false
-                                    translationSheetKey = keyInst
-                                },
-                                leadingIcon = {
-                                    Icon(
-                                        painter = painterResource(id = R.drawable.rounded_translate_24),
-                                        contentDescription = null,
-                                    )
-                                },
-                            )
-                        }
-                    }
-                }
             }
 
             Box(modifier = Modifier.padding(horizontal = 12.dp)) {
@@ -365,12 +276,5 @@ fun PermissionCard(
                 }
             }
         }
-    }
-
-    if (translationSheetKey != null) {
-        TranslationBottomSheet(
-            stringKey = translationSheetKey!!,
-            onDismissRequest = { translationSheetKey = null },
-        )
     }
 }

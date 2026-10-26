@@ -22,12 +22,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.jawzf.pixeltoolkit.translation.TranslationManager
-import com.jawzf.pixeltoolkit.translation.ui.TranslationBottomSheet
 import com.jawzf.pixeltoolkit.ui.components.menus.LocalDropdownMenuDismiss
 import com.jawzf.pixeltoolkit.ui.components.menus.SegmentedDropdownMenu
 import com.jawzf.pixeltoolkit.utils.HapticUtil
@@ -46,21 +43,8 @@ fun ConfigPickerItem(
     content: @Composable ColumnScope.() -> Unit,
 ) {
     val view = LocalView.current
-    val context = LocalContext.current
-    val isTranslationModeActive by TranslationManager.isTranslationModeEnabled
 
     var isMenuExpanded by remember { mutableStateOf(false) }
-    var translationSheetKey by remember { mutableStateOf<String?>(null) }
-
-    val onLongClickAction: (() -> Unit)? =
-        if (isTranslationModeActive) {
-            {
-                HapticUtil.performVirtualKeyHaptic(view)
-                isMenuExpanded = true
-            }
-        } else {
-            null
-        }
 
     ListItem(
         onClick = {
@@ -72,7 +56,7 @@ fun ConfigPickerItem(
                 onDisabledClick()
             }
         },
-        onLongClick = onLongClickAction,
+        onLongClick = null,
         enabled = isEnabled,
         modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
@@ -131,18 +115,6 @@ fun ConfigPickerItem(
                     expanded = isMenuExpanded,
                     onDismissRequest = { isMenuExpanded = false },
                 ) {
-                    if (isTranslationModeActive) {
-                        com.jawzf.pixeltoolkit.translation.ui.TranslationMenuItems(
-                            title = title,
-                            description = description,
-                            options = options,
-                            onSelectKey = { key ->
-                                isMenuExpanded = false
-                                translationSheetKey = key
-                            },
-                        )
-                    }
-
                     CompositionLocalProvider(
                         LocalDropdownMenuDismiss provides { isMenuExpanded = false },
                     ) {
@@ -163,11 +135,4 @@ fun ConfigPickerItem(
             )
         },
     )
-
-    if (translationSheetKey != null) {
-        TranslationBottomSheet(
-            stringKey = translationSheetKey!!,
-            onDismissRequest = { translationSheetKey = null },
-        )
-    }
 }

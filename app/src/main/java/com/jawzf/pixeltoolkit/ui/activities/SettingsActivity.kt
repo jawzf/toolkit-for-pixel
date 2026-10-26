@@ -6,7 +6,6 @@ import android.Manifest
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
-import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -82,8 +81,6 @@ import androidx.core.app.ActivityCompat
 import com.jawzf.pixeltoolkit.domain.DIYTabs
 import com.jawzf.pixeltoolkit.domain.registry.FeatureRegistry
 import com.jawzf.pixeltoolkit.domain.registry.PermissionRegistry
-import com.jawzf.pixeltoolkit.translation.TranslationManager
-import com.jawzf.pixeltoolkit.translation.ui.TranslationSessionSheet
 import com.jawzf.pixeltoolkit.ui.components.EssentialsFloatingToolbar
 import com.jawzf.pixeltoolkit.ui.components.dialogs.AboutSection
 import com.jawzf.pixeltoolkit.ui.components.menus.SegmentedDropdownMenuItem
@@ -95,7 +92,6 @@ import com.jawzf.pixeltoolkit.ui.core.cards.PermissionCard
 import com.jawzf.pixeltoolkit.ui.core.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.ui.core.pickers.AppIconPicker
 import com.jawzf.pixeltoolkit.ui.core.pickers.DefaultTabPicker
-import com.jawzf.pixeltoolkit.ui.core.pickers.LanguagePicker
 import com.jawzf.pixeltoolkit.ui.core.sheets.GitHubAuthSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.ImportConfigConfirmationSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.InstructionsBottomSheet
@@ -326,10 +322,7 @@ fun SettingsContent(
     var showImportBackupPicker by remember { mutableStateOf(false) }
     var selectedImportUri by remember { mutableStateOf<Uri?>(null) }
 
-    var showTranslationSessionSheet by remember { mutableStateOf(false) }
-    var showLanguagePickerSheet by remember { mutableStateOf(false) }
     var showGitHubAuthSheet by remember { mutableStateOf(false) }
-    var showTranslationWarningDialog by remember { mutableStateOf(false) }
     val gitHubAuthViewModel: GitHubAuthViewModel =
         androidx.lifecycle.viewmodel.compose
             .viewModel()
@@ -339,37 +332,6 @@ fun SettingsContent(
                 .SettingsRepository(context)
         }
     var currentUser by remember { mutableStateOf(settingsRepo.getGitHubUser()) }
-
-    val isTranslationModeActive by TranslationManager.isTranslationModeEnabled
-    val sessionEditsCount = TranslationManager.session.edits.size
-
-    var openTranslationPRs by remember {
-        mutableStateOf<List<com.jawzf.pixeltoolkit.domain.model.github.GitHubPullRequest>>(
-            emptyList(),
-        )
-    }
-    val gitHubRepo =
-        remember {
-            com.jawzf.pixeltoolkit.data.repository
-                .GitHubRepository()
-        }
-
-    androidx.compose.runtime.LaunchedEffect(isTranslationModeActive, currentUser) {
-        val user = currentUser
-        if (isTranslationModeActive && user != null) {
-            val userToken = settingsRepo.getGitHubToken()
-            val prs =
-                gitHubRepo.getOpenTranslationPRs(
-                    owner = "sameerasw",
-                    repo = "essentials",
-                    author = user.login,
-                    token = userToken,
-                )
-            openTranslationPRs = prs
-        } else {
-            openTranslationPRs = emptyList()
-        }
-    }
 
     val onImportConfig: (Boolean) -> Unit = { keepPrefs ->
         selectedImportUri?.let { uri ->
@@ -584,12 +546,6 @@ fun SettingsContent(
                 selectedIcon = selectedAppIcon,
                 onIconSelected = { viewModel.setAppIcon(it, context) },
                 onIconSelectedWithPosition = onAppIconSelectedWithPosition,
-            )
-
-            val appLanguage by viewModel.appLanguage
-            LanguagePicker(
-                selectedLanguageCode = appLanguage,
-                onLanguageSelected = { viewModel.setAppLanguage(it) },
             )
 
             val defaultTab by viewModel.defaultTab
@@ -1056,7 +1012,7 @@ fun SettingsContent(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Translations Section
+        // GitHub Section
         Row(
             modifier =
                 Modifier
@@ -1065,16 +1021,11 @@ fun SettingsContent(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
-                text = stringResource(R.string.settings_translations_section),
+                text = stringResource(R.string.settings_github_section),
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
-
-        val currentAppLocale =
-            LocalContext.current.resources.configuration.locales[0]
-                .language
-        val isEnglishApp = currentAppLocale == "en" || currentAppLocale.isBlank()
 
         RoundedCardContainer {
             // GitHub Account Card (Tap to Sign In when logged out, Long Press to Sign Out when logged in)
@@ -1108,7 +1059,6 @@ fun SettingsContent(
                                     HapticUtil.performUIHaptic(view)
                                     gitHubAuthViewModel.signOut(context)
                                     currentUser = null
-                                    TranslationManager.isTranslationModeEnabled.value = false
                                 },
                                 leadingIcon = {
                                     Icon(
@@ -1123,88 +1073,6 @@ fun SettingsContent(
                         null
                     },
             )
-
-            // Translation Mode Switch (IconToggleItem - clean toggle variant without sub-menu divider)
-            IconToggleItem(
-                iconRes = R.drawable.rounded_translate_24,
-                title = stringResource(R.string.settings_translate_mode),
-                description =
-                    if (isEnglishApp) {
-                        "App language is English. Change app language to translate strings"
-                    } else {
-                        stringResource(
-                            R.string.settings_translate_mode_desc,
-                        )
-                    },
-                isChecked = isTranslationModeActive && !isEnglishApp,
-                enabled = !isEnglishApp,
-                onCheckedChange = { enabled ->
-                    if (enabled) {
-                        if (currentUser == null) {
-                            showGitHubAuthSheet = true
-                        } else if (!settingsRepo.isTranslationModeWarningSuppressed()) {
-                            showTranslationWarningDialog = true
-                        } else {
-                            TranslationManager.isTranslationModeEnabled.value = true
-                        }
-                    } else {
-                        TranslationManager.isTranslationModeEnabled.value = false
-                    }
-                },
-            )
-
-            // Pending Edits Summary Card
-            if (sessionEditsCount > 0) {
-                FeatureCard(
-                    title = R.string.settings_translated_texts,
-                    description =
-                        stringResource(
-                            R.string.settings_translated_texts_desc,
-                            sessionEditsCount,
-                        ),
-                    isEnabled = true,
-                    onToggle = {},
-                    onClick = {
-                        HapticUtil.performUIHaptic(view)
-                        showTranslationSessionSheet = true
-                    },
-                    showToggle = false,
-                    iconRes = R.drawable.rounded_edit_24,
-                )
-            }
-
-            // Existing Open Translation PRs
-            if (isTranslationModeActive && openTranslationPRs.isNotEmpty()) {
-                openTranslationPRs.forEach { pr ->
-                    val dateFormatted =
-                        try {
-                            pr.updatedAt.take(10)
-                        } catch (e: Exception) {
-                            ""
-                        }
-                    val subtitleText =
-                        if (dateFormatted.isNotBlank()) "PR #${pr.number} • Updated $dateFormatted" else "PR #${pr.number}"
-
-                    FeatureCard(
-                        title = "View existing PR",
-                        description = subtitleText,
-                        isEnabled = true,
-                        onToggle = {},
-                        onClick = {
-                            HapticUtil.performUIHaptic(view)
-                            val intent =
-                                android.content.Intent(
-                                    android.content.Intent.ACTION_VIEW,
-                                    android.net.Uri.parse(pr.htmlUrl),
-                                )
-
-                            context.startActivity(intent)
-                        },
-                        showToggle = false,
-                        iconRes = R.drawable.brand_github,
-                    )
-                }
-            }
         }
 
         Spacer(modifier = Modifier.height(24.dp))
@@ -1393,35 +1261,12 @@ fun SettingsContent(
         Spacer(modifier = Modifier.height(16.dp))
     }
 
-    if (showTranslationSessionSheet) {
-        TranslationSessionSheet(
-            onDismissRequest = { showTranslationSessionSheet = false },
-            onNeedLogin = {
-                showTranslationSessionSheet = false
-                showGitHubAuthSheet = true
-            },
-        )
-    }
-
     if (showGitHubAuthSheet) {
         GitHubAuthSheet(
             viewModel = gitHubAuthViewModel,
             onDismissRequest = {
                 showGitHubAuthSheet = false
                 currentUser = settingsRepo.getGitHubUser()
-            },
-        )
-    }
-
-    if (showTranslationWarningDialog) {
-        com.jawzf.pixeltoolkit.translation.ui.TranslationWarningBottomSheet(
-            onDismissRequest = { showTranslationWarningDialog = false },
-            onConfirm = { dontShow ->
-                if (dontShow) {
-                    settingsRepo.setTranslationModeWarningSuppressed(true)
-                }
-                TranslationManager.isTranslationModeEnabled.value = true
-                showTranslationWarningDialog = false
             },
         )
     }

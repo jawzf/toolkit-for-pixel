@@ -82,7 +82,6 @@ fun FeatureCard(
 ) {
     val view = LocalView.current
     var showMenu by remember { mutableStateOf(false) }
-    var translationSheetKey by remember { mutableStateOf<String?>(null) }
 
     val menuState = com.jawzf.pixeltoolkit.ui.state.LocalMenuStateManager.current
     androidx.compose.runtime.DisposableEffect(showMenu) {
@@ -375,18 +374,6 @@ fun FeatureCard(
                 expanded = showMenu,
                 onDismissRequest = { showMenu = false },
             ) {
-                val isTranslationModeActive by com.jawzf.pixeltoolkit.translation.TranslationManager.isTranslationModeEnabled
-                if (isTranslationModeActive) {
-                    com.jawzf.pixeltoolkit.translation.ui.TranslationMenuItems(
-                        title = title,
-                        description = description ?: descriptionOverride,
-                        onSelectKey = { key ->
-                            showMenu = false
-                            translationSheetKey = key
-                        },
-                    )
-                }
-
                 if (onPinToggle != null) {
                     SegmentedDropdownMenuItem(
                         text = {
@@ -440,11 +427,4 @@ fun FeatureCard(
             }
         },
     )
-
-    if (translationSheetKey != null) {
-        com.jawzf.pixeltoolkit.translation.ui.TranslationBottomSheet(
-            stringKey = translationSheetKey!!,
-            onDismissRequest = { translationSheetKey = null },
-        )
-    }
 }
