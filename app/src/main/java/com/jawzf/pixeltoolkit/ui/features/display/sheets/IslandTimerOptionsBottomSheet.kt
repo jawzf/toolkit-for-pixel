@@ -21,7 +21,7 @@ import com.jawzf.pixeltoolkit.R
 import com.jawzf.pixeltoolkit.ui.core.cards.IconToggleItem
 import com.jawzf.pixeltoolkit.ui.core.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.ui.core.sheets.AppSelectionSheet
-import com.jawzf.pixeltoolkit.ui.core.sheets.EssentialsBottomSheet
+import com.jawzf.pixeltoolkit.ui.core.sheets.ToolkitBottomSheet
 import com.jawzf.pixeltoolkit.utils.HapticUtil
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 
@@ -35,7 +35,7 @@ fun IslandTimerOptionsBottomSheet(
     val context = LocalContext.current
     var showAppSelectionSheet by remember { mutableStateOf(false) }
 
-    EssentialsBottomSheet(
+    ToolkitBottomSheet(
         onDismissRequest = onDismissRequest,
     ) {
         Column(

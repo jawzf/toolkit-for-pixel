@@ -167,7 +167,7 @@ object PermissionUtils {
         val target = activity ?: generateSequence(context) { (it as? android.content.ContextWrapper)?.baseContext }
             .filterIsInstance<android.app.Activity>()
             .firstOrNull() ?: return
-        context.getSharedPreferences("essentials_prefs", Context.MODE_PRIVATE)
+        context.getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE)
             .edit().putBoolean("local_network_requested", true).apply()
         androidx.core.app.ActivityCompat.requestPermissions(target, arrayOf(LOCAL_NETWORK_PERMISSION), LOCAL_NETWORK_REQUEST_CODE)
     }

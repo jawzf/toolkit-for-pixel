@@ -48,7 +48,7 @@ import com.jawzf.pixeltoolkit.ui.core.sheets.AppSelectionSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.CustomSettingsSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.DeviceEffectsSettingsSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.DimWallpaperSettingsSheet
-import com.jawzf.pixeltoolkit.ui.core.sheets.EssentialsBottomSheet
+import com.jawzf.pixeltoolkit.ui.core.sheets.ToolkitBottomSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.FreezeTagSettingsSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.HilightEffectSettingsSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.PermissionsBottomSheet
@@ -741,7 +741,7 @@ fun DuoSettingsUI(
     }
 
     if (showSlideModeSheet) {
-        EssentialsBottomSheet(
+        ToolkitBottomSheet(
             onDismissRequest = { showSlideModeSheet = false },
         ) {
             Column(
@@ -804,7 +804,7 @@ fun DuoSettingsUI(
             else -> null
         }
 
-        EssentialsBottomSheet(
+        ToolkitBottomSheet(
             onDismissRequest = { pickingActionForGesture = null },
         ) {
             Column(
@@ -942,7 +942,7 @@ fun DuoSettingsUI(
     }
 
     if (showFlashlightOptions) {
-        EssentialsBottomSheet(
+        ToolkitBottomSheet(
             onDismissRequest = { showFlashlightOptions = false },
         ) {
             Column(

@@ -1,6 +1,6 @@
 # Services, QS Tiles & Permissions Matrix
 
-This document outlines background services, Quick Settings tiles, and system permission requirements across the Essentials app.
+This document outlines background services, Quick Settings tiles, and system permission requirements across the Toolkit for Pixel app.
 
 ---
 

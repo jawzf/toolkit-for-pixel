@@ -985,7 +985,7 @@ class NotificationsPlugin : BaseIslandPlugin() {
         private const val REPLY_REPOST_WINDOW_MS = 10_000L
 
         private val GENERIC_TITLES = setOf(
-            "you", "whatsapp", "messages", "telegram", "gmail", "instagram", "slack", "discord", "essentials",
+            "you", "whatsapp", "messages", "telegram", "gmail", "instagram", "slack", "discord", "toolkit",
         )
 
         fun appNameFor(context: Context, alert: ActiveNotificationAlert): String =

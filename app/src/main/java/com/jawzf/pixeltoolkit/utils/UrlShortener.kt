@@ -24,7 +24,7 @@ import java.util.UUID
 object UrlShortener {
 
     private const val TAG = "UrlShortener"
-    private const val PREFS_NAME = "essentials_prefs"
+    private const val PREFS_NAME = "toolkit_prefs"
     private const val PREF_KEY_HISTORY = "url_shortener_history"
     private const val PREF_KEY_CUSTOM_DOMAIN = "url_shortener_custom_domain"
     private const val PREF_KEY_DEFAULT_EXPIRATION = "url_shortener_default_expiration"
@@ -322,7 +322,7 @@ object UrlShortener {
                 requestMethod = "POST"
                 setRequestProperty("Content-Type", "application/json; charset=UTF-8")
                 setRequestProperty("Accept", "application/json")
-                setRequestProperty("X-Client-App", "Essentials")
+                setRequestProperty("X-Client-App", "Toolkit")
                 setRequestProperty("Connection", "close")
                 connectTimeout = 2000
                 readTimeout = 2000

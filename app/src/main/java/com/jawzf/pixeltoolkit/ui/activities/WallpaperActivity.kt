@@ -13,7 +13,7 @@ import androidx.core.view.WindowCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.ui.composables.wallpaper.WallpaperScreen
-import com.jawzf.pixeltoolkit.ui.theme.EssentialsTheme
+import com.jawzf.pixeltoolkit.ui.theme.ToolkitTheme
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 
 class WallpaperActivity : ComponentActivity() {
@@ -32,7 +32,7 @@ class WallpaperActivity : ComponentActivity() {
                 initial = false,
             )
 
-            EssentialsTheme(pitchBlackTheme = isPitchBlackThemeEnabled) {
+            ToolkitTheme(pitchBlackTheme = isPitchBlackThemeEnabled) {
                 Surface(color = MaterialTheme.colorScheme.surfaceContainer) {
                     val context = LocalContext.current
                     val viewModel: MainViewModel = viewModel()

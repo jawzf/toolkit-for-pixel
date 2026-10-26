@@ -332,7 +332,7 @@ fun StatusBarIconSettingsUI(
                                 // Save to preferences
                                 val prefs =
                                     context.getSharedPreferences(
-                                        "essentials_prefs",
+                                        "toolkit_prefs",
                                         Context.MODE_PRIVATE,
                                     )
                                 prefs.edit {

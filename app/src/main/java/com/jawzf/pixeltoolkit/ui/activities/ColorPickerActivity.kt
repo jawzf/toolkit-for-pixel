@@ -13,7 +13,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.jawzf.pixeltoolkit.R
 import com.jawzf.pixeltoolkit.ui.core.sheets.ColorPickerBottomSheet
-import com.jawzf.pixeltoolkit.ui.theme.EssentialsTheme
+import com.jawzf.pixeltoolkit.ui.theme.ToolkitTheme
 import com.jawzf.pixeltoolkit.utils.HapticUtil
 
 class ColorPickerActivity : ComponentActivity() {
@@ -46,7 +46,7 @@ class ColorPickerActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            EssentialsTheme {
+            ToolkitTheme {
                 if (showBottomSheet && pickedColor != null) {
                     ColorPickerBottomSheet(
                         colorInt = pickedColor!!,

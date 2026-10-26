@@ -62,10 +62,10 @@ class QSPreferencesActivity : ComponentActivity() {
                 return
             }
 
-            if (componentName.className == "com.jawzf.pixeltoolkit.services.tiles.EssentialsOnDisplayTileService") {
+            if (componentName.className == "com.jawzf.pixeltoolkit.services.tiles.ToolkitOnDisplayTileService") {
                 val intent =
                     Intent(this, com.jawzf.pixeltoolkit.FeatureSettingsActivity::class.java).apply {
-                        putExtra("feature", "Essentials On Display")
+                        putExtra("feature", "Toolkit On Display")
                         flags = Intent.FLAG_ACTIVITY_NEW_TASK
                     }
                 startActivity(intent)

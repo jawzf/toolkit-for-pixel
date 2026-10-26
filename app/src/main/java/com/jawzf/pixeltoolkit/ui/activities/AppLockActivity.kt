@@ -32,7 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import coil.compose.AsyncImage
 import com.jawzf.pixeltoolkit.services.tiles.ScreenOffAccessibilityService
-import com.jawzf.pixeltoolkit.ui.theme.EssentialsTheme
+import com.jawzf.pixeltoolkit.ui.theme.ToolkitTheme
 import java.util.concurrent.Executor
 
 class AppLockActivity : AppCompatActivity() {
@@ -60,7 +60,7 @@ class AppLockActivity : AppCompatActivity() {
             }
 
         setContent {
-            EssentialsTheme {
+            ToolkitTheme {
                 AppLockScreen()
             }
         }
@@ -135,7 +135,7 @@ class AppLockActivity : AppCompatActivity() {
 
                     AsyncImage(
                         model = R.mipmap.ic_launcher_round,
-                        contentDescription = "Essentials App Icon",
+                        contentDescription = "Toolkit App Icon",
                         modifier =
                             Modifier
                                 .size(32.dp)

@@ -67,7 +67,7 @@ abstract class BaseTileService : TileService() {
     }
 
     private fun setTileAddedState(isAdded: Boolean) {
-        getSharedPreferences("essentials_prefs", MODE_PRIVATE)
+        getSharedPreferences("toolkit_prefs", MODE_PRIVATE)
             .edit {
                 putBoolean("${this::class.java.name}_is_added", isAdded)
             }

@@ -142,7 +142,7 @@ fun AppSelectionSheet(
                 }.thenBy { it.appName.lowercase() },
             )
 
-    EssentialsBottomSheet(
+    ToolkitBottomSheet(
         onDismissRequest = onDismissRequest,
         sheetState = sheetState,
     ) {
@@ -347,7 +347,7 @@ fun SingleAppSelectionSheet(
                 searchQuery.isEmpty() || it.appName.contains(searchQuery, ignoreCase = true)
             }.sortedBy { it.appName.lowercase() }
 
-    EssentialsBottomSheet(
+    ToolkitBottomSheet(
         onDismissRequest = onDismissRequest,
         sheetState = sheetState,
     ) {

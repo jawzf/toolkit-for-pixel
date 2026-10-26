@@ -155,7 +155,7 @@ class NotificationLightingHandler(
 
     fun onScreenOn() {
         if (!isPreview) {
-            val prefs = service.getSharedPreferences("essentials_prefs", Context.MODE_PRIVATE)
+            val prefs = service.getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE)
             val onlyShowWhenScreenOff = prefs.getBoolean("edge_lighting_only_screen_off", true)
             if (onlyShowWhenScreenOff) {
                 removeOverlay(immediate = true)
@@ -282,7 +282,7 @@ class NotificationLightingHandler(
                             val wakeLock =
                                 powerManager.newWakeLock(
                                     PowerManager.SCREEN_BRIGHT_WAKE_LOCK or PowerManager.ACQUIRE_CAUSES_WAKEUP,
-                                    "essentials:NotificationLighting",
+                                    "toolkit:NotificationLighting",
                                 )
                             wakeLock.acquire(10000L)
                         } catch (e: Exception) {
@@ -304,7 +304,7 @@ class NotificationLightingHandler(
                             val wakeLock =
                                 powerManager.newWakeLock(
                                     PowerManager.SCREEN_BRIGHT_WAKE_LOCK or PowerManager.ACQUIRE_CAUSES_WAKEUP,
-                                    "essentials:NotificationLighting",
+                                    "toolkit:NotificationLighting",
                                 )
                             wakeLock.acquire(10000L)
                         } catch (e: Exception) {
@@ -317,7 +317,7 @@ class NotificationLightingHandler(
                     }
                 }
             } else {
-                val prefs = service.getSharedPreferences("essentials_prefs", Context.MODE_PRIVATE)
+                val prefs = service.getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE)
                 val onlyShowWhenScreenOff = prefs.getBoolean("edge_lighting_only_screen_off", true)
                 if (onlyShowWhenScreenOff && !ignoreScreenState && !isPreview) {
                     if (isScreenOn) {

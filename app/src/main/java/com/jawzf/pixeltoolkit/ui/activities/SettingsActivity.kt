@@ -81,7 +81,7 @@ import androidx.core.app.ActivityCompat
 import com.jawzf.pixeltoolkit.domain.DIYTabs
 import com.jawzf.pixeltoolkit.domain.registry.FeatureRegistry
 import com.jawzf.pixeltoolkit.domain.registry.PermissionRegistry
-import com.jawzf.pixeltoolkit.ui.components.EssentialsFloatingToolbar
+import com.jawzf.pixeltoolkit.ui.components.ToolkitFloatingToolbar
 import com.jawzf.pixeltoolkit.ui.components.dialogs.AboutSection
 import com.jawzf.pixeltoolkit.ui.components.menus.SegmentedDropdownMenuItem
 import com.jawzf.pixeltoolkit.ui.components.sliders.ConfigSliderItem
@@ -103,7 +103,7 @@ import com.jawzf.pixeltoolkit.ui.modifiers.BlurDirection
 import com.jawzf.pixeltoolkit.ui.modifiers.liquidRipple
 import com.jawzf.pixeltoolkit.ui.modifiers.progressiveBlur
 import com.jawzf.pixeltoolkit.ui.modifiers.scrollMotionBlur
-import com.jawzf.pixeltoolkit.ui.theme.EssentialsTheme
+import com.jawzf.pixeltoolkit.ui.theme.ToolkitTheme
 import com.jawzf.pixeltoolkit.ui.theme.Shapes
 import com.jawzf.pixeltoolkit.ui.core.pickers.SegmentedPicker
 import com.jawzf.pixeltoolkit.utils.AppHapticMode
@@ -151,7 +151,7 @@ class SettingsActivity : AppCompatActivity() {
         Shizuku.addRequestPermissionResultListener(shizukuPermissionResultListener)
         setContent {
             val isPitchBlackThemeEnabled by viewModel.isPitchBlackThemeEnabled
-            EssentialsTheme(pitchBlackTheme = isPitchBlackThemeEnabled) {
+            ToolkitTheme(pitchBlackTheme = isPitchBlackThemeEnabled) {
                 val context = LocalContext.current
                 LocalView.current
 
@@ -239,7 +239,7 @@ class SettingsActivity : AppCompatActivity() {
                                 ),
                     )
 
-                    EssentialsFloatingToolbar(
+                    ToolkitFloatingToolbar(
                         title = stringResource(R.string.label_settings),
                         onBackClick = { finish() },
                         modifier =
@@ -482,7 +482,7 @@ fun SettingsContent(
                     color = MaterialTheme.colorScheme.onSurface,
                 )
                 Text(
-                    text = "In shizuku, in the 'Control Shizuku with automation apps' section, Open 'View intents' and copy and paste the auth token from 'Extras' section.\n\nThis allows Essentials to automate and re-start Shizuku on demand in features such as Shut-Up",
+                    text = "In shizuku, in the 'Control Shizuku with automation apps' section, Open 'View intents' and copy and paste the auth token from 'Extras' section.\n\nThis allows Toolkit to automate and re-start Shizuku on demand in features such as Shut-Up",
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -968,7 +968,7 @@ fun SettingsContent(
                                 "yyyyMMdd_HHmmss",
                                 Locale.getDefault(),
                             ).format(Date())
-                        exportLauncher.launch("essentials_config_$timeStamp.json")
+                        exportLauncher.launch("toolkit_config_$timeStamp.json")
                     },
                     modifier =
                         Modifier

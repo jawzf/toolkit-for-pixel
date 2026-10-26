@@ -51,8 +51,8 @@ fun SometimesEssentialsSettingsSheet(
     var changeBatteryNotification by remember { mutableStateOf(initialAction.changeBatteryNotification) }
     var batteryNotificationEnabled by remember { mutableStateOf(initialAction.batteryNotificationEnabled) }
 
-    var changeEssentialsOnDisplay by remember { mutableStateOf(initialAction.changeEssentialsOnDisplay) }
-    var essentialsOnDisplayMode by remember { mutableStateOf(initialAction.essentialsOnDisplayMode) }
+    var changeToolkitOnDisplay by remember { mutableStateOf(initialAction.changeToolkitOnDisplay) }
+    var toolkitOnDisplayMode by remember { mutableStateOf(initialAction.toolkitOnDisplayMode) }
 
     var changeAlwaysOnDisplay by remember { mutableStateOf(initialAction.changeAlwaysOnDisplay) }
     var alwaysOnDisplayMode by remember { mutableStateOf(initialAction.alwaysOnDisplayMode) }
@@ -84,7 +84,7 @@ fun SometimesEssentialsSettingsSheet(
             )
         }
 
-    EssentialsBottomSheet(
+    ToolkitBottomSheet(
         onDismissRequest = onDismiss,
         dragHandle = null,
     ) {
@@ -96,7 +96,7 @@ fun SometimesEssentialsSettingsSheet(
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             Text(
-                text = stringResource(R.string.diy_action_sometimes_essentials),
+                text = stringResource(R.string.diy_action_sometimes_toolkit),
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onSurface,
@@ -155,19 +155,19 @@ fun SometimesEssentialsSettingsSheet(
                     )
 
                     FeatureDropdownRow(
-                        title = stringResource(R.string.feat_essentials_on_display_title),
+                        title = stringResource(R.string.feat_toolkit_on_display_title),
                         iconRes = R.drawable.rounded_music_note_24,
-                        isChecked = changeEssentialsOnDisplay,
+                        isChecked = changeToolkitOnDisplay,
                         onCheckedChange = {
                             HapticUtil.performUIHaptic(view)
-                            changeEssentialsOnDisplay = it
+                            changeToolkitOnDisplay = it
                         },
-                        selectedValue = essentialsOnDisplayMode,
+                        selectedValue = toolkitOnDisplayMode,
                         options = listOf("Off", "On", "Docked"),
                         labelProvider = { it },
                         onOptionSelected = {
                             HapticUtil.performVirtualKeyHaptic(view)
-                            essentialsOnDisplayMode = it
+                            toolkitOnDisplayMode = it
                         },
                     )
 
@@ -274,8 +274,8 @@ fun SometimesEssentialsSettingsSheet(
                                 flashlightPulseEnabled = flashlightPulseEnabled,
                                 changeBatteryNotification = changeBatteryNotification,
                                 batteryNotificationEnabled = batteryNotificationEnabled,
-                                changeEssentialsOnDisplay = changeEssentialsOnDisplay,
-                                essentialsOnDisplayMode = essentialsOnDisplayMode,
+                                changeToolkitOnDisplay = changeToolkitOnDisplay,
+                                toolkitOnDisplayMode = toolkitOnDisplayMode,
                                 changeAlwaysOnDisplay = changeAlwaysOnDisplay,
                                 alwaysOnDisplayMode = alwaysOnDisplayMode,
                                 changeGloveMode = changeGloveMode,

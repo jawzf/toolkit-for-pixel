@@ -78,7 +78,7 @@ import com.jawzf.pixeltoolkit.domain.model.AppListBackup
 import com.jawzf.pixeltoolkit.domain.model.DeviceBackupInfo
 import com.jawzf.pixeltoolkit.ui.components.AppsActionButtons
 import com.jawzf.pixeltoolkit.ui.components.DeviceHeroCard
-import com.jawzf.pixeltoolkit.ui.components.EssentialsFloatingToolbar
+import com.jawzf.pixeltoolkit.ui.components.ToolkitFloatingToolbar
 import com.jawzf.pixeltoolkit.ui.components.ImportExportButtons
 import com.jawzf.pixeltoolkit.ui.components.menus.SegmentedDropdownMenu
 import com.jawzf.pixeltoolkit.ui.components.menus.SegmentedDropdownMenuItem
@@ -90,7 +90,7 @@ import com.jawzf.pixeltoolkit.ui.core.sheets.UpdateBottomSheet
 import com.jawzf.pixeltoolkit.ui.modifiers.BlurDirection
 import com.jawzf.pixeltoolkit.ui.modifiers.progressiveBlur
 import com.jawzf.pixeltoolkit.ui.modifiers.scrollMotionBlur
-import com.jawzf.pixeltoolkit.ui.theme.EssentialsTheme
+import com.jawzf.pixeltoolkit.ui.theme.ToolkitTheme
 import com.jawzf.pixeltoolkit.ui.theme.Shapes
 import com.jawzf.pixeltoolkit.utils.DeviceInfo
 import com.jawzf.pixeltoolkit.utils.DeviceUtils
@@ -327,7 +327,7 @@ class YourAndroidActivity : ComponentActivity() {
                 mainViewModel.check(context)
             }
 
-            EssentialsTheme(pitchBlackTheme = isPitchBlackThemeEnabled) {
+            ToolkitTheme(pitchBlackTheme = isPitchBlackThemeEnabled) {
                 val statusBarHeightPx =
                     with(LocalDensity.current) {
                         WindowInsets.statusBars
@@ -362,7 +362,7 @@ class YourAndroidActivity : ComponentActivity() {
                     )
 
                     val localView = LocalView.current
-                    EssentialsFloatingToolbar(
+                    ToolkitFloatingToolbar(
                         title = stringResource(R.string.tab_your_android),
                         onBackClick = {
                             finish()

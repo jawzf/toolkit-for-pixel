@@ -27,7 +27,7 @@ object AutoBackupManager {
     const val MODE_WEEKLY = "weekly"
     const val KEY_MODE = "auto_backup_mode"
     const val KEY_FOLDER = "auto_backup_folder_uri"
-    const val DEFAULT_FOLDER = "essentials-backups"
+    const val DEFAULT_FOLDER = "toolkit-backups"
     private const val WORK_NAME = "auto_backup_work"
 
     fun getMode(context: Context): String = SettingsRepository(context).getString(KEY_MODE, MODE_NEVER) ?: MODE_NEVER
@@ -69,7 +69,7 @@ object AutoBackupManager {
         val modified: Long,
     )
 
-    private const val BACKUP_PREFIX = "essentials-config-"
+    private const val BACKUP_PREFIX = "toolkit-config-"
 
     fun canListBackups(context: Context): Boolean =
         getMode(context) != MODE_NEVER &&
@@ -156,7 +156,7 @@ object AutoBackupManager {
     fun runBackup(context: Context): Boolean =
         try {
             val bytes = ByteArrayOutputStream().also { SettingsRepository(context).exportConfigs(it) }.toByteArray()
-            val name = "essentials-config-" + SimpleDateFormat("yyyyMMdd-HHmmss", Locale.US).format(Date()) + ".json"
+            val name = "toolkit-config-" + SimpleDateFormat("yyyyMMdd-HHmmss", Locale.US).format(Date()) + ".json"
             val folder = getFolder(context)
             if (folder != null) writeToTree(context, folder, name, bytes) else writeToDownloads(context, name, bytes)
         } catch (e: Exception) {

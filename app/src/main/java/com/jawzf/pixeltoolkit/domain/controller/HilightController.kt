@@ -4,7 +4,7 @@ import android.content.Context
 import android.os.BatteryManager
 import android.os.IBinder
 import android.os.SystemClock
-import com.jawzf.pixeltoolkit.EssentialsApp
+import com.jawzf.pixeltoolkit.ToolkitApp
 import com.jawzf.pixeltoolkit.domain.model.HilightEffect
 import com.jawzf.pixeltoolkit.domain.model.HilightFrames
 import com.jawzf.pixeltoolkit.domain.model.HilightPattern
@@ -39,7 +39,7 @@ object HilightController {
         val ledCount = HilightLights.array()?.ids?.size ?: HilightEffect.DEFAULT_LED_COUNT
         val batteryLevel =
             if (effect.pattern == HilightPattern.BATTERY) {
-                EssentialsApp.context
+                ToolkitApp.context
                     .getSystemService(BatteryManager::class.java)
                     ?.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY) ?: 100
             } else {

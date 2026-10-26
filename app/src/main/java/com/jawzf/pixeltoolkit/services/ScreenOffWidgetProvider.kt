@@ -60,7 +60,7 @@ class ScreenOffWidgetProvider : AppWidgetProvider() {
         context: Context,
         appWidgetIds: IntArray,
     ) {
-        val prefs = context.getSharedPreferences("essentials_prefs", Context.MODE_PRIVATE)
+        val prefs = context.getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE)
         prefs
             .edit()
             .apply {
@@ -82,7 +82,7 @@ class ScreenOffWidgetProvider : AppWidgetProvider() {
                     AppWidgetManager.EXTRA_APPWIDGET_ID,
                     AppWidgetManager.INVALID_APPWIDGET_ID,
                 )
-            val prefs = context.getSharedPreferences("essentials_prefs", Context.MODE_PRIVATE)
+            val prefs = context.getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE)
 
             val isDoubleTapRequired =
                 if (appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
@@ -131,7 +131,7 @@ class ScreenOffWidgetProvider : AppWidgetProvider() {
     }
 
     private fun triggerScreenOff(context: Context) {
-        val prefs = context.getSharedPreferences("essentials_prefs", Context.MODE_PRIVATE)
+        val prefs = context.getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE)
         val selectedScreenOffMethod =
             try {
                 ScreenOffMethod.valueOf(

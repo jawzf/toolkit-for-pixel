@@ -19,7 +19,7 @@ object DeviceLockUtils {
     ): Boolean {
         val isLockdownEnabled =
             SettingsRepository(context).getBoolean(SettingsRepository.KEY_LOCKDOWN_MODE, false)
-        val prefs = context.getSharedPreferences("essentials_prefs", Context.MODE_PRIVATE)
+        val prefs = context.getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE)
 
         val selectedScreenOffMethod =
             try {

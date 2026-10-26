@@ -9,8 +9,8 @@ import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.utils.PermissionUtils
 
 @RequiresApi(Build.VERSION_CODES.N)
-class EssentialsOnDisplayTileService : BaseTileService() {
-    override fun getTileLabel(): String = getString(R.string.tile_essentials_on_display)
+class ToolkitOnDisplayTileService : BaseTileService() {
+    override fun getTileLabel(): String = getString(R.string.tile_toolkit_on_display)
 
     override fun getTileSubtitle(): String {
         val enabled = isGlanceEnabled()

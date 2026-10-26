@@ -47,7 +47,7 @@ import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.ui.core.cards.IconToggleItem
 import com.jawzf.pixeltoolkit.ui.core.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.ui.core.pickers.SegmentedPicker
-import com.jawzf.pixeltoolkit.ui.theme.EssentialsTheme
+import com.jawzf.pixeltoolkit.ui.theme.ToolkitTheme
 import com.jawzf.pixeltoolkit.utils.HapticUtil
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 
@@ -62,7 +62,7 @@ class DebuggingSettingsActivity : ComponentActivity() {
                 viewModel.check(context)
             }
             val isPitchBlackThemeEnabled by viewModel.isPitchBlackThemeEnabled
-            EssentialsTheme(pitchBlackTheme = isPitchBlackThemeEnabled) {
+            ToolkitTheme(pitchBlackTheme = isPitchBlackThemeEnabled) {
                 DebuggingSettingsOverlay(onDismiss = { finish() })
             }
         }

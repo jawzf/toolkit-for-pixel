@@ -41,7 +41,7 @@ fun DeviceCareSettingsSheet(
     var clearCache by remember { mutableStateOf(initialAction.clearCache) }
     var closeApps by remember { mutableStateOf(initialAction.closeApps) }
 
-    EssentialsBottomSheet(onDismissRequest = onDismiss) {
+    ToolkitBottomSheet(onDismissRequest = onDismiss) {
         Column(
             modifier =
                 Modifier

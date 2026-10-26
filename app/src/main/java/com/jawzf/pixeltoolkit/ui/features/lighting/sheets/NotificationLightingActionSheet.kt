@@ -60,7 +60,7 @@ fun NotificationLightingActionSheet(
     val context = LocalContext.current
     var draft by remember { mutableStateOf(initialAction) }
 
-    EssentialsBottomSheet(onDismissRequest = onDismiss) {
+    ToolkitBottomSheet(onDismissRequest = onDismiss) {
         Column(
             modifier =
                 Modifier

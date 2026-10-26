@@ -20,7 +20,7 @@ import androidx.compose.ui.draw.scale
 import androidx.lifecycle.lifecycleScope
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.domain.model.ShutUpAppConfig
-import com.jawzf.pixeltoolkit.ui.theme.EssentialsTheme
+import com.jawzf.pixeltoolkit.ui.theme.ToolkitTheme
 import com.jawzf.pixeltoolkit.utils.PermissionUtils
 import com.jawzf.pixeltoolkit.utils.ShizukuUtils.toggleShizuku
 import kotlinx.coroutines.Dispatchers
@@ -50,7 +50,7 @@ class ShutUpShortcutActivity : ComponentActivity() {
                 viewModel.check(context)
             }
             val isPitchBlackThemeEnabled by viewModel.isPitchBlackThemeEnabled
-            EssentialsTheme(pitchBlackTheme = isPitchBlackThemeEnabled) {
+            ToolkitTheme(pitchBlackTheme = isPitchBlackThemeEnabled) {
                 Box(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center,

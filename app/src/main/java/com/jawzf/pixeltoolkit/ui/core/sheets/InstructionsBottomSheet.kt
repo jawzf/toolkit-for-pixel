@@ -23,7 +23,7 @@ fun InstructionsBottomSheet(onDismissRequest: () -> Unit) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = false)
     HelpSheetTracker.TrackOpen()
 
-    EssentialsBottomSheet(
+    ToolkitBottomSheet(
         onDismissRequest = onDismissRequest,
         sheetState = sheetState,
     ) {

@@ -19,11 +19,16 @@ if (( ${#kt[@]} == 0 )); then echo "style: no Kotlin files changed"; exit 0; fi
 
 tmp=$(mktemp -d)
 trap 'rm -rf "$tmp"' EXIT
+# A renamed file is compared with its old path at the base, stored under the new name.
+renames=$(git diff -M --name-status --diff-filter=R "$BASE" | awk -F'\t' '{print $3"\t"$2}')
+base_path() { local p; p=$(printf '%s\n' "$renames" | awk -F'\t' -v f="$1" '$1==f{print $2; exit}'); echo "${p:-$1}"; }
+
 base_kt=()
 for f in "${kt[@]}"; do
-  if git cat-file -e "$BASE:$f" 2>/dev/null; then
+  b=$(base_path "$f")
+  if git cat-file -e "$BASE:$b" 2>/dev/null; then
     mkdir -p "$tmp/base/$(dirname "$f")"
-    git show "$BASE:$f" > "$tmp/base/$f"
+    git show "$BASE:$b" > "$tmp/base/$f"
     base_kt+=("$f")
   fi
 done

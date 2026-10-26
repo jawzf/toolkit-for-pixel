@@ -32,7 +32,7 @@ import com.jawzf.pixeltoolkit.ui.components.menus.SegmentedDropdownMenuItem
 import com.jawzf.pixeltoolkit.ui.core.cards.ConfigPickerItem
 import com.jawzf.pixeltoolkit.ui.core.cards.IconToggleItem
 import com.jawzf.pixeltoolkit.ui.core.containers.RoundedCardContainer
-import com.jawzf.pixeltoolkit.ui.core.sheets.EssentialsBottomSheet
+import com.jawzf.pixeltoolkit.ui.core.sheets.ToolkitBottomSheet
 import com.jawzf.pixeltoolkit.utils.EmojiUtil
 import com.jawzf.pixeltoolkit.utils.HapticUtil
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
@@ -87,7 +87,7 @@ fun StatusGlanceCalendarOptionsBottomSheet(
     val currentLabel = timeframes.firstOrNull { it.first == currentCode }?.second
         ?: stringResource(R.string.status_glance_calendar_timeframe_today)
 
-    EssentialsBottomSheet(
+    ToolkitBottomSheet(
         onDismissRequest = onDismissRequest,
     ) {
         Column(
@@ -237,7 +237,7 @@ private fun CalendarEmojiSheet(
     val trimmed = input.trim()
     val valid = trimmed.isEmpty() || EmojiUtil.isSingleEmoji(trimmed)
 
-    EssentialsBottomSheet(onDismissRequest = onDismissRequest) {
+    ToolkitBottomSheet(onDismissRequest = onDismissRequest) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()

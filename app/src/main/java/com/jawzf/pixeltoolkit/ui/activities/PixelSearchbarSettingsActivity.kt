@@ -67,7 +67,7 @@ import com.jawzf.pixeltoolkit.domain.model.Feature
 import com.jawzf.pixeltoolkit.services.widgets.WidgetScraperService
 import com.jawzf.pixeltoolkit.ui.features.widgets.WidgetPickerSheet
 import kotlinx.coroutines.delay
-import com.jawzf.pixeltoolkit.ui.components.EssentialsFloatingToolbar
+import com.jawzf.pixeltoolkit.ui.components.ToolkitFloatingToolbar
 import com.jawzf.pixeltoolkit.ui.components.animations.LottieFeatureAnimation
 import com.jawzf.pixeltoolkit.ui.components.menus.SegmentedDropdownMenuItem
 import com.jawzf.pixeltoolkit.ui.components.sliders.ConfigSliderItem
@@ -81,7 +81,7 @@ import com.jawzf.pixeltoolkit.ui.core.sheets.ShakeForHelp
 import com.jawzf.pixeltoolkit.ui.modifiers.BlurDirection
 import com.jawzf.pixeltoolkit.ui.modifiers.progressiveBlur
 import com.jawzf.pixeltoolkit.ui.modifiers.scrollMotionBlur
-import com.jawzf.pixeltoolkit.ui.theme.EssentialsTheme
+import com.jawzf.pixeltoolkit.ui.theme.ToolkitTheme
 import com.jawzf.pixeltoolkit.utils.HapticUtil
 import com.jawzf.pixeltoolkit.utils.PermissionUIHelper
 import com.jawzf.pixeltoolkit.utils.PermissionUtils
@@ -128,7 +128,7 @@ class PixelSearchbarSettingsActivity : ComponentActivity() {
 
             val isBlurEnabled by viewModel.isBlurEnabled
 
-            EssentialsTheme(pitchBlackTheme = isPitchBlackThemeEnabled) {
+            ToolkitTheme(pitchBlackTheme = isPitchBlackThemeEnabled) {
                 Scaffold(
                     contentWindowInsets = WindowInsets(0, 0, 0, 0),
                     containerColor = MaterialTheme.colorScheme.surfaceContainer,
@@ -245,7 +245,7 @@ class PixelSearchbarSettingsActivity : ComponentActivity() {
                             )
                         }
 
-                        EssentialsFloatingToolbar(
+                        ToolkitFloatingToolbar(
                             title = stringResource(R.string.pixel_searchbar_settings_title),
                             onBackClick = { finish() },
                             modifier =

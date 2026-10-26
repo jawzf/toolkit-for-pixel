@@ -71,7 +71,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.jawzf.pixeltoolkit.LinkPickerActivity
 import com.jawzf.pixeltoolkit.R
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.ui.theme.EssentialsTheme
+import com.jawzf.pixeltoolkit.ui.theme.ToolkitTheme
 import com.jawzf.pixeltoolkit.utils.HapticUtil
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 import kotlin.math.roundToInt
@@ -105,7 +105,7 @@ class BubbleWebActivity : ComponentActivity() {
             val viewModel: MainViewModel = viewModel()
             val isPitchBlackThemeEnabled by viewModel.isPitchBlackThemeEnabled
 
-            EssentialsTheme(pitchBlackTheme = isPitchBlackThemeEnabled) {
+            ToolkitTheme(pitchBlackTheme = isPitchBlackThemeEnabled) {
                 BubbleWebScreen(
                     initialUrl = initialUrl,
                     isPrivate = isPrivateSession,

@@ -18,7 +18,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Essentials"
+rootProject.name = "ToolkitForPixel"
 include(":app")
 include(":stub")
 include(":island-sdk")

@@ -62,7 +62,7 @@ import com.jawzf.pixeltoolkit.domain.diy.State as DIYState
 import com.jawzf.pixeltoolkit.ui.components.menus.SegmentedDropdownMenu
 import com.jawzf.pixeltoolkit.ui.components.menus.SegmentedDropdownMenuItem
 import com.jawzf.pixeltoolkit.ui.core.containers.RoundedCardContainer
-import com.jawzf.pixeltoolkit.ui.theme.EssentialsTheme
+import com.jawzf.pixeltoolkit.ui.theme.ToolkitTheme
 import com.jawzf.pixeltoolkit.utils.HapticUtil
 import java.text.DateFormatSymbols
 import java.util.Calendar
@@ -639,7 +639,7 @@ private fun AutomationItemSummariesPreview() {
             Automation("12", Automation.Type.TRIGGER, trigger = Trigger.ChargerConnected, actions = actions),
         )
 
-    EssentialsTheme(dynamicColor = false) {
+    ToolkitTheme(dynamicColor = false) {
         Column(
             modifier = Modifier.padding(8.dp),
             verticalArrangement = Arrangement.spacedBy(4.dp),

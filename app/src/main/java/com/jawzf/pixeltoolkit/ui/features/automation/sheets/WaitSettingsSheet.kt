@@ -46,7 +46,7 @@ fun WaitSettingsSheet(
         mutableIntStateOf(WAIT_STEPS_SECONDS.indices.minBy { kotlin.math.abs(WAIT_STEPS_SECONDS[it] - initialAction.seconds) })
     }
 
-    EssentialsBottomSheet(
+    ToolkitBottomSheet(
         onDismissRequest = onDismiss,
         dragHandle = null,
     ) {

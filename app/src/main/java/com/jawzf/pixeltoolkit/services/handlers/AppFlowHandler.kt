@@ -170,7 +170,7 @@ class AppFlowHandler(
             return
         }
 
-        val prefs = context.getSharedPreferences("essentials_prefs", Context.MODE_PRIVATE)
+        val prefs = context.getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE)
         val useUsageAccess = prefs.getBoolean("use_usage_access", false)
 
         val oldPackage = currentPackage
@@ -257,7 +257,7 @@ class AppFlowHandler(
     }
 
     private fun checkAppLock(packageName: String) {
-        val prefs = context.getSharedPreferences("essentials_prefs", Context.MODE_PRIVATE)
+        val prefs = context.getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE)
         val isEnabled = prefs.getBoolean("app_lock_enabled", false)
         if (!isEnabled) return
 
@@ -324,7 +324,7 @@ class AppFlowHandler(
     }
 
     private fun checkConsciousGate(packageName: String) {
-        val prefs = context.getSharedPreferences("essentials_prefs", Context.MODE_PRIVATE)
+        val prefs = context.getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE)
         val isEnabled = prefs.getBoolean("conscious_gate_enabled", false)
         if (!isEnabled || isIgnoredPackage(packageName)) return
 
@@ -412,7 +412,7 @@ class AppFlowHandler(
         lastLeaveTimes.remove(packageName)
         pendingGateLeaveRunnables.remove(packageName)?.let { handler.removeCallbacks(it) }
 
-        val prefs = context.getSharedPreferences("essentials_prefs", Context.MODE_PRIVATE)
+        val prefs = context.getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE)
         val reappearMinutes = prefs.getInt("conscious_gate_reappear_minutes", 0)
         val durationMillis = if (reappearMinutes > 0) reappearMinutes * 60 * 1000L else 5 * 60 * 1000L
         currentConsciousGateSession =
@@ -449,7 +449,7 @@ class AppFlowHandler(
     }
 
     private fun checkHighlightNightLight(packageName: String) {
-        val prefs = context.getSharedPreferences("essentials_prefs", Context.MODE_PRIVATE)
+        val prefs = context.getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE)
         val isEnabled = prefs.getBoolean("dynamic_night_light_enabled", false)
         if (!isEnabled) return
 
@@ -469,7 +469,7 @@ class AppFlowHandler(
     }
 
     private fun processNightLightChange(packageName: String) {
-        val prefs = context.getSharedPreferences("essentials_prefs", Context.MODE_PRIVATE)
+        val prefs = context.getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE)
 
         val json = prefs.getString("dynamic_night_light_selected_apps", null)
         val selectedApps: List<AppSelection> =
@@ -583,7 +583,7 @@ class AppFlowHandler(
     }
 
     private fun checkGestureBarAutomation(packageName: String) {
-        val prefs = context.getSharedPreferences("essentials_prefs", Context.MODE_PRIVATE)
+        val prefs = context.getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE)
         val isEnabled = prefs.getBoolean("hide_gesture_bar_on_launcher_enabled", false)
         if (!isEnabled) return
 

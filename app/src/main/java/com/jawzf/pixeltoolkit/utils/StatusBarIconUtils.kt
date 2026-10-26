@@ -65,7 +65,7 @@ fun saveIconVisibilities(
     context: Context,
     visibilities: Map<String, Boolean>,
 ) {
-    val prefs = context.getSharedPreferences("essentials_prefs", Context.MODE_PRIVATE)
+    val prefs = context.getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE)
     prefs.edit {
         for ((iconId, isVisible) in visibilities) {
             putBoolean("icon_${iconId}_visible", isVisible)
@@ -80,7 +80,7 @@ fun loadIconVisibilities(
     context: Context,
     defaultVisibilities: Map<String, Boolean>,
 ): Map<String, Boolean> {
-    val prefs = context.getSharedPreferences("essentials_prefs", Context.MODE_PRIVATE)
+    val prefs = context.getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE)
     return defaultVisibilities.mapValues { (iconId, default) ->
         prefs.getBoolean("icon_${iconId}_visible", default)
     }
@@ -93,7 +93,7 @@ fun resetAllIconVisibilities(
     context: Context,
     defaultVisibilities: Map<String, Boolean>,
 ) {
-    val prefs = context.getSharedPreferences("essentials_prefs", Context.MODE_PRIVATE)
+    val prefs = context.getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE)
     prefs.edit {
         for ((iconId, default) in defaultVisibilities) {
             putBoolean("icon_${iconId}_visible", default)

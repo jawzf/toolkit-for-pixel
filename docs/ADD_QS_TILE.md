@@ -1,6 +1,6 @@
 # Quick Settings (QS) Tile Implementation Guide
 
-This guide details the end-to-end process of implementing, registering, and maintaining Quick Settings (QS) tiles within the **Essentials** architecture.
+This guide details the end-to-end process of implementing, registering, and maintaining Quick Settings (QS) tiles within the **Toolkit for Pixel** architecture.
 
 For system architecture context, refer to [ARCHITECTURE.md](ARCHITECTURE.md), [STRUCTURE.md](STRUCTURE.md), and [SERVICES_AND_PERMISSIONS.md](SERVICES_AND_PERMISSIONS.md).
 

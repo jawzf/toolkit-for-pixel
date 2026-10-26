@@ -10,7 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import com.jawzf.pixeltoolkit.ui.theme.EssentialsTheme
+import com.jawzf.pixeltoolkit.ui.theme.ToolkitTheme
 
 @Composable
 fun ConsciousGatePreview(
@@ -36,7 +36,7 @@ fun ConsciousGatePreview(
             label = "previewProgress",
         )
 
-    EssentialsTheme {
+    ToolkitTheme {
         ConsciousGatePauseScreen(
             title = title,
             message = message,

@@ -88,6 +88,6 @@ class BackGestureController(
     ): Boolean = abs(store.readSystemScale(left) - scale) < 0.001f || store.writeSystemScale(left, scale)
 
     companion object {
-        const val AUTOMATION_OWNER = "essentials:automation"
+        const val AUTOMATION_OWNER = "toolkit:automation"
     }
 }

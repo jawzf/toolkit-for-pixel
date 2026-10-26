@@ -81,7 +81,7 @@ class FlashlightHandler(
                     service as? com.jawzf.pixeltoolkit.services.tiles.ScreenOffAccessibilityService
                 screenOffService?.updateFlashlightProximityRegistration(enabled)
 
-                val prefs = service.getSharedPreferences("essentials_prefs", Context.MODE_PRIVATE)
+                val prefs = service.getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE)
                 val isGlobalEnabled = prefs.getBoolean("flashlight_global_enabled", false)
                 val lastIntensity = prefs.getInt("flashlight_last_intensity", 1)
 
@@ -198,7 +198,7 @@ class FlashlightHandler(
         intensity: Int,
         forceShow: Boolean = false,
     ) {
-        val prefs = service.getSharedPreferences("essentials_prefs", Context.MODE_PRIVATE)
+        val prefs = service.getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE)
         if (!prefs.getBoolean("flashlight_live_update_enabled", true) || (!isTorchOn && !forceShow)) {
             cancelFlashlightNotification()
             return
@@ -445,7 +445,7 @@ class FlashlightHandler(
     fun pulseFlashlightForNotificationWithCheck(ignoreChecks: Boolean = false) {
         if (isTorchOn) return
 
-        val prefs = service.getSharedPreferences("essentials_prefs", Context.MODE_PRIVATE)
+        val prefs = service.getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE)
         if (!ignoreChecks) {
             val pulseEnabled = prefs.getBoolean("flashlight_pulse_enabled", false)
             if (!pulseEnabled) return
@@ -548,7 +548,7 @@ class FlashlightHandler(
 
             currentIntensityLevel = targetLevel
 
-            val prefs = service.getSharedPreferences("essentials_prefs", Context.MODE_PRIVATE)
+            val prefs = service.getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE)
             if (prefs.getBoolean("flashlight_global_enabled", false)) {
                 prefs.edit { putInt("flashlight_last_intensity", targetLevel) }
             }
@@ -581,7 +581,7 @@ class FlashlightHandler(
     }
 
     fun toggleFlashlight(overrideIntensity: Int? = null) {
-        val prefs = service.getSharedPreferences("essentials_prefs", Context.MODE_PRIVATE)
+        val prefs = service.getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE)
         val isFadeEnabled = prefs.getBoolean("flashlight_fade_enabled", false)
 
         try {
@@ -694,7 +694,7 @@ class FlashlightHandler(
                 }
 
             if (vibrator != null) {
-                val prefs = service.getSharedPreferences("essentials_prefs", Context.MODE_PRIVATE)
+                val prefs = service.getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE)
                 val hapticName =
                     prefs.getString(
                         "button_remap_haptic_type",
@@ -737,7 +737,7 @@ class FlashlightHandler(
             scope.launch {
                 while (isTorchOn) {
                     kotlinx.coroutines.delay(120000L)
-                    val prefs = service.getSharedPreferences("essentials_prefs", Context.MODE_PRIVATE)
+                    val prefs = service.getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE)
                     val isOverheatEnabled =
                         prefs.getBoolean("flashlight_overheat_prevention_enabled", true)
                     if (isOverheatEnabled && FlashlightUtil.isIntensitySupported(service, cameraId)) {

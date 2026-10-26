@@ -48,7 +48,7 @@ fun PixelSearchContactActionSheet(
     val context = LocalContext.current
     val view = LocalView.current
 
-    EssentialsBottomSheet(
+    ToolkitBottomSheet(
         onDismissRequest = onDismissRequest,
     ) {
         Column(

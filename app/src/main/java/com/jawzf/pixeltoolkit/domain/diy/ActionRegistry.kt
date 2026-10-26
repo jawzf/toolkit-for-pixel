@@ -102,7 +102,7 @@ object ActionRegistry {
                 add(Action.OpenNowPlayingApp)
             }
 
-        val essentialsActions =
+        val toolkitActions =
             listOf(
                 Action.SometimesEssentials(),
                 Action.TriggerNotificationLighting(),
@@ -116,7 +116,7 @@ object ActionRegistry {
             ActionCategory(R.string.diy_category_apps, appsActions),
             ActionCategory(R.string.diy_category_system, systemActions),
             ActionCategory(R.string.diy_category_sound_media, soundMediaActions),
-            ActionCategory(R.string.diy_category_essentials, essentialsActions),
+            ActionCategory(R.string.diy_category_toolkit, toolkitActions),
         )
     }
 

@@ -112,7 +112,7 @@ fun CustomSettingsSheet(
         }
     }
 
-    EssentialsBottomSheet(
+    ToolkitBottomSheet(
         onDismissRequest = onDismiss,
     ) {
         Column(

@@ -48,7 +48,7 @@ import com.jawzf.pixeltoolkit.ui.core.sheets.AppSelectionSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.CustomSettingsSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.DeviceEffectsSettingsSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.DimWallpaperSettingsSheet
-import com.jawzf.pixeltoolkit.ui.core.sheets.EssentialsBottomSheet
+import com.jawzf.pixeltoolkit.ui.core.sheets.ToolkitBottomSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.FreezeTagSettingsSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.HilightEffectSettingsSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.PermissionsBottomSheet
@@ -572,7 +572,7 @@ fun StatusGlanceSettingsUI(
             else -> null
         }
 
-        EssentialsBottomSheet(
+        ToolkitBottomSheet(
             onDismissRequest = { pickingActionForGesture = null },
         ) {
             Column(

@@ -25,7 +25,7 @@ class StatusBarAutomationReceiver : BroadcastReceiver() {
         context: Context,
         action: String,
     ) {
-        val prefs = context.getSharedPreferences("essentials_prefs", Context.MODE_PRIVATE)
+        val prefs = context.getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE)
         if (!prefs.getBoolean(SettingsRepository.KEY_STATUS_BAR_ICON_CONTROL_ENABLED, false)) return
         if (!prefs.contains(StatusBarIconViewModel.PREF_BATTERY_PERCENT_MODE)) return
         val mode = prefs.getInt(StatusBarIconViewModel.PREF_BATTERY_PERCENT_MODE, 0)

@@ -54,7 +54,7 @@ fun SoundModeSettingsSheet(
 
     var selectedMode by remember { mutableStateOf(initialAction.mode) }
 
-    EssentialsBottomSheet(
+    ToolkitBottomSheet(
         onDismissRequest = onDismiss,
     ) {
         Column(

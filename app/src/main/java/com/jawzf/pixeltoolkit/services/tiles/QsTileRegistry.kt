@@ -133,7 +133,7 @@ object QsTileRegistry {
             ),
             QsTileEntry(
                 R.drawable.rounded_live_tv_24,
-                EssentialsOnDisplayTileService::class.java,
+                ToolkitOnDisplayTileService::class.java,
             ),
             QsTileEntry(
                 R.drawable.rounded_lock_24,

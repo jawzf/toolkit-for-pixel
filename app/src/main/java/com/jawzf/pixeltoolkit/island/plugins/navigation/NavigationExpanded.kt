@@ -26,7 +26,7 @@ import com.jawzf.pixeltoolkit.island.ui.components.CameraRow
 import com.jawzf.pixeltoolkit.island.ui.components.ConnectedButtonRow
 import com.jawzf.pixeltoolkit.island.ui.components.ConnectedItem
 import com.jawzf.pixeltoolkit.island.ui.components.ConnectedTextLabel
-import com.jawzf.pixeltoolkit.ui.theme.EssentialsTheme
+import com.jawzf.pixeltoolkit.ui.theme.ToolkitTheme
 
 @Composable
 fun NavigationExpanded(

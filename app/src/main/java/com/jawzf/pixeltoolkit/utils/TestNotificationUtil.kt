@@ -116,7 +116,7 @@ object TestNotificationUtil {
                 "jawzf merged commit 8a1f20 into main.\nBranch feature/island-action-buttons deleted.\nAll unit tests and lint checks verified.",
                 "Dependabot created a PR to bump compose-bom to 2026.03.00.\nIncludes Material 3 Expressive performance enhancements and spring physics updates.\nAutomated compatibility tests passed.",
                 "Please review the changes requested by the core team on PR #88:\n- Added expanded top padding slider\n- Extended corner radius to 80dp\n- Increased body text capacity to 7 lines",
-                "All checks passed successfully.\nArtifact essentials-debug.apk generated and ready for release verification."
+                "All checks passed successfully.\nArtifact toolkit-debug.apk generated and ready for release verification."
             ),
             sampleActions = listOf(
                 listOf(

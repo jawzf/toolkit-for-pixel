@@ -86,7 +86,7 @@ import com.jawzf.pixeltoolkit.domain.model.AppPermission
 import com.jawzf.pixeltoolkit.domain.model.AppSelection
 import com.jawzf.pixeltoolkit.domain.model.NotificationApp
 import com.jawzf.pixeltoolkit.ui.components.CategoryExpandableSection
-import com.jawzf.pixeltoolkit.ui.components.EssentialsFloatingToolbar
+import com.jawzf.pixeltoolkit.ui.components.ToolkitFloatingToolbar
 import com.jawzf.pixeltoolkit.ui.core.cards.AppToggleItem
 import com.jawzf.pixeltoolkit.ui.core.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.ui.core.pickers.SegmentedPicker
@@ -100,7 +100,7 @@ import com.jawzf.pixeltoolkit.ui.features.system.ActionSequenceEditor
 import com.jawzf.pixeltoolkit.ui.modifiers.BlurDirection
 import com.jawzf.pixeltoolkit.ui.modifiers.progressiveBlur
 import com.jawzf.pixeltoolkit.ui.modifiers.scrollMotionBlur
-import com.jawzf.pixeltoolkit.ui.theme.EssentialsTheme
+import com.jawzf.pixeltoolkit.ui.theme.ToolkitTheme
 import com.jawzf.pixeltoolkit.utils.AppUtil
 import com.jawzf.pixeltoolkit.utils.HapticUtil
 import com.jawzf.pixeltoolkit.utils.PermissionUtils
@@ -179,7 +179,7 @@ class AutomationEditorActivity : ComponentActivity() {
             }
             val isPitchBlackThemeEnabled by viewModel.isPitchBlackThemeEnabled
             val isMotionBlurEnabled by viewModel.isMotionBlurEnabled
-            EssentialsTheme(pitchBlackTheme = isPitchBlackThemeEnabled) {
+            ToolkitTheme(pitchBlackTheme = isPitchBlackThemeEnabled) {
                 val view = LocalView.current
                 val coroutineScope = rememberCoroutineScope()
                 var carouselState = rememberCarouselState { 2 } // 0: Trigger/State, 1: Actions
@@ -1562,7 +1562,7 @@ class AutomationEditorActivity : ComponentActivity() {
                         }
 
                         // Floating Bottom Toolbar
-                        EssentialsFloatingToolbar(
+                        ToolkitFloatingToolbar(
                             title = stringResource(titleRes),
                             onBackClick = handleBackClick,
                             fabAction =

@@ -19,7 +19,7 @@ import androidx.compose.ui.res.stringResource
 import com.jawzf.pixeltoolkit.R
 import com.jawzf.pixeltoolkit.services.tiles.ScreenOffAccessibilityService
 import com.jawzf.pixeltoolkit.ui.features.consciousgate.ConsciousGatePauseScreen
-import com.jawzf.pixeltoolkit.ui.theme.EssentialsTheme
+import com.jawzf.pixeltoolkit.ui.theme.ToolkitTheme
 import com.jawzf.pixeltoolkit.utils.HapticUtil
 
 class ConsciousGateActivity : AppCompatActivity() {
@@ -50,7 +50,7 @@ class ConsciousGateActivity : AppCompatActivity() {
         val message = intent.getStringExtra("message")
 
         setContent {
-            EssentialsTheme {
+            ToolkitTheme {
                 ConsciousGateScreen(
                     appLabel = appLabel ?: "",
                     packageToGate = packageToGate,

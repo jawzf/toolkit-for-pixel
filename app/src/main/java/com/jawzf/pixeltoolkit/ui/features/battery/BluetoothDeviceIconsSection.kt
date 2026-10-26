@@ -48,7 +48,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.R
 import com.jawzf.pixeltoolkit.services.widgets.BatteriesWidgetReceiver
-import com.jawzf.pixeltoolkit.ui.core.sheets.EssentialsBottomSheet
+import com.jawzf.pixeltoolkit.ui.core.sheets.ToolkitBottomSheet
 import com.jawzf.pixeltoolkit.utils.BluetoothDeviceIcon
 import com.jawzf.pixeltoolkit.utils.BluetoothDeviceIcons
 
@@ -198,7 +198,7 @@ private fun BluetoothDeviceIconSheet(
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val selected = remember { BluetoothDeviceIcons.getOverrideId(context, device.address) }
 
-    EssentialsBottomSheet(
+    ToolkitBottomSheet(
         onDismissRequest = onDismiss,
         sheetState = sheetState,
     ) {

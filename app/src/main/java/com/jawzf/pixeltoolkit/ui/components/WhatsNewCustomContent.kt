@@ -49,7 +49,7 @@ fun ShakeForHelpCard(
         icon = { SectionIcon(R.drawable.rounded_mobile_vibrate_24) },
     ) {
         Text(
-            text = "Shake your phone anywhere in Essentials to open help for the screen you are on. Inside a feature you get that feature's guide, and everywhere else you get the general Help and Guides.",
+            text = "Shake your phone anywhere in Toolkit to open help for the screen you are on. Inside a feature you get that feature's guide, and everywhere else you get the general Help and Guides.",
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )

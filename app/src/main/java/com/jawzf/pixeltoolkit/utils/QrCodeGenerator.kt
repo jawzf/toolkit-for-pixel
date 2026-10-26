@@ -140,7 +140,7 @@ object QrCodeGenerator {
     }
 
     /**
-     * Saves the QR Bitmap into the system's Pictures/Essentials directory.
+     * Saves the QR Bitmap into the system's Pictures/Toolkit directory.
      */
     fun saveQrImage(context: Context, bitmap: Bitmap): Boolean {
         return try {
@@ -149,7 +149,7 @@ object QrCodeGenerator {
                 val values = android.content.ContentValues().apply {
                     put(android.provider.MediaStore.MediaColumns.DISPLAY_NAME, fileName)
                     put(android.provider.MediaStore.MediaColumns.MIME_TYPE, "image/png")
-                    put(android.provider.MediaStore.MediaColumns.RELATIVE_PATH, android.os.Environment.DIRECTORY_PICTURES + "/Essentials")
+                    put(android.provider.MediaStore.MediaColumns.RELATIVE_PATH, android.os.Environment.DIRECTORY_PICTURES + "/Toolkit")
                 }
                 val uri = context.contentResolver.insert(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values) ?: return false
                 context.contentResolver.openOutputStream(uri)?.use { stream ->
@@ -158,7 +158,7 @@ object QrCodeGenerator {
                 }
                 true
             } else {
-                val dir = File(android.os.Environment.getExternalStoragePublicDirectory(android.os.Environment.DIRECTORY_PICTURES), "Essentials")
+                val dir = File(android.os.Environment.getExternalStoragePublicDirectory(android.os.Environment.DIRECTORY_PICTURES), "Toolkit")
                 dir.mkdirs()
                 val file = File(dir, fileName)
                 FileOutputStream(file).use { stream ->

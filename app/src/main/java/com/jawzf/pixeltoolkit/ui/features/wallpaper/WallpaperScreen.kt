@@ -77,7 +77,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.jawzf.pixeltoolkit.R
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.ui.components.EssentialsFloatingToolbar
+import com.jawzf.pixeltoolkit.ui.components.ToolkitFloatingToolbar
 import com.jawzf.pixeltoolkit.ui.components.menus.SegmentedDropdownMenu
 import com.jawzf.pixeltoolkit.ui.components.menus.SegmentedDropdownMenuItem
 import com.jawzf.pixeltoolkit.ui.core.containers.RoundedCardContainer
@@ -410,7 +410,7 @@ fun WallpaperScreen(
             }
         }
 
-        EssentialsFloatingToolbar(
+        ToolkitFloatingToolbar(
             title = stringResource(R.string.feat_live_wallpaper_title),
             onBackClick = {
                 HapticUtil.performUIHaptic(view)

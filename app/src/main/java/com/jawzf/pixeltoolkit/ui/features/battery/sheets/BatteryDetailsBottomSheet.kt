@@ -184,7 +184,7 @@ fun BatteryDetailsBottomSheet(
         }
     val tabLabels = tabResIds.map { stringResource(it) }
 
-    EssentialsBottomSheet(
+    ToolkitBottomSheet(
         onDismissRequest = onDismiss,
         sheetState = sheetState,
     ) {

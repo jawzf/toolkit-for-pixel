@@ -53,7 +53,7 @@ fun SweepShapesBottomSheet(
     val initiallySelected = remember { viewModel.edgeLightingSweepSelectedShapes.value }
     var selectedShapes by remember { mutableStateOf(initiallySelected) }
 
-    EssentialsBottomSheet(
+    ToolkitBottomSheet(
         onDismissRequest = onDismissRequest,
         sheetState = sheetState,
     ) {

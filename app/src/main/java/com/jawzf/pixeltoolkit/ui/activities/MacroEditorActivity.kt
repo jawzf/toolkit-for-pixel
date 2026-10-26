@@ -45,10 +45,10 @@ import com.jawzf.pixeltoolkit.R
 import com.jawzf.pixeltoolkit.domain.diy.ActionRegistry
 import com.jawzf.pixeltoolkit.domain.diy.DIYRepository
 import com.jawzf.pixeltoolkit.domain.diy.Macro
-import com.jawzf.pixeltoolkit.ui.components.EssentialsFloatingToolbar
+import com.jawzf.pixeltoolkit.ui.components.ToolkitFloatingToolbar
 import com.jawzf.pixeltoolkit.ui.core.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.ui.features.system.ActionSequenceEditor
-import com.jawzf.pixeltoolkit.ui.theme.EssentialsTheme
+import com.jawzf.pixeltoolkit.ui.theme.ToolkitTheme
 import com.jawzf.pixeltoolkit.utils.HapticUtil
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 import java.util.UUID
@@ -85,7 +85,7 @@ class MacroEditorActivity : ComponentActivity() {
             }
 
             val isPitchBlackThemeEnabled by viewModel.isPitchBlackThemeEnabled
-            EssentialsTheme(pitchBlackTheme = isPitchBlackThemeEnabled) {
+            ToolkitTheme(pitchBlackTheme = isPitchBlackThemeEnabled) {
                 var name by rememberSaveable { mutableStateOf(existing?.name.orEmpty()) }
                 var actions by remember { mutableStateOf(existing?.actionList.orEmpty()) }
                 var showDiscardDialog by remember { mutableStateOf(false) }
@@ -178,7 +178,7 @@ class MacroEditorActivity : ComponentActivity() {
                             )
                         }
 
-                        EssentialsFloatingToolbar(
+                        ToolkitFloatingToolbar(
                             title =
                                 stringResource(
                                     if (isEditMode) R.string.diy_edit_macro else R.string.diy_new_macro,

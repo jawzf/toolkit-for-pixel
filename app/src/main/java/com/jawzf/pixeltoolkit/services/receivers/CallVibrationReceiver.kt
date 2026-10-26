@@ -18,7 +18,7 @@ class CallVibrationReceiver : BroadcastReceiver() {
         context: Context,
         intent: Intent,
     ) {
-        val prefs = context.getSharedPreferences("essentials_prefs", Context.MODE_PRIVATE)
+        val prefs = context.getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE)
         if (!prefs.getBoolean(SettingsRepository.KEY_CALL_VIBRATIONS_ENABLED, false)) return
 
         if (intent.action == Intent.ACTION_NEW_OUTGOING_CALL) {

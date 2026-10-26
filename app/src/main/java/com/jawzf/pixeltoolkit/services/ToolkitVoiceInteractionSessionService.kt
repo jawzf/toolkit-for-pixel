@@ -7,13 +7,13 @@ import android.service.voice.VoiceInteractionSession
 import android.service.voice.VoiceInteractionSessionService
 import com.jawzf.pixeltoolkit.ui.activities.PixelSearchResultsActivity
 
-class EssentialsVoiceInteractionSessionService : VoiceInteractionSessionService() {
+class ToolkitVoiceInteractionSessionService : VoiceInteractionSessionService() {
     override fun onNewSession(args: Bundle?): VoiceInteractionSession {
-        return EssentialsVoiceInteractionSession(this)
+        return ToolkitVoiceInteractionSession(this)
     }
 }
 
-class EssentialsVoiceInteractionSession(context: Context) : VoiceInteractionSession(context) {
+class ToolkitVoiceInteractionSession(context: Context) : VoiceInteractionSession(context) {
     override fun onShow(args: Bundle?, showFlags: Int) {
         super.onShow(args, showFlags)
         val intent =

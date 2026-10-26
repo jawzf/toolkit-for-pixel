@@ -37,7 +37,7 @@ fun HiddenDebuggingHelpBottomSheet(
     onDismissRequest: () -> Unit,
     onAutoDetected: () -> Unit,
 ) {
-    EssentialsBottomSheet(onDismissRequest = onDismissRequest) {
+    ToolkitBottomSheet(onDismissRequest = onDismissRequest) {
         Column(
             modifier =
                 Modifier

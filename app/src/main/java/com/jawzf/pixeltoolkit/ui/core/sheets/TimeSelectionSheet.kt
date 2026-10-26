@@ -84,7 +84,7 @@ fun TimeSelectionSheet(
         if (showingEndPicker) HapticUtil.performSliderHaptic(view)
     }
 
-    EssentialsBottomSheet(
+    ToolkitBottomSheet(
         onDismissRequest = onDismiss,
         dragHandle = null,
     ) {

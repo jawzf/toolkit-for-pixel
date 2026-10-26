@@ -93,7 +93,7 @@ fun FeatureHelpBottomSheet(
         customHelp.sheet { showCustomHelp = false }
     }
 
-    EssentialsBottomSheet(
+    ToolkitBottomSheet(
         onDismissRequest = onDismissRequest,
     ) {
         Column(

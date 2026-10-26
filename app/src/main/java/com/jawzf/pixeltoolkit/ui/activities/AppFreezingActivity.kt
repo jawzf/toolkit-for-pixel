@@ -50,7 +50,7 @@ import com.jawzf.pixeltoolkit.ui.modifiers.BlurDirection
 import com.jawzf.pixeltoolkit.ui.modifiers.progressiveBlur
 import com.jawzf.pixeltoolkit.ui.state.LocalMenuStateManager
 import com.jawzf.pixeltoolkit.ui.state.MenuStateManager
-import com.jawzf.pixeltoolkit.ui.theme.EssentialsTheme
+import com.jawzf.pixeltoolkit.ui.theme.ToolkitTheme
 import com.jawzf.pixeltoolkit.utils.HapticUtil
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 
@@ -78,7 +78,7 @@ class AppFreezingActivity : ComponentActivity() {
             val isPitchBlackThemeEnabled by viewModel.isPitchBlackThemeEnabled
             val isBlurEnabled by viewModel.isBlurEnabled
 
-            EssentialsTheme(pitchBlackTheme = isPitchBlackThemeEnabled) {
+            ToolkitTheme(pitchBlackTheme = isPitchBlackThemeEnabled) {
                 CompositionLocalProvider(
                     LocalMenuStateManager provides remember { MenuStateManager() },
                 ) {

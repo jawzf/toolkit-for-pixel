@@ -1,6 +1,6 @@
 # Island providers
 
-Any app can put content on the Essentials island without shipping any code into Essentials. Essentials is the **host**: it owns the window, the animations, the gestures, the priority order and every piece of permission UI. A **provider** app only describes what to show and, optionally, draws its own expanded view. Overcast is the reference provider.
+Any app can put content on the Toolkit for Pixel island without shipping any code into Toolkit for Pixel. Toolkit for Pixel is the **host**: it owns the window, the animations, the gestures, the priority order and every piece of permission UI. A **provider** app only describes what to show and, optionally, draws its own expanded view. Overcast is the reference provider.
 
 For how the island itself works, see [ISLAND.md](ISLAND.md).
 
@@ -9,7 +9,7 @@ For how the island itself works, see [ISLAND.md](ISLAND.md).
 ## Overview
 
 ```
- provider app                                   Essentials (host)
+ provider app                                   Toolkit for Pixel (host)
  ─────────────                                  ─────────────────
  IslandProviderService  ◄── bind (AIDL) ──────  RemoteProvidersPlugin
    publish(payload, icons) ─────────────────►     ProviderConnection ─► PayloadValidator
@@ -19,8 +19,8 @@ For how the island itself works, see [ISLAND.md](ISLAND.md).
    snapshot / resize / peek / expand ──────────►    host requests (rate limited)
 ```
 
-- The compact pill and the line are **data**. The provider sends text, icons and tones; Essentials draws them with its own look, so every provider matches.
-- The expanded view is **provider-drawn**. The provider renders Compose into a `SurfaceControlViewHost` and Essentials embeds it. This needs Android 11 or later; older versions simply get no expanded view.
+- The compact pill and the line are **data**. The provider sends text, icons and tones; Toolkit for Pixel draws them with its own look, so every provider matches.
+- The expanded view is **provider-drawn**. The provider renders Compose into a `SurfaceControlViewHost` and Toolkit for Pixel embeds it. This needs Android 11 or later; older versions simply get no expanded view.
 - Transport is a bound service with a small AIDL interface. Payloads are JSON plus icon bitmaps.
 - The host binds a provider only after the user approved it. See [Security model](#security-model).
 
@@ -28,7 +28,7 @@ For how the island itself works, see [ISLAND.md](ISLAND.md).
 
 ## Modules
 
-Both live in the Essentials repository and are referenced as Gradle projects until they are published.
+Both live in the Toolkit for Pixel repository and are referenced as Gradle projects until they are published.
 
 | Module | Contents | Use it when |
 |---|---|---|
@@ -38,9 +38,9 @@ Both live in the Essentials repository and are referenced as Gradle projects unt
 ```kotlin
 // settings.gradle.kts of the provider app
 include(":island-sdk")
-project(":island-sdk").projectDir = file("../essentials/island-sdk")
+project(":island-sdk").projectDir = file("../toolkit-for-pixel/island-sdk")
 include(":island-sdk-compose")
-project(":island-sdk-compose").projectDir = file("../essentials/island-sdk-compose")
+project(":island-sdk-compose").projectDir = file("../toolkit-for-pixel/island-sdk-compose")
 
 // app/build.gradle.kts
 implementation(project(":island-sdk-compose"))
@@ -59,11 +59,11 @@ The modules use the `com.android.library` plugin and Compose; the provider needs
     android:name=".MyIslandService"
     android:exported="true">
     <intent-filter>
-        <action android:name="com.sameerasw.island.PROVIDER" />
+        <action android:name="com.jawzf.pixeltoolkit.island.PROVIDER" />
     </intent-filter>
-    <meta-data android:name="com.sameerasw.island.provider.label" android:value="@string/island_label" />
-    <meta-data android:name="com.sameerasw.island.provider.description" android:value="@string/island_description" />
-    <meta-data android:name="com.sameerasw.island.provider.priority" android:value="58" />
+    <meta-data android:name="com.jawzf.pixeltoolkit.island.provider.label" android:value="@string/island_label" />
+    <meta-data android:name="com.jawzf.pixeltoolkit.island.provider.description" android:value="@string/island_description" />
+    <meta-data android:name="com.jawzf.pixeltoolkit.island.provider.priority" android:value="58" />
 </service>
 ```
 
@@ -219,15 +219,15 @@ Limits: surface requests only work on Android 11 and later; the surface is never
 
 Installing a provider is not enough. Nothing flows until the user approves it, and both sides pin each other.
 
-1. **User approval in Essentials.** Island settings, Island apps lists installed providers. Turning one on opens an Essentials bottom sheet with the provider's icon, its description, what a provider can do and its signing key. The provider never draws any approval UI.
-2. **Pairing.** On Allow, Essentials briefly binds the provider and calls `grantHost()`. The provider accepts only a caller whose package is on its allow list (`IslandSchema.ALLOWED_HOSTS`, currently `com.jawzf.pixeltoolkit`), stores the grant with Essentials' signing certificate and returns true. Override `onHostGrantRequested(hostPackage)` to refuse.
-3. **Pinning.** Essentials stores the provider's signing certificate. Every connect re-checks both: the provider only serves a caller whose package and certificate match its stored grant, and Essentials only binds a provider whose certificate still matches.
-4. **No grant, no data.** Every binder call is checked against the grant, including `attach`, actions and surface requests. If the provider reports it is not authorised, Essentials turns the provider off and stops retrying.
-5. **Revocation.** Turning the provider off in Essentials calls `revokeHost()`. A provider can also revoke from its own settings with `HostGrantStore.revoke(hostPackage)`; Overcast lists approved hosts with a switch for this.
+1. **User approval in Toolkit for Pixel.** Island settings, Island apps lists installed providers. Turning one on opens an Toolkit for Pixel bottom sheet with the provider's icon, its description, what a provider can do and its signing key. The provider never draws any approval UI.
+2. **Pairing.** On Allow, Toolkit for Pixel briefly binds the provider and calls `grantHost()`. The provider accepts only a caller whose package is on its allow list (`IslandSchema.ALLOWED_HOSTS`, currently `com.jawzf.pixeltoolkit`), stores the grant with Toolkit for Pixel' signing certificate and returns true. Override `onHostGrantRequested(hostPackage)` to refuse.
+3. **Pinning.** Toolkit for Pixel stores the provider's signing certificate. Every connect re-checks both: the provider only serves a caller whose package and certificate match its stored grant, and Toolkit for Pixel only binds a provider whose certificate still matches.
+4. **No grant, no data.** Every binder call is checked against the grant, including `attach`, actions and surface requests. If the provider reports it is not authorised, Toolkit for Pixel turns the provider off and stops retrying.
+5. **Revocation.** Turning the provider off in Toolkit for Pixel calls `revokeHost()`. A provider can also revoke from its own settings with `HostGrantStore.revoke(hostPackage)`; Overcast lists approved hosts with a switch for this.
 6. **Sanitising.** Everything a provider sends passes `PayloadValidator`: at most 6 items and 4 Brief cards, keys up to 64 characters, cell text up to 32, line text up to 120, expanded height 80 to 640 dp, icons up to 256 px and 48 of them within 4 MB, unknown tones fall back to `none`. Providers can only open their own app.
 7. **No user data leaves.** The host sends only layout and theme values (`HostInfo`): accent, density, island size, whether power saving is on.
 
-The host never executes provider code. The only provider code that runs in Essentials' window is a surface the provider draws in its own process.
+The host never executes provider code. The only provider code that runs in Toolkit for Pixel' window is a surface the provider draws in its own process.
 
 ---
 
@@ -243,5 +243,5 @@ An approved provider is added automatically to the ordered list in Island settin
 - After `onHostDetached` clear anything tied to the host; after the next `onAttached` publish again.
 - Item and cell keys must be unique. Cell keys share a namespace with the other items on the island, so prefix them with your item key.
 - Alerts that should interrupt use `priorityOverride` plus a `peek`; remember the 10 s peek limit.
-- Test with the Essentials debug build and a provider build signed with a key you keep; a different key after pairing makes Essentials turn the provider off until the user approves it again.
+- Test with the Toolkit for Pixel debug build and a provider build signed with a key you keep; a different key after pairing makes Toolkit for Pixel turn the provider off until the user approves it again.
 - A reference implementation is in the Overcast repository: `weather/island/WeatherIslandService.kt`, `WeatherIslandPayload.kt` and `WeatherIslandExpanded.kt`.

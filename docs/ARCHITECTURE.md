@@ -1,12 +1,12 @@
 # Architecture & Data Flow Overview
 
-This document details the architectural layout, decoupled ViewModels layer, data flow pipelines, and persistent storage mechanics of the **Essentials** Android application.
+This document details the architectural layout, decoupled ViewModels layer, data flow pipelines, and persistent storage mechanics of the **Toolkit for Pixel** Android application.
 
 ---
 
 ## Architectural Pattern
 
-The Essentials application follows the **MVVM (Model-View-ViewModel)** pattern combined with a **Feature-Based Modular Architecture**.
+The Toolkit for Pixel application follows the **MVVM (Model-View-ViewModel)** pattern combined with a **Feature-Based Modular Architecture**.
 
 ```mermaid
 graph TD
@@ -40,5 +40,5 @@ To prevent monolithic ViewModel anti-patterns, state management is split across 
 
 ## Data Access & Persistence
 
-- **`SettingsRepository`**: Wraps `SharedPreferences` (`essentials_prefs`) using Gson JSON serialization for complex object sets (e.g., pinned feature keys, DNS presets, standby app lists).
+- **`SettingsRepository`**: Wraps `SharedPreferences` (`toolkit_prefs`) using Gson JSON serialization for complex object sets (e.g., pinned feature keys, DNS presets, standby app lists).
 - **System Settings Interoperability**: Uses `WRITE_SECURE_SETTINGS` to modify system secure settings (e.g., `doze_always_on`, `refresh_rate_mode`, `icon_blacklist`).

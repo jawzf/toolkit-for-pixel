@@ -157,7 +157,7 @@ fun BugReportBottomSheet(
             }
         }
 
-    EssentialsBottomSheet(
+    ToolkitBottomSheet(
         onDismissRequest = onDismissRequest,
     ) {
         Column(
@@ -476,7 +476,7 @@ fun BugReportBottomSheet(
                                 val shareDir =
                                     File(context.cacheDir, "reports").apply { mkdirs() }
                                 val shareFile =
-                                    File(shareDir, "essentials_report_$timeStamp.txt")
+                                    File(shareDir, "toolkit_report_$timeStamp.txt")
                                 shareFile.writeText(buildFullReportText())
 
                                 val uri =
@@ -491,7 +491,7 @@ fun BugReportBottomSheet(
                                         putExtra(Intent.EXTRA_STREAM, uri)
                                         putExtra(
                                             Intent.EXTRA_SUBJECT,
-                                            "Essentials Bug Report - $timeStamp",
+                                            "Toolkit Bug Report - $timeStamp",
                                         )
                                         addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                                     }
@@ -528,7 +528,7 @@ fun BugReportBottomSheet(
                             HapticUtil.performUIHaptic(view)
                             val timeStamp =
                                 SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(Date())
-                            saveReportLauncher.launch("essentials_report_$timeStamp.txt")
+                            saveReportLauncher.launch("toolkit_report_$timeStamp.txt")
                         },
                         modifier =
                             Modifier

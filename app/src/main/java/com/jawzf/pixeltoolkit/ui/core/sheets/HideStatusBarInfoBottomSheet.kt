@@ -22,7 +22,7 @@ import com.jawzf.pixeltoolkit.utils.HapticUtil
 @Composable
 fun HideStatusBarInfoBottomSheet(onDismissRequest: () -> Unit) {
     val view = LocalView.current
-    EssentialsBottomSheet(onDismissRequest = onDismissRequest) {
+    ToolkitBottomSheet(onDismissRequest = onDismissRequest) {
         Column(
             modifier =
                 Modifier

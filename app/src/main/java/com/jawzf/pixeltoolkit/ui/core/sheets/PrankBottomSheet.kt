@@ -42,7 +42,7 @@ fun PrankBottomSheet(
     var isRevealed by remember { mutableStateOf(false) }
     val view = LocalView.current
 
-    EssentialsBottomSheet(
+    ToolkitBottomSheet(
         onDismissRequest = {
             if (isRevealed) {
                 onDismissRequest()

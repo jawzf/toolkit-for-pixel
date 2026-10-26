@@ -50,7 +50,7 @@ fun GitHubAuthSheet(
     val authState by viewModel.authState
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
-    EssentialsBottomSheet(
+    ToolkitBottomSheet(
         onDismissRequest = {
             viewModel.cancelAuthFlow()
             onDismissRequest()

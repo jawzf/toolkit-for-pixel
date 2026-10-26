@@ -36,7 +36,7 @@ fun RoundedCardLazyContainer(
     val context = LocalContext.current
     val isMotionBlurEnabled =
         remember(context) {
-            context.getSharedPreferences("essentials_prefs", Context.MODE_PRIVATE)
+            context.getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE)
                 .getBoolean("motion_blur", false)
         }
     val lazyListState = rememberLazyListState()

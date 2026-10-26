@@ -106,23 +106,23 @@
     </queries>
 
     <application
-        android:name=".EssentialsApp"
+        android:name=".ToolkitApp"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:enableOnBackInvokedCallback="true"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
-        android:label="Essentials"
+        android:label="Toolkit"
         android:localeConfig="@xml/locales_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Essentials">
+        android:theme="@style/Theme.Toolkit">
 
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:label="Essentials"
-            android:theme="@style/Theme.Essentials.Splash">
+            android:label="Toolkit"
+            android:theme="@style/Theme.Toolkit.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -155,7 +155,7 @@
             android:exported="true"
             android:icon="@mipmap/ic_launcher_legacy"
             android:roundIcon="@mipmap/ic_launcher_legacy_round"
-            android:label="Essentials"
+            android:label="Toolkit"
             android:targetActivity=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -183,7 +183,7 @@
             android:exported="true"
             android:icon="@mipmap/ic_launcher_black"
             android:roundIcon="@mipmap/ic_launcher_black_round"
-            android:label="Essentials"
+            android:label="Toolkit"
             android:targetActivity=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -211,7 +211,7 @@
             android:exported="true"
             android:icon="@mipmap/ic_launcher_gta"
             android:roundIcon="@mipmap/ic_launcher_gta_round"
-            android:label="Essentials"
+            android:label="Toolkit"
             android:targetActivity=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -239,7 +239,7 @@
             android:exported="true"
             android:icon="@mipmap/ic_launcher_google"
             android:roundIcon="@mipmap/ic_launcher_google_round"
-            android:label="Essentials"
+            android:label="Toolkit"
             android:targetActivity=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -285,7 +285,7 @@
             android:label="@string/essential_search_label"
             android:launchMode="singleInstance"
             android:taskAffinity="com.jawzf.pixeltoolkit.search"
-            android:theme="@style/Theme.Essentials.WallpaperTranslucent"
+            android:theme="@style/Theme.Toolkit.WallpaperTranslucent"
             android:windowSoftInputMode="stateVisible|adjustResize" />
 
         <activity
@@ -297,24 +297,24 @@
             android:name=".FeatureSettingsActivity"
             android:exported="false"
             android:label="Feature Settings"
-            android:theme="@style/Theme.Essentials"></activity>
+            android:theme="@style/Theme.Toolkit"></activity>
 
         <activity
             android:name=".ui.activities.YourAndroidActivity"
             android:exported="false"
             android:label="@string/tab_your_android"
-            android:theme="@style/Theme.Essentials"></activity>
+            android:theme="@style/Theme.Toolkit"></activity>
 
         <activity
             android:name=".SettingsActivity"
             android:exported="false"
             android:label="Settings"
-            android:theme="@style/Theme.Essentials"></activity>
+            android:theme="@style/Theme.Toolkit"></activity>
         <activity
             android:name=".AppUpdatesActivity"
             android:exported="false"
             android:label="@string/tab_app_updates_title"
-            android:theme="@style/Theme.Essentials"></activity>
+            android:theme="@style/Theme.Toolkit"></activity>
         <activity
             android:name=".ui.activities.ColorPickerActivity"
             android:excludeFromRecents="true"
@@ -322,7 +322,7 @@
             android:launchMode="singleInstance"
             android:noHistory="true"
             android:taskAffinity=""
-            android:theme="@style/Theme.Essentials.Translucent"></activity>
+            android:theme="@style/Theme.Toolkit.Translucent"></activity>
 
 
 
@@ -332,7 +332,7 @@
             android:documentLaunchMode="always"
             android:exported="true"
             android:resizeableActivity="true"
-            android:theme="@style/Theme.Essentials">
+            android:theme="@style/Theme.Toolkit">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -343,13 +343,13 @@
             android:name=".ui.activities.AutomationEditorActivity"
             android:exported="false"
             android:label="@string/diy_editor_new_title"
-            android:theme="@style/Theme.Essentials" />
+            android:theme="@style/Theme.Toolkit" />
 
         <activity
             android:name=".ui.activities.MacroEditorActivity"
             android:exported="false"
             android:label="@string/diy_new_macro"
-            android:theme="@style/Theme.Essentials" />
+            android:theme="@style/Theme.Toolkit" />
 
 
 
@@ -360,7 +360,7 @@
             android:label="@string/freeze_shortcut_short_label"
             android:launchMode="singleTask"
             android:taskAffinity="com.jawzf.pixeltoolkit.freezing"
-            android:theme="@style/Theme.Essentials" />
+            android:theme="@style/Theme.Toolkit" />
 
         <activity-alias
             android:name=".AppFreezingLauncher"
@@ -433,7 +433,7 @@
             android:launchMode="singleInstance"
             android:noHistory="true"
             android:taskAffinity=""
-            android:theme="@style/Theme.Essentials.Translucent"
+            android:theme="@style/Theme.Toolkit.Translucent"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
@@ -478,7 +478,7 @@
             android:exported="false"
             android:noHistory="true"
             android:taskAffinity=""
-            android:theme="@style/Theme.Essentials.Translucent" />
+            android:theme="@style/Theme.Toolkit.Translucent" />
 
         <activity
             android:name=".ui.activities.ConsciousGateActivity"
@@ -486,7 +486,7 @@
             android:exported="false"
             android:noHistory="true"
             android:taskAffinity=""
-            android:theme="@style/Theme.Essentials.Translucent" />
+            android:theme="@style/Theme.Toolkit.Translucent" />
 
         <activity
             android:name=".ui.activities.TileAuthActivity"
@@ -494,7 +494,7 @@
             android:exported="false"
             android:noHistory="true"
             android:taskAffinity=""
-            android:theme="@style/Theme.Essentials.Translucent" />
+            android:theme="@style/Theme.Toolkit.Translucent" />
 
         <!-- Exported for launchers; pinned shortcuts only carry an id resolved from app storage -->
         <activity
@@ -503,7 +503,7 @@
             android:exported="true"
             android:noHistory="true"
             android:taskAffinity=""
-            android:theme="@style/Theme.Essentials.Translucent" />
+            android:theme="@style/Theme.Toolkit.Translucent" />
 
         <activity
             android:name=".ui.activities.LockscreenActionActivity"
@@ -511,7 +511,7 @@
             android:exported="false"
             android:noHistory="true"
             android:taskAffinity=""
-            android:theme="@style/Theme.Essentials.Translucent" />
+            android:theme="@style/Theme.Toolkit.Translucent" />
 
         <activity
             android:name=".ui.activities.QSPreferencesActivity"
@@ -532,7 +532,7 @@
             android:label="@string/frozen_app_shortcut_label"
             android:noHistory="true"
             android:taskAffinity=""
-            android:theme="@style/Theme.Essentials.Translucent">
+            android:theme="@style/Theme.Toolkit.Translucent">
             <intent-filter>
                 <action android:name="android.intent.action.CREATE_SHORTCUT" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -545,7 +545,7 @@
             android:exported="true"
             android:noHistory="true"
             android:taskAffinity=""
-            android:theme="@style/Theme.Essentials.Translucent" />
+            android:theme="@style/Theme.Toolkit.Translucent" />
 
         <activity
             android:name=".ui.activities.AppVolumeControlActivity"
@@ -553,7 +553,7 @@
             android:exported="false"
             android:noHistory="true"
             android:taskAffinity=""
-            android:theme="@style/Theme.Essentials.Translucent" />
+            android:theme="@style/Theme.Toolkit.Translucent" />
 
         <activity
             android:name=".ui.activities.FlashlightIntensityActivity"
@@ -561,7 +561,7 @@
             android:exported="true"
             android:noHistory="true"
             android:taskAffinity=""
-            android:theme="@style/Theme.Essentials.Translucent" />
+            android:theme="@style/Theme.Toolkit.Translucent" />
 
         <activity
             android:name=".ui.activities.RipplePositionPickerActivity"
@@ -569,7 +569,7 @@
             android:exported="false"
             android:noHistory="true"
             android:taskAffinity=""
-            android:theme="@style/Theme.Essentials.Translucent" />
+            android:theme="@style/Theme.Toolkit.Translucent" />
 
         <activity
             android:name=".ui.activities.SmartPixelsIntensityActivity"
@@ -577,7 +577,7 @@
             android:exported="true"
             android:noHistory="true"
             android:taskAffinity=""
-            android:theme="@style/Theme.Essentials.Translucent" />
+            android:theme="@style/Theme.Toolkit.Translucent" />
 
         <activity
             android:name=".ui.activities.PrivateDnsSettingsActivity"
@@ -585,7 +585,7 @@
             android:exported="true"
             android:noHistory="true"
             android:taskAffinity=""
-            android:theme="@style/Theme.Essentials.Translucent" />
+            android:theme="@style/Theme.Toolkit.Translucent" />
 
         <activity
             android:name=".ui.activities.DefaultLauncherSettingsActivity"
@@ -593,7 +593,7 @@
             android:exported="false"
             android:noHistory="true"
             android:taskAffinity=""
-            android:theme="@style/Theme.Essentials.Translucent" />
+            android:theme="@style/Theme.Toolkit.Translucent" />
 
         <activity
             android:name=".ui.activities.DebuggingSettingsActivity"
@@ -601,7 +601,7 @@
             android:exported="true"
             android:noHistory="true"
             android:taskAffinity=""
-            android:theme="@style/Theme.Essentials.Translucent" />
+            android:theme="@style/Theme.Toolkit.Translucent" />
 
         <activity
             android:name=".ui.activities.BatteryDetailsActivity"
@@ -609,7 +609,7 @@
             android:exported="true"
             android:noHistory="true"
             android:taskAffinity=""
-            android:theme="@style/Theme.Essentials.Translucent" />
+            android:theme="@style/Theme.Toolkit.Translucent" />
 
 
         <service
@@ -732,7 +732,7 @@
 
         <!-- Voice Interaction & System Digital Assistant Service -->
         <service
-            android:name=".services.EssentialsVoiceInteractionService"
+            android:name=".services.ToolkitVoiceInteractionService"
             android:exported="true"
             android:label="@string/app_name"
             android:permission="android.permission.BIND_VOICE_INTERACTION">
@@ -745,11 +745,11 @@
         </service>
 
         <service
-            android:name=".services.EssentialsVoiceInteractionSessionService"
+            android:name=".services.ToolkitVoiceInteractionSessionService"
             android:permission="android.permission.BIND_VOICE_INTERACTION" />
 
         <service
-            android:name=".services.EssentialsRecognitionService"
+            android:name=".services.ToolkitRecognitionService"
             android:exported="true"
             android:label="@string/app_name"
             android:permission="android.permission.BIND_RECOGNITION_SERVICE">
@@ -780,7 +780,7 @@
             android:exported="true"
             android:noHistory="true"
             android:taskAffinity=""
-            android:theme="@style/Theme.Essentials.Translucent">
+            android:theme="@style/Theme.Toolkit.Translucent">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
@@ -792,7 +792,7 @@
             android:exported="true"
             android:noHistory="true"
             android:taskAffinity=""
-            android:theme="@style/Theme.Essentials.Translucent">
+            android:theme="@style/Theme.Toolkit.Translucent">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
@@ -862,7 +862,7 @@
             android:exported="true"
             android:label="@string/widget_stack_settings_title"
             android:taskAffinity=""
-            android:theme="@style/Theme.Essentials.Translucent">
+            android:theme="@style/Theme.Toolkit.Translucent">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
@@ -1084,10 +1084,10 @@
                 android:value="android.service.quicksettings.CATEGORY_DISPLAY" />
         </service>
         <service
-            android:name=".services.tiles.EssentialsOnDisplayTileService"
+            android:name=".services.tiles.ToolkitOnDisplayTileService"
             android:exported="true"
             android:icon="@drawable/rounded_live_tv_24"
-            android:label="@string/tile_essentials_on_display"
+            android:label="@string/tile_toolkit_on_display"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
             <intent-filter>
                 <action android:name="android.service.quicksettings.action.QS_TILE" />
@@ -1129,7 +1129,7 @@
             android:foregroundServiceType="specialUse" />
 
         <service
-            android:name=".ime.EssentialsInputMethodService"
+            android:name=".ime.ToolkitInputMethodService"
             android:exported="true"
             android:label="@string/input_method_label"
             android:permission="android.permission.BIND_INPUT_METHOD">
@@ -1162,9 +1162,9 @@
         </service>
 
         <service
-            android:name=".services.EssentialsConditionProvider"
+            android:name=".services.ToolkitConditionProvider"
             android:exported="true"
-            android:label="Essentials Focus"
+            android:label="Toolkit Focus"
             android:permission="android.permission.BIND_CONDITION_PROVIDER_SERVICE">
             <intent-filter>
                 <action android:name="android.service.notification.ConditionProviderService" />
@@ -1529,7 +1529,7 @@
             android:name=".ui.activities.WallpaperActivity"
             android:exported="false"
             android:label="@string/feat_live_wallpaper_title"
-            android:theme="@style/Theme.Essentials" />
+            android:theme="@style/Theme.Toolkit" />
 
         <activity
             android:name=".ui.activities.LiveWallpaperActivity"

@@ -51,7 +51,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.R
 import com.jawzf.pixeltoolkit.ui.core.containers.RoundedCardContainer
-import com.jawzf.pixeltoolkit.ui.theme.EssentialsTheme
+import com.jawzf.pixeltoolkit.ui.theme.ToolkitTheme
 import com.jawzf.pixeltoolkit.utils.HapticUtil
 
 class PrivateDnsSettingsActivity : ComponentActivity() {
@@ -67,7 +67,7 @@ class PrivateDnsSettingsActivity : ComponentActivity() {
                 viewModel.check(context)
             }
             val isPitchBlackThemeEnabled by viewModel.isPitchBlackThemeEnabled
-            EssentialsTheme(pitchBlackTheme = isPitchBlackThemeEnabled) {
+            ToolkitTheme(pitchBlackTheme = isPitchBlackThemeEnabled) {
                 PrivateDnsSettingsOverlay(onDismiss = { finish() })
             }
         }

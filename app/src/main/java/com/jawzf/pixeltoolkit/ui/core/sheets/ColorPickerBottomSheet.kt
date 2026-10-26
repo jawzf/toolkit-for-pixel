@@ -62,7 +62,7 @@ fun ColorPickerBottomSheet(
             ColorFormatUtils.formatColor(colorInt, selectedFormat)
         }
 
-    EssentialsBottomSheet(
+    ToolkitBottomSheet(
         onDismissRequest = onDismissRequest,
         sheetState = sheetState,
     ) {

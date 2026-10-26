@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.R
 import com.jawzf.pixeltoolkit.ui.components.sliders.ConfigSliderItem
 import com.jawzf.pixeltoolkit.ui.core.containers.RoundedCardContainer
-import com.jawzf.pixeltoolkit.ui.core.sheets.EssentialsBottomSheet
+import com.jawzf.pixeltoolkit.ui.core.sheets.ToolkitBottomSheet
 import com.jawzf.pixeltoolkit.utils.HapticUtil
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 
@@ -27,7 +27,7 @@ fun DuoTimeOptionsBottomSheet(
 ) {
     val view = LocalView.current
 
-    EssentialsBottomSheet(
+    ToolkitBottomSheet(
         onDismissRequest = onDismissRequest,
     ) {
         Column(

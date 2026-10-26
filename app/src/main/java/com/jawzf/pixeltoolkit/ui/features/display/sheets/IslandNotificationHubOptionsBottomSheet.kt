@@ -18,7 +18,7 @@ import com.jawzf.pixeltoolkit.ui.core.cards.IconToggleItem
 import com.jawzf.pixeltoolkit.ui.core.pickers.SegmentedPicker
 import com.jawzf.pixeltoolkit.ui.components.sliders.ConfigSliderItem
 import com.jawzf.pixeltoolkit.ui.core.containers.RoundedCardContainer
-import com.jawzf.pixeltoolkit.ui.core.sheets.EssentialsBottomSheet
+import com.jawzf.pixeltoolkit.ui.core.sheets.ToolkitBottomSheet
 import com.jawzf.pixeltoolkit.utils.HapticUtil
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 
@@ -30,7 +30,7 @@ fun IslandNotificationHubOptionsBottomSheet(
 ) {
     val view = LocalView.current
 
-    EssentialsBottomSheet(onDismissRequest = onDismissRequest) {
+    ToolkitBottomSheet(onDismissRequest = onDismissRequest) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()

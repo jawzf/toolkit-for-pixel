@@ -38,7 +38,7 @@ In `res/xml/accessibility_service_config.xml`:
 * **`flagRetrieveInteractiveWindows`**: Mandatory flag allowing the service to inspect system and application window objects via `getWindows()` / `windows`.
 
 ### B. Runtime Permissions
-* The user must grant the app's **Accessibility Service** in Android System Settings (`Settings > Accessibility > Essentials`).
+* The user must grant the app's **Accessibility Service** in Android System Settings (`Settings > Accessibility > Toolkit for Pixel`).
 
 ---
 

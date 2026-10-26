@@ -41,7 +41,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.graphics.drawable.toBitmap
 import com.jawzf.pixeltoolkit.R
 import com.jawzf.pixeltoolkit.ui.core.containers.RoundedCardContainer
-import com.jawzf.pixeltoolkit.ui.core.sheets.EssentialsBottomSheet
+import com.jawzf.pixeltoolkit.ui.core.sheets.ToolkitBottomSheet
 import com.jawzf.pixeltoolkit.utils.HapticUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -88,7 +88,7 @@ fun KeyboardSelectionSheet(
         }
     }
 
-    EssentialsBottomSheet(
+    ToolkitBottomSheet(
         onDismissRequest = { onDismissRequest(defaultInputMethod) },
     ) {
         Column(

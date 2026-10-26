@@ -40,7 +40,7 @@ fun UnsupportedFeaturesConfirmationSheet(
         }
     }
 
-    EssentialsBottomSheet(
+    ToolkitBottomSheet(
         onDismissRequest = onDismissRequest,
         sheetState = sheetState,
     ) {

@@ -29,7 +29,7 @@ import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EssentialsOnDisplaySettingsUI(
+fun ToolkitOnDisplaySettingsUI(
     viewModel: MainViewModel,
     modifier: Modifier = Modifier,
     highlightSetting: String? = null,
@@ -45,14 +45,14 @@ fun EssentialsOnDisplaySettingsUI(
     if (showPermissionSheet) {
         PermissionsBottomSheet(
             onDismissRequest = { showPermissionSheet = false },
-            featureTitle = R.string.feat_essentials_on_display_title,
+            featureTitle = R.string.feat_toolkit_on_display_title,
             permissions =
                 listOf(
                     PermissionItem(
                         iconRes = R.drawable.rounded_settings_accessibility_24,
                         title = R.string.perm_accessibility_title,
-                        description = R.string.perm_accessibility_desc_essentials_on_display,
-                        dependentFeatures = listOf(R.string.feat_essentials_on_display_title),
+                        description = R.string.perm_accessibility_desc_toolkit_on_display,
+                        dependentFeatures = listOf(R.string.feat_toolkit_on_display_title),
                         actionLabel = R.string.perm_action_enable,
                         action = {
                             PermissionUtils.openAccessibilitySettings(context)
@@ -63,7 +63,7 @@ fun EssentialsOnDisplaySettingsUI(
                         iconRes = R.drawable.rounded_notifications_unread_24,
                         title = R.string.perm_notif_listener_title,
                         description = R.string.perm_notif_listener_desc_lighting,
-                        dependentFeatures = listOf(R.string.feat_essentials_on_display_title),
+                        dependentFeatures = listOf(R.string.feat_toolkit_on_display_title),
                         actionLabel = R.string.perm_action_grant,
                         action = { viewModel.requestNotificationListenerPermission(context) },
                         isGranted = isNotificationListenerEnabled,
@@ -81,24 +81,24 @@ fun EssentialsOnDisplaySettingsUI(
         RoundedCardContainer {
             IconToggleItem(
                 iconRes = R.drawable.rounded_blur_on_24,
-                title = stringResource(R.string.feat_essentials_on_display_title),
-                description = stringResource(R.string.feat_essentials_on_display_desc),
+                title = stringResource(R.string.feat_toolkit_on_display_title),
+                description = stringResource(R.string.feat_toolkit_on_display_desc),
                 isChecked = viewModel.isAmbientMusicGlanceEnabled.value,
                 onCheckedChange = { viewModel.setAmbientMusicGlanceEnabled(it) },
                 enabled = isPermissionGranted,
                 onDisabledClick = { showPermissionSheet = true },
-                modifier = Modifier.highlight(highlightSetting == "enable_essentials_on_display"),
+                modifier = Modifier.highlight(highlightSetting == "enable_toolkit_on_display"),
             )
 
             IconToggleItem(
                 iconRes = R.drawable.rounded_mobile_charge_24,
-                title = stringResource(R.string.essentials_on_display_docked_mode_title),
-                description = stringResource(R.string.essentials_on_display_docked_mode_desc),
+                title = stringResource(R.string.toolkit_on_display_docked_mode_title),
+                description = stringResource(R.string.toolkit_on_display_docked_mode_desc),
                 isChecked = viewModel.isAmbientMusicGlanceDockedModeEnabled.value,
                 onCheckedChange = { viewModel.setAmbientMusicGlanceDockedModeEnabled(it) },
                 enabled = isPermissionGranted && viewModel.isAmbientMusicGlanceEnabled.value,
                 onDisabledClick = { if (!isPermissionGranted) showPermissionSheet = true },
-                modifier = Modifier.highlight(highlightSetting == "essentials_on_display_docked_mode"),
+                modifier = Modifier.highlight(highlightSetting == "toolkit_on_display_docked_mode"),
             )
 
             androidx.compose.animation.AnimatedVisibility(
@@ -108,8 +108,8 @@ fun EssentialsOnDisplaySettingsUI(
             ) {
                 IconToggleItem(
                     iconRes = R.drawable.rounded_notification_sound_24,
-                    title = stringResource(R.string.essentials_on_display_respect_notifications_title),
-                    description = stringResource(R.string.essentials_on_display_respect_notifications_desc),
+                    title = stringResource(R.string.toolkit_on_display_respect_notifications_title),
+                    description = stringResource(R.string.toolkit_on_display_respect_notifications_desc),
                     isChecked = viewModel.isAmbientMusicGlanceRespectNotificationsEnabled.value,
                     onCheckedChange = {
                         viewModel.setAmbientMusicGlanceRespectNotificationsEnabled(
@@ -121,7 +121,7 @@ fun EssentialsOnDisplaySettingsUI(
         }
 
         Text(
-            text = stringResource(R.string.essentials_on_display_album_art_title),
+            text = stringResource(R.string.toolkit_on_display_album_art_title),
             style = MaterialTheme.typography.titleMedium,
             modifier = Modifier.padding(start = 16.dp, top = 16.dp, bottom = 8.dp),
             color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -130,7 +130,7 @@ fun EssentialsOnDisplaySettingsUI(
         AlbumArtModePicker(
             selectedMode = viewModel.ambientMusicGlanceAlbumArtMode.value,
             onModeSelected = { viewModel.setAmbientMusicGlanceAlbumArtMode(it) },
-            modifier = Modifier.highlight(highlightSetting == "essentials_on_display_album_art"),
+            modifier = Modifier.highlight(highlightSetting == "toolkit_on_display_album_art"),
         )
 
         androidx.compose.animation.AnimatedVisibility(
@@ -149,8 +149,8 @@ fun EssentialsOnDisplaySettingsUI(
                 RoundedCardContainer {
                     IconToggleItem(
                         iconRes = R.drawable.outline_interests_24,
-                        title = stringResource(R.string.essentials_on_display_random_shapes_title),
-                        description = stringResource(R.string.essentials_on_display_random_shapes_desc),
+                        title = stringResource(R.string.toolkit_on_display_random_shapes_title),
+                        description = stringResource(R.string.toolkit_on_display_random_shapes_desc),
                         isChecked = viewModel.isAmbientMusicGlanceRandomShapesEnabled.value,
                         onCheckedChange = { viewModel.setAmbientMusicGlanceRandomShapesEnabled(it) },
                     )
@@ -165,7 +165,7 @@ fun EssentialsOnDisplaySettingsUI(
         ) {
             Column {
                 Text(
-                    text = stringResource(R.string.essentials_on_display_clock_title),
+                    text = stringResource(R.string.toolkit_on_display_clock_title),
                     style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier.padding(start = 16.dp, top = 16.dp, bottom = 8.dp),
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -218,8 +218,8 @@ fun EssentialsOnDisplaySettingsUI(
                 RoundedCardContainer {
                     IconToggleItem(
                         iconRes = R.drawable.rounded_battery_android_frame_plus_24,
-                        title = stringResource(R.string.essentials_on_display_force_fill_while_charging_title),
-                        description = stringResource(R.string.essentials_on_display_force_fill_while_charging_desc),
+                        title = stringResource(R.string.toolkit_on_display_force_fill_while_charging_title),
+                        description = stringResource(R.string.toolkit_on_display_force_fill_while_charging_desc),
                         isChecked = viewModel.isAmbientMusicGlanceForceFillWhileChargingEnabled.value,
                         onCheckedChange = {
                             viewModel.setAmbientMusicGlanceForceFillWhileChargingEnabled(

@@ -23,7 +23,7 @@ class InputEventReader(
         try {
             process =
                 com.jawzf.pixeltoolkit.utils.ShellUtils.newProcess(
-                    com.jawzf.pixeltoolkit.EssentialsApp.context,
+                    com.jawzf.pixeltoolkit.ToolkitApp.context,
                     arrayOf("cat", devicePath),
                 )
             inputStream = process?.inputStream

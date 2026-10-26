@@ -41,7 +41,7 @@ import com.jawzf.pixeltoolkit.domain.controller.ZenModeController
 import com.jawzf.pixeltoolkit.domain.diy.Action
 import com.jawzf.pixeltoolkit.ui.core.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.ui.core.pickers.SegmentedPicker
-import com.jawzf.pixeltoolkit.ui.core.sheets.EssentialsBottomSheet
+import com.jawzf.pixeltoolkit.ui.core.sheets.ToolkitBottomSheet
 import com.jawzf.pixeltoolkit.utils.HapticUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -69,7 +69,7 @@ fun SetModeSettingsSheet(
             }
     }
 
-    EssentialsBottomSheet(
+    ToolkitBottomSheet(
         onDismissRequest = onDismiss,
     ) {
         Column(

@@ -8,7 +8,7 @@ import com.jawzf.pixeltoolkit.ui.features.display.ISLAND_VISUALS_FEATURE_ID
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import com.jawzf.pixeltoolkit.EssentialsApp
+import com.jawzf.pixeltoolkit.ToolkitApp
 import com.jawzf.pixeltoolkit.FeatureSettingsActivity
 import com.jawzf.pixeltoolkit.R
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
@@ -330,12 +330,12 @@ object FeatureRegistry {
                 ) {}
             },
             object : Feature(
-                id = "Essentials On Display",
-                title = R.string.feat_essentials_on_display_title,
+                id = "Toolkit On Display",
+                title = R.string.feat_toolkit_on_display_title,
                 iconRes = R.drawable.rounded_music_video_24,
                 category = R.string.cat_interface,
-                description = R.string.feat_essentials_on_display_desc,
-                aboutDescription = R.string.about_desc_essentials_on_display,
+                description = R.string.feat_toolkit_on_display_desc,
+                aboutDescription = R.string.about_desc_toolkit_on_display,
                 permissionKeys = listOf("ACCESSIBILITY", "NOTIFICATION_LISTENER"),
                 hasMoreSettings = true,
                 showToggle = true,
@@ -1105,7 +1105,7 @@ object FeatureRegistry {
                 description = R.string.feat_maps_power_saving_desc,
                 aboutDescription = R.string.about_desc_maps_power_saving,
                 permissionKeys =
-                    if (ShellUtils.isRootEnabled(EssentialsApp.context)) {
+                    if (ShellUtils.isRootEnabled(ToolkitApp.context)) {
                         listOf(
                             "ROOT",
                             "NOTIFICATION_LISTENER",
@@ -1778,7 +1778,7 @@ object FeatureRegistry {
                 description = R.string.feat_button_remap_desc,
                 aboutDescription = R.string.about_desc_button_remap,
                 permissionKeys =
-                    if (ShellUtils.isRootEnabled(EssentialsApp.context)) {
+                    if (ShellUtils.isRootEnabled(ToolkitApp.context)) {
                         listOf(
                             "ACCESSIBILITY",
                             "ROOT",
@@ -1988,7 +1988,7 @@ object FeatureRegistry {
                     get() =
                         if (com.jawzf.pixeltoolkit.data.repository
                                 .SettingsRepository(
-                                    EssentialsApp.context,
+                                    ToolkitApp.context,
                                 ).getBoolean(com.jawzf.pixeltoolkit.data.repository.SettingsRepository.KEY_USE_USAGE_ACCESS)
                         ) {
                             listOf("USAGE_STATS", "WRITE_SECURE_SETTINGS")
@@ -2114,7 +2114,7 @@ object FeatureRegistry {
             ) {
                 override val permissionKeys: List<String>
                     get() =
-                        if (ShellUtils.isRootEnabled(EssentialsApp.context)) {
+                        if (ShellUtils.isRootEnabled(ToolkitApp.context)) {
                             listOf(
                                 "ROOT",
                             )
@@ -2164,7 +2164,7 @@ object FeatureRegistry {
                     get() =
                         if (com.jawzf.pixeltoolkit.data.repository
                                 .SettingsRepository(
-                                    EssentialsApp.context,
+                                    ToolkitApp.context,
                                 ).getBoolean(com.jawzf.pixeltoolkit.data.repository.SettingsRepository.KEY_USE_USAGE_ACCESS)
                         ) {
                             listOf("USAGE_STATS", "ACCESSIBILITY")
@@ -2225,7 +2225,7 @@ object FeatureRegistry {
                     get() =
                         if (com.jawzf.pixeltoolkit.data.repository
                                 .SettingsRepository(
-                                    EssentialsApp.context,
+                                    ToolkitApp.context,
                                 ).getBoolean(com.jawzf.pixeltoolkit.data.repository.SettingsRepository.KEY_USE_USAGE_ACCESS)
                         ) {
                             listOf("USAGE_STATS", "ACCESSIBILITY")
@@ -2281,7 +2281,7 @@ object FeatureRegistry {
                 description = R.string.feat_freeze_desc,
                 aboutDescription = R.string.about_desc_freeze,
                 permissionKeys =
-                    if (ShellUtils.isRootEnabled(EssentialsApp.context)) {
+                    if (ShellUtils.isRootEnabled(ToolkitApp.context)) {
                         listOf(
                             "ROOT",
                             "USAGE_STATS",
@@ -2492,7 +2492,7 @@ object FeatureRegistry {
                 aboutDescription = R.string.about_desc_mono_audio_tile,
                 searchTargetFeatureId = "Quick settings tiles",
                 permissionKeys =
-                    if (ShellUtils.isRootEnabled(EssentialsApp.context)) {
+                    if (ShellUtils.isRootEnabled(ToolkitApp.context)) {
                         listOf("ROOT")
                     } else {
                         listOf(

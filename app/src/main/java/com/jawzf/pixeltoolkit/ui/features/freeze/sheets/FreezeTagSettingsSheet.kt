@@ -56,7 +56,7 @@ fun FreezeTagSettingsSheet(
     var selectedMode by remember { mutableStateOf(initialAction.mode) }
     var selectedTagIds by remember { mutableStateOf(initialAction.tagIds.toSet()) }
 
-    EssentialsBottomSheet(
+    ToolkitBottomSheet(
         onDismissRequest = onDismiss,
     ) {
         Column(

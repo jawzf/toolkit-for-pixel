@@ -31,7 +31,7 @@ import com.jawzf.pixeltoolkit.domain.diy.Action
 import com.jawzf.pixeltoolkit.ui.components.sliders.ConfigSliderItem
 import com.jawzf.pixeltoolkit.ui.core.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.ui.core.pickers.SegmentedPicker
-import com.jawzf.pixeltoolkit.ui.core.sheets.EssentialsBottomSheet
+import com.jawzf.pixeltoolkit.ui.core.sheets.ToolkitBottomSheet
 import com.jawzf.pixeltoolkit.utils.HapticUtil
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -48,7 +48,7 @@ fun SetVolumeSettingsSheet(
 
     val channels = Action.VolumeChannel.entries
 
-    EssentialsBottomSheet(
+    ToolkitBottomSheet(
         onDismissRequest = onDismiss,
     ) {
         Column(

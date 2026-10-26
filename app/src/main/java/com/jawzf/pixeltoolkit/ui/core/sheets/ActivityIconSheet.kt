@@ -97,7 +97,7 @@ fun ActivityIconSheet(
             }
     }
 
-    EssentialsBottomSheet(onDismissRequest = onDismiss) {
+    ToolkitBottomSheet(onDismissRequest = onDismiss) {
         Column(
             modifier =
                 Modifier

@@ -70,7 +70,7 @@ class SoundModeTileService : BaseTileService() {
     override fun getTileSubtitle(): String = if (hasFeaturePermission()) "Mode" else getString(R.string.permission_missing)
 
     override fun hasFeaturePermission(): Boolean {
-        val prefs = getSharedPreferences("essentials_prefs", Context.MODE_PRIVATE)
+        val prefs = getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE)
         val useShizuku = prefs.getBoolean("sound_mode_use_shizuku", true)
         if (useShizuku && ShizukuUtils.isShizukuAvailable() && ShizukuUtils.hasPermission()) {
             return true

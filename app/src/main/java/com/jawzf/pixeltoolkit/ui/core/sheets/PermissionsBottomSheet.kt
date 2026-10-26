@@ -75,7 +75,7 @@ fun PermissionsBottomSheet(
         }
     }
 
-    EssentialsBottomSheet(
+    ToolkitBottomSheet(
         onDismissRequest = onDismissRequest,
     ) {
         Column(

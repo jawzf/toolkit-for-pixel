@@ -47,7 +47,7 @@ fun SendNotificationSettingsSheet(
     var body by remember { mutableStateOf(initialAction.body) }
     var label by remember { mutableStateOf(initialAction.label) }
 
-    EssentialsBottomSheet(onDismissRequest = onDismiss) {
+    ToolkitBottomSheet(onDismissRequest = onDismiss) {
         Column(
             modifier =
                 Modifier

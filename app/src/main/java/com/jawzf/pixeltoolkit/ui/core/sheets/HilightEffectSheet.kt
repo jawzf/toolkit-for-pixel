@@ -187,7 +187,7 @@ fun HilightEffectSheet(
     val view = LocalView.current
     var effect by remember { mutableStateOf(initialEffect) }
 
-    EssentialsBottomSheet(onDismissRequest = onDismiss) {
+    ToolkitBottomSheet(onDismissRequest = onDismiss) {
         Column(
             modifier =
                 Modifier

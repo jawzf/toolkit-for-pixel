@@ -10,7 +10,7 @@ import com.jawzf.pixeltoolkit.ui.activities.TileAuthActivity
 
 class ScreenLockedSecurityTileService : BaseTileService() {
     override fun onTileClick() {
-        val prefs = getSharedPreferences("essentials_prefs", MODE_PRIVATE)
+        val prefs = getSharedPreferences("toolkit_prefs", MODE_PRIVATE)
         val isEnabled = prefs.getBoolean("screen_locked_security_enabled", false)
 
         val intent =
@@ -50,7 +50,7 @@ class ScreenLockedSecurityTileService : BaseTileService() {
 
     override fun getTileState(): Int {
         val enabled =
-            getSharedPreferences("essentials_prefs", MODE_PRIVATE)
+            getSharedPreferences("toolkit_prefs", MODE_PRIVATE)
                 .getBoolean("screen_locked_security_enabled", false)
         return if (enabled) Tile.STATE_ACTIVE else Tile.STATE_INACTIVE
     }

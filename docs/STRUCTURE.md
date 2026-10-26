@@ -1,6 +1,6 @@
 # Project Directory & Package Structure
 
-This document outlines the package layout and file organization of the Essentials Android app following the **Feature-Modular Architecture** refactor.
+This document outlines the package layout and file organization of the Toolkit for Pixel Android app following the **Feature-Modular Architecture** refactor.
 
 ---
 
@@ -9,7 +9,7 @@ This document outlines the package layout and file organization of the Essential
 ```
 app/src/main/java/com/jawzf/pixeltoolkit/
 ├── MainActivity.kt                  # Root Activity launching main Jetpack Compose UI
-├── EssentialsApp.kt                 # Application subclass handling Sentry & global initialization
+├── ToolkitApp.kt                 # Application subclass handling Sentry & global initialization
 ├── data/                            # Data access, repositories, preferences, and data sources
 │   ├── model/                       # Data models & DTOs
 │   └── repository/                  # Repositories (SettingsRepository, GitHubRepository, etc.)
@@ -29,7 +29,7 @@ app/src/main/java/com/jawzf/pixeltoolkit/
 │   │   ├── cards/                   # Material 3 cards (IconToggleItem, FeatureCard, etc.)
 │   │   ├── containers/              # Card container layouts (RoundedCardContainer, etc.)
 │   │   ├── pickers/                 # Segmented and multi-select pickers
-│   │   └── sheets/                  # Standard bottom sheets (EssentialsBottomSheet, etc.)
+│   │   └── sheets/                  # Standard bottom sheets (ToolkitBottomSheet, etc.)
 │   └── features/                    # Feature-based UI modules
 │       ├── apps/                    # App standby & user dictionary controls
 │       ├── audio/                   # ShutUp media ducking & sound mode tiles
