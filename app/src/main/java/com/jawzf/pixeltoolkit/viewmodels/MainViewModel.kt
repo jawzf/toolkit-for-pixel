@@ -598,12 +598,6 @@ class MainViewModel : ViewModel() {
     val isLongPressSymbolsEnabled = mutableStateOf(false)
     val isAccentedCharactersEnabled = mutableStateOf(false)
 
-    // AirSync Bridge
-    val isAirSyncConnectionEnabled = mutableStateOf(false)
-    val macBatteryLevel = mutableIntStateOf(-1)
-    val isMacBatteryCharging = mutableStateOf(false)
-    val macBatteryLastUpdated = mutableStateOf(0L)
-    val isMacConnected = mutableStateOf(false)
     val batteryWidgetMaxDevices = mutableIntStateOf(8)
     val isBatteryWidgetBackgroundEnabled = mutableStateOf(true)
     val isAmbientMusicGlanceDockedModeEnabled = mutableStateOf(false)
@@ -1237,26 +1231,6 @@ class MainViewModel : ViewModel() {
 
                     SettingsRepository.KEY_KEYBOARD_ACCENTED_CHARACTERS ->
                         isAccentedCharactersEnabled.value =
-                            settingsRepository.getBoolean(key, false)
-
-                    SettingsRepository.KEY_AIRSYNC_CONNECTION_ENABLED ->
-                        isAirSyncConnectionEnabled.value =
-                            settingsRepository.getBoolean(key)
-
-                    SettingsRepository.KEY_MAC_BATTERY_LEVEL ->
-                        macBatteryLevel.intValue =
-                            settingsRepository.getInt(key, -1)
-
-                    SettingsRepository.KEY_MAC_BATTERY_IS_CHARGING ->
-                        isMacBatteryCharging.value =
-                            settingsRepository.getBoolean(key, false)
-
-                    SettingsRepository.KEY_MAC_BATTERY_LAST_UPDATED ->
-                        macBatteryLastUpdated.value =
-                            settingsRepository.getLong(key, 0L)
-
-                    SettingsRepository.KEY_AIRSYNC_MAC_CONNECTED ->
-                        isMacConnected.value =
                             settingsRepository.getBoolean(key, false)
 
                     SettingsRepository.KEY_BATTERY_WIDGET_MAX_DEVICES ->
@@ -2768,9 +2742,6 @@ class MainViewModel : ViewModel() {
                 false,
             )
 
-        isAirSyncConnectionEnabled.value =
-            settingsRepository.getBoolean(SettingsRepository.KEY_AIRSYNC_CONNECTION_ENABLED)
-
         // April Fools Check
         isAprilFoolsShown.value =
             settingsRepository.getBoolean(SettingsRepository.KEY_APRIL_FOOLS_SHOWN)
@@ -2782,15 +2753,6 @@ class MainViewModel : ViewModel() {
                 isAprilFoolsSheetVisible.value = true
             }
         }
-
-        macBatteryLevel.intValue =
-            settingsRepository.getInt(SettingsRepository.KEY_MAC_BATTERY_LEVEL, -1)
-        isMacBatteryCharging.value =
-            settingsRepository.getBoolean(SettingsRepository.KEY_MAC_BATTERY_IS_CHARGING, false)
-        macBatteryLastUpdated.value =
-            settingsRepository.getLong(SettingsRepository.KEY_MAC_BATTERY_LAST_UPDATED, 0L)
-        isMacConnected.value =
-            settingsRepository.getBoolean(SettingsRepository.KEY_AIRSYNC_MAC_CONNECTED, false)
 
         isBluetoothDevicesEnabled.value =
             settingsRepository.getBoolean(SettingsRepository.KEY_SHOW_BLUETOOTH_DEVICES, false)
@@ -7889,24 +7851,6 @@ class MainViewModel : ViewModel() {
     ) {
         isKeyboardClipboardEnabled.value = enabled
         settingsRepository.putBoolean(SettingsRepository.KEY_KEYBOARD_CLIPBOARD_ENABLED, enabled)
-    }
-
-    /**
-     * Executes the set air sync connection enabled operation.
-     *
-     * @param enabled [Boolean] Target enabled.
-     * @param context [Context] Target context.
-     */
-    fun setAirSyncConnectionEnabled(
-        enabled: Boolean,
-        context: Context,
-    ) {
-        if (enabled) {
-            // Request permission if not granted, though it's signature level so should be automatic if signed correctly
-            // but we can check it
-        }
-        isAirSyncConnectionEnabled.value = enabled
-        settingsRepository.putBoolean(SettingsRepository.KEY_AIRSYNC_CONNECTION_ENABLED, enabled)
     }
 
     /**

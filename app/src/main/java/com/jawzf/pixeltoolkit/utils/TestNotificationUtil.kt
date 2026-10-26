@@ -107,7 +107,7 @@ object TestNotificationUtil {
             iconLetter = "G",
             sampleSenders = listOf("GitHub Actions", "Dependabot", "Octocat", "Code Review"),
             sampleTitles = listOf(
-                "airsync-android: PR #42 merged",
+                "toolkit-for-pixel: PR #42 merged",
                 "Security vulnerability in gradle wrapper",
                 "Review requested on 'Dynamic Island actions'",
                 "Workflow run completed: CI / Build"

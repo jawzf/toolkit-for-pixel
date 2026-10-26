@@ -106,14 +106,6 @@ class BatteriesWidget : GlanceAppWidget() {
             batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_STATUS) == BatteryManager.BATTERY_STATUS_CHARGING
         items += Item(BluetoothDeviceOrder.PHONE, phoneLevel, R.drawable.rounded_mobile_24, statusIcon(phoneLevel, phoneCharging, ChargeLimitUtil.isShielded(context, phoneLevel, phoneCharging)))
 
-        val macEnabled = prefs[booleanPreferencesKey(SettingsRepository.KEY_AIRSYNC_CONNECTION_ENABLED)] ?: false
-        val macConnected = prefs[booleanPreferencesKey(SettingsRepository.KEY_AIRSYNC_MAC_CONNECTED)] ?: false
-        val macLevel = prefs[intPreferencesKey(SettingsRepository.KEY_MAC_BATTERY_LEVEL)] ?: -1
-        val macCharging = prefs[booleanPreferencesKey(SettingsRepository.KEY_MAC_BATTERY_IS_CHARGING)] ?: false
-        if (macEnabled && macConnected && macLevel != -1) {
-            items += Item(BluetoothDeviceOrder.MAC, macLevel, R.drawable.rounded_laptop_mac_24, statusIcon(macLevel, macCharging))
-        }
-
         val bluetoothEnabled = prefs[booleanPreferencesKey(SettingsRepository.KEY_SHOW_BLUETOOTH_DEVICES)] ?: false
         val bluetoothJson = prefs[stringPreferencesKey(SettingsRepository.KEY_BLUETOOTH_DEVICES_BATTERY)]
         if (bluetoothEnabled && !bluetoothJson.isNullOrEmpty() && bluetoothJson != "[]") {

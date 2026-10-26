@@ -20,7 +20,6 @@ import androidx.lifecycle.compose.LifecycleResumeEffect
 import kotlinx.coroutines.launch
 import com.jawzf.pixeltoolkit.R
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.island.remote.OvercastLink
 import com.jawzf.pixeltoolkit.island.remote.ProviderDiscovery
 import com.jawzf.pixeltoolkit.island.remote.ProviderInfo
 import com.jawzf.pixeltoolkit.island.remote.ProviderPairing
@@ -41,7 +40,6 @@ fun IslandProvidersSection(onChanged: () -> Unit = {}) {
         onPauseOrDispose {}
     }
     val providers = remember(refresh) { ProviderDiscovery.query(context) }
-    val showOvercast = providers.none { it.packageName == OvercastLink.PACKAGE }
     var pending by remember { mutableStateOf<ProviderInfo?>(null) }
     var busy by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
@@ -70,17 +68,6 @@ fun IslandProvidersSection(onChanged: () -> Unit = {}) {
                     onChanged()
                 },
                 onSettingsClick = { ProviderDiscovery.openSettings(context, provider) },
-            )
-        }
-        if (showOvercast) {
-            IconToggleItem(
-                iconRes = R.drawable.rounded_partly_cloudy_day_24,
-                title = stringResource(R.string.app_overcast),
-                showToggle = false,
-                onClick = {
-                    HapticUtil.performVirtualKeyHaptic(view)
-                    if (OvercastLink.isInstalled(context)) OvercastLink.openApp(context) else OvercastLink.openInstallPage(context)
-                },
             )
         }
     }

@@ -725,13 +725,6 @@ private object BriefDevicesCache {
 private fun readDevices(context: Context): List<BriefDevice> {
     val settings = SettingsRepository(context)
     val devices = mutableListOf<BriefDevice>()
-    val macLevel = settings.getInt(SettingsRepository.KEY_MAC_BATTERY_LEVEL, -1)
-    if (settings.getBoolean(SettingsRepository.KEY_AIRSYNC_CONNECTION_ENABLED) &&
-        settings.getBoolean(SettingsRepository.KEY_AIRSYNC_MAC_CONNECTED) &&
-        macLevel >= 0
-    ) {
-        devices += BriefDevice(BluetoothDeviceOrder.MAC, R.drawable.rounded_laptop_mac_24, macLevel)
-    }
     val hasPermission = Build.VERSION.SDK_INT < Build.VERSION_CODES.S ||
         context.checkSelfPermission(Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_GRANTED
     if (hasPermission && settings.isBluetoothDevicesEnabled()) {
