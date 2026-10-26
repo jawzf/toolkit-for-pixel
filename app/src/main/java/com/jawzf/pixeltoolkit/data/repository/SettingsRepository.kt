@@ -309,10 +309,6 @@ class SettingsRepository(
         const val KEY_CIRCLE_TO_SEARCH_GESTURE_HEIGHT = "circle_to_search_gesture_height"
         const val KEY_CIRCLE_TO_SEARCH_GESTURE_WIDTH = "circle_to_search_gesture_width"
         const val KEY_CIRCLE_TO_SEARCH_PREVIEW_ENABLED = "circle_to_search_preview_enabled"
-        const val KEY_AUTO_UPDATE_ENABLED = "auto_update_enabled"
-        const val KEY_UPDATE_NOTIFICATION_ENABLED = "update_notification_enabled"
-        const val KEY_LAST_UPDATE_CHECK_TIME = "last_update_check_time"
-        const val KEY_CHECK_PRE_RELEASES_ENABLED = "check_pre_releases_enabled"
 
         const val KEY_APP_LOCK_ENABLED = "app_lock_enabled"
         const val KEY_APP_LOCK_SELECTED_APPS = "app_lock_selected_apps"
@@ -453,7 +449,6 @@ class SettingsRepository(
         const val KEY_ONBOARDING_COMPLETED = "onboarding_completed"
         const val KEY_PRIVATE_DNS_PRESETS = "private_dns_presets"
         const val KEY_APRIL_FOOLS_SHOWN = "april_fools_shown"
-        const val KEY_WHATS_NEW_LAST_SHOWN_COUNTER = "whats_new_last_shown_counter"
         const val KEY_SCALE_ANIMATIONS_MODE = "scale_animations_mode"
         const val KEY_SCALE_ANIMATIONS_DEFAULT_PROFILE = "scale_animations_default_profile"
         const val KEY_SCALE_ANIMATIONS_GLOVE_PROFILE = "scale_animations_glove_profile"

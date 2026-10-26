@@ -30,14 +30,6 @@
     <string name="screen_off_widget_label">Empty screen off widget</string>
     <string name="app_freezing_tile_label">App Freezing</string>
     <string name="flashlight_pulse_tile_label">Flashlight Pulse</string>
-    <string name="check_pre_releases_label">Check for pre-releases</string>
-    <string name="check_pre_releases_desc">Might be unstable</string>
-    <string name="pre_release_enable_sheet_title">Enable pre-releases?</string>
-    <string name="pre_release_enable_sheet_desc">Pre-release builds contain experimental features and might be unstable or introduce bugs.\n\nIt is recommended to take a config backup after the app restarts, from developer options.</string>
-    <string name="pre_release_disable_sheet_title">Disable pre-releases?</string>
-    <string name="pre_release_disable_sheet_desc">Switch back to receiving only verified stable updates.</string>
-    <string name="pre_release_restart_notice">The app must restart to apply this update channel change cleanly.</string>
-    <string name="action_restart_app">Restart app</string>
     <string name="label_default_tab">Default tab</string>
     <string name="setting_app_icon_title">App icon</string>
     <string name="setting_app_icon_desc">Customize the home screen launcher icon</string>
@@ -1187,9 +1179,7 @@
     <string name="btn_export_config">Export Config</string>
     <string name="btn_import_config">Import Config</string>
     <string name="btn_reset_onboarding">Reset onboarding</string>
-    <string name="btn_reset_update_note">Reset update note</string>
     <string name="toast_onboarding_reset">Onboarding reset</string>
-    <string name="toast_update_note_reset">Update note reset</string>
     <string name="label_developer_options">Developer Options</string>
     <string name="label_wallpaper_update">Wallpaper Update</string>
     <string name="btn_wallpaper_desktop">Desktop</string>
@@ -1217,12 +1207,7 @@
     <string name="haptic_mode_enabled">Enabled</string>
     <string name="haptic_mode_stronger">Stronger</string>
     <string name="label_updates">Updates</string>
-    <string name="label_auto_check_updates">Auto check for updates</string>
-    <string name="desc_auto_check_updates">Check for updates at app launch</string>
     <string name="action_all_set">All Set</string>
-    <string name="action_check_whats_new">Check What\'s New?</string>
-    <string name="welcome_back_title">Welcome back to Essentials</string>
-    <string name="action_see_whats_new">See what\'s new</string>
     <string name="label_mode_default">Default</string>
     <string name="label_mode_glove">Glove mode</string>
     <string name="tile_scale_animations">Glove Mode</string>
@@ -1241,8 +1226,6 @@
     <string name="tile_restart_systemui">SystemUI Restart</string>
     <string name="tile_restart_systemui_subtitle_restart">Now</string>
     <string name="about_desc_restart_systemui_tile">Easily restart SystemUI directly from your Quick Settings panel. Helpful to quickly resolve status bar glitches or apply system UI modifications immediately. Requires root or Shizuku shell access.</string>
-    <string name="msg_error_load_release_notes">Couldn\'t load the release note</string>
-    <string name="action_view_on_web">View on web</string>
 
     <string name="action_done">Done</string>
     <string name="action_preview">Preview</string>
@@ -1293,7 +1276,6 @@
     <string name="about_desc_usb_debugging">Toggle USB Debugging.\n\nEnable or disable ADB debugging access directly from the quick settings.</string>
     <string name="about_desc_color_picker">Launch the eye dropper tool to pick colors introduced in Android 17 BETA 2</string>
     <string name="about_desc_charge_optimization">Optimize your battery life by limiting the maximum charge or using adaptive charging. This is specially designed for Pixel devices to ensure longevity and healthy charging cycles.\n\nCredits: TebbeUbben/ChargeQuickTile</string>
-    <string name="action_download">Download</string>
 
     <!-- DIY Section -->
     <string name="diy_trigger_screen_off">Screen Off</string>
@@ -1628,12 +1610,6 @@
     <string name="automation_paused_title">Automation paused</string>
     <string name="automation_paused_text">%1$s kept triggering itself, so it was turned off.</string>
     <string name="automation_paused_reenable">Re-enable</string>
-    <string name="update_channel_name">App Updates</string>
-    <string name="update_channel_desc">Notifications for new app updates</string>
-    <string name="notification_update_available">Update Available!</string>
-    <string name="notification_update_subtext">Check out what\'s new in Essentials v%1$s</string>
-    <string name="action_update_to_version">Update to Essentials v%1$s</string>
-    <string name="action_check_for_updates">Check for updates</string>
     <string name="battery_notification_no_devices">No devices connected</string>
 
     <string name="label_unknown">Unknown</string>
@@ -3467,8 +3443,6 @@
     <string name="watchface_promo_step3_title">Install on Watch</string>
     <string name="watchface_promo_step3_desc">Open the Play Store listing directly on your watch to install</string>
     <string name="watchface_promo_step3_action">Open on Watch</string>
-
-    <string name="whats_new_previous_updates">From previous updates</string>
 
     <!-- Overcast Separation What's New -->
     <string name="whats_new_feature_tags_title">New: Feature tags and what they mean</string>

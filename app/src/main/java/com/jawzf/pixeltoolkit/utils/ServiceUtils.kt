@@ -3,21 +3,14 @@ package com.jawzf.pixeltoolkit.utils
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import androidx.work.Constraints
-import androidx.work.ExistingPeriodicWorkPolicy
-import androidx.work.NetworkType
-import androidx.work.PeriodicWorkRequestBuilder
-import androidx.work.WorkManager
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.domain.diy.Automation
 import com.jawzf.pixeltoolkit.domain.diy.DIYRepository
 import com.jawzf.pixeltoolkit.services.AppDetectionService
-import com.jawzf.pixeltoolkit.services.AppUpdateWorker
 import com.jawzf.pixeltoolkit.services.BatteryNotificationService
 import com.jawzf.pixeltoolkit.services.widgets.StackHost
 import com.jawzf.pixeltoolkit.utils.SimCarrierUtil
 import com.jawzf.pixeltoolkit.utils.ShellUtils
-import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -34,7 +27,6 @@ object ServiceUtils {
         CoroutineScope(Dispatchers.IO).launch {
             startAppDetectionServiceIfNeeded(context, settingsRepository)
             startBatteryNotificationServiceIfNeeded(context, settingsRepository)
-            schedulePeriodicAppUpdateCheck(context, settingsRepository)
         }
         applyPostRebootSettings(context, settingsRepository)
         StackHost.startIfNeeded(context)
@@ -148,36 +140,6 @@ object ServiceUtils {
             } catch (e: Exception) {
                 e.printStackTrace()
             }
-        }
-    }
-
-    fun schedulePeriodicAppUpdateCheck(
-        context: Context,
-        settingsRepository: SettingsRepository,
-    ) {
-        val isAutoUpdateEnabled =
-            settingsRepository.getBoolean(
-                SettingsRepository.KEY_AUTO_UPDATE_ENABLED,
-                true,
-            )
-        if (isAutoUpdateEnabled) {
-            val constraints =
-                Constraints
-                    .Builder()
-                    .setRequiredNetworkType(NetworkType.CONNECTED)
-                    .build()
-
-            val workRequest =
-                PeriodicWorkRequestBuilder<AppUpdateWorker>(
-                    12,
-                    TimeUnit.HOURS,
-                ).setConstraints(constraints).build()
-
-            WorkManager.getInstance(context).enqueueUniquePeriodicWork(
-                "app_update_check_work",
-                ExistingPeriodicWorkPolicy.KEEP,
-                workRequest,
-            )
         }
     }
 }

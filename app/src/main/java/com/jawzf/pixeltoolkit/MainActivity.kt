@@ -2,8 +2,6 @@ package com.jawzf.pixeltoolkit
 
 import android.animation.ObjectAnimator
 import android.content.Intent
-import android.graphics.PorterDuff
-import android.graphics.PorterDuffColorFilter
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -51,7 +49,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
@@ -62,14 +59,6 @@ import androidx.compose.ui.zIndex
 import androidx.core.animation.doOnEnd
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
-import com.airbnb.lottie.LottieProperty
-import com.airbnb.lottie.compose.LottieAnimation
-import com.airbnb.lottie.compose.LottieCompositionSpec
-import com.airbnb.lottie.compose.LottieConstants
-import com.airbnb.lottie.compose.animateLottieCompositionAsState
-import com.airbnb.lottie.compose.rememberLottieComposition
-import com.airbnb.lottie.compose.rememberLottieDynamicProperties
-import com.airbnb.lottie.compose.rememberLottieDynamicProperty
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.domain.DIYTabs
 import com.jawzf.pixeltoolkit.domain.registry.initPermissionRegistry
@@ -250,10 +239,7 @@ class MainActivity : AppCompatActivity() {
                         stringResource(R.string.label_unknown)
                     }
 
-                    var showUpdateSheet by remember { mutableStateOf(false) }
                     var showInstructionsSheet by remember { mutableStateOf(false) }
-                    val updateInfo by viewModel.updateInfo
-                    val isUpdateAvailable by viewModel.isUpdateAvailable
 
                     var showGitHubAuthSheet by remember { mutableStateOf(false) }
                     var showNewAutomationSheet by remember { mutableStateOf(false) }
@@ -261,7 +247,6 @@ class MainActivity : AppCompatActivity() {
                     val gitHubToken by viewModel.gitHubToken
                     val gitHubUser by gitHubAuthViewModel.currentUser
                     val isOnboardingCompleted by viewModel.isOnboardingCompleted
-                    val isWhatsNewVisible by viewModel.isWhatsNewVisible
 
                     LaunchedEffect(Unit) {
                         gitHubAuthViewModel.loadCachedUser(context)
@@ -278,9 +263,6 @@ class MainActivity : AppCompatActivity() {
                         // Request notification permission if not granted (Android 13+)
                         if (!viewModel.isPostNotificationsEnabled.value) {
                             viewModel.requestNotificationPermission(this@MainActivity)
-                        }
-                        if (!viewModel.isUpdateAvailable.value) {
-                            viewModel.checkForUpdates(context, manual = true)
                         }
                         updatesViewModel.loadTrackedRepos(context)
                     }
@@ -377,14 +359,6 @@ class MainActivity : AppCompatActivity() {
                         if (pagerState.currentPage >= tabs.size) {
                             pagerState.scrollToPage(0)
                         }
-                    }
-
-                    if (showUpdateSheet) {
-                        UpdateBottomSheet(
-                            updateInfo = updateInfo,
-                            isChecking = viewModel.isCheckingUpdate.value,
-                            onDismissRequest = { showUpdateSheet = false },
-                        )
                     }
 
                     if (showInstructionsSheet) {
@@ -768,50 +742,6 @@ class MainActivity : AppCompatActivity() {
                                                                 .padding(4.dp),
                                                     )
                                                 }
-                                            } else if (isUpdateAvailable &&
-                                                (currentTab == DIYTabs.ESSENTIALS || currentTab == DIYTabs.FREEZE)
-                                            ) {
-                                                Badge(
-                                                    modifier =
-                                                        Modifier
-                                                            .align(Alignment.TopEnd)
-                                                            .offset(x = 6.dp, y = (-6).dp)
-                                                            .size(28.dp),
-                                                    containerColor = MaterialTheme.colorScheme.error,
-                                                    contentColor = MaterialTheme.colorScheme.onError,
-                                                ) {
-                                                    val composition by rememberLottieComposition(
-                                                        LottieCompositionSpec.RawRes(R.raw.update_motion),
-                                                    )
-                                                    val progress by animateLottieCompositionAsState(
-                                                        composition = composition,
-                                                        iterations = LottieConstants.IterateForever,
-                                                    )
-                                                    val onErrorColor =
-                                                        MaterialTheme.colorScheme.onError
-                                                    val dynamicProperties =
-                                                        rememberLottieDynamicProperties(
-                                                            rememberLottieDynamicProperty(
-                                                                property = LottieProperty.COLOR_FILTER,
-                                                                value =
-                                                                    PorterDuffColorFilter(
-                                                                        onErrorColor.toArgb(),
-                                                                        PorterDuff.Mode.SRC_ATOP,
-                                                                    ),
-                                                                keyPath = arrayOf("**"),
-                                                            ),
-                                                        )
-
-                                                    LottieAnimation(
-                                                        composition = composition,
-                                                        progress = { progress },
-                                                        dynamicProperties = dynamicProperties,
-                                                        modifier =
-                                                            Modifier
-                                                                .fillMaxSize()
-                                                                .padding(2.dp),
-                                                    )
-                                                }
                                             }
                                         }
                                     },
@@ -915,19 +845,14 @@ class MainActivity : AppCompatActivity() {
                         }
 
                         androidx.compose.animation.AnimatedVisibility(
-                            visible = !isOnboardingCompleted || isWhatsNewVisible,
+                            visible = !isOnboardingCompleted,
                             enter = fadeIn() + slideInVertically { it },
                             exit = fadeOut() + slideOutVertically { it },
                         ) {
                             WelcomeScreen(
                                 viewModel = viewModel,
-                                isWhatsNewFlow = isWhatsNewVisible,
                                 onBeginClick = {
-                                    if (isWhatsNewVisible) {
-                                        viewModel.completeWhatsNew()
-                                    } else {
-                                        viewModel.setOnboardingCompleted(true, context)
-                                    }
+                                    viewModel.setOnboardingCompleted(true, context)
                                 },
                             )
                         }
