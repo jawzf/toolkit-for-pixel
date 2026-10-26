@@ -60,8 +60,8 @@ import androidx.core.view.WindowCompat
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.domain.DIYTabs
 import com.jawzf.pixeltoolkit.domain.registry.initPermissionRegistry
-import com.jawzf.pixeltoolkit.ui.components.ToolkitFloatingToolbar
 import com.jawzf.pixeltoolkit.ui.components.ToolbarItem
+import com.jawzf.pixeltoolkit.ui.components.ToolkitFloatingToolbar
 import com.jawzf.pixeltoolkit.ui.components.menus.SegmentedDropdownMenu
 import com.jawzf.pixeltoolkit.ui.components.menus.SegmentedDropdownMenuItem
 import com.jawzf.pixeltoolkit.ui.composables.DIYScreen
