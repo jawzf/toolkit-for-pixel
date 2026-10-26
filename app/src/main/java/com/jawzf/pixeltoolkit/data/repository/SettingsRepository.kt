@@ -360,13 +360,6 @@ class SettingsRepository(
         const val KEY_KEYBOARD_LONG_PRESS_SYMBOLS = "keyboard_long_press_symbols"
         const val KEY_KEYBOARD_ACCENTED_CHARACTERS = "keyboard_accented_characters"
 
-        // Essentials-AirSync Bridge
-        const val KEY_AIRSYNC_CONNECTION_ENABLED = "airsync_connection_enabled"
-        const val KEY_MAC_BATTERY_LEVEL = "mac_battery_level"
-        const val KEY_MAC_BATTERY_IS_CHARGING = "mac_battery_is_charging"
-        const val KEY_MAC_BATTERY_LAST_UPDATED = "mac_battery_last_updated"
-        const val KEY_AIRSYNC_MAC_CONNECTED = "airsync_mac_connected"
-
         const val KEY_BLUETOOTH_DEVICES_BATTERY = "bluetooth_devices_battery"
         const val KEY_SHOW_BLUETOOTH_DEVICES = "show_bluetooth_devices"
         const val KEY_BATTERY_SEPARATE_CHANNELS = "battery_separate_channels"
@@ -1873,8 +1866,6 @@ class SettingsRepository(
                         key == KEY_GITHUB_WORKFLOW_TOKEN ||
                         key == KEY_SHIZUKU_AUTH_TOKEN ||
                         key.startsWith(LEGACY_WEATHER_API_KEY_PREFIX) ||
-                        key.startsWith("mac_battery_") ||
-                        key == "airsync_mac_connected" ||
                         key == KEY_SNOOZE_DISCOVERED_CHANNELS ||
                         key == KEY_MAPS_DISCOVERED_CHANNELS ||
                         key == KEY_SHUT_UP_ORIGINAL_SETTINGS ||
@@ -1967,13 +1958,11 @@ class SettingsRepository(
                         KEY_GITHUB_WORKFLOW_TOKEN,
                         KEY_SHIZUKU_AUTH_TOKEN,
                         LEGACY_WEATHER_API_KEY_PREFIX,
-                        "airsync_mac_connected",
                         KEY_SNOOZE_DISCOVERED_CHANNELS,
                         KEY_MAPS_DISCOVERED_CHANNELS,
                         KEY_SHUT_UP_ORIGINAL_SETTINGS,
                     )
-                val macBatteryKeys = p.all.keys.filter { it.startsWith("mac_battery_") }
-                (keysToPreserve + macBatteryKeys).forEach { key ->
+                keysToPreserve.forEach { key ->
                     if (p.contains(key)) {
                         preservedValues[key] = p.all[key]
                     }

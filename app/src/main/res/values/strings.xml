@@ -1850,7 +1850,6 @@
     <string name="action_telegram">Telegram</string>
     <string name="action_support">Support</string>
     <string name="label_other_apps">Other Apps</string>
-    <string name="app_overcast">Overcast</string>
     <string name="island_providers_title">Island apps</string>
     <string name="island_provider_pair_title">Allow %1$s on the island?</string>
     <string name="island_provider_pair_subtitle">%1$s wants to show its content on your island.</string>
@@ -1861,7 +1860,6 @@
     <string name="island_provider_allow">Allow</string>
     <string name="island_provider_deny">Deny</string>
     <string name="island_provider_pair_failed">Couldn\'t connect to the app</string>
-    <string name="app_airsync">AirSync</string>
     <string name="app_zenzero">ZenZero</string>
     <string name="app_canvas">Canvas</string>
     <string name="app_tasks">Tasks</string>
@@ -2014,7 +2012,6 @@
     <string name="batteries_widget_label">Battery Status</string>
     <string name="connect_to_airsync">Connect to AirSync</string>
     <string name="connect_to_airsync_summary">Display battery from your connected mac device in AirSync</string>
-    <string name="download_airsync">Download AirSync App</string>
     <string name="download_airsync_summary">Required for Mac battery sync</string>
 
     <string name="feat_battery_notification_title">Battery notification</string>
@@ -2718,7 +2715,6 @@
     <string name="watch_call_sync_desc">For the launcher only</string>
     <string name="action_preview_web">Preview</string>
     <string name="action_clear">Clear</string>
-    <string name="action_send_to_mac">AirSync</string>
     <string name="watch_watchface_title">Watchface</string>
     <string name="watch_watchface_desc">Customize the watchface</string>
     <string name="watchface_category_battery">Battery &amp; Icons</string>
@@ -2771,7 +2767,6 @@
     <string name="watchface_clock_outline_title">Outline only</string>
     <string name="watchface_clock_outline_desc">Show only font outlines instead of filled text</string>
     <string name="watchface_clock_outline_thickness">Outline thickness</string>
-    <string name="app_medrop">MeDrop</string>
     <string name="action_licenses_and_credits">Licenses</string>
     <string name="licenses_credits_title">Licenses &amp; Credits</string>
     <string name="licenses_credits_subtitle">Open source projects powering Essentials</string>

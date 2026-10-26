@@ -36,10 +36,7 @@ class BatteryNotificationService : Service() {
                 sharedPreferences: SharedPreferences?,
                 key: String?,
             ) {
-                if (key == SettingsRepository.KEY_AIRSYNC_MAC_CONNECTED ||
-                    key == SettingsRepository.KEY_MAC_BATTERY_LEVEL ||
-                    key == SettingsRepository.KEY_MAC_BATTERY_IS_CHARGING ||
-                    key == SettingsRepository.KEY_BLUETOOTH_DEVICES_BATTERY ||
+                if (key == SettingsRepository.KEY_BLUETOOTH_DEVICES_BATTERY ||
                     key == SettingsRepository.KEY_SHOW_BLUETOOTH_DEVICES
                 ) {
                     updateNotification()
@@ -172,35 +169,6 @@ class BatteryNotificationService : Service() {
     private fun fetchBatteryData(): List<BatteryItemData> {
         val items = mutableListOf<BatteryItemData>()
         val maxDevices = settingsRepository.getBatteryWidgetMaxDevices()
-
-        // Mac
-        val isAirSyncEnabled =
-            settingsRepository.getBoolean(SettingsRepository.KEY_AIRSYNC_CONNECTION_ENABLED)
-        val macLevel = settingsRepository.getInt(SettingsRepository.KEY_MAC_BATTERY_LEVEL, -1)
-        val isMacConnected =
-            settingsRepository.getBoolean(SettingsRepository.KEY_AIRSYNC_MAC_CONNECTED)
-        val macIsCharging =
-            settingsRepository.getBoolean(SettingsRepository.KEY_MAC_BATTERY_IS_CHARGING)
-
-        if (isAirSyncEnabled && macLevel != -1 && isMacConnected) {
-            val statusIcon =
-                if (macIsCharging) {
-                    R.drawable.rounded_bolt_filled_24
-                } else if (macLevel <= 15) {
-                    R.drawable.rounded_battery_android_frame_alert_24
-                } else {
-                    null
-                }
-            items.add(
-                BatteryItemData(
-                    macLevel,
-                    R.drawable.rounded_laptop_mac_24,
-                    "Mac",
-                    statusIcon,
-                    BluetoothDeviceOrder.MAC,
-                ),
-            )
-        }
 
         // Bluetooth
         val isShowBluetoothEnabled =

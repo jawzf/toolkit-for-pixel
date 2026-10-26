@@ -73,11 +73,6 @@
         tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
 
-    <permission
-        android:name="com.sameerasw.permission.ESSENTIALS_AIRSYNC_BRIDGE"
-        android:protectionLevel="signature" />
-    <uses-permission android:name="com.sameerasw.permission.ESSENTIALS_AIRSYNC_BRIDGE" />
-
     <permission-group
         android:name="com.jawzf.pixeltoolkit.permission-group.EXTERNAL_CONTROL"
         android:description="@string/perm_external_control_desc"
@@ -104,7 +99,6 @@
     <uses-permission android:name="android.permission.SET_WALLPAPER" />
 
     <queries>
-        <package android:name="com.sameerasw.overcast" />
         <package android:name="eu.darken.porter" />
         <intent>
             <action android:name="com.jawzf.pixeltoolkit.island.PROVIDER" />
@@ -1441,15 +1435,6 @@
                 android:resource="@xml/device_admin_rules" />
             <intent-filter>
                 <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
-            </intent-filter>
-        </receiver>
-
-        <receiver
-            android:name=".services.receivers.AirSyncBridgeReceiver"
-            android:exported="true"
-            android:permission="com.sameerasw.permission.ESSENTIALS_AIRSYNC_BRIDGE">
-            <intent-filter>
-                <action android:name="com.jawzf.pixeltoolkit.action.UPDATE_MAC_BATTERY" />
             </intent-filter>
         </receiver>
 

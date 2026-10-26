@@ -6,7 +6,6 @@ import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 object BluetoothDeviceOrder {
     const val SEPARATOR = "|"
     const val PHONE = "__phone"
-    const val MAC = "__mac"
     private const val KEY = "bluetooth_device_order"
 
     private fun saved(context: Context): List<String> =

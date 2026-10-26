@@ -290,22 +290,9 @@ fun LinkPickerScreen(
     var showQrSheet by remember { mutableStateOf(false) }
     var showShortenSheet by remember { mutableStateOf(initialOpenShorten) }
 
-    var isMacConnected by remember {
-        mutableStateOf(
-            settingsRepository.getBoolean(SettingsRepository.KEY_AIRSYNC_CONNECTION_ENABLED, false) &&
-                settingsRepository.getBoolean(SettingsRepository.KEY_AIRSYNC_MAC_CONNECTED, false)
-        )
-    }
-
     DisposableEffect(Unit) {
         val listener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
             when (key) {
-                SettingsRepository.KEY_AIRSYNC_CONNECTION_ENABLED,
-                SettingsRepository.KEY_AIRSYNC_MAC_CONNECTED -> {
-                    isMacConnected =
-                        settingsRepository.getBoolean(SettingsRepository.KEY_AIRSYNC_CONNECTION_ENABLED, false) &&
-                            settingsRepository.getBoolean(SettingsRepository.KEY_AIRSYNC_MAC_CONNECTED, false)
-                }
                 SettingsRepository.KEY_LINK_PREVIEW_ENABLED -> {
                     isLinkPreviewEnabled = settingsRepository.isLinkPreviewEnabled()
                 }
@@ -530,44 +517,8 @@ fun LinkPickerScreen(
                             }
                         }
 
-                        val actionItems = remember(isFloatingSupported, isMacConnected) {
+                        val actionItems = remember(isFloatingSupported) {
                             listOfNotNull(
-                                if (isMacConnected) {
-                                    LinkActionItem(
-                                        titleRes = R.string.action_send_to_mac,
-                                        iconRes = R.drawable.rounded_devices_24,
-                                        onClick = {
-                                            val shareIntent =
-                                                Intent(Intent.ACTION_SEND).apply {
-                                                    type = "text/plain"
-                                                    putExtra(Intent.EXTRA_TEXT, currentUri.toString())
-                                                    setPackage("com.sameerasw.airsync")
-                                                    flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                                                }
-                                            try {
-                                                context.startActivity(shareIntent)
-                                                onFinish()
-                                            } catch (_: Exception) {
-                                                try {
-                                                    val broadcastIntent =
-                                                        Intent("com.sameerasw.airsync.action.SEND_LINK").apply {
-                                                            putExtra("url", currentUri.toString())
-                                                            setPackage("com.sameerasw.airsync")
-                                                        }
-                                                    context.sendBroadcast(broadcastIntent)
-                                                    onFinish()
-                                                } catch (e: Exception) {
-                                                    Toast
-                                                        .makeText(
-                                                            context,
-                                                            context.getString(R.string.download_airsync),
-                                                            Toast.LENGTH_SHORT,
-                                                        ).show()
-                                                }
-                                            }
-                                        },
-                                    )
-                                } else null,
                                 LinkActionItem(
                                     titleRes = R.string.shorten_copy_link,
                                     iconRes = R.drawable.rounded_content_copy_24,

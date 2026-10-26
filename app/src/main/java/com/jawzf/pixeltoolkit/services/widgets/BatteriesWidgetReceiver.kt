@@ -121,19 +121,6 @@ class BatteriesWidgetReceiver : GlanceAppWidgetReceiver() {
                     android.util.Log.e("BatteriesWidget", "Error updating widget", e)
                 }
             }
-
-            try {
-                val requestIntent =
-                    Intent("com.sameerasw.airsync.action.REQUEST_MAC_BATTERY").apply {
-                        setPackage("com.sameerasw.airsync")
-                    }
-                context.sendBroadcast(
-                    requestIntent,
-                    "com.sameerasw.permission.ESSENTIALS_AIRSYNC_BRIDGE",
-                )
-            } catch (e: Exception) {
-                // Ignore if AirSync not installed/found
-            }
         }
     }
 }

@@ -79,15 +79,6 @@ private fun previewItems(
     val phoneCharging = manager.getIntProperty(BatteryManager.BATTERY_PROPERTY_STATUS) == BatteryManager.BATTERY_STATUS_CHARGING
     keyed += BluetoothDeviceOrder.PHONE to PreviewItem(phoneLevel, R.drawable.rounded_mobile_24, statusIcon(phoneLevel, phoneCharging, ChargeLimitUtil.isShielded(context, phoneLevel, phoneCharging)))
 
-    val macLevel = settings.getInt(SettingsRepository.KEY_MAC_BATTERY_LEVEL, -1)
-    if (settings.getBoolean(SettingsRepository.KEY_AIRSYNC_CONNECTION_ENABLED) &&
-        settings.getBoolean(SettingsRepository.KEY_AIRSYNC_MAC_CONNECTED) &&
-        macLevel != -1
-    ) {
-        val charging = settings.getBoolean(SettingsRepository.KEY_MAC_BATTERY_IS_CHARGING)
-        keyed += BluetoothDeviceOrder.MAC to PreviewItem(macLevel, R.drawable.rounded_laptop_mac_24, statusIcon(macLevel, charging))
-    }
-
     if (settings.isBluetoothDevicesEnabled()) {
         val json = settings.getString(SettingsRepository.KEY_BLUETOOTH_DEVICES_BATTERY)
         val devices =
@@ -121,15 +112,14 @@ fun BatteriesPreviewCard(
     val version = BatteriesPreviewTrigger.version.intValue
     val showPercentage = remember(version) { SettingsRepository(context).isBatteryShowPercentageEnabled() }
     val bluetoothEnabled = viewModel.isBluetoothDevicesEnabled.value
-    val airSyncEnabled = viewModel.isAirSyncConnectionEnabled.value
     var settled by remember { mutableIntStateOf(0) }
 
-    LaunchedEffect(version, maxDevices, bluetoothEnabled, airSyncEnabled) {
+    LaunchedEffect(version, maxDevices, bluetoothEnabled) {
         delay(800)
         settled++
     }
 
-    val items = remember(version, maxDevices, bluetoothEnabled, airSyncEnabled, settled) { previewItems(context, maxDevices) }
+    val items = remember(version, maxDevices, bluetoothEnabled, settled) { previewItems(context, maxDevices) }
 
     val primary = MaterialTheme.colorScheme.primary
     val error = MaterialTheme.colorScheme.error

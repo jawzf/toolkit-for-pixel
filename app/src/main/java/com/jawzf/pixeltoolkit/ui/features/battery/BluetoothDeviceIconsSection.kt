@@ -78,7 +78,6 @@ fun BluetoothDeviceIconsSection(
         remember(bluetoothEnabled) {
             listOf(
                 PairedDevice("Phone", BluetoothDeviceOrder.PHONE, R.drawable.rounded_mobile_24),
-                PairedDevice("AirSync - Your Mac", BluetoothDeviceOrder.MAC, R.drawable.rounded_laptop_mac_24),
             ) + if (bluetoothEnabled) pairedDevices(context) else emptyList()
         }
     var version by remember { mutableIntStateOf(0) }
@@ -88,7 +87,6 @@ fun BluetoothDeviceIconsSection(
             BluetoothDeviceOrder.load(
                 context,
                 devices.map { it.address },
-                if (viewModel.isAirSyncConnectionEnabled.value) emptySet() else setOf(BluetoothDeviceOrder.MAC),
             ),
         )
     }
@@ -101,10 +99,6 @@ fun BluetoothDeviceIconsSection(
             order = order.toMutableList().apply { add(to, removeAt(from)) }
             BluetoothDeviceOrder.save(context, order)
             BatteriesPreviewTrigger.bump()
-            val macVisible = order.indexOf(BluetoothDeviceOrder.MAC) < order.indexOf(BluetoothDeviceOrder.SEPARATOR)
-            if (macVisible != viewModel.isAirSyncConnectionEnabled.value) {
-                viewModel.setAirSyncConnectionEnabled(macVisible, context)
-            }
             context.sendBroadcast(
                 Intent(context, BatteriesWidgetReceiver::class.java).apply {
                     action = android.appwidget.AppWidgetManager.ACTION_APPWIDGET_UPDATE
