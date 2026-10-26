@@ -43,35 +43,6 @@ class GitHubAuthRepository {
             }
         }
 
-    suspend fun requestDeviceCodeWithWorkflow(): DeviceCodeResponse? =
-        withContext(Dispatchers.IO) {
-            try {
-                val requestBody =
-                    FormBody
-                        .Builder()
-                        .add("client_id", clientId)
-                        .add("scope", "public_repo workflow")
-                        .build()
-
-                val request =
-                    Request
-                        .Builder()
-                        .url("https://github.com/login/device/code")
-                        .header("Accept", "application/json")
-                        .post(requestBody)
-                        .build()
-
-                val response = client.newCall(request).execute()
-                if (!response.isSuccessful) return@withContext null
-
-                val responseBody = response.body?.string() ?: return@withContext null
-                gson.fromJson(responseBody, DeviceCodeResponse::class.java)
-            } catch (e: Exception) {
-                e.printStackTrace()
-                null
-            }
-        }
-
     suspend fun pollForToken(
         deviceCode: String,
         interval: Int,

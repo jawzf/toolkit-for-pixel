@@ -567,7 +567,6 @@ class MainViewModel : ViewModel() {
     val isMotionBlurEnabled = mutableStateOf(false)
     val isMotionBlurSettingEnabled = mutableStateOf(false)
     val motionBlurScale = mutableFloatStateOf(1.0f)
-    val isOnlineHelpMediaEnabled = mutableStateOf(true)
     val isShakeForHelpEnabled = mutableStateOf(true)
     val isSwipeTabsEnabled = mutableStateOf(true)
     val isPowerSaveModeEnabled = mutableStateOf(false)
@@ -645,11 +644,6 @@ class MainViewModel : ViewModel() {
     private var appContext: Context? = null
 
     val gitHubToken = mutableStateOf<String?>(null)
-    val gitHubWorkflowToken = mutableStateOf<String?>(null)
-    val wallpaperTriggerState = mutableStateOf<String?>(null)
-    val workflowAuthState =
-        mutableStateOf<com.jawzf.pixeltoolkit.viewmodels.AuthState>(com.jawzf.pixeltoolkit.viewmodels.AuthState.Idle)
-    private var workflowPollingJob: kotlinx.coroutines.Job? = null
     val gitHubUser = mutableStateOf<com.jawzf.pixeltoolkit.domain.model.github.GitHubUser?>(null)
 
     private val contentObserver =
@@ -1447,10 +1441,6 @@ class MainViewModel : ViewModel() {
 
                     SettingsRepository.KEY_MOTION_BLUR -> {
                         appContext?.let { updateMotionBlurState(it) }
-                    }
-
-                    SettingsRepository.KEY_ONLINE_HELP_MEDIA -> {
-                        isOnlineHelpMediaEnabled.value = settingsRepository.isOnlineHelpMediaEnabled()
                     }
 
                     SettingsRepository.KEY_SHAKE_FOR_HELP -> {
@@ -2272,12 +2262,6 @@ class MainViewModel : ViewModel() {
             }
         }
 
-        viewModelScope.launch {
-            settingsRepository.gitHubWorkflowToken.collect {
-                gitHubWorkflowToken.value = it
-            }
-        }
-
         isWidgetEnabled.value = settingsRepository.getBoolean(SettingsRepository.KEY_WIDGET_ENABLED)
         isStatusBarIconControlEnabled.value =
             settingsRepository.getBoolean(SettingsRepository.KEY_STATUS_BAR_ICON_CONTROL_ENABLED)
@@ -2369,8 +2353,6 @@ class MainViewModel : ViewModel() {
         selectedAppIcon.value = settingsRepository.getAppIcon()
         isSwipeTabsEnabled.value =
             settingsRepository.getBoolean(SettingsRepository.KEY_SWIPE_TABS, true)
-        isOnlineHelpMediaEnabled.value =
-            settingsRepository.isOnlineHelpMediaEnabled()
         isShakeForHelpEnabled.value = settingsRepository.isShakeForHelpEnabled()
 
         // Live Wallpaper initialization
@@ -3155,129 +3137,6 @@ class MainViewModel : ViewModel() {
     }
 
     /**
-     * Executes the start workflow auth flow operation.
-     *
-     * @param context [Context] Target context.
-     */
-    fun startWorkflowAuthFlow(context: Context) {
-        workflowAuthState.value = com.jawzf.pixeltoolkit.viewmodels.AuthState.Loading
-        viewModelScope.launch {
-            val authRepo =
-                com.jawzf.pixeltoolkit.data.repository
-                    .GitHubAuthRepository()
-            val response = authRepo.requestDeviceCodeWithWorkflow()
-            if (response != null) {
-                workflowAuthState.value =
-                    com.jawzf.pixeltoolkit.viewmodels.AuthState.CodeReceived(
-                        userCode = response.userCode,
-                        verificationUri = response.verificationUri,
-                    )
-                startWorkflowPolling(response.deviceCode, response.interval, context)
-            } else {
-                workflowAuthState.value =
-                    com.jawzf.pixeltoolkit.viewmodels.AuthState
-                        .Error("Failed to request device code")
-            }
-        }
-    }
-
-    private fun startWorkflowPolling(
-        deviceCode: String,
-        intervalSeconds: Int,
-        context: Context,
-    ) {
-        workflowPollingJob?.cancel()
-        workflowPollingJob =
-            viewModelScope.launch {
-                val authRepo =
-                    com.jawzf.pixeltoolkit.data.repository
-                        .GitHubAuthRepository()
-                var currentInterval = intervalSeconds * 1000L
-                while (isActive) {
-                    kotlinx.coroutines.delay(currentInterval)
-                    val tokenResponse = authRepo.pollForToken(deviceCode, intervalSeconds)
-
-                    if (tokenResponse != null) {
-                        when {
-                            tokenResponse.accessToken != null -> {
-                                workflowAuthState.value =
-                                    com.jawzf.pixeltoolkit.viewmodels.AuthState.Authenticated(
-                                        tokenResponse.accessToken,
-                                    )
-                                settingsRepository.saveGitHubWorkflowToken(tokenResponse.accessToken)
-                                workflowPollingJob?.cancel()
-                                return@launch
-                            }
-
-                            tokenResponse.error == "authorization_pending" -> {
-                                // continue
-                            }
-
-                            tokenResponse.error == "slow_down" -> {
-                                currentInterval += 5000L
-                            }
-
-                            tokenResponse.error == "expired_token" -> {
-                                workflowAuthState.value =
-                                    com.jawzf.pixeltoolkit.viewmodels.AuthState
-                                        .Error("Code expired. Please try again.")
-                                workflowPollingJob?.cancel()
-                                return@launch
-                            }
-
-                            else -> {
-                                workflowAuthState.value =
-                                    com.jawzf.pixeltoolkit.viewmodels.AuthState
-                                        .Error("Authentication failed: ${tokenResponse.error}")
-                                workflowPollingJob?.cancel()
-                                return@launch
-                            }
-                        }
-                    }
-                }
-            }
-    }
-
-    /**
-     * Executes the cancel workflow auth flow operation.
-     */
-    fun cancelWorkflowAuthFlow() {
-        workflowPollingJob?.cancel()
-        workflowAuthState.value = com.jawzf.pixeltoolkit.viewmodels.AuthState.Idle
-    }
-
-    /**
-     * Executes the trigger wallpaper update operation.
-     *
-     * @param target [String] Target target.
-     */
-    fun triggerWallpaperUpdate(target: String) {
-        val token = settingsRepository.getGitHubWorkflowToken() ?: return
-        wallpaperTriggerState.value = "loading"
-        viewModelScope.launch {
-            val gitHubRepo =
-                com.jawzf.pixeltoolkit.data.repository
-                    .GitHubRepository()
-            val success =
-                gitHubRepo.triggerWorkflowDispatch(
-                    token = token,
-                    owner = "sameerasw",
-                    repo = "sameerasw.com",
-                    workflowFile = "daily-unsplash.yml",
-                    ref = "main",
-                    inputs = mapOf("target" to target),
-                )
-            if (success) {
-                wallpaperTriggerState.value = "success"
-            } else {
-                wallpaperTriggerState.value = "error"
-            }
-            kotlinx.coroutines.delay(3000)
-            wallpaperTriggerState.value = null
-        }
-    }
-
-    /**
      * Executes the set root enabled operation.
      *
      * @param enabled [Boolean] Target enabled.
@@ -3473,14 +3332,6 @@ class MainViewModel : ViewModel() {
     ) {
         motionBlurScale.floatValue = scale
         settingsRepository.putFloat(SettingsRepository.KEY_MOTION_BLUR_SCALE, scale)
-    }
-
-    fun setOnlineHelpMediaEnabled(
-        enabled: Boolean,
-        context: Context? = null,
-    ) {
-        settingsRepository.setOnlineHelpMediaEnabled(enabled)
-        isOnlineHelpMediaEnabled.value = enabled
     }
 
     fun setShakeForHelpEnabled(

@@ -387,7 +387,6 @@ class SettingsRepository(
             "ambient_music_glance_respect_notifications"
 
         const val KEY_GITHUB_ACCESS_TOKEN = "github_access_token"
-        const val KEY_GITHUB_WORKFLOW_TOKEN = "github_workflow_token"
         const val KEY_GITHUB_USER_PROFILE = "github_user_profile"
 
         const val KEY_FLASHLIGHT_PULSE_SELECTED_APPS = "flashlight_pulse_selected_apps"
@@ -436,7 +435,6 @@ class SettingsRepository(
         const val KEY_USE_RIPPLE = "use_ripple"
         const val KEY_MOTION_BLUR = "motion_blur"
         const val KEY_MOTION_BLUR_SCALE = "motion_blur_scale"
-        const val KEY_ONLINE_HELP_MEDIA = "online_help_media"
         const val KEY_SHAKE_FOR_HELP = "shake_for_help"
         const val KEY_SWIPE_TABS = "swipe_tabs"
         const val KEY_ONBOARDING_COMPLETED = "onboarding_completed"
@@ -1863,7 +1861,6 @@ class SettingsRepository(
                     if (key == "freeze_auto_excluded_apps" || key.endsWith("_selected_apps")) {
                     }
                     if (key == KEY_GITHUB_ACCESS_TOKEN ||
-                        key == KEY_GITHUB_WORKFLOW_TOKEN ||
                         key == KEY_SHIZUKU_AUTH_TOKEN ||
                         key.startsWith(LEGACY_WEATHER_API_KEY_PREFIX) ||
                         key == KEY_SNOOZE_DISCOVERED_CHANNELS ||
@@ -1901,7 +1898,6 @@ class SettingsRepository(
         val protected =
             setOf(
                 KEY_GITHUB_ACCESS_TOKEN,
-                KEY_GITHUB_WORKFLOW_TOKEN,
                 KEY_SHIZUKU_AUTH_TOKEN,
                 KEY_SNOOZE_DISCOVERED_CHANNELS,
                 KEY_MAPS_DISCOVERED_CHANNELS,
@@ -1955,7 +1951,6 @@ class SettingsRepository(
                 val keysToPreserve =
                     listOf(
                         KEY_GITHUB_ACCESS_TOKEN,
-                        KEY_GITHUB_WORKFLOW_TOKEN,
                         KEY_SHIZUKU_AUTH_TOKEN,
                         LEGACY_WEATHER_API_KEY_PREFIX,
                         KEY_SNOOZE_DISCOVERED_CHANNELS,
@@ -1993,7 +1988,6 @@ class SettingsRepository(
                         prefWrapper.forEach { (key, item) ->
                             // Do not import sensitive keys from the file even if they exist there
                             if (key == KEY_GITHUB_ACCESS_TOKEN ||
-                                key == KEY_GITHUB_WORKFLOW_TOKEN ||
                                 key == KEY_SHIZUKU_AUTH_TOKEN ||
                                 key.startsWith(LEGACY_WEATHER_API_KEY_PREFIX)
                             ) {
@@ -2240,10 +2234,6 @@ class SettingsRepository(
      * @return The resulting Boolean data.
      */
     fun isShutUpAttemptShizukuRestartEnabled(): Boolean = getBoolean(KEY_SHUT_UP_ATTEMPT_SHIZUKU_RESTART, true)
-
-    fun isOnlineHelpMediaEnabled(): Boolean = getBoolean(KEY_ONLINE_HELP_MEDIA, true)
-
-    fun setOnlineHelpMediaEnabled(enabled: Boolean) = putBoolean(KEY_ONLINE_HELP_MEDIA, enabled)
 
     fun isShakeForHelpEnabled(): Boolean = getBoolean(KEY_SHAKE_FOR_HELP, true)
 
@@ -2559,34 +2549,6 @@ class SettingsRepository(
                     }
                 }
             trySend(getString(KEY_GITHUB_ACCESS_TOKEN))
-            prefs.registerOnSharedPreferenceChangeListener(listener)
-            awaitClose { prefs.unregisterOnSharedPreferenceChangeListener(listener) }
-        }
-
-    /**
-     * Executes the get git hub workflow token operation.
-     * @return The resulting String? data.
-     */
-    fun getGitHubWorkflowToken(): String? = prefs.getString(KEY_GITHUB_WORKFLOW_TOKEN, null)
-
-    /**
-     * Executes the save git hub workflow token operation.
-     *
-     * @param token [String?] Target token.
-     */
-    fun saveGitHubWorkflowToken(token: String?) {
-        prefs.edit().putString(KEY_GITHUB_WORKFLOW_TOKEN, token).apply()
-    }
-
-    val gitHubWorkflowToken: Flow<String?> =
-        callbackFlow {
-            val listener =
-                SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
-                    if (key == KEY_GITHUB_WORKFLOW_TOKEN) {
-                        trySend(getString(KEY_GITHUB_WORKFLOW_TOKEN))
-                    }
-                }
-            trySend(getString(KEY_GITHUB_WORKFLOW_TOKEN))
             prefs.registerOnSharedPreferenceChangeListener(listener)
             awaitClose { prefs.unregisterOnSharedPreferenceChangeListener(listener) }
         }

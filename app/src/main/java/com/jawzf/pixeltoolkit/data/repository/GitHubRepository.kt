@@ -150,56 +150,6 @@ class GitHubRepository {
             }
         }
 
-    suspend fun triggerWorkflowDispatch(
-        token: String,
-        owner: String,
-        repo: String,
-        workflowFile: String,
-        ref: String,
-        inputs: Map<String, String>,
-    ): Boolean =
-        withContext(Dispatchers.IO) {
-            try {
-                val url =
-                    URL("https://api.github.com/repos/$owner/$repo/actions/workflows/$workflowFile/dispatches")
-                val connection = url.openConnection() as HttpURLConnection
-                connection.requestMethod = "POST"
-                connection.doOutput = true
-                connection.setRequestProperty("Authorization", "Bearer $token")
-                connection.setRequestProperty("Accept", "application/vnd.github+json")
-                connection.setRequestProperty("Content-Type", "application/json")
-
-                val payload =
-                    gson.toJson(
-                        mapOf(
-                            "ref" to ref,
-                            "inputs" to inputs,
-                        ),
-                    )
-
-                connection.outputStream.use { os ->
-                    os.write(payload.toByteArray(Charsets.UTF_8))
-                }
-
-                val responseCode = connection.responseCode
-                val responseText =
-                    if (responseCode in 200..299) {
-                        connection.inputStream?.bufferedReader()?.readText() ?: ""
-                    } else {
-                        connection.errorStream?.bufferedReader()?.readText() ?: ""
-                    }
-                Log.d(
-                    "GitHubRepository",
-                    "triggerWorkflowDispatch responseCode: $responseCode, body: $responseText",
-                )
-
-                responseCode == 204
-            } catch (e: Exception) {
-                Log.e("GitHubRepository", "triggerWorkflowDispatch exception: ${e.message}", e)
-                false
-            }
-        }
-
     suspend fun addDiscussionComment(
         token: String,
         owner: String,

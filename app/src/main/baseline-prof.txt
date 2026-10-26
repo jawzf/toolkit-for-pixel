@@ -1,4 +1,4 @@
-HSPLcom/sameerasw/essentials/island/ui/**;->**(**)**
-HSPLcom/sameerasw/essentials/island/service/**;->**(**)**
-Lcom/sameerasw/essentials/island/ui/**;
-Lcom/sameerasw/essentials/island/service/**;
+HSPLcom/jawzf/pixeltoolkit/island/ui/**;->**(**)**
+HSPLcom/jawzf/pixeltoolkit/island/service/**;->**(**)**
+Lcom/jawzf/pixeltoolkit/island/ui/**;
+Lcom/jawzf/pixeltoolkit/island/service/**;
