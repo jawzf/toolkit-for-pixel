@@ -1182,12 +1182,8 @@
     <string name="toast_onboarding_reset">Onboarding reset</string>
     <string name="label_developer_options">Developer Options</string>
     <string name="label_wallpaper_update">Wallpaper Update</string>
-    <string name="btn_wallpaper_desktop">Desktop</string>
-    <string name="btn_wallpaper_both">Both</string>
-    <string name="btn_wallpaper_mobile">Mobile</string>
     <string name="welcome_title">Welcome to Essentials</string>
     <string name="welcome_subtitle">A Toolbox for Android Nerds</string>
-    <string name="welcome_developer_attribution">by sameerasw.com</string>
     <string name="action_lets_begin">Let\'s Begin</string>
     <string name="acknowledgement_title">Acknowledgement</string>
     <string name="acknowledgement_desc">This app is a collection of utilities that can interact deeply with your device system. Using some features might modify system settings or behavior in unexpected ways. \n\nYou only need to grant necessary permissions which are required for selected features you are using giving you full control over the app\'s behavior. \n\nFurther more, the app does not track or store any of your personal data, I don\'t need them... Keep to yourself safe. You can refer to the source code for more information. \n\nThis app is fully open source and is and always will be free to use. Do not pay or install from unknown sources.</string>
@@ -1587,7 +1583,6 @@
     <string name="diy_set_keyboard_switch_failed">Keyboard switching failed: %1$s</string>
 
     <!-- About Section -->
-    <string name="app_developer_name">Sameera Wijerathna</string>
     <string name="app_description">The all-in-one toolbox for your Pixel and Androids</string>
 
     <!-- Edge Lighting -->
@@ -1844,12 +1839,7 @@
     <!-- QS / Activities -->
 
     <!-- About Section -->
-    <string name="developed_by_format">Developed by %1$s\nwith ❤\uFE0F from \uD83C\uDDF1\uD83C\uDDF0</string>
     <string name="action_website">Website</string>
-    <string name="action_contact">Contact</string>
-    <string name="action_telegram">Telegram</string>
-    <string name="action_support">Support</string>
-    <string name="label_other_apps">Other Apps</string>
     <string name="island_providers_title">Island apps</string>
     <string name="island_provider_pair_title">Allow %1$s on the island?</string>
     <string name="island_provider_pair_subtitle">%1$s wants to show its content on your island.</string>
@@ -1860,23 +1850,13 @@
     <string name="island_provider_allow">Allow</string>
     <string name="island_provider_deny">Deny</string>
     <string name="island_provider_pair_failed">Couldn\'t connect to the app</string>
-    <string name="app_zenzero">ZenZero</string>
-    <string name="app_canvas">Canvas</string>
-    <string name="app_tasks">Tasks</string>
-    <string name="app_zero">Zero</string>
-    <string name="label_top_contributors">Top Contributors</string>
     <string name="label_feature_credits">Contributed by</string>
     <string name="contributions_count_format">%1$d contributions</string>
 
     <!-- Help & Guides -->
     <string name="help_guides_title">Help &amp; Guides</string>
-    <string name="need_more_support_reach_out">Need more support? Reach out,</string>
     <string name="action_collapse">Collapse</string>
     <string name="action_expand">Expand</string>
-    <string name="support_group_label">Support Group</string>
-    <string name="email_label">Email</string>
-    <string name="send_email_chooser_title">Send email</string>
-    <string name="error_no_email_app">No email app available</string>
     <string name="instruction_step_image_description">Step %1$d Image</string>
 
     <!-- Instructions Content -->
@@ -2261,7 +2241,6 @@
     <string name="kaomoji_cat_weapons">Weapons</string>
     <string name="kaomoji_cat_winking">Winking</string>
     <string name="kaomoji_cat_writing">Writing</string>
-    <string name="msg_restrict_own_app_repo">Oi! You can check updates in app settings, No need to add here XD</string>
     <string name="action_export">Export</string>
     <string name="action_import">Import</string>
     <string name="msg_export_success">Repositories exported successfully</string>
@@ -2397,7 +2376,6 @@
     <string name="desc_ripple_animation">Enable liquid ripple animations across the UI</string>
     <string name="label_motion_blur">Motion blur</string>
     <string name="label_motion_blur_amount">Amount</string>
-    <string name="label_online_help_media">Online help media</string>
     <string name="label_shake_for_help">Shake for help</string>
     <string name="setting_swipe_tabs_title">Swipe between tabs</string>
     <string name="setting_swipe_tabs_desc">In home screen</string>

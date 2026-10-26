@@ -58,7 +58,6 @@ import com.jawzf.pixeltoolkit.domain.model.Feature
 import com.jawzf.pixeltoolkit.translation.TranslatableText
 import com.jawzf.pixeltoolkit.ui.core.cards.FeatureTagIcon
 import com.jawzf.pixeltoolkit.ui.core.containers.RoundedCardContainer
-import com.jawzf.pixeltoolkit.ui.core.media.FeatureHelpMediaViewer
 import com.jawzf.pixeltoolkit.utils.ColorUtil
 import com.jawzf.pixeltoolkit.utils.HapticUtil
 import com.jawzf.pixeltoolkit.utils.PermissionUIHelper
@@ -168,12 +167,6 @@ fun FeatureHelpBottomSheet(
                     )
                 }
             }
-
-            // Online Help Media 
-            FeatureHelpMediaViewer(
-                feature = feature,
-                viewModel = viewModel,
-            )
 
             // Description Body
             RoundedCardContainer(

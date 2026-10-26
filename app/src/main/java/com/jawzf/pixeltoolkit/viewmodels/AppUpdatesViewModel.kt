@@ -143,11 +143,6 @@ class AppUpdatesViewModel : ViewModel() {
         }
 
         val (owner, repo) = parts
-        if (owner.lowercase() == "sameerasw" && repo.lowercase() == "essentials") {
-            _errorMessage.value = context.getString(R.string.msg_restrict_own_app_repo)
-            _shouldDismissSheet.value = true
-            return
-        }
         _isSearching.value = true
         _errorMessage.value = null
         _searchResult.value = null

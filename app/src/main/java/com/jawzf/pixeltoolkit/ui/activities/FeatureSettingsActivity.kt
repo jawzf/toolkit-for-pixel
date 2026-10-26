@@ -171,7 +171,7 @@ class FeatureSettingsActivity : AppCompatActivity() {
                 val isPitchBlackThemeEnabled by viewModel.isPitchBlackThemeEnabled
                 EssentialsTheme(pitchBlackTheme = isPitchBlackThemeEnabled) {
                     LinkPickerScreen(
-                        uri = "https://sameerasw.com".toUri(),
+                        uri = "https://example.com".toUri(),
                         onFinish = { finish() },
                         modifier = Modifier.fillMaxSize(),
                         demo = false,

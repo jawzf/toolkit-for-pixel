@@ -85,7 +85,7 @@ object TestNotificationUtil {
             sampleBodies = listOf(
                 "We detected a new sign-in to your Google Account from a macOS device in Colombo, Sri Lanka.\nIf this was you, you don't need to do anything.\nIf not, please review your recent security activity immediately.",
                 "Your receipt for Google Cloud Platform Services is now available.\nTotal billed amount: $48.20 for compute engine and cloud storage instances.\nView detailed usage metrics in the console.",
-                "Sameera mentioned you in a comment on Frame 4:\n\"I updated the expanded notification card to show up to 7 lines of body text with dynamic font size and M3 Expressive container styling.\"",
+                "Alex mentioned you in a comment on Frame 4:\n\"I updated the expanded notification card to show up to 7 lines of body text with dynamic font size and M3 Expressive container styling.\"",
                 "Explore the top open-source projects trending this week across Kotlin, Jetpack Compose, and Rust.\nOver 2,400 developers joined the community digest.",
                 "All 42 test suites passed in 1m 24s.\nDocker container built and deployed to staging environment successfully."
             ),
@@ -113,7 +113,7 @@ object TestNotificationUtil {
                 "Workflow run completed: CI / Build"
             ),
             sampleBodies = listOf(
-                "sameerasw merged commit 8a1f20 into main.\nBranch feature/island-action-buttons deleted.\nAll unit tests and lint checks verified.",
+                "jawzf merged commit 8a1f20 into main.\nBranch feature/island-action-buttons deleted.\nAll unit tests and lint checks verified.",
                 "Dependabot created a PR to bump compose-bom to 2026.03.00.\nIncludes Material 3 Expressive performance enhancements and spring physics updates.\nAutomated compatibility tests passed.",
                 "Please review the changes requested by the core team on PR #88:\n- Added expanded top padding slider\n- Extended corner radius to 80dp\n- Increased body text capacity to 7 lines",
                 "All checks passed successfully.\nArtifact essentials-debug.apk generated and ready for release verification."

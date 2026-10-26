@@ -15,7 +15,6 @@ import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -51,7 +50,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.graphicsLayer
@@ -336,40 +334,6 @@ fun WelcomeStepContent(
             )
 
             Spacer(modifier = Modifier.weight(1f))
-
-            Row(
-                modifier =
-                    Modifier
-                        .clip(RoundedCornerShape(100.dp))
-                        .background(MaterialTheme.colorScheme.primaryContainer)
-                        .clickable {
-                            val websiteUrl = "https://sameerasw.com"
-                            val intent = Intent(Intent.ACTION_VIEW, websiteUrl.toUri())
-                            context.startActivity(intent)
-                        }.padding(8.dp),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.avatar),
-                    contentDescription = "Developer Avatar",
-                    contentScale = ContentScale.Crop,
-                    modifier =
-                        Modifier
-                            .size(32.dp)
-                            .clip(RoundedCornerShape(100.dp))
-                            .background(MaterialTheme.colorScheme.surfaceContainerHigh),
-                )
-
-                Spacer(modifier = Modifier.width(8.dp))
-
-                Text(
-                    text = stringResource(R.string.welcome_developer_attribution),
-                    textAlign = TextAlign.Center,
-                    color = MaterialTheme.colorScheme.onPrimaryContainer,
-                    modifier = Modifier.padding(end = 4.dp),
-                )
-            }
 
             Spacer(modifier = Modifier.height(16.dp))
 
