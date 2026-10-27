@@ -1247,7 +1247,7 @@
     <string name="location_reached_distance_label">Distance to target: %1$s</string>
     <string name="about_desc_freeze">Freeze apps to stop them from running in the background.\n\nPrevent battery drain and data usage by completely freezing apps when you are not using them. They will be unfrozen instantly when you launch them. The apps will not show up in the app drawer and also will not show up for app updates in Play Store while frozen.</string>
     <string name="about_desc_system_keyboard">A custom input method no-one asked for.\n\nIt is just an experiment. Multiple languages may not get support as it is a very complex and time consuming implementation.</string>
-    <string name="about_desc_batteries">Monitor battery levels of all your connected devices.\n\nSee the battery status of your Bluetooth headphones, watch, and other accessories in one place. Connect with AirSync application to display your mac battery level as well.</string>
+    <string name="about_desc_batteries">Monitor battery levels of all your connected devices.\n\nSee the battery status of your Bluetooth headphones, watch, and other accessories in one place.</string>
     <string name="about_desc_app_updates">Keep track of updates for your installed apps.\n\nGet notified about available updates, view changelogs and install them easily with a tap.</string>
     <string name="about_desc_call_vibrations">Add haptic feedback to your calls.\n\nVibrate when a call is connected, disconnected, or accepted, giving you tactile confirmation without looking at the screen.</string>
     <string name="about_desc_sound_mode_tile">Quickly toggle between Sound, Vibrate, and Silent modes.\n\nA convenient tile to change your ringer mode without using the volume buttons or settings. You can re-order the modes or disable any if not needed to customize the tile toggle to cycle behavior.</string>
@@ -1989,14 +1989,10 @@
     <string name="feat_batteries_title">Batteries</string>
     <string name="feat_batteries_desc">Monitor your device battery levels</string>
     <string name="batteries_widget_label">Battery Status</string>
-    <string name="connect_to_airsync">Connect to AirSync</string>
-    <string name="connect_to_airsync_summary">Display battery from your connected mac device in AirSync</string>
-    <string name="download_airsync_summary">Required for Mac battery sync</string>
 
     <string name="feat_battery_notification_title">Battery notification</string>
     <string name="feat_battery_notification_desc">Persistent battery status notification</string>
     <string name="battery_notification_hint">This notification displays battery levels for your connected Mac and Bluetooth devices. You can configure which devices to show in the Battery Widget settings.</string>
-    <string name="about_desc_battery_notification">Replicate the battery widget experience in your notification shade. It will show the battery levels of all your connected devices in a single persistent notification, updated in real-time. This includes your Mac (via AirSync) and Bluetooth accessories.</string>
     <string name="battery_notification_channel_name">Battery Status Notification</string>
     <string name="battery_notification_channel_desc">Persistent notification showing connected devices battery levels</string>
     <string name="perm_nearby_devices_title">Nearby Devices</string>
@@ -2606,6 +2602,7 @@
     <string name="feat_wallpaper_staging_desc">Review and queue tomorrow\'s mobile wallpaper</string>
 
     <string name="settings_github_section">GitHub</string>
+    <string name="settings_github_sign_in_desc">Sign in to check app updates from GitHub</string>
     <!-- In-App Translation Mode -->
     <string name="translation_discard">Discard</string>
     <string name="translation_login_required">GitHub login required to submit translations</string>

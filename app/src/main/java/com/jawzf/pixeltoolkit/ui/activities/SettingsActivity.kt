@@ -1037,7 +1037,7 @@ fun SettingsContent(
                     ) {
                         "Logged in as ${currentUser?.name ?: currentUser?.login}"
                     } else {
-                        "Sign in required to translate"
+                        stringResource(R.string.settings_github_sign_in_desc)
                     },
                 isEnabled = true,
                 onToggle = {},

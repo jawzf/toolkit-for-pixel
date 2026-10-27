@@ -36,7 +36,7 @@ import com.jawzf.pixeltoolkit.utils.HapticUtil
 @OptIn(ExperimentalFoundationApi::class)
 fun AboutSection(
     modifier: Modifier = Modifier,
-    appName: String = "Toolkit",
+    appName: String = stringResource(R.string.app_name),
     description: String = stringResource(R.string.app_description),
     onVersionLongClick: () -> Unit = {},
 ) {

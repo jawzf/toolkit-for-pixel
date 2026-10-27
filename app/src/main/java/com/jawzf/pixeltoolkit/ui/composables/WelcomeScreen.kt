@@ -802,23 +802,6 @@ fun PreferencesStepContent(
             }
 
             Spacer(modifier = Modifier.height(24.dp))
-
-            // Updates Section
-            Text(
-                text = stringResource(R.string.label_updates),
-                style = MaterialTheme.typography.titleMedium,
-                modifier =
-                    Modifier
-                        .padding(start = 12.dp, bottom = 8.dp)
-                        .fillMaxWidth(),
-                color = MaterialTheme.colorScheme.primary,
-                textAlign = TextAlign.Start,
-            )
-
-            RoundedCardContainer {
-            }
-
-            Spacer(modifier = Modifier.height(24.dp))
         }
 
         Spacer(modifier = Modifier.height(16.dp))
