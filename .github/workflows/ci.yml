@@ -92,19 +92,9 @@ jobs:
             echo "Dependency changes approved (deps-approved label)."
           fi
 
-      # Upstream lint tooling fails to resolve the androidTest classpath; only real lint errors fail.
+      # Old upstream findings are in app/lint-baseline.xml; any new lint error fails.
       - name: Android lint
-        run: |
-          if ./gradlew --no-configuration-cache :app:lintDebug > "$RUNNER_TEMP/lint.log" 2>&1; then
-            echo "Lint passed."
-          elif grep -qE 'Lint found errors|compile[A-Za-z]*Kotlin FAILED' "$RUNNER_TEMP/lint.log"; then
-            sed -n '/What went wrong/,/^\* Try/p' "$RUNNER_TEMP/lint.log" | head -40
-            grep -E '^e: |Error:' "$RUNNER_TEMP/lint.log" | head -40
-            exit 1
-          else
-            echo "::warning::Lint skipped: lint tooling failed, not code."
-            sed -n '/What went wrong/,/^\* Try/p' "$RUNNER_TEMP/lint.log" | head -15
-          fi
+        run: ./gradlew --no-configuration-cache :app:lintDebug
 
       - name: Unit tests
         run: ./gradlew :app:testDebugUnitTest
