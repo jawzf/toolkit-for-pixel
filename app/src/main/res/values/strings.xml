@@ -1186,9 +1186,8 @@
     <string name="welcome_subtitle">A Toolbox for Android Nerds</string>
     <string name="action_lets_begin">Let\'s Begin</string>
     <string name="acknowledgement_title">Acknowledgement</string>
-    <string name="acknowledgement_desc">This app is a collection of utilities that can interact deeply with your device system. Using some features might modify system settings or behavior in unexpected ways. \n\nYou only need to grant necessary permissions which are required for selected features you are using giving you full control over the app\'s behavior. \n\nFurther more, the app does not track or store any of your personal data, I don\'t need them... Keep to yourself safe. You can refer to the source code for more information. \n\nThis app is fully open source and is and always will be free to use. Do not pay or install from unknown sources.</string>
+    <string name="acknowledgement_desc">This app is a collection of utilities that can interact deeply with your device system. Using some features might modify system settings or behavior in unexpected ways. \n\nYou only grant the permissions needed for the features you use, so you stay in control of what the app can do. \n\nThe app does not track, collect or share your personal data.</string>
     <string name="acknowledgement_warning">WARNING: Proceed with caution. The developer takes no responsibility for any system instability, data loss, or other issues caused by the use of this app. By proceeding, you acknowledge these risks.</string>
-    <string name="acknowledgement_footer">I know you didn\'t even read this carefully but, in case you need any help, feel free to reach out the developer or the community.</string>
     <string name="action_i_understand">I Understand</string>
     <string name="feature_intro_desc">Anytime you are clueless on a feature or a Quick Settings Tile on what it does and what permissions may necessary for it, just long press it and pick \'What is this?\' to learn more.</string>
     <string name="feature_intro_footer">You can report bugs or find helpful guides anytime in the app settings.</string>
@@ -1906,9 +1905,6 @@
     <string name="instruction_section_flashlight_title">Flashlight brightness does not work</string>
     <string name="instruction_section_flashlight_desc">Only a limited number of devices got hardware and software support adjusting the flashlight intensity. \n\n\'The minimum version of Android is 13 (SDK33).\nFlashlight brightness control only supports HAL version 3.8 and higher, so among the supported devices, the latest ones (For example, Pixel 6/7, Samsung S23, etc.)\'\npolodarb/Flashlight-Tiramisu</string>
 
-    <string name="instruction_section_about_title">What the hell is this app?</string>
-    <string name="instruction_section_about_desc">Good question,\n\nI always wanted to extract the most out of my devices as I\'ve been a rooted user for ever since I got my first Project Treble device. And I\'ve been loving the Tasker app which is like the god when comes automation and utilizing every possible API and internal features of Android.\n\nSo I am not unrooted and back on stock Android beta experience and wanted to get the most out from what is possible with given privileges. Might as well share them. So with my beginner knowledge in Kotlin Jetpack and with the support of many research and assist tools and also the great community, I built an all-in-one app containing everything I wanted to be in my Android with given permissions. And here it is.\n\nFeature requests are welcome, I will consider and see if they are achievable with available permissions and my skills. Nowadays what is not possible. :)\n\nWhy not on Play Store?\nI don\'t wanna risk getting my Developer account banned due to the highly sensitive and internal permissions and APIs being used in the app. But with the way Android sideloading is headed, let\'s see what we have to do. I do understand the concerns of sideloaded apps being malicious.\nWhile we are at the topic, Checkout my other app AirSync if you are a mac + Android user. *shameless plug*\n\nEnjoy, Keep building! (っ◕‿◕)っ</string>
-
     <string name="instruction_section_genai_title">On-Device GenAI (Gemini Nano)</string>
     <string name="instruction_section_genai_desc">Powered locally by Google Gemini Nano via Android\'s AICore system service. Executes foundation models on-device for improved user privacy without sending data to remote servers.\n\n• Requirements &amp; AICore: Uses ML Kit GenAI Prompt APIs on supported devices (such as Pixel 9/10 series, Galaxy S25/S26, etc.) running Android AICore.\n• App Foreground Limitation: GenAI API inference is permitted only when the app is in the top foreground.\n• Quota &amp; Execution: Subject to AICore per-app battery and inference quotas. Features run entirely offline once AICore model download completes.\n• Context Automations: Maps prompt requests into DIY triggers, states, app tags, and deep settings locally on device.</string>
 
@@ -2389,11 +2385,6 @@
     <string name="msg_flashbang">Get ready to be flashbanged!</string>
     <string name="action_abort">Abort</string>
     <string name="action_continue">Continue</string>
-    <string name="prank_trial_expired_title">Your Toolkit trial has expired</string>
-    <string name="prank_trial_expired_desc">Your free trial period of Toolkit for Pixel has ended. Access to advanced features like Button Remap, App Freezing, and DIY Automations with Premium.</string>
-    <string name="prank_button_premium">What\'s in Premium?</string>
-    <string name="prank_reveal_title">April Fools!</string>
-    <string name="prank_reveal_desc">Just kidding, Toolkit for Pixel is and will always be free and open source. Enjoy! (っ◕‿◕)っ</string>
 
     <string name="notification_lighting_style_system">System</string>
     <string name="notification_lighting_system_mode_title">Ripple Animation</string>

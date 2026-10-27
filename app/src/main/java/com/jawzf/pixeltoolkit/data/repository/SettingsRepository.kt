@@ -439,7 +439,6 @@ class SettingsRepository(
         const val KEY_SWIPE_TABS = "swipe_tabs"
         const val KEY_ONBOARDING_COMPLETED = "onboarding_completed"
         const val KEY_PRIVATE_DNS_PRESETS = "private_dns_presets"
-        const val KEY_APRIL_FOOLS_SHOWN = "april_fools_shown"
         const val KEY_SCALE_ANIMATIONS_MODE = "scale_animations_mode"
         const val KEY_SCALE_ANIMATIONS_DEFAULT_PROFILE = "scale_animations_default_profile"
         const val KEY_SCALE_ANIMATIONS_GLOVE_PROFILE = "scale_animations_glove_profile"

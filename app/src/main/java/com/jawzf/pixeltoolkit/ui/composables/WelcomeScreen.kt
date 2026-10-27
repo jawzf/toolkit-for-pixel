@@ -419,14 +419,6 @@ fun AcknowledgementStepContent(
                     style = MaterialTheme.typography.bodyLarge,
                 )
 
-                Spacer(modifier = Modifier.height(32.dp))
-
-                Text(
-                    text = stringResource(R.string.acknowledgement_footer),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-
                 Spacer(modifier = Modifier.height(16.dp))
             }
         }
