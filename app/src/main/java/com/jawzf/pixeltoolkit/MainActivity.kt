@@ -57,7 +57,6 @@ import androidx.compose.ui.zIndex
 import androidx.core.animation.doOnEnd
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.domain.DIYTabs
 import com.jawzf.pixeltoolkit.domain.registry.initPermissionRegistry
 import com.jawzf.pixeltoolkit.ui.components.ToolbarItem
@@ -71,7 +70,6 @@ import com.jawzf.pixeltoolkit.ui.composables.WelcomeScreen
 import com.jawzf.pixeltoolkit.ui.core.sheets.AddRepoBottomSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.GitHubAuthSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.InstructionsBottomSheet
-import com.jawzf.pixeltoolkit.ui.core.sheets.PrankBottomSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.ShakeForHelp
 import com.jawzf.pixeltoolkit.ui.core.sheets.UpdateBottomSheet
 import com.jawzf.pixeltoolkit.ui.modifiers.BlurDirection
@@ -371,26 +369,6 @@ class MainActivity : AppCompatActivity() {
                         GitHubAuthSheet(
                             viewModel = gitHubAuthViewModel,
                             onDismissRequest = { showGitHubAuthSheet = false },
-                        )
-                    }
-
-                    val isAprilFoolsSheetVisible by viewModel.isAprilFoolsSheetVisible
-                    val prankSheetState =
-                        androidx.compose.material3.rememberModalBottomSheetState(
-                            skipPartiallyExpanded = true,
-                        )
-
-                    if (isAprilFoolsSheetVisible) {
-                        PrankBottomSheet(
-                            viewModel = viewModel,
-                            sheetState = prankSheetState,
-                            onDismissRequest = {
-                                viewModel.isAprilFoolsSheetVisible.value = false
-                                viewModel.settingsRepository.putBoolean(
-                                    SettingsRepository.KEY_APRIL_FOOLS_SHOWN,
-                                    true,
-                                )
-                            },
                         )
                     }
 

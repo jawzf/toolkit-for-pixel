@@ -154,11 +154,6 @@ fun HelpAndGuidesContent() {
                 iconRes = R.drawable.rounded_save_24,
                 description = stringResource(R.string.instruction_section_backup_desc),
             ),
-            InstructionSection(
-                title = stringResource(R.string.instruction_section_about_title),
-                iconRes = R.drawable.ic_stat_name,
-                description = stringResource(R.string.instruction_section_about_desc),
-            ),
         )
 
     RoundedCardContainer {
