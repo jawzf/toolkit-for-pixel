@@ -10,7 +10,7 @@ import android.media.AudioManager
 import android.os.Build
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.unit.dp
-import com.jawzf.pixeltoolkit.R
+import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.domain.controller.ZenModeController
 import com.jawzf.pixeltoolkit.island.model.CompactCell

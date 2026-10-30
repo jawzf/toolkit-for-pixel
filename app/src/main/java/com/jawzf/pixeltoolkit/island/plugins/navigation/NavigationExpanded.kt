@@ -16,16 +16,16 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.jawzf.pixeltoolkit.R
+import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.domain.model.NavigationNotificationData
 import com.jawzf.pixeltoolkit.island.model.IslandExpandedScope
 import com.jawzf.pixeltoolkit.island.ui.IslandLayoutSpec
 import com.jawzf.pixeltoolkit.island.ui.IslandTextStyles
-import com.jawzf.pixeltoolkit.island.ui.islandTextColor
 import com.jawzf.pixeltoolkit.island.ui.components.CameraRow
 import com.jawzf.pixeltoolkit.island.ui.components.ConnectedButtonRow
 import com.jawzf.pixeltoolkit.island.ui.components.ConnectedItem
 import com.jawzf.pixeltoolkit.island.ui.components.ConnectedTextLabel
+import com.jawzf.pixeltoolkit.island.ui.islandTextColor
 import com.jawzf.pixeltoolkit.ui.theme.ToolkitTheme
 
 @Composable

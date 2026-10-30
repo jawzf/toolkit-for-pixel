@@ -13,7 +13,7 @@ import android.util.Log
 import android.util.SizeF
 import android.view.View
 import android.widget.RemoteViews
-import com.jawzf.pixeltoolkit.R
+import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.data.repository.WidgetStackRepository
 import com.jawzf.pixeltoolkit.domain.model.WidgetStackConfig
 import com.jawzf.pixeltoolkit.ui.activities.WidgetStackConfigureActivity

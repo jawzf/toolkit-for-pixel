@@ -4,7 +4,7 @@ import android.content.Context
 import android.hardware.display.DisplayManager
 import android.provider.Settings
 import android.view.Display
-import com.jawzf.pixeltoolkit.R
+import com.jawzf.pixeltoolkit.core.design.R
 import java.util.Locale
 import kotlin.math.roundToInt
 

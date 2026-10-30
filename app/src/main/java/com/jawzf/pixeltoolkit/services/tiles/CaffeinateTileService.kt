@@ -3,7 +3,7 @@ package com.jawzf.pixeltoolkit.services.tiles
 import android.app.ActivityManager
 import android.provider.Settings
 import android.service.quicksettings.Tile
-import com.jawzf.pixeltoolkit.R
+import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.domain.controller.CaffeinateController
 import com.jawzf.pixeltoolkit.services.CaffeinateWakeLockService
 

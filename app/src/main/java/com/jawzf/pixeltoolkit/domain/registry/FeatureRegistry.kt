@@ -1,16 +1,11 @@
 package com.jawzf.pixeltoolkit.domain.registry
 
-import com.jawzf.pixeltoolkit.ui.features.display.ISLAND_BEHAVIOR_FEATURE_ID
-import com.jawzf.pixeltoolkit.ui.features.display.ISLAND_DURATION_FEATURE_ID
-import com.jawzf.pixeltoolkit.ui.features.display.ISLAND_NOTIFICATIONS_FEATURE_ID
-import com.jawzf.pixeltoolkit.ui.features.display.ISLAND_PLACEMENT_FEATURE_ID
-import com.jawzf.pixeltoolkit.ui.features.display.ISLAND_VISUALS_FEATURE_ID
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import com.jawzf.pixeltoolkit.ToolkitApp
 import com.jawzf.pixeltoolkit.FeatureSettingsActivity
-import com.jawzf.pixeltoolkit.R
+import com.jawzf.pixeltoolkit.ToolkitApp
+import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.domain.controller.CaffeinateController
 import com.jawzf.pixeltoolkit.domain.model.Feature
@@ -18,10 +13,15 @@ import com.jawzf.pixeltoolkit.domain.model.SearchSetting
 import com.jawzf.pixeltoolkit.domain.model.SystemShortcutsState
 import com.jawzf.pixeltoolkit.ui.activities.PixelSearchbarSettingsActivity
 import com.jawzf.pixeltoolkit.ui.features.consciousgate.CONSCIOUS_GATE_FEATURE_ID
+import com.jawzf.pixeltoolkit.ui.features.display.ISLAND_BEHAVIOR_FEATURE_ID
+import com.jawzf.pixeltoolkit.ui.features.display.ISLAND_DURATION_FEATURE_ID
+import com.jawzf.pixeltoolkit.ui.features.display.ISLAND_NOTIFICATIONS_FEATURE_ID
+import com.jawzf.pixeltoolkit.ui.features.display.ISLAND_PLACEMENT_FEATURE_ID
+import com.jawzf.pixeltoolkit.ui.features.display.ISLAND_VISUALS_FEATURE_ID
 import com.jawzf.pixeltoolkit.ui.features.system.BACK_GESTURE_FEATURE_ID
 import com.jawzf.pixeltoolkit.utils.DeviceUtils
-import com.jawzf.pixeltoolkit.utils.hardware.HilightLights
 import com.jawzf.pixeltoolkit.utils.ShellUtils
+import com.jawzf.pixeltoolkit.utils.hardware.HilightLights
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 
 object FeatureRegistry {

@@ -41,7 +41,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.FeatureSettingsActivity
-import com.jawzf.pixeltoolkit.R
+import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.ui.components.sliders.ConfigSliderItem
 import com.jawzf.pixeltoolkit.ui.core.cards.IconToggleItem
@@ -50,6 +50,7 @@ import com.jawzf.pixeltoolkit.ui.core.pickers.ColorSwatchPicker
 import com.jawzf.pixeltoolkit.ui.core.pickers.ISLAND_ICON_PASTEL_COLORS
 import com.jawzf.pixeltoolkit.ui.core.pickers.SegmentedPicker
 import com.jawzf.pixeltoolkit.ui.core.sheets.AppSelectionSheet
+import com.jawzf.pixeltoolkit.ui.core.sheets.HideStatusBarInfoBottomSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.PermissionsBottomSheet
 import com.jawzf.pixeltoolkit.ui.features.consciousgate.CONSCIOUS_GATE_FEATURE_ID
 import com.jawzf.pixeltoolkit.ui.features.display.actions.GestureActionPickerSheet
@@ -57,10 +58,10 @@ import com.jawzf.pixeltoolkit.ui.features.display.actions.HorizontalSlideModeShe
 import com.jawzf.pixeltoolkit.ui.features.display.actions.horizontalSlideDescription
 import com.jawzf.pixeltoolkit.ui.features.display.sheets.IslandAlarmOptionsBottomSheet
 import com.jawzf.pixeltoolkit.ui.features.display.sheets.IslandBorderOutlineOptionsBottomSheet
-import com.jawzf.pixeltoolkit.ui.features.display.sheets.IslandNotificationHubOptionsBottomSheet
 import com.jawzf.pixeltoolkit.ui.features.display.sheets.IslandBriefOptionsBottomSheet
 import com.jawzf.pixeltoolkit.ui.features.display.sheets.IslandCallOptionsBottomSheet
 import com.jawzf.pixeltoolkit.ui.features.display.sheets.IslandDevicesBatteryBottomSheet
+import com.jawzf.pixeltoolkit.ui.features.display.sheets.IslandNotificationHubOptionsBottomSheet
 import com.jawzf.pixeltoolkit.ui.features.display.sheets.IslandPrefToggle
 import com.jawzf.pixeltoolkit.ui.features.display.sheets.IslandPulseShadowOptionsBottomSheet
 import com.jawzf.pixeltoolkit.ui.features.display.sheets.IslandTimeOptionsBottomSheet
@@ -71,7 +72,6 @@ import com.jawzf.pixeltoolkit.ui.modifiers.highlight
 import com.jawzf.pixeltoolkit.utils.HapticUtil
 import com.jawzf.pixeltoolkit.utils.PermissionUIHelper
 import com.jawzf.pixeltoolkit.utils.PermissionUtils
-import com.jawzf.pixeltoolkit.ui.core.sheets.HideStatusBarInfoBottomSheet
 import com.jawzf.pixeltoolkit.utils.ShellUtils
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 

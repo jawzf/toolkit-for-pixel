@@ -9,7 +9,7 @@ import android.os.Looper
 import android.service.quicksettings.Tile
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import com.jawzf.pixeltoolkit.R
+import com.jawzf.pixeltoolkit.core.design.R
 
 @RequiresApi(Build.VERSION_CODES.N)
 class ColorPickerTileService : BaseTileService() {

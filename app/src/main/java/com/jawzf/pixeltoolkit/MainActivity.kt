@@ -57,6 +57,7 @@ import androidx.compose.ui.zIndex
 import androidx.core.animation.doOnEnd
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
+import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.domain.DIYTabs
 import com.jawzf.pixeltoolkit.domain.registry.initPermissionRegistry
 import com.jawzf.pixeltoolkit.ui.components.ToolbarItem

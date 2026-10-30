@@ -45,7 +45,7 @@ import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.jawzf.pixeltoolkit.R
+import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.domain.model.NotificationLightingColorMode
 import com.jawzf.pixeltoolkit.domain.model.NotificationLightingRipplePosition
 import com.jawzf.pixeltoolkit.domain.model.NotificationLightingStyle

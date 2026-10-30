@@ -10,7 +10,7 @@ import android.os.Looper
 import android.service.quicksettings.Tile
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import com.jawzf.pixeltoolkit.R
+import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.domain.HapticFeedbackType
 import com.jawzf.pixeltoolkit.utils.HapticUtil
 import com.jawzf.pixeltoolkit.utils.UrlShortener

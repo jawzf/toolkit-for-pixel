@@ -9,13 +9,13 @@ import android.content.Intent
 import android.os.Build
 import android.provider.Settings
 import androidx.core.app.ActivityCompat
-import com.jawzf.pixeltoolkit.R
+import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.domain.model.AppPermission
 import com.jawzf.pixeltoolkit.domain.registry.PermissionRegistry
 import com.jawzf.pixeltoolkit.ui.core.sheets.PermissionItem
 import com.jawzf.pixeltoolkit.utils.PermissionUtils
-import kotlinx.coroutines.launch
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
+import kotlinx.coroutines.launch
 
 object PermissionUIHelper {
     fun getPermissionItem(

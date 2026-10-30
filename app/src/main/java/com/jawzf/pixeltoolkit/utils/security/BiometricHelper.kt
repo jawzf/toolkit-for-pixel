@@ -43,7 +43,7 @@ object BiometricHelper {
 
                     override fun onAuthenticationFailed() {
                         super.onAuthenticationFailed()
-                        onError(activity.getString(com.jawzf.pixeltoolkit.R.string.error_auth_failed))
+                        onError(activity.getString(com.jawzf.pixeltoolkit.core.design.R.string.error_auth_failed))
                     }
                 },
             )

@@ -1,6 +1,5 @@
 package com.jawzf.pixeltoolkit.data.repository
 
-import com.jawzf.pixeltoolkit.ui.core.pickers.NetworkType
 import android.content.Context
 import android.content.SharedPreferences
 import android.provider.Settings
@@ -14,13 +13,12 @@ import com.jawzf.pixeltoolkit.domain.diy.Action
 import com.jawzf.pixeltoolkit.domain.diy.ActionGsonAdapter
 import com.jawzf.pixeltoolkit.domain.model.AppIcon
 import com.jawzf.pixeltoolkit.domain.model.AppSelection
+import com.jawzf.pixeltoolkit.domain.model.AppTag
 import com.jawzf.pixeltoolkit.domain.model.AutoDismissAppConfig
 import com.jawzf.pixeltoolkit.domain.model.AutoDismissChannel
 import com.jawzf.pixeltoolkit.domain.model.AutoDismissStat
 import com.jawzf.pixeltoolkit.domain.model.BackGestureAppConfig
-import com.jawzf.pixeltoolkit.domain.model.AppTag
 import com.jawzf.pixeltoolkit.domain.model.DnsPreset
-import com.jawzf.pixeltoolkit.utils.DuoBatteryLevels
 import com.jawzf.pixeltoolkit.domain.model.HilightEffect
 import com.jawzf.pixeltoolkit.domain.model.HilightProgressColorMode
 import com.jawzf.pixeltoolkit.domain.model.NotificationLightingColorMode
@@ -33,6 +31,8 @@ import com.jawzf.pixeltoolkit.domain.model.ScaleAnimationsProfile
 import com.jawzf.pixeltoolkit.domain.model.SystemShortcutsState
 import com.jawzf.pixeltoolkit.domain.model.TrackedRepo
 import com.jawzf.pixeltoolkit.domain.model.github.GitHubUser
+import com.jawzf.pixeltoolkit.ui.core.pickers.NetworkType
+import com.jawzf.pixeltoolkit.utils.DuoBatteryLevels
 import com.jawzf.pixeltoolkit.utils.RootUtils
 import com.jawzf.pixeltoolkit.utils.ShellUtils
 import com.jawzf.pixeltoolkit.utils.ShizukuUtils
@@ -1444,12 +1444,12 @@ class SettingsRepository(
     fun setConsciousGateFeelEverySecond(enabled: Boolean) = putBoolean(KEY_CONSCIOUS_GATE_FEEL_EVERY_SECOND, enabled)
 
     fun getConsciousGateTitle(context: Context = this.context): String =
-        prefs.getString(KEY_CONSCIOUS_GATE_TITLE, null) ?: context.getString(com.jawzf.pixeltoolkit.R.string.conscious_gate_default_title)
+        prefs.getString(KEY_CONSCIOUS_GATE_TITLE, null) ?: context.getString(com.jawzf.pixeltoolkit.core.design.R.string.conscious_gate_default_title)
 
     fun setConsciousGateTitle(title: String) = putString(KEY_CONSCIOUS_GATE_TITLE, title)
 
     fun getConsciousGateMessage(context: Context = this.context): String =
-        prefs.getString(KEY_CONSCIOUS_GATE_MESSAGE, null) ?: context.getString(com.jawzf.pixeltoolkit.R.string.conscious_gate_default_message)
+        prefs.getString(KEY_CONSCIOUS_GATE_MESSAGE, null) ?: context.getString(com.jawzf.pixeltoolkit.core.design.R.string.conscious_gate_default_message)
 
     fun setConsciousGateMessage(message: String) = putString(KEY_CONSCIOUS_GATE_MESSAGE, message)
 
@@ -2718,7 +2718,7 @@ class SettingsRepository(
      */
     fun getLiveWallpaperAvailableVideos(): List<String> {
         val raws =
-            com.jawzf.pixeltoolkit.R.raw::class.java.fields.mapNotNull { field ->
+            com.jawzf.pixeltoolkit.core.design.R.raw::class.java.fields.mapNotNull { field ->
                 try {
                     if (field.name.startsWith("loop_")) field.name else null
                 } catch (e: Exception) {
@@ -3114,27 +3114,27 @@ class SettingsRepository(
     private fun getDefaultDnsPresets(): List<DnsPreset> =
         listOf(
             DnsPreset(
-                name = context.getString(com.jawzf.pixeltoolkit.R.string.dns_preset_adguard),
+                name = context.getString(com.jawzf.pixeltoolkit.core.design.R.string.dns_preset_adguard),
                 hostname = "dns.adguard.com",
                 isDefault = true,
             ),
             DnsPreset(
-                name = context.getString(com.jawzf.pixeltoolkit.R.string.dns_preset_google),
+                name = context.getString(com.jawzf.pixeltoolkit.core.design.R.string.dns_preset_google),
                 hostname = "dns.google",
                 isDefault = true,
             ),
             DnsPreset(
-                name = context.getString(com.jawzf.pixeltoolkit.R.string.dns_preset_cloudflare),
+                name = context.getString(com.jawzf.pixeltoolkit.core.design.R.string.dns_preset_cloudflare),
                 hostname = "1dot1dot1dot1.cloudflare-dns.com",
                 isDefault = true,
             ),
             DnsPreset(
-                name = context.getString(com.jawzf.pixeltoolkit.R.string.dns_preset_quad9),
+                name = context.getString(com.jawzf.pixeltoolkit.core.design.R.string.dns_preset_quad9),
                 hostname = "dns.quad9.net",
                 isDefault = true,
             ),
             DnsPreset(
-                name = context.getString(com.jawzf.pixeltoolkit.R.string.dns_preset_cleanbrowsing),
+                name = context.getString(com.jawzf.pixeltoolkit.core.design.R.string.dns_preset_cleanbrowsing),
                 hostname = "adult-filter-dns.cleanbrowsing.org",
                 isDefault = true,
             ),
@@ -4398,7 +4398,7 @@ class SettingsRepository(
             com.jawzf.pixeltoolkit.utils.ShellUtils.runCommand(
                 context,
                 "settings put global heads_up_notifications_enabled $targetValue",
-                featureName = context.getString(com.jawzf.pixeltoolkit.R.string.island_suppress_system_heads_up_title),
+                featureName = context.getString(com.jawzf.pixeltoolkit.core.design.R.string.island_suppress_system_heads_up_title),
             )
         } catch (_: Exception) {}
     }

@@ -10,7 +10,7 @@ import android.os.SystemClock
 import android.os.Vibrator
 import android.os.VibratorManager
 import android.widget.RemoteViews
-import com.jawzf.pixeltoolkit.R
+import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.domain.HapticFeedbackType
 import com.jawzf.pixeltoolkit.domain.ScreenOffMethod
 import com.jawzf.pixeltoolkit.utils.DeviceLockUtils

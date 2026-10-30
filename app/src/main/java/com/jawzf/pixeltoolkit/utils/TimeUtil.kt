@@ -1,7 +1,7 @@
 package com.jawzf.pixeltoolkit.utils
 
 import android.content.Context
-import com.jawzf.pixeltoolkit.R
+import com.jawzf.pixeltoolkit.core.design.R
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.TimeZone

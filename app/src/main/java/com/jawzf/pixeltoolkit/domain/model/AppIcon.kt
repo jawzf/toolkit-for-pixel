@@ -2,7 +2,7 @@ package com.jawzf.pixeltoolkit.domain.model
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import com.jawzf.pixeltoolkit.R
+import com.jawzf.pixeltoolkit.core.design.R
 
 enum class AppIcon(
     val key: String,

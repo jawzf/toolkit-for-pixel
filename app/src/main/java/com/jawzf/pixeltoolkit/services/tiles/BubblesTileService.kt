@@ -7,7 +7,7 @@ import android.os.Build
 import android.provider.Settings
 import android.service.quicksettings.Tile
 import androidx.annotation.RequiresApi
-import com.jawzf.pixeltoolkit.R
+import com.jawzf.pixeltoolkit.core.design.R
 
 @RequiresApi(Build.VERSION_CODES.N)
 class BubblesTileService : BaseTileService() {

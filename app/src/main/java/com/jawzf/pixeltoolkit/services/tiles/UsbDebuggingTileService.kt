@@ -5,7 +5,7 @@ import android.graphics.drawable.Icon
 import android.provider.Settings
 import android.service.quicksettings.Tile
 import com.jawzf.pixeltoolkit.FeatureSettingsActivity
-import com.jawzf.pixeltoolkit.R
+import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.utils.PermissionUtils
 import com.jawzf.pixeltoolkit.utils.ShizukuUtils.toggleShizuku
 import kotlinx.coroutines.delay

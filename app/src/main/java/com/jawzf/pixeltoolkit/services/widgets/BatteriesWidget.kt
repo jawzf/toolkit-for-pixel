@@ -3,13 +3,13 @@ package com.jawzf.pixeltoolkit.services.widgets
 import android.content.Context
 import android.os.BatteryManager
 import androidx.compose.runtime.Composable
-import androidx.core.content.ContextCompat
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.times
+import androidx.core.content.ContextCompat
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.intPreferencesKey
@@ -45,7 +45,7 @@ import androidx.glance.text.FontWeight
 import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
 import com.google.gson.Gson
-import com.jawzf.pixeltoolkit.R
+import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.ui.activities.BatteryDetailsActivity
 import com.jawzf.pixeltoolkit.utils.BatteryRingDrawer

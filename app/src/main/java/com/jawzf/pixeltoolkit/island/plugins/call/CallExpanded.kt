@@ -1,7 +1,5 @@
 package com.jawzf.pixeltoolkit.island.plugins.call
 
-import com.jawzf.pixeltoolkit.island.ui.components.ArtworkBackdrop
-import androidx.compose.ui.graphics.asImageBitmap
 import android.graphics.Bitmap
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -18,12 +16,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.jawzf.pixeltoolkit.R
+import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.island.model.IslandExpandedScope
 import com.jawzf.pixeltoolkit.island.ui.IslandTextStyles
+import com.jawzf.pixeltoolkit.island.ui.components.ArtworkBackdrop
 import com.jawzf.pixeltoolkit.island.ui.components.CameraRow
 import com.jawzf.pixeltoolkit.island.ui.components.ConnectedButtonRow
 import com.jawzf.pixeltoolkit.island.ui.components.ConnectedItem

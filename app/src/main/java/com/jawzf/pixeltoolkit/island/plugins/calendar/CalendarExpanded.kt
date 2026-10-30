@@ -1,16 +1,14 @@
 package com.jawzf.pixeltoolkit.island.plugins.calendar
 
-import com.jawzf.pixeltoolkit.island.ui.squareFit
-import androidx.compose.foundation.layout.fillMaxSize
-import com.jawzf.pixeltoolkit.island.ui.SurfaceBackdrop
-import com.jawzf.pixeltoolkit.island.ui.components.cameraClearance
 import android.text.format.DateFormat
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -20,22 +18,21 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.compose.ui.graphics.nativeCanvas
-import androidx.compose.foundation.Canvas
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.jawzf.pixeltoolkit.R
+import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.island.model.IslandExpandedScope
 import com.jawzf.pixeltoolkit.island.plugins.soften
 import com.jawzf.pixeltoolkit.island.ui.IslandTextStyles
-import com.jawzf.pixeltoolkit.island.ui.islandTextColor
+import com.jawzf.pixeltoolkit.island.ui.SurfaceBackdrop
 import com.jawzf.pixeltoolkit.island.ui.components.CameraRow
 import com.jawzf.pixeltoolkit.island.ui.components.ConnectedButtonRow
 import com.jawzf.pixeltoolkit.island.ui.components.ConnectedItem
@@ -44,6 +41,9 @@ import com.jawzf.pixeltoolkit.island.ui.components.IslandIcon
 import com.jawzf.pixeltoolkit.island.ui.components.MarqueeText
 import com.jawzf.pixeltoolkit.island.ui.components.RollingText
 import com.jawzf.pixeltoolkit.island.ui.components.accentGlow
+import com.jawzf.pixeltoolkit.island.ui.components.cameraClearance
+import com.jawzf.pixeltoolkit.island.ui.islandTextColor
+import com.jawzf.pixeltoolkit.island.ui.squareFit
 import com.jawzf.pixeltoolkit.utils.UpcomingCalendarEvent
 import java.util.Date
 

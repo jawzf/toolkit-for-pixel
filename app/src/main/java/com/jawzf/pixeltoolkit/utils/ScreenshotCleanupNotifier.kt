@@ -15,7 +15,7 @@ import android.util.Size
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
-import com.jawzf.pixeltoolkit.R
+import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.receivers.ScreenshotCleanupActionReceiver
 
 object ScreenshotCleanupNotifier {

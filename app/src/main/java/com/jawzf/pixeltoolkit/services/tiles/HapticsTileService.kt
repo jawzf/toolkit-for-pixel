@@ -9,7 +9,7 @@ import android.provider.Settings
 import android.service.quicksettings.Tile
 import android.util.Log
 import android.widget.Toast
-import com.jawzf.pixeltoolkit.R
+import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.utils.PermissionUtils
 import com.jawzf.pixeltoolkit.utils.ShellUtils
 

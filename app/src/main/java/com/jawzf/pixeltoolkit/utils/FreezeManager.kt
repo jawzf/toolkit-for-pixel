@@ -4,11 +4,11 @@ import android.content.Context
 import android.os.Build
 import android.os.IBinder
 import android.util.Log
+import com.jawzf.pixeltoolkit.core.design.R
 import org.lsposed.hiddenapibypass.HiddenApiBypass
 import rikka.shizuku.Shizuku
 import rikka.shizuku.ShizukuBinderWrapper
 import rikka.shizuku.SystemServiceHelper
-import com.jawzf.pixeltoolkit.R
 
 object FreezeManager {
     private const val TAG = "FreezeManager"

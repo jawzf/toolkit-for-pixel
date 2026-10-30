@@ -1,11 +1,10 @@
 package com.jawzf.pixeltoolkit.island.plugins.call
 
-import com.jawzf.pixeltoolkit.island.plugins.sendPendingIntent
+import android.telecom.TelecomManager
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.dp
-import android.telecom.TelecomManager
-import com.jawzf.pixeltoolkit.R
+import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.island.model.CompactCell
 import com.jawzf.pixeltoolkit.island.model.CompactPlacement
@@ -15,6 +14,7 @@ import com.jawzf.pixeltoolkit.island.model.IslandPriority
 import com.jawzf.pixeltoolkit.island.model.LineContent
 import com.jawzf.pixeltoolkit.island.model.PluginRequest
 import com.jawzf.pixeltoolkit.island.plugins.BaseIslandPlugin
+import com.jawzf.pixeltoolkit.island.plugins.sendPendingIntent
 import com.jawzf.pixeltoolkit.island.ui.components.IslandBitmap
 import com.jawzf.pixeltoolkit.island.ui.components.IslandIcon
 import com.jawzf.pixeltoolkit.island.ui.components.RollingText

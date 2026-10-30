@@ -44,11 +44,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
-import com.mikepenz.aboutlibraries.ui.compose.produceLibraries
-import com.jawzf.pixeltoolkit.R
+import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.ui.core.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.utils.ColorUtil
 import com.jawzf.pixeltoolkit.utils.HapticUtil
+import com.mikepenz.aboutlibraries.ui.compose.produceLibraries
 
 data class LicenseSection(
     val title: String,

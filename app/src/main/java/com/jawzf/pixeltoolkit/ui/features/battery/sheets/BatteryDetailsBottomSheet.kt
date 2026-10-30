@@ -45,7 +45,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontVariation
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.jawzf.pixeltoolkit.R
+import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.ui.components.battery.BatteryAppsTabContent
 import com.jawzf.pixeltoolkit.ui.components.battery.BatteryInfoTabContent
 import com.jawzf.pixeltoolkit.ui.core.containers.RoundedCardContainer

@@ -47,7 +47,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.jawzf.pixeltoolkit.R
+import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.domain.registry.QSTileInfo
+import com.jawzf.pixeltoolkit.domain.registry.QSTileRegistry
 import com.jawzf.pixeltoolkit.services.tiles.AdaptiveBrightnessTileService
 import com.jawzf.pixeltoolkit.services.tiles.AlwaysOnDisplayTileService
 import com.jawzf.pixeltoolkit.services.tiles.AppFreezingTileService
@@ -57,7 +59,6 @@ import com.jawzf.pixeltoolkit.services.tiles.CaffeinateTileService
 import com.jawzf.pixeltoolkit.services.tiles.ChargeQuickTileService
 import com.jawzf.pixeltoolkit.services.tiles.DeveloperOptionsTileService
 import com.jawzf.pixeltoolkit.services.tiles.DynamicNightLightTileService
-import com.jawzf.pixeltoolkit.services.tiles.ToolkitOnDisplayTileService
 import com.jawzf.pixeltoolkit.services.tiles.FlashlightPulseTileService
 import com.jawzf.pixeltoolkit.services.tiles.FlashlightTileService
 import com.jawzf.pixeltoolkit.services.tiles.LockdownTileService
@@ -75,11 +76,10 @@ import com.jawzf.pixeltoolkit.services.tiles.SmartPixelsTileService
 import com.jawzf.pixeltoolkit.services.tiles.SoundModeTileService
 import com.jawzf.pixeltoolkit.services.tiles.StayAwakeTileService
 import com.jawzf.pixeltoolkit.services.tiles.TapToWakeTileService
+import com.jawzf.pixeltoolkit.services.tiles.ToolkitOnDisplayTileService
 import com.jawzf.pixeltoolkit.services.tiles.UiBlurTileService
 import com.jawzf.pixeltoolkit.services.tiles.UrlShortenerTileService
 import com.jawzf.pixeltoolkit.services.tiles.UsbDebuggingTileService
-import com.jawzf.pixeltoolkit.domain.registry.QSTileInfo
-import com.jawzf.pixeltoolkit.domain.registry.QSTileRegistry
 import com.jawzf.pixeltoolkit.ui.core.cards.IconToggleItem
 import com.jawzf.pixeltoolkit.ui.core.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.ui.core.sheets.PermissionsBottomSheet

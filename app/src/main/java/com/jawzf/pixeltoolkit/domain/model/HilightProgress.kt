@@ -1,7 +1,7 @@
 package com.jawzf.pixeltoolkit.domain.model
 
 import androidx.annotation.StringRes
-import com.jawzf.pixeltoolkit.R
+import com.jawzf.pixeltoolkit.core.design.R
 import kotlin.math.ceil
 import kotlin.math.roundToInt
 

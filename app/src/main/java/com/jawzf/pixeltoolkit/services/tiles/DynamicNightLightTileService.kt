@@ -3,7 +3,7 @@ package com.jawzf.pixeltoolkit.services.tiles
 import android.graphics.drawable.Icon
 import android.service.quicksettings.Tile
 import androidx.core.content.edit
-import com.jawzf.pixeltoolkit.R
+import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.utils.PermissionUtils
 
 class DynamicNightLightTileService : BaseTileService() {

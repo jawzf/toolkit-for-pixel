@@ -2,7 +2,7 @@ package com.jawzf.pixeltoolkit.utils
 
 import android.content.ComponentName
 import android.content.Context
-import com.jawzf.pixeltoolkit.R
+import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.services.SplitScreenShortcutService
 
 object SplitScreenUtil {

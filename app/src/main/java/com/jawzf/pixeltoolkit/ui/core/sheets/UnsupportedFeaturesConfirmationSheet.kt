@@ -16,15 +16,15 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import com.jawzf.pixeltoolkit.R
+import androidx.compose.ui.unit.dp
+import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.ui.core.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.ui.features.consciousgate.HoldToContinueButton
 import com.jawzf.pixeltoolkit.ui.features.consciousgate.UnscaledMotion
 import kotlinx.coroutines.withContext
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
-import com.jawzf.pixeltoolkit.ui.core.containers.RoundedCardContainer
 
 @Composable
 fun UnsupportedFeaturesConfirmationSheet(

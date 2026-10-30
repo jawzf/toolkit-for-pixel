@@ -6,7 +6,7 @@ import android.content.Intent
 import android.util.Log
 import android.widget.Toast
 import com.jawzf.pixeltoolkit.MainActivity
-import com.jawzf.pixeltoolkit.R
+import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.domain.controller.CaffeinateController
 import com.jawzf.pixeltoolkit.services.tiles.BaseTileService
 import com.jawzf.pixeltoolkit.services.tiles.CaffeinateTileService

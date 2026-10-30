@@ -64,7 +64,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.jawzf.pixeltoolkit.R
+import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.data.repository.WidgetStackRepository
 import com.jawzf.pixeltoolkit.domain.model.WidgetStackConfig
 import com.jawzf.pixeltoolkit.services.widgets.StackHost

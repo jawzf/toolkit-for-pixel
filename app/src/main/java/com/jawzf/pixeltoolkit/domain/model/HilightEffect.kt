@@ -3,7 +3,7 @@ package com.jawzf.pixeltoolkit.domain.model
 import androidx.annotation.Keep
 import androidx.annotation.StringRes
 import com.google.gson.annotations.SerializedName
-import com.jawzf.pixeltoolkit.R
+import com.jawzf.pixeltoolkit.core.design.R
 import kotlin.math.PI
 import kotlin.math.abs
 import kotlin.math.cos

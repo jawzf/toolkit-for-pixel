@@ -293,7 +293,7 @@ class NotificationLightingService : Service() {
         val builder =
             NotificationCompat
                 .Builder(this, CHANNEL_ID)
-                .setSmallIcon(com.jawzf.pixeltoolkit.R.drawable.rounded_magnify_fullscreen_24)
+                .setSmallIcon(com.jawzf.pixeltoolkit.core.design.R.drawable.rounded_magnify_fullscreen_24)
                 .setContentTitle("")
                 .setContentText("")
                 .setPriority(NotificationCompat.PRIORITY_MIN)
@@ -344,7 +344,7 @@ class NotificationLightingService : Service() {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                             getColor(android.R.color.system_accent1_100)
                         } else {
-                            getColor(com.jawzf.pixeltoolkit.R.color.purple_500)
+                            getColor(com.jawzf.pixeltoolkit.core.design.R.color.purple_500)
                         }
                     }
                 }

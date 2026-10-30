@@ -3,7 +3,7 @@ package com.jawzf.pixeltoolkit.services.tiles
 import android.graphics.drawable.Icon
 import android.provider.Settings
 import android.service.quicksettings.Tile
-import com.jawzf.pixeltoolkit.R
+import com.jawzf.pixeltoolkit.core.design.R
 
 class StayAwakeTileService : BaseTileService() {
     override fun onTileClick() {

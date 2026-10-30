@@ -2,7 +2,7 @@ package com.jawzf.pixeltoolkit.domain.model
 
 import androidx.annotation.StringRes
 import com.google.gson.annotations.SerializedName
-import com.jawzf.pixeltoolkit.R
+import com.jawzf.pixeltoolkit.core.design.R
 
 enum class ActivityIconSource(
     @StringRes val title: Int,

@@ -1,7 +1,7 @@
 package com.jawzf.pixeltoolkit.domain.diy
 
 import android.content.Context
-import com.jawzf.pixeltoolkit.R
+import com.jawzf.pixeltoolkit.core.design.R
 import kotlin.math.roundToInt
 
 fun systemMetricText(

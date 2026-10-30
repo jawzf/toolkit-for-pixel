@@ -42,7 +42,7 @@ abstract class Feature(
     @androidx.annotation.RawRes val animationRes: Int = 0,
     val contributors: List<String> = emptyList(),
 ) {
-    val requiresAuth: Boolean = category == com.jawzf.pixeltoolkit.R.string.cat_protection
+    val requiresAuth: Boolean = category == com.jawzf.pixeltoolkit.core.design.R.string.cat_protection
 
     abstract fun isEnabled(viewModel: MainViewModel): Boolean
 

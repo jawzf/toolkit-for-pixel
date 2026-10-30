@@ -1,6 +1,6 @@
 package com.jawzf.pixeltoolkit.utils
 
-import com.jawzf.pixeltoolkit.R
+import com.jawzf.pixeltoolkit.core.design.R
 
 enum class PrivilegedMode(
     val key: String,

@@ -34,7 +34,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.jawzf.pixeltoolkit.R
+import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.domain.diy.Action
 import com.jawzf.pixeltoolkit.domain.diy.ActionRegistry
 import com.jawzf.pixeltoolkit.domain.diy.displayName
@@ -43,28 +43,28 @@ import com.jawzf.pixeltoolkit.ui.components.CategoryExpandableSection
 import com.jawzf.pixeltoolkit.ui.core.cards.IconToggleItem
 import com.jawzf.pixeltoolkit.ui.core.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.ui.core.sheets.AppSelectionSheet
-import com.jawzf.pixeltoolkit.ui.core.sheets.CustomSettingsSheet
-import com.jawzf.pixeltoolkit.ui.core.sheets.DimWallpaperSettingsSheet
-import com.jawzf.pixeltoolkit.ui.core.sheets.ToolkitBottomSheet
-import com.jawzf.pixeltoolkit.ui.core.sheets.HilightEffectSettingsSheet
-import com.jawzf.pixeltoolkit.ui.core.sheets.ScreenOffSettingsSheet
-import com.jawzf.pixeltoolkit.ui.core.sheets.OpenActivityPicker
-import com.jawzf.pixeltoolkit.ui.core.sheets.SingleAppSelectionSheet
-import com.jawzf.pixeltoolkit.ui.core.sheets.WaitSettingsSheet
-import com.jawzf.pixeltoolkit.ui.core.sheets.SendNotificationSettingsSheet
-import com.jawzf.pixeltoolkit.ui.core.sheets.DeviceCareSettingsSheet
-import com.jawzf.pixeltoolkit.ui.core.sheets.formatWait
 import com.jawzf.pixeltoolkit.ui.core.sheets.ChargingModeSettingsSheet
+import com.jawzf.pixeltoolkit.ui.core.sheets.CustomSettingsSheet
+import com.jawzf.pixeltoolkit.ui.core.sheets.DeviceCareSettingsSheet
+import com.jawzf.pixeltoolkit.ui.core.sheets.DimWallpaperSettingsSheet
+import com.jawzf.pixeltoolkit.ui.core.sheets.HilightEffectSettingsSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.NotificationLightingActionSheet
+import com.jawzf.pixeltoolkit.ui.core.sheets.OpenActivityPicker
 import com.jawzf.pixeltoolkit.ui.core.sheets.OverlayControlSettingsSheet
+import com.jawzf.pixeltoolkit.ui.core.sheets.ScreenOffSettingsSheet
+import com.jawzf.pixeltoolkit.ui.core.sheets.SendNotificationSettingsSheet
+import com.jawzf.pixeltoolkit.ui.core.sheets.SingleAppSelectionSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.SoundModeSettingsSheet
+import com.jawzf.pixeltoolkit.ui.core.sheets.ToolkitBottomSheet
+import com.jawzf.pixeltoolkit.ui.core.sheets.WaitSettingsSheet
+import com.jawzf.pixeltoolkit.ui.core.sheets.formatWait
 import com.jawzf.pixeltoolkit.ui.features.apps.sheets.KeyboardSelectionSheet
 import com.jawzf.pixeltoolkit.ui.features.audio.sheets.SetModeSettingsSheet
 import com.jawzf.pixeltoolkit.ui.features.audio.sheets.SetVolumeSettingsSheet
 import com.jawzf.pixeltoolkit.utils.HapticUtil
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
-import java.util.concurrent.atomic.AtomicLong
 import sh.calvin.reorderable.ReorderableColumn
+import java.util.concurrent.atomic.AtomicLong
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

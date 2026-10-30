@@ -2,7 +2,7 @@ package com.jawzf.pixeltoolkit.services.tiles
 
 import android.graphics.drawable.Icon
 import android.service.quicksettings.Tile
-import com.jawzf.pixeltoolkit.R
+import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.domain.model.ScaleAnimationsProfile
 

@@ -5,14 +5,13 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.graphics.Color as AndroidColor
 import android.os.BatteryManager
 import android.os.PowerManager
 import android.text.format.DateFormat
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.jawzf.pixeltoolkit.R
+import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.island.model.CompactCell
 import com.jawzf.pixeltoolkit.island.model.CompactPlacement
@@ -29,6 +28,7 @@ import com.jawzf.pixeltoolkit.island.ui.components.RollingText
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import android.graphics.Color as AndroidColor
 
 class TimeBatteryPlugin : BaseIslandPlugin() {
     override val id = "time_battery"

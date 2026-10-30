@@ -62,11 +62,9 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.jawzf.pixeltoolkit.R
+import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.domain.model.Feature
 import com.jawzf.pixeltoolkit.services.widgets.WidgetScraperService
-import com.jawzf.pixeltoolkit.ui.features.widgets.WidgetPickerSheet
-import kotlinx.coroutines.delay
 import com.jawzf.pixeltoolkit.ui.components.ToolkitFloatingToolbar
 import com.jawzf.pixeltoolkit.ui.components.animations.LottieFeatureAnimation
 import com.jawzf.pixeltoolkit.ui.components.menus.SegmentedDropdownMenuItem
@@ -78,6 +76,7 @@ import com.jawzf.pixeltoolkit.ui.core.pickers.SegmentedPicker
 import com.jawzf.pixeltoolkit.ui.core.sheets.FeatureHelpBottomSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.PermissionsBottomSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.ShakeForHelp
+import com.jawzf.pixeltoolkit.ui.features.widgets.WidgetPickerSheet
 import com.jawzf.pixeltoolkit.ui.modifiers.BlurDirection
 import com.jawzf.pixeltoolkit.ui.modifiers.progressiveBlur
 import com.jawzf.pixeltoolkit.ui.modifiers.scrollMotionBlur
@@ -86,6 +85,7 @@ import com.jawzf.pixeltoolkit.utils.HapticUtil
 import com.jawzf.pixeltoolkit.utils.PermissionUIHelper
 import com.jawzf.pixeltoolkit.utils.PermissionUtils
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
+import kotlinx.coroutines.delay
 
 class PixelSearchbarSettingsActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3ExpressiveApi::class)
