@@ -1,4 +1,5 @@
 pluginManagement {
+    includeBuild("build-logic")
     repositories {
         google()
         mavenCentral()
@@ -23,3 +24,6 @@ include(":app")
 include(":stub")
 include(":island-sdk")
 include(":island-sdk-compose")
+include(":core:design")
+include(":core:platform")
+include(":core:data")

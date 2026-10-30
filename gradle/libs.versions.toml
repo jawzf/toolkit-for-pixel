@@ -96,6 +96,7 @@ zxing-core = { group = "com.google.zxing", name = "core", version.ref = "zxing" 
 
 aboutlibraries-core = { group = "com.mikepenz", name = "aboutlibraries-core", version.ref = "aboutlibraries" }
 aboutlibraries-compose-m3 = { group = "com.mikepenz", name = "aboutlibraries-compose-m3", version.ref = "aboutlibraries" }
+android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

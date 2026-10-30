@@ -79,6 +79,9 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:design"))
+    implementation(project(":core:platform"))
+    implementation(project(":core:data"))
     compileOnly(project(":stub"))
     implementation(libs.aboutlibraries.core)
     implementation(libs.aboutlibraries.compose.m3)
