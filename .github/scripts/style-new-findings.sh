@@ -42,7 +42,8 @@ detekt_run() {
   out=$($DETEKT --input "$list" --config "$CFG/detekt.yml" --build-upon-default-config 2>&1)
   rc=$?
   if (( rc == 1 || rc == 3 )); then echo "$out" | head -20 >&2; return 1; fi
-  echo "$out" | grep -E '\.kt:[0-9]+'
+  # No findings is a pass: grep's exit 1 must not look like a detekt failure.
+  echo "$out" | grep -E '\.kt:[0-9]+' || true
 }
 
 ktlint_head=$(ktlint_run "${kt[@]}")
