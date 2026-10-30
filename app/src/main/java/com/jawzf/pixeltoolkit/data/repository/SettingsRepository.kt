@@ -1444,12 +1444,14 @@ class SettingsRepository(
     fun setConsciousGateFeelEverySecond(enabled: Boolean) = putBoolean(KEY_CONSCIOUS_GATE_FEEL_EVERY_SECOND, enabled)
 
     fun getConsciousGateTitle(context: Context = this.context): String =
-        prefs.getString(KEY_CONSCIOUS_GATE_TITLE, null) ?: context.getString(com.jawzf.pixeltoolkit.core.design.R.string.conscious_gate_default_title)
+        prefs.getString(KEY_CONSCIOUS_GATE_TITLE, null)
+            ?: context.getString(com.jawzf.pixeltoolkit.core.design.R.string.conscious_gate_default_title)
 
     fun setConsciousGateTitle(title: String) = putString(KEY_CONSCIOUS_GATE_TITLE, title)
 
     fun getConsciousGateMessage(context: Context = this.context): String =
-        prefs.getString(KEY_CONSCIOUS_GATE_MESSAGE, null) ?: context.getString(com.jawzf.pixeltoolkit.core.design.R.string.conscious_gate_default_message)
+        prefs.getString(KEY_CONSCIOUS_GATE_MESSAGE, null)
+            ?: context.getString(com.jawzf.pixeltoolkit.core.design.R.string.conscious_gate_default_message)
 
     fun setConsciousGateMessage(message: String) = putString(KEY_CONSCIOUS_GATE_MESSAGE, message)
 

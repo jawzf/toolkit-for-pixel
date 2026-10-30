@@ -81,7 +81,10 @@ fun LicensesBottomSheet(onDismissRequest: () -> Unit) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = false)
     val context = LocalContext.current
     val libraries by produceLibraries {
-        context.resources.openRawResource(R.raw.aboutlibraries).bufferedReader().use { it.readText() }
+        context.resources
+            .openRawResource(com.jawzf.pixeltoolkit.R.raw.aboutlibraries)
+            .bufferedReader()
+            .use { it.readText() }
     }
 
     val customSections = remember {

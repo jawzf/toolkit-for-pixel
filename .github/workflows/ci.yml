@@ -92,9 +92,9 @@ jobs:
             echo "Dependency changes approved (deps-approved label)."
           fi
 
-      # Old upstream findings are in app/lint-baseline.xml; any new lint error fails.
+      # Old upstream findings are in each module's lint-baseline.xml; any new lint error fails.
       - name: Android lint
-        run: ./gradlew --no-configuration-cache :app:lintDebug
+        run: ./gradlew --no-configuration-cache :app:lintDebug :core:design:lintDebug :core:platform:lintDebug :core:data:lintDebug
 
       - name: Unit tests
         run: ./gradlew :app:testDebugUnitTest
