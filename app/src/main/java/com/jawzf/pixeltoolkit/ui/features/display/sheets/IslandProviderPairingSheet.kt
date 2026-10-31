@@ -35,10 +35,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.drawable.toBitmap
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
+import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
 import com.jawzf.pixeltoolkit.island.remote.ProviderInfo
 import com.jawzf.pixeltoolkit.island.sdk.IslandIdentity
-import com.jawzf.pixeltoolkit.ui.core.sheets.ToolkitBottomSheet
-import com.jawzf.pixeltoolkit.utils.HapticUtil
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.domain.model.ActiveNotificationAlert
 import com.jawzf.pixeltoolkit.domain.model.NotificationActionItem
@@ -33,7 +34,6 @@ import com.jawzf.pixeltoolkit.island.ui.IslandStackOverlap
 import com.jawzf.pixeltoolkit.island.ui.components.IslandBitmap
 import com.jawzf.pixeltoolkit.island.ui.components.IslandIcon
 import com.jawzf.pixeltoolkit.services.NotificationListener
-import com.jawzf.pixeltoolkit.utils.HapticUtil
 import kotlin.math.ceil
 
 class NotificationsPlugin : BaseIslandPlugin() {

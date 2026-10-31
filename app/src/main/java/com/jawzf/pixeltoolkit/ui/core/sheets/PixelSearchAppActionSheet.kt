@@ -29,11 +29,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.design.cards.FeatureCard
+import com.jawzf.pixeltoolkit.core.design.color.ColorUtil
+import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
+import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
+import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
 import com.jawzf.pixeltoolkit.domain.model.PixelSearchResultItem
-import com.jawzf.pixeltoolkit.ui.core.cards.FeatureCard
-import com.jawzf.pixeltoolkit.ui.core.containers.RoundedCardContainer
-import com.jawzf.pixeltoolkit.utils.ColorUtil
-import com.jawzf.pixeltoolkit.utils.HapticUtil
 
 @Composable
 fun PixelSearchAppActionSheet(

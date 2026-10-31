@@ -22,12 +22,12 @@ import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.core.design.R
-import com.jawzf.pixeltoolkit.ui.core.cards.IconToggleItem
-import com.jawzf.pixeltoolkit.ui.core.containers.RoundedCardContainer
+import com.jawzf.pixeltoolkit.core.design.cards.IconToggleItem
+import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
+import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
+import com.jawzf.pixeltoolkit.core.design.modifiers.highlight
 import com.jawzf.pixeltoolkit.ui.core.sheets.AppSelectionSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.PermissionsBottomSheet
-import com.jawzf.pixeltoolkit.ui.modifiers.highlight
-import com.jawzf.pixeltoolkit.utils.HapticUtil
 import com.jawzf.pixeltoolkit.utils.PermissionUIHelper
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 

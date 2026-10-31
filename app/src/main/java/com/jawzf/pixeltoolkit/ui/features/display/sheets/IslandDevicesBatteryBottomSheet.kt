@@ -25,8 +25,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.FeatureSettingsActivity
 import com.jawzf.pixeltoolkit.core.design.R
-import com.jawzf.pixeltoolkit.ui.core.sheets.ToolkitBottomSheet
-import com.jawzf.pixeltoolkit.utils.HapticUtil
+import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
+import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)

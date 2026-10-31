@@ -40,9 +40,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import com.jawzf.pixeltoolkit.core.design.R
-import com.jawzf.pixeltoolkit.ui.core.cards.SelectionCardItem
-import com.jawzf.pixeltoolkit.ui.core.containers.RoundedCardContainer
-import com.jawzf.pixeltoolkit.utils.HapticUtil
+import com.jawzf.pixeltoolkit.core.design.cards.SelectionCardItem
+import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
+import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.utils.WifiUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

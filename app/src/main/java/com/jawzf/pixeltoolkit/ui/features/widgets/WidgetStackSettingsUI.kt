@@ -32,12 +32,12 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
+import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.data.repository.WidgetStackRepository
 import com.jawzf.pixeltoolkit.domain.model.WidgetStackConfig
 import com.jawzf.pixeltoolkit.services.widgets.StackWidgetProvider
 import com.jawzf.pixeltoolkit.ui.activities.WidgetStackConfigureActivity
-import com.jawzf.pixeltoolkit.ui.core.containers.RoundedCardContainer
-import com.jawzf.pixeltoolkit.utils.HapticUtil
 
 @Composable
 fun WidgetStackSettingsUI(modifier: Modifier = Modifier) {

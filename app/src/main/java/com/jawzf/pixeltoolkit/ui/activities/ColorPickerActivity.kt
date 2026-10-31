@@ -12,9 +12,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
+import com.jawzf.pixeltoolkit.core.design.theme.ToolkitTheme
 import com.jawzf.pixeltoolkit.ui.core.sheets.ColorPickerBottomSheet
-import com.jawzf.pixeltoolkit.ui.theme.ToolkitTheme
-import com.jawzf.pixeltoolkit.utils.HapticUtil
 
 class ColorPickerActivity : ComponentActivity() {
     private var pickedColor by mutableStateOf<Int?>(null)

@@ -26,19 +26,19 @@ import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.design.cards.IconToggleItem
+import com.jawzf.pixeltoolkit.core.design.cards.SelectionCardItem
+import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
+import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
+import com.jawzf.pixeltoolkit.core.design.modifiers.highlight
+import com.jawzf.pixeltoolkit.core.design.pickers.SegmentedPicker
 import com.jawzf.pixeltoolkit.domain.diy.Action
 import com.jawzf.pixeltoolkit.domain.diy.ActionRegistry
 import com.jawzf.pixeltoolkit.domain.model.ActivityIconSource
 import com.jawzf.pixeltoolkit.domain.model.LockscreenShortcutSide
 import com.jawzf.pixeltoolkit.domain.model.SystemShortcutsState
-import com.jawzf.pixeltoolkit.ui.core.cards.IconToggleItem
-import com.jawzf.pixeltoolkit.ui.core.cards.SelectionCardItem
-import com.jawzf.pixeltoolkit.ui.core.containers.RoundedCardContainer
-import com.jawzf.pixeltoolkit.ui.core.pickers.SegmentedPicker
 import com.jawzf.pixeltoolkit.ui.core.sheets.ActivityIconSheet
-import com.jawzf.pixeltoolkit.ui.modifiers.highlight
 import com.jawzf.pixeltoolkit.utils.ActivityLauncherUtil
-import com.jawzf.pixeltoolkit.utils.HapticUtil
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 
 @Composable

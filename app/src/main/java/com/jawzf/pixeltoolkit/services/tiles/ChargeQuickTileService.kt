@@ -5,6 +5,7 @@ import android.graphics.drawable.Icon
 import android.service.quicksettings.Tile
 import com.jawzf.pixeltoolkit.FeatureSettingsActivity
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.utils.ShellUtils
 
 class ChargeQuickTileService : BaseTileService() {
@@ -15,7 +16,7 @@ class ChargeQuickTileService : BaseTileService() {
 
     override fun onClick() {
         if (!hasFeaturePermission()) {
-            com.jawzf.pixeltoolkit.utils.HapticUtil
+            HapticUtil
                 .performHapticForService(this)
             val intent =
                 Intent(this, FeatureSettingsActivity::class.java).apply {

@@ -52,17 +52,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.design.components.SegmentedDropdownMenu
+import com.jawzf.pixeltoolkit.core.design.components.SegmentedDropdownMenuItem
+import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
+import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
+import com.jawzf.pixeltoolkit.core.design.theme.ToolkitTheme
 import com.jawzf.pixeltoolkit.domain.diy.Action
 import com.jawzf.pixeltoolkit.domain.diy.Automation
 import com.jawzf.pixeltoolkit.domain.diy.DIYRuntimeStore
 import com.jawzf.pixeltoolkit.domain.diy.Trigger
 import com.jawzf.pixeltoolkit.domain.diy.displayName
 import com.jawzf.pixeltoolkit.domain.diy.systemMetricText
-import com.jawzf.pixeltoolkit.ui.components.menus.SegmentedDropdownMenu
-import com.jawzf.pixeltoolkit.ui.components.menus.SegmentedDropdownMenuItem
-import com.jawzf.pixeltoolkit.ui.core.containers.RoundedCardContainer
-import com.jawzf.pixeltoolkit.ui.theme.ToolkitTheme
-import com.jawzf.pixeltoolkit.utils.HapticUtil
 import java.text.DateFormatSymbols
 import java.util.Calendar
 import com.jawzf.pixeltoolkit.domain.diy.State as DIYState

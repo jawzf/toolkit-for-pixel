@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Build
+import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.services.receivers.SecurityReceiver
 import com.jawzf.pixeltoolkit.utils.LogManager
 import com.jawzf.pixeltoolkit.utils.ShizukuUtils
@@ -25,7 +26,7 @@ class ToolkitApp : Application() {
     override fun onCreate() {
         super.onCreate()
         context = applicationContext
-        com.jawzf.pixeltoolkit.utils.HapticUtil.initialize(this)
+        HapticUtil.initialize(this)
 
         try {
             resources?.configuration

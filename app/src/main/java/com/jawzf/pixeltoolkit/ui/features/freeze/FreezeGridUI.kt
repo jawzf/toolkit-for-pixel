@@ -77,14 +77,15 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.design.color.ColorUtil
+import com.jawzf.pixeltoolkit.core.design.components.SegmentedDropdownMenu
+import com.jawzf.pixeltoolkit.core.design.components.SegmentedDropdownMenuItem
+import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
+import com.jawzf.pixeltoolkit.core.design.modifiers.scrollMotionBlur
+import com.jawzf.pixeltoolkit.core.design.state.LocalMenuStateManager
+import com.jawzf.pixeltoolkit.core.design.state.MenuStateManager
 import com.jawzf.pixeltoolkit.domain.model.NotificationApp
-import com.jawzf.pixeltoolkit.ui.components.menus.SegmentedDropdownMenu
-import com.jawzf.pixeltoolkit.ui.components.menus.SegmentedDropdownMenuItem
-import com.jawzf.pixeltoolkit.ui.modifiers.scrollMotionBlur
-import com.jawzf.pixeltoolkit.ui.state.LocalMenuStateManager
-import com.jawzf.pixeltoolkit.utils.ColorUtil
 import com.jawzf.pixeltoolkit.utils.FreezeManager
-import com.jawzf.pixeltoolkit.utils.HapticUtil
 import com.jawzf.pixeltoolkit.utils.ShortcutUtil
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 import kotlinx.coroutines.Dispatchers
@@ -517,7 +518,7 @@ fun AppGridItem(
     isLockedByTag: Boolean = false,
     tagColor: Color? = null,
     isHighlighted: Boolean = false,
-    menuState: com.jawzf.pixeltoolkit.ui.state.MenuStateManager,
+    menuState: MenuStateManager,
     onClick: () -> Unit,
     onToggleFreeze: () -> Unit,
     onToggleAutoFreeze: (Boolean) -> Unit,

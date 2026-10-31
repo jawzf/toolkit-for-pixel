@@ -10,7 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import com.jawzf.pixeltoolkit.ui.theme.ToolkitTheme
+import com.jawzf.pixeltoolkit.core.design.theme.ToolkitTheme
 
 @Composable
 fun ConsciousGatePreview(

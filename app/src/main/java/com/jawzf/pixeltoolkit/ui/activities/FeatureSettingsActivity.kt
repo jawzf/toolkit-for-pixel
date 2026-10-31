@@ -48,13 +48,22 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.jawzf.pixeltoolkit.core.design.R
-import com.jawzf.pixeltoolkit.domain.HapticFeedbackType
+import com.jawzf.pixeltoolkit.core.design.cards.FeatureCard
+import com.jawzf.pixeltoolkit.core.design.components.LottieFeatureAnimation
+import com.jawzf.pixeltoolkit.core.design.components.ToolkitFloatingToolbar
+import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
+import com.jawzf.pixeltoolkit.core.design.haptics.HapticFeedbackType
+import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
+import com.jawzf.pixeltoolkit.core.design.modifiers.BlurDirection
+import com.jawzf.pixeltoolkit.core.design.modifiers.highlight
+import com.jawzf.pixeltoolkit.core.design.modifiers.progressiveBlur
+import com.jawzf.pixeltoolkit.core.design.modifiers.scrollMotionBlur
+import com.jawzf.pixeltoolkit.core.design.sheets.InstructionsBottomSheet
+import com.jawzf.pixeltoolkit.core.design.state.LocalMenuStateManager
+import com.jawzf.pixeltoolkit.core.design.state.MenuStateManager
+import com.jawzf.pixeltoolkit.core.design.theme.ToolkitTheme
 import com.jawzf.pixeltoolkit.domain.registry.FeatureRegistry
-import com.jawzf.pixeltoolkit.ui.components.ToolkitFloatingToolbar
-import com.jawzf.pixeltoolkit.ui.components.animations.LottieFeatureAnimation
 import com.jawzf.pixeltoolkit.ui.components.linkActions.LinkPickerScreen
-import com.jawzf.pixeltoolkit.ui.core.cards.FeatureCard
-import com.jawzf.pixeltoolkit.ui.core.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.ui.core.sheets.PermissionsBottomSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.ShakeForHelp
 import com.jawzf.pixeltoolkit.ui.features.battery.BatteriesSettingsUI
@@ -119,14 +128,8 @@ import com.jawzf.pixeltoolkit.ui.features.system.TextAnimationsSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.ToolkitOnDisplaySettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.VolumeStepsSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.widgets.WidgetStackSettingsUI
-import com.jawzf.pixeltoolkit.ui.modifiers.BlurDirection
-import com.jawzf.pixeltoolkit.ui.modifiers.highlight
-import com.jawzf.pixeltoolkit.ui.modifiers.progressiveBlur
-import com.jawzf.pixeltoolkit.ui.modifiers.scrollMotionBlur
-import com.jawzf.pixeltoolkit.ui.theme.ToolkitTheme
 import com.jawzf.pixeltoolkit.utils.BiometricSecurityHelper
 import com.jawzf.pixeltoolkit.utils.DeviceUtils
-import com.jawzf.pixeltoolkit.utils.HapticUtil
 import com.jawzf.pixeltoolkit.viewmodels.CaffeinateViewModel
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 import com.jawzf.pixeltoolkit.viewmodels.StatusBarIconViewModel
@@ -220,10 +223,9 @@ class FeatureSettingsActivity : AppCompatActivity() {
 
             ToolkitTheme(pitchBlackTheme = isPitchBlackThemeEnabled) {
                 androidx.compose.runtime.CompositionLocalProvider(
-                    com.jawzf.pixeltoolkit.ui.state.LocalMenuStateManager provides
+                    LocalMenuStateManager provides
                         remember {
-                            com.jawzf.pixeltoolkit.ui.state
-                                .MenuStateManager()
+                            MenuStateManager()
                         },
                 ) {
                     LocalView.current
@@ -425,7 +427,7 @@ class FeatureSettingsActivity : AppCompatActivity() {
                     }
 
                     if (showInstructionsSheet) {
-                        com.jawzf.pixeltoolkit.ui.core.sheets.InstructionsBottomSheet(
+                        InstructionsBottomSheet(
                             onDismissRequest = { showInstructionsSheet = false },
                         )
                     }

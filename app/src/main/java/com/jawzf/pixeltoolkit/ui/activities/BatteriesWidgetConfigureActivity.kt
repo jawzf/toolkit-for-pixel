@@ -32,13 +32,13 @@ import androidx.glance.appwidget.state.getAppWidgetState
 import androidx.glance.appwidget.state.updateAppWidgetState
 import androidx.glance.state.PreferencesGlanceStateDefinition
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.design.cards.IconToggleItem
+import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
+import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
+import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
+import com.jawzf.pixeltoolkit.core.design.theme.ToolkitTheme
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.services.widgets.BatteriesWidget
-import com.jawzf.pixeltoolkit.ui.core.cards.IconToggleItem
-import com.jawzf.pixeltoolkit.ui.core.containers.RoundedCardContainer
-import com.jawzf.pixeltoolkit.ui.core.sheets.ToolkitBottomSheet
-import com.jawzf.pixeltoolkit.ui.theme.ToolkitTheme
-import com.jawzf.pixeltoolkit.utils.HapticUtil
 import kotlinx.coroutines.launch
 
 class BatteriesWidgetConfigureActivity : ComponentActivity() {

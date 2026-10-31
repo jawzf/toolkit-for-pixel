@@ -6,7 +6,7 @@ import android.provider.Settings
 import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.jawzf.pixeltoolkit.domain.HapticFeedbackType
+import com.jawzf.pixeltoolkit.core.design.haptics.HapticFeedbackType
 import com.jawzf.pixeltoolkit.domain.controller.BackGestureController
 import com.jawzf.pixeltoolkit.domain.controller.BackGestureStore
 import com.jawzf.pixeltoolkit.domain.diy.Action

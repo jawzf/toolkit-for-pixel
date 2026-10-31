@@ -44,12 +44,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.design.color.ColorUtil
+import com.jawzf.pixeltoolkit.core.design.components.SegmentedDropdownMenu
+import com.jawzf.pixeltoolkit.core.design.components.SegmentedDropdownMenuItem
+import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
+import com.jawzf.pixeltoolkit.core.design.state.LocalMenuStateManager
 import com.jawzf.pixeltoolkit.domain.model.Feature
 import com.jawzf.pixeltoolkit.domain.registry.FeatureRegistry
-import com.jawzf.pixeltoolkit.ui.components.menus.SegmentedDropdownMenu
-import com.jawzf.pixeltoolkit.ui.components.menus.SegmentedDropdownMenuItem
-import com.jawzf.pixeltoolkit.utils.ColorUtil
-import com.jawzf.pixeltoolkit.utils.HapticUtil
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -109,7 +110,7 @@ fun FavoriteCarousel(
             val resolvedTitle = stringResource(id = feature.title)
             var showMenu by remember { mutableStateOf(false) }
 
-            val menuState = com.jawzf.pixeltoolkit.ui.state.LocalMenuStateManager.current
+            val menuState = LocalMenuStateManager.current
             androidx.compose.runtime.DisposableEffect(showMenu) {
                 if (showMenu) {
                     menuState.activeId = feature.id

@@ -38,9 +38,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.design.color.ColorUtil
+import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
+import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.domain.model.AppTag
-import com.jawzf.pixeltoolkit.ui.core.containers.RoundedCardContainer
-import com.jawzf.pixeltoolkit.utils.HapticUtil
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -105,7 +106,7 @@ fun AssignTagsSheet(
                             leadingContent = {
                                 val richColor =
                                     remember(color) {
-                                        com.jawzf.pixeltoolkit.utils.ColorUtil
+                                        ColorUtil
                                             .toRichColor(color)
                                     }
                                 Box(

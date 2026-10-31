@@ -56,10 +56,10 @@ import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
+import com.jawzf.pixeltoolkit.core.design.theme.ToolkitTheme
 import com.jawzf.pixeltoolkit.services.receivers.FlashlightActionReceiver
-import com.jawzf.pixeltoolkit.ui.theme.ToolkitTheme
 import com.jawzf.pixeltoolkit.utils.FlashlightUtil
-import com.jawzf.pixeltoolkit.utils.HapticUtil
 
 class FlashlightIntensityActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

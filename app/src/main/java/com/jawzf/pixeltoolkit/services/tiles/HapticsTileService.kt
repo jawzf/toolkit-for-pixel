@@ -10,6 +10,7 @@ import android.service.quicksettings.Tile
 import android.util.Log
 import android.widget.Toast
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.utils.PermissionUtils
 import com.jawzf.pixeltoolkit.utils.ShellUtils
 
@@ -53,7 +54,7 @@ class HapticsTileService : BaseTileService() {
         }
         if (value == 1) {
             runCatching {
-                com.jawzf.pixeltoolkit.utils.HapticUtil.vibrate(this, VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE))
+                HapticUtil.vibrate(this, VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE))
             }.onFailure { Log.w("HapticsTile", "Could not vibrate for confirmation", it) }
         }
     }

@@ -92,6 +92,7 @@ import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupProperties
 import androidx.compose.ui.zIndex
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.ime.Suggestion
 import com.jawzf.pixeltoolkit.ime.SuggestionType
 import com.jawzf.pixeltoolkit.ui.ime.touch.KeyAction
@@ -102,7 +103,6 @@ import com.jawzf.pixeltoolkit.ui.ime.touch.KeyboardLayoutBuilder
 import com.jawzf.pixeltoolkit.ui.ime.touch.KeyboardTouchState
 import com.jawzf.pixeltoolkit.ui.ime.touch.PointerMode
 import com.jawzf.pixeltoolkit.ui.ime.touch.RowDef
-import com.jawzf.pixeltoolkit.utils.HapticUtil
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 

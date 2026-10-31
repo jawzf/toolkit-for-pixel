@@ -29,7 +29,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import com.jawzf.pixeltoolkit.core.design.R
-import com.jawzf.pixeltoolkit.ui.theme.Shapes
+import com.jawzf.pixeltoolkit.core.design.theme.Shapes
 import com.jawzf.pixeltoolkit.utils.AutoBackupManager
 
 @Composable

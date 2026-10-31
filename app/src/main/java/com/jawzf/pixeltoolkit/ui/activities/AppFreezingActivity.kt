@@ -43,15 +43,15 @@ import androidx.core.view.WindowCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.jawzf.pixeltoolkit.FeatureSettingsActivity
 import com.jawzf.pixeltoolkit.core.design.R
-import com.jawzf.pixeltoolkit.ui.components.menus.SegmentedDropdownMenu
-import com.jawzf.pixeltoolkit.ui.components.menus.SegmentedDropdownMenuItem
+import com.jawzf.pixeltoolkit.core.design.components.SegmentedDropdownMenu
+import com.jawzf.pixeltoolkit.core.design.components.SegmentedDropdownMenuItem
+import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
+import com.jawzf.pixeltoolkit.core.design.modifiers.BlurDirection
+import com.jawzf.pixeltoolkit.core.design.modifiers.progressiveBlur
+import com.jawzf.pixeltoolkit.core.design.state.LocalMenuStateManager
+import com.jawzf.pixeltoolkit.core.design.state.MenuStateManager
+import com.jawzf.pixeltoolkit.core.design.theme.ToolkitTheme
 import com.jawzf.pixeltoolkit.ui.composables.FreezeGridUI
-import com.jawzf.pixeltoolkit.ui.modifiers.BlurDirection
-import com.jawzf.pixeltoolkit.ui.modifiers.progressiveBlur
-import com.jawzf.pixeltoolkit.ui.state.LocalMenuStateManager
-import com.jawzf.pixeltoolkit.ui.state.MenuStateManager
-import com.jawzf.pixeltoolkit.ui.theme.ToolkitTheme
-import com.jawzf.pixeltoolkit.utils.HapticUtil
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 
 class AppFreezingActivity : ComponentActivity() {

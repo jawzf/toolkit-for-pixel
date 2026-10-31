@@ -58,26 +58,28 @@ import androidx.core.animation.doOnEnd
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.design.components.SegmentedDropdownMenu
+import com.jawzf.pixeltoolkit.core.design.components.SegmentedDropdownMenuItem
+import com.jawzf.pixeltoolkit.core.design.components.ToolbarItem
+import com.jawzf.pixeltoolkit.core.design.components.ToolkitFloatingToolbar
+import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
+import com.jawzf.pixeltoolkit.core.design.modifiers.BlurDirection
+import com.jawzf.pixeltoolkit.core.design.modifiers.progressiveBlur
+import com.jawzf.pixeltoolkit.core.design.modifiers.scrollMotionBlur
+import com.jawzf.pixeltoolkit.core.design.sheets.InstructionsBottomSheet
+import com.jawzf.pixeltoolkit.core.design.state.LocalMenuStateManager
+import com.jawzf.pixeltoolkit.core.design.state.MenuStateManager
+import com.jawzf.pixeltoolkit.core.design.theme.ToolkitTheme
 import com.jawzf.pixeltoolkit.domain.DIYTabs
 import com.jawzf.pixeltoolkit.domain.registry.initPermissionRegistry
-import com.jawzf.pixeltoolkit.ui.components.ToolbarItem
-import com.jawzf.pixeltoolkit.ui.components.ToolkitFloatingToolbar
-import com.jawzf.pixeltoolkit.ui.components.menus.SegmentedDropdownMenu
-import com.jawzf.pixeltoolkit.ui.components.menus.SegmentedDropdownMenuItem
 import com.jawzf.pixeltoolkit.ui.composables.DIYScreen
 import com.jawzf.pixeltoolkit.ui.composables.FreezeGridUI
 import com.jawzf.pixeltoolkit.ui.composables.SetupFeatures
 import com.jawzf.pixeltoolkit.ui.composables.WelcomeScreen
 import com.jawzf.pixeltoolkit.ui.core.sheets.AddRepoBottomSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.GitHubAuthSheet
-import com.jawzf.pixeltoolkit.ui.core.sheets.InstructionsBottomSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.ShakeForHelp
 import com.jawzf.pixeltoolkit.ui.core.sheets.UpdateBottomSheet
-import com.jawzf.pixeltoolkit.ui.modifiers.BlurDirection
-import com.jawzf.pixeltoolkit.ui.modifiers.progressiveBlur
-import com.jawzf.pixeltoolkit.ui.modifiers.scrollMotionBlur
-import com.jawzf.pixeltoolkit.ui.theme.ToolkitTheme
-import com.jawzf.pixeltoolkit.utils.HapticUtil
 import com.jawzf.pixeltoolkit.viewmodels.AppUpdatesViewModel
 import com.jawzf.pixeltoolkit.viewmodels.GitHubAuthViewModel
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
@@ -222,10 +224,9 @@ class MainActivity : AppCompatActivity() {
             val isSwipeTabsEnabled by viewModel.isSwipeTabsEnabled
             ToolkitTheme(pitchBlackTheme = isPitchBlackThemeEnabled) {
                 androidx.compose.runtime.CompositionLocalProvider(
-                    com.jawzf.pixeltoolkit.ui.state.LocalMenuStateManager provides
+                    LocalMenuStateManager provides
                         remember {
-                            com.jawzf.pixeltoolkit.ui.state
-                                .MenuStateManager()
+                            MenuStateManager()
                         },
                 ) {
                     val context = LocalContext.current

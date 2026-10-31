@@ -35,11 +35,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.design.cards.IconToggleItem
+import com.jawzf.pixeltoolkit.core.design.components.ListExpandToggleButton
+import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
+import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
+import com.jawzf.pixeltoolkit.core.design.pickers.MultiSegmentedPicker
+import com.jawzf.pixeltoolkit.core.design.theme.Shapes
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.ui.components.buttons.ListExpandToggleButton
-import com.jawzf.pixeltoolkit.ui.core.containers.RoundedCardContainer
-import com.jawzf.pixeltoolkit.ui.core.pickers.MultiSegmentedPicker
-import com.jawzf.pixeltoolkit.ui.theme.Shapes
 import com.jawzf.pixeltoolkit.utils.battery.BatteryDetails
 import com.jawzf.pixeltoolkit.utils.battery.BatteryInfoUtil
 import com.jawzf.pixeltoolkit.utils.hardware.ThermalInfo
@@ -542,7 +544,7 @@ fun BatteryInfoTabContent(
 
                     Button(
                         onClick = {
-                            com.jawzf.pixeltoolkit.utils.HapticUtil
+                            HapticUtil
                                 .performVirtualKeyHaptic(view)
                             if (com.jawzf.pixeltoolkit.utils.BatteryStatsUtil
                                     .resetStats(context)
@@ -559,7 +561,7 @@ fun BatteryInfoTabContent(
                 var autoResetEnabled by remember {
                     mutableStateOf(settingsRepository.getBoolean("auto_reset_battery_stats", false))
                 }
-                com.jawzf.pixeltoolkit.ui.core.cards.IconToggleItem(
+                IconToggleItem(
                     title = stringResource(R.string.label_auto_reset_battery_stats_title),
                     description = stringResource(R.string.label_auto_reset_battery_stats_desc),
                     isChecked = autoResetEnabled,
@@ -627,7 +629,7 @@ fun BatteryInfoTabContent(
                 ) {
                     Button(
                         onClick = {
-                            com.jawzf.pixeltoolkit.utils.HapticUtil
+                            HapticUtil
                                 .performVirtualKeyHaptic(view)
                             if (com.jawzf.pixeltoolkit.utils.ShizukuUtils
                                     .grantBatteryStatsPermission()

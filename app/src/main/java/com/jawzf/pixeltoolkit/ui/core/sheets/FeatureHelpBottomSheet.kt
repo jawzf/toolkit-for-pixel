@@ -51,14 +51,17 @@ import androidx.core.net.toUri
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.design.cards.FeatureTagIcon
+import com.jawzf.pixeltoolkit.core.design.color.ColorUtil
+import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
+import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
+import com.jawzf.pixeltoolkit.core.design.sheets.FeatureCustomHelp
+import com.jawzf.pixeltoolkit.core.design.sheets.HelpSheetTracker
+import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.domain.model.Feature
 import com.jawzf.pixeltoolkit.domain.registry.FeatureResetRegistry
-import com.jawzf.pixeltoolkit.ui.core.cards.FeatureTagIcon
-import com.jawzf.pixeltoolkit.ui.core.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.ui.features.consciousgate.HoldToContinueButton
-import com.jawzf.pixeltoolkit.utils.ColorUtil
-import com.jawzf.pixeltoolkit.utils.HapticUtil
 import com.jawzf.pixeltoolkit.utils.PermissionUIHelper
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 

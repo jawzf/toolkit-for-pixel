@@ -16,8 +16,9 @@ import android.provider.Settings
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.google.gson.Gson
+import com.jawzf.pixeltoolkit.core.design.haptics.HapticFeedbackType
+import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.domain.HapticFeedbackType
 import com.jawzf.pixeltoolkit.domain.diy.Automation
 import com.jawzf.pixeltoolkit.domain.diy.DIYRepository
 import com.jawzf.pixeltoolkit.domain.model.AppSelection
@@ -25,7 +26,6 @@ import com.jawzf.pixeltoolkit.domain.model.BackGestureAppConfig
 import com.jawzf.pixeltoolkit.services.automation.executors.CombinedActionExecutor
 import com.jawzf.pixeltoolkit.services.tiles.ScreenOffAccessibilityService
 import com.jawzf.pixeltoolkit.utils.FreezeManager
-import com.jawzf.pixeltoolkit.utils.HapticUtil
 import com.jawzf.pixeltoolkit.utils.ShizukuUtils.toggleShizuku
 import com.jawzf.pixeltoolkit.utils.StatusBarManager
 import kotlinx.coroutines.CoroutineScope

@@ -24,10 +24,10 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.content.edit
 import com.jawzf.pixeltoolkit.core.design.R
-import com.jawzf.pixeltoolkit.domain.HapticFeedbackType
+import com.jawzf.pixeltoolkit.core.design.haptics.HapticFeedbackType
+import com.jawzf.pixeltoolkit.core.design.haptics.performHapticFeedback
 import com.jawzf.pixeltoolkit.services.receivers.FlashlightActionReceiver
 import com.jawzf.pixeltoolkit.utils.FlashlightUtil
-import com.jawzf.pixeltoolkit.utils.performHapticFeedback
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.isActive

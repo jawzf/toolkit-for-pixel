@@ -11,9 +11,9 @@ import android.os.Build
 import android.service.quicksettings.Tile
 import androidx.annotation.RequiresApi
 import com.jawzf.pixeltoolkit.core.design.R
-import com.jawzf.pixeltoolkit.domain.HapticFeedbackType
+import com.jawzf.pixeltoolkit.core.design.haptics.HapticFeedbackType
+import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.services.handlers.SoundModeHandler
-import com.jawzf.pixeltoolkit.utils.HapticUtil
 import com.jawzf.pixeltoolkit.utils.ShizukuUtils
 
 @RequiresApi(Build.VERSION_CODES.N)

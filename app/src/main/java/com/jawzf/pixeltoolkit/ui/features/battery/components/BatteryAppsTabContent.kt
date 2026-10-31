@@ -37,10 +37,13 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.drawable.toBitmap
 import com.jawzf.pixeltoolkit.core.design.R
-import com.jawzf.pixeltoolkit.ui.core.containers.RoundedCardContainer
-import com.jawzf.pixeltoolkit.ui.theme.Shapes
+import com.jawzf.pixeltoolkit.core.design.components.ListExpandToggleButton
+import com.jawzf.pixeltoolkit.core.design.components.SegmentedDropdownMenu
+import com.jawzf.pixeltoolkit.core.design.components.SegmentedDropdownMenuItem
+import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
+import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
+import com.jawzf.pixeltoolkit.core.design.theme.Shapes
 import com.jawzf.pixeltoolkit.utils.BatteryUsageApp
-import com.jawzf.pixeltoolkit.utils.HapticUtil
 import java.util.Locale
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -173,12 +176,12 @@ fun BatteryAppsTabContent(
                         }
                     }
 
-                    com.jawzf.pixeltoolkit.ui.components.menus.SegmentedDropdownMenu(
+                    SegmentedDropdownMenu(
                         expanded = showMenu,
                         onDismissRequest = { showMenu = false },
                     ) {
                         if (canOpenAppInfo && app.packageName != null) {
-                            com.jawzf.pixeltoolkit.ui.components.menus.SegmentedDropdownMenuItem(
+                            SegmentedDropdownMenuItem(
                                 text = { Text(stringResource(R.string.label_app_info)) },
                                 onClick = {
                                     showMenu = false
@@ -213,7 +216,7 @@ fun BatteryAppsTabContent(
         }
 
         if (usageApps.size > 20) {
-            com.jawzf.pixeltoolkit.ui.components.buttons.ListExpandToggleButton(
+            ListExpandToggleButton(
                 isExpanded = showAllApps,
                 onToggle = onToggleShowAll,
             )
