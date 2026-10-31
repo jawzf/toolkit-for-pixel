@@ -1,5 +1,7 @@
 package com.jawzf.pixeltoolkit.core.design.modifiers
 
+import android.content.Context
+import android.os.PowerManager
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -15,7 +17,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.jawzf.pixeltoolkit.utils.DeviceUtils
 
 enum class BlurDirection {
     TOP,
@@ -37,7 +38,7 @@ fun Modifier.progressiveBlur(
         val overlayColor = MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.65f)
         val context = LocalContext.current
         val density = LocalDensity.current
-        val isPowerSave = remember(context) { DeviceUtils.isPowerSaveMode(context) }
+        val isPowerSave = remember(context) { isPowerSaveMode(context) }
 
         val blurRadiusDp = with(density) { blurRadius.toDp() }
 
@@ -126,7 +127,7 @@ fun Modifier.progressiveBlur(
     composed {
         val overlayColor = MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.65f)
         val context = LocalContext.current
-        val isPowerSave = remember(context) { DeviceUtils.isPowerSaveMode(context) }
+        val isPowerSave = remember(context) { isPowerSaveMode(context) }
 
         val blurModifier =
             if (maxRadius > 0.dp && !isPowerSave) {
@@ -175,3 +176,6 @@ fun Modifier.progressiveBlur(
             .then(blurModifier)
             .then(gradientModifier)
     }
+
+private fun isPowerSaveMode(context: Context): Boolean =
+    (context.getSystemService(Context.POWER_SERVICE) as? PowerManager)?.isPowerSaveMode == true

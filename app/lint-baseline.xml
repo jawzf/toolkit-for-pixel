@@ -173,7 +173,7 @@
         errorLine2="                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/ui/features/system/TextAnimationsSettingsUI.kt"
-            line="132"
+            line="133"
             column="36"/>
     </issue>
 
@@ -184,7 +184,7 @@
         errorLine2="                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/ui/features/system/TextAnimationsSettingsUI.kt"
-            line="198"
+            line="199"
             column="36"/>
     </issue>
 
@@ -195,7 +195,7 @@
         errorLine2="                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/ui/features/system/TextAnimationsSettingsUI.kt"
-            line="276"
+            line="277"
             column="36"/>
     </issue>
 
@@ -206,7 +206,7 @@
         errorLine2="                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/ui/features/system/TextAnimationsSettingsUI.kt"
-            line="292"
+            line="293"
             column="36"/>
     </issue>
 
@@ -217,7 +217,7 @@
         errorLine2="                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/ui/features/system/TextAnimationsSettingsUI.kt"
-            line="308"
+            line="309"
             column="36"/>
     </issue>
 
@@ -406,61 +406,6 @@
             file="src/main/java/com/jawzf/pixeltoolkit/utils/FreezeManager.kt"
             line="145"
             column="33"/>
-    </issue>
-
-    <issue
-        id="InlinedApi"
-        message="Field requires API level 31 (current min is 30): `android.os.VibrationEffect.Composition#PRIMITIVE_LOW_TICK`"
-        errorLine1="                    .addPrimitive(VibrationEffect.Composition.PRIMITIVE_LOW_TICK, HapticUtil.boost(0.5f))"
-        errorLine2="                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/com/jawzf/pixeltoolkit/utils/ui/HapticFeedbackUtils.kt"
-            line="32"
-            column="35"/>
-    </issue>
-
-    <issue
-        id="InlinedApi"
-        message="Field requires API level 31 (current min is 30): `android.os.VibrationEffect.Composition#PRIMITIVE_LOW_TICK`"
-        errorLine1="                .addPrimitive(VibrationEffect.Composition.PRIMITIVE_LOW_TICK, boost(0.4f))"
-        errorLine2="                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/com/jawzf/pixeltoolkit/utils/ui/HapticUtil.kt"
-            line="226"
-            column="31"/>
-    </issue>
-
-    <issue
-        id="InlinedApi"
-        message="Field requires API level 31 (current min is 30): `android.os.VibrationEffect.Composition#PRIMITIVE_LOW_TICK`"
-        errorLine1="                    VibrationEffect.Composition.PRIMITIVE_LOW_TICK"
-        errorLine2="                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/com/jawzf/pixeltoolkit/utils/ui/HapticUtil.kt"
-            line="265"
-            column="21"/>
-    </issue>
-
-    <issue
-        id="InlinedApi"
-        message="Field requires API level 31 (current min is 30): `android.os.VibrationEffect.Composition#PRIMITIVE_LOW_TICK`"
-        errorLine1="                    composition.addPrimitive(VibrationEffect.Composition.PRIMITIVE_LOW_TICK, boost(level * scale), if (index == 0) 20 else 45)"
-        errorLine2="                                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/com/jawzf/pixeltoolkit/utils/ui/HapticUtil.kt"
-            line="269"
-            column="46"/>
-    </issue>
-
-    <issue
-        id="InlinedApi"
-        message="Field requires API level 31 (current min is 30): `android.os.VibrationEffect.Composition#PRIMITIVE_LOW_TICK`"
-        errorLine1="                    VibrationEffect.Composition.PRIMITIVE_LOW_TICK"
-        errorLine2="                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/com/jawzf/pixeltoolkit/utils/ui/HapticUtil.kt"
-            line="361"
-            column="21"/>
     </issue>
 
     <issue
@@ -745,7 +690,7 @@
         errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/services/tiles/ChargeQuickTileService.kt"
-            line="32"
+            line="33"
             column="13"/>
     </issue>
 
@@ -879,17 +824,6 @@
             file="src/main/java/com/jawzf/pixeltoolkit/utils/FreezeManager.kt"
             line="556"
             column="37"/>
-    </issue>
-
-    <issue
-        id="NewApi"
-        message="Call requires API level 30 (current min is 26): `android.os.VibrationEffect.Composition#compose`"
-        errorLine1="    return compose()"
-        errorLine2="           ~~~~~~~">
-        <location
-            file="src/main/java/com/jawzf/pixeltoolkit/utils/ui/HapticUtil.kt"
-            line="30"
-            column="12"/>
     </issue>
 
     <issue
@@ -1086,7 +1020,7 @@
         errorLine2="                            ~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/ToolkitApp.kt"
-            line="36"
+            line="37"
             column="29"/>
     </issue>
 
@@ -1493,7 +1427,7 @@
         errorLine2="                                      ~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/ui/features/battery/components/BatteryAppsTabContent.kt"
-            line="82"
+            line="85"
             column="39"/>
     </issue>
 
@@ -1504,7 +1438,7 @@
         errorLine2="                                      ~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/ui/features/battery/components/BatteryAppsTabContent.kt"
-            line="84"
+            line="87"
             column="39"/>
     </issue>
 
@@ -1515,7 +1449,7 @@
         errorLine2="                                          ~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/ui/features/battery/components/BatteryInfoTabContent.kt"
-            line="162"
+            line="164"
             column="43"/>
     </issue>
 
@@ -1611,22 +1545,22 @@
         id="SelectedPhotoAccess"
         message="Your app is currently not handling Selected Photos Access introduced in Android 14+"
         errorLine1="    &lt;uses-permission android:name=&quot;android.permission.READ_MEDIA_IMAGES&quot; />"
-        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        errorLine2="                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/AndroidManifest.xml"
             line="34"
-            column="5"/>
+            column="36"/>
     </issue>
 
     <issue
         id="SelectedPhotoAccess"
         message="Your app is currently not handling Selected Photos Access introduced in Android 14+"
         errorLine1="    &lt;uses-permission android:name=&quot;android.permission.READ_MEDIA_VIDEO&quot; />"
-        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        errorLine2="                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/AndroidManifest.xml"
             line="35"
-            column="5"/>
+            column="36"/>
     </issue>
 
     <issue
@@ -1668,7 +1602,7 @@
         errorLine1="distributionUrl=https\://services.gradle.org/distributions/gradle-9.5.0-bin.zip"
         errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="$HOME/Documents/GitHub/essentials-agents/wt-tk21/gradle/wrapper/gradle-wrapper.properties"
+            file="$HOME/Documents/GitHub/essentials-agents/wt-tk22/gradle/wrapper/gradle-wrapper.properties"
             line="3"
             column="17"/>
     </issue>
@@ -1679,7 +1613,7 @@
         errorLine1="agp = &quot;9.3.1&quot;"
         errorLine2="      ~~~~~~~">
         <location
-            file="$HOME/Documents/GitHub/essentials-agents/wt-tk21/gradle/libs.versions.toml"
+            file="$HOME/Documents/GitHub/essentials-agents/wt-tk22/gradle/libs.versions.toml"
             line="3"
             column="7"/>
     </issue>
@@ -1690,7 +1624,7 @@
         errorLine1="agp = &quot;9.3.1&quot;"
         errorLine2="      ~~~~~~~">
         <location
-            file="$HOME/Documents/GitHub/essentials-agents/wt-tk21/gradle/libs.versions.toml"
+            file="$HOME/Documents/GitHub/essentials-agents/wt-tk22/gradle/libs.versions.toml"
             line="3"
             column="7"/>
     </issue>
@@ -1701,7 +1635,7 @@
         errorLine1="agp = &quot;9.3.1&quot;"
         errorLine2="      ~~~~~~~">
         <location
-            file="$HOME/Documents/GitHub/essentials-agents/wt-tk21/gradle/libs.versions.toml"
+            file="$HOME/Documents/GitHub/essentials-agents/wt-tk22/gradle/libs.versions.toml"
             line="3"
             column="7"/>
     </issue>
@@ -1712,7 +1646,7 @@
         errorLine1="coreKtx = &quot;1.19.0&quot;"
         errorLine2="          ~~~~~~~~">
         <location
-            file="$HOME/Documents/GitHub/essentials-agents/wt-tk21/gradle/libs.versions.toml"
+            file="$HOME/Documents/GitHub/essentials-agents/wt-tk22/gradle/libs.versions.toml"
             line="14"
             column="11"/>
     </issue>
@@ -1723,7 +1657,7 @@
         errorLine1="navigationevent = &quot;1.2.0-rc01&quot;"
         errorLine2="                  ~~~~~~~~~~~~">
         <location
-            file="$HOME/Documents/GitHub/essentials-agents/wt-tk21/gradle/libs.versions.toml"
+            file="$HOME/Documents/GitHub/essentials-agents/wt-tk22/gradle/libs.versions.toml"
             line="19"
             column="19"/>
     </issue>
@@ -1734,7 +1668,7 @@
         errorLine1="composeBom = &quot;2026.06.01&quot;"
         errorLine2="             ~~~~~~~~~~~~">
         <location
-            file="$HOME/Documents/GitHub/essentials-agents/wt-tk21/gradle/libs.versions.toml"
+            file="$HOME/Documents/GitHub/essentials-agents/wt-tk22/gradle/libs.versions.toml"
             line="20"
             column="14"/>
     </issue>
@@ -1745,7 +1679,7 @@
         errorLine1="material3Version = &quot;1.5.0-alpha24&quot;"
         errorLine2="                   ~~~~~~~~~~~~~~~">
         <location
-            file="$HOME/Documents/GitHub/essentials-agents/wt-tk21/gradle/libs.versions.toml"
+            file="$HOME/Documents/GitHub/essentials-agents/wt-tk22/gradle/libs.versions.toml"
             line="22"
             column="20"/>
     </issue>
@@ -1756,7 +1690,7 @@
         errorLine1="palette = &quot;1.0.0&quot;"
         errorLine2="          ~~~~~~~">
         <location
-            file="$HOME/Documents/GitHub/essentials-agents/wt-tk21/gradle/libs.versions.toml"
+            file="$HOME/Documents/GitHub/essentials-agents/wt-tk22/gradle/libs.versions.toml"
             line="24"
             column="11"/>
     </issue>
@@ -1767,7 +1701,7 @@
         errorLine1="appcompat = &quot;1.7.1&quot;"
         errorLine2="            ~~~~~~~">
         <location
-            file="$HOME/Documents/GitHub/essentials-agents/wt-tk21/gradle/libs.versions.toml"
+            file="$HOME/Documents/GitHub/essentials-agents/wt-tk22/gradle/libs.versions.toml"
             line="27"
             column="13"/>
     </issue>
@@ -1778,7 +1712,7 @@
         errorLine1="foundationLayout = &quot;1.13.0-alpha03&quot;"
         errorLine2="                   ~~~~~~~~~~~~~~~~">
         <location
-            file="$HOME/Documents/GitHub/essentials-agents/wt-tk21/gradle/libs.versions.toml"
+            file="$HOME/Documents/GitHub/essentials-agents/wt-tk22/gradle/libs.versions.toml"
             line="29"
             column="20"/>
     </issue>
@@ -1789,7 +1723,7 @@
         errorLine1="ui = &quot;1.13.0-alpha03&quot;"
         errorLine2="     ~~~~~~~~~~~~~~~~">
         <location
-            file="$HOME/Documents/GitHub/essentials-agents/wt-tk21/gradle/libs.versions.toml"
+            file="$HOME/Documents/GitHub/essentials-agents/wt-tk22/gradle/libs.versions.toml"
             line="31"
             column="6"/>
     </issue>
@@ -1800,7 +1734,7 @@
         errorLine1="foundation = &quot;1.13.0-alpha03&quot;"
         errorLine2="             ~~~~~~~~~~~~~~~~">
         <location
-            file="$HOME/Documents/GitHub/essentials-agents/wt-tk21/gradle/libs.versions.toml"
+            file="$HOME/Documents/GitHub/essentials-agents/wt-tk22/gradle/libs.versions.toml"
             line="32"
             column="14"/>
     </issue>
@@ -1811,7 +1745,7 @@
         errorLine1="material3 = &quot;1.5.0-alpha24&quot;"
         errorLine2="            ~~~~~~~~~~~~~~~">
         <location
-            file="$HOME/Documents/GitHub/essentials-agents/wt-tk21/gradle/libs.versions.toml"
+            file="$HOME/Documents/GitHub/essentials-agents/wt-tk22/gradle/libs.versions.toml"
             line="37"
             column="13"/>
     </issue>
@@ -1822,7 +1756,7 @@
         errorLine1="foundationLayoutVersion = &quot;1.13.0-alpha03&quot;"
         errorLine2="                          ~~~~~~~~~~~~~~~~">
         <location
-            file="$HOME/Documents/GitHub/essentials-agents/wt-tk21/gradle/libs.versions.toml"
+            file="$HOME/Documents/GitHub/essentials-agents/wt-tk22/gradle/libs.versions.toml"
             line="38"
             column="27"/>
     </issue>
@@ -1833,7 +1767,7 @@
         errorLine1="foundationVersion = &quot;1.13.0-alpha03&quot;"
         errorLine2="                    ~~~~~~~~~~~~~~~~">
         <location
-            file="$HOME/Documents/GitHub/essentials-agents/wt-tk21/gradle/libs.versions.toml"
+            file="$HOME/Documents/GitHub/essentials-agents/wt-tk22/gradle/libs.versions.toml"
             line="39"
             column="21"/>
     </issue>
@@ -1844,7 +1778,7 @@
         errorLine1="work = &quot;2.11.2&quot;"
         errorLine2="       ~~~~~~~~">
         <location
-            file="$HOME/Documents/GitHub/essentials-agents/wt-tk21/gradle/libs.versions.toml"
+            file="$HOME/Documents/GitHub/essentials-agents/wt-tk22/gradle/libs.versions.toml"
             line="40"
             column="8"/>
     </issue>
@@ -1855,7 +1789,7 @@
         errorLine1="media3 = &quot;1.10.1&quot;"
         errorLine2="         ~~~~~~~~">
         <location
-            file="$HOME/Documents/GitHub/essentials-agents/wt-tk21/gradle/libs.versions.toml"
+            file="$HOME/Documents/GitHub/essentials-agents/wt-tk22/gradle/libs.versions.toml"
             line="42"
             column="10"/>
     </issue>
@@ -1866,7 +1800,7 @@
         errorLine1="media3 = &quot;1.10.1&quot;"
         errorLine2="         ~~~~~~~~">
         <location
-            file="$HOME/Documents/GitHub/essentials-agents/wt-tk21/gradle/libs.versions.toml"
+            file="$HOME/Documents/GitHub/essentials-agents/wt-tk22/gradle/libs.versions.toml"
             line="42"
             column="10"/>
     </issue>
@@ -1877,7 +1811,7 @@
         errorLine1="media3 = &quot;1.10.1&quot;"
         errorLine2="         ~~~~~~~~">
         <location
-            file="$HOME/Documents/GitHub/essentials-agents/wt-tk21/gradle/libs.versions.toml"
+            file="$HOME/Documents/GitHub/essentials-agents/wt-tk22/gradle/libs.versions.toml"
             line="42"
             column="10"/>
     </issue>
@@ -1899,7 +1833,7 @@
         errorLine1="aboutlibraries = &quot;15.2.0&quot;"
         errorLine2="                 ~~~~~~~~">
         <location
-            file="$HOME/Documents/GitHub/essentials-agents/wt-tk21/gradle/libs.versions.toml"
+            file="$HOME/Documents/GitHub/essentials-agents/wt-tk22/gradle/libs.versions.toml"
             line="2"
             column="18"/>
     </issue>
@@ -1910,7 +1844,7 @@
         errorLine1="aboutlibraries = &quot;15.2.0&quot;"
         errorLine2="                 ~~~~~~~~">
         <location
-            file="$HOME/Documents/GitHub/essentials-agents/wt-tk21/gradle/libs.versions.toml"
+            file="$HOME/Documents/GitHub/essentials-agents/wt-tk22/gradle/libs.versions.toml"
             line="2"
             column="18"/>
     </issue>
@@ -1921,7 +1855,7 @@
         errorLine1="aboutlibraries = &quot;15.2.0&quot;"
         errorLine2="                 ~~~~~~~~">
         <location
-            file="$HOME/Documents/GitHub/essentials-agents/wt-tk21/gradle/libs.versions.toml"
+            file="$HOME/Documents/GitHub/essentials-agents/wt-tk22/gradle/libs.versions.toml"
             line="2"
             column="18"/>
     </issue>
@@ -1932,7 +1866,7 @@
         errorLine1="gsonVersion = &quot;2.14.0&quot;"
         errorLine2="              ~~~~~~~~">
         <location
-            file="$HOME/Documents/GitHub/essentials-agents/wt-tk21/gradle/libs.versions.toml"
+            file="$HOME/Documents/GitHub/essentials-agents/wt-tk22/gradle/libs.versions.toml"
             line="11"
             column="15"/>
     </issue>
@@ -1943,7 +1877,7 @@
         errorLine1="jsoup = &quot;1.22.2&quot;"
         errorLine2="        ~~~~~~~~">
         <location
-            file="$HOME/Documents/GitHub/essentials-agents/wt-tk21/gradle/libs.versions.toml"
+            file="$HOME/Documents/GitHub/essentials-agents/wt-tk22/gradle/libs.versions.toml"
             line="12"
             column="9"/>
     </issue>
@@ -1954,7 +1888,7 @@
         errorLine1="kotlin = &quot;2.4.10&quot;"
         errorLine2="         ~~~~~~~~">
         <location
-            file="$HOME/Documents/GitHub/essentials-agents/wt-tk21/gradle/libs.versions.toml"
+            file="$HOME/Documents/GitHub/essentials-agents/wt-tk22/gradle/libs.versions.toml"
             line="13"
             column="10"/>
     </issue>
@@ -1965,7 +1899,7 @@
         errorLine1="hiddenapibypass = &quot;6.1&quot;"
         errorLine2="                  ~~~~~">
         <location
-            file="$HOME/Documents/GitHub/essentials-agents/wt-tk21/gradle/libs.versions.toml"
+            file="$HOME/Documents/GitHub/essentials-agents/wt-tk22/gradle/libs.versions.toml"
             line="28"
             column="19"/>
     </issue>
@@ -1976,7 +1910,7 @@
         errorLine1="gson = &quot;2.14.0&quot;"
         errorLine2="       ~~~~~~~~">
         <location
-            file="$HOME/Documents/GitHub/essentials-agents/wt-tk21/gradle/libs.versions.toml"
+            file="$HOME/Documents/GitHub/essentials-agents/wt-tk22/gradle/libs.versions.toml"
             line="35"
             column="8"/>
     </issue>
@@ -1987,7 +1921,7 @@
         errorLine1="zxing = &quot;3.5.3&quot;"
         errorLine2="        ~~~~~~~">
         <location
-            file="$HOME/Documents/GitHub/essentials-agents/wt-tk21/gradle/libs.versions.toml"
+            file="$HOME/Documents/GitHub/essentials-agents/wt-tk22/gradle/libs.versions.toml"
             line="43"
             column="9"/>
     </issue>
@@ -1998,7 +1932,7 @@
         errorLine1="androidx-compose-material3-v150alpha24 = { module = &quot;androidx.compose.material3:material3&quot;, version.ref = &quot;material3Version&quot; }"
         errorLine2="                                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="$HOME/Documents/GitHub/essentials-agents/wt-tk21/gradle/libs.versions.toml"
+            file="$HOME/Documents/GitHub/essentials-agents/wt-tk22/gradle/libs.versions.toml"
             line="49"
             column="43"/>
     </issue>
@@ -2009,7 +1943,7 @@
         errorLine1="api-v1315 = { module = &quot;dev.rikka.shizuku:api&quot;, version.ref = &quot;api&quot; }"
         errorLine2="             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="$HOME/Documents/GitHub/essentials-agents/wt-tk21/gradle/libs.versions.toml"
+            file="$HOME/Documents/GitHub/essentials-agents/wt-tk22/gradle/libs.versions.toml"
             line="55"
             column="14"/>
     </issue>
@@ -2020,7 +1954,7 @@
         errorLine1="gson-v2140 = { module = &quot;com.google.code.gson:gson&quot;, version.ref = &quot;gsonVersion&quot; }"
         errorLine2="              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="$HOME/Documents/GitHub/essentials-agents/wt-tk21/gradle/libs.versions.toml"
+            file="$HOME/Documents/GitHub/essentials-agents/wt-tk22/gradle/libs.versions.toml"
             line="59"
             column="15"/>
     </issue>
@@ -2031,7 +1965,7 @@
         errorLine1="shizuku-api = { group = &quot;dev.rikka.shizuku&quot;, name = &quot;api&quot;, version.ref = &quot;shizuku&quot; }"
         errorLine2="               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="$HOME/Documents/GitHub/essentials-agents/wt-tk21/gradle/libs.versions.toml"
+            file="$HOME/Documents/GitHub/essentials-agents/wt-tk22/gradle/libs.versions.toml"
             line="74"
             column="16"/>
     </issue>
@@ -2042,7 +1976,7 @@
         errorLine1="androidx-compose-foundation-layout = { group = &quot;androidx.compose.foundation&quot;, name = &quot;foundation-layout&quot;, version.ref = &quot;foundationLayout&quot; }"
         errorLine2="                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="$HOME/Documents/GitHub/essentials-agents/wt-tk21/gradle/libs.versions.toml"
+            file="$HOME/Documents/GitHub/essentials-agents/wt-tk22/gradle/libs.versions.toml"
             line="78"
             column="39"/>
     </issue>
@@ -2053,7 +1987,7 @@
         errorLine1="androidx-compose-foundation = { group = &quot;androidx.compose.foundation&quot;, name = &quot;foundation&quot;, version.ref = &quot;foundation&quot; }"
         errorLine2="                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="$HOME/Documents/GitHub/essentials-agents/wt-tk21/gradle/libs.versions.toml"
+            file="$HOME/Documents/GitHub/essentials-agents/wt-tk22/gradle/libs.versions.toml"
             line="80"
             column="32"/>
     </issue>
@@ -2064,7 +1998,7 @@
         errorLine1="gson = { group = &quot;com.google.code.gson&quot;, name = &quot;gson&quot;, version.ref = &quot;gson&quot; }"
         errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="$HOME/Documents/GitHub/essentials-agents/wt-tk21/gradle/libs.versions.toml"
+            file="$HOME/Documents/GitHub/essentials-agents/wt-tk22/gradle/libs.versions.toml"
             line="83"
             column="9"/>
     </issue>
@@ -2075,7 +2009,7 @@
         errorLine1="androidx-material3 = { group = &quot;androidx.compose.material3&quot;, name = &quot;material3&quot;, version.ref = &quot;material3&quot; }"
         errorLine2="                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="$HOME/Documents/GitHub/essentials-agents/wt-tk21/gradle/libs.versions.toml"
+            file="$HOME/Documents/GitHub/essentials-agents/wt-tk22/gradle/libs.versions.toml"
             line="85"
             column="23"/>
     </issue>
@@ -2086,7 +2020,7 @@
         errorLine1="androidx-foundation-layout = { group = &quot;androidx.compose.foundation&quot;, name = &quot;foundation-layout&quot;, version.ref = &quot;foundationLayoutVersion&quot; }"
         errorLine2="                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="$HOME/Documents/GitHub/essentials-agents/wt-tk21/gradle/libs.versions.toml"
+            file="$HOME/Documents/GitHub/essentials-agents/wt-tk22/gradle/libs.versions.toml"
             line="86"
             column="31"/>
     </issue>
@@ -2097,7 +2031,7 @@
         errorLine1="androidx-foundation = { group = &quot;androidx.compose.foundation&quot;, name = &quot;foundation&quot;, version.ref = &quot;foundationVersion&quot; }"
         errorLine2="                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="$HOME/Documents/GitHub/essentials-agents/wt-tk21/gradle/libs.versions.toml"
+            file="$HOME/Documents/GitHub/essentials-agents/wt-tk22/gradle/libs.versions.toml"
             line="87"
             column="24"/>
     </issue>
@@ -2248,17 +2182,6 @@
     <issue
         id="ConfigurationScreenWidthHeight"
         message="Using Configuration.screenWidthDp instead of LocalWindowInfo.current.containerSize"
-        errorLine1="    val screenWidth = configuration.screenWidthDp"
-        errorLine2="                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/com/jawzf/pixeltoolkit/ui/components/ToolkitFloatingToolbar.kt"
-            line="77"
-            column="23"/>
-    </issue>
-
-    <issue
-        id="ConfigurationScreenWidthHeight"
-        message="Using Configuration.screenWidthDp instead of LocalWindowInfo.current.containerSize"
         errorLine1="            val isLargeScreen = configuration.screenWidthDp >= 600"
         errorLine2="                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
@@ -2285,7 +2208,7 @@
         errorLine2="                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/ui/core/sheets/ActivityIconSheet.kt"
-            line="148"
+            line="149"
             column="39"/>
     </issue>
 
@@ -2329,7 +2252,7 @@
         errorLine2="                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/ui/features/apps/sheets/AppSelectionSheets.kt"
-            line="117"
+            line="118"
             column="21"/>
     </issue>
 
@@ -2406,7 +2329,7 @@
         errorLine2="                                                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/ui/features/battery/sheets/BatteryDetailsBottomSheet.kt"
-            line="269"
+            line="270"
             column="61"/>
     </issue>
 
@@ -2417,7 +2340,7 @@
         errorLine2="                                                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/ui/features/battery/sheets/BatteryDetailsBottomSheet.kt"
-            line="270"
+            line="271"
             column="66"/>
     </issue>
 
@@ -2428,7 +2351,7 @@
         errorLine2="                                                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/ui/features/battery/sheets/BatteryDetailsBottomSheet.kt"
-            line="271"
+            line="272"
             column="65"/>
     </issue>
 
@@ -2439,7 +2362,7 @@
         errorLine2="                                      ~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/ui/features/battery/sheets/BatteryDetailsBottomSheet.kt"
-            line="287"
+            line="288"
             column="39"/>
     </issue>
 
@@ -2450,7 +2373,7 @@
         errorLine2="                                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/ui/features/battery/components/BatteryInfoTabContent.kt"
-            line="500"
+            line="502"
             column="46"/>
     </issue>
 
@@ -2461,7 +2384,7 @@
         errorLine2="                                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/ui/features/battery/components/BatteryInfoTabContent.kt"
-            line="501"
+            line="503"
             column="43"/>
     </issue>
 
@@ -2472,7 +2395,7 @@
         errorLine2="                                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/ui/features/battery/components/BatteryInfoTabContent.kt"
-            line="502"
+            line="504"
             column="40"/>
     </issue>
 
@@ -2483,7 +2406,7 @@
         errorLine2="                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/ui/core/sheets/BugReportBottomSheet.kt"
-            line="146"
+            line="147"
             column="29"/>
     </issue>
 
@@ -2494,7 +2417,7 @@
         errorLine2="                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/ui/core/sheets/BugReportBottomSheet.kt"
-            line="153"
+            line="154"
             column="25"/>
     </issue>
 
@@ -2505,7 +2428,7 @@
         errorLine2="                                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/ui/core/sheets/BugReportBottomSheet.kt"
-            line="429"
+            line="430"
             column="41"/>
     </issue>
 
@@ -2879,7 +2802,7 @@
         errorLine2="                                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/ui/features/freeze/FreezeSettingsUI.kt"
-            line="346"
+            line="347"
             column="46"/>
     </issue>
 
@@ -2890,7 +2813,7 @@
         errorLine2="                                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/ui/features/freeze/FreezeSettingsUI.kt"
-            line="347"
+            line="348"
             column="47"/>
     </issue>
 
@@ -2901,7 +2824,7 @@
         errorLine2="                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/ui/features/freeze/sheets/FreezeTagSettingsSheet.kt"
-            line="86"
+            line="87"
             column="29"/>
     </issue>
 
@@ -2912,7 +2835,7 @@
         errorLine2="                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/ui/features/freeze/sheets/FreezeTagSettingsSheet.kt"
-            line="88"
+            line="89"
             column="29"/>
     </issue>
 
@@ -2923,7 +2846,7 @@
         errorLine2="                                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/ui/core/sheets/HilightEffectSheet.kt"
-            line="109"
+            line="110"
             column="40"/>
     </issue>
 
@@ -2934,7 +2857,7 @@
         errorLine2="                                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/ui/core/sheets/HilightEffectSheet.kt"
-            line="120"
+            line="121"
             column="40"/>
     </issue>
 
@@ -2945,7 +2868,7 @@
         errorLine2="                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/ui/core/sheets/HilightEffectSheet.kt"
-            line="131"
+            line="132"
             column="36"/>
     </issue>
 
@@ -2978,7 +2901,7 @@
         errorLine2="                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/ui/core/sheets/LicensesBottomSheet.kt"
-            line="98"
+            line="99"
             column="32"/>
     </issue>
 
@@ -2989,7 +2912,7 @@
         errorLine2="                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/ui/core/sheets/LicensesBottomSheet.kt"
-            line="106"
+            line="107"
             column="32"/>
     </issue>
 
@@ -3000,7 +2923,7 @@
         errorLine2="                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/ui/core/sheets/LicensesBottomSheet.kt"
-            line="114"
+            line="115"
             column="32"/>
     </issue>
 
@@ -3011,7 +2934,7 @@
         errorLine2="                                                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/ui/core/sheets/LicensesBottomSheet.kt"
-            line="125"
+            line="126"
             column="71"/>
     </issue>
 
@@ -3022,7 +2945,7 @@
         errorLine2="                                                                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/ui/core/sheets/LicensesBottomSheet.kt"
-            line="126"
+            line="127"
             column="70"/>
     </issue>
 
@@ -3033,7 +2956,7 @@
         errorLine2="                                                                                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/ui/core/sheets/LicensesBottomSheet.kt"
-            line="127"
+            line="128"
             column="92"/>
     </issue>
 
@@ -3077,7 +3000,7 @@
         errorLine2="                                                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/ui/core/sheets/PixelSearchContactActionSheet.kt"
-            line="164"
+            line="165"
             column="57"/>
     </issue>
 
@@ -3088,7 +3011,7 @@
         errorLine2="                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/ui/activities/PrivateDnsSettingsActivity.kt"
-            line="222"
+            line="223"
             column="29"/>
     </issue>
 
@@ -3099,7 +3022,7 @@
         errorLine2="                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/ui/activities/PrivateDnsSettingsActivity.kt"
-            line="224"
+            line="225"
             column="29"/>
     </issue>
 
@@ -3308,7 +3231,7 @@
         errorLine2="                                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/ui/features/system/sheets/SometimesEssentialsSettingsSheet.kt"
-            line="222"
+            line="223"
             column="52"/>
     </issue>
 
@@ -3418,7 +3341,7 @@
         errorLine2="                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/ui/features/system/TextAnimationsSettingsUI.kt"
-            line="56"
+            line="57"
             column="36"/>
     </issue>
 
@@ -3429,7 +3352,7 @@
         errorLine2="                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/ui/features/system/TextAnimationsSettingsUI.kt"
-            line="57"
+            line="58"
             column="33"/>
     </issue>
 
@@ -3440,7 +3363,7 @@
         errorLine2="                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/ui/features/system/TextAnimationsSettingsUI.kt"
-            line="101"
+            line="102"
             column="39"/>
     </issue>
 
@@ -3451,7 +3374,7 @@
         errorLine2="                                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/ui/features/system/TextAnimationsSettingsUI.kt"
-            line="102"
+            line="103"
             column="41"/>
     </issue>
 
@@ -3462,7 +3385,7 @@
         errorLine2="                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/ui/features/system/TextAnimationsSettingsUI.kt"
-            line="103"
+            line="104"
             column="33"/>
     </issue>
 
@@ -3473,7 +3396,7 @@
         errorLine2="                            ~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/ui/features/freeze/sheets/AssignTagsSheet.kt"
-            line="98"
+            line="99"
             column="29"/>
     </issue>
 
@@ -3561,7 +3484,7 @@
         errorLine2="                                ~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/ui/features/freeze/FreezeGridUI.kt"
-            line="312"
+            line="313"
             column="33"/>
     </issue>
 
@@ -3572,7 +3495,7 @@
         errorLine2="                        ~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/ui/features/freeze/FreezeSettingsUI.kt"
-            line="507"
+            line="508"
             column="25"/>
     </issue>
 
@@ -3594,7 +3517,7 @@
         errorLine2="                            ~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/ui/features/freeze/sheets/FreezeTagSettingsSheet.kt"
-            line="119"
+            line="120"
             column="29"/>
     </issue>
 
@@ -3627,7 +3550,7 @@
         errorLine2="        ~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/ui/core/sheets/LicensesBottomSheet.kt"
-            line="84"
+            line="85"
             column="9"/>
     </issue>
 
@@ -3649,7 +3572,7 @@
         errorLine2="                    ~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/ui/features/tiles/QuickSettingsTilesSettingsUI.kt"
-            line="101"
+            line="105"
             column="21"/>
     </issue>
 
@@ -3695,28 +3618,6 @@
             file="src/main/java/com/jawzf/pixeltoolkit/ui/features/widgets/WidgetPickerSheet.kt"
             line="334"
             column="45"/>
-    </issue>
-
-    <issue
-        id="ModifierFactoryExtensionFunction"
-        message="Modifier factory functions should be extensions on Modifier"
-        errorLine1="    fun applyLiquidRipple("
-        errorLine2="        ~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/com/jawzf/pixeltoolkit/ui/modifiers/LiquidRippleModifier.kt"
-            line="99"
-            column="9"/>
-    </issue>
-
-    <issue
-        id="ModifierFactoryExtensionFunction"
-        message="Modifier factory functions should be extensions on Modifier"
-        errorLine1="    fun applyScrollMotionBlur("
-        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/com/jawzf/pixeltoolkit/ui/modifiers/ScrollMotionBlurModifier.kt"
-            line="128"
-            column="9"/>
     </issue>
 
     <issue
@@ -3788,17 +3689,6 @@
     <issue
         id="ModifierParameter"
         message="Modifier parameter should be the first optional parameter"
-        errorLine1="    modifier: Modifier = Modifier,"
-        errorLine2="    ~~~~~~~~">
-        <location
-            file="src/main/java/com/jawzf/pixeltoolkit/ui/core/cards/IconToggleItem.kt"
-            line="50"
-            column="5"/>
-    </issue>
-
-    <issue
-        id="ModifierParameter"
-        message="Modifier parameter should be the first optional parameter"
         errorLine1="fun IslandIcon(res: Int, tint: Color = Color.White, size: Dp = 20.dp, modifier: Modifier = Modifier) {"
         errorLine2="                                                                      ~~~~~~~~">
         <location
@@ -3836,18 +3726,7 @@
         errorLine2="    ~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/ui/features/automation/sheets/NewAutomationSheet.kt"
-            line="191"
-            column="5"/>
-    </issue>
-
-    <issue
-        id="ModifierParameter"
-        message="Modifier parameter should be the first optional parameter"
-        errorLine1="    modifier: Modifier = Modifier,"
-        errorLine2="    ~~~~~~~~">
-        <location
-            file="src/main/java/com/jawzf/pixeltoolkit/ui/core/cards/PermissionCard.kt"
-            line="46"
+            line="192"
             column="5"/>
     </issue>
 
@@ -3858,18 +3737,7 @@
         errorLine2="    ~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/ui/features/tiles/QuickSettingsTilesSettingsUI.kt"
-            line="497"
-            column="5"/>
-    </issue>
-
-    <issue
-        id="ModifierParameter"
-        message="Modifier parameter should be the first optional parameter"
-        errorLine1="    modifier: Modifier = Modifier,"
-        errorLine2="    ~~~~~~~~">
-        <location
-            file="src/main/java/com/jawzf/pixeltoolkit/ui/core/pickers/SegmentedPicker.kt"
-            line="45"
+            line="501"
             column="5"/>
     </issue>
 
@@ -3880,7 +3748,7 @@
         errorLine2="            ~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/ui/activities/FeatureSettingsActivity.kt"
-            line="215"
+            line="218"
             column="13"/>
     </issue>
 
@@ -3913,7 +3781,7 @@
         errorLine2="                                                                          ~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/MainActivity.kt"
-            line="311"
+            line="312"
             column="75"/>
     </issue>
 
@@ -3957,7 +3825,7 @@
         errorLine2="                            ~~~~~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/MainActivity.kt"
-            line="469"
+            line="470"
             column="29"/>
     </issue>
 
@@ -3979,7 +3847,7 @@
         errorLine2="                                              ~~~~~~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/ui/features/freeze/sheets/AssignTagsSheet.kt"
-            line="98"
+            line="99"
             column="47"/>
     </issue>
 
@@ -4012,7 +3880,7 @@
         errorLine2="                                                  ~~~~~~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/ui/features/freeze/FreezeGridUI.kt"
-            line="312"
+            line="313"
             column="51"/>
     </issue>
 
@@ -4023,7 +3891,7 @@
         errorLine2="                                          ~~~~~~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/ui/features/freeze/FreezeSettingsUI.kt"
-            line="507"
+            line="508"
             column="43"/>
     </issue>
 
@@ -4045,7 +3913,7 @@
         errorLine2="                                              ~~~~~~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/ui/features/freeze/sheets/FreezeTagSettingsSheet.kt"
-            line="119"
+            line="120"
             column="47"/>
     </issue>
 
@@ -4100,7 +3968,7 @@
         errorLine2="                              ~~~~~~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/MainActivity.kt"
-            line="177"
+            line="179"
             column="31"/>
     </issue>
 
@@ -4331,7 +4199,7 @@
         errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/ui/core/sheets/ActivityPickerSheet.kt"
-            line="107"
+            line="108"
             column="13"/>
     </issue>
 
@@ -4707,116 +4575,6 @@
             file="src/main/java/com/jawzf/pixeltoolkit/services/tiles/FlashlightTileService.kt"
             line="12"
             column="1"/>
-    </issue>
-
-    <issue
-        id="ObsoleteSdkInt"
-        message="Unnecessary; `Build.VERSION.SDK_INT >= Build.VERSION_CODES.O` is always true here (`SDK_INT` ≥ 26 and &lt; 29)"
-        errorLine1="            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {"
-        errorLine2="                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/com/jawzf/pixeltoolkit/utils/ui/HapticFeedbackUtils.kt"
-            line="38"
-            column="24"/>
-    </issue>
-
-    <issue
-        id="ObsoleteSdkInt"
-        message="Unnecessary; `Build.VERSION.SDK_INT >= Build.VERSION_CODES.O` is always true here (`SDK_INT` ≥ 26 and &lt; 29)"
-        errorLine1="            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {"
-        errorLine2="                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/com/jawzf/pixeltoolkit/utils/ui/HapticFeedbackUtils.kt"
-            line="55"
-            column="24"/>
-    </issue>
-
-    <issue
-        id="ObsoleteSdkInt"
-        message="Unnecessary; `Build.VERSION.SDK_INT >= Build.VERSION_CODES.O` is always true here (`SDK_INT` ≥ 26 and &lt; 29)"
-        errorLine1="            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {"
-        errorLine2="                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/com/jawzf/pixeltoolkit/utils/ui/HapticFeedbackUtils.kt"
-            line="72"
-            column="24"/>
-    </issue>
-
-    <issue
-        id="ObsoleteSdkInt"
-        message="Unnecessary; `Build.VERSION.SDK_INT >= Build.VERSION_CODES.O` is always true here (`SDK_INT` ≥ 26 and &lt; 29)"
-        errorLine1="            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {"
-        errorLine2="                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/com/jawzf/pixeltoolkit/utils/ui/HapticFeedbackUtils.kt"
-            line="90"
-            column="24"/>
-    </issue>
-
-    <issue
-        id="ObsoleteSdkInt"
-        message="Unnecessary; `SDK_INT` is always >= 26"
-        errorLine1="        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/com/jawzf/pixeltoolkit/utils/ui/HapticUtil.kt"
-            line="239"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="ObsoleteSdkInt"
-        message="Unnecessary; `SDK_INT` is always >= 26"
-        errorLine1="        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/com/jawzf/pixeltoolkit/utils/ui/HapticUtil.kt"
-            line="276"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="ObsoleteSdkInt"
-        message="Unnecessary; `SDK_INT` is always >= 26"
-        errorLine1="        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/com/jawzf/pixeltoolkit/utils/ui/HapticUtil.kt"
-            line="313"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="ObsoleteSdkInt"
-        message="Unnecessary; `SDK_INT` is always >= 26"
-        errorLine1="        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/com/jawzf/pixeltoolkit/utils/ui/HapticUtil.kt"
-            line="339"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="ObsoleteSdkInt"
-        message="Unnecessary; `SDK_INT` is always >= 26"
-        errorLine1="        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/com/jawzf/pixeltoolkit/utils/ui/HapticUtil.kt"
-            line="395"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="ObsoleteSdkInt"
-        message="Unnecessary; `SDK_INT` is always >= 26"
-        errorLine1="        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/com/jawzf/pixeltoolkit/utils/ui/HapticUtil.kt"
-            line="444"
-            column="13"/>
     </issue>
 
     <issue
@@ -5376,7 +5134,7 @@
         errorLine2="        ^">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/ToolkitApp.kt"
-            line="19"
+            line="20"
             column="9"/>
     </issue>
 
@@ -5673,7 +5431,7 @@
         errorLine2="                                    ~~~~~~~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/ui/composables/SetupFeatures.kt"
-            line="967"
+            line="968"
             column="37"/>
     </issue>
 
@@ -5684,7 +5442,7 @@
         errorLine2="                                       ~~~~~~~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/ui/composables/SetupFeatures.kt"
-            line="970"
+            line="971"
             column="40"/>
     </issue>
 
@@ -5761,7 +5519,7 @@
         errorLine2="                                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/ui/core/sheets/AddRepoBottomSheet.kt"
-            line="250"
+            line="251"
             column="41"/>
     </issue>
 
@@ -5882,7 +5640,7 @@
         errorLine2="                                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/ui/core/sheets/AppColorSelectionSheet.kt"
-            line="374"
+            line="375"
             column="45"/>
     </issue>
 
@@ -5904,7 +5662,7 @@
         errorLine2="                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/ui/features/freeze/sheets/AssignTagsSheet.kt"
-            line="93"
+            line="94"
             column="39"/>
     </issue>
 
@@ -6159,28 +5917,6 @@
             file="src/main/java/com/jawzf/pixeltoolkit/services/receivers/CallVibrationReceiver.kt"
             line="69"
             column="9"/>
-    </issue>
-
-    <issue
-        id="UseKtx"
-        message="Use the KTX extension function `String.toColorInt` instead?"
-        errorLine1="                        Color(android.graphics.Color.parseColor(colorHex))"
-        errorLine2="                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/com/jawzf/pixeltoolkit/ui/core/pickers/ColorSwatchPicker.kt"
-            line="166"
-            column="31"/>
-    </issue>
-
-    <issue
-        id="UseKtx"
-        message="Use the KTX extension function `String.toColorInt` instead?"
-        errorLine1="                        val c = android.graphics.Color.parseColor(colorHex)"
-        errorLine2="                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/com/jawzf/pixeltoolkit/ui/core/pickers/ColorSwatchPicker.kt"
-            line="173"
-            column="33"/>
     </issue>
 
     <issue
@@ -6454,7 +6190,7 @@
         errorLine2="                                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/ui/features/freeze/FreezeGridUI.kt"
-            line="307"
+            line="308"
             column="43"/>
     </issue>
 
@@ -6465,7 +6201,7 @@
         errorLine2="                                                                ^">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/ui/features/freeze/FreezeGridUI.kt"
-            line="413"
+            line="414"
             column="65"/>
     </issue>
 
@@ -6476,7 +6212,7 @@
         errorLine2="                                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/ui/features/freeze/FreezeSettingsUI.kt"
-            line="502"
+            line="503"
             column="40"/>
     </issue>
 
@@ -6498,7 +6234,7 @@
         errorLine2="                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/ui/features/freeze/sheets/FreezeTagSettingsSheet.kt"
-            line="114"
+            line="115"
             column="39"/>
     </issue>
 
@@ -6515,23 +6251,12 @@
 
     <issue
         id="UseKtx"
-        message="Use the KTX extension function `SharedPreferences.edit` instead?"
-        errorLine1="        prefs.edit().putString(&quot;app_haptics_mode&quot;, mode.name).apply()"
-        errorLine2="        ~~~~~~~~~~~~">
-        <location
-            file="src/main/java/com/jawzf/pixeltoolkit/utils/ui/HapticUtil.kt"
-            line="543"
-            column="9"/>
-    </issue>
-
-    <issue
-        id="UseKtx"
         message="Use the KTX extension function `String.toColorInt` instead?"
         errorLine1="                onColorSelected = { hex -> onEffectChange(effect.copy(color = Color.parseColor(hex))) },"
         errorLine2="                                                                              ~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/ui/core/sheets/HilightEffectSheet.kt"
-            line="96"
+            line="97"
             column="79"/>
     </issue>
 
@@ -6894,7 +6619,7 @@
         errorLine2="                                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/services/handlers/OmniGestureOverlayHandler.kt"
-            line="90"
+            line="91"
             column="55"/>
     </issue>
 
@@ -6905,7 +6630,7 @@
         errorLine2="                                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/services/handlers/OmniGestureOverlayHandler.kt"
-            line="99"
+            line="100"
             column="51"/>
     </issue>
 
@@ -7048,7 +6773,7 @@
         errorLine2="                                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/ui/core/sheets/PixelSearchAppActionSheet.kt"
-            line="197"
+            line="198"
             column="40"/>
     </issue>
 
@@ -7059,7 +6784,7 @@
         errorLine2="                                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/ui/core/sheets/PixelSearchAppActionSheet.kt"
-            line="203"
+            line="204"
             column="40"/>
     </issue>
 
@@ -7070,7 +6795,7 @@
         errorLine2="                                                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/ui/core/sheets/PixelSearchContactActionSheet.kt"
-            line="129"
+            line="130"
             column="60"/>
     </issue>
 
@@ -7081,7 +6806,7 @@
         errorLine2="                                                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/ui/core/sheets/PixelSearchContactActionSheet.kt"
-            line="145"
+            line="146"
             column="62"/>
     </issue>
 
@@ -7092,7 +6817,7 @@
         errorLine2="                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/ui/core/sheets/PixelSearchFileActionSheet.kt"
-            line="259"
+            line="260"
             column="29"/>
     </issue>
 
@@ -7103,7 +6828,7 @@
         errorLine2="                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/ui/core/sheets/PixelSearchFileActionSheet.kt"
-            line="272"
+            line="273"
             column="23"/>
     </issue>
 
@@ -7257,7 +6982,7 @@
         errorLine2="                                                ^">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/ui/features/tiles/QuickSettingsTilesSettingsUI.kt"
-            line="325"
+            line="329"
             column="49"/>
     </issue>
 
@@ -7268,7 +6993,7 @@
         errorLine2="                                                ^">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/ui/features/tiles/QuickSettingsTilesSettingsUI.kt"
-            line="337"
+            line="341"
             column="49"/>
     </issue>
 
@@ -8137,7 +7862,7 @@
         errorLine2="                                       ^">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/services/handlers/OmniGestureOverlayHandler.kt"
-            line="91"
+            line="92"
             column="40"/>
     </issue>
 
