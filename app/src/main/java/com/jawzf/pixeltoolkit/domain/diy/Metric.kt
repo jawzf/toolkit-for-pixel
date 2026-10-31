@@ -3,7 +3,7 @@ package com.jawzf.pixeltoolkit.domain.diy
 import androidx.annotation.DrawableRes
 import androidx.annotation.Keep
 import androidx.annotation.StringRes
-import com.jawzf.pixeltoolkit.R
+import com.jawzf.pixeltoolkit.core.design.R
 
 @Keep
 enum class Metric(

@@ -13,7 +13,7 @@ import com.google.zxing.BarcodeFormat
 import com.google.zxing.EncodeHintType
 import com.google.zxing.qrcode.QRCodeWriter
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
-import com.jawzf.pixeltoolkit.R
+import com.jawzf.pixeltoolkit.core.design.R
 import java.io.File
 import java.io.FileOutputStream
 import java.util.EnumMap

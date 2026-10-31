@@ -8,19 +8,19 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.core.Animatable
-import com.jawzf.pixeltoolkit.ui.features.consciousgate.UnscaledMotion
-import kotlinx.coroutines.withContext
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.res.stringResource
-import com.jawzf.pixeltoolkit.R
+import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.services.tiles.ScreenOffAccessibilityService
 import com.jawzf.pixeltoolkit.ui.features.consciousgate.ConsciousGatePauseScreen
+import com.jawzf.pixeltoolkit.ui.features.consciousgate.UnscaledMotion
 import com.jawzf.pixeltoolkit.ui.theme.ToolkitTheme
 import com.jawzf.pixeltoolkit.utils.HapticUtil
+import kotlinx.coroutines.withContext
 
 class ConsciousGateActivity : AppCompatActivity() {
     private var packageToGate: String? = null

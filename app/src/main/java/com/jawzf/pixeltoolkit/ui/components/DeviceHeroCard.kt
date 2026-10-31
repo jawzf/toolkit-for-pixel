@@ -49,7 +49,7 @@ import coil.compose.AsyncImage
 import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder
 import coil.request.ImageRequest
-import com.jawzf.pixeltoolkit.R
+import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.ui.core.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.ui.theme.Shapes
 import com.jawzf.pixeltoolkit.utils.DeviceImageMapper

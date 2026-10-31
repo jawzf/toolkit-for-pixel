@@ -220,7 +220,7 @@ class NotificationLightingHandler(
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                             service.getColor(android.R.color.system_accent1_100)
                         } else {
-                            service.getColor(com.jawzf.pixeltoolkit.R.color.purple_500)
+                            service.getColor(com.jawzf.pixeltoolkit.core.design.R.color.purple_500)
                         }
                     }
                 }
@@ -419,7 +419,7 @@ class NotificationLightingHandler(
         ShellUtils.runCommand(
             service,
             command,
-            featureName = service.getString(com.jawzf.pixeltoolkit.R.string.feat_notification_lighting_title),
+            featureName = service.getString(com.jawzf.pixeltoolkit.core.design.R.string.feat_notification_lighting_title),
         )
     }
 }

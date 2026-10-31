@@ -55,9 +55,3 @@
 -dontwarn org.slf4j.**
 -keep class org.slf4j.** { *; }
 
-# Keep R.string class and fields for runtime translation key reflection lookup
--keep class com.jawzf.pixeltoolkit.R$string { *; }
--keepclassmembers class com.jawzf.pixeltoolkit.R$string {
-    public static <fields>;
-}
-

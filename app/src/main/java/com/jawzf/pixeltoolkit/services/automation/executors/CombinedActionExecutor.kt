@@ -24,7 +24,7 @@ import android.util.Log
 import android.view.KeyEvent
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import com.jawzf.pixeltoolkit.R
+import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.domain.HapticFeedbackType
 import com.jawzf.pixeltoolkit.domain.controller.CaffeinateController

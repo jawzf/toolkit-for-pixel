@@ -1,6 +1,6 @@
 package com.jawzf.pixeltoolkit.domain
 
-import com.jawzf.pixeltoolkit.R
+import com.jawzf.pixeltoolkit.core.design.R
 
 /**
  * Data class representing a status bar icon with all its variants across different OEMs

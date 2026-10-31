@@ -10,7 +10,7 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.widget.Toast
-import com.jawzf.pixeltoolkit.R
+import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.utils.UrlShortener
 
 class UrlShortenerActionReceiver : BroadcastReceiver() {

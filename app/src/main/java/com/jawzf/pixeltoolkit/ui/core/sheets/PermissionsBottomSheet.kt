@@ -31,8 +31,8 @@ import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.jawzf.pixeltoolkit.R
 import com.jawzf.pixeltoolkit.SettingsActivity
+import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.ui.components.buttons.ListExpandToggleButton
 import com.jawzf.pixeltoolkit.ui.core.cards.PermissionCard
 import com.jawzf.pixeltoolkit.ui.core.containers.RoundedCardContainer

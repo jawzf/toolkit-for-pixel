@@ -2,7 +2,7 @@ package com.jawzf.pixeltoolkit.domain.diy
 
 import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
-import com.jawzf.pixeltoolkit.R
+import com.jawzf.pixeltoolkit.core.design.R
 
 @Keep
 sealed interface Trigger {

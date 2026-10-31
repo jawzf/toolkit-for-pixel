@@ -5,7 +5,7 @@ import android.content.Intent
 import android.graphics.drawable.Icon
 import android.os.Build
 import android.service.quicksettings.Tile
-import com.jawzf.pixeltoolkit.R
+import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.ui.activities.TileAuthActivity
 
 class ScreenLockedSecurityTileService : BaseTileService() {

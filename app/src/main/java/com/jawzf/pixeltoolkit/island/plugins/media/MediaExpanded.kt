@@ -1,9 +1,5 @@
 package com.jawzf.pixeltoolkit.island.plugins.media
 
-import androidx.compose.foundation.layout.fillMaxSize
-import com.jawzf.pixeltoolkit.island.ui.SurfaceBackdrop
-import com.jawzf.pixeltoolkit.island.ui.components.ArtworkBackdrop
-import com.jawzf.pixeltoolkit.island.ui.components.MarqueeText
 import android.graphics.Bitmap
 import android.os.SystemClock
 import androidx.compose.animation.AnimatedContent
@@ -13,12 +9,12 @@ import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.ui.unit.Dp
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -38,19 +34,23 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.jawzf.pixeltoolkit.R
+import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.island.model.IslandExpandedScope
-import androidx.compose.ui.platform.LocalContext
 import com.jawzf.pixeltoolkit.island.ui.IslandHaptics
 import com.jawzf.pixeltoolkit.island.ui.IslandMotion
 import com.jawzf.pixeltoolkit.island.ui.IslandTextStyles
+import com.jawzf.pixeltoolkit.island.ui.SurfaceBackdrop
+import com.jawzf.pixeltoolkit.island.ui.components.ArtworkBackdrop
 import com.jawzf.pixeltoolkit.island.ui.components.ConnectedButtonRow
 import com.jawzf.pixeltoolkit.island.ui.components.ConnectedItem
 import com.jawzf.pixeltoolkit.island.ui.components.IslandIcon
 import com.jawzf.pixeltoolkit.island.ui.components.IslandSeekBar
+import com.jawzf.pixeltoolkit.island.ui.components.MarqueeText
 import kotlinx.coroutines.delay
 import kotlin.math.abs
 

@@ -10,7 +10,7 @@ import android.util.Log
 import android.util.SizeF
 import android.widget.FrameLayout
 import android.widget.RemoteViews
-import com.jawzf.pixeltoolkit.R
+import com.jawzf.pixeltoolkit.core.design.R
 
 object NestedWidgetSupport {
     private const val TAG = "NestedWidgetSupport"

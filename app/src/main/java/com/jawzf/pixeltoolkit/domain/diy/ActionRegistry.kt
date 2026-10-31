@@ -1,7 +1,7 @@
 package com.jawzf.pixeltoolkit.domain.diy
 
 import android.os.Build
-import com.jawzf.pixeltoolkit.R
+import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.utils.DeviceUtils
 
 object ActionRegistry {

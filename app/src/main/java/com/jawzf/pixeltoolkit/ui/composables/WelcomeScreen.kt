@@ -44,9 +44,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -71,13 +71,13 @@ import coil.compose.AsyncImage
 import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder
 import coil.request.ImageRequest
-import com.jawzf.pixeltoolkit.R
+import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.ui.components.ShakeForHelpCard
 import com.jawzf.pixeltoolkit.ui.core.cards.IconToggleItem
-import com.jawzf.pixeltoolkit.ui.core.pickers.PrivilegedModePicker
 import com.jawzf.pixeltoolkit.ui.core.containers.RoundedCardContainer
-import com.jawzf.pixeltoolkit.ui.theme.AppFontFamily
+import com.jawzf.pixeltoolkit.ui.core.pickers.PrivilegedModePicker
 import com.jawzf.pixeltoolkit.ui.core.pickers.SegmentedPicker
+import com.jawzf.pixeltoolkit.ui.theme.AppFontFamily
 import com.jawzf.pixeltoolkit.utils.AppHapticMode
 import com.jawzf.pixeltoolkit.utils.HapticUtil
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel

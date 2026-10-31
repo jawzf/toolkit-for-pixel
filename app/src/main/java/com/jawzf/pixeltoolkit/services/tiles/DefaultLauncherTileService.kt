@@ -6,7 +6,7 @@ import android.graphics.drawable.Icon
 import android.os.Build
 import android.provider.Settings
 import android.service.quicksettings.Tile
-import com.jawzf.pixeltoolkit.R
+import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.utils.LauncherUtils
 import com.jawzf.pixeltoolkit.utils.ShellUtils
 import kotlinx.coroutines.Dispatchers

@@ -34,11 +34,11 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.drawable.toBitmap
-import com.jawzf.pixeltoolkit.R
+import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.island.remote.ProviderInfo
+import com.jawzf.pixeltoolkit.island.sdk.IslandIdentity
 import com.jawzf.pixeltoolkit.ui.core.sheets.ToolkitBottomSheet
 import com.jawzf.pixeltoolkit.utils.HapticUtil
-import com.jawzf.pixeltoolkit.island.sdk.IslandIdentity
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

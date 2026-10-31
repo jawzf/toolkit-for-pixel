@@ -1,6 +1,6 @@
 package com.jawzf.pixeltoolkit.services.tiles
 
-import com.jawzf.pixeltoolkit.R
+import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.utils.PermissionUtils
 import com.jawzf.pixeltoolkit.utils.ShellUtils
 

@@ -36,7 +36,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.jawzf.pixeltoolkit.R
+import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.domain.model.github.GitHubUser
 import com.jawzf.pixeltoolkit.ui.core.cards.FeatureTagIcon
 import com.jawzf.pixeltoolkit.utils.HapticUtil

@@ -16,8 +16,9 @@ import android.graphics.Color
 import android.graphics.PixelFormat
 import android.graphics.RadialGradient
 import android.graphics.Shader
-import android.graphics.drawable.BitmapDrawable
+import android.graphics.Typeface
 import android.graphics.drawable.AdaptiveIconDrawable
+import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.hardware.display.DisplayManager
 import android.media.MediaMetadata
@@ -40,22 +41,21 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.graphics.Typeface
-import com.jawzf.pixeltoolkit.R
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.utils.PriorityModeUtil
-import com.jawzf.pixeltoolkit.utils.ShellUtils
 import com.jawzf.pixeltoolkit.domain.model.AppSelection
 import com.jawzf.pixeltoolkit.services.NotificationListener
 import com.jawzf.pixeltoolkit.utils.AppUtil
-import java.io.File
+import com.jawzf.pixeltoolkit.utils.PriorityModeUtil
+import com.jawzf.pixeltoolkit.utils.ShellUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.File
 
 class AodWallpaperOverlayHandler(
     private val service: AccessibilityService,

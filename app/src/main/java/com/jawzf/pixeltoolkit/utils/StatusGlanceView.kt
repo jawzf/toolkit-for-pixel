@@ -26,7 +26,7 @@ import android.view.animation.LinearInterpolator
 import android.view.animation.OvershootInterpolator
 import androidx.core.content.ContextCompat
 import androidx.palette.graphics.Palette
-import com.jawzf.pixeltoolkit.R
+import com.jawzf.pixeltoolkit.core.design.R
 
 class StatusGlanceView(context: Context) : View(context) {
     private val density = resources.displayMetrics.density

@@ -15,8 +15,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.jawzf.pixeltoolkit.R
-import com.jawzf.pixeltoolkit.utils.BluetoothDeviceOrder
+import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.island.model.CompactCell
 import com.jawzf.pixeltoolkit.island.model.CompactPlacement
@@ -29,6 +28,7 @@ import com.jawzf.pixeltoolkit.island.plugins.soften
 import com.jawzf.pixeltoolkit.island.ui.components.BatteryGlyph
 import com.jawzf.pixeltoolkit.island.ui.components.BatteryRing
 import com.jawzf.pixeltoolkit.island.ui.components.IslandIcon
+import com.jawzf.pixeltoolkit.utils.BluetoothDeviceOrder
 
 class DevicesPlugin : BaseIslandPlugin() {
     override val id = "devices"

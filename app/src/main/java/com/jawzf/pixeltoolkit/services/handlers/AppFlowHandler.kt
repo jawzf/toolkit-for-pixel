@@ -22,8 +22,8 @@ import com.jawzf.pixeltoolkit.domain.diy.Automation
 import com.jawzf.pixeltoolkit.domain.diy.DIYRepository
 import com.jawzf.pixeltoolkit.domain.model.AppSelection
 import com.jawzf.pixeltoolkit.domain.model.BackGestureAppConfig
-import com.jawzf.pixeltoolkit.services.tiles.ScreenOffAccessibilityService
 import com.jawzf.pixeltoolkit.services.automation.executors.CombinedActionExecutor
+import com.jawzf.pixeltoolkit.services.tiles.ScreenOffAccessibilityService
 import com.jawzf.pixeltoolkit.utils.FreezeManager
 import com.jawzf.pixeltoolkit.utils.HapticUtil
 import com.jawzf.pixeltoolkit.utils.ShizukuUtils.toggleShizuku
@@ -746,10 +746,10 @@ class AppFlowHandler(
             )
 
         val title =
-            context.getString(com.jawzf.pixeltoolkit.R.string.shut_up_auto_archive_notif_title)
+            context.getString(com.jawzf.pixeltoolkit.core.design.R.string.shut_up_auto_archive_notif_title)
         val text =
             context.getString(
-                com.jawzf.pixeltoolkit.R.string.shut_up_auto_archive_notif_text,
+                com.jawzf.pixeltoolkit.core.design.R.string.shut_up_auto_archive_notif_text,
                 appName,
                 secondsLeft,
             )
@@ -760,7 +760,7 @@ class AppFlowHandler(
                 val builder =
                     android.app.Notification
                         .Builder(context, "shutup_alerts_channel")
-                        .setSmallIcon(com.jawzf.pixeltoolkit.R.drawable.rounded_snowflake_24)
+                        .setSmallIcon(com.jawzf.pixeltoolkit.core.design.R.drawable.rounded_snowflake_24)
                         .setContentTitle(title)
                         .setContentText(text)
                         .setOngoing(true)
@@ -779,9 +779,9 @@ class AppFlowHandler(
                         .Builder(
                             android.graphics.drawable.Icon.createWithResource(
                                 context,
-                                com.jawzf.pixeltoolkit.R.drawable.rounded_snowflake_24,
+                                com.jawzf.pixeltoolkit.core.design.R.drawable.rounded_snowflake_24,
                             ),
-                            context.getString(com.jawzf.pixeltoolkit.R.string.shut_up_auto_archive_action_freeze),
+                            context.getString(com.jawzf.pixeltoolkit.core.design.R.string.shut_up_auto_archive_action_freeze),
                             freezePendingIntent,
                         ).build(),
                 )
@@ -790,9 +790,9 @@ class AppFlowHandler(
                         .Builder(
                             android.graphics.drawable.Icon.createWithResource(
                                 context,
-                                com.jawzf.pixeltoolkit.R.drawable.rounded_close_24,
+                                com.jawzf.pixeltoolkit.core.design.R.drawable.rounded_close_24,
                             ),
-                            context.getString(com.jawzf.pixeltoolkit.R.string.shut_up_auto_archive_action_abort),
+                            context.getString(com.jawzf.pixeltoolkit.core.design.R.string.shut_up_auto_archive_action_abort),
                             abortPendingIntent,
                         ).build(),
                 )
@@ -826,7 +826,7 @@ class AppFlowHandler(
             } else {
                 NotificationCompat
                     .Builder(context, "shutup_alerts_channel")
-                    .setSmallIcon(com.jawzf.pixeltoolkit.R.drawable.rounded_snowflake_24)
+                    .setSmallIcon(com.jawzf.pixeltoolkit.core.design.R.drawable.rounded_snowflake_24)
                     .setContentTitle(title)
                     .setContentText(text)
                     .setPriority(NotificationCompat.PRIORITY_MAX)
@@ -836,12 +836,12 @@ class AppFlowHandler(
                     .setOngoing(true)
                     .setProgress(10, secondsLeft, false)
                     .addAction(
-                        com.jawzf.pixeltoolkit.R.drawable.rounded_snowflake_24,
-                        context.getString(com.jawzf.pixeltoolkit.R.string.shut_up_auto_archive_action_freeze),
+                        com.jawzf.pixeltoolkit.core.design.R.drawable.rounded_snowflake_24,
+                        context.getString(com.jawzf.pixeltoolkit.core.design.R.string.shut_up_auto_archive_action_freeze),
                         freezePendingIntent,
                     ).addAction(
-                        com.jawzf.pixeltoolkit.R.drawable.rounded_close_24,
-                        context.getString(com.jawzf.pixeltoolkit.R.string.shut_up_auto_archive_action_abort),
+                        com.jawzf.pixeltoolkit.core.design.R.drawable.rounded_close_24,
+                        context.getString(com.jawzf.pixeltoolkit.core.design.R.string.shut_up_auto_archive_action_abort),
                         abortPendingIntent,
                     ).addExtras(
                         android.os.Bundle().apply {
@@ -870,7 +870,7 @@ class AppFlowHandler(
                 android.app
                     .NotificationChannel(
                         "app_detection_service_channel",
-                        context.getString(com.jawzf.pixeltoolkit.R.string.app_detection_service_channel_name),
+                        context.getString(com.jawzf.pixeltoolkit.core.design.R.string.app_detection_service_channel_name),
                         NotificationManager.IMPORTANCE_HIGH,
                     ).apply {
                         description = "Channel for app detection alerts"
@@ -942,7 +942,7 @@ class AppFlowHandler(
                 val builder =
                     android.app.Notification
                         .Builder(context, "shutup_restore_channel")
-                        .setSmallIcon(com.jawzf.pixeltoolkit.R.drawable.rounded_code_24)
+                        .setSmallIcon(com.jawzf.pixeltoolkit.core.design.R.drawable.rounded_code_24)
                         .setContentTitle(title)
                         .setContentText(text)
                         .setCategory(android.app.Notification.CATEGORY_SERVICE)
@@ -954,7 +954,7 @@ class AppFlowHandler(
                                 .Builder(
                                     android.graphics.drawable.Icon.createWithResource(
                                         context,
-                                        com.jawzf.pixeltoolkit.R.drawable.rounded_code_24,
+                                        com.jawzf.pixeltoolkit.core.design.R.drawable.rounded_code_24,
                                     ),
                                     "Restore Now",
                                     restorePendingIntent,
@@ -979,7 +979,7 @@ class AppFlowHandler(
             } else {
                 NotificationCompat
                     .Builder(context, "shutup_restore_channel")
-                    .setSmallIcon(com.jawzf.pixeltoolkit.R.drawable.rounded_code_24)
+                    .setSmallIcon(com.jawzf.pixeltoolkit.core.design.R.drawable.rounded_code_24)
                     .setContentTitle(title)
                     .setContentText(text)
                     .setPriority(NotificationCompat.PRIORITY_MAX)
@@ -988,7 +988,7 @@ class AppFlowHandler(
                     .setOnlyAlertOnce(true)
                     .setOngoing(true)
                     .addAction(
-                        com.jawzf.pixeltoolkit.R.drawable.rounded_code_24,
+                        com.jawzf.pixeltoolkit.core.design.R.drawable.rounded_code_24,
                         "Restore Now",
                         restorePendingIntent,
                     ).addExtras(
@@ -1096,7 +1096,7 @@ class AppFlowHandler(
             android.widget.Toast
                 .makeText(
                     context,
-                    context.getString(com.jawzf.pixeltoolkit.R.string.shut_up_toast_restored),
+                    context.getString(com.jawzf.pixeltoolkit.core.design.R.string.shut_up_toast_restored),
                     android.widget.Toast.LENGTH_SHORT,
                 ).show()
 

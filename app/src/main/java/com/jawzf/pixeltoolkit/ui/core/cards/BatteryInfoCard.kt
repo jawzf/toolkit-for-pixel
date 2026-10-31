@@ -31,7 +31,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.jawzf.pixeltoolkit.R
+import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.ui.core.sheets.BatteryDetailsBottomSheet
 import com.jawzf.pixeltoolkit.ui.theme.Shapes
 import com.jawzf.pixeltoolkit.utils.DeviceUtils

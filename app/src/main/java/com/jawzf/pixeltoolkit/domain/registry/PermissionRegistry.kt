@@ -1,6 +1,6 @@
 package com.jawzf.pixeltoolkit.domain.registry
 
-import com.jawzf.pixeltoolkit.R
+import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.domain.model.AppPermission
 
 object PermissionRegistry {

@@ -1,10 +1,10 @@
 package com.jawzf.pixeltoolkit.utils
 
-import androidx.annotation.DrawableRes
 import android.content.Context
+import androidx.annotation.DrawableRes
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.jawzf.pixeltoolkit.R
+import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 
 data class BluetoothDeviceIcon(val id: String, val label: String, @DrawableRes val res: Int)

@@ -3,7 +3,7 @@ package com.jawzf.pixeltoolkit.domain.registry
 import android.content.Context
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import com.jawzf.pixeltoolkit.R
+import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.services.tiles.AdaptiveBrightnessTileService
 import com.jawzf.pixeltoolkit.services.tiles.AlwaysOnDisplayTileService
 import com.jawzf.pixeltoolkit.services.tiles.AppFreezingTileService
@@ -17,10 +17,10 @@ import com.jawzf.pixeltoolkit.services.tiles.DefaultLauncherTileService
 import com.jawzf.pixeltoolkit.services.tiles.DeveloperOptionsTileService
 import com.jawzf.pixeltoolkit.services.tiles.DuoTileService
 import com.jawzf.pixeltoolkit.services.tiles.DynamicNightLightTileService
-import com.jawzf.pixeltoolkit.services.tiles.ToolkitOnDisplayTileService
 import com.jawzf.pixeltoolkit.services.tiles.FlashlightPulseTileService
 import com.jawzf.pixeltoolkit.services.tiles.FlashlightTileService
 import com.jawzf.pixeltoolkit.services.tiles.HapticsTileService
+import com.jawzf.pixeltoolkit.services.tiles.HeadsUpNotificationsTileService
 import com.jawzf.pixeltoolkit.services.tiles.IslandTileService
 import com.jawzf.pixeltoolkit.services.tiles.LockdownTileService
 import com.jawzf.pixeltoolkit.services.tiles.MapsPowerSavingTileService
@@ -28,7 +28,6 @@ import com.jawzf.pixeltoolkit.services.tiles.MonoAudioTileService
 import com.jawzf.pixeltoolkit.services.tiles.NfcTileService
 import com.jawzf.pixeltoolkit.services.tiles.NotificationLightingTileService
 import com.jawzf.pixeltoolkit.services.tiles.PrivateDnsTileService
-import com.jawzf.pixeltoolkit.services.tiles.HeadsUpNotificationsTileService
 import com.jawzf.pixeltoolkit.services.tiles.PrivateNotificationsTileService
 import com.jawzf.pixeltoolkit.services.tiles.RefreshRateTileService
 import com.jawzf.pixeltoolkit.services.tiles.RestartSystemUiTileService
@@ -38,6 +37,7 @@ import com.jawzf.pixeltoolkit.services.tiles.SmartPixelsTileService
 import com.jawzf.pixeltoolkit.services.tiles.SoundModeTileService
 import com.jawzf.pixeltoolkit.services.tiles.StayAwakeTileService
 import com.jawzf.pixeltoolkit.services.tiles.TapToWakeTileService
+import com.jawzf.pixeltoolkit.services.tiles.ToolkitOnDisplayTileService
 import com.jawzf.pixeltoolkit.services.tiles.UiBlurTileService
 import com.jawzf.pixeltoolkit.services.tiles.UrlShortenerTileService
 import com.jawzf.pixeltoolkit.services.tiles.UsbDebuggingTileService

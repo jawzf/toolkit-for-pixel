@@ -6,7 +6,7 @@ import android.os.Build
 import android.service.quicksettings.Tile
 import androidx.annotation.RequiresApi
 import com.jawzf.pixeltoolkit.FeatureSettingsActivity
-import com.jawzf.pixeltoolkit.R
+import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.utils.PermissionUtils
 import com.jawzf.pixeltoolkit.utils.ShellUtils

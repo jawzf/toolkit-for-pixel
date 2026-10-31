@@ -48,6 +48,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.ui.components.ReusableTopAppBar
 import com.jawzf.pixeltoolkit.ui.core.cards.TrackedRepoCard
 import com.jawzf.pixeltoolkit.ui.core.containers.RoundedCardContainer

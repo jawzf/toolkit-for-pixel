@@ -8,12 +8,10 @@ import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
-import com.jawzf.pixeltoolkit.R
+import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.data.repository.GitHubRepository
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.domain.model.NotificationApp
-import org.json.JSONArray
-import org.json.JSONObject
 import com.jawzf.pixeltoolkit.domain.model.TrackedRepo
 import com.jawzf.pixeltoolkit.domain.model.github.GitHubAsset
 import com.jawzf.pixeltoolkit.domain.model.github.GitHubOwner
@@ -23,6 +21,8 @@ import com.jawzf.pixeltoolkit.utils.AppUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.json.JSONArray
+import org.json.JSONObject
 import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream

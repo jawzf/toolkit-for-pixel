@@ -45,7 +45,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.graphics.toColorInt
 import androidx.lifecycle.compose.LifecycleResumeEffect
-import com.jawzf.pixeltoolkit.R
+import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.domain.controller.HilightController
 import com.jawzf.pixeltoolkit.domain.model.HilightEffect
 import com.jawzf.pixeltoolkit.domain.model.HilightFrames

@@ -18,19 +18,18 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
-import com.jawzf.pixeltoolkit.R
+import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.ui.core.cards.IconToggleItem
 import com.jawzf.pixeltoolkit.ui.core.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.ui.core.pickers.MultiSegmentedPicker
 import com.jawzf.pixeltoolkit.ui.core.sheets.PermissionItem
 import com.jawzf.pixeltoolkit.ui.core.sheets.PermissionsBottomSheet
-import com.jawzf.pixeltoolkit.viewmodels.CaffeinateViewModel
-
-import androidx.compose.ui.platform.LocalView
 import com.jawzf.pixeltoolkit.utils.HapticUtil
+import com.jawzf.pixeltoolkit.viewmodels.CaffeinateViewModel
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable

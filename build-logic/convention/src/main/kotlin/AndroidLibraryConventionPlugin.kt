@@ -16,6 +16,9 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
                 sourceCompatibility = JavaVersion.VERSION_21
                 targetCompatibility = JavaVersion.VERSION_21
             }
+            lint {
+                baseline = target.file("lint-baseline.xml")
+            }
         }
     }
 }

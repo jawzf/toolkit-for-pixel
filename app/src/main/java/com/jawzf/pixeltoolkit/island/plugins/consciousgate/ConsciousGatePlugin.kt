@@ -1,19 +1,16 @@
 package com.jawzf.pixeltoolkit.island.plugins.consciousgate
 
-import com.jawzf.pixeltoolkit.island.ui.components.MarqueeText
 import android.content.Context
-import android.os.PowerManager
 import android.graphics.Bitmap
+import android.os.PowerManager
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
-import androidx.compose.ui.Modifier
-import com.jawzf.pixeltoolkit.island.ui.components.CameraRow
-import com.jawzf.pixeltoolkit.island.ui.components.RollingText
 import androidx.compose.material3.Text
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.jawzf.pixeltoolkit.R
+import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.domain.HapticFeedbackType
 import com.jawzf.pixeltoolkit.island.model.CompactCell
@@ -25,7 +22,10 @@ import com.jawzf.pixeltoolkit.island.model.LineContent
 import com.jawzf.pixeltoolkit.island.plugins.BaseIslandPlugin
 import com.jawzf.pixeltoolkit.island.plugins.launchPackage
 import com.jawzf.pixeltoolkit.island.ui.IslandTextStyles
+import com.jawzf.pixeltoolkit.island.ui.components.CameraRow
 import com.jawzf.pixeltoolkit.island.ui.components.IslandBitmap
+import com.jawzf.pixeltoolkit.island.ui.components.MarqueeText
+import com.jawzf.pixeltoolkit.island.ui.components.RollingText
 import com.jawzf.pixeltoolkit.services.tiles.ScreenOffAccessibilityService
 import com.jawzf.pixeltoolkit.utils.AppUtil
 import com.jawzf.pixeltoolkit.utils.HapticUtil

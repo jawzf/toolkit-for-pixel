@@ -56,6 +56,6 @@ sealed class PixelSearchResultItem {
         val isAudio: Boolean = mimeType.startsWith("audio/", ignoreCase = true),
         val durationMs: Long = 0L,
         val path: String? = null,
-        @DrawableRes val iconRes: Int = com.jawzf.pixeltoolkit.R.drawable.rounded_description_24,
+        @DrawableRes val iconRes: Int = com.jawzf.pixeltoolkit.core.design.R.drawable.rounded_description_24,
     ) : PixelSearchResultItem()
 }

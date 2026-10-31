@@ -6,7 +6,7 @@ import android.hardware.camera2.CameraManager
 import android.os.Build
 import android.service.quicksettings.Tile
 import androidx.annotation.RequiresApi
-import com.jawzf.pixeltoolkit.R
+import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.services.receivers.FlashlightActionReceiver
 
 @RequiresApi(Build.VERSION_CODES.N)

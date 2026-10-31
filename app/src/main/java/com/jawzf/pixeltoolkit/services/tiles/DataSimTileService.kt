@@ -3,7 +3,7 @@ package com.jawzf.pixeltoolkit.services.tiles
 import android.graphics.drawable.Icon
 import android.service.quicksettings.Tile
 import android.util.Log
-import com.jawzf.pixeltoolkit.R
+import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.utils.PermissionUtils
 import com.jawzf.pixeltoolkit.utils.ShellUtils
 import kotlinx.coroutines.Dispatchers

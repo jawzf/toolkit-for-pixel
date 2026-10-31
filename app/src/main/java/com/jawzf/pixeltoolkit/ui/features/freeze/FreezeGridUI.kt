@@ -76,7 +76,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
-import com.jawzf.pixeltoolkit.R
+import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.domain.model.NotificationApp
 import com.jawzf.pixeltoolkit.ui.components.menus.SegmentedDropdownMenu
 import com.jawzf.pixeltoolkit.ui.components.menus.SegmentedDropdownMenuItem

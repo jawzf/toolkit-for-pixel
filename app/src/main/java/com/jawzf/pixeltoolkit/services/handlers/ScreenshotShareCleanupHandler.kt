@@ -5,7 +5,7 @@ import android.content.ComponentName
 import android.content.res.Resources
 import android.view.accessibility.AccessibilityEvent
 import android.widget.Toast
-import com.jawzf.pixeltoolkit.R
+import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.utils.ScreenshotCleaner
 import com.jawzf.pixeltoolkit.utils.ScreenshotCleanupNotifier
