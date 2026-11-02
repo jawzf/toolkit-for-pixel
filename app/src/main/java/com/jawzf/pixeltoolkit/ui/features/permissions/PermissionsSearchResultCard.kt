@@ -33,11 +33,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.SettingsActivity
 import com.jawzf.pixeltoolkit.core.design.R
-import com.jawzf.pixeltoolkit.ui.components.buttons.ListExpandToggleButton
-import com.jawzf.pixeltoolkit.ui.core.cards.FeatureCard
-import com.jawzf.pixeltoolkit.ui.core.containers.RoundedCardContainer
+import com.jawzf.pixeltoolkit.core.design.cards.FeatureCard
+import com.jawzf.pixeltoolkit.core.design.components.ListExpandToggleButton
+import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
+import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.ui.core.sheets.PermissionItem
-import com.jawzf.pixeltoolkit.utils.HapticUtil
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 
 @Composable

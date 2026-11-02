@@ -1,6 +1,5 @@
 package com.jawzf.pixeltoolkit.island.service
 
-import com.jawzf.pixeltoolkit.island.state.CameraAnchor
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.PixelFormat
@@ -16,13 +15,14 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
-import com.jawzf.pixeltoolkit.utils.HapticUtil
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.unit.IntRect
 import androidx.lifecycle.setViewTreeLifecycleOwner
 import androidx.lifecycle.setViewTreeViewModelStoreOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
+import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.island.model.IslandStage
+import com.jawzf.pixeltoolkit.island.state.CameraAnchor
 import com.jawzf.pixeltoolkit.island.state.CameraGeometry
 import kotlin.math.roundToInt
 

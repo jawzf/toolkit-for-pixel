@@ -25,8 +25,10 @@ import android.view.KeyEvent
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.design.haptics.HapticFeedbackType
+import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
+import com.jawzf.pixeltoolkit.core.design.haptics.performHapticFeedback
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.domain.HapticFeedbackType
 import com.jawzf.pixeltoolkit.domain.controller.CaffeinateController
 import com.jawzf.pixeltoolkit.domain.controller.HilightController
 import com.jawzf.pixeltoolkit.domain.controller.HotspotController
@@ -44,14 +46,12 @@ import com.jawzf.pixeltoolkit.utils.AutomationFailureNotifier
 import com.jawzf.pixeltoolkit.utils.AutomationNotificationPoster
 import com.jawzf.pixeltoolkit.utils.DeviceCare
 import com.jawzf.pixeltoolkit.utils.DeviceLockUtils
-import com.jawzf.pixeltoolkit.utils.HapticUtil
 import com.jawzf.pixeltoolkit.utils.PermissionUtils
 import com.jawzf.pixeltoolkit.utils.ShellUtils
 import com.jawzf.pixeltoolkit.utils.ShizukuUtils
 import com.jawzf.pixeltoolkit.utils.SplitScreenUtil
 import com.jawzf.pixeltoolkit.utils.overlay.fromPrefs
 import com.jawzf.pixeltoolkit.utils.overlay.writeTo
-import com.jawzf.pixeltoolkit.utils.performHapticFeedback
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext

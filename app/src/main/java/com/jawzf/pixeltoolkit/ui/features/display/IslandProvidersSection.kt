@@ -18,15 +18,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.design.cards.IconToggleItem
+import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
+import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.island.remote.ProviderDiscovery
 import com.jawzf.pixeltoolkit.island.remote.ProviderInfo
 import com.jawzf.pixeltoolkit.island.remote.ProviderPairing
 import com.jawzf.pixeltoolkit.island.remote.ProviderTrustStore
-import com.jawzf.pixeltoolkit.ui.core.cards.IconToggleItem
-import com.jawzf.pixeltoolkit.ui.core.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.ui.features.display.sheets.IslandProviderPairingSheet
-import com.jawzf.pixeltoolkit.utils.HapticUtil
 import kotlinx.coroutines.launch
 
 @Composable

@@ -10,8 +10,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import com.jawzf.pixeltoolkit.core.design.theme.ToolkitTheme
 import com.jawzf.pixeltoolkit.ui.components.linkActions.LinkPickerScreen
-import com.jawzf.pixeltoolkit.ui.theme.ToolkitTheme
 
 class LinkPickerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

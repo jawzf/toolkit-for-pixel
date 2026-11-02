@@ -1,24 +1,16 @@
 package com.jawzf.pixeltoolkit.services
 
-import android.graphics.drawable.Icon
-import android.content.pm.LauncherApps
-import com.jawzf.pixeltoolkit.domain.controller.HilightController
-import com.jawzf.pixeltoolkit.domain.controller.HilightProgressTracker
-import com.jawzf.pixeltoolkit.utils.PriorityModeUtil
-import com.jawzf.pixeltoolkit.utils.DeviceUtils
-import com.jawzf.pixeltoolkit.utils.notification.NotificationRepostFilter
-import com.jawzf.pixeltoolkit.utils.chronometer.ChronometerRepository
-import com.jawzf.pixeltoolkit.utils.call.CallNotificationParser
-import com.jawzf.pixeltoolkit.utils.call.CallStateRepository
 import android.app.Notification
 import android.app.NotificationManager
 import android.app.Person
 import android.content.Context
 import android.content.Intent
+import android.content.pm.LauncherApps
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
+import android.graphics.drawable.Icon
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -30,16 +22,19 @@ import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import android.util.Log
 import androidx.annotation.RequiresApi
+import com.jawzf.pixeltoolkit.core.design.haptics.HapticFeedbackType
+import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.domain.HapticFeedbackType
 import com.jawzf.pixeltoolkit.domain.MapsState
+import com.jawzf.pixeltoolkit.domain.controller.HilightController
+import com.jawzf.pixeltoolkit.domain.controller.HilightProgressTracker
 import com.jawzf.pixeltoolkit.domain.model.ActiveNotificationAlert
 import com.jawzf.pixeltoolkit.domain.model.DashConfig
+import com.jawzf.pixeltoolkit.domain.model.NavigationNotificationData
+import com.jawzf.pixeltoolkit.domain.model.NavigationParser
 import com.jawzf.pixeltoolkit.domain.model.NotificationActionItem
 import com.jawzf.pixeltoolkit.domain.model.NotificationLightingColorMode
 import com.jawzf.pixeltoolkit.domain.model.NotificationLightingSide
-import com.jawzf.pixeltoolkit.domain.model.NavigationNotificationData
-import com.jawzf.pixeltoolkit.domain.model.NavigationParser
 import com.jawzf.pixeltoolkit.domain.model.ProgressNotificationData
 import com.jawzf.pixeltoolkit.domain.model.RippleConfig
 import com.jawzf.pixeltoolkit.island.plugins.notifications.OtpExtractor
@@ -48,14 +43,19 @@ import com.jawzf.pixeltoolkit.services.tiles.ScreenOffAccessibilityService
 import com.jawzf.pixeltoolkit.services.widgets.PixelSearchbarWidget
 import com.jawzf.pixeltoolkit.utils.AppColorUtil
 import com.jawzf.pixeltoolkit.utils.AppUtil
-import com.jawzf.pixeltoolkit.utils.HapticUtil
+import com.jawzf.pixeltoolkit.utils.DeviceUtils
 import com.jawzf.pixeltoolkit.utils.PermissionUtils
+import com.jawzf.pixeltoolkit.utils.PriorityModeUtil
+import com.jawzf.pixeltoolkit.utils.call.CallNotificationParser
+import com.jawzf.pixeltoolkit.utils.call.CallStateRepository
+import com.jawzf.pixeltoolkit.utils.chronometer.ChronometerRepository
+import com.jawzf.pixeltoolkit.utils.notification.NotificationRepostFilter
 import com.jawzf.pixeltoolkit.utils.overlay.fromPrefs
 import com.jawzf.pixeltoolkit.utils.overlay.writeTo
 import kotlinx.coroutines.launch
-import java.util.concurrent.ConcurrentHashMap
 import java.io.File
 import java.io.FileOutputStream
+import java.util.concurrent.ConcurrentHashMap
 
 class NotificationListener : NotificationListenerService() {
     interface ProgressNotificationListener {

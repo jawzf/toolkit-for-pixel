@@ -15,6 +15,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewConfiguration
 import android.view.WindowManager
+import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.utils.OmniTriggerUtil
 
 class OmniGestureOverlayHandler(
@@ -138,14 +139,14 @@ class OmniGestureOverlayHandler(
     }
 
     private fun startRampingHaptic() {
-        if (!com.jawzf.pixeltoolkit.utils.HapticUtil.isAppHapticsEnabled.value) return
+        if (!HapticUtil.isAppHapticsEnabled.value) return
         val v = vibrator ?: return
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             runCatching {
                 val effect =
                     VibrationEffect
                         .startComposition()
-                        .addPrimitive(VibrationEffect.Composition.PRIMITIVE_SLOW_RISE, com.jawzf.pixeltoolkit.utils.HapticUtil.boost(0.6f))
+                        .addPrimitive(VibrationEffect.Composition.PRIMITIVE_SLOW_RISE, HapticUtil.boost(0.6f))
                         .compose()
                 v.vibrate(effect)
             }.onFailure { fallbackRampingWaveform(v) }
@@ -166,7 +167,7 @@ class OmniGestureOverlayHandler(
     }
 
     private fun triggerFinalTick() {
-        if (!com.jawzf.pixeltoolkit.utils.HapticUtil.isAppHapticsEnabled.value) return
+        if (!HapticUtil.isAppHapticsEnabled.value) return
         val v = vibrator ?: return
         runCatching {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {

@@ -16,9 +16,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.jawzf.pixeltoolkit.core.design.modifiers.scrollMotionBlur
 import com.jawzf.pixeltoolkit.ui.components.linkActions.AppPickerItem
 import com.jawzf.pixeltoolkit.ui.components.linkActions.ResolvedAppInfo
-import com.jawzf.pixeltoolkit.ui.modifiers.scrollMotionBlur
 
 @Composable
 fun RoundedCardLazyContainer(

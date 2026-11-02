@@ -23,11 +23,13 @@ import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.design.cards.ConfigPickerItem
+import com.jawzf.pixeltoolkit.core.design.cards.IconToggleItem
+import com.jawzf.pixeltoolkit.core.design.components.ConfigSliderItem
+import com.jawzf.pixeltoolkit.core.design.components.SegmentedDropdownMenuItem
+import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
+import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.ui.components.sliders.ConfigSliderItem
-import com.jawzf.pixeltoolkit.ui.core.cards.IconToggleItem
-import com.jawzf.pixeltoolkit.ui.core.containers.RoundedCardContainer
-import com.jawzf.pixeltoolkit.utils.HapticUtil
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 
 @Composable
@@ -378,7 +380,7 @@ fun PowerAndBatterySettingsUI(
 
             // Sound Trigger Mode Selector
             val soundTriggerValue = getInt("soundtrigger_mode", 1)
-            com.jawzf.pixeltoolkit.ui.core.cards.ConfigPickerItem(
+            ConfigPickerItem(
                 title = stringResource(R.string.label_soundtrigger_mode),
                 description = stringResource(R.string.desc_soundtrigger_mode),
                 selectedValue =
@@ -397,7 +399,7 @@ fun PowerAndBatterySettingsUI(
                             1 -> stringResource(R.string.soundtrigger_mode_restrict)
                             else -> stringResource(R.string.soundtrigger_mode_critical)
                         }
-                    com.jawzf.pixeltoolkit.ui.components.menus.SegmentedDropdownMenuItem(
+                    SegmentedDropdownMenuItem(
                         text = { Text(optionLabel) },
                         onClick = {
                             viewModel.updateBatterySaverConstant(
@@ -430,7 +432,7 @@ fun PowerAndBatterySettingsUI(
                     else -> stringResource(R.string.location_mode_throttle)
                 }
 
-            com.jawzf.pixeltoolkit.ui.core.cards.ConfigPickerItem(
+            ConfigPickerItem(
                 title = stringResource(R.string.label_location_mode),
                 description = stringResource(R.string.desc_location_mode),
                 selectedValue = selectedLabel,
@@ -446,7 +448,7 @@ fun PowerAndBatterySettingsUI(
                             3 -> stringResource(R.string.location_mode_foreground_only)
                             else -> stringResource(R.string.location_mode_throttle)
                         }
-                    com.jawzf.pixeltoolkit.ui.components.menus.SegmentedDropdownMenuItem(
+                    SegmentedDropdownMenuItem(
                         text = { Text(optionLabel) },
                         onClick = {
                             viewModel.updateBatterySaverConstant(

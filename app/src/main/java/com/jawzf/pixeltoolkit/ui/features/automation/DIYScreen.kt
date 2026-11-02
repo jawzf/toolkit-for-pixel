@@ -67,16 +67,16 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
+import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
+import com.jawzf.pixeltoolkit.core.design.modifiers.scrollMotionBlur
 import com.jawzf.pixeltoolkit.domain.diy.Automation
 import com.jawzf.pixeltoolkit.domain.diy.Macro
 import com.jawzf.pixeltoolkit.ui.activities.AutomationEditorActivity
 import com.jawzf.pixeltoolkit.ui.activities.MacroEditorActivity
 import com.jawzf.pixeltoolkit.ui.components.diy.AutomationItem
 import com.jawzf.pixeltoolkit.ui.components.diy.MacroItem
-import com.jawzf.pixeltoolkit.ui.core.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.ui.core.sheets.NewAutomationSheet
-import com.jawzf.pixeltoolkit.ui.modifiers.scrollMotionBlur
-import com.jawzf.pixeltoolkit.utils.HapticUtil
 import com.jawzf.pixeltoolkit.viewmodels.DIYViewModel
 
 @Composable

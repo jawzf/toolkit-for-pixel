@@ -23,10 +23,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.core.design.R
-import com.jawzf.pixeltoolkit.ui.components.sliders.ConfigSliderItem
-import com.jawzf.pixeltoolkit.ui.core.containers.RoundedCardContainer
-import com.jawzf.pixeltoolkit.ui.core.pickers.SegmentedPicker
-import com.jawzf.pixeltoolkit.utils.HapticUtil
+import com.jawzf.pixeltoolkit.core.design.cards.IconToggleItem
+import com.jawzf.pixeltoolkit.core.design.components.ConfigSliderItem
+import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
+import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
+import com.jawzf.pixeltoolkit.core.design.pickers.SegmentedPicker
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
@@ -68,14 +69,14 @@ fun TextAnimationsSettingsUI(
         }
 
         RoundedCardContainer {
-            com.jawzf.pixeltoolkit.ui.core.cards.IconToggleItem(
+            IconToggleItem(
                 title = stringResource(R.string.label_increase_touch_sensitivity),
                 subtitle = stringResource(R.string.desc_increase_touch_sensitivity),
                 icon = R.drawable.rounded_touch_app_24,
                 checked = viewModel.isTouchSensitivityEnabled.value,
                 onCheckedChange = { viewModel.setTouchSensitivityEnabled(it) },
             )
-            com.jawzf.pixeltoolkit.ui.core.cards.IconToggleItem(
+            IconToggleItem(
                 title = stringResource(R.string.label_auto_rotate),
                 subtitle = stringResource(R.string.desc_auto_rotate),
                 icon = R.drawable.rounded_mobile_rotate_24,

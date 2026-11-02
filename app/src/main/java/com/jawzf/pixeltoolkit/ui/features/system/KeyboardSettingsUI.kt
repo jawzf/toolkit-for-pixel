@@ -31,10 +31,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.core.design.R
-import com.jawzf.pixeltoolkit.ui.components.sliders.ConfigSliderItem
-import com.jawzf.pixeltoolkit.ui.core.cards.IconToggleItem
-import com.jawzf.pixeltoolkit.ui.core.containers.RoundedCardContainer
-import com.jawzf.pixeltoolkit.ui.modifiers.highlight
+import com.jawzf.pixeltoolkit.core.design.cards.IconToggleItem
+import com.jawzf.pixeltoolkit.core.design.components.ConfigSliderItem
+import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
+import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
+import com.jawzf.pixeltoolkit.core.design.modifiers.highlight
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 import kotlinx.coroutines.delay
 
@@ -138,7 +139,7 @@ fun KeyboardSettingsUI(
                 value = viewModel.keyboardHeight.floatValue,
                 onValueChange = {
                     viewModel.setKeyboardHeight(it, context)
-                    com.jawzf.pixeltoolkit.utils.HapticUtil
+                    HapticUtil
                         .performSliderHaptic(view)
                 },
                 valueRange = 200f..600f,
@@ -151,7 +152,7 @@ fun KeyboardSettingsUI(
                 value = viewModel.keyboardBottomPadding.floatValue,
                 onValueChange = {
                     viewModel.setKeyboardBottomPadding(it, context)
-                    com.jawzf.pixeltoolkit.utils.HapticUtil
+                    HapticUtil
                         .performSliderHaptic(view)
                 },
                 valueRange = 0f..100f,
@@ -164,7 +165,7 @@ fun KeyboardSettingsUI(
                 value = viewModel.keyboardRoundness.floatValue,
                 onValueChange = {
                     viewModel.setKeyboardRoundness(it, context)
-                    com.jawzf.pixeltoolkit.utils.HapticUtil
+                    HapticUtil
                         .performSliderHaptic(view)
                 },
                 valueRange = 4f..30f,
@@ -244,7 +245,7 @@ fun KeyboardSettingsUI(
                 value = viewModel.keyboardFunctionsPadding.floatValue,
                 onValueChange = {
                     viewModel.setKeyboardFunctionsPadding(it, context)
-                    com.jawzf.pixeltoolkit.utils.HapticUtil
+                    HapticUtil
                         .performSliderHaptic(view)
                 },
                 valueRange = 0f..100f,

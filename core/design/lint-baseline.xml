@@ -2,6 +2,72 @@
 <issues format="6" by="lint 9.3.1" type="baseline" client="gradle" dependencies="false" name="AGP (9.3.1)" variant="all" version="9.3.1">
 
     <issue
+        id="InlinedApi"
+        message="Field requires API level 31 (current min is 30): `android.os.VibrationEffect.Composition#PRIMITIVE_LOW_TICK`"
+        errorLine1="                    .addPrimitive(VibrationEffect.Composition.PRIMITIVE_LOW_TICK, HapticUtil.boost(0.5f))"
+        errorLine2="                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/jawzf/pixeltoolkit/core/design/haptics/HapticFeedbackUtils.kt"
+            line="32"
+            column="35"/>
+    </issue>
+
+    <issue
+        id="InlinedApi"
+        message="Field requires API level 31 (current min is 30): `android.os.VibrationEffect.Composition#PRIMITIVE_LOW_TICK`"
+        errorLine1="                .addPrimitive(VibrationEffect.Composition.PRIMITIVE_LOW_TICK, boost(0.4f))"
+        errorLine2="                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/jawzf/pixeltoolkit/core/design/haptics/HapticUtil.kt"
+            line="226"
+            column="31"/>
+    </issue>
+
+    <issue
+        id="InlinedApi"
+        message="Field requires API level 31 (current min is 30): `android.os.VibrationEffect.Composition#PRIMITIVE_LOW_TICK`"
+        errorLine1="                    VibrationEffect.Composition.PRIMITIVE_LOW_TICK"
+        errorLine2="                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/jawzf/pixeltoolkit/core/design/haptics/HapticUtil.kt"
+            line="265"
+            column="21"/>
+    </issue>
+
+    <issue
+        id="InlinedApi"
+        message="Field requires API level 31 (current min is 30): `android.os.VibrationEffect.Composition#PRIMITIVE_LOW_TICK`"
+        errorLine1="                    composition.addPrimitive(VibrationEffect.Composition.PRIMITIVE_LOW_TICK, boost(level * scale), if (index == 0) 20 else 45)"
+        errorLine2="                                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/jawzf/pixeltoolkit/core/design/haptics/HapticUtil.kt"
+            line="269"
+            column="46"/>
+    </issue>
+
+    <issue
+        id="InlinedApi"
+        message="Field requires API level 31 (current min is 30): `android.os.VibrationEffect.Composition#PRIMITIVE_LOW_TICK`"
+        errorLine1="                    VibrationEffect.Composition.PRIMITIVE_LOW_TICK"
+        errorLine2="                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/jawzf/pixeltoolkit/core/design/haptics/HapticUtil.kt"
+            line="361"
+            column="21"/>
+    </issue>
+
+    <issue
+        id="NewApi"
+        message="Call requires API level 30 (current min is 26): `android.os.VibrationEffect.Composition#compose`"
+        errorLine1="    return compose()"
+        errorLine2="           ~~~~~~~">
+        <location
+            file="src/main/java/com/jawzf/pixeltoolkit/core/design/haptics/HapticUtil.kt"
+            line="30"
+            column="12"/>
+    </issue>
+
+    <issue
         id="UnusedAttribute"
         message="Attribute `targetCellWidth` is only used in API level 31 and higher (current min is 26)"
         errorLine1="    android:targetCellWidth=&quot;1&quot;"
@@ -219,6 +285,149 @@
             file="src/main/res/drawable/key_shift.xml"
             line="2"
             column="20"/>
+    </issue>
+
+    <issue
+        id="ConfigurationScreenWidthHeight"
+        message="Using Configuration.screenWidthDp instead of LocalWindowInfo.current.containerSize"
+        errorLine1="    val screenWidth = configuration.screenWidthDp"
+        errorLine2="                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/jawzf/pixeltoolkit/core/design/components/ToolkitFloatingToolbar.kt"
+            line="78"
+            column="23"/>
+    </issue>
+
+    <issue
+        id="ModifierFactoryExtensionFunction"
+        message="Modifier factory functions should be extensions on Modifier"
+        errorLine1="    fun applyLiquidRipple("
+        errorLine2="        ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/jawzf/pixeltoolkit/core/design/modifiers/LiquidRippleModifier.kt"
+            line="99"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="ModifierFactoryExtensionFunction"
+        message="Modifier factory functions should be extensions on Modifier"
+        errorLine1="    fun applyScrollMotionBlur("
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/jawzf/pixeltoolkit/core/design/modifiers/ScrollMotionBlurModifier.kt"
+            line="128"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="ModifierParameter"
+        message="Modifier parameter should be the first optional parameter"
+        errorLine1="    modifier: Modifier = Modifier,"
+        errorLine2="    ~~~~~~~~">
+        <location
+            file="src/main/java/com/jawzf/pixeltoolkit/core/design/cards/IconToggleItem.kt"
+            line="50"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="ModifierParameter"
+        message="Modifier parameter should be the first optional parameter"
+        errorLine1="    modifier: Modifier = Modifier,"
+        errorLine2="    ~~~~~~~~">
+        <location
+            file="src/main/java/com/jawzf/pixeltoolkit/core/design/cards/PermissionCard.kt"
+            line="46"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="ModifierParameter"
+        message="Modifier parameter should be the first optional parameter"
+        errorLine1="    modifier: Modifier = Modifier,"
+        errorLine2="    ~~~~~~~~">
+        <location
+            file="src/main/java/com/jawzf/pixeltoolkit/core/design/pickers/SegmentedPicker.kt"
+            line="45"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="UseAppTint"
+        message="Must use `app:tint` instead of `android:tint`"
+        errorLine1="                android:tint=&quot;@android:color/white&quot; />"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/widget_stack.xml"
+            line="70"
+            column="17"/>
+    </issue>
+
+    <issue
+        id="UseAppTint"
+        message="Must use `app:tint` instead of `android:tint`"
+        errorLine1="                android:tint=&quot;@android:color/white&quot; />"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/widget_stack.xml"
+            line="86"
+            column="17"/>
+    </issue>
+
+    <issue
+        id="UseAppTint"
+        message="Must use `app:tint` instead of `android:tint`"
+        errorLine1="                android:tint=&quot;@android:color/white&quot; />"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/widget_stack_animated.xml"
+            line="73"
+            column="17"/>
+    </issue>
+
+    <issue
+        id="UseAppTint"
+        message="Must use `app:tint` instead of `android:tint`"
+        errorLine1="                android:tint=&quot;@android:color/white&quot; />"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/widget_stack_animated.xml"
+            line="89"
+            column="17"/>
+    </issue>
+
+    <issue
+        id="UseAppTint"
+        message="Must use `app:tint` instead of `android:tint`"
+        errorLine1="                android:tint=&quot;@android:color/white&quot; />"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/widget_stack_animated_reverse.xml"
+            line="73"
+            column="17"/>
+    </issue>
+
+    <issue
+        id="UseAppTint"
+        message="Must use `app:tint` instead of `android:tint`"
+        errorLine1="                android:tint=&quot;@android:color/white&quot; />"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/widget_stack_animated_reverse.xml"
+            line="89"
+            column="17"/>
+    </issue>
+
+    <issue
+        id="UseAppTint"
+        message="Must use `app:tint` instead of `android:tint`"
+        errorLine1="            android:tint=&quot;@android:color/white&quot; />"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/widget_stack_preview.xml"
+            line="19"
+            column="13"/>
     </issue>
 
     <issue
@@ -498,6 +707,116 @@
 
     <issue
         id="ObsoleteSdkInt"
+        message="Unnecessary; `Build.VERSION.SDK_INT >= Build.VERSION_CODES.O` is always true here (`SDK_INT` ≥ 26 and &lt; 29)"
+        errorLine1="            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {"
+        errorLine2="                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/jawzf/pixeltoolkit/core/design/haptics/HapticFeedbackUtils.kt"
+            line="38"
+            column="24"/>
+    </issue>
+
+    <issue
+        id="ObsoleteSdkInt"
+        message="Unnecessary; `Build.VERSION.SDK_INT >= Build.VERSION_CODES.O` is always true here (`SDK_INT` ≥ 26 and &lt; 29)"
+        errorLine1="            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {"
+        errorLine2="                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/jawzf/pixeltoolkit/core/design/haptics/HapticFeedbackUtils.kt"
+            line="55"
+            column="24"/>
+    </issue>
+
+    <issue
+        id="ObsoleteSdkInt"
+        message="Unnecessary; `Build.VERSION.SDK_INT >= Build.VERSION_CODES.O` is always true here (`SDK_INT` ≥ 26 and &lt; 29)"
+        errorLine1="            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {"
+        errorLine2="                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/jawzf/pixeltoolkit/core/design/haptics/HapticFeedbackUtils.kt"
+            line="72"
+            column="24"/>
+    </issue>
+
+    <issue
+        id="ObsoleteSdkInt"
+        message="Unnecessary; `Build.VERSION.SDK_INT >= Build.VERSION_CODES.O` is always true here (`SDK_INT` ≥ 26 and &lt; 29)"
+        errorLine1="            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {"
+        errorLine2="                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/jawzf/pixeltoolkit/core/design/haptics/HapticFeedbackUtils.kt"
+            line="90"
+            column="24"/>
+    </issue>
+
+    <issue
+        id="ObsoleteSdkInt"
+        message="Unnecessary; `SDK_INT` is always >= 26"
+        errorLine1="        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/jawzf/pixeltoolkit/core/design/haptics/HapticUtil.kt"
+            line="239"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="ObsoleteSdkInt"
+        message="Unnecessary; `SDK_INT` is always >= 26"
+        errorLine1="        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/jawzf/pixeltoolkit/core/design/haptics/HapticUtil.kt"
+            line="276"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="ObsoleteSdkInt"
+        message="Unnecessary; `SDK_INT` is always >= 26"
+        errorLine1="        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/jawzf/pixeltoolkit/core/design/haptics/HapticUtil.kt"
+            line="313"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="ObsoleteSdkInt"
+        message="Unnecessary; `SDK_INT` is always >= 26"
+        errorLine1="        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/jawzf/pixeltoolkit/core/design/haptics/HapticUtil.kt"
+            line="339"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="ObsoleteSdkInt"
+        message="Unnecessary; `SDK_INT` is always >= 26"
+        errorLine1="        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/jawzf/pixeltoolkit/core/design/haptics/HapticUtil.kt"
+            line="395"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="ObsoleteSdkInt"
+        message="Unnecessary; `SDK_INT` is always >= 26"
+        errorLine1="        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/jawzf/pixeltoolkit/core/design/haptics/HapticUtil.kt"
+            line="444"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="ObsoleteSdkInt"
         message="This folder configuration (`v24`) is unnecessary; `minSdkVersion` is 26. Merge all the resources in this folder into `drawable`.">
         <location
             file="src/main/res/drawable-v24"/>
@@ -742,6 +1061,39 @@
         message="Found bitmap drawable `res/drawable/tile_help.gif` in densityless folder">
         <location
             file="src/main/res/drawable/tile_help.gif"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `String.toColorInt` instead?"
+        errorLine1="                        Color(android.graphics.Color.parseColor(colorHex))"
+        errorLine2="                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/jawzf/pixeltoolkit/core/design/pickers/ColorSwatchPicker.kt"
+            line="166"
+            column="31"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `String.toColorInt` instead?"
+        errorLine1="                        val c = android.graphics.Color.parseColor(colorHex)"
+        errorLine2="                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/jawzf/pixeltoolkit/core/design/pickers/ColorSwatchPicker.kt"
+            line="173"
+            column="33"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `SharedPreferences.edit` instead?"
+        errorLine1="        prefs.edit().putString(&quot;app_haptics_mode&quot;, mode.name).apply()"
+        errorLine2="        ~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/jawzf/pixeltoolkit/core/design/haptics/HapticUtil.kt"
+            line="543"
+            column="9"/>
     </issue>
 
     <issue

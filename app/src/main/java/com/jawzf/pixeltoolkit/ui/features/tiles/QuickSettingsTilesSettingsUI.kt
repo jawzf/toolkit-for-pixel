@@ -48,6 +48,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.design.cards.IconToggleItem
+import com.jawzf.pixeltoolkit.core.design.components.SegmentedDropdownMenu
+import com.jawzf.pixeltoolkit.core.design.components.SegmentedDropdownMenuItem
+import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
+import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
+import com.jawzf.pixeltoolkit.core.design.modifiers.highlight
+import com.jawzf.pixeltoolkit.core.design.modifiers.scrollMotionBlur
+import com.jawzf.pixeltoolkit.core.design.state.LocalMenuStateManager
 import com.jawzf.pixeltoolkit.domain.registry.QSTileInfo
 import com.jawzf.pixeltoolkit.domain.registry.QSTileRegistry
 import com.jawzf.pixeltoolkit.services.tiles.AdaptiveBrightnessTileService
@@ -80,11 +88,7 @@ import com.jawzf.pixeltoolkit.services.tiles.ToolkitOnDisplayTileService
 import com.jawzf.pixeltoolkit.services.tiles.UiBlurTileService
 import com.jawzf.pixeltoolkit.services.tiles.UrlShortenerTileService
 import com.jawzf.pixeltoolkit.services.tiles.UsbDebuggingTileService
-import com.jawzf.pixeltoolkit.ui.core.cards.IconToggleItem
-import com.jawzf.pixeltoolkit.ui.core.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.ui.core.sheets.PermissionsBottomSheet
-import com.jawzf.pixeltoolkit.ui.modifiers.highlight
-import com.jawzf.pixeltoolkit.ui.modifiers.scrollMotionBlur
 import com.jawzf.pixeltoolkit.utils.DeviceUtils
 import com.jawzf.pixeltoolkit.utils.PermissionUIHelper
 import com.jawzf.pixeltoolkit.utils.PermissionUtils
@@ -502,7 +506,7 @@ fun QSTileCard(
     val view = LocalView.current
     var showMenu by remember { mutableStateOf(false) }
 
-    val menuState = com.jawzf.pixeltoolkit.ui.state.LocalMenuStateManager.current
+    val menuState = LocalMenuStateManager.current
     androidx.compose.runtime.DisposableEffect(showMenu) {
         if (showMenu) {
             menuState.activeId = tile.titleRes
@@ -546,13 +550,13 @@ fun QSTileCard(
                     },
                 ).combinedClickable(
                     onClick = {
-                        com.jawzf.pixeltoolkit.utils.HapticUtil
+                        HapticUtil
                             .performVirtualKeyHaptic(view)
                         onClick()
                     },
                     onLongClick = {
                         if (onHelpClick != null || onPinToggle != null) {
-                            com.jawzf.pixeltoolkit.utils.HapticUtil
+                            HapticUtil
                                 .performVirtualKeyHaptic(view)
                             showMenu = true
                         }
@@ -621,12 +625,12 @@ fun QSTileCard(
         }
 
         if (onHelpClick != null || onPinToggle != null) {
-            com.jawzf.pixeltoolkit.ui.components.menus.SegmentedDropdownMenu(
+            SegmentedDropdownMenu(
                 expanded = showMenu,
                 onDismissRequest = { showMenu = false },
             ) {
                 if (onPinToggle != null) {
-                    com.jawzf.pixeltoolkit.ui.components.menus.SegmentedDropdownMenuItem(
+                    SegmentedDropdownMenuItem(
                         text = {
                             Text(
                                 if (isPinned) {
@@ -658,7 +662,7 @@ fun QSTileCard(
                 }
 
                 if (onHelpClick != null) {
-                    com.jawzf.pixeltoolkit.ui.components.menus.SegmentedDropdownMenuItem(
+                    SegmentedDropdownMenuItem(
                         text = {
                             Text(stringResource(R.string.action_what_is_this))
                         },

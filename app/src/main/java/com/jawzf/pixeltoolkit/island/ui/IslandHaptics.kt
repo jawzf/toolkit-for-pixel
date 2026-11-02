@@ -1,8 +1,8 @@
 package com.jawzf.pixeltoolkit.island.ui
 
 import android.content.Context
-import com.jawzf.pixeltoolkit.domain.HapticFeedbackType
-import com.jawzf.pixeltoolkit.utils.HapticUtil
+import com.jawzf.pixeltoolkit.core.design.haptics.HapticFeedbackType
+import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 
 object IslandHaptics {
     fun tap(context: Context) = HapticUtil.performHapticForService(context, HapticFeedbackType.CLICK)

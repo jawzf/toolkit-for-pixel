@@ -16,7 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import com.jawzf.pixeltoolkit.ui.core.containers.RoundedCardContainer
+import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 
 @Composable
 fun ShareWithContent(

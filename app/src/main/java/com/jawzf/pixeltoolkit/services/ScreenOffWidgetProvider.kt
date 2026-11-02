@@ -11,10 +11,10 @@ import android.os.Vibrator
 import android.os.VibratorManager
 import android.widget.RemoteViews
 import com.jawzf.pixeltoolkit.core.design.R
-import com.jawzf.pixeltoolkit.domain.HapticFeedbackType
+import com.jawzf.pixeltoolkit.core.design.haptics.HapticFeedbackType
+import com.jawzf.pixeltoolkit.core.design.haptics.performHapticFeedback
 import com.jawzf.pixeltoolkit.domain.ScreenOffMethod
 import com.jawzf.pixeltoolkit.utils.DeviceLockUtils
-import com.jawzf.pixeltoolkit.utils.performHapticFeedback
 
 class ScreenOffWidgetProvider : AppWidgetProvider() {
     companion object {
