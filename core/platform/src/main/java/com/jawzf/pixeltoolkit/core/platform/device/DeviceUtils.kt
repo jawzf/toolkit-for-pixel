@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.utils
+package com.jawzf.pixeltoolkit.core.platform.device
 
 import android.app.ActivityManager
 import android.content.Context

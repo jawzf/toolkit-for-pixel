@@ -53,7 +53,7 @@ import android.content.pm.PackageManager
 import android.graphics.drawable.Icon
 import android.service.quicksettings.Tile
 import com.jawzf.pixeltoolkit.core.design.R
-import com.jawzf.pixeltoolkit.utils.DeviceUtils
+import com.jawzf.pixeltoolkit.core.platform.device.DeviceUtils
 
 class FeatureTileService : BaseTileService() {
 

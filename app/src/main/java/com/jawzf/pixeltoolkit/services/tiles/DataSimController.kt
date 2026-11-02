@@ -6,8 +6,8 @@ import android.os.IBinder
 import android.telephony.SubscriptionManager
 import android.telephony.TelephonyManager
 import android.util.Log
-import com.jawzf.pixeltoolkit.utils.RootUtils
-import com.jawzf.pixeltoolkit.utils.ShellUtils
+import com.jawzf.pixeltoolkit.core.platform.shell.RootUtils
+import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import org.lsposed.hiddenapibypass.HiddenApiBypass
 import rikka.shizuku.Shizuku
 import rikka.shizuku.ShizukuBinderWrapper

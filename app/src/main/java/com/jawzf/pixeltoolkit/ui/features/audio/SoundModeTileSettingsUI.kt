@@ -43,9 +43,9 @@ import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.modifiers.highlight
 import com.jawzf.pixeltoolkit.core.design.modifiers.scrollMotionBlur
+import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuUtils
 import com.jawzf.pixeltoolkit.ui.core.sheets.PermissionItem
 import com.jawzf.pixeltoolkit.ui.core.sheets.PermissionsBottomSheet
-import com.jawzf.pixeltoolkit.utils.ShizukuUtils
 import sh.calvin.reorderable.ReorderableItem
 import sh.calvin.reorderable.rememberReorderableLazyListState
 import kotlin.math.min

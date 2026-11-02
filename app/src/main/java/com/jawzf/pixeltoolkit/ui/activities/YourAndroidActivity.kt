@@ -83,6 +83,8 @@ import com.jawzf.pixeltoolkit.core.design.modifiers.progressiveBlur
 import com.jawzf.pixeltoolkit.core.design.modifiers.scrollMotionBlur
 import com.jawzf.pixeltoolkit.core.design.theme.Shapes
 import com.jawzf.pixeltoolkit.core.design.theme.ToolkitTheme
+import com.jawzf.pixeltoolkit.core.platform.device.DeviceInfo
+import com.jawzf.pixeltoolkit.core.platform.device.DeviceUtils
 import com.jawzf.pixeltoolkit.domain.model.AppBackupItem
 import com.jawzf.pixeltoolkit.domain.model.AppListBackup
 import com.jawzf.pixeltoolkit.domain.model.DeviceBackupInfo
@@ -93,8 +95,6 @@ import com.jawzf.pixeltoolkit.ui.core.cards.TrackedRepoCard
 import com.jawzf.pixeltoolkit.ui.core.sheets.AddRepoBottomSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.GitHubAuthSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.UpdateBottomSheet
-import com.jawzf.pixeltoolkit.utils.DeviceInfo
-import com.jawzf.pixeltoolkit.utils.DeviceUtils
 import com.jawzf.pixeltoolkit.viewmodels.AppUpdatesViewModel
 import com.jawzf.pixeltoolkit.viewmodels.GitHubAuthViewModel
 import kotlinx.coroutines.Dispatchers

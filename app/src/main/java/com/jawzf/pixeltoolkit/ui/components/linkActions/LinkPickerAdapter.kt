@@ -118,8 +118,8 @@ import com.jawzf.pixeltoolkit.core.design.modifiers.progressiveBlur
 import com.jawzf.pixeltoolkit.core.design.modifiers.scrollMotionBlur
 import com.jawzf.pixeltoolkit.core.design.pickers.SegmentedPicker
 import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
+import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.utils.PermissionUtils
 import com.jawzf.pixeltoolkit.utils.WindowingUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async

@@ -14,15 +14,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.toArgb
+import com.jawzf.pixeltoolkit.core.platform.device.DeviceUtils
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.island.model.IslandExpandedScope
 import com.jawzf.pixeltoolkit.island.model.IslandItem
 import com.jawzf.pixeltoolkit.island.model.IslandPriorityEntries
 import com.jawzf.pixeltoolkit.island.model.PluginRequest
-import com.jawzf.pixeltoolkit.island.ui.IslandLayoutSpec
-import com.jawzf.pixeltoolkit.utils.DeviceUtils
-import kotlin.math.roundToInt
 import com.jawzf.pixeltoolkit.island.plugins.brief.BriefPlugin
+import com.jawzf.pixeltoolkit.island.sdk.DecodedPayload
 import com.jawzf.pixeltoolkit.island.sdk.HostInfo
 import com.jawzf.pixeltoolkit.island.sdk.HostRequestType
 import com.jawzf.pixeltoolkit.island.sdk.IIslandHost
@@ -31,6 +30,7 @@ import com.jawzf.pixeltoolkit.island.sdk.IslandAction
 import com.jawzf.pixeltoolkit.island.sdk.IslandActionType
 import com.jawzf.pixeltoolkit.island.sdk.IslandCodec
 import com.jawzf.pixeltoolkit.island.sdk.IslandSchema
+import com.jawzf.pixeltoolkit.island.ui.IslandLayoutSpec
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -40,7 +40,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import com.jawzf.pixeltoolkit.island.sdk.DecodedPayload
+import kotlin.math.roundToInt
 
 class ProviderConnection(
     private val context: Context,

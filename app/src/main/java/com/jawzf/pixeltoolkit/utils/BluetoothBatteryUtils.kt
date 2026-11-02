@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.bluetooth.BluetoothManager
 import android.content.Context
 import androidx.annotation.Keep
+import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 
 object BluetoothBatteryUtils {
     @Keep

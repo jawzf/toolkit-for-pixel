@@ -33,6 +33,7 @@ import com.jawzf.pixeltoolkit.core.design.components.ConfigSliderItem
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.modifiers.highlight
+import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.ui.core.sheets.PermissionItem
 import com.jawzf.pixeltoolkit.ui.core.sheets.PermissionsBottomSheet
 import com.jawzf.pixeltoolkit.ui.features.network.sheets.SimNamesBottomSheet
@@ -190,7 +191,7 @@ fun NetworksSettingsUI(
                     actionLabel = if (hasReadPhoneState) R.string.perm_action_granted else R.string.perm_action_grant,
                     action = {
                         (context as? Activity)?.let {
-                            com.jawzf.pixeltoolkit.utils.PermissionUtils.requestPermissionsSafely(
+                            PermissionUtils.requestPermissionsSafely(
                                 it,
                                 arrayOf(Manifest.permission.READ_PHONE_STATE),
                                 102,

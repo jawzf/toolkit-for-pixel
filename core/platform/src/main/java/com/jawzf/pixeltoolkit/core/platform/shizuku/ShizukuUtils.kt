@@ -1,9 +1,11 @@
-package com.jawzf.pixeltoolkit.utils
+package com.jawzf.pixeltoolkit.core.platform.shizuku
 
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.IBinder
 import android.os.RemoteException
+import com.jawzf.pixeltoolkit.core.platform.shell.PrivilegedMode
+import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import moe.shizuku.server.IShizukuService
 import rikka.shizuku.Shizuku
 import rikka.shizuku.ShizukuProvider

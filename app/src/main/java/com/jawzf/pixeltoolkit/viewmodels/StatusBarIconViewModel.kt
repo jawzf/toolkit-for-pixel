@@ -10,12 +10,15 @@ import android.provider.Settings
 import androidx.compose.runtime.mutableStateOf
 import androidx.core.content.edit
 import androidx.lifecycle.ViewModel
+import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
+import com.jawzf.pixeltoolkit.core.platform.shell.RootUtils
+import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
+import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuUtils
 import com.jawzf.pixeltoolkit.domain.StatusBarIconRegistry
-import com.jawzf.pixeltoolkit.utils.ShellUtils
-import com.jawzf.pixeltoolkit.utils.writeSecureSetting
 import com.jawzf.pixeltoolkit.ui.core.pickers.NetworkType
 import com.jawzf.pixeltoolkit.utils.resetAllIconVisibilities
 import com.jawzf.pixeltoolkit.utils.updateIconBlacklistSetting
+import com.jawzf.pixeltoolkit.utils.writeSecureSetting
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -106,10 +109,10 @@ class StatusBarIconViewModel : ViewModel() {
     fun check(context: Context) {
         isWriteSecureSettingsEnabled.value = canWriteSecureSettings(context)
         isShizukuAvailable.value =
-            com.jawzf.pixeltoolkit.utils.ShizukuUtils
+            ShizukuUtils
                 .hasPermission()
         isRootAvailable.value =
-            com.jawzf.pixeltoolkit.utils.RootUtils
+            RootUtils
                 .isRootPermissionGranted()
         isShellPermissionGranted.value = ShellUtils.hasPermission(context)
         loadIconVisibilityState(context)
@@ -117,7 +120,7 @@ class StatusBarIconViewModel : ViewModel() {
         loadSmartDataPref(context)
         loadSelectedNetworkTypes(context)
         isWriteSettingsEnabled.value =
-            com.jawzf.pixeltoolkit.utils.PermissionUtils
+            PermissionUtils
                 .canWriteSystemSettings(context)
         loadStatusBarSettings(context)
         loadAdvancedFlags(context)
@@ -456,7 +459,7 @@ class StatusBarIconViewModel : ViewModel() {
     }
 
     private fun canWriteSecureSettings(context: Context): Boolean =
-        com.jawzf.pixeltoolkit.utils.PermissionUtils
+        PermissionUtils
             .canWriteSecureSettings(context)
 
     /**

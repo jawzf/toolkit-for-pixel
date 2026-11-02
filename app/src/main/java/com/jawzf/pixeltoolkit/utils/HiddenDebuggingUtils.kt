@@ -2,6 +2,7 @@ package com.jawzf.pixeltoolkit.utils
 
 import android.content.Context
 import android.provider.Settings
+import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 
 object HiddenDebuggingUtils {

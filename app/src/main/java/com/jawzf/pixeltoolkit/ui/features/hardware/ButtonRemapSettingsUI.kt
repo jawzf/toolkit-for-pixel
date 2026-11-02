@@ -49,13 +49,15 @@ import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.modifiers.highlight
 import com.jawzf.pixeltoolkit.core.design.pickers.HapticFeedbackPicker
 import com.jawzf.pixeltoolkit.core.design.pickers.SegmentedPicker
+import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
+import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuPermissionHelper
+import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuStatus
+import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuUtils
 import com.jawzf.pixeltoolkit.domain.diy.Action
 import com.jawzf.pixeltoolkit.domain.model.PowerChoice
 import com.jawzf.pixeltoolkit.domain.model.RemapInput
 import com.jawzf.pixeltoolkit.domain.model.RemapScreenState
 import com.jawzf.pixeltoolkit.domain.model.RemapSlot
-import com.jawzf.pixeltoolkit.shizuku.ShizukuPermissionHelper
-import com.jawzf.pixeltoolkit.shizuku.ShizukuStatus
 import com.jawzf.pixeltoolkit.ui.core.sheets.PermissionsBottomSheet
 import com.jawzf.pixeltoolkit.utils.PermissionUIHelper
 import com.jawzf.pixeltoolkit.utils.PowerButtonGestures
@@ -157,7 +159,7 @@ fun ButtonRemapSettingsUI(
                     )
 
                     val isRootEnabled =
-                        com.jawzf.pixeltoolkit.utils.ShellUtils
+                        ShellUtils
                             .isRootEnabled(context)
                     IconToggleItem(
                         iconRes = if (isRootEnabled) R.drawable.rounded_numbers_24 else R.drawable.rounded_adb_24,
@@ -167,10 +169,10 @@ fun ButtonRemapSettingsUI(
                         onCheckedChange = { enabled ->
                             if (enabled) {
                                 val shellHasPermission =
-                                    com.jawzf.pixeltoolkit.utils.ShellUtils
+                                    ShellUtils
                                         .hasPermission(context)
                                 val shellIsAvailable =
-                                    com.jawzf.pixeltoolkit.utils.ShellUtils
+                                    ShellUtils
                                         .isAvailable(context)
 
                                 if (shellHasPermission) {
@@ -183,7 +185,7 @@ fun ButtonRemapSettingsUI(
                                     }
                                 } else if (isRootEnabled && !shellHasPermission) {
                                     viewModel.setButtonRemapUseShizuku(true, context)
-                                    com.jawzf.pixeltoolkit.utils.ShellUtils.runCommand(
+                                    ShellUtils.runCommand(
                                         context,
                                         "id",
                                     )
@@ -222,10 +224,10 @@ fun ButtonRemapSettingsUI(
                             horizontalArrangement = Arrangement.SpaceBetween,
                         ) {
                             val shellAvailable =
-                                com.jawzf.pixeltoolkit.utils.ShellUtils
+                                ShellUtils
                                     .isAvailable(context)
                             val shellPermission =
-                                com.jawzf.pixeltoolkit.utils.ShellUtils
+                                ShellUtils
                                     .hasPermission(context)
 
                             val statusText =
@@ -267,7 +269,7 @@ fun ButtonRemapSettingsUI(
                                     onClick = {
                                         try {
                                             val shizukuPackage =
-                                                com.jawzf.pixeltoolkit.utils.ShizukuUtils
+                                                ShizukuUtils
                                                     .getShizukuPackageName(context)
                                             val intent =
                                                 context.packageManager.getLaunchIntentForPackage(shizukuPackage)

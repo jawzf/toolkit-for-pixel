@@ -7,7 +7,8 @@ import android.os.Bundle
 import android.os.IBinder
 import android.os.SystemClock
 import android.util.Log
-import com.jawzf.pixeltoolkit.shizuku.ShizukuPermissionHelper
+import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuPermissionHelper
+import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuUtils
 import org.lsposed.hiddenapibypass.HiddenApiBypass
 import java.lang.reflect.Method
 

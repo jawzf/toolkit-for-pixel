@@ -1,6 +1,7 @@
 package com.jawzf.pixeltoolkit.utils
 
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.platform.device.DeviceInfo
 
 object DeviceImageMapper {
     /**

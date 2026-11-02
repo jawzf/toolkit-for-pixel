@@ -28,7 +28,7 @@ import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.components.SegmentedDropdownMenu
 import com.jawzf.pixeltoolkit.core.design.components.SegmentedDropdownMenuItem
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
-import com.jawzf.pixeltoolkit.utils.PrivilegedMode
+import com.jawzf.pixeltoolkit.core.platform.shell.PrivilegedMode
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

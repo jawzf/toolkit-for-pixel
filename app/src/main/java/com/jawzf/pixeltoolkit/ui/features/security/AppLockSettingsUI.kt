@@ -25,11 +25,11 @@ import com.jawzf.pixeltoolkit.core.design.cards.IconToggleItem
 import com.jawzf.pixeltoolkit.core.design.components.SegmentedDropdownMenuItem
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.modifiers.highlight
+import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.ui.core.sheets.AppSelectionSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.PermissionItem
 import com.jawzf.pixeltoolkit.ui.core.sheets.PermissionsBottomSheet
 import com.jawzf.pixeltoolkit.utils.BiometricHelper
-import com.jawzf.pixeltoolkit.utils.PermissionUtils
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 import com.jawzf.pixeltoolkit.viewmodels.PermissionViewModel
 

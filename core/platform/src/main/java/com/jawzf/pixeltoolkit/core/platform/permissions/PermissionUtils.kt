@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.utils
+package com.jawzf.pixeltoolkit.core.platform.permissions
 
 import android.app.admin.DevicePolicyManager
 import android.content.ComponentName

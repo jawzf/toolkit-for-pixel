@@ -1,5 +1,6 @@
 package com.jawzf.pixeltoolkit.input
 
+import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import java.io.InputStream
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
@@ -22,7 +23,7 @@ class InputEventReader(
     fun open(): Boolean =
         try {
             process =
-                com.jawzf.pixeltoolkit.utils.ShellUtils.newProcess(
+                ShellUtils.newProcess(
                     com.jawzf.pixeltoolkit.ToolkitApp.context,
                     arrayOf("cat", devicePath),
                 )

@@ -34,9 +34,9 @@ import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.theme.Shapes
+import com.jawzf.pixeltoolkit.core.platform.device.DeviceUtils
+import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.ui.core.sheets.BatteryDetailsBottomSheet
-import com.jawzf.pixeltoolkit.utils.DeviceUtils
-import com.jawzf.pixeltoolkit.utils.ShellUtils
 import com.jawzf.pixeltoolkit.utils.battery.BatteryInfoUtil
 
 @OptIn(ExperimentalFoundationApi::class)

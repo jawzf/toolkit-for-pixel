@@ -6,8 +6,8 @@ import android.provider.Settings
 import android.service.quicksettings.Tile
 import com.jawzf.pixeltoolkit.FeatureSettingsActivity
 import com.jawzf.pixeltoolkit.core.design.R
-import com.jawzf.pixeltoolkit.utils.PermissionUtils
-import com.jawzf.pixeltoolkit.utils.ShizukuUtils.toggleShizuku
+import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
+import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuUtils.toggleShizuku
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 

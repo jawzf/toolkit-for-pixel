@@ -63,10 +63,10 @@ import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.theme.AppFontFamily
+import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.island.service.OverlayLifecycleOwner
 import com.jawzf.pixeltoolkit.utils.LockscreenShortcutDetector
-import com.jawzf.pixeltoolkit.utils.ShellUtils
 import kotlin.concurrent.thread
 
 class FaceUnlockBrightnessHandler(

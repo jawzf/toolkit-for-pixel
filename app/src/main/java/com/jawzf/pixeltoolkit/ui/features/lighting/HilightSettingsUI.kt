@@ -53,6 +53,7 @@ import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.modifiers.highlight
 import com.jawzf.pixeltoolkit.core.design.pickers.ColorSwatchPicker
 import com.jawzf.pixeltoolkit.core.design.pickers.SegmentedPicker
+import com.jawzf.pixeltoolkit.core.platform.device.DeviceUtils
 import com.jawzf.pixeltoolkit.domain.controller.HilightController
 import com.jawzf.pixeltoolkit.domain.model.HilightEffect
 import com.jawzf.pixeltoolkit.domain.model.HilightFrames
@@ -62,7 +63,6 @@ import com.jawzf.pixeltoolkit.domain.model.HilightProgressFrames
 import com.jawzf.pixeltoolkit.ui.core.sheets.HilightEffectSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.SingleAppSelectionSheet
 import com.jawzf.pixeltoolkit.utils.AppColorUtil
-import com.jawzf.pixeltoolkit.utils.DeviceUtils
 import com.jawzf.pixeltoolkit.utils.hardware.HilightLights
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 import kotlinx.coroutines.Dispatchers

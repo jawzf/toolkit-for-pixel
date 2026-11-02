@@ -50,6 +50,8 @@ import com.jawzf.pixeltoolkit.core.design.modifiers.highlight
 import com.jawzf.pixeltoolkit.core.design.pickers.ColorSwatchPicker
 import com.jawzf.pixeltoolkit.core.design.pickers.ISLAND_ICON_PASTEL_COLORS
 import com.jawzf.pixeltoolkit.core.design.pickers.SegmentedPicker
+import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
+import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.ui.core.sheets.AppSelectionSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.HideStatusBarInfoBottomSheet
@@ -71,8 +73,6 @@ import com.jawzf.pixeltoolkit.ui.features.display.sheets.IslandTimerOptionsBotto
 import com.jawzf.pixeltoolkit.ui.features.display.sheets.StatusGlanceCalendarOptionsBottomSheet
 import com.jawzf.pixeltoolkit.ui.features.display.sheets.rememberIslandShowsWhileLocked
 import com.jawzf.pixeltoolkit.utils.PermissionUIHelper
-import com.jawzf.pixeltoolkit.utils.PermissionUtils
-import com.jawzf.pixeltoolkit.utils.ShellUtils
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 
 const val ISLAND_PLACEMENT_FEATURE_ID = "Island placement"

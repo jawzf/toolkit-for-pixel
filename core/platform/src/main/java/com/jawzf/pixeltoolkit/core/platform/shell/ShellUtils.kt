@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.utils
+package com.jawzf.pixeltoolkit.core.platform.shell
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -8,6 +8,8 @@ import android.content.Intent
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuProcessHelper
+import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuUtils
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 
 object ShellUtils {
@@ -201,7 +203,7 @@ object ShellUtils {
                 return null
             }
             try {
-                com.jawzf.pixeltoolkit.shizuku.ShizukuProcessHelper
+                ShizukuProcessHelper
                     .newProcess(command)
             } catch (e: Exception) {
                 if (notifyOnError) {

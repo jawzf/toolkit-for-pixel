@@ -1,8 +1,8 @@
 package com.jawzf.pixeltoolkit.services.tiles
 
 import com.jawzf.pixeltoolkit.core.design.R
-import com.jawzf.pixeltoolkit.utils.PermissionUtils
-import com.jawzf.pixeltoolkit.utils.ShellUtils
+import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
+import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 
 object QsTileRegistry {
     data class QsTileEntry(

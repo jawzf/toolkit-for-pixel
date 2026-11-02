@@ -3,7 +3,7 @@ package com.jawzf.pixeltoolkit.utils.battery
 import android.content.Context
 import android.provider.Settings
 import androidx.annotation.Keep
-import com.jawzf.pixeltoolkit.utils.ShellUtils
+import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 
 @Keep
 enum class ChargingMode { OFF, ADAPTIVE, LIMITED }

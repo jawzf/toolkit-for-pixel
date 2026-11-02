@@ -40,6 +40,7 @@ import com.jawzf.pixeltoolkit.core.design.components.CategoryExpandableSection
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
+import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.domain.diy.Action
 import com.jawzf.pixeltoolkit.domain.diy.ActionRegistry
 import com.jawzf.pixeltoolkit.domain.diy.displayName
@@ -123,7 +124,7 @@ fun ActionSequenceEditor(
             action.permissions
                 .map { permKey ->
                     if (permKey == "SHIZUKU" || permKey == "ROOT") {
-                        if (com.jawzf.pixeltoolkit.utils.ShellUtils
+                        if (ShellUtils
                                 .isRootEnabled(context)
                         ) {
                             "ROOT"

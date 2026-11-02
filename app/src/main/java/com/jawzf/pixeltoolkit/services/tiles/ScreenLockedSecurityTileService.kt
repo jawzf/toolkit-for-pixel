@@ -6,6 +6,7 @@ import android.graphics.drawable.Icon
 import android.os.Build
 import android.service.quicksettings.Tile
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.ui.activities.TileAuthActivity
 
 class ScreenLockedSecurityTileService : BaseTileService() {
@@ -43,7 +44,7 @@ class ScreenLockedSecurityTileService : BaseTileService() {
     override fun getTileSubtitle(): String = if (getTileState() == Tile.STATE_ACTIVE) "Enabled" else "Disabled"
 
     override fun hasFeaturePermission(): Boolean =
-        com.jawzf.pixeltoolkit.utils.ShellUtils
+        ShellUtils
             .hasPermission(this)
 
     override fun getTileIcon(): Icon = Icon.createWithResource(this, R.drawable.rounded_security_24)

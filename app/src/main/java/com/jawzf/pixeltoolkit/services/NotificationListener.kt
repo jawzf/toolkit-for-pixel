@@ -24,6 +24,8 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticFeedbackType
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
+import com.jawzf.pixeltoolkit.core.platform.device.DeviceUtils
+import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.domain.MapsState
 import com.jawzf.pixeltoolkit.domain.controller.HilightController
@@ -43,8 +45,6 @@ import com.jawzf.pixeltoolkit.services.tiles.ScreenOffAccessibilityService
 import com.jawzf.pixeltoolkit.services.widgets.PixelSearchbarWidget
 import com.jawzf.pixeltoolkit.utils.AppColorUtil
 import com.jawzf.pixeltoolkit.utils.AppUtil
-import com.jawzf.pixeltoolkit.utils.DeviceUtils
-import com.jawzf.pixeltoolkit.utils.PermissionUtils
 import com.jawzf.pixeltoolkit.utils.PriorityModeUtil
 import com.jawzf.pixeltoolkit.utils.call.CallNotificationParser
 import com.jawzf.pixeltoolkit.utils.call.CallStateRepository

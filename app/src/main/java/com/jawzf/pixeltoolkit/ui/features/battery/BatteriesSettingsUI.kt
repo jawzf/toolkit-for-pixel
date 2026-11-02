@@ -37,6 +37,8 @@ import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.cards.IconToggleItem
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
+import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
+import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuUtils
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 
 @OptIn(androidx.compose.material3.ExperimentalMaterial3ExpressiveApi::class)
@@ -164,9 +166,9 @@ fun BatteriesSettingsUI(
                         com.jawzf.pixeltoolkit.data.repository
                             .SettingsRepository(context)
                             .setBatterySeparateChannelsEnabled(enabled)
-                        if (enabled && !com.jawzf.pixeltoolkit.utils.ShellUtils.hasPermission(context)) {
-                            if (com.jawzf.pixeltoolkit.utils.ShizukuUtils.isShizukuAvailable()) {
-                                com.jawzf.pixeltoolkit.utils.ShizukuUtils.requestPermission()
+                        if (enabled && !ShellUtils.hasPermission(context)) {
+                            if (ShizukuUtils.isShizukuAvailable()) {
+                                ShizukuUtils.requestPermission()
                             } else {
                                 android.widget.Toast
                                     .makeText(context, R.string.shizuku_not_running_desc, android.widget.Toast.LENGTH_SHORT)

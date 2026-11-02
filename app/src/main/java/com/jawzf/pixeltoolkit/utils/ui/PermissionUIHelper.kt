@@ -10,10 +10,13 @@ import android.os.Build
 import android.provider.Settings
 import androidx.core.app.ActivityCompat
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionGrantUtil
+import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
+import com.jawzf.pixeltoolkit.core.platform.shell.RootUtils
+import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuUtils
 import com.jawzf.pixeltoolkit.domain.model.AppPermission
 import com.jawzf.pixeltoolkit.domain.registry.PermissionRegistry
 import com.jawzf.pixeltoolkit.ui.core.sheets.PermissionItem
-import com.jawzf.pixeltoolkit.utils.PermissionUtils
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 import kotlinx.coroutines.launch
 
@@ -140,7 +143,7 @@ object PermissionUIHelper {
                     actionLabel = if (viewModel.isPostNotificationsEnabled.value) R.string.perm_action_granted else R.string.perm_action_grant,
                     action = {
                         if (activity != null) {
-                            com.jawzf.pixeltoolkit.utils.PermissionUtils.requestPermissionsSafely(
+                            PermissionUtils.requestPermissionsSafely(
                                 activity,
                                 arrayOf(android.Manifest.permission.POST_NOTIFICATIONS),
                                 103,
@@ -166,7 +169,7 @@ object PermissionUIHelper {
                     actionLabel = if (viewModel.isReadPhoneStateEnabled.value) R.string.perm_action_granted else R.string.perm_action_grant,
                     action = {
                         if (activity != null) {
-                            com.jawzf.pixeltoolkit.utils.PermissionUtils.requestPermissionsSafely(
+                            PermissionUtils.requestPermissionsSafely(
                                 activity,
                                 arrayOf(android.Manifest.permission.READ_PHONE_STATE),
                                 102,
@@ -263,7 +266,7 @@ object PermissionUIHelper {
                     actionLabel = if (viewModel.isCalendarPermissionGranted.value) R.string.perm_action_granted else R.string.perm_action_grant,
                     action = {
                         if (activity != null) {
-                            com.jawzf.pixeltoolkit.utils.PermissionUtils.requestPermissionsSafely(
+                            PermissionUtils.requestPermissionsSafely(
                                 activity,
                                 arrayOf(
                                     android.Manifest.permission.READ_CALENDAR,
@@ -334,7 +337,7 @@ object PermissionUIHelper {
                                         android.Manifest.permission.BLUETOOTH_ADMIN,
                                     )
                                 }
-                            com.jawzf.pixeltoolkit.utils.PermissionUtils.requestPermissionsSafely(activity, permissions, 105)
+                            PermissionUtils.requestPermissionsSafely(activity, permissions, 105)
                         }
                     },
                     isGranted = viewModel.isBluetoothPermissionGranted.value,
@@ -396,7 +399,7 @@ object PermissionUIHelper {
                     actionLabel = if (isGranted) R.string.perm_action_granted else R.string.perm_action_grant,
                     action = {
                         if (targetActivity != null) {
-                            com.jawzf.pixeltoolkit.utils.PermissionUtils.requestPermissionsSafely(
+                            PermissionUtils.requestPermissionsSafely(
                                 targetActivity,
                                 arrayOf(android.Manifest.permission.READ_CONTACTS),
                                 110,
@@ -458,7 +461,7 @@ object PermissionUIHelper {
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                                 perms.add(android.Manifest.permission.ANSWER_PHONE_CALLS)
                             }
-                            com.jawzf.pixeltoolkit.utils.PermissionUtils.requestPermissionsSafely(targetActivity, perms.toTypedArray(), 109)
+                            PermissionUtils.requestPermissionsSafely(targetActivity, perms.toTypedArray(), 109)
                         }
                     },
                     isGranted = isGranted,
@@ -496,7 +499,7 @@ object PermissionUIHelper {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                             PermissionUtils.openManageExternalStorageSettings(context)
                         } else if (targetActivity != null) {
-                            com.jawzf.pixeltoolkit.utils.PermissionUtils.requestPermissionsSafely(
+                            PermissionUtils.requestPermissionsSafely(
                                 targetActivity,
                                 arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE),
                                 110,

@@ -28,6 +28,9 @@ import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticFeedbackType
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.haptics.performHapticFeedback
+import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
+import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
+import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuUtils
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.domain.controller.CaffeinateController
 import com.jawzf.pixeltoolkit.domain.controller.HilightController
@@ -46,9 +49,6 @@ import com.jawzf.pixeltoolkit.utils.AutomationFailureNotifier
 import com.jawzf.pixeltoolkit.utils.AutomationNotificationPoster
 import com.jawzf.pixeltoolkit.utils.DeviceCare
 import com.jawzf.pixeltoolkit.utils.DeviceLockUtils
-import com.jawzf.pixeltoolkit.utils.PermissionUtils
-import com.jawzf.pixeltoolkit.utils.ShellUtils
-import com.jawzf.pixeltoolkit.utils.ShizukuUtils
 import com.jawzf.pixeltoolkit.utils.SplitScreenUtil
 import com.jawzf.pixeltoolkit.utils.overlay.fromPrefs
 import com.jawzf.pixeltoolkit.utils.overlay.writeTo
@@ -781,7 +781,7 @@ object CombinedActionExecutor {
                             }
                         if (!success) {
                             val command = "settings put secure $key $value"
-                            com.jawzf.pixeltoolkit.utils.ShellUtils
+                            ShellUtils
                                 .runCommand(context, command)
                         }
                     }

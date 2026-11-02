@@ -76,6 +76,7 @@ import com.jawzf.pixeltoolkit.core.design.modifiers.progressiveBlur
 import com.jawzf.pixeltoolkit.core.design.modifiers.scrollMotionBlur
 import com.jawzf.pixeltoolkit.core.design.pickers.SegmentedPicker
 import com.jawzf.pixeltoolkit.core.design.theme.ToolkitTheme
+import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.domain.model.Feature
 import com.jawzf.pixeltoolkit.services.widgets.WidgetScraperService
 import com.jawzf.pixeltoolkit.ui.core.sheets.FeatureHelpBottomSheet
@@ -83,7 +84,6 @@ import com.jawzf.pixeltoolkit.ui.core.sheets.PermissionsBottomSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.ShakeForHelp
 import com.jawzf.pixeltoolkit.ui.features.widgets.WidgetPickerSheet
 import com.jawzf.pixeltoolkit.utils.PermissionUIHelper
-import com.jawzf.pixeltoolkit.utils.PermissionUtils
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 import kotlinx.coroutines.delay
 

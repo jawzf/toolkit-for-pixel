@@ -12,13 +12,14 @@ import android.os.PowerManager
 import android.util.Log
 import android.view.Display
 import androidx.core.app.NotificationCompat
+import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
+import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuPermissionHelper
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.domain.model.RemapSlot
 import com.jawzf.pixeltoolkit.input.InputDeviceScanner
 import com.jawzf.pixeltoolkit.input.PowerPressDetector
 import com.jawzf.pixeltoolkit.input.VolumeLongPressDetector
 import com.jawzf.pixeltoolkit.input.VolumePressEvent
-import com.jawzf.pixeltoolkit.shizuku.ShizukuPermissionHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -159,7 +160,7 @@ class InputEventListenerService : Service() {
         scope?.launch {
             stopListening()
 
-            if (!com.jawzf.pixeltoolkit.utils.ShellUtils
+            if (!ShellUtils
                     .hasPermission(this@InputEventListenerService)
             ) {
                 Log.e("InputEventListener", "Shell permission not granted")

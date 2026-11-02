@@ -56,6 +56,9 @@ import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.modifiers.highlight
 import com.jawzf.pixeltoolkit.core.design.modifiers.scrollMotionBlur
 import com.jawzf.pixeltoolkit.core.design.state.LocalMenuStateManager
+import com.jawzf.pixeltoolkit.core.platform.device.DeviceUtils
+import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
+import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.domain.registry.QSTileInfo
 import com.jawzf.pixeltoolkit.domain.registry.QSTileRegistry
 import com.jawzf.pixeltoolkit.services.tiles.AdaptiveBrightnessTileService
@@ -89,10 +92,7 @@ import com.jawzf.pixeltoolkit.services.tiles.UiBlurTileService
 import com.jawzf.pixeltoolkit.services.tiles.UrlShortenerTileService
 import com.jawzf.pixeltoolkit.services.tiles.UsbDebuggingTileService
 import com.jawzf.pixeltoolkit.ui.core.sheets.PermissionsBottomSheet
-import com.jawzf.pixeltoolkit.utils.DeviceUtils
 import com.jawzf.pixeltoolkit.utils.PermissionUIHelper
-import com.jawzf.pixeltoolkit.utils.PermissionUtils
-import com.jawzf.pixeltoolkit.utils.ShellUtils
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 
 @Composable

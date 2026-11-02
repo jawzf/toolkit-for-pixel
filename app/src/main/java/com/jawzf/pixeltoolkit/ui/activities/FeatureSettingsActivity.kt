@@ -62,6 +62,9 @@ import com.jawzf.pixeltoolkit.core.design.sheets.InstructionsBottomSheet
 import com.jawzf.pixeltoolkit.core.design.state.LocalMenuStateManager
 import com.jawzf.pixeltoolkit.core.design.state.MenuStateManager
 import com.jawzf.pixeltoolkit.core.design.theme.ToolkitTheme
+import com.jawzf.pixeltoolkit.core.platform.device.DeviceUtils
+import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
+import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.domain.registry.FeatureRegistry
 import com.jawzf.pixeltoolkit.ui.components.linkActions.LinkPickerScreen
 import com.jawzf.pixeltoolkit.ui.core.sheets.PermissionsBottomSheet
@@ -129,7 +132,6 @@ import com.jawzf.pixeltoolkit.ui.features.system.ToolkitOnDisplaySettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.VolumeStepsSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.widgets.WidgetStackSettingsUI
 import com.jawzf.pixeltoolkit.utils.BiometricSecurityHelper
-import com.jawzf.pixeltoolkit.utils.DeviceUtils
 import com.jawzf.pixeltoolkit.viewmodels.CaffeinateViewModel
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 import com.jawzf.pixeltoolkit.viewmodels.StatusBarIconViewModel
@@ -324,7 +326,7 @@ class FeatureSettingsActivity : AppCompatActivity() {
                                 "Snooze system notifications" -> !isNotificationListenerEnabled
                                 "Auto-dismiss notifications" -> !isNotificationListenerEnabled
                                 "Screen locked security" ->
-                                    !com.jawzf.pixeltoolkit.utils.ShellUtils.hasPermission(
+                                    !ShellUtils.hasPermission(
                                         context,
                                     )
                                 "App lock" ->
@@ -334,7 +336,7 @@ class FeatureSettingsActivity : AppCompatActivity() {
                                     !isAccessibilityEnabled ||
                                         (if (viewModel.isUseUsageAccess.value) !viewModel.isUsageStatsPermissionGranted.value else false)
                                 "Freeze" ->
-                                    !com.jawzf.pixeltoolkit.utils.ShellUtils.hasPermission(
+                                    !ShellUtils.hasPermission(
                                         context,
                                     )
 
@@ -343,7 +345,7 @@ class FeatureSettingsActivity : AppCompatActivity() {
                                         !viewModel.isBackgroundLocationPermissionGranted.value
                                 "Quick settings tiles" -> !viewModel.isWriteSettingsEnabled.value
                                 "Screen refresh rate" ->
-                                    !com.jawzf.pixeltoolkit.utils.ShellUtils.hasPermission(
+                                    !ShellUtils.hasPermission(
                                         context,
                                     )
                                 // Top level checks for other features (rarely hit if they are children, but safe to add)
@@ -351,7 +353,7 @@ class FeatureSettingsActivity : AppCompatActivity() {
                                 "Call vibrations" -> !isReadPhoneStateEnabled || !isNotificationListenerEnabled
                                 "Maps power saving mode" ->
                                     !isNotificationListenerEnabled ||
-                                        !com.jawzf.pixeltoolkit.utils.ShellUtils.hasPermission(
+                                        !ShellUtils.hasPermission(
                                             context,
                                         )
 
@@ -360,7 +362,7 @@ class FeatureSettingsActivity : AppCompatActivity() {
                                 "Always on Display" -> !isWriteSecureSettingsEnabled
                                 "Lock screen clock" -> !isWriteSecureSettingsEnabled
                                 "Other customizations" ->
-                                    !com.jawzf.pixeltoolkit.utils.ShellUtils.hasPermission(
+                                    !ShellUtils.hasPermission(
                                         context,
                                     )
 
@@ -368,7 +370,7 @@ class FeatureSettingsActivity : AppCompatActivity() {
                                 "Power and Battery" -> !isWriteSecureSettingsEnabled
                                 "Networks" ->
                                     !isWriteSecureSettingsEnabled &&
-                                        !com.jawzf.pixeltoolkit.utils.ShellUtils.hasPermission(
+                                        !ShellUtils.hasPermission(
                                             context,
                                         )
 
@@ -738,7 +740,7 @@ class FeatureSettingsActivity : AppCompatActivity() {
                                                             "Snooze system notifications" -> !isNotificationListenerEnabled
                                  "Auto-dismiss notifications" -> !isNotificationListenerEnabled
                                                             "Screen locked security" ->
-                                                                !com.jawzf.pixeltoolkit.utils.ShellUtils.hasPermission(
+                                                                !ShellUtils.hasPermission(
                                                                     context,
                                                                 )
                                                             "App lock" ->
@@ -748,7 +750,7 @@ class FeatureSettingsActivity : AppCompatActivity() {
                                                                 !isAccessibilityEnabled ||
                                                                     (if (viewModel.isUseUsageAccess.value) !viewModel.isUsageStatsPermissionGranted.value else false)
                                                             "Freeze" ->
-                                                                !com.jawzf.pixeltoolkit.utils.ShellUtils.hasPermission(
+                                                                !ShellUtils.hasPermission(
                                                                     context,
                                                                 )
 
@@ -767,7 +769,7 @@ class FeatureSettingsActivity : AppCompatActivity() {
 
                                                             "Maps power saving mode" ->
                                                                 !isNotificationListenerEnabled ||
-                                                                    !com.jawzf.pixeltoolkit.utils.ShellUtils.hasPermission(
+                                                                    !ShellUtils.hasPermission(
                                                                         context,
                                                                     )
 
@@ -778,7 +780,7 @@ class FeatureSettingsActivity : AppCompatActivity() {
                                                             "Always on Display" -> !isWriteSecureSettingsEnabled
                                                             "Lock screen clock" -> !isWriteSecureSettingsEnabled
                                                             "Screen refresh rate" ->
-                                                                !com.jawzf.pixeltoolkit.utils.ShellUtils.hasPermission(
+                                                                !ShellUtils.hasPermission(
                                                                     context,
                                                                 )
 
@@ -788,12 +790,12 @@ class FeatureSettingsActivity : AppCompatActivity() {
                                                             "Power and Battery" -> !isWriteSecureSettingsEnabled
                                                             "Networks" ->
                                                                 !isWriteSecureSettingsEnabled &&
-                                                                    !com.jawzf.pixeltoolkit.utils.ShellUtils.hasPermission(
+                                                                    !ShellUtils.hasPermission(
                                                                         context,
                                                                     )
 
                                                             "Call Sync" ->
-                                                                !com.jawzf.pixeltoolkit.utils.PermissionUtils.hasCallPermissions(
+                                                                !PermissionUtils.hasCallPermissions(
                                                                     context,
                                                                 )
                                                             "Notification Sync" -> !viewModel.isNotificationListenerEnabled.value

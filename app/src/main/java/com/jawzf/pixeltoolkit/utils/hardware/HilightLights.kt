@@ -1,14 +1,14 @@
 package com.jawzf.pixeltoolkit.utils.hardware
 
+import android.content.Context
 import android.hardware.lights.Light
 import android.hardware.lights.LightState
 import android.os.Binder
 import android.os.IBinder
 import com.jawzf.pixeltoolkit.ToolkitApp
-import android.content.Context
-import com.jawzf.pixeltoolkit.utils.PrivilegedMode
-import com.jawzf.pixeltoolkit.utils.ShellUtils
-import com.jawzf.pixeltoolkit.utils.ShizukuUtils
+import com.jawzf.pixeltoolkit.core.platform.shell.PrivilegedMode
+import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
+import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuUtils
 import rikka.shizuku.ShizukuBinderWrapper
 import rikka.shizuku.SystemServiceHelper
 import java.lang.reflect.Method

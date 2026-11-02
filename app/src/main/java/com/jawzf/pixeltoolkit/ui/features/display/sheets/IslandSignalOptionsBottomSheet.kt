@@ -27,6 +27,7 @@ import com.jawzf.pixeltoolkit.core.design.cards.IconToggleItem
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
+import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.ui.core.pickers.NetworkTypePicker
 import com.jawzf.pixeltoolkit.ui.core.sheets.PermissionItem
@@ -151,7 +152,7 @@ fun IslandSignalOptionsBottomSheet(onDismissRequest: () -> Unit) {
                     actionLabel = R.string.permission_grant_action,
                     action = {
                         (context as? Activity)?.let {
-                            com.jawzf.pixeltoolkit.utils.PermissionUtils.requestPermissionsSafely(it, arrayOf(Manifest.permission.READ_PHONE_STATE), 1001)
+                            PermissionUtils.requestPermissionsSafely(it, arrayOf(Manifest.permission.READ_PHONE_STATE), 1001)
                         }
                     },
                     isGranted = ContextCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED,

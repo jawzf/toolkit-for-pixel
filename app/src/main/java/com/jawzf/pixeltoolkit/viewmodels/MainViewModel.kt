@@ -37,6 +37,13 @@ import androidx.lifecycle.viewModelScope
 import com.jawzf.pixeltoolkit.ToolkitApp
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticFeedbackType
+import com.jawzf.pixeltoolkit.core.platform.device.DeviceUtils
+import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionGrantUtil
+import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
+import com.jawzf.pixeltoolkit.core.platform.shell.PrivilegedMode
+import com.jawzf.pixeltoolkit.core.platform.shell.RootUtils
+import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
+import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuUtils
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.domain.MapsState
 import com.jawzf.pixeltoolkit.domain.controller.CaffeinateController
@@ -74,18 +81,11 @@ import com.jawzf.pixeltoolkit.services.receivers.SecurityReceiver
 import com.jawzf.pixeltoolkit.services.tiles.ScreenOffAccessibilityService
 import com.jawzf.pixeltoolkit.utils.AppIconUtil
 import com.jawzf.pixeltoolkit.utils.AppUtil
-import com.jawzf.pixeltoolkit.utils.DeviceUtils
 import com.jawzf.pixeltoolkit.utils.DuoBatteryLevels
 import com.jawzf.pixeltoolkit.utils.LogManager
-import com.jawzf.pixeltoolkit.utils.PermissionGrantUtil
-import com.jawzf.pixeltoolkit.utils.PermissionUtils
 import com.jawzf.pixeltoolkit.utils.PowerButtonGestures
-import com.jawzf.pixeltoolkit.utils.PrivilegedMode
 import com.jawzf.pixeltoolkit.utils.RefreshRateUtils
-import com.jawzf.pixeltoolkit.utils.RootUtils
 import com.jawzf.pixeltoolkit.utils.ScreenshotCleaner
-import com.jawzf.pixeltoolkit.utils.ShellUtils
-import com.jawzf.pixeltoolkit.utils.ShizukuUtils
 import com.jawzf.pixeltoolkit.utils.SplitScreenUtil
 import com.jawzf.pixeltoolkit.utils.StatusBarInsetsUtils
 import com.jawzf.pixeltoolkit.utils.SurfaceFlingerControl
@@ -3405,7 +3405,7 @@ class MainViewModel : ViewModel() {
      * @param activity [Activity] Target activity.
      */
     fun requestReadPhoneStatePermission(activity: Activity) {
-        com.jawzf.pixeltoolkit.utils.PermissionUtils.requestPermissionsSafely(
+        PermissionUtils.requestPermissionsSafely(
             activity,
             arrayOf(Manifest.permission.READ_PHONE_STATE),
             1005,
@@ -7774,7 +7774,7 @@ class MainViewModel : ViewModel() {
      * @param activity [androidx.activity.ComponentActivity] Target activity.
      */
     fun requestReadPhoneStatePermission(activity: androidx.activity.ComponentActivity) {
-        com.jawzf.pixeltoolkit.utils.PermissionUtils.requestPermissionsSafely(
+        PermissionUtils.requestPermissionsSafely(
             activity,
             arrayOf(Manifest.permission.READ_PHONE_STATE),
             1001,
@@ -7787,7 +7787,7 @@ class MainViewModel : ViewModel() {
      * @param activity [androidx.activity.ComponentActivity] Target activity.
      */
     fun requestLocationPermission(activity: androidx.activity.ComponentActivity) {
-        com.jawzf.pixeltoolkit.utils.PermissionUtils.requestPermissionsSafely(
+        PermissionUtils.requestPermissionsSafely(
             activity,
             arrayOf(
                 Manifest.permission.ACCESS_FINE_LOCATION,
@@ -7804,7 +7804,7 @@ class MainViewModel : ViewModel() {
      */
     fun requestBackgroundLocationPermission(activity: androidx.activity.ComponentActivity) {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
-            com.jawzf.pixeltoolkit.utils.PermissionUtils.requestPermissionsSafely(
+            PermissionUtils.requestPermissionsSafely(
                 activity,
                 arrayOf(Manifest.permission.ACCESS_BACKGROUND_LOCATION),
                 1004,
@@ -7818,7 +7818,7 @@ class MainViewModel : ViewModel() {
      * @param activity [androidx.activity.ComponentActivity] Target activity.
      */
     fun requestBluetoothPermission(activity: androidx.activity.ComponentActivity) {
-        com.jawzf.pixeltoolkit.utils.PermissionUtils.requestPermissionsSafely(
+        PermissionUtils.requestPermissionsSafely(
             activity,
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
                 arrayOf(Manifest.permission.BLUETOOTH_CONNECT, Manifest.permission.BLUETOOTH_SCAN)
@@ -7835,7 +7835,7 @@ class MainViewModel : ViewModel() {
      * @param activity [androidx.activity.ComponentActivity] Target activity.
      */
     fun requestCalendarPermission(activity: androidx.activity.ComponentActivity) {
-        com.jawzf.pixeltoolkit.utils.PermissionUtils.requestPermissionsSafely(
+        PermissionUtils.requestPermissionsSafely(
             activity,
             arrayOf(
                 Manifest.permission.READ_CALENDAR,
@@ -7852,7 +7852,7 @@ class MainViewModel : ViewModel() {
      */
     fun requestNotificationPermission(activity: androidx.activity.ComponentActivity) {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
-            com.jawzf.pixeltoolkit.utils.PermissionUtils.requestPermissionsSafely(
+            PermissionUtils.requestPermissionsSafely(
                 activity,
                 arrayOf(Manifest.permission.POST_NOTIFICATIONS),
                 1002,

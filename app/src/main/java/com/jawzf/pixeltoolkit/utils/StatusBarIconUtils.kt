@@ -3,6 +3,8 @@ package com.jawzf.pixeltoolkit.utils
 import android.content.Context
 import android.provider.Settings
 import androidx.core.content.edit
+import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
+import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 
 /**
  * Extensions and utilities for managing statusbar icon visibility

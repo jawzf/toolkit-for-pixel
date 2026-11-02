@@ -97,6 +97,10 @@ import com.jawzf.pixeltoolkit.core.design.pickers.SegmentedPicker
 import com.jawzf.pixeltoolkit.core.design.sheets.InstructionsBottomSheet
 import com.jawzf.pixeltoolkit.core.design.theme.Shapes
 import com.jawzf.pixeltoolkit.core.design.theme.ToolkitTheme
+import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionGrantUtil
+import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
+import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
+import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuUtils
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.domain.DIYTabs
 import com.jawzf.pixeltoolkit.domain.registry.FeatureRegistry
@@ -110,9 +114,7 @@ import com.jawzf.pixeltoolkit.ui.core.sheets.GitHubAuthSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.ImportConfigConfirmationSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.ShakeForHelp
 import com.jawzf.pixeltoolkit.ui.core.sheets.UnsupportedFeaturesConfirmationSheet
-import com.jawzf.pixeltoolkit.utils.PermissionGrantUtil
 import com.jawzf.pixeltoolkit.utils.PermissionUIHelper
-import com.jawzf.pixeltoolkit.utils.PermissionUtils
 import com.jawzf.pixeltoolkit.viewmodels.GitHubAuthViewModel
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 import kotlinx.coroutines.Dispatchers
@@ -896,9 +898,9 @@ fun SettingsContent(
                 isChecked = viewModel.isHiddenDebuggingSupport.value,
                 onCheckedChange = { checked ->
                     viewModel.setHiddenDebuggingSupport(checked)
-                    if (checked && !com.jawzf.pixeltoolkit.utils.ShellUtils.hasPermission(context)) {
-                        if (com.jawzf.pixeltoolkit.utils.ShizukuUtils.isShizukuAvailable()) {
-                            com.jawzf.pixeltoolkit.utils.ShizukuUtils.requestPermission()
+                    if (checked && !ShellUtils.hasPermission(context)) {
+                        if (ShizukuUtils.isShizukuAvailable()) {
+                            ShizukuUtils.requestPermission()
                         } else {
                             Toast.makeText(context, R.string.shizuku_not_running_desc, Toast.LENGTH_SHORT).show()
                         }

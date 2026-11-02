@@ -5,8 +5,9 @@ import android.os.Build
 import android.service.quicksettings.Tile
 import androidx.annotation.RequiresApi
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
+import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.utils.ShellUtils
 
 @RequiresApi(Build.VERSION_CODES.N)
 class AlwaysOnDisplayTileService : BaseTileService() {
@@ -20,7 +21,7 @@ class AlwaysOnDisplayTileService : BaseTileService() {
         }
 
     override fun hasFeaturePermission(): Boolean =
-        com.jawzf.pixeltoolkit.utils.PermissionUtils
+        PermissionUtils
             .canWriteSecureSettings(this) ||
             (ShellUtils.isAvailable(this) && ShellUtils.hasPermission(this))
 

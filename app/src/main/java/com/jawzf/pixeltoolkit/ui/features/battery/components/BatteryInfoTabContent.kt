@@ -41,6 +41,8 @@ import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.pickers.MultiSegmentedPicker
 import com.jawzf.pixeltoolkit.core.design.theme.Shapes
+import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
+import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuUtils
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.utils.battery.BatteryDetails
 import com.jawzf.pixeltoolkit.utils.battery.BatteryInfoUtil
@@ -512,9 +514,9 @@ fun BatteryInfoTabContent(
         }
 
         val isShellAvailableForReset =
-            com.jawzf.pixeltoolkit.utils.ShellUtils
+            ShellUtils
                 .isAvailable(context) &&
-                com.jawzf.pixeltoolkit.utils.ShellUtils.hasPermission(
+                ShellUtils.hasPermission(
                     context,
                 )
         if (isShellAvailableForReset) {
@@ -578,9 +580,9 @@ fun BatteryInfoTabContent(
     // Permission Grant Card at the very bottom if BATTERY_STATS permission is missing AND Shizuku/Root is available & permitted
     val hasStatsPerm = BatteryInfoUtil.hasBatteryStatsPermission(context)
     val isShellAvailable =
-        com.jawzf.pixeltoolkit.utils.ShellUtils
+        ShellUtils
             .isAvailable(context) &&
-            com.jawzf.pixeltoolkit.utils.ShellUtils.hasPermission(
+            ShellUtils.hasPermission(
                 context,
             )
     if (!hasStatsPerm &&
@@ -622,16 +624,16 @@ fun BatteryInfoTabContent(
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
 
-                if (com.jawzf.pixeltoolkit.utils.ShizukuUtils
+                if (ShizukuUtils
                         .isShizukuAvailable() &&
-                    com.jawzf.pixeltoolkit.utils.ShizukuUtils
+                    ShizukuUtils
                         .hasPermission()
                 ) {
                     Button(
                         onClick = {
                             HapticUtil
                                 .performVirtualKeyHaptic(view)
-                            if (com.jawzf.pixeltoolkit.utils.ShizukuUtils
+                            if (ShizukuUtils
                                     .grantBatteryStatsPermission()
                             ) {
                                 onRefresh()

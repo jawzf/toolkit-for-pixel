@@ -6,8 +6,8 @@ import android.graphics.drawable.Icon
 import android.os.Build
 import android.service.quicksettings.Tile
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.ui.activities.TileAuthActivity
-import com.jawzf.pixeltoolkit.utils.PermissionUtils
 
 class AppLockTileService : BaseTileService() {
     override fun onTileClick() {

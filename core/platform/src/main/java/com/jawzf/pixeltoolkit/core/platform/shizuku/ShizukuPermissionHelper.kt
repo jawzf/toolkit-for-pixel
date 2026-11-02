@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.shizuku
+package com.jawzf.pixeltoolkit.core.platform.shizuku
 
 import android.content.Context
 import android.content.pm.PackageManager

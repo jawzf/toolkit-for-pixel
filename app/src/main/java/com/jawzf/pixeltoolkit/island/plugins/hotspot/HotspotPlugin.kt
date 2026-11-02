@@ -32,6 +32,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
+import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.island.model.CompactCell
 import com.jawzf.pixeltoolkit.island.model.CompactPlacement
@@ -40,8 +42,6 @@ import com.jawzf.pixeltoolkit.island.model.IslandPriority
 import com.jawzf.pixeltoolkit.island.model.LineContent
 import com.jawzf.pixeltoolkit.island.plugins.BaseIslandPlugin
 import com.jawzf.pixeltoolkit.island.ui.components.IslandIcon
-import com.jawzf.pixeltoolkit.utils.PermissionUtils
-import com.jawzf.pixeltoolkit.utils.ShellUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay

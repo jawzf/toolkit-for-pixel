@@ -90,7 +90,7 @@ import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.pickers.SegmentedPicker
 import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
-import com.jawzf.pixeltoolkit.utils.PermissionUtils
+import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.utils.QrCodeGenerator
 import com.jawzf.pixeltoolkit.utils.UrlShortener
 import com.jawzf.pixeltoolkit.utils.WindowingUtils

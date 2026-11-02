@@ -25,6 +25,7 @@ import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.cards.IconToggleItem
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.modifiers.highlight
+import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.ui.core.sheets.PermissionItem
 import com.jawzf.pixeltoolkit.ui.core.sheets.PermissionsBottomSheet
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
@@ -110,7 +111,7 @@ fun OtherCustomizationsSettingsUI(
                     ),
                 actionLabel = if (isAccessibilityEnabled) R.string.label_enabled else R.string.perm_action_enable,
                 action = {
-                    com.jawzf.pixeltoolkit.utils.PermissionUtils.openAccessibilitySettings(
+                    PermissionUtils.openAccessibilitySettings(
                         context,
                     )
                 },
@@ -125,7 +126,7 @@ fun OtherCustomizationsSettingsUI(
                 dependentFeatures = listOf(R.string.feat_hide_gesture_bar_on_launcher_title),
                 actionLabel = if (isUsageStatsGranted) R.string.perm_action_granted else R.string.perm_action_enable,
                 action = {
-                    com.jawzf.pixeltoolkit.utils.PermissionUtils
+                    PermissionUtils
                         .openUsageStatsSettings(context)
                 },
                 isGranted = isUsageStatsGranted,
