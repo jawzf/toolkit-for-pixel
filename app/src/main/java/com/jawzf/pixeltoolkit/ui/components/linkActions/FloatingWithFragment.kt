@@ -120,7 +120,7 @@ fun FloatingWithContent(
         ) {
             // 1. Preview Web (Only shown when floating mode is supported)
             if (isFloatingSupported) {
-                val bubblesEnabled = WindowingUtils.areNotificationBubblesEnabled(context)
+                val bubblesEnabled = PermissionUtils.areNotificationBubblesEnabled(context)
                 val canWriteSecure = PermissionUtils.canWriteSecureSettings(context)
                 val previewEnabled = bubblesEnabled || canWriteSecure
                 val previewDescription = when {

@@ -552,7 +552,7 @@ fun LinkPickerScreen(
                                         titleRes = R.string.action_preview_web,
                                         iconRes = R.drawable.rounded_open_in_browser_24,
                                         onClick = {
-                                            val bubblesEnabled = WindowingUtils.areNotificationBubblesEnabled(context)
+                                            val bubblesEnabled = PermissionUtils.areNotificationBubblesEnabled(context)
                                             val canWriteSecure = PermissionUtils.canWriteSecureSettings(context)
                                             if (bubblesEnabled || canWriteSecure) {
                                                 WindowingUtils.launchOverlayWindow(context, currentUri, isPrivate = true)
