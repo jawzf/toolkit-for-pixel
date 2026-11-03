@@ -35,6 +35,7 @@ import androidx.core.os.LocaleListCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jawzf.pixeltoolkit.ToolkitApp
+import com.jawzf.pixeltoolkit.core.data.backup.ConfigBackup
 import com.jawzf.pixeltoolkit.core.data.log.LogManager
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticFeedbackType
@@ -8949,7 +8950,7 @@ class MainViewModel : ViewModel() {
         context: Context,
         outputStream: java.io.OutputStream,
     ) {
-        settingsRepository.exportConfigs(outputStream)
+        ConfigBackup(context).exportConfigs(outputStream)
     }
 
     fun importConfigs(
@@ -8957,7 +8958,7 @@ class MainViewModel : ViewModel() {
         inputStream: java.io.InputStream,
         keepPrefs: Boolean,
     ): Boolean {
-        val success = settingsRepository.importConfigs(inputStream, keepPrefs)
+        val success = ConfigBackup(context).importConfigs(inputStream, keepPrefs)
         if (success) {
             settingsRepository.syncSystemSettingsWithSaved()
             com.jawzf.pixeltoolkit.domain.diy.DIYRepository

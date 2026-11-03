@@ -12,6 +12,7 @@ import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
+import com.jawzf.pixeltoolkit.core.data.backup.ConfigBackup
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -155,7 +156,7 @@ object AutoBackupManager {
 
     fun runBackup(context: Context): Boolean =
         try {
-            val bytes = ByteArrayOutputStream().also { SettingsRepository(context).exportConfigs(it) }.toByteArray()
+            val bytes = ByteArrayOutputStream().also { ConfigBackup(context).exportConfigs(it) }.toByteArray()
             val name = "toolkit-config-" + SimpleDateFormat("yyyyMMdd-HHmmss", Locale.US).format(Date()) + ".json"
             val folder = getFolder(context)
             if (folder != null) writeToTree(context, folder, name, bytes) else writeToDownloads(context, name, bytes)
