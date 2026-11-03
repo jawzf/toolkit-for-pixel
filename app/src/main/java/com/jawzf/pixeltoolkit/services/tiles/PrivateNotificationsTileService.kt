@@ -6,6 +6,7 @@ import android.graphics.drawable.Icon
 import android.provider.Settings
 import android.service.quicksettings.Tile
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.platform.tiles.BaseTileService
 
 class PrivateNotificationsTileService : BaseTileService() {
     override val isSensitiveTile: Boolean = true

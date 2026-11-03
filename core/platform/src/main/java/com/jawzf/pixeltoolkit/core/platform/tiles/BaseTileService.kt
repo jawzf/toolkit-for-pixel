@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.services.tiles
+package com.jawzf.pixeltoolkit.core.platform.tiles
 
 import android.app.PendingIntent
 import android.content.Intent

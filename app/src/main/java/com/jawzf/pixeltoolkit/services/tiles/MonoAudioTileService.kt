@@ -6,6 +6,7 @@ import android.service.quicksettings.Tile
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
+import com.jawzf.pixeltoolkit.core.platform.tiles.BaseTileService
 
 class MonoAudioTileService : BaseTileService() {
     override fun getTileLabel(): String = "Mono Audio"

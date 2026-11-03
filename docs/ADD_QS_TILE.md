@@ -41,7 +41,7 @@ Quick Settings tile integration operates across three core layers:
 
 ### 1. Create Tile Service Class
 
-All QS tile services are located in `app/src/main/java/com/jawzf/pixeltoolkit/services/tiles/` and must extend [`BaseTileService`](../app/src/main/java/com/jawzf/pixeltoolkit/services/tiles/BaseTileService.kt).
+All QS tile services are located in `app/src/main/java/com/jawzf/pixeltoolkit/services/tiles/` and must extend [`BaseTileService`](../core/platform/src/main/java/com/jawzf/pixeltoolkit/core/platform/tiles/BaseTileService.kt).
 
 #### Implementation Example:
 
