@@ -7,6 +7,8 @@ on:
     branches: [main]
   push:
     branches: [main]
+  # The merge job starts the main run itself: a merge made with GITHUB_TOKEN doesn't trigger `push`.
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -55,12 +57,11 @@ jobs:
           DETEKT: java -jar ${{ runner.temp }}/detekt.jar
         run: bash .github/scripts/style-new-findings.sh "$(git merge-base HEAD "origin/${{ github.base_ref }}")"
 
-  build:
-    name: Lint, unit tests, builds
+  # Lint and the builds run as separate jobs so they overlap (each took ~11-15 min in a row).
+  lint:
+    name: Dependency check, Android lint
     runs-on: ubuntu-latest
-    timeout-minutes: 45
-    outputs:
-      apk_kb: ${{ steps.size.outputs.apk_kb }}
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -95,6 +96,20 @@ jobs:
       # Old upstream findings are in each module's lint-baseline.xml; any new lint error fails.
       - name: Android lint
         run: ./gradlew --no-configuration-cache :app:lintDebug :core:design:lintDebug :core:platform:lintDebug :core:data:lintDebug
+
+  build:
+    name: Unit tests, builds
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    outputs:
+      apk_kb: ${{ steps.size.outputs.apk_kb }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v6.1.0
+        with:
+          distribution: temurin
+          java-version: ${{ env.JAVA_VERSION }}
+      - uses: gradle/actions/setup-gradle@3f5f9adaf7d9fecd50b5935e54106014257a94e6 # v6.4.0
 
       - name: Unit tests
         run: ./gradlew :app:testDebugUnitTest
@@ -165,3 +180,29 @@ jobs:
           tar -xzf "$RUNNER_TEMP/gitleaks.tar.gz" -C "$RUNNER_TEMP" gitleaks
       - name: Scan full history
         run: $RUNNER_TEMP/gitleaks git --redact --no-banner --verbose .
+
+  # Phase 1 only (Joe, 2026-11-04): a PR labelled merge-approved, added only after Joe's yes,
+  # is squash-merged once every other check has passed on that exact head commit.
+  merge:
+    name: Merge when approved
+    if: github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'merge-approved')
+    needs: [style, lint, build, size, secrets]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+      pull-requests: write
+      actions: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      PR: ${{ github.event.pull_request.number }}
+      HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+      HEAD_REF: ${{ github.event.pull_request.head.ref }}
+    steps:
+      - name: Squash-merge
+        run: |
+          gh pr merge "$PR" --repo "$GITHUB_REPOSITORY" --squash --match-head-commit "$HEAD_SHA" \
+            --body "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
+          gh api -X DELETE "repos/$GITHUB_REPOSITORY/git/refs/heads/$HEAD_REF"
+      - name: Start the main run
+        run: gh workflow run ci.yml --repo "$GITHUB_REPOSITORY" --ref main
