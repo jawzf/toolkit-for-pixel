@@ -6,6 +6,7 @@ import android.provider.Settings
 import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.jawzf.pixeltoolkit.core.data.prefs.PrefsStore
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticFeedbackType
 import com.jawzf.pixeltoolkit.core.platform.shell.RootUtils
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
@@ -42,10 +43,8 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlin.math.abs
 
 class SettingsRepository(
-    private val context: Context,
-) {
-    private val prefs: SharedPreferences =
-        context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+    context: Context,
+) : PrefsStore(context) {
     private val gson = Gson()
 
     init {
@@ -615,7 +614,6 @@ class SettingsRepository(
         const val KEY_ISLAND_PROVIDERS_LAUNCHER_ONLY = "island_providers_launcher_only"
         const val KEY_ISLAND_PROVIDERS_HIDE_LOCKED = "island_providers_hide_locked"
 
-        private const val LEGACY_WEATHER_API_KEY_PREFIX = "weather_api_key"
         const val KEY_ISLAND_CALENDAR_EMOJIS = "island_calendar_emojis"
         const val KEY_ISLAND_TIMERS_SHOW_SCREEN_RECORDER = "island_timers_show_screen_recorder"
         const val KEY_ISLAND_TIMERS_FILTER_APPS = "island_timers_filter_apps"
@@ -862,176 +860,6 @@ class SettingsRepository(
             prefs.registerOnSharedPreferenceChangeListener(listener)
             awaitClose { prefs.unregisterOnSharedPreferenceChangeListener(listener) }
         }
-
-    /**
-     * Registers a listener to be notified when shared preference values change.
-     *
-     * @param listener [SharedPreferences.OnSharedPreferenceChangeListener] The listener instance to register.
-     */
-    fun registerOnSharedPreferenceChangeListener(listener: SharedPreferences.OnSharedPreferenceChangeListener) {
-        prefs.registerOnSharedPreferenceChangeListener(listener)
-    }
-
-    /**
-     * Unregisters a previously registered shared preference change listener.
-     *
-     * @param listener [SharedPreferences.OnSharedPreferenceChangeListener] The listener instance to unregister.
-     */
-    fun unregisterOnSharedPreferenceChangeListener(listener: SharedPreferences.OnSharedPreferenceChangeListener) {
-        prefs.unregisterOnSharedPreferenceChangeListener(listener)
-    }
-
-    // General Getters
-
-    /**
-     * Retrieves a boolean preference value by key.
-     *
-     * @param key [String] Preference key name.
-     * @param default [Boolean] Fallback boolean value if key is absent.
-     * @return The stored boolean value or default.
-     */
-    fun getBoolean(
-        key: String,
-        default: Boolean = false,
-    ): Boolean = prefs.getBoolean(key, default)
-
-    /**
-     * Retrieves a string preference value by key.
-     *
-     * @param key [String] Preference key name.
-     * @param default [String?] Fallback string value if key is absent.
-     * @return The stored string value or default.
-     */
-    fun getString(
-        key: String,
-        default: String? = null,
-    ): String? = prefs.getString(key, default)
-
-    /**
-     * Retrieves an integer preference value by key.
-     *
-     * @param key [String] Preference key name.
-     * @param default [Int] Fallback integer value if key is absent.
-     * @return The stored integer value or default.
-     */
-    fun getInt(
-        key: String,
-        default: Int = 0,
-    ): Int = prefs.getInt(key, default)
-
-    /**
-     * Retrieves a float preference value by key, with legacy integer migration fallback.
-     *
-     * @param key [String] Preference key name.
-     * @param default [Float] Fallback float value if key is absent.
-     * @return The stored float value or default.
-     */
-    fun getFloat(
-        key: String,
-        default: Float = 0f,
-    ): Float =
-        try {
-            prefs.getFloat(key, default)
-        } catch (e: ClassCastException) {
-            try {
-                // Migrate from Int to Float if necessary
-                val intValue = prefs.getInt(key, default.toInt())
-                val floatValue = intValue.toFloat()
-                putFloat(key, floatValue)
-                floatValue
-            } catch (e2: Exception) {
-                default
-            }
-        }
-
-    /**
-     * Retrieves a long integer preference value by key.
-     *
-     * @param key [String] Preference key name.
-     * @param default [Long] Fallback long value if key is absent.
-     * @return The stored long value or default.
-     */
-    fun getLong(
-        key: String,
-        default: Long = 0L,
-    ): Long = prefs.getLong(key, default)
-
-    // General Setters
-
-    /**
-     * Checks if a preference key exists in persistent storage.
-     *
-     * @param key [String] Preference key name.
-     * @return True if key exists in shared preferences.
-     */
-    fun contains(key: String): Boolean = prefs.contains(key)
-
-    /**
-     * Asynchronously stores a boolean preference value.
-     *
-     * @param key [String] Preference key name.
-     * @param value [Boolean] Boolean value to store.
-     */
-    fun putBoolean(
-        key: String,
-        value: Boolean,
-    ) = prefs.edit().putBoolean(key, value).apply()
-
-    fun putBooleanSync(
-        key: String,
-        value: Boolean,
-    ) = prefs.edit().putBoolean(key, value).commit()
-
-    /**
-     * Asynchronously stores a string preference value.
-     *
-     * @param key [String] Preference key name.
-     * @param value [String?] String value to store.
-     */
-    fun putString(
-        key: String,
-        value: String?,
-    ) = prefs.edit().putString(key, value).apply()
-
-    /**
-     * Asynchronously stores an integer preference value.
-     *
-     * @param key [String] Preference key name.
-     * @param value [Int] Integer value to store.
-     */
-    fun putInt(
-        key: String,
-        value: Int,
-    ) = prefs.edit().putInt(key, value).apply()
-
-    /**
-     * Asynchronously stores a float preference value.
-     *
-     * @param key [String] Preference key name.
-     * @param value [Float] Float value to store.
-     */
-    fun putFloat(
-        key: String,
-        value: Float,
-    ) = prefs.edit().putFloat(key, value).apply()
-
-    /**
-     * Asynchronously stores a long integer preference value.
-     *
-     * @param key [String] Preference key name.
-     * @param value [Long] Long value to store.
-     */
-    fun putLong(
-        key: String,
-        value: Long,
-    ) = prefs.edit().putLong(key, value).apply()
-
-    /**
-     * Asynchronously removes a preference entry by key.
-     *
-     * @param key [String] Preference key name to remove.
-     */
-    fun remove(key: String) = prefs.edit().remove(key).apply()
 
     // Specific Getters with logic from ViewModel
 
@@ -1827,60 +1655,6 @@ class SettingsRepository(
         putString(KEY_MAPS_DETECTION_CHANNELS, json)
     }
 
-    // Config Export/Import
-    fun getAllConfigsAsJsonString(): String {
-        return try {
-            val allConfigs = mutableMapOf<String, Map<String, Map<String, Any>>>()
-            val prefFiles =
-                listOf(
-                    "toolkit_prefs",
-                    "caffeinate_prefs",
-                    "link_prefs",
-                    "diy_automations_prefs",
-                    "live_wallpaper_prefs",
-                )
-
-            prefFiles.forEach { fileName ->
-                val p = context.getSharedPreferences(fileName, Context.MODE_PRIVATE)
-                val wrapperMap = mutableMapOf<String, Map<String, Any>>()
-
-                p.all.forEach { (key, value) ->
-                    if (key == "freeze_auto_excluded_apps" || key.endsWith("_selected_apps")) {
-                    }
-                    if (key == KEY_GITHUB_ACCESS_TOKEN ||
-                        key == KEY_SHIZUKU_AUTH_TOKEN ||
-                        key.startsWith(LEGACY_WEATHER_API_KEY_PREFIX) ||
-                        key == KEY_SNOOZE_DISCOVERED_CHANNELS ||
-                        key == KEY_MAPS_DISCOVERED_CHANNELS ||
-                        key == KEY_SHUT_UP_ORIGINAL_SETTINGS ||
-                        key == "battery_history_points"
-                    ) {
-                        return@forEach
-                    }
-
-                    val type =
-                        when (value) {
-                            is Boolean -> "Boolean"
-                            is Int -> "Int"
-                            is Long -> "Long"
-                            is Float -> "Float"
-                            is String -> "String"
-                            is Set<*> -> "StringSet"
-                            else -> "Unknown"
-                        }
-                    if (value != null && type != "Unknown") {
-                        wrapperMap[key] = mapOf("type" to type, "value" to value)
-                    }
-                }
-                allConfigs[fileName] = wrapperMap
-            }
-
-            gson.toJson(allConfigs)
-        } catch (e: Exception) {
-            "{}"
-        }
-    }
-
     fun resetKeysWithPrefixes(prefixes: List<String>) {
         val protected =
             setOf(
@@ -1895,124 +1669,6 @@ class SettingsRepository(
             .filter { key -> key !in protected && prefixes.any { key.startsWith(it) } }
             .forEach { editor.remove(it) }
         editor.apply()
-    }
-
-    /**
-     * Executes the export configs operation.
-     *
-     * @param outputStream [java.io.OutputStream] Target output stream.
-     */
-    fun exportConfigs(outputStream: java.io.OutputStream) {
-        try {
-            val json = getAllConfigsAsJsonString()
-            outputStream.write(json.toByteArray())
-            outputStream.flush()
-            outputStream.close()
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
-
-    /**
-     * Executes the import configs operation.
-     *
-     * @param inputStream [java.io.InputStream] Target input stream.
-     * @param keepPrefs [Boolean] Target keep prefs.
-     * @return The resulting Boolean data.
-     */
-    fun importConfigs(
-        inputStream: java.io.InputStream,
-        keepPrefs: Boolean,
-    ): Boolean {
-        return try {
-            val json = inputStream.bufferedReader().use { it.readText() }
-            val type = object : TypeToken<Map<String, Map<String, Map<String, Any>>>>() {}.type
-            val allConfigs: Map<String, Map<String, Map<String, Any>>> =
-                gson.fromJson(json, type) ?: emptyMap()
-
-            allConfigs.forEach { (fileName, prefWrapper) ->
-                val p = context.getSharedPreferences(fileName, Context.MODE_PRIVATE)
-
-                // Preserve sensitive or volatile local state not present in backups
-                val preservedValues = mutableMapOf<String, Any?>()
-                val keysToPreserve =
-                    listOf(
-                        KEY_GITHUB_ACCESS_TOKEN,
-                        KEY_SHIZUKU_AUTH_TOKEN,
-                        LEGACY_WEATHER_API_KEY_PREFIX,
-                        KEY_SNOOZE_DISCOVERED_CHANNELS,
-                        KEY_MAPS_DISCOVERED_CHANNELS,
-                        KEY_SHUT_UP_ORIGINAL_SETTINGS,
-                    )
-                keysToPreserve.forEach { key ->
-                    if (p.contains(key)) {
-                        preservedValues[key] = p.all[key]
-                    }
-                }
-
-                p
-                    .edit()
-                    .apply {
-                        if (!keepPrefs) clear()
-
-                        // Restore preserved values
-                        preservedValues.forEach { (key, value) ->
-                            if (value != null) {
-                                when (value) {
-                                    is Boolean -> putBoolean(key, value)
-                                    is Int -> putInt(key, value)
-                                    is Long -> putLong(key, value)
-                                    is Float -> putFloat(key, value)
-                                    is String -> putString(key, value)
-                                    is Set<*> -> {
-                                        @Suppress("UNCHECKED_CAST")
-                                        putStringSet(key, value as Set<String>)
-                                    }
-                                }
-                            }
-                        }
-
-                        prefWrapper.forEach { (key, item) ->
-                            // Do not import sensitive keys from the file even if they exist there
-                            if (key == KEY_GITHUB_ACCESS_TOKEN ||
-                                key == KEY_SHIZUKU_AUTH_TOKEN ||
-                                key.startsWith(LEGACY_WEATHER_API_KEY_PREFIX)
-                            ) {
-                                return@forEach
-                            }
-                            val itemType = item["type"] as? String
-                            val itemValue = item["value"]
-
-                            if (itemType != null && itemValue != null) {
-                                try {
-                                    when (itemType) {
-                                        "Boolean" -> putBoolean(key, itemValue as Boolean)
-                                        "Int" -> putInt(key, (itemValue as Double).toInt())
-                                        "Long" -> putLong(key, (itemValue as Double).toLong())
-                                        "Float" -> putFloat(key, (itemValue as Double).toFloat())
-                                        "String" -> putString(key, itemValue as String)
-                                        "StringSet" -> {
-                                            @Suppress("UNCHECKED_CAST")
-                                            putStringSet(key, (itemValue as List<String>).toSet())
-                                        }
-                                    }
-                                } catch (e: Exception) {
-                                    e.printStackTrace()
-                                }
-                            }
-                        }
-                    }.apply()
-            }
-            true
-        } catch (e: Exception) {
-            e.printStackTrace()
-            false
-        } finally {
-            try {
-                inputStream.close()
-            } catch (e: Exception) {
-            }
-        }
     }
 
     /**
