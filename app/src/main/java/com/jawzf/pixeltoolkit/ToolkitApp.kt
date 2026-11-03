@@ -6,9 +6,10 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Build
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
+import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuUtils
 import com.jawzf.pixeltoolkit.services.receivers.SecurityReceiver
 import com.jawzf.pixeltoolkit.utils.LogManager
-import com.jawzf.pixeltoolkit.utils.ShizukuUtils
+import com.jawzf.pixeltoolkit.utils.StatusBarManager
 import eu.darken.porter.bridge.PorterShizukuBridge
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -39,7 +40,7 @@ class ToolkitApp : Application() {
         }
 
         PorterShizukuBridge.start(CoroutineScope(SupervisorJob() + Dispatchers.Default))
-        ShizukuUtils.initialize()
+        ShizukuUtils.initialize(this) { StatusBarManager.update(it) }
         com.jawzf.pixeltoolkit.utils.CarConnectionMonitor
             .initialize(this)
         LogManager.init(this)

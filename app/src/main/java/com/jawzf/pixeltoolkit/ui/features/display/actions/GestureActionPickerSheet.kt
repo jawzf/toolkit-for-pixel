@@ -30,6 +30,7 @@ import com.jawzf.pixeltoolkit.core.design.components.CategoryExpandableSection
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
+import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.domain.diy.Action
 import com.jawzf.pixeltoolkit.domain.diy.ActionRegistry
@@ -54,7 +55,6 @@ import com.jawzf.pixeltoolkit.ui.features.audio.sheets.SetVolumeSettingsSheet
 import com.jawzf.pixeltoolkit.ui.features.system.LikeSongSettingsSheet
 import com.jawzf.pixeltoolkit.ui.features.system.RemapActionItem
 import com.jawzf.pixeltoolkit.utils.PermissionUIHelper
-import com.jawzf.pixeltoolkit.utils.ShellUtils
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 
 @Composable

@@ -1,9 +1,12 @@
-package com.jawzf.pixeltoolkit.utils
+package com.jawzf.pixeltoolkit.core.platform.shizuku
 
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.IBinder
 import android.os.RemoteException
+import com.jawzf.pixeltoolkit.core.platform.PlatformPrefs
+import com.jawzf.pixeltoolkit.core.platform.shell.PrivilegedMode
+import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import moe.shizuku.server.IShizukuService
 import rikka.shizuku.Shizuku
 import rikka.shizuku.ShizukuProvider
@@ -53,13 +56,15 @@ object ShizukuUtils {
             false
         }
 
+    private var appContext: Context? = null
+    private var onBinderReady: ((Context) -> Unit)? = null
+
     private val binderReceivedListener =
         Shizuku.OnBinderReceivedListener {
             binder = Shizuku.getBinder()
             try {
                 if (hasPermission()) {
-                    val appCtx = com.jawzf.pixeltoolkit.ToolkitApp.context
-                    StatusBarManager.update(appCtx)
+                    appContext?.let { onBinderReady?.invoke(it) }
                 }
             } catch (_: Throwable) {
             }
@@ -87,7 +92,12 @@ object ShizukuUtils {
             }
         }
 
-    fun initialize() {
+    fun initialize(
+        context: Context,
+        onBinderReady: (Context) -> Unit,
+    ) {
+        appContext = context.applicationContext
+        this.onBinderReady = onBinderReady
         Shizuku.addBinderReceivedListener(binderReceivedListener)
         Shizuku.addBinderDeadListener(binderDeadListener)
     }
@@ -214,10 +224,10 @@ object ShizukuUtils {
         }
 
         val action = if (start) "moe.shizuku.privileged.api.START" else "moe.shizuku.privileged.api.STOP"
-        val settingsRepository =
-            com.jawzf.pixeltoolkit.data.repository
-                .SettingsRepository(context)
-        val token = settingsRepository.getShizukuAuthToken()
+        val token =
+            context
+                .getSharedPreferences(PlatformPrefs.PREFS_NAME, Context.MODE_PRIVATE)
+                .getString(PlatformPrefs.KEY_SHIZUKU_AUTH_TOKEN, "") ?: ""
         if (token.isEmpty()) {
             android.util.Log.w("ShizukuUtils", "Shizuku auth token is missing, cannot stop Shizuku")
             return
@@ -240,9 +250,9 @@ object ShizukuUtils {
         start: Boolean,
     ) {
         val token =
-            com.jawzf.pixeltoolkit.data.repository
-                .SettingsRepository(context)
-                .getShizukuAuthToken()
+            context
+                .getSharedPreferences(PlatformPrefs.PREFS_NAME, Context.MODE_PRIVATE)
+                .getString(PlatformPrefs.KEY_SHIZUKU_AUTH_TOKEN, "") ?: ""
         if (token.isEmpty()) {
             android.util.Log.w("ShizukuUtils", "Porter token is missing, cannot toggle Porter")
             return

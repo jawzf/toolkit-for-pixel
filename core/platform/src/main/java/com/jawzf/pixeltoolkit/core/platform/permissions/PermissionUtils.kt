@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.utils
+package com.jawzf.pixeltoolkit.core.platform.permissions
 
 import android.app.admin.DevicePolicyManager
 import android.content.ComponentName
@@ -8,9 +8,7 @@ import android.net.Uri
 import android.os.Build
 import android.provider.Settings
 import android.view.inputmethod.InputMethodManager
-import com.jawzf.pixeltoolkit.services.NotificationListener
-import com.jawzf.pixeltoolkit.services.receivers.SecurityDeviceAdminReceiver
-import com.jawzf.pixeltoolkit.services.tiles.ScreenOffAccessibilityService
+import com.jawzf.pixeltoolkit.core.platform.AppComponents
 
 object PermissionUtils {
     fun requestPermissionsSafely(
@@ -37,7 +35,7 @@ object PermissionUtils {
                 context.contentResolver,
                 Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES,
             )
-        val serviceName = "${context.packageName}/${ScreenOffAccessibilityService::class.java.name}"
+        val serviceName = "${context.packageName}/${AppComponents.SCREEN_OFF_ACCESSIBILITY_SERVICE}"
         return enabledServices?.contains(serviceName) == true
     }
 
@@ -54,10 +52,10 @@ object PermissionUtils {
                 Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES,
             )
         val className = when (slot) {
-            1 -> com.jawzf.pixeltoolkit.services.AccessibilityShortcutService1::class.java.name
-            2 -> com.jawzf.pixeltoolkit.services.AccessibilityShortcutService2::class.java.name
-            3 -> com.jawzf.pixeltoolkit.services.AccessibilityShortcutService3::class.java.name
-            else -> com.jawzf.pixeltoolkit.services.AccessibilityShortcutService1::class.java.name
+            1 -> AppComponents.ACCESSIBILITY_SHORTCUT_SERVICE_1
+            2 -> AppComponents.ACCESSIBILITY_SHORTCUT_SERVICE_2
+            3 -> AppComponents.ACCESSIBILITY_SHORTCUT_SERVICE_3
+            else -> AppComponents.ACCESSIBILITY_SHORTCUT_SERVICE_1
         }
         val serviceName = "${context.packageName}/$className"
         return enabledServices?.contains(serviceName) == true
@@ -70,11 +68,11 @@ object PermissionUtils {
                 .orEmpty()
         val slotClass =
             when (slot) {
-                1 -> com.jawzf.pixeltoolkit.services.AccessibilityShortcutService1::class.java
-                2 -> com.jawzf.pixeltoolkit.services.AccessibilityShortcutService2::class.java
-                else -> com.jawzf.pixeltoolkit.services.AccessibilityShortcutService3::class.java
+                1 -> AppComponents.ACCESSIBILITY_SHORTCUT_SERVICE_1
+                2 -> AppComponents.ACCESSIBILITY_SHORTCUT_SERVICE_2
+                else -> AppComponents.ACCESSIBILITY_SHORTCUT_SERVICE_3
             }
-        val split = ComponentName(context, com.jawzf.pixeltoolkit.services.SplitScreenShortcutService::class.java).flattenToString()
+        val split = ComponentName(context, AppComponents.SPLIT_SCREEN_SHORTCUT_SERVICE).flattenToString()
         return split in targets && ComponentName(context, slotClass).flattenToString() in targets
     }
 
@@ -101,7 +99,7 @@ object PermissionUtils {
                     context.contentResolver,
                     "enabled_notification_listeners",
                 ) ?: return false
-            val componentName = ComponentName(context, NotificationListener::class.java)
+            val componentName = ComponentName(context, AppComponents.NOTIFICATION_LISTENER)
             enabledServices.contains(componentName.flattenToString())
         } catch (_: Exception) {
             false
@@ -129,7 +127,7 @@ object PermissionUtils {
      */
     fun isDeviceAdminActive(context: Context): Boolean {
         val dpm = context.getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
-        val adminComponent = ComponentName(context, SecurityDeviceAdminReceiver::class.java)
+        val adminComponent = ComponentName(context, AppComponents.SECURITY_DEVICE_ADMIN_RECEIVER)
         return dpm.isAdminActive(adminComponent)
     }
 
@@ -147,7 +145,7 @@ object PermissionUtils {
                     Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES,
                 )
             val serviceName =
-                "${context.packageName}/${ScreenOffAccessibilityService::class.java.name}"
+                "${context.packageName}/${AppComponents.SCREEN_OFF_ACCESSIBILITY_SERVICE}"
             enabledServices?.contains(serviceName) == true
         } catch (e: Exception) {
             false
@@ -174,6 +172,15 @@ object PermissionUtils {
 
     private const val LOCAL_NETWORK_REQUEST_CODE = 137
 
+    const val BUBBLE_CHANNEL_ID = "bubble_web_preview_channel"
+
+    fun areNotificationBubblesEnabled(context: Context): Boolean =
+        try {
+            Settings.Secure.getInt(context.contentResolver, "notification_bubbles", 1) == 1
+        } catch (_: Exception) {
+            true
+        }
+
     fun hasBubblePermission(context: Context): Boolean {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) return false
         val nm = context.getSystemService(Context.NOTIFICATION_SERVICE) as? android.app.NotificationManager ?: return false
@@ -183,11 +190,11 @@ object PermissionUtils {
             @Suppress("DEPRECATION")
             if (!nm.areBubblesAllowed()) return false
         }
-        val channel = nm.getNotificationChannel(WindowingUtils.BUBBLE_CHANNEL_ID)
+        val channel = nm.getNotificationChannel(BUBBLE_CHANNEL_ID)
         if (channel != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             return channel.canBubble()
         }
-        return WindowingUtils.areNotificationBubblesEnabled(context)
+        return areNotificationBubblesEnabled(context)
     }
 
     fun openBubbleSettings(context: Context) {
@@ -270,7 +277,7 @@ object PermissionUtils {
                 // ACTION_ACCESSIBILITY_DETAILS_SETTINGS / EXTRA_ACCESSIBILITY_COMPONENT_NAME are
                 // hidden from the public SDK stub (no compile-time constants), but the platform
                 // still honors these literal action/extra strings from third-party callers on API 31+.
-                val componentName = ComponentName(context, ScreenOffAccessibilityService::class.java)
+                val componentName = ComponentName(context, AppComponents.SCREEN_OFF_ACCESSIBILITY_SERVICE)
                 val intent = Intent("android.settings.ACCESSIBILITY_DETAILS_SETTINGS")
                 intent.putExtra("android.provider.extra.ACCESSIBILITY_COMPONENT_NAME", componentName.flattenToString())
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -575,7 +582,7 @@ object PermissionUtils {
     fun openDeviceAdminSettings(context: Context) {
         try {
             val intent = Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN)
-            val adminComponent = ComponentName(context, SecurityDeviceAdminReceiver::class.java)
+            val adminComponent = ComponentName(context, AppComponents.SECURITY_DEVICE_ADMIN_RECEIVER)
             intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, adminComponent)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             context.startActivity(intent)

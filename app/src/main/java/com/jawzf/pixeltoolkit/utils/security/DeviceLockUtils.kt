@@ -8,6 +8,8 @@ import android.os.Build
 import android.view.KeyEvent
 import android.widget.Toast
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
+import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.domain.ScreenOffMethod
 import com.jawzf.pixeltoolkit.services.tiles.ScreenOffAccessibilityService

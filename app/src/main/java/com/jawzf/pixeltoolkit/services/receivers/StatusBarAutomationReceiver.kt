@@ -4,6 +4,8 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.provider.Settings
+import com.jawzf.pixeltoolkit.core.platform.shell.RootUtils
+import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuUtils
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.viewmodels.StatusBarIconViewModel
 
@@ -65,19 +67,19 @@ class StatusBarAutomationReceiver : BroadcastReceiver() {
 
         // Background Shizuku/Root fallback
         if (!success || currentValue != value) {
-            if (com.jawzf.pixeltoolkit.utils.ShizukuUtils
+            if (ShizukuUtils
                     .hasPermission()
             ) {
-                com.jawzf.pixeltoolkit.utils.ShizukuUtils
+                ShizukuUtils
                     .runCommand("settings put system $key $value")
-                com.jawzf.pixeltoolkit.utils.ShizukuUtils
+                ShizukuUtils
                     .runCommand("settings put secure $key $value")
-            } else if (com.jawzf.pixeltoolkit.utils.RootUtils
+            } else if (RootUtils
                     .isRootPermissionGranted()
             ) {
-                com.jawzf.pixeltoolkit.utils.RootUtils
+                RootUtils
                     .runCommand("settings put system $key $value")
-                com.jawzf.pixeltoolkit.utils.RootUtils
+                RootUtils
                     .runCommand("settings put secure $key $value")
             }
         }

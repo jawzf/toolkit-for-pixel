@@ -7,7 +7,7 @@ import android.os.Handler
 import android.os.Looper
 import android.service.notification.StatusBarNotification
 import android.util.Log
-import com.jawzf.pixeltoolkit.utils.ShellUtils
+import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import java.util.concurrent.Executors
 
 object LiveUpdateOpSuppressor {

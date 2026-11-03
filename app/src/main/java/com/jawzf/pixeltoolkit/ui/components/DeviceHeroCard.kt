@@ -53,9 +53,9 @@ import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.theme.Shapes
+import com.jawzf.pixeltoolkit.core.platform.device.DeviceInfo
+import com.jawzf.pixeltoolkit.core.platform.device.DeviceUtils
 import com.jawzf.pixeltoolkit.utils.DeviceImageMapper
-import com.jawzf.pixeltoolkit.utils.DeviceInfo
-import com.jawzf.pixeltoolkit.utils.DeviceUtils
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable

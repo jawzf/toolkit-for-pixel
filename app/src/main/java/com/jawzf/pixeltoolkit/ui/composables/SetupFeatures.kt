@@ -90,6 +90,9 @@ import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.modifiers.liquidRipple
 import com.jawzf.pixeltoolkit.core.design.modifiers.scrollMotionBlur
 import com.jawzf.pixeltoolkit.core.design.sheets.InstructionsBottomSheet
+import com.jawzf.pixeltoolkit.core.platform.device.DeviceUtils
+import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
+import com.jawzf.pixeltoolkit.core.platform.shell.RootUtils
 import com.jawzf.pixeltoolkit.domain.registry.FeatureRegistry
 import com.jawzf.pixeltoolkit.domain.registry.PermissionRegistry
 import com.jawzf.pixeltoolkit.domain.registry.QSTileRegistry
@@ -104,10 +107,8 @@ import com.jawzf.pixeltoolkit.ui.features.freeze.FrozenAppsSearchResultCard
 import com.jawzf.pixeltoolkit.ui.features.permissions.PermissionsSearchResultCard
 import com.jawzf.pixeltoolkit.ui.features.tiles.QSTilesSearchResultCard
 import com.jawzf.pixeltoolkit.utils.BiometricSecurityHelper
-import com.jawzf.pixeltoolkit.utils.DeviceUtils
 import com.jawzf.pixeltoolkit.utils.FreezeManager
 import com.jawzf.pixeltoolkit.utils.PermissionUIHelper
-import com.jawzf.pixeltoolkit.utils.PermissionUtils
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -384,7 +385,7 @@ fun SetupFeatures(
                                     dependentFeatures = listOf(R.string.feat_screen_locked_security_title),
                                     action = {
                                         viewModel.isRootPermissionGranted.value =
-                                            com.jawzf.pixeltoolkit.utils.RootUtils
+                                            RootUtils
                                                 .isRootPermissionGranted()
                                     },
                                     isGranted = isRootPermissionGranted,
@@ -705,7 +706,7 @@ fun SetupFeatures(
                                     dependentFeatures = listOf(R.string.feat_screen_locked_security_title),
                                     action = {
                                         viewModel.isRootPermissionGranted.value =
-                                            com.jawzf.pixeltoolkit.utils.RootUtils
+                                            RootUtils
                                                 .isRootPermissionGranted()
                                     },
                                     isGranted = isRootPermissionGranted,

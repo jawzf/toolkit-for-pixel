@@ -2,6 +2,7 @@ package com.jawzf.pixeltoolkit.utils
 
 import android.content.Context
 import android.net.wifi.WifiManager
+import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 
 object WifiUtil {
     private const val UNKNOWN_SSID = "<unknown ssid>"

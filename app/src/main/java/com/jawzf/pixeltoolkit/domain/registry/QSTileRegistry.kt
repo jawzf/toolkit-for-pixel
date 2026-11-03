@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
+import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.services.tiles.AdaptiveBrightnessTileService
 import com.jawzf.pixeltoolkit.services.tiles.AlwaysOnDisplayTileService
 import com.jawzf.pixeltoolkit.services.tiles.AppFreezingTileService
@@ -41,8 +43,6 @@ import com.jawzf.pixeltoolkit.services.tiles.ToolkitOnDisplayTileService
 import com.jawzf.pixeltoolkit.services.tiles.UiBlurTileService
 import com.jawzf.pixeltoolkit.services.tiles.UrlShortenerTileService
 import com.jawzf.pixeltoolkit.services.tiles.UsbDebuggingTileService
-import com.jawzf.pixeltoolkit.utils.PermissionUtils
-import com.jawzf.pixeltoolkit.utils.ShellUtils
 
 data class QSTileInfo(
     @StringRes val titleRes: Int,

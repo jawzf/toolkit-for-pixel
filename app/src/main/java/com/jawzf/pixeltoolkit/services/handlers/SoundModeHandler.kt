@@ -3,7 +3,7 @@ package com.jawzf.pixeltoolkit.services.handlers
 import android.app.NotificationManager
 import android.content.Context
 import android.media.AudioManager
-import com.jawzf.pixeltoolkit.utils.ShizukuUtils
+import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuUtils
 
 class SoundModeHandler(
     private val context: Context,

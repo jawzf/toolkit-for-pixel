@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.shizuku
+package com.jawzf.pixeltoolkit.core.platform.shizuku
 
 import rikka.shizuku.Shizuku
 import java.lang.reflect.Method

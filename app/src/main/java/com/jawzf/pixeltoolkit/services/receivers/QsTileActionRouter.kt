@@ -8,14 +8,14 @@ import android.widget.Toast
 import com.jawzf.pixeltoolkit.MainActivity
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
+import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
+import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.domain.controller.CaffeinateController
 import com.jawzf.pixeltoolkit.services.tiles.BaseTileService
 import com.jawzf.pixeltoolkit.services.tiles.CaffeinateTileService
 import com.jawzf.pixeltoolkit.services.tiles.DataSimController
 import com.jawzf.pixeltoolkit.services.tiles.DataSimTileService
 import com.jawzf.pixeltoolkit.services.tiles.FlashlightTileService
-import com.jawzf.pixeltoolkit.utils.PermissionUtils
-import com.jawzf.pixeltoolkit.utils.ShellUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

@@ -84,6 +84,8 @@ import com.jawzf.pixeltoolkit.core.design.modifiers.progressiveBlur
 import com.jawzf.pixeltoolkit.core.design.modifiers.scrollMotionBlur
 import com.jawzf.pixeltoolkit.core.design.pickers.SegmentedPicker
 import com.jawzf.pixeltoolkit.core.design.theme.ToolkitTheme
+import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
+import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.domain.diy.Action
 import com.jawzf.pixeltoolkit.domain.diy.ActionRegistry
@@ -103,7 +105,6 @@ import com.jawzf.pixeltoolkit.ui.core.sheets.WifiNetworkSelectionSheet
 import com.jawzf.pixeltoolkit.ui.features.location.sheets.LocationTriggerSheet
 import com.jawzf.pixeltoolkit.ui.features.system.ActionSequenceEditor
 import com.jawzf.pixeltoolkit.utils.AppUtil
-import com.jawzf.pixeltoolkit.utils.PermissionUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -494,7 +495,7 @@ class AutomationEditorActivity : ComponentActivity() {
                         action.permissions
                             .map { permKey ->
                                 if (permKey == "SHIZUKU" || permKey == "ROOT") {
-                                    if (com.jawzf.pixeltoolkit.utils.ShellUtils
+                                    if (ShellUtils
                                             .isRootEnabled(context)
                                     ) {
                                         "ROOT"

@@ -8,8 +8,8 @@ import android.service.quicksettings.Tile
 import androidx.annotation.RequiresApi
 import com.jawzf.pixeltoolkit.FeatureSettingsActivity
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.utils.PermissionUtils
 
 @RequiresApi(Build.VERSION_CODES.N)
 class PrivateDnsTileService : BaseTileService() {

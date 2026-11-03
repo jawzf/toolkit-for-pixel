@@ -13,8 +13,8 @@ import androidx.annotation.RequiresApi
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticFeedbackType
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
+import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuUtils
 import com.jawzf.pixeltoolkit.services.handlers.SoundModeHandler
-import com.jawzf.pixeltoolkit.utils.ShizukuUtils
 
 @RequiresApi(Build.VERSION_CODES.N)
 class SoundModeTileService : BaseTileService() {

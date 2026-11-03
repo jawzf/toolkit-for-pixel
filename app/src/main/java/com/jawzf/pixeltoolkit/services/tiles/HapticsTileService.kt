@@ -11,8 +11,8 @@ import android.util.Log
 import android.widget.Toast
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
-import com.jawzf.pixeltoolkit.utils.PermissionUtils
-import com.jawzf.pixeltoolkit.utils.ShellUtils
+import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
+import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 
 class HapticsTileService : BaseTileService() {
     private val observer = object : ContentObserver(Handler(Looper.getMainLooper())) {

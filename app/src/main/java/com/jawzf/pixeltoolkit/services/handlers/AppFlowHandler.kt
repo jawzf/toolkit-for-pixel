@@ -18,6 +18,8 @@ import androidx.core.app.NotificationCompat
 import com.google.gson.Gson
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticFeedbackType
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
+import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
+import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuUtils.toggleShizuku
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.domain.diy.Automation
 import com.jawzf.pixeltoolkit.domain.diy.DIYRepository
@@ -26,7 +28,6 @@ import com.jawzf.pixeltoolkit.domain.model.BackGestureAppConfig
 import com.jawzf.pixeltoolkit.services.automation.executors.CombinedActionExecutor
 import com.jawzf.pixeltoolkit.services.tiles.ScreenOffAccessibilityService
 import com.jawzf.pixeltoolkit.utils.FreezeManager
-import com.jawzf.pixeltoolkit.utils.ShizukuUtils.toggleShizuku
 import com.jawzf.pixeltoolkit.utils.StatusBarManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -1040,7 +1041,7 @@ class AppFlowHandler(
             }
 
             val canWriteSecure =
-                com.jawzf.pixeltoolkit.utils.PermissionUtils
+                PermissionUtils
                     .canWriteSecureSettings(context)
             val canWriteSystem = Settings.System.canWrite(context)
 

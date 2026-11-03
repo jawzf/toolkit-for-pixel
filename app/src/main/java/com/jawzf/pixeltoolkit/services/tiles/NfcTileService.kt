@@ -7,7 +7,8 @@ import android.os.Build
 import android.service.quicksettings.Tile
 import androidx.annotation.RequiresApi
 import com.jawzf.pixeltoolkit.core.design.R
-import com.jawzf.pixeltoolkit.utils.ShellUtils
+import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
+import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import java.lang.reflect.Method
 
 @RequiresApi(Build.VERSION_CODES.N)
@@ -61,7 +62,7 @@ class NfcTileService : BaseTileService() {
     }
 
     override fun hasFeaturePermission(): Boolean =
-        com.jawzf.pixeltoolkit.utils.PermissionUtils
+        PermissionUtils
             .canWriteSecureSettings(this) ||
             (ShellUtils.isAvailable(this) && ShellUtils.hasPermission(this))
 

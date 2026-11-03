@@ -6,9 +6,9 @@ import android.content.Context
 import android.content.Intent
 import android.widget.Toast
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
+import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuUtils
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.utils.ShellUtils
-import com.jawzf.pixeltoolkit.utils.ShizukuUtils
 
 class ShizukuActionReceiver : BroadcastReceiver() {
     override fun onReceive(

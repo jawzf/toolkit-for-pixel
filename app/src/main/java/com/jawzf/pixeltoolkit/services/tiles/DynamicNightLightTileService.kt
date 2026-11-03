@@ -4,7 +4,7 @@ import android.graphics.drawable.Icon
 import android.service.quicksettings.Tile
 import androidx.core.content.edit
 import com.jawzf.pixeltoolkit.core.design.R
-import com.jawzf.pixeltoolkit.utils.PermissionUtils
+import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 
 class DynamicNightLightTileService : BaseTileService() {
     override fun onTileClick() {

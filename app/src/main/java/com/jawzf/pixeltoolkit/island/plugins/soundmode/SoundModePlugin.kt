@@ -11,6 +11,7 @@ import android.os.Build
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.domain.controller.ZenModeController
 import com.jawzf.pixeltoolkit.island.model.CompactCell
@@ -21,7 +22,6 @@ import com.jawzf.pixeltoolkit.island.model.LineContent
 import com.jawzf.pixeltoolkit.island.model.PluginRequest
 import com.jawzf.pixeltoolkit.island.plugins.BaseIslandPlugin
 import com.jawzf.pixeltoolkit.island.ui.components.IslandIcon
-import com.jawzf.pixeltoolkit.utils.ShellUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

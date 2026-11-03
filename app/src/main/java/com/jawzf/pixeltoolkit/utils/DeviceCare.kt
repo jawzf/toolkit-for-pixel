@@ -12,6 +12,7 @@ import android.provider.Settings
 import android.text.format.Formatter
 import android.widget.Toast
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.domain.diy.Action
 
 object DeviceCare {

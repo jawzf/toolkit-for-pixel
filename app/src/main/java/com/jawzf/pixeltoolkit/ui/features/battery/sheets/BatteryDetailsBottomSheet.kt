@@ -49,11 +49,11 @@ import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.pickers.SegmentedPicker
 import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
+import com.jawzf.pixeltoolkit.core.platform.device.DeviceUtils
 import com.jawzf.pixeltoolkit.ui.components.battery.BatteryAppsTabContent
 import com.jawzf.pixeltoolkit.ui.components.battery.BatteryInfoTabContent
 import com.jawzf.pixeltoolkit.utils.BatteryStatsUtil
 import com.jawzf.pixeltoolkit.utils.BatteryUsageApp
-import com.jawzf.pixeltoolkit.utils.DeviceUtils
 import com.jawzf.pixeltoolkit.utils.battery.BatteryDetails
 import com.jawzf.pixeltoolkit.utils.battery.BatteryInfoUtil
 import com.jawzf.pixeltoolkit.utils.battery.ChargingMode

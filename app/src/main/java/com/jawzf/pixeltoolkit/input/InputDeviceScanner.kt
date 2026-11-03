@@ -1,8 +1,8 @@
 package com.jawzf.pixeltoolkit.input
 
 import android.content.Context
-import com.jawzf.pixeltoolkit.shizuku.ShizukuProcessHelper
-import com.jawzf.pixeltoolkit.utils.ShellUtils
+import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
+import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuProcessHelper
 import java.io.BufferedReader
 import java.io.InputStreamReader
 

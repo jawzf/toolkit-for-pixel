@@ -4,6 +4,8 @@ import android.graphics.drawable.Icon
 import android.provider.Settings
 import android.service.quicksettings.Tile
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
+import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 
 class MonoAudioTileService : BaseTileService() {
     override fun getTileLabel(): String = "Mono Audio"
@@ -11,12 +13,12 @@ class MonoAudioTileService : BaseTileService() {
     override fun getTileSubtitle(): String = if (isMonoAudioEnabled()) "On" else "Off"
 
     override fun hasFeaturePermission(): Boolean =
-        com.jawzf.pixeltoolkit.utils.PermissionUtils
+        PermissionUtils
             .canWriteSecureSettings(this) ||
             (
-                com.jawzf.pixeltoolkit.utils.ShellUtils
+                ShellUtils
                     .isAvailable(this) &&
-                    com.jawzf.pixeltoolkit.utils.ShellUtils
+                    ShellUtils
                         .hasPermission(this)
             )
 
@@ -26,7 +28,7 @@ class MonoAudioTileService : BaseTileService() {
 
     override fun onTileClick() {
         val newState = if (isMonoAudioEnabled()) 0 else 1
-        com.jawzf.pixeltoolkit.utils.ShellUtils.runCommand(
+        ShellUtils.runCommand(
             this,
             "settings put system master_mono $newState",
             featureName = getTileLabel(),

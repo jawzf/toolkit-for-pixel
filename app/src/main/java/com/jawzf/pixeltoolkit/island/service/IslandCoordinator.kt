@@ -34,6 +34,7 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.island.gestures.CompactGestureController
 import com.jawzf.pixeltoolkit.island.gestures.CompactGestures
@@ -87,7 +88,6 @@ import com.jawzf.pixeltoolkit.island.ui.IslandStackBubble
 import com.jawzf.pixeltoolkit.island.ui.IslandStackOverlap
 import com.jawzf.pixeltoolkit.island.ui.QueueStyle
 import com.jawzf.pixeltoolkit.island.ui.components.IslandIcon
-import com.jawzf.pixeltoolkit.utils.ShellUtils
 import com.jawzf.pixeltoolkit.utils.StatusBarManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

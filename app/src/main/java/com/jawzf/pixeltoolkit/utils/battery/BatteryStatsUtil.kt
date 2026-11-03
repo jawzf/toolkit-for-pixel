@@ -3,6 +3,7 @@ package com.jawzf.pixeltoolkit.utils
 import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
+import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 
 data class BatteryUsageApp(

@@ -4,6 +4,7 @@ import android.content.ComponentName
 import android.content.Context
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
+import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.services.SplitScreenShortcutService
 
 object SplitScreenUtil {

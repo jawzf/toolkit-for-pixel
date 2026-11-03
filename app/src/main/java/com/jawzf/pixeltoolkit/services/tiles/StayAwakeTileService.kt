@@ -4,6 +4,7 @@ import android.graphics.drawable.Icon
 import android.provider.Settings
 import android.service.quicksettings.Tile
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 
 class StayAwakeTileService : BaseTileService() {
     override fun onTileClick() {
@@ -24,7 +25,7 @@ class StayAwakeTileService : BaseTileService() {
         }
 
     override fun hasFeaturePermission(): Boolean =
-        com.jawzf.pixeltoolkit.utils.PermissionUtils
+        PermissionUtils
             .canWriteSecureSettings(this)
 
     override fun getTileState(): Int {

@@ -7,6 +7,9 @@ import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticFeedbackType
+import com.jawzf.pixeltoolkit.core.platform.shell.RootUtils
+import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
+import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuUtils
 import com.jawzf.pixeltoolkit.domain.controller.BackGestureController
 import com.jawzf.pixeltoolkit.domain.controller.BackGestureStore
 import com.jawzf.pixeltoolkit.domain.diy.Action
@@ -33,9 +36,6 @@ import com.jawzf.pixeltoolkit.domain.model.TrackedRepo
 import com.jawzf.pixeltoolkit.domain.model.github.GitHubUser
 import com.jawzf.pixeltoolkit.ui.core.pickers.NetworkType
 import com.jawzf.pixeltoolkit.utils.DuoBatteryLevels
-import com.jawzf.pixeltoolkit.utils.RootUtils
-import com.jawzf.pixeltoolkit.utils.ShellUtils
-import com.jawzf.pixeltoolkit.utils.ShizukuUtils
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -4397,7 +4397,7 @@ class SettingsRepository(
                 targetValue,
             )
         } catch (_: SecurityException) {
-            com.jawzf.pixeltoolkit.utils.ShellUtils.runCommand(
+            ShellUtils.runCommand(
                 context,
                 "settings put global heads_up_notifications_enabled $targetValue",
                 featureName = context.getString(com.jawzf.pixeltoolkit.core.design.R.string.island_suppress_system_heads_up_title),

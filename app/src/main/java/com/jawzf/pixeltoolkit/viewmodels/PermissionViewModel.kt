@@ -3,8 +3,8 @@ package com.jawzf.pixeltoolkit.viewmodels
 import android.content.Context
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.jawzf.pixeltoolkit.utils.PermissionUtils
-import com.jawzf.pixeltoolkit.utils.ShizukuUtils
+import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
+import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuUtils
 
 class PermissionViewModel : ViewModel() {
     val isAccessibilityEnabled = mutableStateOf(false)

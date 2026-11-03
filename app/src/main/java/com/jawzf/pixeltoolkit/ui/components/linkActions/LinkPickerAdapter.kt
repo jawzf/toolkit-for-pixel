@@ -118,8 +118,8 @@ import com.jawzf.pixeltoolkit.core.design.modifiers.progressiveBlur
 import com.jawzf.pixeltoolkit.core.design.modifiers.scrollMotionBlur
 import com.jawzf.pixeltoolkit.core.design.pickers.SegmentedPicker
 import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
+import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.utils.PermissionUtils
 import com.jawzf.pixeltoolkit.utils.WindowingUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -552,7 +552,7 @@ fun LinkPickerScreen(
                                         titleRes = R.string.action_preview_web,
                                         iconRes = R.drawable.rounded_open_in_browser_24,
                                         onClick = {
-                                            val bubblesEnabled = WindowingUtils.areNotificationBubblesEnabled(context)
+                                            val bubblesEnabled = PermissionUtils.areNotificationBubblesEnabled(context)
                                             val canWriteSecure = PermissionUtils.canWriteSecureSettings(context)
                                             if (bubblesEnabled || canWriteSecure) {
                                                 WindowingUtils.launchOverlayWindow(context, currentUri, isPrivate = true)

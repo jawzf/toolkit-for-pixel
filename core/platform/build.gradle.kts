@@ -5,3 +5,10 @@ plugins {
 android {
     namespace = "com.jawzf.pixeltoolkit.core.platform"
 }
+
+dependencies {
+    implementation(project(":core:design"))
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.shizuku.api)
+    implementation(libs.shizuku.provider)
+}

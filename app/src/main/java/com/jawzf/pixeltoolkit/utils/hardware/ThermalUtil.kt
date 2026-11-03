@@ -1,7 +1,7 @@
 package com.jawzf.pixeltoolkit.utils.hardware
 
 import android.content.Context
-import com.jawzf.pixeltoolkit.utils.ShellUtils
+import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 
 data class ThermalItem(
     val name: String,

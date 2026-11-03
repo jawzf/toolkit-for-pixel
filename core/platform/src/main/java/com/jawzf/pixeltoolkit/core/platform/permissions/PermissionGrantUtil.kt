@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.utils
+package com.jawzf.pixeltoolkit.core.platform.permissions
 
 import android.app.AppOpsManager
 import android.content.Context
@@ -6,8 +6,8 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Process
 import android.provider.Settings
-import com.jawzf.pixeltoolkit.services.NotificationListener
-import com.jawzf.pixeltoolkit.services.tiles.ScreenOffAccessibilityService
+import com.jawzf.pixeltoolkit.core.platform.AppComponents
+import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 
 object PermissionGrantUtil {
     private val APP_OPS = listOf(
@@ -28,11 +28,11 @@ object PermissionGrantUtil {
         requestedPermissions(context).forEach { commands += "pm grant $pkg $it" }
         APP_OPS.forEach { commands += "appops set $pkg $it allow" }
 
-        commands += "cmd notification allow_listener $pkg/${NotificationListener::class.java.name}"
+        commands += "cmd notification allow_listener $pkg/${AppComponents.NOTIFICATION_LISTENER}"
         commands += "cmd notification allow_dnd $pkg"
         commands += "cmd deviceidle whitelist +$pkg"
 
-        val accessibility = "$pkg/${ScreenOffAccessibilityService::class.java.name}"
+        val accessibility = "$pkg/${AppComponents.SCREEN_OFF_ACCESSIBILITY_SERVICE}"
         val enabled = Settings.Secure.getString(context.contentResolver, Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES).orEmpty()
         if (!enabled.split(':').contains(accessibility)) {
             val updated = if (enabled.isBlank()) accessibility else "$enabled:$accessibility"
@@ -58,7 +58,7 @@ object PermissionGrantUtil {
 
     fun grantSensitiveNotifications(context: Context, featureName: String? = null) {
         val pkg = context.packageName
-        val listener = "$pkg/${NotificationListener::class.java.name}"
+        val listener = "$pkg/${AppComponents.NOTIFICATION_LISTENER}"
         ShellUtils.runCommandWithOutput(
             context,
             "appops set $pkg RECEIVE_SENSITIVE_NOTIFICATIONS allow; " +

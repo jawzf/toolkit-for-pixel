@@ -116,6 +116,7 @@ import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.modifiers.BlurDirection
 import com.jawzf.pixeltoolkit.core.design.modifiers.progressiveBlur
 import com.jawzf.pixeltoolkit.core.design.theme.ToolkitTheme
+import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.domain.model.NotificationApp
 import com.jawzf.pixeltoolkit.domain.model.PixelSearchResultItem
@@ -132,7 +133,6 @@ import com.jawzf.pixeltoolkit.ui.features.tiles.QSTilesSearchResultCard
 import com.jawzf.pixeltoolkit.utils.AppUtil
 import com.jawzf.pixeltoolkit.utils.FileSearchUtil
 import com.jawzf.pixeltoolkit.utils.FreezeManager
-import com.jawzf.pixeltoolkit.utils.PermissionUtils
 import com.jawzf.pixeltoolkit.utils.ShortcutUtil
 import com.jawzf.pixeltoolkit.utils.WindowingUtils
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel

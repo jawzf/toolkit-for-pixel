@@ -34,10 +34,10 @@ import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.haptics.performHapticFeedback
 import com.jawzf.pixeltoolkit.core.design.pickers.HapticFeedbackPicker
 import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
+import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.domain.ScreenOffMethod
 import com.jawzf.pixeltoolkit.domain.diy.Action
 import com.jawzf.pixeltoolkit.ui.core.pickers.ScreenOffMethodPicker
-import com.jawzf.pixeltoolkit.utils.ShellUtils
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

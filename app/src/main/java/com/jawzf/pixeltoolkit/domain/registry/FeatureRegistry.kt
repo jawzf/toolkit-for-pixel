@@ -6,6 +6,8 @@ import android.os.Build
 import com.jawzf.pixeltoolkit.FeatureSettingsActivity
 import com.jawzf.pixeltoolkit.ToolkitApp
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.platform.device.DeviceUtils
+import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.domain.controller.CaffeinateController
 import com.jawzf.pixeltoolkit.domain.model.Feature
@@ -19,8 +21,6 @@ import com.jawzf.pixeltoolkit.ui.features.display.ISLAND_NOTIFICATIONS_FEATURE_I
 import com.jawzf.pixeltoolkit.ui.features.display.ISLAND_PLACEMENT_FEATURE_ID
 import com.jawzf.pixeltoolkit.ui.features.display.ISLAND_VISUALS_FEATURE_ID
 import com.jawzf.pixeltoolkit.ui.features.system.BACK_GESTURE_FEATURE_ID
-import com.jawzf.pixeltoolkit.utils.DeviceUtils
-import com.jawzf.pixeltoolkit.utils.ShellUtils
 import com.jawzf.pixeltoolkit.utils.hardware.HilightLights
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 

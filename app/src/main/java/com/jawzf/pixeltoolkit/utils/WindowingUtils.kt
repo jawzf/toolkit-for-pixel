@@ -17,11 +17,11 @@ import androidx.core.content.pm.ShortcutInfoCompat
 import androidx.core.content.pm.ShortcutManagerCompat
 import androidx.core.graphics.drawable.IconCompat
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.ui.activities.BubbleWebActivity
 
 object WindowingUtils {
     private const val TAG = "WindowingUtils"
-    const val BUBBLE_CHANNEL_ID = "bubble_web_preview_channel"
     private const val NOTIFICATION_ID = 90210
 
     /**
@@ -39,17 +39,6 @@ object WindowingUtils {
         if (am?.isLowRamDevice == true) return false
 
         return true
-    }
-
-    /**
-     * Checks if notification bubbles are enabled globally in system settings.
-     */
-    fun areNotificationBubblesEnabled(context: Context): Boolean {
-        return try {
-            Settings.Secure.getInt(context.contentResolver, "notification_bubbles", 1) == 1
-        } catch (_: Exception) {
-            true
-        }
     }
 
     /**
@@ -74,7 +63,7 @@ object WindowingUtils {
     fun launchOverlayWindow(context: Context, uri: Uri, isPrivate: Boolean = false): Boolean {
         return try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && isFloatingModeSupported(context)) {
-                if (!areNotificationBubblesEnabled(context) && PermissionUtils.canWriteSecureSettings(context)) {
+                if (!PermissionUtils.areNotificationBubblesEnabled(context) && PermissionUtils.canWriteSecureSettings(context)) {
                     enableNotificationBubbles(context)
                 }
                 launchNativeBubble(context, uri, isPrivate)
@@ -98,7 +87,7 @@ object WindowingUtils {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
-                BUBBLE_CHANNEL_ID,
+                PermissionUtils.BUBBLE_CHANNEL_ID,
                 context.getString(R.string.preview_web_title),
                 NotificationManager.IMPORTANCE_HIGH,
             ).apply {
@@ -182,7 +171,7 @@ object WindowingUtils {
                 )
             )
 
-        val builder = NotificationCompat.Builder(context, BUBBLE_CHANNEL_ID)
+        val builder = NotificationCompat.Builder(context, PermissionUtils.BUBBLE_CHANNEL_ID)
             .setContentTitle(context.getString(R.string.preview_web_title))
             .setContentText(host)
             .setSmallIcon(iconRes)

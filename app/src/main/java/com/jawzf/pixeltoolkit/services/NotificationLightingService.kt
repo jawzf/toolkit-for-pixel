@@ -17,6 +17,7 @@ import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import androidx.core.app.NotificationCompat
+import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.domain.model.DashConfig
 import com.jawzf.pixeltoolkit.domain.model.NotificationLightingColorMode
 import com.jawzf.pixeltoolkit.domain.model.NotificationLightingSide
@@ -479,7 +480,7 @@ class NotificationLightingService : Service() {
     private fun canDrawOverlays(): Boolean = Settings.canDrawOverlays(this)
 
     private fun triggerSystemLighting() {
-        if (!com.jawzf.pixeltoolkit.utils.ShellUtils
+        if (!ShellUtils
                 .hasPermission(this)
         ) {
             return
@@ -502,7 +503,7 @@ class NotificationLightingService : Service() {
                 }
             }
 
-        com.jawzf.pixeltoolkit.utils.ShellUtils
+        ShellUtils
             .runCommand(this, command)
 
         // No need to keep service running for system ripples as they are fire-and-forget

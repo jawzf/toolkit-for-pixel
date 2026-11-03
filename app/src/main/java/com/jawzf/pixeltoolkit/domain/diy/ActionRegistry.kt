@@ -2,7 +2,7 @@ package com.jawzf.pixeltoolkit.domain.diy
 
 import android.os.Build
 import com.jawzf.pixeltoolkit.core.design.R
-import com.jawzf.pixeltoolkit.utils.DeviceUtils
+import com.jawzf.pixeltoolkit.core.platform.device.DeviceUtils
 
 object ActionRegistry {
     data class ActionCategory(

@@ -2,6 +2,7 @@ package com.jawzf.pixeltoolkit.utils
 
 import android.content.Context
 import android.provider.Settings
+import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.domain.model.PowerChoice
 import com.jawzf.pixeltoolkit.domain.model.RemapInput

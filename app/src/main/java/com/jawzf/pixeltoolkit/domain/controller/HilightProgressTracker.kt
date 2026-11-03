@@ -2,11 +2,11 @@ package com.jawzf.pixeltoolkit.domain.controller
 
 import android.content.Context
 import android.os.PowerManager
+import com.jawzf.pixeltoolkit.core.platform.device.DeviceUtils
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.domain.model.HilightProgressColorMode
 import com.jawzf.pixeltoolkit.domain.model.HilightProgressFrames
 import com.jawzf.pixeltoolkit.domain.model.ProgressNotificationData
-import com.jawzf.pixeltoolkit.utils.DeviceUtils
 import com.jawzf.pixeltoolkit.utils.PriorityModeUtil
 import com.jawzf.pixeltoolkit.utils.hardware.HilightLights
 

@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.GlanceAppWidgetReceiver
+import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import kotlinx.coroutines.launch
 
 class BatteriesWidgetReceiver : GlanceAppWidgetReceiver() {
@@ -67,7 +68,7 @@ class BatteriesWidgetReceiver : GlanceAppWidgetReceiver() {
                         com.jawzf.pixeltoolkit.data.repository
                             .SettingsRepository(context)
                     val hasPerm =
-                        com.jawzf.pixeltoolkit.utils.PermissionUtils.hasBluetoothPermission(
+                        PermissionUtils.hasBluetoothPermission(
                             context,
                         )
 

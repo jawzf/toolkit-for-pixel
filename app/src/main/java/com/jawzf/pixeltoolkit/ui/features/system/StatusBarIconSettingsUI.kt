@@ -45,6 +45,7 @@ import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.modifiers.highlight
 import com.jawzf.pixeltoolkit.core.design.pickers.SegmentedPicker
+import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.domain.StatusBarIconRegistry
 import com.jawzf.pixeltoolkit.ui.core.pickers.NetworkTypePicker
 import com.jawzf.pixeltoolkit.ui.core.sheets.HideStatusBarInfoBottomSheet
@@ -95,7 +96,7 @@ fun StatusBarIconSettingsUI(
                         dependentFeatures = listOf(R.string.smart_data_title),
                         actionLabel = R.string.permission_grant_action,
                         action = {
-                            com.jawzf.pixeltoolkit.utils.PermissionUtils.requestPermissionsSafely(
+                            PermissionUtils.requestPermissionsSafely(
                                 context as ComponentActivity,
                                 arrayOf(Manifest.permission.READ_PHONE_STATE),
                                 1001,

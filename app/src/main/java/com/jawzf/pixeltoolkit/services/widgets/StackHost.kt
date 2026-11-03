@@ -26,11 +26,11 @@ import androidx.core.content.ContextCompat
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
+import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.data.repository.WidgetStackRepository
 import com.jawzf.pixeltoolkit.domain.model.WidgetStackConfig
 import com.jawzf.pixeltoolkit.island.plugins.media.MediaSessionSource
 import com.jawzf.pixeltoolkit.utils.CalendarEventUtil
-import com.jawzf.pixeltoolkit.utils.PermissionUtils
 import com.jawzf.pixeltoolkit.utils.battery.BatteryInfoUtil
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

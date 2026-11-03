@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.utils
+package com.jawzf.pixeltoolkit.core.platform.shell
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -8,7 +8,10 @@ import android.content.Intent
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import com.jawzf.pixeltoolkit.core.design.R
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
+import com.jawzf.pixeltoolkit.core.platform.AppComponents
+import com.jawzf.pixeltoolkit.core.platform.PlatformPrefs
+import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuProcessHelper
+import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuUtils
 
 object ShellUtils {
     private var lastAlertTime = 0L
@@ -16,10 +19,10 @@ object ShellUtils {
 
     fun getSelectedMode(context: Context): PrivilegedMode {
         val prefs =
-            context.getSharedPreferences(SettingsRepository.PREFS_NAME, Context.MODE_PRIVATE)
-        val stored = prefs.getString(SettingsRepository.KEY_PRIVILEGED_MODE, null)
+            context.getSharedPreferences(PlatformPrefs.PREFS_NAME, Context.MODE_PRIVATE)
+        val stored = prefs.getString(PlatformPrefs.KEY_PRIVILEGED_MODE, null)
         if (stored != null) return PrivilegedMode.fromKey(stored)
-        return if (prefs.getBoolean(SettingsRepository.KEY_USE_ROOT, false)) {
+        return if (prefs.getBoolean(PlatformPrefs.KEY_USE_ROOT, false)) {
             PrivilegedMode.ROOT
         } else {
             PrivilegedMode.AUTO
@@ -201,7 +204,7 @@ object ShellUtils {
                 return null
             }
             try {
-                com.jawzf.pixeltoolkit.shizuku.ShizukuProcessHelper
+                ShizukuProcessHelper
                     .newProcess(command)
             } catch (e: Exception) {
                 if (notifyOnError) {
@@ -250,10 +253,7 @@ object ShellUtils {
             )
 
         val restartIntent =
-            Intent(
-                context,
-                com.jawzf.pixeltoolkit.services.receivers.ShizukuActionReceiver::class.java,
-            ).apply {
+            Intent().setClassName(context, AppComponents.SHIZUKU_ACTION_RECEIVER).apply {
                 action = "com.jawzf.pixeltoolkit.ACTION_RESTART_SHIZUKU"
             }
         val restartPendingIntent =
