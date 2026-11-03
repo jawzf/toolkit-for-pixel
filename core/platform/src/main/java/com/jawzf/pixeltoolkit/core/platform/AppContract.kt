@@ -10,6 +10,7 @@ object AppComponents {
     const val ACCESSIBILITY_SHORTCUT_SERVICE_2 = "com.jawzf.pixeltoolkit.services.AccessibilityShortcutService2"
     const val ACCESSIBILITY_SHORTCUT_SERVICE_3 = "com.jawzf.pixeltoolkit.services.AccessibilityShortcutService3"
     const val SPLIT_SCREEN_SHORTCUT_SERVICE = "com.jawzf.pixeltoolkit.services.SplitScreenShortcutService"
+    const val FEATURE_SETTINGS_ACTIVITY = "com.jawzf.pixeltoolkit.FeatureSettingsActivity"
 }
 
 /** Preference keys the platform helpers read; the same values as in SettingsRepository. */
@@ -18,4 +19,6 @@ object PlatformPrefs {
     const val KEY_PRIVILEGED_MODE = "privileged_mode"
     const val KEY_USE_ROOT = "use_root"
     const val KEY_SHIZUKU_AUTH_TOKEN = "shizuku_auth_token"
+    const val KEY_SECURE_SENSITIVE_TILES = "secure_sensitive_tiles"
+    const val KEY_ENABLE_UNSUPPORTED_FEATURES = "enable_unsupported_features"
 }

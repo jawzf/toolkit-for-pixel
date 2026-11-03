@@ -11,8 +11,9 @@ import android.widget.Toast
 import androidx.core.content.edit
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
+import com.jawzf.pixeltoolkit.core.platform.AppComponents
+import com.jawzf.pixeltoolkit.core.platform.PlatformPrefs
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -67,7 +68,7 @@ abstract class BaseTileService : TileService() {
     }
 
     private fun setTileAddedState(isAdded: Boolean) {
-        getSharedPreferences("toolkit_prefs", MODE_PRIVATE)
+        getSharedPreferences(PlatformPrefs.PREFS_NAME, MODE_PRIVATE)
             .edit {
                 putBoolean("${this::class.java.name}_is_added", isAdded)
             }
@@ -87,8 +88,10 @@ abstract class BaseTileService : TileService() {
             return
         }
 
-        val settingsRepository = SettingsRepository(this)
-        if (isSensitiveTile && settingsRepository.isSecureSensitiveTilesEnabled() && isLocked) {
+        val secureSensitiveTiles =
+            getSharedPreferences(PlatformPrefs.PREFS_NAME, MODE_PRIVATE)
+                .getBoolean(PlatformPrefs.KEY_SECURE_SENSITIVE_TILES, true)
+        if (isSensitiveTile && secureSensitiveTiles && isLocked) {
             Toast.makeText(
                 this,
                 getString(R.string.qs_tile_unlock_to_use, getTileLabel()),
@@ -123,27 +126,29 @@ abstract class BaseTileService : TileService() {
         }
     }
 
-    protected fun areUnsupportedFeaturesEnabled(): Boolean = SettingsRepository(this).isEnableUnsupportedFeatures()
+    protected fun areUnsupportedFeaturesEnabled(): Boolean =
+        getSharedPreferences(PlatformPrefs.PREFS_NAME, MODE_PRIVATE)
+            .getBoolean(PlatformPrefs.KEY_ENABLE_UNSUPPORTED_FEATURES, false)
 
     protected fun startActivityAndCollapseCompat(intent: Intent) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
             startActivityAndCollapse(PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE))
         } else {
-            @Suppress("DEPRECATION")
+            @Suppress("DEPRECATION", "StartActivityAndCollapseDeprecated")
             startActivityAndCollapse(intent)
         }
     }
 
     protected fun openTilesSettings() {
         val intent =
-            Intent(this, com.jawzf.pixeltoolkit.FeatureSettingsActivity::class.java).apply {
+            Intent().setClassName(this, AppComponents.FEATURE_SETTINGS_ACTIVITY).apply {
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
                 putExtra("feature", "Quick settings tiles")
             }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
             startActivityAndCollapse(PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE))
         } else {
-            @Suppress("DEPRECATION")
+            @Suppress("DEPRECATION", "StartActivityAndCollapseDeprecated")
             startActivityAndCollapse(intent)
         }
     }

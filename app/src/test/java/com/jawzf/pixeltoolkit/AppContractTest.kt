@@ -25,6 +25,7 @@ class AppContractTest {
         assertEquals(AccessibilityShortcutService2::class.java.name, AppComponents.ACCESSIBILITY_SHORTCUT_SERVICE_2)
         assertEquals(AccessibilityShortcutService3::class.java.name, AppComponents.ACCESSIBILITY_SHORTCUT_SERVICE_3)
         assertEquals(SplitScreenShortcutService::class.java.name, AppComponents.SPLIT_SCREEN_SHORTCUT_SERVICE)
+        assertEquals(FeatureSettingsActivity::class.java.name, AppComponents.FEATURE_SETTINGS_ACTIVITY)
     }
 
     @Test
@@ -33,5 +34,7 @@ class AppContractTest {
         assertEquals(SettingsRepository.KEY_PRIVILEGED_MODE, PlatformPrefs.KEY_PRIVILEGED_MODE)
         assertEquals(SettingsRepository.KEY_USE_ROOT, PlatformPrefs.KEY_USE_ROOT)
         assertEquals(SettingsRepository.KEY_SHIZUKU_AUTH_TOKEN, PlatformPrefs.KEY_SHIZUKU_AUTH_TOKEN)
+        assertEquals(SettingsRepository.KEY_SECURE_SENSITIVE_TILES, PlatformPrefs.KEY_SECURE_SENSITIVE_TILES)
+        assertEquals(SettingsRepository.KEY_ENABLE_UNSUPPORTED_FEATURES, PlatformPrefs.KEY_ENABLE_UNSUPPORTED_FEATURES)
     }
 }
