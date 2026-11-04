@@ -80,5 +80,8 @@ class ConnectivitySettings(
     companion object {
         const val KEY_PRIVATE_DNS_PRESETS = "private_dns_presets"
         const val KEY_SIM_NAMES_APPLY_ON_BOOT = "sim_names_apply_on_boot"
+        const val KEY_NETWORK_DOWNLOAD_RATE_LIMIT = "network_download_rate_limit"
+        const val KEY_MOBILE_DATA_ALWAYS_ON = "mobile_data_always_on"
+        const val KEY_WIRELESS_DISPLAY_CERTIFICATION = "wireless_display_certification"
     }
 }

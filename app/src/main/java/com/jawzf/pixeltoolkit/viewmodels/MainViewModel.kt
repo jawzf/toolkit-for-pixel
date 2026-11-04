@@ -72,7 +72,7 @@ import com.jawzf.pixeltoolkit.domain.model.SearchableItem
 import com.jawzf.pixeltoolkit.domain.model.SystemShortcutsState
 import com.jawzf.pixeltoolkit.domain.registry.SearchRegistry
 import com.jawzf.pixeltoolkit.feature.connectivity.ConnectivitySettings
-import com.jawzf.pixeltoolkit.feature.connectivity.dns.DnsPreset
+import com.jawzf.pixeltoolkit.feature.connectivity.ConnectivityState
 import com.jawzf.pixeltoolkit.island.service.IslandStatusBarHider
 import com.jawzf.pixeltoolkit.services.CaffeinateWakeLockService
 import com.jawzf.pixeltoolkit.services.NotificationAutoDismisser
@@ -422,7 +422,7 @@ class MainViewModel : ViewModel() {
     val isNotificationGlanceSameAsLightingEnabled = mutableStateOf(true)
     val isOnboardingCompleted =
         mutableStateOf(true) // Default to true so it doesn't flash on first check if not loaded
-    val dnsPresets = mutableStateListOf<DnsPreset>()
+    val connectivity = ConnectivityState(viewModelScope)
     val addedQSTiles = mutableStateOf<Set<String>>(emptySet())
     val isHideGestureBarEnabled = mutableStateOf(false)
     val isHideGestureBarOnLauncherEnabled = mutableStateOf(false)
@@ -435,9 +435,6 @@ class MainViewModel : ViewModel() {
     val isCircleToSearchPreviewEnabled = mutableStateOf(false)
     val isDisableRotationSuggestionEnabled = mutableStateOf(false)
     val isAllowOverlaysInSettingsEnabled = mutableStateOf(false)
-    val networkDownloadRateLimit = mutableIntStateOf(-1)
-    val isMobileDataAlwaysOnEnabled = mutableStateOf(false)
-    val isWirelessDisplayCertificationEnabled = mutableStateOf(false)
     val isTransparentNavigationBarEnabled = mutableStateOf(false)
     val isSplitScreenGestureEnabled = mutableStateOf(false)
     val isPreferGpuComposingEnabled = mutableStateOf(false)
@@ -641,7 +638,6 @@ class MainViewModel : ViewModel() {
     val notificationSnoozeOptions = mutableStateOf<List<Int>>(listOf(15, 30, 60, 120))
 
     lateinit var settingsRepository: SettingsRepository
-    lateinit var connectivitySettings: ConnectivitySettings
     private var appContext: Context? = null
 
     val gitHubToken = mutableStateOf<String?>(null)
@@ -1448,10 +1444,11 @@ class MainViewModel : ViewModel() {
                         isShakeForHelpEnabled.value = settingsRepository.isShakeForHelpEnabled()
                     }
 
-                    ConnectivitySettings.KEY_PRIVATE_DNS_PRESETS -> {
-                        dnsPresets.clear()
-                        dnsPresets.addAll(connectivitySettings.getPrivateDnsPresets())
-                    }
+                    ConnectivitySettings.KEY_PRIVATE_DNS_PRESETS,
+                    ConnectivitySettings.KEY_NETWORK_DOWNLOAD_RATE_LIMIT,
+                    ConnectivitySettings.KEY_MOBILE_DATA_ALWAYS_ON,
+                    ConnectivitySettings.KEY_WIRELESS_DISPLAY_CERTIFICATION,
+                    -> connectivity.onPreferenceChanged(key, appContext)
 
                     SettingsRepository.KEY_FLASHLIGHT_PULSE_MAX_INTENSITY -> {
                         flashlightPulseMaxIntensity.floatValue =
@@ -1551,39 +1548,6 @@ class MainViewModel : ViewModel() {
                             applyAllowOverlaysInSettings(
                                 it,
                                 isAllowOverlaysInSettingsEnabled.value,
-                            )
-                        }
-                    }
-
-                    SettingsRepository.KEY_NETWORK_DOWNLOAD_RATE_LIMIT -> {
-                        networkDownloadRateLimit.intValue =
-                            settingsRepository.getInt(key, -1)
-                        appContext?.let {
-                            applyNetworkDownloadRateLimit(
-                                it,
-                                networkDownloadRateLimit.intValue,
-                            )
-                        }
-                    }
-
-                    SettingsRepository.KEY_MOBILE_DATA_ALWAYS_ON -> {
-                        isMobileDataAlwaysOnEnabled.value =
-                            settingsRepository.getBoolean(key)
-                        appContext?.let {
-                            applyMobileDataAlwaysOn(
-                                it,
-                                isMobileDataAlwaysOnEnabled.value,
-                            )
-                        }
-                    }
-
-                    SettingsRepository.KEY_WIRELESS_DISPLAY_CERTIFICATION -> {
-                        isWirelessDisplayCertificationEnabled.value =
-                            settingsRepository.getBoolean(key)
-                        appContext?.let {
-                            applyWirelessDisplayCertification(
-                                it,
-                                isWirelessDisplayCertificationEnabled.value,
                             )
                         }
                     }
@@ -1895,7 +1859,6 @@ class MainViewModel : ViewModel() {
     fun check(context: Context) {
         appContext = context.applicationContext
         settingsRepository = SettingsRepository(context)
-        connectivitySettings = ConnectivitySettings(context)
         gitHubUser.value = settingsRepository.getGitHubUser()
 
         // Sync with system per-app language settings
@@ -1962,15 +1925,6 @@ class MainViewModel : ViewModel() {
             settingsRepository.getBoolean(SettingsRepository.KEY_DISABLE_ROTATION_SUGGESTION, false)
         isAllowOverlaysInSettingsEnabled.value =
             settingsRepository.getBoolean(SettingsRepository.KEY_ALLOW_OVERLAYS_IN_SETTINGS, false)
-        networkDownloadRateLimit.intValue =
-            settingsRepository.getInt(SettingsRepository.KEY_NETWORK_DOWNLOAD_RATE_LIMIT, -1)
-        isMobileDataAlwaysOnEnabled.value =
-            settingsRepository.getBoolean(SettingsRepository.KEY_MOBILE_DATA_ALWAYS_ON, false)
-        isWirelessDisplayCertificationEnabled.value =
-            settingsRepository.getBoolean(
-                SettingsRepository.KEY_WIRELESS_DISPLAY_CERTIFICATION,
-                false,
-            )
         isTransparentNavigationBarEnabled.value =
             settingsRepository.getBoolean(SettingsRepository.KEY_TRANSPARENT_NAVIGATION_BAR, false)
         isSplitScreenGestureEnabled.value =
@@ -2793,8 +2747,7 @@ class MainViewModel : ViewModel() {
         isDeveloperModeEnabled.value =
             settingsRepository.getBoolean(SettingsRepository.KEY_DEVELOPER_MODE_ENABLED)
 
-        dnsPresets.clear()
-        dnsPresets.addAll(connectivitySettings.getPrivateDnsPresets())
+        connectivity.load(context)
 
         pinnedFeatureKeys.value = settingsRepository.getPinnedFeatures()
         pinnedQsTileKeys.value = settingsRepository.getPinnedQsTiles()
@@ -3722,167 +3675,6 @@ class MainViewModel : ViewModel() {
         if (!success) {
             viewModelScope.launch(kotlinx.coroutines.Dispatchers.IO) {
                 ShellUtils.runCommand(context, "settings put secure $key $value")
-            }
-        }
-    }
-
-    /**
-     * Executes the set network download rate limit operation.
-     *
-     * @param limit [Int] Target limit.
-     * @param context [Context] Target context.
-     */
-    fun setNetworkDownloadRateLimit(
-        limit: Int,
-        context: Context,
-    ) {
-        networkDownloadRateLimit.intValue = limit
-        settingsRepository.putInt(SettingsRepository.KEY_NETWORK_DOWNLOAD_RATE_LIMIT, limit)
-        applyNetworkDownloadRateLimit(context, limit)
-    }
-
-    /**
-     * Executes the set mobile data always on enabled operation.
-     *
-     * @param enabled [Boolean] Target enabled.
-     * @param context [Context] Target context.
-     */
-    fun setMobileDataAlwaysOnEnabled(
-        enabled: Boolean,
-        context: Context,
-    ) {
-        isMobileDataAlwaysOnEnabled.value = enabled
-        settingsRepository.putBoolean(SettingsRepository.KEY_MOBILE_DATA_ALWAYS_ON, enabled)
-        applyMobileDataAlwaysOn(context, enabled)
-    }
-
-    /**
-     * Executes the set wireless display certification enabled operation.
-     *
-     * @param enabled [Boolean] Target enabled.
-     * @param context [Context] Target context.
-     */
-    fun setWirelessDisplayCertificationEnabled(
-        enabled: Boolean,
-        context: Context,
-    ) {
-        isWirelessDisplayCertificationEnabled.value = enabled
-        settingsRepository.putBoolean(
-            SettingsRepository.KEY_WIRELESS_DISPLAY_CERTIFICATION,
-            enabled,
-        )
-        applyWirelessDisplayCertification(context, enabled)
-    }
-
-    /**
-     * Executes the refresh networks state operation.
-     *
-     * @param context [Context] Target context.
-     */
-    fun refreshNetworksState(context: Context) {
-        try {
-            val liveRateLimit =
-                Settings.Global.getInt(
-                    context.contentResolver,
-                    "ingress_rate_limit_bytes_per_second",
-                    -1,
-                )
-            networkDownloadRateLimit.intValue = liveRateLimit
-            settingsRepository.putInt(
-                SettingsRepository.KEY_NETWORK_DOWNLOAD_RATE_LIMIT,
-                liveRateLimit,
-            )
-        } catch (e: Exception) {
-            // Permission restricted
-        }
-
-        try {
-            val liveMobileData =
-                Settings.Global.getInt(context.contentResolver, "mobile_data_always_on", 0) == 1
-            isMobileDataAlwaysOnEnabled.value = liveMobileData
-            settingsRepository.putBoolean(
-                SettingsRepository.KEY_MOBILE_DATA_ALWAYS_ON,
-                liveMobileData,
-            )
-        } catch (e: Exception) {
-            // Permission restricted
-        }
-
-        try {
-            val liveWirelessDisplay =
-                Settings.Global.getInt(
-                    context.contentResolver,
-                    "wifi_display_certification_on",
-                    0,
-                ) == 1
-            isWirelessDisplayCertificationEnabled.value = liveWirelessDisplay
-            settingsRepository.putBoolean(
-                SettingsRepository.KEY_WIRELESS_DISPLAY_CERTIFICATION,
-                liveWirelessDisplay,
-            )
-        } catch (e: Exception) {
-            // Permission restricted
-        }
-    }
-
-    private fun applyNetworkDownloadRateLimit(
-        context: Context,
-        limit: Int,
-    ) {
-        val key = "ingress_rate_limit_bytes_per_second"
-        var success = false
-        if (PermissionUtils.canWriteSecureSettings(context)) {
-            try {
-                success = Settings.Global.putInt(context.contentResolver, key, limit)
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
-        if (!success) {
-            viewModelScope.launch(kotlinx.coroutines.Dispatchers.IO) {
-                ShellUtils.runCommand(context, "settings put global $key $limit")
-            }
-        }
-    }
-
-    private fun applyMobileDataAlwaysOn(
-        context: Context,
-        enabled: Boolean,
-    ) {
-        val value = if (enabled) 1 else 0
-        val key = "mobile_data_always_on"
-        var success = false
-        if (PermissionUtils.canWriteSecureSettings(context)) {
-            try {
-                success = Settings.Global.putInt(context.contentResolver, key, value)
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
-        if (!success) {
-            viewModelScope.launch(kotlinx.coroutines.Dispatchers.IO) {
-                ShellUtils.runCommand(context, "settings put global $key $value")
-            }
-        }
-    }
-
-    private fun applyWirelessDisplayCertification(
-        context: Context,
-        enabled: Boolean,
-    ) {
-        val value = if (enabled) 1 else 0
-        val key = "wifi_display_certification_on"
-        var success = false
-        if (PermissionUtils.canWriteSecureSettings(context)) {
-            try {
-                success = Settings.Global.putInt(context.contentResolver, key, value)
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
-        if (!success) {
-            viewModelScope.launch(kotlinx.coroutines.Dispatchers.IO) {
-                ShellUtils.runCommand(context, "settings put global $key $value")
             }
         }
     }
@@ -9466,39 +9258,6 @@ class MainViewModel : ViewModel() {
         setOnboardingCompleted(false, context)
         // Reset tab to TOOLKIT
         setDefaultTab(com.jawzf.pixeltoolkit.domain.DIYTabs.TOOLKIT, context)
-    }
-
-    /**
-     * Executes the reset dns presets operation.
-     */
-    fun resetDnsPresets() {
-        connectivitySettings.resetPrivateDnsPresets()
-    }
-
-    /**
-     * Executes the add dns preset operation.
-     *
-     * @param name [String] Target name.
-     * @param hostname [String] Target hostname.
-     */
-    fun addDnsPreset(
-        name: String,
-        hostname: String,
-    ) {
-        val current = connectivitySettings.getPrivateDnsPresets().toMutableList()
-        current.add(DnsPreset(name = name, hostname = hostname))
-        connectivitySettings.savePrivateDnsPresets(current)
-    }
-
-    /**
-     * Executes the remove dns preset operation.
-     *
-     * @param preset [DnsPreset] Target preset.
-     */
-    fun removeDnsPreset(preset: DnsPreset) {
-        val current = connectivitySettings.getPrivateDnsPresets().toMutableList()
-        current.removeAll { it.id == preset.id }
-        connectivitySettings.savePrivateDnsPresets(current)
     }
 
     private fun updateAddedQSTiles(context: Context) {

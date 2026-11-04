@@ -49,6 +49,7 @@ import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.modifiers.highlight
 import com.jawzf.pixeltoolkit.core.design.pickers.HapticFeedbackPicker
 import com.jawzf.pixeltoolkit.core.design.pickers.SegmentedPicker
+import com.jawzf.pixeltoolkit.core.design.sheets.PermissionsBottomSheet
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuPermissionHelper
 import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuStatus
@@ -58,7 +59,6 @@ import com.jawzf.pixeltoolkit.domain.model.PowerChoice
 import com.jawzf.pixeltoolkit.domain.model.RemapInput
 import com.jawzf.pixeltoolkit.domain.model.RemapScreenState
 import com.jawzf.pixeltoolkit.domain.model.RemapSlot
-import com.jawzf.pixeltoolkit.ui.core.sheets.PermissionsBottomSheet
 import com.jawzf.pixeltoolkit.utils.PermissionUIHelper
 import com.jawzf.pixeltoolkit.utils.PowerButtonGestures
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel

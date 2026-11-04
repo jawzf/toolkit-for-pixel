@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.features.system
+package com.jawzf.pixeltoolkit.feature.connectivity.ui
 
 import android.Manifest
 import android.app.Activity
@@ -33,11 +33,10 @@ import com.jawzf.pixeltoolkit.core.design.components.ConfigSliderItem
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.modifiers.highlight
+import com.jawzf.pixeltoolkit.core.design.sheets.PermissionItem
+import com.jawzf.pixeltoolkit.core.design.sheets.PermissionsBottomSheet
 import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
-import com.jawzf.pixeltoolkit.ui.core.sheets.PermissionItem
-import com.jawzf.pixeltoolkit.ui.core.sheets.PermissionsBottomSheet
-import com.jawzf.pixeltoolkit.ui.features.network.sheets.SimNamesBottomSheet
-import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
+import com.jawzf.pixeltoolkit.feature.connectivity.ConnectivityState
 import kotlin.math.roundToInt
 
 private enum class NetworkPermissionModule {
@@ -50,7 +49,11 @@ private enum class NetworkPermissionModule {
 
 @Composable
 fun NetworksSettingsUI(
-    viewModel: MainViewModel,
+    state: ConnectivityState,
+    isShizukuAvailable: Boolean,
+    isShellGranted: Boolean,
+    isWriteSecureSettingsEnabled: Boolean,
+    onRequestShizukuPermission: () -> Unit,
     modifier: Modifier = Modifier,
     highlightSetting: String? = null,
 ) {
@@ -100,16 +103,10 @@ fun NetworksSettingsUI(
             )
         }
 
-    val isShizukuAvailable = viewModel.isShizukuAvailable.value
-    val isShizukuGranted = viewModel.isShizukuPermissionGranted.value
-    val isRootAvailable = viewModel.isRootAvailable.value
-    val isRootGranted = viewModel.isRootPermissionGranted.value
-    val isShellGranted =
-        (isShizukuAvailable && isShizukuGranted) || (isRootAvailable && isRootGranted)
-    val isHasWritePermission = viewModel.isWriteSecureSettingsEnabled.value || isShellGranted
+    val isHasWritePermission = isWriteSecureSettingsEnabled || isShellGranted
 
     LaunchedEffect(Unit) {
-        viewModel.refreshNetworksState(context)
+        state.refreshNetworksState(context)
     }
 
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -117,7 +114,7 @@ fun NetworksSettingsUI(
         val observer =
             LifecycleEventObserver { _, event ->
                 if (event == Lifecycle.Event.ON_RESUME) {
-                    viewModel.refreshNetworksState(context)
+                    state.refreshNetworksState(context)
                 }
             }
         lifecycleOwner.lifecycle.addObserver(observer)
@@ -174,7 +171,7 @@ fun NetworksSettingsUI(
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                         context.startActivity(intent)
                     } else {
-                        viewModel.requestShizukuPermission()
+                        onRequestShizukuPermission()
                     }
                 },
                 isGranted = isShellGranted,
@@ -229,7 +226,7 @@ fun NetworksSettingsUI(
             spacing = 2.dp,
             cornerRadius = 24.dp,
         ) {
-            val currentRateLimit = viewModel.networkDownloadRateLimit.intValue
+            val currentRateLimit = state.networkDownloadRateLimit.intValue
             val currentIndex =
                 remember(currentRateLimit) {
                     val idx = presetValues.indexOf(currentRateLimit)
@@ -252,7 +249,7 @@ fun NetworksSettingsUI(
                     if (presetValues[newIndex] != currentRateLimit) {
                         HapticUtil.performSliderHaptic(view)
                         if (isHasWritePermission) {
-                            viewModel.setNetworkDownloadRateLimit(presetValues[newIndex], context)
+                            state.setNetworkDownloadRateLimit(presetValues[newIndex], context)
                         } else {
                             requestingPermissionFor = NetworkPermissionModule.RATE_LIMIT
                         }
@@ -277,10 +274,10 @@ fun NetworksSettingsUI(
             IconToggleItem(
                 title = stringResource(R.string.feat_mobile_data_always_on_title),
                 description = stringResource(R.string.feat_mobile_data_always_on_desc),
-                isChecked = viewModel.isMobileDataAlwaysOnEnabled.value,
+                isChecked = state.isMobileDataAlwaysOnEnabled.value,
                 onCheckedChange = { enabled ->
                     if (isHasWritePermission) {
-                        viewModel.setMobileDataAlwaysOnEnabled(enabled, context)
+                        state.setMobileDataAlwaysOnEnabled(enabled, context)
                     } else {
                         requestingPermissionFor = NetworkPermissionModule.MOBILE_DATA_ALWAYS_ON
                     }
@@ -302,10 +299,10 @@ fun NetworksSettingsUI(
             IconToggleItem(
                 title = stringResource(R.string.feat_wireless_display_certification_title),
                 description = stringResource(R.string.feat_wireless_display_certification_desc),
-                isChecked = viewModel.isWirelessDisplayCertificationEnabled.value,
+                isChecked = state.isWirelessDisplayCertificationEnabled.value,
                 onCheckedChange = { enabled ->
                     if (isHasWritePermission) {
-                        viewModel.setWirelessDisplayCertificationEnabled(enabled, context)
+                        state.setWirelessDisplayCertificationEnabled(enabled, context)
                     } else {
                         requestingPermissionFor =
                             NetworkPermissionModule.WIRELESS_DISPLAY_CERTIFICATION

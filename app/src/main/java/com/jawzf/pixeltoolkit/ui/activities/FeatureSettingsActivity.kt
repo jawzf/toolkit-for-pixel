@@ -59,6 +59,7 @@ import com.jawzf.pixeltoolkit.core.design.modifiers.highlight
 import com.jawzf.pixeltoolkit.core.design.modifiers.progressiveBlur
 import com.jawzf.pixeltoolkit.core.design.modifiers.scrollMotionBlur
 import com.jawzf.pixeltoolkit.core.design.sheets.InstructionsBottomSheet
+import com.jawzf.pixeltoolkit.core.design.sheets.PermissionsBottomSheet
 import com.jawzf.pixeltoolkit.core.design.state.LocalMenuStateManager
 import com.jawzf.pixeltoolkit.core.design.state.MenuStateManager
 import com.jawzf.pixeltoolkit.core.design.theme.ToolkitTheme
@@ -66,8 +67,8 @@ import com.jawzf.pixeltoolkit.core.platform.device.DeviceUtils
 import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.domain.registry.FeatureRegistry
+import com.jawzf.pixeltoolkit.feature.connectivity.ui.NetworksSettingsUI
 import com.jawzf.pixeltoolkit.ui.components.linkActions.LinkPickerScreen
-import com.jawzf.pixeltoolkit.ui.core.sheets.PermissionsBottomSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.ShakeForHelp
 import com.jawzf.pixeltoolkit.ui.features.battery.BatteriesSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.consciousgate.CONSCIOUS_GATE_FEATURE_ID
@@ -113,7 +114,6 @@ import com.jawzf.pixeltoolkit.ui.features.system.LockScreenClockSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.LockscreenShortcutsSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.MapsPowerSavingSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.NavigationSettingsUI
-import com.jawzf.pixeltoolkit.ui.features.system.NetworksSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.NotificationLightingSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.NotificationSnoozingSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.OtherCustomizationsSettingsUI
@@ -1295,7 +1295,13 @@ class FeatureSettingsActivity : AppCompatActivity() {
 
                                     "Networks" -> {
                                         NetworksSettingsUI(
-                                            viewModel = viewModel,
+                                            state = viewModel.connectivity,
+                                            isShizukuAvailable = viewModel.isShizukuAvailable.value,
+                                            isShellGranted =
+                                                (viewModel.isShizukuAvailable.value && viewModel.isShizukuPermissionGranted.value) ||
+                                                    (viewModel.isRootAvailable.value && viewModel.isRootPermissionGranted.value),
+                                            isWriteSecureSettingsEnabled = viewModel.isWriteSecureSettingsEnabled.value,
+                                            onRequestShizukuPermission = { viewModel.requestShizukuPermission() },
                                             modifier = Modifier.padding(top = 16.dp),
                                             highlightSetting = highlightSetting,
                                         )

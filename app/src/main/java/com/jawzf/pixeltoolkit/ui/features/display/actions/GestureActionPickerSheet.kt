@@ -29,6 +29,7 @@ import com.jawzf.pixeltoolkit.core.design.cards.IconToggleItem
 import com.jawzf.pixeltoolkit.core.design.components.CategoryExpandableSection
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
+import com.jawzf.pixeltoolkit.core.design.sheets.PermissionsBottomSheet
 import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
@@ -44,7 +45,6 @@ import com.jawzf.pixeltoolkit.ui.core.sheets.DimWallpaperSettingsSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.FreezeTagSettingsSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.HilightEffectSettingsSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.OpenActivityPicker
-import com.jawzf.pixeltoolkit.ui.core.sheets.PermissionsBottomSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.ScreenOffSettingsSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.SingleAppSelectionSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.SometimesEssentialsSettingsSheet

@@ -45,12 +45,12 @@ import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.modifiers.highlight
 import com.jawzf.pixeltoolkit.core.design.pickers.SegmentedPicker
+import com.jawzf.pixeltoolkit.core.design.sheets.PermissionItem
+import com.jawzf.pixeltoolkit.core.design.sheets.PermissionsBottomSheet
 import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.domain.StatusBarIconRegistry
 import com.jawzf.pixeltoolkit.ui.core.pickers.NetworkTypePicker
 import com.jawzf.pixeltoolkit.ui.core.sheets.HideStatusBarInfoBottomSheet
-import com.jawzf.pixeltoolkit.ui.core.sheets.PermissionItem
-import com.jawzf.pixeltoolkit.ui.core.sheets.PermissionsBottomSheet
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 import com.jawzf.pixeltoolkit.viewmodels.StatusBarIconViewModel
 

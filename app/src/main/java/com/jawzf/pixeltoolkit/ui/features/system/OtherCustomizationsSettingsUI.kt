@@ -25,9 +25,9 @@ import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.cards.IconToggleItem
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.modifiers.highlight
+import com.jawzf.pixeltoolkit.core.design.sheets.PermissionItem
+import com.jawzf.pixeltoolkit.core.design.sheets.PermissionsBottomSheet
 import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
-import com.jawzf.pixeltoolkit.ui.core.sheets.PermissionItem
-import com.jawzf.pixeltoolkit.ui.core.sheets.PermissionsBottomSheet
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 
 enum class PermissionModule {

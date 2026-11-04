@@ -90,6 +90,8 @@ import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.modifiers.liquidRipple
 import com.jawzf.pixeltoolkit.core.design.modifiers.scrollMotionBlur
 import com.jawzf.pixeltoolkit.core.design.sheets.InstructionsBottomSheet
+import com.jawzf.pixeltoolkit.core.design.sheets.PermissionItem
+import com.jawzf.pixeltoolkit.core.design.sheets.PermissionsBottomSheet
 import com.jawzf.pixeltoolkit.core.platform.device.DeviceUtils
 import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.core.platform.shell.RootUtils
@@ -100,8 +102,6 @@ import com.jawzf.pixeltoolkit.ui.activities.PixelSearchbarSettingsActivity
 import com.jawzf.pixeltoolkit.ui.activities.WallpaperActivity
 import com.jawzf.pixeltoolkit.ui.activities.YourAndroidActivity
 import com.jawzf.pixeltoolkit.ui.components.FavoriteCarousel
-import com.jawzf.pixeltoolkit.ui.core.sheets.PermissionItem
-import com.jawzf.pixeltoolkit.ui.core.sheets.PermissionsBottomSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.ReorderFavoritesBottomSheet
 import com.jawzf.pixeltoolkit.ui.features.freeze.FrozenAppsSearchResultCard
 import com.jawzf.pixeltoolkit.ui.features.permissions.PermissionsSearchResultCard

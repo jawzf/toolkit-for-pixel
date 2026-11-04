@@ -75,12 +75,13 @@ import com.jawzf.pixeltoolkit.core.design.modifiers.BlurDirection
 import com.jawzf.pixeltoolkit.core.design.modifiers.progressiveBlur
 import com.jawzf.pixeltoolkit.core.design.modifiers.scrollMotionBlur
 import com.jawzf.pixeltoolkit.core.design.pickers.SegmentedPicker
+import com.jawzf.pixeltoolkit.core.design.sheets.PermissionItem
+import com.jawzf.pixeltoolkit.core.design.sheets.PermissionsBottomSheet
 import com.jawzf.pixeltoolkit.core.design.theme.ToolkitTheme
 import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.domain.model.Feature
 import com.jawzf.pixeltoolkit.services.widgets.WidgetScraperService
 import com.jawzf.pixeltoolkit.ui.core.sheets.FeatureHelpBottomSheet
-import com.jawzf.pixeltoolkit.ui.core.sheets.PermissionsBottomSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.ShakeForHelp
 import com.jawzf.pixeltoolkit.ui.features.widgets.WidgetPickerSheet
 import com.jawzf.pixeltoolkit.utils.PermissionUIHelper
@@ -1053,7 +1054,7 @@ fun PixelSearchbarSettingsUI(
         val permItem =
             remember(key, isPermGranted, context, viewModel) {
                 if (key == "MEDIA") {
-                    com.jawzf.pixeltoolkit.ui.core.sheets.PermissionItem(
+                    PermissionItem(
                         iconRes = R.drawable.rounded_image_24,
                         title = R.string.perm_files_media_title,
                         description = R.string.perm_files_media_desc,
@@ -1077,7 +1078,7 @@ fun PixelSearchbarSettingsUI(
                         isGranted = isPermGranted,
                     )
                 } else if (key == "ALL_FILES") {
-                    com.jawzf.pixeltoolkit.ui.core.sheets.PermissionItem(
+                    PermissionItem(
                         iconRes = R.drawable.rounded_folder_24,
                         title = R.string.perm_all_files_title,
                         description = R.string.perm_all_files_desc,
@@ -1089,7 +1090,7 @@ fun PixelSearchbarSettingsUI(
                         isGranted = isPermGranted,
                     )
                 } else if (key == "READ_CONTACTS") {
-                    com.jawzf.pixeltoolkit.ui.core.sheets.PermissionItem(
+                    PermissionItem(
                         iconRes = R.drawable.rounded_call_24,
                         title = R.string.perm_contacts_title,
                         description = R.string.perm_contacts_desc,

@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.features.network.sheets
+package com.jawzf.pixeltoolkit.feature.connectivity.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

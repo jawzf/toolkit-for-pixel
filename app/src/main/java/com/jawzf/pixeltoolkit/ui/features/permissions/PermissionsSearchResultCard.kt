@@ -37,7 +37,7 @@ import com.jawzf.pixeltoolkit.core.design.cards.FeatureCard
 import com.jawzf.pixeltoolkit.core.design.components.ListExpandToggleButton
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
-import com.jawzf.pixeltoolkit.ui.core.sheets.PermissionItem
+import com.jawzf.pixeltoolkit.core.design.sheets.PermissionItem
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 
 @Composable

@@ -39,6 +39,7 @@ import com.jawzf.pixeltoolkit.core.design.cards.IconToggleItem
 import com.jawzf.pixeltoolkit.core.design.components.CategoryExpandableSection
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
+import com.jawzf.pixeltoolkit.core.design.sheets.PermissionsBottomSheet
 import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.domain.diy.Action
@@ -658,7 +659,7 @@ fun ActionSequenceEditor(
                 viewModel,
             )
         if (permissionItems.isNotEmpty()) {
-            com.jawzf.pixeltoolkit.ui.core.sheets.PermissionsBottomSheet(
+            PermissionsBottomSheet(
                 onDismissRequest = {
                     showPermissionSheet = false
                     permissionKeysToShow = emptyList()
