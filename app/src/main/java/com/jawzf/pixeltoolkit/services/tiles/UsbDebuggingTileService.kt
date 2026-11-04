@@ -8,6 +8,7 @@ import com.jawzf.pixeltoolkit.FeatureSettingsActivity
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuUtils.toggleShizuku
+import com.jawzf.pixeltoolkit.core.platform.tiles.BaseTileService
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 

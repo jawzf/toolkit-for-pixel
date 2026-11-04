@@ -5,6 +5,7 @@ import android.provider.Settings
 import android.service.quicksettings.Tile
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
+import com.jawzf.pixeltoolkit.core.platform.tiles.BaseTileService
 
 class StayAwakeTileService : BaseTileService() {
     override fun onTileClick() {

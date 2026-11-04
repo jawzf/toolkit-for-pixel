@@ -5,6 +5,7 @@ import android.service.quicksettings.Tile
 import androidx.core.content.edit
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
+import com.jawzf.pixeltoolkit.core.platform.tiles.BaseTileService
 
 class NotificationLightingTileService : BaseTileService() {
     override fun onTileClick() {

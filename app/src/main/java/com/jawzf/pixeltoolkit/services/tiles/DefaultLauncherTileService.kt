@@ -8,6 +8,7 @@ import android.provider.Settings
 import android.service.quicksettings.Tile
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
+import com.jawzf.pixeltoolkit.core.platform.tiles.BaseTileService
 import com.jawzf.pixeltoolkit.utils.LauncherUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay

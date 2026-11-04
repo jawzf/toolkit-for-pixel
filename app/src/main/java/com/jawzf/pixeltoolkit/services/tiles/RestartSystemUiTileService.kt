@@ -9,6 +9,7 @@ import com.jawzf.pixeltoolkit.FeatureSettingsActivity
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.platform.shell.RootUtils
 import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuUtils
+import com.jawzf.pixeltoolkit.core.platform.tiles.BaseTileService
 
 @RequiresApi(Build.VERSION_CODES.N)
 class RestartSystemUiTileService : BaseTileService() {

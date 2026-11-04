@@ -5,6 +5,7 @@ import android.content.pm.PackageManager
 import android.graphics.drawable.Icon
 import android.service.quicksettings.Tile
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.platform.tiles.BaseTileService
 
 class HeadsUpNotificationsTileService : BaseTileService() {
     override fun getTileLabel(): String = getString(R.string.tile_heads_up_notifications)

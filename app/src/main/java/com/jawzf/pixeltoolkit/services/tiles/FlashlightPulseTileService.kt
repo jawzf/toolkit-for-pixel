@@ -2,6 +2,7 @@ package com.jawzf.pixeltoolkit.services.tiles
 
 import android.service.quicksettings.Tile
 import androidx.core.content.edit
+import com.jawzf.pixeltoolkit.core.platform.tiles.BaseTileService
 
 class FlashlightPulseTileService : BaseTileService() {
     override fun onTileClick() {
