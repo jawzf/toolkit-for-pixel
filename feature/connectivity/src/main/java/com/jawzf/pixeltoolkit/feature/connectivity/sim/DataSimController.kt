@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.services.tiles
+package com.jawzf.pixeltoolkit.feature.connectivity.sim
 
 import android.content.Context
 import android.os.Build
@@ -14,7 +14,7 @@ import rikka.shizuku.ShizukuBinderWrapper
 import rikka.shizuku.SystemServiceHelper
 import java.lang.reflect.InvocationTargetException
 
-internal object DataSimController {
+object DataSimController {
     private const val SUB_INTERFACE = "com.android.internal.telephony.ISub"
     private const val PHONE_INTERFACE = "com.android.internal.telephony.ITelephony"
     private var exemptionsApplied = false

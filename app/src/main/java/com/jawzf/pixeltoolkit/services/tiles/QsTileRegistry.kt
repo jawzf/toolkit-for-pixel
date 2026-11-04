@@ -4,6 +4,10 @@ import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.core.platform.tiles.BaseTileService
+import com.jawzf.pixeltoolkit.feature.connectivity.dns.PrivateDnsTileService
+import com.jawzf.pixeltoolkit.feature.connectivity.nfc.NfcTileService
+import com.jawzf.pixeltoolkit.feature.connectivity.sim.DataSimController
+import com.jawzf.pixeltoolkit.feature.connectivity.sim.DataSimTileService
 
 object QsTileRegistry {
     data class QsTileEntry(
@@ -263,9 +267,10 @@ object QsTileRegistry {
                     context.getString(if (HapticsSettings.isEnabled(context)) R.string.tile_active else R.string.tile_inactive)
                 DataSimTileService::class.java.name -> {
                     val state = DataSimController.lastKnownState
+                    val selected = state?.selected
                     when {
                         !PermissionUtils.hasReadPhoneStatePermission(context) || !ShellUtils.hasPermission(context) -> context.getString(R.string.permission_missing)
-                        state?.selected != null -> state.selected.name ?: context.getString(R.string.tile_data_sim_slot, state.selected.slot + 1)
+                        selected != null -> selected.name ?: context.getString(R.string.tile_data_sim_slot, selected.slot + 1)
                         state == null -> context.getString(R.string.tile_data_sim_loading)
                         else -> context.getString(R.string.tile_data_sim_no_selection)
                     }

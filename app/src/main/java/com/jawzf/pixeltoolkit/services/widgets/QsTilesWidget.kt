@@ -45,8 +45,8 @@ import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.color.ColorUtil
 import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.services.tiles.DataSimController
-import com.jawzf.pixeltoolkit.services.tiles.DataSimTileService
+import com.jawzf.pixeltoolkit.feature.connectivity.sim.DataSimController
+import com.jawzf.pixeltoolkit.feature.connectivity.sim.DataSimTileService
 import com.jawzf.pixeltoolkit.services.tiles.QsTileRegistry
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

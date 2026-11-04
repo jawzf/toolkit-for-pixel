@@ -12,9 +12,9 @@ import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.core.platform.tiles.BaseTileService
 import com.jawzf.pixeltoolkit.domain.controller.CaffeinateController
+import com.jawzf.pixeltoolkit.feature.connectivity.sim.DataSimController
+import com.jawzf.pixeltoolkit.feature.connectivity.sim.DataSimTileService
 import com.jawzf.pixeltoolkit.services.tiles.CaffeinateTileService
-import com.jawzf.pixeltoolkit.services.tiles.DataSimController
-import com.jawzf.pixeltoolkit.services.tiles.DataSimTileService
 import com.jawzf.pixeltoolkit.services.tiles.FlashlightTileService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

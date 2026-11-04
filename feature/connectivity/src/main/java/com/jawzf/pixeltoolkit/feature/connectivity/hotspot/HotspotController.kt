@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.domain.controller
+package com.jawzf.pixeltoolkit.feature.connectivity.hotspot
 
 import android.content.Context
 import android.os.Binder
@@ -18,7 +18,7 @@ import java.lang.reflect.InvocationTargetException
 import java.lang.reflect.Proxy
 
 // Same path as the Settings hotspot toggle; cmd wifi start-softap doesn't share internet
-internal object HotspotController {
+object HotspotController {
     private const val TAG = "HotspotController"
     private const val CONNECTOR = "android.net.ITetheringConnector"
     private const val LISTENER = "android.net.IIntResultListener"

@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.shizuku
+package com.jawzf.pixeltoolkit.feature.connectivity.sim
 
 import android.app.Activity
 import android.app.IActivityManager
