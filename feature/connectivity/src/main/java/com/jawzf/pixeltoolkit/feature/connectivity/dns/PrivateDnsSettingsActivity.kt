@@ -36,10 +36,10 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -54,20 +54,18 @@ import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.pickers.SegmentedPicker
 import com.jawzf.pixeltoolkit.core.design.theme.ToolkitTheme
+import com.jawzf.pixeltoolkit.core.platform.PlatformPrefs
+import com.jawzf.pixeltoolkit.feature.connectivity.ConnectivitySettings
+import com.jawzf.pixeltoolkit.feature.connectivity.ConnectivityState
 
 class PrivateDnsSettingsActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            val viewModel: com.jawzf.pixeltoolkit.viewmodels.MainViewModel =
-                androidx.lifecycle.viewmodel.compose
-                    .viewModel()
             val context = LocalContext.current
-            LaunchedEffect(Unit) {
-                viewModel.check(context)
-            }
-            val isPitchBlackThemeEnabled by viewModel.isPitchBlackThemeEnabled
+            val isPitchBlackThemeEnabled =
+                remember { ConnectivitySettings(context).getBoolean(PlatformPrefs.KEY_PITCH_BLACK_THEME_ENABLED) }
             ToolkitTheme(pitchBlackTheme = isPitchBlackThemeEnabled) {
                 PrivateDnsSettingsOverlay(onDismiss = { finish() })
             }
@@ -80,9 +78,8 @@ class PrivateDnsSettingsActivity : ComponentActivity() {
 fun PrivateDnsSettingsOverlay(onDismiss: () -> Unit) {
     val context = LocalContext.current
     val view = LocalView.current
-    val viewModel: com.jawzf.pixeltoolkit.viewmodels.MainViewModel =
-        androidx.lifecycle.viewmodel.compose
-            .viewModel()
+    val scope = rememberCoroutineScope()
+    val state = remember { ConnectivityState(scope).also { it.load(context) } }
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
     val PRIVATE_DNS_MODE = "private_dns_mode"
@@ -101,8 +98,7 @@ fun PrivateDnsSettingsOverlay(onDismiss: () -> Unit) {
 
     val settingsRepository =
         remember {
-            com.jawzf.pixeltoolkit.data.repository
-                .SettingsRepository(context)
+            ConnectivitySettings(context)
         }
     var cycleAuto by remember {
         mutableStateOf(settingsRepository.getBoolean("private_dns_cycle_auto", true))
@@ -320,7 +316,7 @@ fun PrivateDnsSettingsOverlay(onDismiss: () -> Unit) {
                         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                             OutlinedButton(
                                 onClick = {
-                                    viewModel.resetDnsPresets()
+                                    state.resetDnsPresets()
                                     HapticUtil.performUIHaptic(view)
                                 },
                                 modifier = Modifier.height(32.dp),
@@ -367,7 +363,7 @@ fun PrivateDnsSettingsOverlay(onDismiss: () -> Unit) {
                         AddDnsPresetDialog(
                             onDismiss = { showAddDialog = false },
                             onConfirm = { name, host ->
-                                viewModel.addDnsPreset(
+                                state.addDnsPreset(
                                     name,
                                     host,
                                 )
@@ -379,7 +375,7 @@ fun PrivateDnsSettingsOverlay(onDismiss: () -> Unit) {
 
                     RoundedCardContainer {
                         val presets =
-                            viewModel.dnsPresets
+                            state.dnsPresets
 
                         presets.forEach { preset ->
                             DnsPresetItem(
@@ -393,7 +389,7 @@ fun PrivateDnsSettingsOverlay(onDismiss: () -> Unit) {
                                     }
                                 },
                                 onDelete = {
-                                    viewModel.removeDnsPreset(
+                                    state.removeDnsPreset(
                                         preset,
                                     )
                                     HapticUtil.performUIHaptic(view)

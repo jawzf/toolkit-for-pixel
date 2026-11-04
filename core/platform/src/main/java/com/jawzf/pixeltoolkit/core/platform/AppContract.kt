@@ -21,4 +21,5 @@ object PlatformPrefs {
     const val KEY_SHIZUKU_AUTH_TOKEN = "shizuku_auth_token"
     const val KEY_SECURE_SENSITIVE_TILES = "secure_sensitive_tiles"
     const val KEY_ENABLE_UNSUPPORTED_FEATURES = "enable_unsupported_features"
+    const val KEY_PITCH_BLACK_THEME_ENABLED = "pitch_black_theme_enabled"
 }

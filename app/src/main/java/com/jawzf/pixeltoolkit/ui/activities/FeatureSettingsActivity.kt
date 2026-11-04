@@ -1295,7 +1295,13 @@ class FeatureSettingsActivity : AppCompatActivity() {
 
                                     "Networks" -> {
                                         NetworksSettingsUI(
-                                            viewModel = viewModel,
+                                            state = viewModel.connectivity,
+                                            isShizukuAvailable = viewModel.isShizukuAvailable.value,
+                                            isShellGranted =
+                                                (viewModel.isShizukuAvailable.value && viewModel.isShizukuPermissionGranted.value) ||
+                                                    (viewModel.isRootAvailable.value && viewModel.isRootPermissionGranted.value),
+                                            isWriteSecureSettingsEnabled = viewModel.isWriteSecureSettingsEnabled.value,
+                                            onRequestShizukuPermission = { viewModel.requestShizukuPermission() },
                                             modifier = Modifier.padding(top = 16.dp),
                                             highlightSetting = highlightSetting,
                                         )

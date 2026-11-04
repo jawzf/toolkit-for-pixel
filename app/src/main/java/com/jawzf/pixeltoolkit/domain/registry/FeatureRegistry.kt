@@ -525,7 +525,7 @@ object FeatureRegistry {
                 hasMoreSettings = false,
                 showToggle = false,
             ) {
-                override fun isEnabled(viewModel: MainViewModel) = viewModel.networkDownloadRateLimit.intValue != -1
+                override fun isEnabled(viewModel: MainViewModel) = viewModel.connectivity.networkDownloadRateLimit.intValue != -1
 
                 override fun onToggle(
                     viewModel: MainViewModel,
@@ -544,13 +544,13 @@ object FeatureRegistry {
                 parentFeatureId = "Networks",
                 hasMoreSettings = false,
             ) {
-                override fun isEnabled(viewModel: MainViewModel) = viewModel.isMobileDataAlwaysOnEnabled.value
+                override fun isEnabled(viewModel: MainViewModel) = viewModel.connectivity.isMobileDataAlwaysOnEnabled.value
 
                 override fun onToggle(
                     viewModel: MainViewModel,
                     context: Context,
                     enabled: Boolean,
-                ) = viewModel.setMobileDataAlwaysOnEnabled(enabled, context)
+                ) = viewModel.connectivity.setMobileDataAlwaysOnEnabled(enabled, context)
             },
             object : Feature(
                 id = "Wireless display certification",
@@ -563,13 +563,13 @@ object FeatureRegistry {
                 parentFeatureId = "Networks",
                 hasMoreSettings = false,
             ) {
-                override fun isEnabled(viewModel: MainViewModel) = viewModel.isWirelessDisplayCertificationEnabled.value
+                override fun isEnabled(viewModel: MainViewModel) = viewModel.connectivity.isWirelessDisplayCertificationEnabled.value
 
                 override fun onToggle(
                     viewModel: MainViewModel,
                     context: Context,
                     enabled: Boolean,
-                ) = viewModel.setWirelessDisplayCertificationEnabled(enabled, context)
+                ) = viewModel.connectivity.setWirelessDisplayCertificationEnabled(enabled, context)
             },
             object : Feature(
                 id = "SIM names",

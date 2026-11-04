@@ -31,13 +31,11 @@ import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.jawzf.pixeltoolkit.SettingsActivity
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.cards.PermissionCard
 import com.jawzf.pixeltoolkit.core.design.components.ListExpandToggleButton
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
-import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
 
 data class PermissionItem(
     val iconRes: Int,
@@ -101,7 +99,7 @@ fun PermissionsBottomSheet(
                         HapticUtil.performUIHaptic(view)
                         onDismissRequest()
                         val intent =
-                            Intent(context, SettingsActivity::class.java).apply {
+                            Intent().setClassName(context, SETTINGS_ACTIVITY).apply {
                                 putExtra("expand_permissions", true)
                             }
                         context.startActivity(intent)
@@ -193,3 +191,5 @@ fun PermissionsBottomSheet(
         }
     }
 }
+
+private const val SETTINGS_ACTIVITY = "com.jawzf.pixeltoolkit.SettingsActivity"

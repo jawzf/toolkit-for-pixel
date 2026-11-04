@@ -43,6 +43,14 @@
                 android:name="android.service.quicksettings.TILE_CATEGORY"
                 android:value="android.service.quicksettings.CATEGORY_CONNECTIVITY" />
         </service>
+
+        <activity
+            android:name="com.jawzf.pixeltoolkit.feature.connectivity.dns.PrivateDnsSettingsActivity"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:noHistory="true"
+            android:taskAffinity=""
+            android:theme="@style/Theme.Toolkit.Translucent" />
     </application>
 
     <instrumentation

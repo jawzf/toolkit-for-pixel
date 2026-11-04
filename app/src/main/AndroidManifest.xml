@@ -580,14 +580,6 @@
             android:theme="@style/Theme.Toolkit.Translucent" />
 
         <activity
-            android:name=".ui.activities.PrivateDnsSettingsActivity"
-            android:excludeFromRecents="true"
-            android:exported="true"
-            android:noHistory="true"
-            android:taskAffinity=""
-            android:theme="@style/Theme.Toolkit.Translucent" />
-
-        <activity
             android:name=".ui.activities.DefaultLauncherSettingsActivity"
             android:excludeFromRecents="true"
             android:exported="false"
