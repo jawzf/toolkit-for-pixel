@@ -83,6 +83,7 @@ import com.jawzf.pixeltoolkit.core.design.modifiers.BlurDirection
 import com.jawzf.pixeltoolkit.core.design.modifiers.progressiveBlur
 import com.jawzf.pixeltoolkit.core.design.modifiers.scrollMotionBlur
 import com.jawzf.pixeltoolkit.core.design.pickers.SegmentedPicker
+import com.jawzf.pixeltoolkit.core.design.sheets.PermissionsBottomSheet
 import com.jawzf.pixeltoolkit.core.design.theme.ToolkitTheme
 import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
@@ -1551,7 +1552,7 @@ class AutomationEditorActivity : ComponentActivity() {
                                     this@AutomationEditorActivity,
                                 )
                             if (permissionItems.isNotEmpty()) {
-                                com.jawzf.pixeltoolkit.ui.core.sheets.PermissionsBottomSheet(
+                                PermissionsBottomSheet(
                                     onDismissRequest = {
                                         showPermissionSheet = false
                                         permissionKeysToShow = emptyList()

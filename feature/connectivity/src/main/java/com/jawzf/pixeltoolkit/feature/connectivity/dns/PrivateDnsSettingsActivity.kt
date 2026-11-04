@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.activities
+package com.jawzf.pixeltoolkit.feature.connectivity.dns
 
 import android.os.Bundle
 import android.provider.Settings
