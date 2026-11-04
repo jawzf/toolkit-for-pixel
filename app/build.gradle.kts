@@ -82,6 +82,7 @@ dependencies {
     implementation(project(":core:design"))
     implementation(project(":core:platform"))
     implementation(project(":core:data"))
+    implementation(project(":feature:connectivity"))
     compileOnly(project(":stub"))
     implementation(libs.aboutlibraries.core)
     implementation(libs.aboutlibraries.compose.m3)

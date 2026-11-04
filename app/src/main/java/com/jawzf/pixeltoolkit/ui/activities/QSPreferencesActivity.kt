@@ -9,6 +9,8 @@ import android.provider.Settings
 import android.util.Log
 import androidx.activity.ComponentActivity
 import com.jawzf.pixeltoolkit.FeatureSettingsActivity
+import com.jawzf.pixeltoolkit.feature.connectivity.dns.PrivateDnsTileService
+import com.jawzf.pixeltoolkit.feature.connectivity.nfc.NfcTileService
 import com.jawzf.pixeltoolkit.feature.connectivity.sim.DataSimTileService
 import com.jawzf.pixeltoolkit.utils.DeviceLockUtils
 
@@ -74,7 +76,7 @@ class QSPreferencesActivity : ComponentActivity() {
                 return
             }
 
-            if (componentName.className == "com.jawzf.pixeltoolkit.services.tiles.PrivateDnsTileService") {
+            if (componentName.className == PrivateDnsTileService::class.java.name) {
                 val intent =
                     Intent(this, PrivateDnsSettingsActivity::class.java).apply {
                         flags = Intent.FLAG_ACTIVITY_NEW_TASK
@@ -158,7 +160,7 @@ class QSPreferencesActivity : ComponentActivity() {
                     "com.jawzf.pixeltoolkit.services.tiles.AppFreezingTileService" -> "Freeze"
                     "com.jawzf.pixeltoolkit.services.tiles.FlashlightPulseTileService" -> "Notification lighting"
                     "com.jawzf.pixeltoolkit.services.tiles.StayAwakeTileService" -> "Quick settings tiles"
-                    "com.jawzf.pixeltoolkit.services.tiles.NfcTileService" -> "NFC"
+                    NfcTileService::class.java.name -> "NFC"
                     "com.jawzf.pixeltoolkit.services.tiles.AdaptiveBrightnessTileService" -> "Quick settings tiles"
                     "com.jawzf.pixeltoolkit.services.tiles.RefreshRateTileService" -> "Screen refresh rate"
                     "com.jawzf.pixeltoolkit.services.tiles.MapsPowerSavingTileService" -> "Maps power saving mode"

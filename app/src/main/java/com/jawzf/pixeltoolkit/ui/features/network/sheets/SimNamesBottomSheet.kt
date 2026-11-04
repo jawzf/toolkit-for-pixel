@@ -44,7 +44,7 @@ import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.cards.IconToggleItem
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
+import com.jawzf.pixeltoolkit.feature.connectivity.ConnectivitySettings
 import com.jawzf.pixeltoolkit.feature.connectivity.sim.SimCarrierInfo
 import com.jawzf.pixeltoolkit.feature.connectivity.sim.SimCarrierUtil
 import kotlinx.coroutines.Dispatchers
@@ -58,7 +58,7 @@ fun SimNamesBottomSheet(onDismissRequest: () -> Unit) {
     val view = LocalView.current
     val scope = rememberCoroutineScope()
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-    val settingsRepository = remember { SettingsRepository(context) }
+    val settingsRepository = remember { ConnectivitySettings(context) }
 
     var isLoading by remember { mutableStateOf(true) }
     var isSaving by remember { mutableStateOf(false) }

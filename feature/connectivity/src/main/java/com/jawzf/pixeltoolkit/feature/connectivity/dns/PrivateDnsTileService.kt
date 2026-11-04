@@ -6,11 +6,11 @@ import android.os.Build
 import android.provider.Settings
 import android.service.quicksettings.Tile
 import androidx.annotation.RequiresApi
-import com.jawzf.pixeltoolkit.FeatureSettingsActivity
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.platform.AppComponents
 import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.core.platform.tiles.BaseTileService
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
+import com.jawzf.pixeltoolkit.feature.connectivity.ConnectivitySettings
 
 @RequiresApi(Build.VERSION_CODES.N)
 class PrivateDnsTileService : BaseTileService() {
@@ -28,7 +28,7 @@ class PrivateDnsTileService : BaseTileService() {
     override fun onClick() {
         if (!hasFeaturePermission()) {
             val intent =
-                Intent(this, FeatureSettingsActivity::class.java).apply {
+                Intent().setClassName(this, AppComponents.FEATURE_SETTINGS_ACTIVITY).apply {
                     flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
                     putExtra("feature", "Quick settings tiles")
                 }
@@ -48,7 +48,7 @@ class PrivateDnsTileService : BaseTileService() {
                 val hostname = getPrivateDnsHostname()
                 if (!hostname.isNullOrEmpty()) {
                     val settingsRepository =
-                        SettingsRepository(this)
+                        ConnectivitySettings(this)
                     val preset =
                         settingsRepository.getPrivateDnsPresets().find { it.hostname == hostname }
                     preset?.name ?: hostname
@@ -73,7 +73,7 @@ class PrivateDnsTileService : BaseTileService() {
     override fun getTileState(): Int = if (getPrivateDnsMode() != MODE_OFF) Tile.STATE_ACTIVE else Tile.STATE_INACTIVE
 
     override fun onTileClick() {
-        val settingsRepository = SettingsRepository(this)
+        val settingsRepository = ConnectivitySettings(this)
         val isCycleMode = settingsRepository.getBoolean("private_dns_is_cycle_mode", false)
         val currentMode = getPrivateDnsMode()
 

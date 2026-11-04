@@ -71,6 +71,7 @@ import com.jawzf.pixeltoolkit.domain.model.ScaleAnimationsProfile
 import com.jawzf.pixeltoolkit.domain.model.SearchableItem
 import com.jawzf.pixeltoolkit.domain.model.SystemShortcutsState
 import com.jawzf.pixeltoolkit.domain.registry.SearchRegistry
+import com.jawzf.pixeltoolkit.feature.connectivity.ConnectivitySettings
 import com.jawzf.pixeltoolkit.feature.connectivity.dns.DnsPreset
 import com.jawzf.pixeltoolkit.island.service.IslandStatusBarHider
 import com.jawzf.pixeltoolkit.services.CaffeinateWakeLockService
@@ -640,6 +641,7 @@ class MainViewModel : ViewModel() {
     val notificationSnoozeOptions = mutableStateOf<List<Int>>(listOf(15, 30, 60, 120))
 
     lateinit var settingsRepository: SettingsRepository
+    lateinit var connectivitySettings: ConnectivitySettings
     private var appContext: Context? = null
 
     val gitHubToken = mutableStateOf<String?>(null)
@@ -1446,9 +1448,9 @@ class MainViewModel : ViewModel() {
                         isShakeForHelpEnabled.value = settingsRepository.isShakeForHelpEnabled()
                     }
 
-                    SettingsRepository.KEY_PRIVATE_DNS_PRESETS -> {
+                    ConnectivitySettings.KEY_PRIVATE_DNS_PRESETS -> {
                         dnsPresets.clear()
-                        dnsPresets.addAll(settingsRepository.getPrivateDnsPresets())
+                        dnsPresets.addAll(connectivitySettings.getPrivateDnsPresets())
                     }
 
                     SettingsRepository.KEY_FLASHLIGHT_PULSE_MAX_INTENSITY -> {
@@ -1893,6 +1895,7 @@ class MainViewModel : ViewModel() {
     fun check(context: Context) {
         appContext = context.applicationContext
         settingsRepository = SettingsRepository(context)
+        connectivitySettings = ConnectivitySettings(context)
         gitHubUser.value = settingsRepository.getGitHubUser()
 
         // Sync with system per-app language settings
@@ -2791,7 +2794,7 @@ class MainViewModel : ViewModel() {
             settingsRepository.getBoolean(SettingsRepository.KEY_DEVELOPER_MODE_ENABLED)
 
         dnsPresets.clear()
-        dnsPresets.addAll(settingsRepository.getPrivateDnsPresets())
+        dnsPresets.addAll(connectivitySettings.getPrivateDnsPresets())
 
         pinnedFeatureKeys.value = settingsRepository.getPinnedFeatures()
         pinnedQsTileKeys.value = settingsRepository.getPinnedQsTiles()
@@ -9469,7 +9472,7 @@ class MainViewModel : ViewModel() {
      * Executes the reset dns presets operation.
      */
     fun resetDnsPresets() {
-        settingsRepository.resetPrivateDnsPresets()
+        connectivitySettings.resetPrivateDnsPresets()
     }
 
     /**
@@ -9482,9 +9485,9 @@ class MainViewModel : ViewModel() {
         name: String,
         hostname: String,
     ) {
-        val current = settingsRepository.getPrivateDnsPresets().toMutableList()
+        val current = connectivitySettings.getPrivateDnsPresets().toMutableList()
         current.add(DnsPreset(name = name, hostname = hostname))
-        settingsRepository.savePrivateDnsPresets(current)
+        connectivitySettings.savePrivateDnsPresets(current)
     }
 
     /**
@@ -9493,9 +9496,9 @@ class MainViewModel : ViewModel() {
      * @param preset [DnsPreset] Target preset.
      */
     fun removeDnsPreset(preset: DnsPreset) {
-        val current = settingsRepository.getPrivateDnsPresets().toMutableList()
+        val current = connectivitySettings.getPrivateDnsPresets().toMutableList()
         current.removeAll { it.id == preset.id }
-        settingsRepository.savePrivateDnsPresets(current)
+        connectivitySettings.savePrivateDnsPresets(current)
     }
 
     private fun updateAddedQSTiles(context: Context) {
