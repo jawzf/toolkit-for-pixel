@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.utils
+package com.jawzf.pixeltoolkit.feature.connectivity.sim
 
 import android.annotation.SuppressLint
 import android.app.IActivityManager
@@ -11,7 +11,7 @@ import android.telephony.CarrierConfigManager
 import android.telephony.SubscriptionInfo
 import android.telephony.SubscriptionManager
 import android.util.Log
-import com.jawzf.pixeltoolkit.shizuku.CarrierConfigModifier
+import com.jawzf.pixeltoolkit.feature.connectivity.sim.CarrierConfigModifier
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

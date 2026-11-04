@@ -8,10 +8,10 @@ import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuUtils
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.domain.diy.Automation
 import com.jawzf.pixeltoolkit.domain.diy.DIYRepository
+import com.jawzf.pixeltoolkit.feature.connectivity.sim.SimCarrierUtil
 import com.jawzf.pixeltoolkit.services.AppDetectionService
 import com.jawzf.pixeltoolkit.services.BatteryNotificationService
 import com.jawzf.pixeltoolkit.services.widgets.StackHost
-import com.jawzf.pixeltoolkit.utils.SimCarrierUtil
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

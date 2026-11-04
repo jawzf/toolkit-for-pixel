@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.services.tiles
+package com.jawzf.pixeltoolkit.feature.connectivity.sim
 
 import android.content.Context
 import android.os.Build

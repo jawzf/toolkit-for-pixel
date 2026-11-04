@@ -45,8 +45,8 @@ import com.jawzf.pixeltoolkit.core.design.cards.IconToggleItem
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.utils.SimCarrierInfo
-import com.jawzf.pixeltoolkit.utils.SimCarrierUtil
+import com.jawzf.pixeltoolkit.feature.connectivity.sim.SimCarrierInfo
+import com.jawzf.pixeltoolkit.feature.connectivity.sim.SimCarrierUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

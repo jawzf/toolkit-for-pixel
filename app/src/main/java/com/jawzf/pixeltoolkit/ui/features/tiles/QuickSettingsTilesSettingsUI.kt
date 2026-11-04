@@ -61,6 +61,8 @@ import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.domain.registry.QSTileInfo
 import com.jawzf.pixeltoolkit.domain.registry.QSTileRegistry
+import com.jawzf.pixeltoolkit.feature.connectivity.dns.PrivateDnsTileService
+import com.jawzf.pixeltoolkit.feature.connectivity.nfc.NfcTileService
 import com.jawzf.pixeltoolkit.services.tiles.AdaptiveBrightnessTileService
 import com.jawzf.pixeltoolkit.services.tiles.AlwaysOnDisplayTileService
 import com.jawzf.pixeltoolkit.services.tiles.AppFreezingTileService
@@ -75,9 +77,7 @@ import com.jawzf.pixeltoolkit.services.tiles.FlashlightTileService
 import com.jawzf.pixeltoolkit.services.tiles.LockdownTileService
 import com.jawzf.pixeltoolkit.services.tiles.MapsPowerSavingTileService
 import com.jawzf.pixeltoolkit.services.tiles.MonoAudioTileService
-import com.jawzf.pixeltoolkit.services.tiles.NfcTileService
 import com.jawzf.pixeltoolkit.services.tiles.NotificationLightingTileService
-import com.jawzf.pixeltoolkit.services.tiles.PrivateDnsTileService
 import com.jawzf.pixeltoolkit.services.tiles.PrivateNotificationsTileService
 import com.jawzf.pixeltoolkit.services.tiles.RefreshRateTileService
 import com.jawzf.pixeltoolkit.services.tiles.RestartSystemUiTileService

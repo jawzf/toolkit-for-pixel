@@ -9,6 +9,7 @@ import android.provider.Settings
 import android.util.Log
 import androidx.activity.ComponentActivity
 import com.jawzf.pixeltoolkit.FeatureSettingsActivity
+import com.jawzf.pixeltoolkit.feature.connectivity.sim.DataSimTileService
 import com.jawzf.pixeltoolkit.utils.DeviceLockUtils
 
 class QSPreferencesActivity : ComponentActivity() {
@@ -83,7 +84,7 @@ class QSPreferencesActivity : ComponentActivity() {
                 return
             }
 
-            if (componentName.className == com.jawzf.pixeltoolkit.services.tiles.DataSimTileService::class.java.name) {
+            if (componentName.className == DataSimTileService::class.java.name) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                     openSystemSettings(Settings.ACTION_MANAGE_ALL_SIM_PROFILES_SETTINGS, Settings.ACTION_WIRELESS_SETTINGS)
                 } else {

@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.domain.controller
+package com.jawzf.pixeltoolkit.feature.connectivity.hotspot
 
 import android.content.Context
 import android.os.Binder
