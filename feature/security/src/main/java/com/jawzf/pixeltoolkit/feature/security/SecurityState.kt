@@ -1,6 +1,7 @@
 package com.jawzf.pixeltoolkit.feature.security
 
 import android.content.Context
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -22,6 +23,12 @@ class SecurityState(
     val screenshotAutoCleanDays = mutableIntStateOf(7)
     val screenshotsCleanedCount = mutableIntStateOf(0)
     val screenshotsCleanedBytes = mutableLongStateOf(0L)
+    val isFaceUnlockBrightnessEnabled = mutableStateOf(false)
+    val faceUnlockMaxBrightness = mutableIntStateOf(100)
+    val faceUnlockAmbientThreshold = mutableFloatStateOf(10f)
+    val isFaceUnlockTriggerUnlock = mutableStateOf(true)
+    val isFaceUnlockAutoIlluminate = mutableStateOf(false)
+    val isFaceUnlockLightTint = mutableStateOf(false)
 
     /** Reads the saved values. Call before anything else. */
     fun load(context: Context) {
@@ -33,6 +40,12 @@ class SecurityState(
         screenshotAutoCleanDays.intValue = settings.getScreenshotAutoCleanDays()
         screenshotsCleanedCount.intValue = settings.getScreenshotsCleanedCount()
         screenshotsCleanedBytes.longValue = settings.getScreenshotsCleanedBytes()
+        isFaceUnlockBrightnessEnabled.value = settings.isFaceUnlockBrightnessEnabled()
+        faceUnlockMaxBrightness.intValue = settings.getFaceUnlockMaxBrightness()
+        faceUnlockAmbientThreshold.floatValue = settings.getFaceUnlockAmbientThreshold()
+        isFaceUnlockTriggerUnlock.value = settings.isFaceUnlockTriggerUnlockEnabled()
+        isFaceUnlockAutoIlluminate.value = settings.isFaceUnlockAutoIlluminateEnabled()
+        isFaceUnlockLightTint.value = settings.isFaceUnlockLightTintEnabled()
     }
 
     /** Updates the state for a changed preference key; ignores other keys. */
@@ -55,6 +68,24 @@ class SecurityState(
 
             SecuritySettings.KEY_SCREENSHOTS_CLEANED_BYTES ->
                 screenshotsCleanedBytes.longValue = settings.getScreenshotsCleanedBytes()
+
+            SecuritySettings.KEY_FACE_UNLOCK_BRIGHTNESS_ENABLED ->
+                isFaceUnlockBrightnessEnabled.value = settings.isFaceUnlockBrightnessEnabled()
+
+            SecuritySettings.KEY_FACE_UNLOCK_MAX_BRIGHTNESS ->
+                faceUnlockMaxBrightness.intValue = settings.getFaceUnlockMaxBrightness()
+
+            SecuritySettings.KEY_FACE_UNLOCK_AMBIENT_THRESHOLD ->
+                faceUnlockAmbientThreshold.floatValue = settings.getFaceUnlockAmbientThreshold()
+
+            SecuritySettings.KEY_FACE_UNLOCK_TRIGGER_UNLOCK ->
+                isFaceUnlockTriggerUnlock.value = settings.isFaceUnlockTriggerUnlockEnabled()
+
+            SecuritySettings.KEY_FACE_UNLOCK_AUTO_ILLUMINATE ->
+                isFaceUnlockAutoIlluminate.value = settings.isFaceUnlockAutoIlluminateEnabled()
+
+            SecuritySettings.KEY_FACE_UNLOCK_LIGHT_TINT ->
+                isFaceUnlockLightTint.value = settings.isFaceUnlockLightTintEnabled()
 
             else -> {}
         }
@@ -91,5 +122,35 @@ class SecurityState(
     fun setScreenshotAutoCleanDays(days: Int) {
         settings.setScreenshotAutoCleanDays(days)
         screenshotAutoCleanDays.intValue = days
+    }
+
+    fun setFaceUnlockBrightnessEnabled(enabled: Boolean) {
+        settings.setFaceUnlockBrightnessEnabled(enabled)
+        isFaceUnlockBrightnessEnabled.value = enabled
+    }
+
+    fun setFaceUnlockAmbientThreshold(value: Float) {
+        settings.setFaceUnlockAmbientThreshold(value)
+        faceUnlockAmbientThreshold.floatValue = value
+    }
+
+    fun setFaceUnlockMaxBrightness(value: Int) {
+        settings.setFaceUnlockMaxBrightness(value)
+        faceUnlockMaxBrightness.intValue = value
+    }
+
+    fun setFaceUnlockAutoIlluminate(enabled: Boolean) {
+        settings.setFaceUnlockAutoIlluminateEnabled(enabled)
+        isFaceUnlockAutoIlluminate.value = enabled
+    }
+
+    fun setFaceUnlockTriggerUnlock(enabled: Boolean) {
+        settings.setFaceUnlockTriggerUnlockEnabled(enabled)
+        isFaceUnlockTriggerUnlock.value = enabled
+    }
+
+    fun setFaceUnlockLightTint(enabled: Boolean) {
+        settings.setFaceUnlockLightTintEnabled(enabled)
+        isFaceUnlockLightTint.value = enabled
     }
 }

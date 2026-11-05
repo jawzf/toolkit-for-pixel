@@ -2645,13 +2645,13 @@ object FeatureRegistry {
                     ),
                 parentFeatureId = "Security",
             ) {
-                override fun isEnabled(viewModel: MainViewModel) = viewModel.isFaceUnlockBrightnessEnabled.value
+                override fun isEnabled(viewModel: MainViewModel) = viewModel.security.isFaceUnlockBrightnessEnabled.value
 
                 override fun onToggle(
                     viewModel: MainViewModel,
                     context: Context,
                     enabled: Boolean,
-                ) = viewModel.setFaceUnlockBrightnessEnabled(enabled)
+                ) = viewModel.security.setFaceUnlockBrightnessEnabled(enabled)
             },
             object : Feature(
                 id = "Screenshots",

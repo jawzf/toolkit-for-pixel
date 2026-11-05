@@ -1061,7 +1061,10 @@ class FeatureSettingsActivity : AppCompatActivity() {
 
                                     "Face unlock brightness" -> {
                                         FaceUnlockBrightnessSettingsUI(
-                                            viewModel = viewModel,
+                                            state = viewModel.security,
+                                            isAccessibilityEnabled = viewModel.isAccessibilityEnabled.value,
+                                            permissionItems = { keys -> PermissionUIHelper.getPermissionItems(keys, context, viewModel) },
+                                            onPermissionsDismissed = { viewModel.check(context) },
                                             modifier = Modifier.padding(top = 16.dp),
                                             highlightSetting = highlightSetting,
                                         )

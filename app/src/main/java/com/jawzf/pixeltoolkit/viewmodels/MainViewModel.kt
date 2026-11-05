@@ -395,12 +395,6 @@ class MainViewModel : ViewModel() {
     val isAodWallpaperExtendedAppIcon = mutableStateOf(false)
     val aodWallpaperExtendedTextScale = mutableFloatStateOf(1f)
     val currentWallpaperBitmap = mutableStateOf<Bitmap?>(null)
-    val isFaceUnlockBrightnessEnabled = mutableStateOf(false)
-    val faceUnlockMaxBrightness = mutableIntStateOf(100)
-    val faceUnlockAmbientThreshold = mutableFloatStateOf(10f)
-    val isFaceUnlockTriggerUnlock = mutableStateOf(true)
-    val isFaceUnlockAutoIlluminate = mutableStateOf(false)
-    val isFaceUnlockLightTint = mutableStateOf(false)
     val isAutoAccessibilityEnabled = mutableStateOf(false)
     val isNotificationGlanceSameAsLightingEnabled = mutableStateOf(true)
     val isOnboardingCompleted =
@@ -1349,9 +1343,12 @@ class MainViewModel : ViewModel() {
                         aodWallpaperExtendedTextScale.floatValue =
                             settingsRepository.getAodWallpaperExtendedTextScale()
 
-                    SettingsRepository.KEY_FACE_UNLOCK_BRIGHTNESS_ENABLED ->
-                        isFaceUnlockBrightnessEnabled.value = settingsRepository.isFaceUnlockBrightnessEnabled()
-
+                    SecuritySettings.KEY_FACE_UNLOCK_BRIGHTNESS_ENABLED,
+                    SecuritySettings.KEY_FACE_UNLOCK_MAX_BRIGHTNESS,
+                    SecuritySettings.KEY_FACE_UNLOCK_AMBIENT_THRESHOLD,
+                    SecuritySettings.KEY_FACE_UNLOCK_TRIGGER_UNLOCK,
+                    SecuritySettings.KEY_FACE_UNLOCK_AUTO_ILLUMINATE,
+                    SecuritySettings.KEY_FACE_UNLOCK_LIGHT_TINT,
                     SecuritySettings.KEY_SCREENSHOT_SHARE_CLEANUP_ENABLED,
                     SecuritySettings.KEY_SCREENSHOT_SHARE_CLEANUP_DELAY,
                     SecuritySettings.KEY_SCREENSHOT_AUTO_CLEAN_ENABLED,
@@ -1359,21 +1356,6 @@ class MainViewModel : ViewModel() {
                     SecuritySettings.KEY_SCREENSHOTS_CLEANED_COUNT,
                     SecuritySettings.KEY_SCREENSHOTS_CLEANED_BYTES,
                     -> security.onPreferenceChanged(key)
-
-                    SettingsRepository.KEY_FACE_UNLOCK_MAX_BRIGHTNESS ->
-                        faceUnlockMaxBrightness.intValue = settingsRepository.getFaceUnlockMaxBrightness()
-
-                    SettingsRepository.KEY_FACE_UNLOCK_AMBIENT_THRESHOLD ->
-                        faceUnlockAmbientThreshold.floatValue = settingsRepository.getFaceUnlockAmbientThreshold()
-
-                    SettingsRepository.KEY_FACE_UNLOCK_TRIGGER_UNLOCK ->
-                        isFaceUnlockTriggerUnlock.value = settingsRepository.isFaceUnlockTriggerUnlockEnabled()
-
-                    SettingsRepository.KEY_FACE_UNLOCK_AUTO_ILLUMINATE ->
-                        isFaceUnlockAutoIlluminate.value = settingsRepository.isFaceUnlockAutoIlluminateEnabled()
-
-                    SettingsRepository.KEY_FACE_UNLOCK_LIGHT_TINT ->
-                        isFaceUnlockLightTint.value = settingsRepository.isFaceUnlockLightTintEnabled()
 
                     SettingsRepository.KEY_NOTIFICATION_GLANCE_SAME_AS_LIGHTING ->
                         isNotificationGlanceSameAsLightingEnabled.value =
@@ -2767,13 +2749,7 @@ class MainViewModel : ViewModel() {
         pixelSearchResultWeb.value = settingsRepository.isPixelSearchResultWebEnabled()
         pixelSearchBubblesWeb.value = settingsRepository.isPixelSearchBubblesWebEnabled()
         pixelSearchEngine.value = settingsRepository.getPixelSearchEngine()
-        isFaceUnlockBrightnessEnabled.value = settingsRepository.isFaceUnlockBrightnessEnabled()
         security.load(context)
-        faceUnlockMaxBrightness.intValue = settingsRepository.getFaceUnlockMaxBrightness()
-        faceUnlockAmbientThreshold.floatValue = settingsRepository.getFaceUnlockAmbientThreshold()
-        isFaceUnlockTriggerUnlock.value = settingsRepository.isFaceUnlockTriggerUnlockEnabled()
-        isFaceUnlockAutoIlluminate.value = settingsRepository.isFaceUnlockAutoIlluminateEnabled()
-        isFaceUnlockLightTint.value = settingsRepository.isFaceUnlockLightTintEnabled()
         isNotificationGlanceSameAsLightingEnabled.value =
             settingsRepository.getBoolean(
                 SettingsRepository.KEY_NOTIFICATION_GLANCE_SAME_AS_LIGHTING,
@@ -8688,36 +8664,6 @@ class MainViewModel : ViewModel() {
             } catch (_: Throwable) {
             }
         }
-    }
-
-    fun setFaceUnlockBrightnessEnabled(enabled: Boolean) {
-        settingsRepository.setFaceUnlockBrightnessEnabled(enabled)
-        isFaceUnlockBrightnessEnabled.value = enabled
-    }
-
-    fun setFaceUnlockAmbientThreshold(value: Float) {
-        settingsRepository.setFaceUnlockAmbientThreshold(value)
-        faceUnlockAmbientThreshold.floatValue = value
-    }
-
-    fun setFaceUnlockMaxBrightness(value: Int) {
-        settingsRepository.setFaceUnlockMaxBrightness(value)
-        faceUnlockMaxBrightness.intValue = value
-    }
-
-    fun setFaceUnlockAutoIlluminate(enabled: Boolean) {
-        settingsRepository.setFaceUnlockAutoIlluminateEnabled(enabled)
-        isFaceUnlockAutoIlluminate.value = enabled
-    }
-
-    fun setFaceUnlockTriggerUnlock(enabled: Boolean) {
-        settingsRepository.setFaceUnlockTriggerUnlockEnabled(enabled)
-        isFaceUnlockTriggerUnlock.value = enabled
-    }
-
-    fun setFaceUnlockLightTint(enabled: Boolean) {
-        settingsRepository.setFaceUnlockLightTintEnabled(enabled)
-        isFaceUnlockLightTint.value = enabled
     }
 
     /**

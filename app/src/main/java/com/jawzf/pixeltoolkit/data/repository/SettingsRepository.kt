@@ -769,12 +769,6 @@ class SettingsRepository(
         const val KEY_LOCK_SCREEN_CLOCK_SELECTED_COLOR_ID = "lock_screen_clock_selected_color_id"
         const val KEY_LOCK_SCREEN_CLOCK_SEED_COLOR = "lock_screen_clock_seed_color"
         const val KEY_RECENT_SEARCHES = "recent_searches"
-        const val KEY_FACE_UNLOCK_BRIGHTNESS_ENABLED = "face_unlock_brightness_enabled"
-        const val KEY_FACE_UNLOCK_MAX_BRIGHTNESS = "face_unlock_max_brightness"
-        const val KEY_FACE_UNLOCK_TRIGGER_UNLOCK = "face_unlock_trigger_unlock"
-        const val KEY_FACE_UNLOCK_AUTO_ILLUMINATE = "face_unlock_auto_illuminate"
-        const val KEY_FACE_UNLOCK_AMBIENT_THRESHOLD = "face_unlock_ambient_threshold_lux"
-        const val KEY_FACE_UNLOCK_LIGHT_TINT = "face_unlock_light_tint"
         const val KEY_KEEP_PREFS = "keep_prefs"
 
         const val KEY_LOCKDOWN_MODE = "lockdown_mode"
@@ -3715,22 +3709,6 @@ class SettingsRepository(
 
     fun isIslandNotifQueueInlineEnabled(): Boolean = getBoolean(KEY_ISLAND_NOTIF_QUEUE_INLINE, false)
     fun setIslandNotifQueueInlineEnabled(enabled: Boolean) = putBoolean(KEY_ISLAND_NOTIF_QUEUE_INLINE, enabled)
-
-    fun isFaceUnlockBrightnessEnabled(): Boolean = getBoolean(KEY_FACE_UNLOCK_BRIGHTNESS_ENABLED, false)
-    fun setFaceUnlockBrightnessEnabled(enabled: Boolean) = putBoolean(KEY_FACE_UNLOCK_BRIGHTNESS_ENABLED, enabled)
-
-    fun getFaceUnlockMaxBrightness(): Int = getInt(KEY_FACE_UNLOCK_MAX_BRIGHTNESS, 100)
-    fun setFaceUnlockMaxBrightness(value: Int) = putInt(KEY_FACE_UNLOCK_MAX_BRIGHTNESS, value)
-    fun getFaceUnlockAmbientThreshold(): Float = getFloat(KEY_FACE_UNLOCK_AMBIENT_THRESHOLD, 10f)
-    fun setFaceUnlockAmbientThreshold(value: Float) = putFloat(KEY_FACE_UNLOCK_AMBIENT_THRESHOLD, value)
-
-    fun isFaceUnlockAutoIlluminateEnabled(): Boolean = getBoolean(KEY_FACE_UNLOCK_AUTO_ILLUMINATE, false)
-    fun setFaceUnlockAutoIlluminateEnabled(enabled: Boolean) = putBoolean(KEY_FACE_UNLOCK_AUTO_ILLUMINATE, enabled)
-    fun isFaceUnlockTriggerUnlockEnabled(): Boolean = getBoolean(KEY_FACE_UNLOCK_TRIGGER_UNLOCK, true)
-    fun setFaceUnlockTriggerUnlockEnabled(enabled: Boolean) = putBoolean(KEY_FACE_UNLOCK_TRIGGER_UNLOCK, enabled)
-
-    fun isFaceUnlockLightTintEnabled(): Boolean = getBoolean(KEY_FACE_UNLOCK_LIGHT_TINT, false)
-    fun setFaceUnlockLightTintEnabled(enabled: Boolean) = putBoolean(KEY_FACE_UNLOCK_LIGHT_TINT, enabled)
 
     fun isIslandNotifSkipSilentEnabled(): Boolean = getBoolean(KEY_ISLAND_NOTIF_SKIP_SILENT, true)
     fun setIslandNotifSkipSilentEnabled(enabled: Boolean) = putBoolean(KEY_ISLAND_NOTIF_SKIP_SILENT, enabled)

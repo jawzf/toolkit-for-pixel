@@ -17,4 +17,5 @@ dependencies {
     implementation(libs.androidx.compose.foundation)
     implementation(libs.androidx.compose.material3.v150alpha24)
     implementation(libs.androidx.work.runtime.ktx)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
 }
