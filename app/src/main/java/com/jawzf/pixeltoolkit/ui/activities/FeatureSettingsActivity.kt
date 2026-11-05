@@ -83,6 +83,7 @@ import com.jawzf.pixeltoolkit.feature.sound.ui.AppVolumeSettingsUI
 import com.jawzf.pixeltoolkit.feature.sound.ui.SoundModeTileSettingsUI
 import com.jawzf.pixeltoolkit.feature.sound.ui.VolumeStepsSettingsUI
 import com.jawzf.pixeltoolkit.ui.components.linkActions.LinkPickerScreen
+import com.jawzf.pixeltoolkit.ui.core.sheets.AppSelectionSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.ShakeForHelp
 import com.jawzf.pixeltoolkit.ui.core.sheets.SingleAppSelectionSheet
 import com.jawzf.pixeltoolkit.ui.features.consciousgate.CONSCIOUS_GATE_FEATURE_ID
@@ -1100,7 +1101,29 @@ class FeatureSettingsActivity : AppCompatActivity() {
 
                                     "Freeze" -> {
                                         FreezeSettingsUI(
-                                            viewModel = viewModel,
+                                            state = viewModel.freeze,
+                                            isShizukuAvailable = viewModel.isShizukuAvailable.value,
+                                            isShizukuPermissionGranted = viewModel.isShizukuPermissionGranted.value,
+                                            isAccessibilityEnabled = viewModel.isAccessibilityEnabled.value,
+                                            isEnableUnsupportedFeatures = viewModel.isEnableUnsupportedFeatures.value,
+                                            permissionItems = { keys -> PermissionUIHelper.getPermissionItems(keys, context, viewModel, context as? android.app.Activity) },
+                                            appPicker = { onDismiss ->
+                                                AppSelectionSheet(
+                                                    restrictSystemApps = !viewModel.isEnableUnsupportedFeatures.value,
+                                                    showInvertSelection = false,
+                                                    hideSystemAppsByDefault = true,
+                                                    onDismissRequest = onDismiss,
+                                                    onLoadApps = { viewModel.freeze.loadFreezeSelectedApps(it) },
+                                                    onSaveApps = { ctx, apps -> viewModel.freeze.saveFreezeSelectedApps(ctx, apps) },
+                                                    onAppToggle = { ctx, pkg, enabled ->
+                                                        viewModel.freeze.updateFreezeAppEnabled(
+                                                            ctx,
+                                                            pkg,
+                                                            enabled,
+                                                        )
+                                                    },
+                                                )
+                                            },
                                             modifier = Modifier.padding(top = 16.dp),
                                             highlightKey = highlightSetting,
                                         )

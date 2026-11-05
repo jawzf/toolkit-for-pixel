@@ -52,6 +52,7 @@ import com.jawzf.pixeltoolkit.core.design.state.LocalMenuStateManager
 import com.jawzf.pixeltoolkit.core.design.state.MenuStateManager
 import com.jawzf.pixeltoolkit.core.design.theme.ToolkitTheme
 import com.jawzf.pixeltoolkit.feature.apps.freeze.ui.FreezeGridUI
+import com.jawzf.pixeltoolkit.utils.ShortcutUtil
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 
 class AppFreezingActivity : ComponentActivity() {
@@ -117,7 +118,10 @@ class AppFreezingActivity : ComponentActivity() {
                                     ),
                         ) {
                             FreezeGridUI(
-                                viewModel = viewModel,
+                                state = viewModel.freeze,
+                                isMotionBlurEnabled = viewModel.isMotionBlurEnabled.value,
+                                onResume = { viewModel.check(context) },
+                                onPinShortcut = { app -> ShortcutUtil.pinAppShortcut(context, app) },
                                 modifier = Modifier.fillMaxSize(),
                                 contentPadding =
                                     PaddingValues(
