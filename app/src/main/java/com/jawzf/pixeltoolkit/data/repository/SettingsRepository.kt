@@ -31,8 +31,7 @@ import com.jawzf.pixeltoolkit.domain.model.PowerChoice
 import com.jawzf.pixeltoolkit.domain.model.RemapSlot
 import com.jawzf.pixeltoolkit.domain.model.ScaleAnimationsProfile
 import com.jawzf.pixeltoolkit.domain.model.SystemShortcutsState
-import com.jawzf.pixeltoolkit.feature.apps.updates.TrackedRepo
-import com.jawzf.pixeltoolkit.feature.apps.updates.github.GitHubUser
+import com.jawzf.pixeltoolkit.feature.apps.AppsSettings
 import com.jawzf.pixeltoolkit.feature.power.PowerSettings
 import com.jawzf.pixeltoolkit.ui.core.pickers.NetworkType
 import com.jawzf.pixeltoolkit.utils.DuoBatteryLevels
@@ -316,7 +315,6 @@ class SettingsRepository(
         const val KEY_SHOW_LEGACY_FEATURES = "show_legacy_features"
 
         const val KEY_KEYBOARD_HEIGHT = "keyboard_height"
-        const val KEY_TRACKED_REPOS = "tracked_repos"
         const val KEY_KEYBOARD_BOTTOM_PADDING = "keyboard_bottom_padding"
         const val KEY_KEYBOARD_HAPTICS_ENABLED = "keyboard_haptics_enabled"
         const val KEY_KEYBOARD_ROUNDNESS = "keyboard_roundness"
@@ -347,9 +345,6 @@ class SettingsRepository(
             "ambient_music_glance_force_fill_while_charging"
         const val KEY_AMBIENT_MUSIC_GLANCE_RESPECT_NOTIFICATIONS =
             "ambient_music_glance_respect_notifications"
-
-        const val KEY_GITHUB_ACCESS_TOKEN = "github_access_token"
-        const val KEY_GITHUB_USER_PROFILE = "github_user_profile"
 
         const val KEY_FLASHLIGHT_PULSE_SELECTED_APPS = "flashlight_pulse_selected_apps"
         const val KEY_FLASHLIGHT_PULSE_SAME_AS_LIGHTING = "flashlight_pulse_same_as_lighting"
@@ -1370,7 +1365,7 @@ class SettingsRepository(
     fun resetKeysWithPrefixes(prefixes: List<String>) {
         val protected =
             setOf(
-                KEY_GITHUB_ACCESS_TOKEN,
+                AppsSettings.KEY_GITHUB_ACCESS_TOKEN,
                 KEY_SHIZUKU_AUTH_TOKEN,
                 KEY_SNOOZE_DISCOVERED_CHANNELS,
                 PowerSettings.KEY_MAPS_DISCOVERED_CHANNELS,
@@ -1469,45 +1464,6 @@ class SettingsRepository(
     fun saveRecentSearches(items: List<com.jawzf.pixeltoolkit.domain.model.SearchableItem>) {
         val json = gson.toJson(items)
         putString(KEY_RECENT_SEARCHES, json)
-    }
-
-    /**
-     * Executes the get tracked repos operation.
-     * @return The resulting List<TrackedRepo> data.
-     */
-    fun getTrackedRepos(): List<TrackedRepo> {
-        val json = prefs.getString(KEY_TRACKED_REPOS, null) ?: return emptyList()
-        return try {
-            gson.fromJson(json, Array<TrackedRepo>::class.java).toList()
-        } catch (e: Exception) {
-            emptyList()
-        }
-    }
-
-    /**
-     * Executes the save tracked repos operation.
-     *
-     * @param repos [List<TrackedRepo>] Target repos.
-     */
-    fun saveTrackedRepos(repos: List<TrackedRepo>) {
-        val json = gson.toJson(repos)
-        prefs.edit().putString(KEY_TRACKED_REPOS, json).apply()
-    }
-
-    /**
-     * Executes the add or update tracked repo operation.
-     *
-     * @param repo [TrackedRepo] Target repo.
-     */
-    fun addOrUpdateTrackedRepo(repo: TrackedRepo) {
-        val current = getTrackedRepos().toMutableList()
-        val index = current.indexOfFirst { it.fullName == repo.fullName }
-        if (index != -1) {
-            current[index] = repo
-        } else {
-            current.add(repo)
-        }
-        saveTrackedRepos(current)
     }
 
     /**
@@ -1794,72 +1750,19 @@ class SettingsRepository(
         putString(KEY_EDGE_LIGHTING_SWEEP_SELECTED_SHAPES, json)
     }
 
-    /**
-     * Executes the remove tracked repo operation.
-     *
-     * @param fullName [String] Target full name.
-     */
-    fun removeTrackedRepo(fullName: String) {
-        val current = getTrackedRepos().toMutableList()
-        current.removeAll { it.fullName == fullName }
-        saveTrackedRepos(current)
-    }
-
-    /**
-     * Executes the get git hub token operation.
-     * @return The resulting String? data.
-     */
-    fun getGitHubToken(): String? = prefs.getString(KEY_GITHUB_ACCESS_TOKEN, null)
-
-    /**
-     * Executes the save git hub token operation.
-     *
-     * @param token [String?] Target token.
-     */
-    fun saveGitHubToken(token: String?) {
-        prefs.edit().putString(KEY_GITHUB_ACCESS_TOKEN, token).apply()
-    }
-
     // observe token changes
     val gitHubToken: Flow<String?> =
         callbackFlow {
             val listener =
                 SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
-                    if (key == KEY_GITHUB_ACCESS_TOKEN) {
-                        trySend(getString(KEY_GITHUB_ACCESS_TOKEN))
+                    if (key == AppsSettings.KEY_GITHUB_ACCESS_TOKEN) {
+                        trySend(getString(AppsSettings.KEY_GITHUB_ACCESS_TOKEN))
                     }
                 }
-            trySend(getString(KEY_GITHUB_ACCESS_TOKEN))
+            trySend(getString(AppsSettings.KEY_GITHUB_ACCESS_TOKEN))
             prefs.registerOnSharedPreferenceChangeListener(listener)
             awaitClose { prefs.unregisterOnSharedPreferenceChangeListener(listener) }
         }
-
-    /**
-     * Executes the save git hub user operation.
-     *
-     * @param user [GitHubUser?] Target user.
-     */
-    fun saveGitHubUser(user: GitHubUser?) {
-        if (user == null) {
-            prefs.edit().remove(KEY_GITHUB_USER_PROFILE).apply()
-        } else {
-            val json = gson.toJson(user)
-            prefs.edit().putString(KEY_GITHUB_USER_PROFILE, json).apply()
-        }
-    }
-
-    /**
-     * Executes the get git hub user operation.
-     * @return The resulting GitHubUser? data.
-     */
-    fun getGitHubUser(): GitHubUser? {
-        val json = prefs.getString(KEY_GITHUB_USER_PROFILE, null) ?: return null
-        return try {
-            gson.fromJson(json, GitHubUser::class.java)
-        } catch (e: Exception) {
-            null
-        }
-    }
 
     /**
      * Executes the is user dictionary enabled operation.

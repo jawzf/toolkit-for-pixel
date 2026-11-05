@@ -20,5 +20,8 @@ class AppsSettingsTest {
         assertEquals("app_lock_enabled", AppsSettings.KEY_APP_LOCK_ENABLED)
         assertEquals("app_lock_selected_apps", AppsSettings.KEY_APP_LOCK_SELECTED_APPS)
         assertEquals("app_lock_auto_lock_delay_index", AppsSettings.KEY_APP_LOCK_AUTO_LOCK_DELAY_INDEX)
+        assertEquals("tracked_repos", AppsSettings.KEY_TRACKED_REPOS)
+        assertEquals("github_access_token", AppsSettings.KEY_GITHUB_ACCESS_TOKEN)
+        assertEquals("github_user_profile", AppsSettings.KEY_GITHUB_USER_PROFILE)
     }
 }

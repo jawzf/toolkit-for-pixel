@@ -1192,7 +1192,7 @@ class MainViewModel : ViewModel() {
                         isOnboardingCompleted.value = settingsRepository.getBoolean(key, false)
                     }
 
-                    SettingsRepository.KEY_TRACKED_REPOS -> {
+                    AppsSettings.KEY_TRACKED_REPOS -> {
                         appContext?.let { refreshTrackedUpdates(it) }
                     }
 
@@ -1744,7 +1744,7 @@ class MainViewModel : ViewModel() {
     fun check(context: Context) {
         appContext = context.applicationContext
         settingsRepository = SettingsRepository(context)
-        gitHubUser.value = settingsRepository.getGitHubUser()
+        gitHubUser.value = AppsSettings(context).getGitHubUser()
 
         // Sync with system per-app language settings
         val currentLocales = AppCompatDelegate.getApplicationLocales()
@@ -3104,7 +3104,7 @@ class MainViewModel : ViewModel() {
      * @param context [Context] Target context.
      */
     fun refreshTrackedUpdates(context: Context) {
-        val trackedRepos = settingsRepository.getTrackedRepos()
+        val trackedRepos = AppsSettings(context).getTrackedRepos()
         if (trackedRepos.isEmpty()) {
             hasPendingUpdates.value = false
             return

@@ -11,7 +11,7 @@ import com.google.gson.Gson
 import com.jawzf.pixeltoolkit.core.data.apps.AppUtil
 import com.jawzf.pixeltoolkit.core.data.apps.NotificationApp
 import com.jawzf.pixeltoolkit.core.design.R
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
+import com.jawzf.pixeltoolkit.feature.apps.AppsSettings
 import com.jawzf.pixeltoolkit.feature.apps.updates.TrackedRepo
 import com.jawzf.pixeltoolkit.feature.apps.updates.github.GitHubAsset
 import com.jawzf.pixeltoolkit.feature.apps.updates.github.GitHubOwner
@@ -122,7 +122,7 @@ class AppUpdatesViewModel : ViewModel() {
     fun loadTrackedRepos(context: Context) {
         _isLoading.value = true
         viewModelScope.launch {
-            _trackedRepos.value = SettingsRepository(context).getTrackedRepos()
+            _trackedRepos.value = AppsSettings(context).getTrackedRepos()
             _isLoading.value = false
         }
     }
@@ -152,7 +152,7 @@ class AppUpdatesViewModel : ViewModel() {
 
         viewModelScope.launch {
             try {
-                val token = SettingsRepository(context).getGitHubToken()
+                val token = AppsSettings(context).getGitHubToken()
                 val repoInfo = gitHubRepository.getRepoInfo(owner, repo, token)
                 if (repoInfo == null) {
                     _errorMessage.value = context.getString(R.string.error_repo_not_found)
@@ -233,7 +233,7 @@ class AppUpdatesViewModel : ViewModel() {
                 notificationsEnabled = _notificationsEnabled.value,
             )
 
-        SettingsRepository(context).addOrUpdateTrackedRepo(trackedRepo)
+        AppsSettings(context).addOrUpdateTrackedRepo(trackedRepo)
         loadTrackedRepos(context)
         clearSearch()
     }
@@ -248,7 +248,7 @@ class AppUpdatesViewModel : ViewModel() {
         context: Context,
         fullName: String,
     ) {
-        SettingsRepository(context).removeTrackedRepo(fullName)
+        AppsSettings(context).removeTrackedRepo(fullName)
         loadTrackedRepos(context)
     }
 
@@ -322,7 +322,7 @@ class AppUpdatesViewModel : ViewModel() {
             }
 
             try {
-                val token = SettingsRepository(context).getGitHubToken()
+                val token = AppsSettings(context).getGitHubToken()
                 val repoInfo = gitHubRepository.getRepoInfo(repo.owner, repo.name, token)
                 val release = gitHubRepository.getLatestRelease(repo.owner, repo.name, token)
 
@@ -449,7 +449,7 @@ class AppUpdatesViewModel : ViewModel() {
 
         viewModelScope.launch {
             try {
-                val token = SettingsRepository(context).getGitHubToken()
+                val token = AppsSettings(context).getGitHubToken()
 
                 val release =
                     if (repo.allowPreReleases) {
@@ -473,7 +473,7 @@ class AppUpdatesViewModel : ViewModel() {
                             publishedAt = release.publishedAt,
                             // Keep existing flags
                         )
-                    SettingsRepository(context).addOrUpdateTrackedRepo(updatedRepo)
+                    AppsSettings(context).addOrUpdateTrackedRepo(updatedRepo)
                     loadTrackedRepos(context)
                 }
             } catch (e: Exception) {
@@ -500,7 +500,7 @@ class AppUpdatesViewModel : ViewModel() {
             _updateProgress.value = 0f
             var completedCount = 0
 
-            val settingsRepo = SettingsRepository(context)
+            val settingsRepo = AppsSettings(context)
             val token = settingsRepo.getGitHubToken()
 
             val updatedRepos = reposToCheck.toMutableList()
@@ -697,7 +697,7 @@ class AppUpdatesViewModel : ViewModel() {
         outputStream: OutputStream,
     ) {
         try {
-            val repos = SettingsRepository(context).getTrackedRepos()
+            val repos = AppsSettings(context).getTrackedRepos()
             val json = gson.toJson(repos)
             outputStream.write(json.toByteArray())
             outputStream.flush()
@@ -726,7 +726,7 @@ class AppUpdatesViewModel : ViewModel() {
             val json = inputStream.bufferedReader().use { it.readText() }
             val importedRepos = parseImportedRepos(context, json)
             if (importedRepos.isNotEmpty()) {
-                val settingsRepo = SettingsRepository(context)
+                val settingsRepo = AppsSettings(context)
                 val currentRepos = settingsRepo.getTrackedRepos().toMutableList()
                 importedRepos.forEach { imported ->
                     val index = currentRepos.indexOfFirst { it.fullName == imported.fullName }
