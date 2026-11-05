@@ -18,6 +18,7 @@ import com.jawzf.pixeltoolkit.feature.power.battery.BatteryNotificationTileServi
 import com.jawzf.pixeltoolkit.feature.power.caffeinate.CaffeinateTileService
 import com.jawzf.pixeltoolkit.feature.power.charging.ChargeQuickTileService
 import com.jawzf.pixeltoolkit.feature.power.maps.MapsPowerSavingTileService
+import com.jawzf.pixeltoolkit.feature.security.lockscreen.ScreenLockedSecurityTileService
 import com.jawzf.pixeltoolkit.feature.sound.mode.SoundModeTileService
 import com.jawzf.pixeltoolkit.utils.DeviceLockUtils
 
@@ -163,7 +164,7 @@ class QSPreferencesActivity : ComponentActivity() {
                     "com.jawzf.pixeltoolkit.services.tiles.NotificationLightingTileService" -> "Notification lighting"
                     "com.jawzf.pixeltoolkit.services.tiles.DynamicNightLightTileService" -> "Dynamic night light"
                     "com.jawzf.pixeltoolkit.services.tiles.AppLockTileService" -> "App lock"
-                    "com.jawzf.pixeltoolkit.services.tiles.ScreenLockedSecurityTileService" -> "Screen locked security"
+                    ScreenLockedSecurityTileService::class.java.name -> "Screen locked security"
                     "com.jawzf.pixeltoolkit.services.tiles.AppFreezingTileService" -> "Freeze"
                     "com.jawzf.pixeltoolkit.services.tiles.FlashlightPulseTileService" -> "Notification lighting"
                     "com.jawzf.pixeltoolkit.services.tiles.StayAwakeTileService" -> "Quick settings tiles"

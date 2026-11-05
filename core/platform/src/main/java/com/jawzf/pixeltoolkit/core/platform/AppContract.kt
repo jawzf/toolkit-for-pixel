@@ -14,6 +14,7 @@ object AppComponents {
     const val ACCESSIBILITY_SHORTCUT_SERVICE_3 = "com.jawzf.pixeltoolkit.services.AccessibilityShortcutService3"
     const val SPLIT_SCREEN_SHORTCUT_SERVICE = "com.jawzf.pixeltoolkit.services.SplitScreenShortcutService"
     const val FEATURE_SETTINGS_ACTIVITY = "com.jawzf.pixeltoolkit.FeatureSettingsActivity"
+    const val TILE_AUTH_ACTIVITY = "com.jawzf.pixeltoolkit.ui.activities.TileAuthActivity"
     const val MAIN_ACTIVITY = "com.jawzf.pixeltoolkit.MainActivity"
 
     /** The app's launch intent, or MainActivity when the launcher alias is disabled. */

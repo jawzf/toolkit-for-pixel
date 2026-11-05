@@ -12,6 +12,7 @@ import com.jawzf.pixeltoolkit.feature.connectivity.sim.DataSimTileService
 import com.jawzf.pixeltoolkit.feature.power.caffeinate.CaffeinateTileService
 import com.jawzf.pixeltoolkit.feature.power.charging.ChargeQuickTileService
 import com.jawzf.pixeltoolkit.feature.power.maps.MapsPowerSavingTileService
+import com.jawzf.pixeltoolkit.feature.security.lockscreen.ScreenLockedSecurityTileService
 import com.jawzf.pixeltoolkit.feature.sound.mode.SoundModeTileService
 import com.jawzf.pixeltoolkit.feature.sound.mono.MonoAudioTileService
 import com.jawzf.pixeltoolkit.services.tiles.AdaptiveBrightnessTileService
@@ -35,7 +36,6 @@ import com.jawzf.pixeltoolkit.services.tiles.PrivateNotificationsTileService
 import com.jawzf.pixeltoolkit.services.tiles.RefreshRateTileService
 import com.jawzf.pixeltoolkit.services.tiles.RestartSystemUiTileService
 import com.jawzf.pixeltoolkit.services.tiles.ScaleAnimationsTileService
-import com.jawzf.pixeltoolkit.services.tiles.ScreenLockedSecurityTileService
 import com.jawzf.pixeltoolkit.services.tiles.SmartPixelsTileService
 import com.jawzf.pixeltoolkit.services.tiles.StayAwakeTileService
 import com.jawzf.pixeltoolkit.services.tiles.TapToWakeTileService

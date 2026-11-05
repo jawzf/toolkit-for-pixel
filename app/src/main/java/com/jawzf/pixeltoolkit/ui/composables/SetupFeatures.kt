@@ -137,7 +137,7 @@ fun SetupFeatures(
     viewModel.isButtonRemapEnabled.value
     viewModel.isDynamicNightLightEnabled.value
 
-    viewModel.isScreenLockedSecurityEnabled.value
+    viewModel.security.isScreenLockedSecurityEnabled.value
     val isRippleEnabled by viewModel.isRippleEnabled
     val pinnedFeatureKeys by viewModel.pinnedFeatureKeys
     val context = LocalContext.current

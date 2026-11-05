@@ -9,12 +9,12 @@ import android.os.Looper
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.feature.power.maps.MapsState
+import com.jawzf.pixeltoolkit.feature.security.SecuritySettings
+import com.jawzf.pixeltoolkit.feature.security.SecurityState
 import com.jawzf.pixeltoolkit.utils.StatusBarManager
 
 class SecurityReceiver : BroadcastReceiver() {
     companion object {
-        const val REQUESTER_NOTIFICATION_INTERACTIONS = "DisableNotificationInteractions"
-        private const val REQUESTER_QS = "DisableQsWhenLocked"
         private val TRUST_REFRESH_DELAYS_MS = listOf(500L, 1500L, 3000L)
         private val handler = Handler(Looper.getMainLooper())
 
@@ -25,27 +25,27 @@ class SecurityReceiver : BroadcastReceiver() {
         }
 
         private fun disableOnExtendedUnlock(settings: SettingsRepository) =
-            settings.getBoolean(SettingsRepository.KEY_SCREEN_LOCKED_DISABLE_ON_EXTENDED_UNLOCK, false)
+            settings.getBoolean(SecuritySettings.KEY_SCREEN_LOCKED_DISABLE_ON_EXTENDED_UNLOCK, false)
 
         private fun applyRestrictions(
             context: Context,
             settings: SettingsRepository,
         ) {
-            if (settings.getBoolean(SettingsRepository.KEY_SCREEN_LOCKED_SECURITY_ENABLED, false)) {
-                StatusBarManager.requestDisable(context, REQUESTER_QS, setOf(StatusBarManager.FLAG_QUICK_SETTINGS))
+            if (settings.getBoolean(SecuritySettings.KEY_SCREEN_LOCKED_SECURITY_ENABLED, false)) {
+                StatusBarManager.requestDisable(context, SecurityState.REQUESTER_QS, setOf(StatusBarManager.FLAG_QUICK_SETTINGS))
             }
-            if (settings.getBoolean(SettingsRepository.KEY_SCREEN_LOCKED_DISABLE_NOTIFICATION_INTERACTIONS, false)) {
+            if (settings.getBoolean(SecuritySettings.KEY_SCREEN_LOCKED_DISABLE_NOTIFICATION_INTERACTIONS, false)) {
                 StatusBarManager.requestDisable(
                     context,
-                    REQUESTER_NOTIFICATION_INTERACTIONS,
+                    SecurityState.REQUESTER_NOTIFICATION_INTERACTIONS,
                     setOf(StatusBarManager.FLAG_STATUSBAR_EXPANSION, StatusBarManager.FLAG_QUICK_SETTINGS),
                 )
             }
         }
 
         private fun restoreRestrictions(context: Context) {
-            StatusBarManager.requestRestore(context, REQUESTER_QS)
-            StatusBarManager.requestRestore(context, REQUESTER_NOTIFICATION_INTERACTIONS)
+            StatusBarManager.requestRestore(context, SecurityState.REQUESTER_QS)
+            StatusBarManager.requestRestore(context, SecurityState.REQUESTER_NOTIFICATION_INTERACTIONS)
         }
 
         // Follows trust changes while the lock screen is showing
@@ -114,7 +114,7 @@ class SecurityReceiver : BroadcastReceiver() {
                 )
                 StatusBarManager.requestRestore(
                     context,
-                    REQUESTER_NOTIFICATION_INTERACTIONS,
+                    SecurityState.REQUESTER_NOTIFICATION_INTERACTIONS,
                 )
                 StatusBarManager.reassertFlags(context)
             }

@@ -9,6 +9,7 @@ android {
 dependencies {
     implementation(project(":core:design"))
     implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.biometric)
     implementation(libs.shizuku.api)
     implementation(libs.shizuku.provider)
 }

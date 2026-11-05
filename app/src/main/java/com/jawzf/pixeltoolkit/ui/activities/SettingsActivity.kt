@@ -97,6 +97,7 @@ import com.jawzf.pixeltoolkit.core.design.pickers.SegmentedPicker
 import com.jawzf.pixeltoolkit.core.design.sheets.InstructionsBottomSheet
 import com.jawzf.pixeltoolkit.core.design.theme.Shapes
 import com.jawzf.pixeltoolkit.core.design.theme.ToolkitTheme
+import com.jawzf.pixeltoolkit.core.platform.auth.BiometricHelper
 import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionGrantUtil
 import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
@@ -402,13 +403,13 @@ fun SettingsContent(
                 val canAuthenticate =
                     androidx.biometric.BiometricManager
                         .from(context)
-                        .canAuthenticate(com.jawzf.pixeltoolkit.utils.BiometricHelper.allowedAuthenticators) ==
+                        .canAuthenticate(BiometricHelper.allowedAuthenticators) ==
                         androidx.biometric.BiometricManager.BIOMETRIC_SUCCESS
                 if (activity == null || !canAuthenticate) {
                     showUnsupportedFeaturesSheet = false
                     viewModel.setEnableUnsupportedFeatures(true, context)
                 } else {
-                    com.jawzf.pixeltoolkit.utils.BiometricHelper.showBiometricPrompt(
+                    BiometricHelper.showBiometricPrompt(
                         activity = activity,
                         title = context.getString(R.string.unsupported_auth_title),
                         subtitle = context.getString(R.string.unsupported_auth_subtitle),

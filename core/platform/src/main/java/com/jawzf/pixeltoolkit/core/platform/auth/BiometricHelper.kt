@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.utils
+package com.jawzf.pixeltoolkit.core.platform.auth
 
 import android.os.Build
 import androidx.biometric.BiometricManager

@@ -3,7 +3,7 @@ package com.jawzf.pixeltoolkit.ui.activities
 import android.os.Bundle
 import androidx.core.content.edit
 import androidx.fragment.app.FragmentActivity
-import com.jawzf.pixeltoolkit.utils.BiometricHelper
+import com.jawzf.pixeltoolkit.core.platform.auth.BiometricHelper
 
 class TileAuthActivity : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
