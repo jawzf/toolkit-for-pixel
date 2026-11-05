@@ -70,6 +70,9 @@ import com.jawzf.pixeltoolkit.domain.registry.FeatureRegistry
 import com.jawzf.pixeltoolkit.feature.connectivity.ui.NetworksSettingsUI
 import com.jawzf.pixeltoolkit.feature.power.battery.ui.BatteriesPreviewCard
 import com.jawzf.pixeltoolkit.feature.power.battery.ui.BatteriesSettingsUI
+import com.jawzf.pixeltoolkit.feature.power.caffeinate.CaffeinateViewModel
+import com.jawzf.pixeltoolkit.feature.power.caffeinate.ui.CaffeinateSettingsUI
+import com.jawzf.pixeltoolkit.feature.power.maps.ui.MapsPowerSavingSettingsUI
 import com.jawzf.pixeltoolkit.feature.sound.ui.AppVolumeSettingsUI
 import com.jawzf.pixeltoolkit.feature.sound.ui.SoundModeTileSettingsUI
 import com.jawzf.pixeltoolkit.feature.sound.ui.VolumeStepsSettingsUI
@@ -102,7 +105,6 @@ import com.jawzf.pixeltoolkit.ui.features.system.AutoDismissNotificationsSetting
 import com.jawzf.pixeltoolkit.ui.features.system.BACK_GESTURE_FEATURE_ID
 import com.jawzf.pixeltoolkit.ui.features.system.BackGestureSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.ButtonRemapSettingsUI
-import com.jawzf.pixeltoolkit.ui.features.system.CaffeinateSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.DynamicNightLightSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.FaceUnlockBrightnessSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.FlashlightPulseSettingsUI
@@ -116,7 +118,6 @@ import com.jawzf.pixeltoolkit.ui.features.system.KeyboardSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.LiveWallpaperSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.LockScreenClockSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.LockscreenShortcutsSettingsUI
-import com.jawzf.pixeltoolkit.ui.features.system.MapsPowerSavingSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.NavigationSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.NotificationLightingSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.NotificationSnoozingSettingsUI
@@ -134,7 +135,6 @@ import com.jawzf.pixeltoolkit.ui.features.system.TextAnimationsSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.ToolkitOnDisplaySettingsUI
 import com.jawzf.pixeltoolkit.ui.features.widgets.WidgetStackSettingsUI
 import com.jawzf.pixeltoolkit.utils.BiometricSecurityHelper
-import com.jawzf.pixeltoolkit.viewmodels.CaffeinateViewModel
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 import com.jawzf.pixeltoolkit.viewmodels.StatusBarIconViewModel
 import kotlinx.coroutines.delay

@@ -34,6 +34,7 @@ import com.jawzf.pixeltoolkit.domain.model.ScaleAnimationsProfile
 import com.jawzf.pixeltoolkit.domain.model.SystemShortcutsState
 import com.jawzf.pixeltoolkit.domain.model.TrackedRepo
 import com.jawzf.pixeltoolkit.domain.model.github.GitHubUser
+import com.jawzf.pixeltoolkit.feature.power.maps.MapsChannel
 import com.jawzf.pixeltoolkit.ui.core.pickers.NetworkType
 import com.jawzf.pixeltoolkit.utils.DuoBatteryLevels
 import kotlinx.coroutines.channels.awaitClose
@@ -1571,14 +1572,14 @@ class SettingsRepository(
     }
 
     // Maps Channels Helper
-    fun loadMapsDiscoveredChannels(): List<com.jawzf.pixeltoolkit.domain.model.MapsChannel> {
+    fun loadMapsDiscoveredChannels(): List<MapsChannel> {
         val json = prefs.getString(KEY_MAPS_DISCOVERED_CHANNELS, null)
         return if (json != null) {
             try {
                 gson
                     .fromJson(
                         json,
-                        Array<com.jawzf.pixeltoolkit.domain.model.MapsChannel>::class.java,
+                        Array<MapsChannel>::class.java,
                     ).toList()
             } catch (e: Exception) {
                 emptyList()
@@ -1591,9 +1592,9 @@ class SettingsRepository(
     /**
      * Executes the save maps discovered channels operation.
      *
-     * @param channels [List<com.jawzf.pixeltoolkit.domain.model.MapsChannel>] Target channels.
+     * @param channels [List<MapsChannel>] Target channels.
      */
-    fun saveMapsDiscoveredChannels(channels: List<com.jawzf.pixeltoolkit.domain.model.MapsChannel>) {
+    fun saveMapsDiscoveredChannels(channels: List<MapsChannel>) {
         val json = gson.toJson(channels)
         putString(KEY_MAPS_DISCOVERED_CHANNELS, json)
     }

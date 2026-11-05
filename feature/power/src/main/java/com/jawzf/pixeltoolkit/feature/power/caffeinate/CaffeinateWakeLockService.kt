@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.services
+package com.jawzf.pixeltoolkit.feature.power.caffeinate
 
 import android.app.Notification
 import android.app.NotificationChannel
@@ -17,7 +17,7 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import com.jawzf.pixeltoolkit.MainActivity
 import com.jawzf.pixeltoolkit.core.design.R
-import com.jawzf.pixeltoolkit.domain.controller.CaffeinateController
+import com.jawzf.pixeltoolkit.feature.power.caffeinate.CaffeinateController
 
 class CaffeinateWakeLockService : Service() {
     private var wakeLock: PowerManager.WakeLock? = null

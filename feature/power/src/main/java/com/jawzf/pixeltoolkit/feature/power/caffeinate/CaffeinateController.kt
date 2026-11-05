@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.domain.controller
+package com.jawzf.pixeltoolkit.feature.power.caffeinate
 
 import android.app.ActivityManager
 import android.content.ComponentName
@@ -7,8 +7,8 @@ import android.content.Intent
 import android.service.quicksettings.TileService
 import androidx.compose.runtime.mutableStateOf
 import androidx.core.content.ContextCompat
-import com.jawzf.pixeltoolkit.services.CaffeinateWakeLockService
-import com.jawzf.pixeltoolkit.services.tiles.CaffeinateTileService
+import com.jawzf.pixeltoolkit.feature.power.caffeinate.CaffeinateTileService
+import com.jawzf.pixeltoolkit.feature.power.caffeinate.CaffeinateWakeLockService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job

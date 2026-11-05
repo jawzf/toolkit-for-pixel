@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.features.system
+package com.jawzf.pixeltoolkit.feature.power.maps.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

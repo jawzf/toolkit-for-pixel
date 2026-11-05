@@ -32,7 +32,6 @@ import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuUtils
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.domain.controller.CaffeinateController
 import com.jawzf.pixeltoolkit.domain.controller.HilightController
 import com.jawzf.pixeltoolkit.domain.controller.ZenModeController
 import com.jawzf.pixeltoolkit.domain.diy.Action
@@ -42,6 +41,7 @@ import com.jawzf.pixeltoolkit.domain.model.NotificationLightingStyle
 import com.jawzf.pixeltoolkit.domain.model.RippleConfig
 import com.jawzf.pixeltoolkit.feature.connectivity.hotspot.HotspotController
 import com.jawzf.pixeltoolkit.feature.power.PowerSettings
+import com.jawzf.pixeltoolkit.feature.power.caffeinate.CaffeinateController
 import com.jawzf.pixeltoolkit.feature.power.charging.ChargingModeUtil
 import com.jawzf.pixeltoolkit.feature.sound.mode.SoundModeHandler
 import com.jawzf.pixeltoolkit.services.NotificationLightingService

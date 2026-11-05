@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.domain.model
+package com.jawzf.pixeltoolkit.feature.power.maps
 
 import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName

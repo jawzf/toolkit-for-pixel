@@ -47,8 +47,6 @@ import com.jawzf.pixeltoolkit.core.platform.shell.RootUtils
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuUtils
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.domain.MapsState
-import com.jawzf.pixeltoolkit.domain.controller.CaffeinateController
 import com.jawzf.pixeltoolkit.domain.diy.Action
 import com.jawzf.pixeltoolkit.domain.model.AppIcon
 import com.jawzf.pixeltoolkit.domain.model.AppSelection
@@ -75,10 +73,13 @@ import com.jawzf.pixeltoolkit.feature.connectivity.ConnectivitySettings
 import com.jawzf.pixeltoolkit.feature.connectivity.ConnectivityState
 import com.jawzf.pixeltoolkit.feature.power.BatteryState
 import com.jawzf.pixeltoolkit.feature.power.PowerSettings
+import com.jawzf.pixeltoolkit.feature.power.caffeinate.CaffeinateController
+import com.jawzf.pixeltoolkit.feature.power.caffeinate.CaffeinateWakeLockService
+import com.jawzf.pixeltoolkit.feature.power.maps.MapsChannel
+import com.jawzf.pixeltoolkit.feature.power.maps.MapsState
 import com.jawzf.pixeltoolkit.feature.sound.SoundSettings
 import com.jawzf.pixeltoolkit.feature.sound.SoundState
 import com.jawzf.pixeltoolkit.island.service.IslandStatusBarHider
-import com.jawzf.pixeltoolkit.services.CaffeinateWakeLockService
 import com.jawzf.pixeltoolkit.services.NotificationAutoDismisser
 import com.jawzf.pixeltoolkit.services.NotificationLightingService
 import com.jawzf.pixeltoolkit.services.NotificationListener
@@ -360,7 +361,7 @@ class MainViewModel : ViewModel() {
     val snoozeChannels =
         mutableStateOf<List<com.jawzf.pixeltoolkit.domain.model.SnoozeChannel>>(emptyList())
     val mapsChannels =
-        mutableStateOf<List<com.jawzf.pixeltoolkit.domain.model.MapsChannel>>(emptyList())
+        mutableStateOf<List<MapsChannel>>(emptyList())
     val isSnoozeHeadsUpEnabled = mutableStateOf(false)
     val isAutoDismissEnabled = mutableStateOf(false)
     val isFlashlightAlwaysTurnOffEnabled = mutableStateOf(false)

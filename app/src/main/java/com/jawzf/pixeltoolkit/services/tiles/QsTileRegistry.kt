@@ -8,7 +8,10 @@ import com.jawzf.pixeltoolkit.feature.connectivity.dns.PrivateDnsTileService
 import com.jawzf.pixeltoolkit.feature.connectivity.nfc.NfcTileService
 import com.jawzf.pixeltoolkit.feature.connectivity.sim.DataSimController
 import com.jawzf.pixeltoolkit.feature.connectivity.sim.DataSimTileService
+import com.jawzf.pixeltoolkit.feature.power.caffeinate.CaffeinateController
+import com.jawzf.pixeltoolkit.feature.power.caffeinate.CaffeinateTileService
 import com.jawzf.pixeltoolkit.feature.power.charging.ChargeQuickTileService
+import com.jawzf.pixeltoolkit.feature.power.maps.MapsPowerSavingTileService
 import com.jawzf.pixeltoolkit.feature.sound.mode.SoundModeTileService
 import com.jawzf.pixeltoolkit.feature.sound.mono.MonoAudioTileService
 
@@ -179,8 +182,8 @@ object QsTileRegistry {
                         ShellUtils.hasPermission(context) &&
                         DataSimController.lastKnownState?.next != null
                 CaffeinateTileService::class.java.name -> {
-                    com.jawzf.pixeltoolkit.domain.controller.CaffeinateController.isActive.value ||
-                            com.jawzf.pixeltoolkit.domain.controller.CaffeinateController.isStarting.value
+                    CaffeinateController.isActive.value ||
+                            CaffeinateController.isStarting.value
                 }
 
                 FlashlightTileService::class.java.name -> {
@@ -279,9 +282,9 @@ object QsTileRegistry {
                     }
                 }
                 CaffeinateTileService::class.java.name -> {
-                    if (com.jawzf.pixeltoolkit.domain.controller.CaffeinateController.isActive.value) {
+                    if (CaffeinateController.isActive.value) {
                         "Active"
-                    } else if (com.jawzf.pixeltoolkit.domain.controller.CaffeinateController.isStarting.value) {
+                    } else if (CaffeinateController.isStarting.value) {
                         "Starting"
                     } else {
                         "Off"
