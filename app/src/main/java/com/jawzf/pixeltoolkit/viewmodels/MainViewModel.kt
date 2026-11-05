@@ -49,7 +49,6 @@ import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.domain.diy.Action
 import com.jawzf.pixeltoolkit.domain.model.AppIcon
 import com.jawzf.pixeltoolkit.domain.model.AppSelection
-import com.jawzf.pixeltoolkit.domain.model.AppStandbyInfo
 import com.jawzf.pixeltoolkit.domain.model.AutoDismissAppConfig
 import com.jawzf.pixeltoolkit.domain.model.AutoDismissChannel
 import com.jawzf.pixeltoolkit.domain.model.AutoDismissStat
@@ -414,7 +413,7 @@ class MainViewModel : ViewModel() {
     val connectivity = ConnectivityState(viewModelScope)
     val sound = SoundState()
     val battery = BatteryState()
-    val power = PowerState()
+    val power = PowerState(viewModelScope)
     val addedQSTiles = mutableStateOf<Set<String>>(emptySet())
     val isHideGestureBarEnabled = mutableStateOf(false)
     val isHideGestureBarOnLauncherEnabled = mutableStateOf(false)
@@ -430,8 +429,6 @@ class MainViewModel : ViewModel() {
     val isTransparentNavigationBarEnabled = mutableStateOf(false)
     val isSplitScreenGestureEnabled = mutableStateOf(false)
     val isPreferGpuComposingEnabled = mutableStateOf(false)
-    val standbyAppsList = mutableStateOf<List<AppStandbyInfo>>(emptyList())
-    val isStandbyAppsLoading = mutableStateOf(false)
     val isPixelSearchbarEnabled = mutableStateOf(false)
     val pixelSearchbarType = mutableStateOf("empty")
     val pixelSearchbarDateFormat = mutableStateOf("EEEE, MMMM d")
@@ -613,12 +610,6 @@ class MainViewModel : ViewModel() {
     val smallestWidth = mutableIntStateOf(360)
     val hasShizukuPermission = mutableStateOf(false)
 
-    // Battery Saver Constants
-    val batterySaverConstants = mutableStateOf<Map<String, String>>(emptyMap())
-
-    // Battery Saver Low Power Trigger Level
-    val lowPowerTriggerLevel = mutableIntStateOf(0)
-
     // Notification Snooze
     val isShowNotificationSnoozeEnabled = mutableStateOf(false)
     val notificationSnoozeDefault = mutableIntStateOf(60)
@@ -680,7 +671,7 @@ class MainViewModel : ViewModel() {
                         }
 
                         Settings.Global.getUriFor("battery_saver_constants") -> {
-                            appContext?.let { loadBatterySaverConstants(it) }
+                            appContext?.let { power.loadBatterySaverConstants(it) }
                         }
 
                         Settings.Global.getUriFor("audio_safe_volume_state") -> {
@@ -688,7 +679,7 @@ class MainViewModel : ViewModel() {
                         }
 
                         Settings.Global.getUriFor("low_power_trigger_level") -> {
-                            appContext?.let { syncLowPowerTriggerLevel(it) }
+                            appContext?.let { power.syncLowPowerTriggerLevel(it) }
                         }
 
                         Settings.Secure.getUriFor("show_notification_snooze") -> {
@@ -2149,8 +2140,8 @@ class MainViewModel : ViewModel() {
             e.printStackTrace()
         }
 
-        loadBatterySaverConstants(context)
-        syncLowPowerTriggerLevel(context)
+        power.loadBatterySaverConstants(context)
+        power.syncLowPowerTriggerLevel(context)
         syncShowNotificationSnooze(context)
         loadNotificationSnoozeOptions(context)
 
@@ -3666,128 +3657,6 @@ class MainViewModel : ViewModel() {
         val action = if (enabled) "enable" else "disable"
         viewModelScope.launch(kotlinx.coroutines.Dispatchers.IO) {
             ShellUtils.runCommand(context, "cmd overlay $action --user current $pkg")
-        }
-    }
-
-    /**
-     * Executes the load standby apps operation.
-     *
-     * @param context [Context] Target context.
-     */
-    fun loadStandbyApps(context: Context) {
-        viewModelScope.launch(kotlinx.coroutines.Dispatchers.IO) {
-            isStandbyAppsLoading.value = true
-            val pm = context.packageManager
-            val intent = Intent(Intent.ACTION_MAIN).apply { addCategory(Intent.CATEGORY_LAUNCHER) }
-            val apps = pm.queryIntentActivities(intent, 0)
-
-            val appList =
-                apps
-                    .mapNotNull { resolveInfo ->
-                        val pkg = resolveInfo.activityInfo.packageName
-                        if (pkg == context.packageName) return@mapNotNull null
-
-                        val label = resolveInfo.loadLabel(pm).toString()
-                        val icon = resolveInfo.loadIcon(pm)
-
-                        var bucket = 10
-                        val output = ShellUtils.runCommandWithOutput(context, "am get-standby-bucket $pkg")
-                        if (output != null) {
-                            val text = output.lowercase().trim()
-                            bucket =
-                                when {
-                                    text.contains("restricted") || text.contains("45") -> 45
-                                    text.contains("rare") || text.contains("40") -> 40
-                                    text.contains("frequent") || text.contains("30") -> 30
-                                    text.contains("working") || text.contains("20") -> 20
-                                    text.contains("active") || text.contains("10") -> 10
-                                    else -> 10
-                                }
-                        }
-
-                        AppStandbyInfo(pkg, label, icon, bucket)
-                    }.sortedBy { it.label.lowercase() }
-
-            kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Main) {
-                standbyAppsList.value = appList
-                isStandbyAppsLoading.value = false
-            }
-        }
-    }
-
-    /**
-     * Executes the set app standby bucket operation.
-     *
-     * @param packageName [String] Target package name.
-     * @param targetBucket [Int] Target target bucket.
-     * @param context [Context] Target context.
-     */
-    fun setAppStandbyBucket(
-        packageName: String,
-        targetBucket: Int,
-        context: Context,
-    ) {
-        val currentList = standbyAppsList.value
-        val updatedList =
-            currentList.map { app ->
-                if (app.packageName == packageName) {
-                    app.copy(bucket = targetBucket)
-                } else {
-                    app
-                }
-            }
-        standbyAppsList.value = updatedList
-
-        viewModelScope.launch(kotlinx.coroutines.Dispatchers.IO) {
-            val bucketName =
-                when (targetBucket) {
-                    10 -> "active"
-                    20 -> "working_set"
-                    30 -> "frequent"
-                    40 -> "rare"
-                    45 -> "restricted"
-                    else -> "active"
-                }
-            ShellUtils.runCommand(context, "am set-standby-bucket $packageName $bucketName")
-        }
-    }
-
-    /**
-     * Executes batch set app standby bucket operation for multiple apps.
-     *
-     * @param packageNames [Set<String>] Target package names.
-     * @param targetBucket [Int] Target standby bucket code.
-     * @param context [Context] Context for shell execution.
-     */
-    fun setAppsStandbyBucket(
-        packageNames: Set<String>,
-        targetBucket: Int,
-        context: Context,
-    ) {
-        val currentList = standbyAppsList.value
-        val updatedList =
-            currentList.map { app ->
-                if (packageNames.contains(app.packageName)) {
-                    app.copy(bucket = targetBucket)
-                } else {
-                    app
-                }
-            }
-        standbyAppsList.value = updatedList
-
-        viewModelScope.launch(kotlinx.coroutines.Dispatchers.IO) {
-            val bucketName =
-                when (targetBucket) {
-                    10 -> "active"
-                    20 -> "working_set"
-                    30 -> "frequent"
-                    40 -> "rare"
-                    45 -> "restricted"
-                    else -> "active"
-                }
-            packageNames.forEach { pkg ->
-                ShellUtils.runCommand(context, "am set-standby-bucket $pkg $bucketName")
-            }
         }
     }
 
@@ -9021,117 +8890,6 @@ class MainViewModel : ViewModel() {
                 .toSet()
 
         addedQSTiles.value = fromSecureSettings + fromPrefs
-    }
-
-    /**
-     * Executes the load battery saver constants operation.
-     *
-     * @param context [Context] Target context.
-     */
-    fun loadBatterySaverConstants(context: Context) {
-        val constantsStr =
-            Settings.Global.getString(context.contentResolver, "battery_saver_constants") ?: ""
-        val map = mutableMapOf<String, String>()
-        if (constantsStr.isNotEmpty()) {
-            constantsStr.split(",").forEach { pair ->
-                val parts = pair.split("=", limit = 2)
-                if (parts.size == 2) {
-                    map[parts[0].trim()] = parts[1].trim()
-                }
-            }
-        }
-        batterySaverConstants.value = map
-    }
-
-    /**
-     * Executes the update battery saver constant operation.
-     *
-     * @param context [Context] Target context.
-     * @param key [String] Target key.
-     * @param value [String] Target value.
-     */
-    fun updateBatterySaverConstant(
-        context: Context,
-        key: String,
-        value: String,
-    ) {
-        val currentMap = batterySaverConstants.value.toMutableMap()
-        currentMap[key] = value
-        saveBatterySaverConstants(context, currentMap)
-    }
-
-    /**
-     * Executes the remove battery saver constant operation.
-     *
-     * @param context [Context] Target context.
-     * @param key [String] Target key.
-     */
-    fun removeBatterySaverConstant(
-        context: Context,
-        key: String,
-    ) {
-        val currentMap = batterySaverConstants.value.toMutableMap()
-        currentMap.remove(key)
-        saveBatterySaverConstants(context, currentMap)
-    }
-
-    /**
-     * Executes the reset battery saver constants operation.
-     *
-     * @param context [Context] Target context.
-     */
-    fun resetBatterySaverConstants(context: Context) {
-        try {
-            Settings.Global.putString(context.contentResolver, "battery_saver_constants", null)
-            batterySaverConstants.value = emptyMap()
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
-
-    private fun saveBatterySaverConstants(
-        context: Context,
-        map: Map<String, String>,
-    ) {
-        val constantsStr = map.map { "${it.key}=${it.value}" }.joinToString(",")
-        try {
-            Settings.Global.putString(
-                context.contentResolver,
-                "battery_saver_constants",
-                constantsStr,
-            )
-            batterySaverConstants.value = map
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
-
-    /**
-     * Executes the sync low power trigger level operation.
-     *
-     * @param context [Context] Target context.
-     */
-    fun syncLowPowerTriggerLevel(context: Context) {
-        val level = Settings.Global.getInt(context.contentResolver, "low_power_trigger_level", 0)
-        lowPowerTriggerLevel.intValue = level
-    }
-
-    /**
-     * Executes the set low power trigger level operation.
-     *
-     * @param context [Context] Target context.
-     * @param level [Int] Target level.
-     */
-    fun setLowPowerTriggerLevel(
-        context: Context,
-        level: Int,
-    ) {
-        try {
-            Settings.Global.putInt(context.contentResolver, "low_power_trigger_level", level)
-            lowPowerTriggerLevel.intValue = level
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
     }
 
     /**

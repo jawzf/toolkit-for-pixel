@@ -128,6 +128,10 @@ class PowerSettings(
         putString(KEY_MAPS_DETECTION_CHANNELS, json)
     }
 
+    fun isPowerSavingApplyOnBootEnabled(): Boolean = getBoolean(KEY_POWER_SAVING_APPLY_ON_BOOT, false)
+
+    fun setPowerSavingApplyOnBootEnabled(enabled: Boolean) = putBoolean(KEY_POWER_SAVING_APPLY_ON_BOOT, enabled)
+
     companion object {
         const val KEY_BLUETOOTH_DEVICES_BATTERY = "bluetooth_devices_battery"
         const val KEY_SHOW_BLUETOOTH_DEVICES = "show_bluetooth_devices"
@@ -140,5 +144,6 @@ class PowerSettings(
         const val KEY_MAPS_POWER_SAVING_ENABLED = "maps_power_saving_enabled"
         const val KEY_MAPS_DISCOVERED_CHANNELS = "maps_discovered_channels"
         const val KEY_MAPS_DETECTION_CHANNELS = "maps_detection_channels"
+        const val KEY_POWER_SAVING_APPLY_ON_BOOT = "power_saving_apply_on_boot"
     }
 }

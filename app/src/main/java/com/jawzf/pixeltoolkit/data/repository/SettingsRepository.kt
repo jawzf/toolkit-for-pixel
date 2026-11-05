@@ -744,7 +744,6 @@ class SettingsRepository(
         const val KEY_BACK_GESTURE_RESTORE_LEFT_SCALE = "back_gesture_restore_left_scale"
         const val KEY_BACK_GESTURE_RESTORE_RIGHT_SCALE = "back_gesture_restore_right_scale"
         const val KEY_BACK_GESTURE_APP_CONFIGS = "back_gesture_app_configs"
-        const val KEY_STANDBY_APPS = "standby_apps"
         const val KEY_PIXEL_SEARCHBAR = "pixel_searchbar"
         const val KEY_PIXEL_SEARCHBAR_TYPE = "pixel_searchbar_type"
         const val KEY_PIXEL_SEARCHBAR_MIGRATED_V1 = "pixel_searchbar_migrated_v1"
@@ -787,7 +786,6 @@ class SettingsRepository(
 
         const val KEY_LOCKDOWN_MODE = "lockdown_mode"
         const val KEY_BUBBLE_WEB_FULLSCREEN = "bubble_web_fullscreen"
-        const val KEY_POWER_SAVING_APPLY_ON_BOOT = "power_saving_apply_on_boot"
         const val KEY_UNSPLASH_ACCESS_KEY = "unsplash_access_key"
         const val KEY_EXTERNAL_CONTROL_TOKEN = "external_control_token"
     }
@@ -805,10 +803,6 @@ class SettingsRepository(
             prefs.edit().putString(KEY_UNSPLASH_ACCESS_KEY, key.trim()).apply()
         }
     }
-
-    fun isPowerSavingApplyOnBootEnabled(): Boolean = getBoolean(KEY_POWER_SAVING_APPLY_ON_BOOT, false)
-
-    fun setPowerSavingApplyOnBootEnabled(enabled: Boolean) = putBoolean(KEY_POWER_SAVING_APPLY_ON_BOOT, enabled)
 
     // Observe changes
     fun observeKeyChanges(): Flow<String?> =

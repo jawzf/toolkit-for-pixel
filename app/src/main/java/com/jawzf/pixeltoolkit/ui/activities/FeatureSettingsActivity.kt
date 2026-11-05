@@ -73,6 +73,8 @@ import com.jawzf.pixeltoolkit.feature.power.battery.ui.BatteriesSettingsUI
 import com.jawzf.pixeltoolkit.feature.power.caffeinate.CaffeinateViewModel
 import com.jawzf.pixeltoolkit.feature.power.caffeinate.ui.CaffeinateSettingsUI
 import com.jawzf.pixeltoolkit.feature.power.maps.ui.MapsPowerSavingSettingsUI
+import com.jawzf.pixeltoolkit.feature.power.saver.ui.PowerAndBatterySettingsUI
+import com.jawzf.pixeltoolkit.feature.power.standby.ui.StandbyAppsSettingsUI
 import com.jawzf.pixeltoolkit.feature.sound.ui.AppVolumeSettingsUI
 import com.jawzf.pixeltoolkit.feature.sound.ui.SoundModeTileSettingsUI
 import com.jawzf.pixeltoolkit.feature.sound.ui.VolumeStepsSettingsUI
@@ -122,14 +124,12 @@ import com.jawzf.pixeltoolkit.ui.features.system.NavigationSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.NotificationLightingSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.NotificationSnoozingSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.OtherCustomizationsSettingsUI
-import com.jawzf.pixeltoolkit.ui.features.system.PowerAndBatterySettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.QuickSettingsTilesSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.RefreshRateSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.ScreenLockedSecuritySettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.ScreenOffWidgetSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.ShutUpSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.SnoozeNotificationsSettingsUI
-import com.jawzf.pixeltoolkit.ui.features.system.StandbyAppsSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.StatusBarIconSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.TextAnimationsSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.ToolkitOnDisplaySettingsUI
@@ -1301,7 +1301,8 @@ class FeatureSettingsActivity : AppCompatActivity() {
 
                                     "Power and Battery" -> {
                                         PowerAndBatterySettingsUI(
-                                            viewModel = viewModel,
+                                            state = viewModel.power,
+                                            isWriteSecureSettingsEnabled = viewModel.isWriteSecureSettingsEnabled.value,
                                             modifier = Modifier.padding(top = 16.dp),
                                             highlightSetting = highlightSetting,
                                         )
@@ -1323,7 +1324,12 @@ class FeatureSettingsActivity : AppCompatActivity() {
 
                                     "Standby apps" -> {
                                         StandbyAppsSettingsUI(
-                                            viewModel = viewModel,
+                                            state = viewModel.power,
+                                            isShizukuAvailable = viewModel.isShizukuAvailable.value,
+                                            isShizukuPermissionGranted = viewModel.isShizukuPermissionGranted.value,
+                                            isRootAvailable = viewModel.isRootAvailable.value,
+                                            isRootPermissionGranted = viewModel.isRootPermissionGranted.value,
+                                            onRequestShizukuPermission = { viewModel.requestShizukuPermission() },
                                             modifier = Modifier.padding(top = 16.dp),
                                             selectedPackages = standbyAppsSelectedPackages,
                                             onSelectionChange = { standbyAppsSelectedPackages = it },
