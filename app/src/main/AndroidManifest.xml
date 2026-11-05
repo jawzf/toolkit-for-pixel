@@ -473,14 +473,6 @@
         </activity>
 
         <activity
-            android:name=".AppLockActivity"
-            android:excludeFromRecents="true"
-            android:exported="false"
-            android:noHistory="true"
-            android:taskAffinity=""
-            android:theme="@style/Theme.Toolkit.Translucent" />
-
-        <activity
             android:name=".ui.activities.ConsciousGateActivity"
             android:excludeFromRecents="true"
             android:exported="false"
@@ -978,19 +970,6 @@
             <meta-data
                 android:name="android.service.quicksettings.TILE_CATEGORY"
                 android:value="android.service.quicksettings.CATEGORY_DISPLAY" />
-        </service>
-        <service
-            android:name=".services.tiles.AppLockTileService"
-            android:exported="true"
-            android:icon="@drawable/rounded_shield_lock_24"
-            android:label="App Lock"
-            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
-            <intent-filter>
-                <action android:name="android.service.quicksettings.action.QS_TILE" />
-            </intent-filter>
-            <meta-data
-                android:name="android.service.quicksettings.TILE_CATEGORY"
-                android:value="android.service.quicksettings.CATEGORY_PRIVACY" />
         </service>
 
         <service

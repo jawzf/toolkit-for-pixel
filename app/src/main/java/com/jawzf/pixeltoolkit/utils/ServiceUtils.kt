@@ -8,6 +8,7 @@ import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuUtils
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.domain.diy.Automation
 import com.jawzf.pixeltoolkit.domain.diy.DIYRepository
+import com.jawzf.pixeltoolkit.feature.apps.AppsSettings
 import com.jawzf.pixeltoolkit.feature.connectivity.ConnectivitySettings
 import com.jawzf.pixeltoolkit.feature.connectivity.sim.SimCarrierUtil
 import com.jawzf.pixeltoolkit.feature.power.PowerSettings
@@ -84,7 +85,7 @@ object ServiceUtils {
         settingsRepository: SettingsRepository,
     ) {
         val isAppLockEnabled =
-            settingsRepository.getBoolean(SettingsRepository.KEY_APP_LOCK_ENABLED)
+            settingsRepository.getBoolean(AppsSettings.KEY_APP_LOCK_ENABLED)
         val isConsciousGateEnabled =
             settingsRepository.getBoolean(SettingsRepository.KEY_CONSCIOUS_GATE_ENABLED)
         val isDynamicNightLightEnabled =

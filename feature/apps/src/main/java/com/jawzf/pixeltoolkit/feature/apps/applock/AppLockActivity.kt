@@ -33,8 +33,8 @@ import androidx.core.content.ContextCompat
 import coil.compose.AsyncImage
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.theme.ToolkitTheme
+import com.jawzf.pixeltoolkit.core.platform.AppComponents
 import com.jawzf.pixeltoolkit.core.platform.auth.BiometricHelper
-import com.jawzf.pixeltoolkit.services.tiles.ScreenOffAccessibilityService
 import java.util.concurrent.Executor
 
 class AppLockActivity : AppCompatActivity() {
@@ -181,7 +181,7 @@ class AppLockActivity : AppCompatActivity() {
         sendBroadcast(intent)
 
         val accessibilityIntent =
-            Intent(this, ScreenOffAccessibilityService::class.java).apply {
+            Intent().setClassName(this, AppComponents.SCREEN_OFF_ACCESSIBILITY_SERVICE).apply {
                 action = "APP_AUTHENTICATED"
                 putExtra("package_name", packageToLock)
             }
@@ -204,7 +204,7 @@ class AppLockActivity : AppCompatActivity() {
         sendBroadcast(intent)
 
         val serviceIntent =
-            Intent(this, ScreenOffAccessibilityService::class.java).apply {
+            Intent().setClassName(this, AppComponents.SCREEN_OFF_ACCESSIBILITY_SERVICE).apply {
                 action = "APP_AUTHENTICATION_FAILED"
             }
         startService(serviceIntent)

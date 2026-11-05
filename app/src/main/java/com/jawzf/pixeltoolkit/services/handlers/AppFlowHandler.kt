@@ -25,6 +25,7 @@ import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.domain.diy.Automation
 import com.jawzf.pixeltoolkit.domain.diy.DIYRepository
 import com.jawzf.pixeltoolkit.domain.model.BackGestureAppConfig
+import com.jawzf.pixeltoolkit.feature.apps.applock.AppLockActivity
 import com.jawzf.pixeltoolkit.feature.apps.freeze.FreezeManager
 import com.jawzf.pixeltoolkit.services.automation.executors.CombinedActionExecutor
 import com.jawzf.pixeltoolkit.services.tiles.ScreenOffAccessibilityService
@@ -316,7 +317,7 @@ class AppFlowHandler(
             )
             val intent =
                 Intent().apply {
-                    component = ComponentName(context, "com.jawzf.pixeltoolkit.AppLockActivity")
+                    component = ComponentName(context, AppLockActivity::class.java.name)
                     putExtra("package_to_lock", packageName)
                     flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_NO_ANIMATION
                 }

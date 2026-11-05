@@ -114,7 +114,29 @@ class AppsSettings(
         saveFreezeSelectedApps(current)
     }
 
+    fun loadAppLockSelectedApps(): List<AppSelection> = loadAppSelection(KEY_APP_LOCK_SELECTED_APPS)
+
+    fun saveAppLockSelectedApps(apps: List<AppSelection>) = saveAppSelection(KEY_APP_LOCK_SELECTED_APPS, apps)
+
+    fun updateAppLockAppSelection(
+        packageName: String,
+        enabled: Boolean,
+    ) {
+        val current = loadAppLockSelectedApps().toMutableList()
+        val index = current.indexOfFirst { it.packageName == packageName }
+        if (index != -1) {
+            current[index] = current[index].copy(isEnabled = enabled)
+        } else {
+            current.add(AppSelection(packageName, enabled))
+        }
+        saveAppLockSelectedApps(current)
+    }
+
     companion object {
+        const val KEY_APP_LOCK_ENABLED = "app_lock_enabled"
+        const val KEY_APP_LOCK_SELECTED_APPS = "app_lock_selected_apps"
+        const val KEY_APP_LOCK_AUTO_LOCK_DELAY_INDEX = "app_lock_auto_lock_delay_index"
+
         const val KEY_FREEZE_SELECTED_APPS = "freeze_selected_apps"
         const val KEY_FREEZE_WHEN_LOCKED_ENABLED = "freeze_when_locked_enabled"
         const val KEY_FREEZE_LOCK_DELAY_INDEX = "freeze_lock_delay_index"

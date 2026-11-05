@@ -295,10 +295,6 @@ class SettingsRepository(
         const val KEY_CIRCLE_TO_SEARCH_GESTURE_WIDTH = "circle_to_search_gesture_width"
         const val KEY_CIRCLE_TO_SEARCH_PREVIEW_ENABLED = "circle_to_search_preview_enabled"
 
-        const val KEY_APP_LOCK_ENABLED = "app_lock_enabled"
-        const val KEY_APP_LOCK_SELECTED_APPS = "app_lock_selected_apps"
-        const val KEY_APP_LOCK_AUTO_LOCK_DELAY_INDEX = "app_lock_auto_lock_delay_index"
-
         const val KEY_CONSCIOUS_GATE_ENABLED = "conscious_gate_enabled"
         const val KEY_CONSCIOUS_GATE_SELECTED_APPS = "conscious_gate_selected_apps"
         const val KEY_CONSCIOUS_GATE_DELAY_SECONDS = "conscious_gate_delay_seconds"
@@ -1046,29 +1042,6 @@ class SettingsRepository(
         packageName: String,
         enabled: Boolean,
     ) = updateAppSelection(KEY_DYNAMIC_NIGHT_LIGHT_SELECTED_APPS, packageName, enabled)
-
-    /**
-     * Executes the load app lock selected apps operation.
-     */
-    fun loadAppLockSelectedApps() = loadAppSelection(KEY_APP_LOCK_SELECTED_APPS)
-
-    /**
-     * Executes the save app lock selected apps operation.
-     *
-     * @param apps [List<AppSelection>] Target apps.
-     */
-    fun saveAppLockSelectedApps(apps: List<AppSelection>) = saveAppSelection(KEY_APP_LOCK_SELECTED_APPS, apps)
-
-    /**
-     * Executes the update app lock app selection operation.
-     *
-     * @param packageName [String] Target package name.
-     * @param enabled [Boolean] Target enabled.
-     */
-    fun updateAppLockAppSelection(
-        packageName: String,
-        enabled: Boolean,
-    ) = updateAppSelection(KEY_APP_LOCK_SELECTED_APPS, packageName, enabled)
 
     /**
      * Executes the load conscious gate selected apps operation.
