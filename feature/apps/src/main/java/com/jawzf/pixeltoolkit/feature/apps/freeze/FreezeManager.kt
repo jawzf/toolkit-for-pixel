@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.utils
+package com.jawzf.pixeltoolkit.feature.apps.freeze
 
 import android.content.Context
 import android.os.Build

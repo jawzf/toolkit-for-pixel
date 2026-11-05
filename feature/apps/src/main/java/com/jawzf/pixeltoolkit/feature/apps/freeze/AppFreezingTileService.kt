@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.services.tiles
+package com.jawzf.pixeltoolkit.feature.apps.freeze
 
 import android.app.PendingIntent
 import android.content.Intent

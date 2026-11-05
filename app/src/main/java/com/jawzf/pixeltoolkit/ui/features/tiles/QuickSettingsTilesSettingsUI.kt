@@ -62,6 +62,7 @@ import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.domain.registry.QSTileInfo
 import com.jawzf.pixeltoolkit.domain.registry.QSTileRegistry
+import com.jawzf.pixeltoolkit.feature.apps.freeze.AppFreezingTileService
 import com.jawzf.pixeltoolkit.feature.connectivity.dns.PrivateDnsTileService
 import com.jawzf.pixeltoolkit.feature.connectivity.nfc.NfcTileService
 import com.jawzf.pixeltoolkit.feature.power.caffeinate.CaffeinateTileService
@@ -72,7 +73,6 @@ import com.jawzf.pixeltoolkit.feature.sound.mode.SoundModeTileService
 import com.jawzf.pixeltoolkit.feature.sound.mono.MonoAudioTileService
 import com.jawzf.pixeltoolkit.services.tiles.AdaptiveBrightnessTileService
 import com.jawzf.pixeltoolkit.services.tiles.AlwaysOnDisplayTileService
-import com.jawzf.pixeltoolkit.services.tiles.AppFreezingTileService
 import com.jawzf.pixeltoolkit.services.tiles.AppLockTileService
 import com.jawzf.pixeltoolkit.services.tiles.BubblesTileService
 import com.jawzf.pixeltoolkit.services.tiles.DeveloperOptionsTileService

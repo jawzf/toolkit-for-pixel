@@ -40,7 +40,7 @@ import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.pickers.SegmentedPicker
 import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
 import com.jawzf.pixeltoolkit.domain.diy.Action
-import com.jawzf.pixeltoolkit.domain.model.AppTag
+import com.jawzf.pixeltoolkit.feature.apps.freeze.AppTag
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

@@ -98,6 +98,7 @@ import com.jawzf.pixeltoolkit.core.platform.shell.RootUtils
 import com.jawzf.pixeltoolkit.domain.registry.FeatureRegistry
 import com.jawzf.pixeltoolkit.domain.registry.PermissionRegistry
 import com.jawzf.pixeltoolkit.domain.registry.QSTileRegistry
+import com.jawzf.pixeltoolkit.feature.apps.freeze.FreezeManager
 import com.jawzf.pixeltoolkit.ui.activities.PixelSearchbarSettingsActivity
 import com.jawzf.pixeltoolkit.ui.activities.WallpaperActivity
 import com.jawzf.pixeltoolkit.ui.activities.YourAndroidActivity
@@ -107,7 +108,6 @@ import com.jawzf.pixeltoolkit.ui.features.freeze.FrozenAppsSearchResultCard
 import com.jawzf.pixeltoolkit.ui.features.permissions.PermissionsSearchResultCard
 import com.jawzf.pixeltoolkit.ui.features.tiles.QSTilesSearchResultCard
 import com.jawzf.pixeltoolkit.utils.BiometricSecurityHelper
-import com.jawzf.pixeltoolkit.utils.FreezeManager
 import com.jawzf.pixeltoolkit.utils.PermissionUIHelper
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 import kotlinx.coroutines.delay

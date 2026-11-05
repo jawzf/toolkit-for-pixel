@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.domain.model
+package com.jawzf.pixeltoolkit.feature.apps.freeze
 
 enum class FreezeMode(
     val value: Int,

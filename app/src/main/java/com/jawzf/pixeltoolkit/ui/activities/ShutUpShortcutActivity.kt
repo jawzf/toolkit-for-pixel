@@ -24,6 +24,7 @@ import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuUtils.toggleShizuku
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.domain.model.ShutUpAppConfig
+import com.jawzf.pixeltoolkit.feature.apps.freeze.FreezeManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -66,12 +67,12 @@ class ShutUpShortcutActivity : ComponentActivity() {
 
         lifecycleScope.launch {
             // Unfreeze first while Shizuku/Root is still  functional
-            if (com.jawzf.pixeltoolkit.utils.FreezeManager.isAppFrozen(
+            if (FreezeManager.isAppFrozen(
                     this@ShutUpShortcutActivity,
                     packageName,
                 )
             ) {
-                com.jawzf.pixeltoolkit.utils.FreezeManager.unfreezeApp(
+                FreezeManager.unfreezeApp(
                     this@ShutUpShortcutActivity,
                     packageName,
                 )

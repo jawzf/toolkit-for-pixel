@@ -60,7 +60,8 @@ import com.jawzf.pixeltoolkit.core.design.modifiers.highlight
 import com.jawzf.pixeltoolkit.core.design.pickers.SegmentedPicker
 import com.jawzf.pixeltoolkit.core.design.sheets.PermissionsBottomSheet
 import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
-import com.jawzf.pixeltoolkit.domain.model.FreezeMode
+import com.jawzf.pixeltoolkit.feature.apps.freeze.AppTag
+import com.jawzf.pixeltoolkit.feature.apps.freeze.FreezeMode
 import com.jawzf.pixeltoolkit.ui.core.sheets.AppSelectionSheet
 import com.jawzf.pixeltoolkit.utils.PermissionUIHelper
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
@@ -83,7 +84,7 @@ fun FreezeSettingsUI(
     val isShizukuPermissionGranted by viewModel.isShizukuPermissionGranted
     val pickedApps by viewModel.freezePickedApps
 
-    var tagToEdit by remember { mutableStateOf<com.jawzf.pixeltoolkit.domain.model.AppTag?>(null) }
+    var tagToEdit by remember { mutableStateOf<AppTag?>(null) }
     var isTagEditorSheetOpen by remember { mutableStateOf(false) }
 
     var isMenuExpanded by remember { mutableStateOf(false) }

@@ -67,6 +67,8 @@ import com.jawzf.pixeltoolkit.domain.model.ScaleAnimationsProfile
 import com.jawzf.pixeltoolkit.domain.model.SearchableItem
 import com.jawzf.pixeltoolkit.domain.model.SystemShortcutsState
 import com.jawzf.pixeltoolkit.domain.registry.SearchRegistry
+import com.jawzf.pixeltoolkit.feature.apps.freeze.AppTag
+import com.jawzf.pixeltoolkit.feature.apps.freeze.FreezeManager
 import com.jawzf.pixeltoolkit.feature.connectivity.ConnectivitySettings
 import com.jawzf.pixeltoolkit.feature.connectivity.ConnectivityState
 import com.jawzf.pixeltoolkit.feature.power.BatteryState
@@ -515,7 +517,7 @@ class MainViewModel : ViewModel() {
     val isFreezeDontFreezeActiveAppsEnabled = mutableStateOf(false)
     val freezeMode = mutableIntStateOf(0)
     val isFreezeShowInLauncherEnabled = mutableStateOf(true)
-    val freezeTags = mutableStateOf<List<com.jawzf.pixeltoolkit.domain.model.AppTag>>(emptyList())
+    val freezeTags = mutableStateOf<List<AppTag>>(emptyList())
     val freezeAppTagMap = mutableStateOf<Map<String, List<String>>>(emptyMap())
     val isFreezeTagColorCodedEnabled = mutableStateOf(false)
 
@@ -7656,11 +7658,11 @@ class MainViewModel : ViewModel() {
      * Executes the add freeze tag operation.
      *
      * @param context [Context] Target context.
-     * @param tag [com.jawzf.pixeltoolkit.domain.model.AppTag] Target tag.
+     * @param tag [AppTag] Target tag.
      */
     fun addFreezeTag(
         context: Context,
-        tag: com.jawzf.pixeltoolkit.domain.model.AppTag,
+        tag: AppTag,
     ) {
         val updated = freezeTags.value + tag
         freezeTags.value = updated
@@ -7672,11 +7674,11 @@ class MainViewModel : ViewModel() {
      * Executes the update freeze tag operation.
      *
      * @param context [Context] Target context.
-     * @param tag [com.jawzf.pixeltoolkit.domain.model.AppTag] Target tag.
+     * @param tag [AppTag] Target tag.
      */
     fun updateFreezeTag(
         context: Context,
-        tag: com.jawzf.pixeltoolkit.domain.model.AppTag,
+        tag: AppTag,
     ) {
         val updated = freezeTags.value.map { if (it.id == tag.id) tag else it }
         freezeTags.value = updated
@@ -7806,7 +7808,7 @@ class MainViewModel : ViewModel() {
      */
     fun freezeAllAuto(context: Context) {
         viewModelScope.launch(Dispatchers.IO) {
-            com.jawzf.pixeltoolkit.utils.FreezeManager
+            FreezeManager
                 .freezeAll(context)
         }
     }
@@ -7818,7 +7820,7 @@ class MainViewModel : ViewModel() {
      */
     fun unfreezeAllAuto(context: Context) {
         viewModelScope.launch(Dispatchers.IO) {
-            com.jawzf.pixeltoolkit.utils.FreezeManager
+            FreezeManager
                 .unfreezeAll(context)
         }
     }
@@ -7830,7 +7832,7 @@ class MainViewModel : ViewModel() {
      */
     fun freezeAllManual(context: Context) {
         viewModelScope.launch(Dispatchers.IO) {
-            com.jawzf.pixeltoolkit.utils.FreezeManager
+            FreezeManager
                 .freezeAllManual(context)
         }
     }
@@ -7842,7 +7844,7 @@ class MainViewModel : ViewModel() {
      */
     fun unfreezeAllManual(context: Context) {
         viewModelScope.launch(Dispatchers.IO) {
-            com.jawzf.pixeltoolkit.utils.FreezeManager
+            FreezeManager
                 .unfreezeAllManual(context)
         }
     }
@@ -7859,10 +7861,10 @@ class MainViewModel : ViewModel() {
     ) {
         viewModelScope.launch(Dispatchers.IO) {
             val isFrozen =
-                com.jawzf.pixeltoolkit.utils.FreezeManager
+                FreezeManager
                     .isAppFrozen(context, packageName)
             if (isFrozen) {
-                com.jawzf.pixeltoolkit.utils.FreezeManager
+                FreezeManager
                     .unfreezeApp(context, packageName)
                 // Small delay to ensure system registers the change before launch
                 delay(100)
@@ -7883,7 +7885,7 @@ class MainViewModel : ViewModel() {
      */
     fun freezeAllApps(context: Context) {
         viewModelScope.launch(Dispatchers.IO) {
-            com.jawzf.pixeltoolkit.utils.FreezeManager
+            FreezeManager
                 .freezeAllManual(context)
             refreshFreezePickedApps(context)
         }
@@ -7896,7 +7898,7 @@ class MainViewModel : ViewModel() {
      */
     fun unfreezeAllApps(context: Context) {
         viewModelScope.launch(Dispatchers.IO) {
-            com.jawzf.pixeltoolkit.utils.FreezeManager
+            FreezeManager
                 .unfreezeAllManual(context)
             refreshFreezePickedApps(context)
         }
@@ -7909,7 +7911,7 @@ class MainViewModel : ViewModel() {
      */
     fun freezeAutomaticApps(context: Context) {
         viewModelScope.launch(Dispatchers.IO) {
-            com.jawzf.pixeltoolkit.utils.FreezeManager
+            FreezeManager
                 .freezeAll(context)
             refreshFreezePickedApps(context)
         }
@@ -7924,7 +7926,7 @@ class MainViewModel : ViewModel() {
     fun anyAppsCurrentlyFrozen(context: Context): Boolean {
         val picked = freezePickedApps.value
         return picked.any {
-            com.jawzf.pixeltoolkit.utils.FreezeManager.isAppFrozen(
+            FreezeManager.isAppFrozen(
                 context,
                 it.packageName,
             )
@@ -8261,7 +8263,7 @@ class MainViewModel : ViewModel() {
 
     data class FreezeBackupData(
         val apps: List<AppSelection>? = null,
-        val tags: List<com.jawzf.pixeltoolkit.domain.model.AppTag>? = null,
+        val tags: List<AppTag>? = null,
         val appTagMap: Map<String, List<String>>? = null,
     )
 
@@ -8306,7 +8308,7 @@ class MainViewModel : ViewModel() {
             val gson = com.google.gson.Gson()
 
             var importedApps: List<AppSelection> = emptyList()
-            var importedTags: List<com.jawzf.pixeltoolkit.domain.model.AppTag> = emptyList()
+            var importedTags: List<AppTag> = emptyList()
             var importedMap: Map<String, List<String>> = emptyMap()
 
             // Gracefully handle legacy backup (JSON Array of AppSelection) vs new backup (FreezeBackupData object)
