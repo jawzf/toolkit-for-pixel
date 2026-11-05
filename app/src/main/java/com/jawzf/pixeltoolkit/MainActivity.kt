@@ -84,6 +84,7 @@ import com.jawzf.pixeltoolkit.ui.composables.SetupFeatures
 import com.jawzf.pixeltoolkit.ui.composables.WelcomeScreen
 import com.jawzf.pixeltoolkit.ui.core.sheets.ShakeForHelp
 import com.jawzf.pixeltoolkit.ui.core.sheets.SingleAppSelectionSheet
+import com.jawzf.pixeltoolkit.utils.AutoUpdateManagerHelper
 import com.jawzf.pixeltoolkit.utils.ShortcutUtil
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 import kotlinx.coroutines.launch
@@ -460,6 +461,9 @@ class MainActivity : AppCompatActivity() {
                                     ),
                                 isChecking = isNotesLoading,
                                 onDismissRequest = { repoToShowReleaseNotesFullName = null },
+                                onDownloadAndInstall = { apkUrl, apkName, onProgressUpdate ->
+                                    AutoUpdateManagerHelper(context).downloadAndInstallApk(apkUrl, apkName, onProgressUpdate)
+                                },
                             )
                         } else {
                             repoToShowReleaseNotesFullName = null

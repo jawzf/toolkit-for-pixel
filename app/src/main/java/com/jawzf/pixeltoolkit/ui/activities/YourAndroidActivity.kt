@@ -100,6 +100,7 @@ import com.jawzf.pixeltoolkit.ui.components.AppsActionButtons
 import com.jawzf.pixeltoolkit.ui.components.DeviceHeroCard
 import com.jawzf.pixeltoolkit.ui.components.ImportExportButtons
 import com.jawzf.pixeltoolkit.ui.core.sheets.SingleAppSelectionSheet
+import com.jawzf.pixeltoolkit.utils.AutoUpdateManagerHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -498,6 +499,9 @@ class YourAndroidActivity : ComponentActivity() {
                                     ),
                                 isChecking = isNotesLoading,
                                 onDismissRequest = { repoToShowReleaseNotesFullName = null },
+                                onDownloadAndInstall = { apkUrl, apkName, onProgressUpdate ->
+                                    AutoUpdateManagerHelper(context).downloadAndInstallApk(apkUrl, apkName, onProgressUpdate)
+                                },
                             )
                         } else {
                             repoToShowReleaseNotesFullName = null
