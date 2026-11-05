@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.features.system
+package com.jawzf.pixeltoolkit.feature.apps.freeze.ui
 
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -63,6 +63,7 @@ import com.jawzf.pixeltoolkit.core.design.sheets.PermissionsBottomSheet
 import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.feature.apps.freeze.AppTag
 import com.jawzf.pixeltoolkit.feature.apps.freeze.FreezeMode
+import com.jawzf.pixeltoolkit.feature.apps.freeze.ui.sheets.FreezeTagEditorSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.AppSelectionSheet
 import com.jawzf.pixeltoolkit.utils.PermissionUIHelper
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
@@ -772,7 +773,7 @@ fun FreezeSettingsUI(
         }
 
         if (isTagEditorSheetOpen) {
-            com.jawzf.pixeltoolkit.ui.core.sheets.FreezeTagEditorSheet(
+            FreezeTagEditorSheet(
                 tagToEdit = tagToEdit,
                 onDismissRequest = { isTagEditorSheetOpen = false },
                 onSave = { tag ->

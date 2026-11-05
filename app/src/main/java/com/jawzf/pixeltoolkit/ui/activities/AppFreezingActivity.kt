@@ -51,7 +51,7 @@ import com.jawzf.pixeltoolkit.core.design.modifiers.progressiveBlur
 import com.jawzf.pixeltoolkit.core.design.state.LocalMenuStateManager
 import com.jawzf.pixeltoolkit.core.design.state.MenuStateManager
 import com.jawzf.pixeltoolkit.core.design.theme.ToolkitTheme
-import com.jawzf.pixeltoolkit.ui.composables.FreezeGridUI
+import com.jawzf.pixeltoolkit.feature.apps.freeze.ui.FreezeGridUI
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 
 class AppFreezingActivity : ComponentActivity() {

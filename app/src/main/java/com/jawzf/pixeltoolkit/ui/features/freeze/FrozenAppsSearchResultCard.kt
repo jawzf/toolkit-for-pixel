@@ -41,8 +41,8 @@ import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.state.LocalMenuStateManager
 import com.jawzf.pixeltoolkit.domain.DIYTabs
 import com.jawzf.pixeltoolkit.feature.apps.freeze.FreezeManager
-import com.jawzf.pixeltoolkit.ui.composables.AppGridItem
-import com.jawzf.pixeltoolkit.ui.core.sheets.AssignTagsSheet
+import com.jawzf.pixeltoolkit.feature.apps.freeze.ui.AppGridItem
+import com.jawzf.pixeltoolkit.feature.apps.freeze.ui.sheets.AssignTagsSheet
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

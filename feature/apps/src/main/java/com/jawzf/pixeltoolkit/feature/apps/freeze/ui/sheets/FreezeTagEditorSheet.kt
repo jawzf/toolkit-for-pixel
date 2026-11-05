@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.core.sheets
+package com.jawzf.pixeltoolkit.feature.apps.freeze.ui.sheets
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -39,7 +39,8 @@ import com.jawzf.pixeltoolkit.core.design.cards.IconToggleItem
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.feature.apps.freeze.AppTag
-import com.jawzf.pixeltoolkit.ui.components.FreezeTagIconPicker
+import com.jawzf.pixeltoolkit.feature.apps.freeze.ui.components.FreezeTagColorPicker
+import com.jawzf.pixeltoolkit.feature.apps.freeze.ui.components.FreezeTagIconPicker
 import java.util.UUID
 
 val PRESET_PASTEL_COLORS =
@@ -162,7 +163,7 @@ fun FreezeTagEditorSheet(
                                 shape = MaterialTheme.shapes.extraSmall,
                             ).padding(16.dp),
                 ) {
-                    com.jawzf.pixeltoolkit.ui.components.FreezeTagColorPicker(
+                    FreezeTagColorPicker(
                         selectedColorHex = selectedColorHex,
                         onColorSelected = { selectedColorHex = it },
                     )

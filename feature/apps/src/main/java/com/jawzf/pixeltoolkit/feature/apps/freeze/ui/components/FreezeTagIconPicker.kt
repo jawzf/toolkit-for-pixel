@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.components
+package com.jawzf.pixeltoolkit.feature.apps.freeze.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -19,28 +19,46 @@ import androidx.compose.material3.carousel.rememberCarouselState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
-import com.jawzf.pixeltoolkit.ui.core.sheets.PRESET_PASTEL_COLORS
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FreezeTagColorPicker(
-    selectedColorHex: String,
-    onColorSelected: (String) -> Unit,
+fun FreezeTagIconPicker(
+    selectedIconName: String,
+    onIconSelected: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val carouselState = rememberCarouselState { PRESET_PASTEL_COLORS.size }
+    val icons =
+        listOf(
+            "rounded_interests_24",
+            "rounded_work_24",
+            "rounded_school_24",
+            "rounded_camera_24",
+            "rounded_favorite_24",
+            "rounded_shopping_cart_24",
+            "rounded_music_note_24",
+            "rounded_videogame_asset_24",
+            "rounded_apartment_24",
+            "rounded_beach_access_24",
+            "rounded_local_pizza_24",
+            "rounded_train_24",
+            "rounded_flight_24",
+            "rounded_directions_boat_24",
+        )
+
+    val carouselState = rememberCarouselState { icons.size }
+    val context = LocalContext.current
     val view = LocalView.current
 
     Column(modifier = modifier.fillMaxWidth()) {
         Text(
-            text = stringResource(R.string.freeze_tag_color_picker_label),
+            text = stringResource(R.string.freeze_tag_icon_picker_label),
             style = MaterialTheme.typography.labelMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.padding(bottom = 8.dp),
@@ -58,35 +76,39 @@ fun FreezeTagColorPicker(
                     .fillMaxWidth()
                     .height(64.dp),
         ) { index ->
-            val colorHex = PRESET_PASTEL_COLORS[index]
-            val isSelected = colorHex.equals(selectedColorHex, ignoreCase = true)
-            val parsedColor =
-                try {
-                    Color(android.graphics.Color.parseColor(colorHex))
-                } catch (e: Exception) {
-                    MaterialTheme.colorScheme.primary
-                }
+            val iconName = icons[index]
+            val isSelected = iconName == selectedIconName
+            val iconResId =
+                context.resources.getIdentifier(iconName, "drawable", context.packageName)
 
             Box(
                 modifier =
                     Modifier
                         .fillMaxSize()
                         .maskClip(MaterialTheme.shapes.medium)
-                        .background(parsedColor)
-                        .clickable {
+                        .background(
+                            if (isSelected) {
+                                MaterialTheme.colorScheme.primaryContainer
+                            } else {
+                                MaterialTheme.colorScheme.surfaceContainerHigh
+                            },
+                        ).clickable {
                             HapticUtil.performVirtualKeyHaptic(view)
-                            onColorSelected(colorHex)
+                            onIconSelected(iconName)
                         },
                 contentAlignment = Alignment.Center,
             ) {
-                if (isSelected) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.rounded_check_24),
-                        contentDescription = null,
-                        tint = Color.Black.copy(alpha = 0.7f),
-                        modifier = Modifier.size(24.dp),
-                    )
-                }
+                Icon(
+                    painter = painterResource(id = if (iconResId != 0) iconResId else R.drawable.rounded_interests_24),
+                    contentDescription = null,
+                    tint =
+                        if (isSelected) {
+                            MaterialTheme.colorScheme.onPrimaryContainer
+                        } else {
+                            MaterialTheme.colorScheme.onSurfaceVariant
+                        },
+                    modifier = Modifier.size(24.dp),
+                )
             }
         }
     }

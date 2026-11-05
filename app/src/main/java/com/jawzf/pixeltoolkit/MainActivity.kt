@@ -72,8 +72,8 @@ import com.jawzf.pixeltoolkit.core.design.state.MenuStateManager
 import com.jawzf.pixeltoolkit.core.design.theme.ToolkitTheme
 import com.jawzf.pixeltoolkit.domain.DIYTabs
 import com.jawzf.pixeltoolkit.domain.registry.initPermissionRegistry
+import com.jawzf.pixeltoolkit.feature.apps.freeze.ui.FreezeGridUI
 import com.jawzf.pixeltoolkit.ui.composables.DIYScreen
-import com.jawzf.pixeltoolkit.ui.composables.FreezeGridUI
 import com.jawzf.pixeltoolkit.ui.composables.SetupFeatures
 import com.jawzf.pixeltoolkit.ui.composables.WelcomeScreen
 import com.jawzf.pixeltoolkit.ui.core.sheets.AddRepoBottomSheet

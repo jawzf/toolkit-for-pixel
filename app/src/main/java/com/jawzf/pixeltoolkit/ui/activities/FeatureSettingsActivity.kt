@@ -67,6 +67,7 @@ import com.jawzf.pixeltoolkit.core.platform.device.DeviceUtils
 import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.domain.registry.FeatureRegistry
+import com.jawzf.pixeltoolkit.feature.apps.freeze.ui.FreezeSettingsUI
 import com.jawzf.pixeltoolkit.feature.connectivity.ui.NetworksSettingsUI
 import com.jawzf.pixeltoolkit.feature.power.battery.ui.BatteriesPreviewCard
 import com.jawzf.pixeltoolkit.feature.power.battery.ui.BatteriesSettingsUI
@@ -112,7 +113,6 @@ import com.jawzf.pixeltoolkit.ui.features.system.ButtonRemapSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.DynamicNightLightSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.FlashlightPulseSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.FlashlightSettingsUI
-import com.jawzf.pixeltoolkit.ui.features.system.FreezeSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.HilightNotificationsSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.HilightProgressSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.HilightSettingsUI
