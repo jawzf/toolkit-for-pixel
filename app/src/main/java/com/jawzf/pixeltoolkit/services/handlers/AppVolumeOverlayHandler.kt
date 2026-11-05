@@ -34,10 +34,10 @@ import androidx.compose.ui.graphics.toArgb
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
+import com.jawzf.pixeltoolkit.feature.sound.appvolume.AppVolumeController
+import com.jawzf.pixeltoolkit.feature.sound.appvolume.VolumePanelDetector
 import com.jawzf.pixeltoolkit.ui.activities.AppVolumeControlActivity
 import com.jawzf.pixeltoolkit.utils.AppUtil
-import com.jawzf.pixeltoolkit.utils.VolumePanelDetector
-import com.jawzf.pixeltoolkit.utils.media.AppVolumeController
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob

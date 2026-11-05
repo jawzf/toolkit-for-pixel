@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.services.receivers
+package com.jawzf.pixeltoolkit.feature.sound.callvibration
 
 import android.content.BroadcastReceiver
 import android.content.Context

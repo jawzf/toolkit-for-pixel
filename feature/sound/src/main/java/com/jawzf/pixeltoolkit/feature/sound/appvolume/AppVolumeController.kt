@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.utils.media
+package com.jawzf.pixeltoolkit.feature.sound.appvolume
 
 import android.content.Context
 import android.media.AudioPlaybackConfiguration
