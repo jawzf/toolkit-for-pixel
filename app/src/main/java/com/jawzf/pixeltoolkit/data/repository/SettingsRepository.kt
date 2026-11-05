@@ -34,6 +34,7 @@ import com.jawzf.pixeltoolkit.domain.model.ScaleAnimationsProfile
 import com.jawzf.pixeltoolkit.domain.model.SystemShortcutsState
 import com.jawzf.pixeltoolkit.domain.model.TrackedRepo
 import com.jawzf.pixeltoolkit.domain.model.github.GitHubUser
+import com.jawzf.pixeltoolkit.feature.power.bluetooth.BluetoothBatteryUtils
 import com.jawzf.pixeltoolkit.ui.core.pickers.NetworkType
 import com.jawzf.pixeltoolkit.utils.DuoBatteryLevels
 import kotlinx.coroutines.channels.awaitClose
@@ -1659,13 +1660,13 @@ class SettingsRepository(
      * Executes the get bluetooth devices battery operation.
      * @return The resulting List<com data.
      */
-    fun getBluetoothDevicesBattery(): List<com.jawzf.pixeltoolkit.utils.BluetoothBatteryUtils.BluetoothDeviceBattery> {
+    fun getBluetoothDevicesBattery(): List<BluetoothBatteryUtils.BluetoothDeviceBattery> {
         val json = prefs.getString(KEY_BLUETOOTH_DEVICES_BATTERY, null) ?: return emptyList()
         return try {
             gson
                 .fromJson(
                     json,
-                    Array<com.jawzf.pixeltoolkit.utils.BluetoothBatteryUtils.BluetoothDeviceBattery>::class.java,
+                    Array<BluetoothBatteryUtils.BluetoothDeviceBattery>::class.java,
                 ).toList()
         } catch (e: Exception) {
             emptyList()
@@ -1675,9 +1676,9 @@ class SettingsRepository(
     /**
      * Executes the save bluetooth devices battery operation.
      *
-     * @param devices [List<com.jawzf.pixeltoolkit.utils.BluetoothBatteryUtils.BluetoothDeviceBattery>] Target devices.
+     * @param devices [List<BluetoothBatteryUtils.BluetoothDeviceBattery>] Target devices.
      */
-    fun saveBluetoothDevicesBattery(devices: List<com.jawzf.pixeltoolkit.utils.BluetoothBatteryUtils.BluetoothDeviceBattery>) {
+    fun saveBluetoothDevicesBattery(devices: List<BluetoothBatteryUtils.BluetoothDeviceBattery>) {
         val json = gson.toJson(devices)
         putString(KEY_BLUETOOTH_DEVICES_BATTERY, json)
     }

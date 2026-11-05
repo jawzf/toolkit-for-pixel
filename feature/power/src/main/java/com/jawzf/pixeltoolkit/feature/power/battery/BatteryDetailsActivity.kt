@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.activities
+package com.jawzf.pixeltoolkit.feature.power.battery
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -9,8 +9,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import com.jawzf.pixeltoolkit.core.design.theme.ToolkitTheme
-import com.jawzf.pixeltoolkit.ui.core.sheets.BatteryDetailsBottomSheet
-import com.jawzf.pixeltoolkit.utils.battery.BatteryInfoUtil
+import com.jawzf.pixeltoolkit.feature.power.battery.BatteryInfoUtil
+import com.jawzf.pixeltoolkit.feature.power.battery.ui.BatteryDetailsBottomSheet
 
 class BatteryDetailsActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

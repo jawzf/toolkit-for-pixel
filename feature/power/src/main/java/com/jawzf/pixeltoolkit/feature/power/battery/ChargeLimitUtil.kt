@@ -1,6 +1,8 @@
-package com.jawzf.pixeltoolkit.utils.battery
+package com.jawzf.pixeltoolkit.feature.power.battery
 
 import android.content.Context
+import com.jawzf.pixeltoolkit.feature.power.charging.ChargingMode
+import com.jawzf.pixeltoolkit.feature.power.charging.ChargingModeUtil
 
 object ChargeLimitUtil {
     private const val SHIELD_LEVEL = 78

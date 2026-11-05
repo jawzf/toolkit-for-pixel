@@ -36,8 +36,8 @@ import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.theme.Shapes
 import com.jawzf.pixeltoolkit.core.platform.device.DeviceUtils
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
-import com.jawzf.pixeltoolkit.ui.core.sheets.BatteryDetailsBottomSheet
-import com.jawzf.pixeltoolkit.utils.battery.BatteryInfoUtil
+import com.jawzf.pixeltoolkit.feature.power.battery.BatteryInfoUtil
+import com.jawzf.pixeltoolkit.feature.power.battery.ui.BatteryDetailsBottomSheet
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable

@@ -38,6 +38,7 @@ import com.google.gson.reflect.TypeToken
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.domain.model.AppSelection
+import com.jawzf.pixeltoolkit.feature.power.battery.ChargeLimitUtil
 import com.jawzf.pixeltoolkit.services.NotificationListener
 import com.jawzf.pixeltoolkit.utils.StatusGlanceView
 import kotlinx.coroutines.CoroutineScope
@@ -439,7 +440,7 @@ class StatusGlanceHandler(
 
         val status = batteryIntent?.getIntExtra(BatteryManager.EXTRA_STATUS, -1) ?: -1
         val plugged = status == BatteryManager.BATTERY_STATUS_CHARGING || status == BatteryManager.BATTERY_STATUS_FULL
-        val isCharging = plugged && !com.jawzf.pixeltoolkit.utils.battery.ChargeLimitUtil.isShielded(service, batteryPct, plugged)
+        val isCharging = plugged && !ChargeLimitUtil.isShielded(service, batteryPct, plugged)
         val isFull = status == BatteryManager.BATTERY_STATUS_FULL || batteryPct >= 100
 
         val powerManager = service.getSystemService(Context.POWER_SERVICE) as? PowerManager

@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.components.battery
+package com.jawzf.pixeltoolkit.feature.power.battery.ui
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
@@ -44,9 +44,10 @@ import com.jawzf.pixeltoolkit.core.design.theme.Shapes
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuUtils
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.utils.battery.BatteryDetails
-import com.jawzf.pixeltoolkit.utils.battery.BatteryInfoUtil
-import com.jawzf.pixeltoolkit.utils.hardware.ThermalInfo
+import com.jawzf.pixeltoolkit.feature.power.battery.BatteryDetails
+import com.jawzf.pixeltoolkit.feature.power.battery.BatteryInfoUtil
+import com.jawzf.pixeltoolkit.feature.power.battery.BatteryStatsUtil
+import com.jawzf.pixeltoolkit.feature.power.battery.ThermalInfo
 import java.util.Locale
 
 @Composable
@@ -548,7 +549,7 @@ fun BatteryInfoTabContent(
                         onClick = {
                             HapticUtil
                                 .performVirtualKeyHaptic(view)
-                            if (com.jawzf.pixeltoolkit.utils.BatteryStatsUtil
+                            if (BatteryStatsUtil
                                     .resetStats(context)
                             ) {
                                 onRefresh()

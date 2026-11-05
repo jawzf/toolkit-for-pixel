@@ -1,10 +1,11 @@
-package com.jawzf.pixeltoolkit.services.widgets
+package com.jawzf.pixeltoolkit.feature.power.widget
 
 import android.content.Context
 import android.content.Intent
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.GlanceAppWidgetReceiver
 import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
+import com.jawzf.pixeltoolkit.feature.power.bluetooth.BluetoothBatteryUtils
 import kotlinx.coroutines.launch
 
 class BatteriesWidgetReceiver : GlanceAppWidgetReceiver() {
@@ -76,7 +77,7 @@ class BatteriesWidgetReceiver : GlanceAppWidgetReceiver() {
                     val bluetoothDevices =
                         if (isEnabled && hasPerm) {
                             kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) {
-                                com.jawzf.pixeltoolkit.utils.BluetoothBatteryUtils.getPairedDevicesBattery(
+                                BluetoothBatteryUtils.getPairedDevicesBattery(
                                     context,
                                 )
                             }

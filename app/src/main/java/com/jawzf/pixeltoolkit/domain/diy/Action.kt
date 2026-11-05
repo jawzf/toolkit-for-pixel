@@ -14,7 +14,7 @@ import com.jawzf.pixeltoolkit.domain.model.HilightPattern
 import com.jawzf.pixeltoolkit.domain.model.NotificationLightingColorMode
 import com.jawzf.pixeltoolkit.domain.model.NotificationLightingSide
 import com.jawzf.pixeltoolkit.domain.model.NotificationLightingStyle
-import com.jawzf.pixeltoolkit.utils.battery.ChargingMode
+import com.jawzf.pixeltoolkit.feature.power.charging.ChargingMode
 
 @Keep
 sealed interface Action {

@@ -48,6 +48,7 @@ import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.domain.model.ActiveNotificationAlert
 import com.jawzf.pixeltoolkit.domain.model.AppSelection
 import com.jawzf.pixeltoolkit.domain.model.ProgressNotificationData
+import com.jawzf.pixeltoolkit.feature.power.battery.ChargeLimitUtil
 import com.jawzf.pixeltoolkit.services.NotificationListener
 import com.jawzf.pixeltoolkit.utils.AppUtil
 import com.jawzf.pixeltoolkit.utils.DuoOverlayView
@@ -246,7 +247,7 @@ class DuoOverlayHandler(
                     status == BatteryManager.BATTERY_STATUS_FULL)
                 val currentLevel = if (level >= 0 && scale > 0) (level * 100) / scale else 0
                 val isLimitShield =
-                    com.jawzf.pixeltoolkit.utils.battery.ChargeLimitUtil.isShielded(service, currentLevel, isChargingStatus || action == Intent.ACTION_POWER_CONNECTED)
+                    ChargeLimitUtil.isShielded(service, currentLevel, isChargingStatus || action == Intent.ACTION_POWER_CONNECTED)
 
                 val isNowCharging = when (action) {
                     Intent.ACTION_POWER_DISCONNECTED -> false
@@ -1260,7 +1261,7 @@ class DuoOverlayHandler(
                     val isChargingStatus = isPlugged && (status == BatteryManager.BATTERY_STATUS_CHARGING ||
                         status == BatteryManager.BATTERY_STATUS_FULL)
                     val initialLevel = if (level >= 0 && scale > 0) (level * 100) / scale else 0
-                    if (isChargingStatus && !com.jawzf.pixeltoolkit.utils.battery.ChargeLimitUtil.isShielded(service, initialLevel, true)) {
+                    if (isChargingStatus && !ChargeLimitUtil.isShielded(service, initialLevel, true)) {
                         isChargingState = true
                         val isFast = isFastCharging(it, plugged)
                         isFastChargingState = isFast

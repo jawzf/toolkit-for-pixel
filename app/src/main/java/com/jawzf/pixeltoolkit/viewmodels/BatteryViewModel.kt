@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.utils.battery.BatteryInfoUtil
+import com.jawzf.pixeltoolkit.feature.power.battery.BatteryInfoUtil
 
 class BatteryViewModel : ViewModel() {
     val isBatteryNotificationEnabled = mutableStateOf(false)

@@ -10,8 +10,8 @@ import com.jawzf.pixeltoolkit.domain.diy.Automation
 import com.jawzf.pixeltoolkit.domain.diy.DIYRepository
 import com.jawzf.pixeltoolkit.feature.connectivity.ConnectivitySettings
 import com.jawzf.pixeltoolkit.feature.connectivity.sim.SimCarrierUtil
+import com.jawzf.pixeltoolkit.feature.power.battery.BatteryNotificationService
 import com.jawzf.pixeltoolkit.services.AppDetectionService
-import com.jawzf.pixeltoolkit.services.BatteryNotificationService
 import com.jawzf.pixeltoolkit.services.widgets.StackHost
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

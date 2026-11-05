@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.services.tiles
+package com.jawzf.pixeltoolkit.feature.power.battery
 
 import android.content.Intent
 import android.graphics.drawable.Icon
@@ -8,7 +8,7 @@ import androidx.annotation.RequiresApi
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.platform.tiles.BaseTileService
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.services.BatteryNotificationService
+import com.jawzf.pixeltoolkit.feature.power.battery.BatteryNotificationService
 
 @RequiresApi(Build.VERSION_CODES.N)
 class BatteryNotificationTileService : BaseTileService() {

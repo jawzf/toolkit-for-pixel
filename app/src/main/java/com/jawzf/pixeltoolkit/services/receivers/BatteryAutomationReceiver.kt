@@ -5,7 +5,8 @@ import android.content.Context
 import android.content.Intent
 import android.os.BatteryManager
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.utils.BatteryStatsUtil
+import com.jawzf.pixeltoolkit.feature.power.battery.BatteryHistoryManager
+import com.jawzf.pixeltoolkit.feature.power.battery.BatteryStatsUtil
 
 class BatteryAutomationReceiver : BroadcastReceiver() {
     override fun onReceive(
@@ -28,7 +29,7 @@ class BatteryAutomationReceiver : BroadcastReceiver() {
         if (level >= 0) {
             val force =
                 action == Intent.ACTION_POWER_CONNECTED || action == Intent.ACTION_POWER_DISCONNECTED
-            com.jawzf.pixeltoolkit.utils.BatteryHistoryManager.recordPoint(
+            BatteryHistoryManager.recordPoint(
                 context,
                 level,
                 isPlugged,

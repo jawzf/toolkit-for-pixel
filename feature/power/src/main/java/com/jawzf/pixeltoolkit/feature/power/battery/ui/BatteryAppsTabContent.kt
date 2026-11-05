@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.components.battery
+package com.jawzf.pixeltoolkit.feature.power.battery.ui
 
 import android.view.View
 import androidx.compose.animation.AnimatedContent
@@ -43,7 +43,7 @@ import com.jawzf.pixeltoolkit.core.design.components.SegmentedDropdownMenuItem
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.theme.Shapes
-import com.jawzf.pixeltoolkit.utils.BatteryUsageApp
+import com.jawzf.pixeltoolkit.feature.power.battery.BatteryUsageApp
 import java.util.Locale
 
 @OptIn(ExperimentalFoundationApi::class)

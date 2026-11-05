@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.services.tiles
+package com.jawzf.pixeltoolkit.feature.power.charging
 
 import android.content.Intent
 import android.graphics.drawable.Icon

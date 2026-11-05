@@ -29,9 +29,9 @@ import androidx.work.WorkManager
 import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.data.repository.WidgetStackRepository
 import com.jawzf.pixeltoolkit.domain.model.WidgetStackConfig
+import com.jawzf.pixeltoolkit.feature.power.battery.BatteryInfoUtil
 import com.jawzf.pixeltoolkit.island.plugins.media.MediaSessionSource
 import com.jawzf.pixeltoolkit.utils.CalendarEventUtil
-import com.jawzf.pixeltoolkit.utils.battery.BatteryInfoUtil
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

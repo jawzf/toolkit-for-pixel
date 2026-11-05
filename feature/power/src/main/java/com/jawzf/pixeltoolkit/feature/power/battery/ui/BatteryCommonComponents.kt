@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.components.battery
+package com.jawzf.pixeltoolkit.feature.power.battery.ui
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.fadeIn
@@ -47,6 +47,7 @@ import androidx.core.graphics.drawable.toBitmap
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.theme.Shapes
+import com.jawzf.pixeltoolkit.feature.power.battery.BatteryUsageApp
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -178,7 +179,7 @@ fun BatteryLoadingIndicatorCard() {
 }
 
 @Composable
-fun TopAppsBreakdownHeader(usageApps: List<com.jawzf.pixeltoolkit.utils.BatteryUsageApp>) {
+fun TopAppsBreakdownHeader(usageApps: List<BatteryUsageApp>) {
     if (usageApps.isEmpty()) return
 
     val totalAllMah = remember(usageApps) { usageApps.sumOf { it.powerMah }.coerceAtLeast(0.0001) }

@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.services.widgets
+package com.jawzf.pixeltoolkit.feature.power.widget
 
 import android.content.Context
 import android.os.BatteryManager
@@ -47,12 +47,12 @@ import androidx.glance.text.TextStyle
 import com.google.gson.Gson
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.ui.activities.BatteryDetailsActivity
-import com.jawzf.pixeltoolkit.utils.BatteryRingDrawer
-import com.jawzf.pixeltoolkit.utils.BluetoothBatteryUtils
-import com.jawzf.pixeltoolkit.utils.BluetoothDeviceIcons
-import com.jawzf.pixeltoolkit.utils.BluetoothDeviceOrder
-import com.jawzf.pixeltoolkit.utils.battery.ChargeLimitUtil
+import com.jawzf.pixeltoolkit.feature.power.battery.BatteryDetailsActivity
+import com.jawzf.pixeltoolkit.feature.power.battery.BatteryRingDrawer
+import com.jawzf.pixeltoolkit.feature.power.battery.ChargeLimitUtil
+import com.jawzf.pixeltoolkit.feature.power.bluetooth.BluetoothBatteryUtils
+import com.jawzf.pixeltoolkit.feature.power.bluetooth.BluetoothDeviceIcons
+import com.jawzf.pixeltoolkit.feature.power.bluetooth.BluetoothDeviceOrder
 
 class BatteriesWidget : GlanceAppWidget() {
     override val sizeMode = SizeMode.Exact

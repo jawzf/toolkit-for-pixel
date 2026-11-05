@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.services
+package com.jawzf.pixeltoolkit.feature.power.battery
 
 import android.app.Notification
 import android.app.NotificationChannel
@@ -19,11 +19,11 @@ import androidx.core.graphics.ColorUtils
 import com.google.gson.Gson
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.ui.activities.BatteryDetailsActivity
-import com.jawzf.pixeltoolkit.utils.BatteryRingDrawer
-import com.jawzf.pixeltoolkit.utils.BluetoothBatteryUtils
-import com.jawzf.pixeltoolkit.utils.BluetoothDeviceIcons
-import com.jawzf.pixeltoolkit.utils.BluetoothDeviceOrder
+import com.jawzf.pixeltoolkit.feature.power.battery.BatteryDetailsActivity
+import com.jawzf.pixeltoolkit.feature.power.battery.BatteryRingDrawer
+import com.jawzf.pixeltoolkit.feature.power.bluetooth.BluetoothBatteryUtils
+import com.jawzf.pixeltoolkit.feature.power.bluetooth.BluetoothDeviceIcons
+import com.jawzf.pixeltoolkit.feature.power.bluetooth.BluetoothDeviceOrder
 
 class BatteryNotificationService : Service() {
     private lateinit var settingsRepository: SettingsRepository

@@ -73,6 +73,8 @@ import com.jawzf.pixeltoolkit.domain.model.SystemShortcutsState
 import com.jawzf.pixeltoolkit.domain.registry.SearchRegistry
 import com.jawzf.pixeltoolkit.feature.connectivity.ConnectivitySettings
 import com.jawzf.pixeltoolkit.feature.connectivity.ConnectivityState
+import com.jawzf.pixeltoolkit.feature.power.battery.BatteryNotificationService
+import com.jawzf.pixeltoolkit.feature.power.widget.BatteriesWidgetReceiver
 import com.jawzf.pixeltoolkit.feature.sound.SoundSettings
 import com.jawzf.pixeltoolkit.feature.sound.SoundState
 import com.jawzf.pixeltoolkit.island.service.IslandStatusBarHider
@@ -2859,7 +2861,7 @@ class MainViewModel : ViewModel() {
         val intent =
             Intent(
                 context,
-                com.jawzf.pixeltoolkit.services.BatteryNotificationService::class.java,
+                BatteryNotificationService::class.java,
             )
         context.stopService(intent)
     }
@@ -7441,7 +7443,7 @@ class MainViewModel : ViewModel() {
         val intent =
             Intent(
                 context,
-                com.jawzf.pixeltoolkit.services.widgets.BatteriesWidgetReceiver::class.java,
+                BatteriesWidgetReceiver::class.java,
             ).apply {
                 action = android.appwidget.AppWidgetManager.ACTION_APPWIDGET_UPDATE
             }
@@ -7465,7 +7467,7 @@ class MainViewModel : ViewModel() {
         val intent =
             Intent(
                 context,
-                com.jawzf.pixeltoolkit.services.widgets.BatteriesWidgetReceiver::class.java,
+                BatteriesWidgetReceiver::class.java,
             ).apply {
                 action = android.appwidget.AppWidgetManager.ACTION_APPWIDGET_UPDATE
             }
@@ -7489,7 +7491,7 @@ class MainViewModel : ViewModel() {
         val intent =
             Intent(
                 context,
-                com.jawzf.pixeltoolkit.services.widgets.BatteriesWidgetReceiver::class.java,
+                BatteriesWidgetReceiver::class.java,
             ).apply {
                 action = android.appwidget.AppWidgetManager.ACTION_APPWIDGET_UPDATE
             }

@@ -17,6 +17,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
+import com.jawzf.pixeltoolkit.feature.power.bluetooth.BluetoothDeviceIcons
+import com.jawzf.pixeltoolkit.feature.power.bluetooth.BluetoothDeviceOrder
 import com.jawzf.pixeltoolkit.island.model.CompactCell
 import com.jawzf.pixeltoolkit.island.model.CompactPlacement
 import com.jawzf.pixeltoolkit.island.model.IslandItem
@@ -28,7 +30,6 @@ import com.jawzf.pixeltoolkit.island.plugins.soften
 import com.jawzf.pixeltoolkit.island.ui.components.BatteryGlyph
 import com.jawzf.pixeltoolkit.island.ui.components.BatteryRing
 import com.jawzf.pixeltoolkit.island.ui.components.IslandIcon
-import com.jawzf.pixeltoolkit.utils.BluetoothDeviceOrder
 
 class DevicesPlugin : BaseIslandPlugin() {
     override val id = "devices"
@@ -244,8 +245,8 @@ class DevicesPlugin : BaseIslandPlugin() {
         }
 
     private fun iconFor(device: BluetoothDevice, name: String): Int {
-        if (com.jawzf.pixeltoolkit.utils.BluetoothDeviceIcons.getOverrideId(context, device.address) != null) {
-            return com.jawzf.pixeltoolkit.utils.BluetoothDeviceIcons.resolve(context, device.address, name)
+        if (BluetoothDeviceIcons.getOverrideId(context, device.address) != null) {
+            return BluetoothDeviceIcons.resolve(context, device.address, name)
         }
         val major = try {
             device.bluetoothClass?.majorDeviceClass

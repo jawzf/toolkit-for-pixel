@@ -33,11 +33,11 @@ import androidx.core.content.ContextCompat
 import com.google.gson.Gson
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.utils.BatteryRingDrawer
-import com.jawzf.pixeltoolkit.utils.BluetoothBatteryUtils
-import com.jawzf.pixeltoolkit.utils.BluetoothDeviceIcons
-import com.jawzf.pixeltoolkit.utils.BluetoothDeviceOrder
-import com.jawzf.pixeltoolkit.utils.battery.ChargeLimitUtil
+import com.jawzf.pixeltoolkit.feature.power.battery.BatteryRingDrawer
+import com.jawzf.pixeltoolkit.feature.power.battery.ChargeLimitUtil
+import com.jawzf.pixeltoolkit.feature.power.bluetooth.BluetoothBatteryUtils
+import com.jawzf.pixeltoolkit.feature.power.bluetooth.BluetoothDeviceIcons
+import com.jawzf.pixeltoolkit.feature.power.bluetooth.BluetoothDeviceOrder
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 import kotlinx.coroutines.delay
 
