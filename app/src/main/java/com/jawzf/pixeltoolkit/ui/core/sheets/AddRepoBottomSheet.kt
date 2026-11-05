@@ -50,9 +50,9 @@ import com.jawzf.pixeltoolkit.core.design.components.SimpleMarkdown
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
-import com.jawzf.pixeltoolkit.domain.model.UpdateInfo
-import com.jawzf.pixeltoolkit.utils.TimeUtil
-import com.jawzf.pixeltoolkit.viewmodels.AppUpdatesViewModel
+import com.jawzf.pixeltoolkit.feature.apps.updates.AppUpdatesViewModel
+import com.jawzf.pixeltoolkit.feature.apps.updates.TimeUtil
+import com.jawzf.pixeltoolkit.feature.apps.updates.UpdateInfo
 import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)

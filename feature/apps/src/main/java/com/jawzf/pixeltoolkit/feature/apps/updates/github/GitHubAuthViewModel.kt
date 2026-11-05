@@ -1,12 +1,12 @@
-package com.jawzf.pixeltoolkit.viewmodels
+package com.jawzf.pixeltoolkit.feature.apps.updates.github
 
 import android.content.Context
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jawzf.pixeltoolkit.data.repository.GitHubAuthRepository
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
+import com.jawzf.pixeltoolkit.feature.apps.updates.github.GitHubAuthRepository
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
@@ -15,15 +15,14 @@ import kotlinx.coroutines.launch
 class GitHubAuthViewModel : ViewModel() {
     private val authRepository = GitHubAuthRepository()
     private val gitHubRepository =
-        com.jawzf.pixeltoolkit.data.repository
-            .GitHubRepository()
+        GitHubRepository()
 
     private val _authState = mutableStateOf<AuthState>(AuthState.Idle)
     val authState: State<AuthState> = _authState
 
     private val _currentUser =
-        mutableStateOf<com.jawzf.pixeltoolkit.domain.model.github.GitHubUser?>(null)
-    val currentUser: State<com.jawzf.pixeltoolkit.domain.model.github.GitHubUser?> = _currentUser
+        mutableStateOf<GitHubUser?>(null)
+    val currentUser: State<GitHubUser?> = _currentUser
 
     private var pollingJob: Job? = null
 

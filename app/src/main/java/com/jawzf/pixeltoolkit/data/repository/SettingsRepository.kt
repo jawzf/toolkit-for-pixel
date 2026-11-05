@@ -31,8 +31,8 @@ import com.jawzf.pixeltoolkit.domain.model.PowerChoice
 import com.jawzf.pixeltoolkit.domain.model.RemapSlot
 import com.jawzf.pixeltoolkit.domain.model.ScaleAnimationsProfile
 import com.jawzf.pixeltoolkit.domain.model.SystemShortcutsState
-import com.jawzf.pixeltoolkit.domain.model.TrackedRepo
-import com.jawzf.pixeltoolkit.domain.model.github.GitHubUser
+import com.jawzf.pixeltoolkit.feature.apps.updates.TrackedRepo
+import com.jawzf.pixeltoolkit.feature.apps.updates.github.GitHubUser
 import com.jawzf.pixeltoolkit.feature.power.PowerSettings
 import com.jawzf.pixeltoolkit.ui.core.pickers.NetworkType
 import com.jawzf.pixeltoolkit.utils.DuoBatteryLevels

@@ -35,8 +35,8 @@ import androidx.compose.ui.unit.sp
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
-import com.jawzf.pixeltoolkit.viewmodels.AuthState
-import com.jawzf.pixeltoolkit.viewmodels.GitHubAuthViewModel
+import com.jawzf.pixeltoolkit.feature.apps.updates.github.AuthState
+import com.jawzf.pixeltoolkit.feature.apps.updates.github.GitHubAuthViewModel
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable

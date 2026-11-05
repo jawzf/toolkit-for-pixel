@@ -70,6 +70,7 @@ import com.jawzf.pixeltoolkit.domain.registry.SearchRegistry
 import com.jawzf.pixeltoolkit.feature.apps.AppsSettings
 import com.jawzf.pixeltoolkit.feature.apps.applock.AppLockState
 import com.jawzf.pixeltoolkit.feature.apps.freeze.FreezeState
+import com.jawzf.pixeltoolkit.feature.apps.updates.github.GitHubUser
 import com.jawzf.pixeltoolkit.feature.connectivity.ConnectivitySettings
 import com.jawzf.pixeltoolkit.feature.connectivity.ConnectivityState
 import com.jawzf.pixeltoolkit.feature.power.BatteryState
@@ -600,7 +601,7 @@ class MainViewModel : ViewModel() {
     private var appContext: Context? = null
 
     val gitHubToken = mutableStateOf<String?>(null)
-    val gitHubUser = mutableStateOf<com.jawzf.pixeltoolkit.domain.model.github.GitHubUser?>(null)
+    val gitHubUser = mutableStateOf<GitHubUser?>(null)
 
     private val contentObserver =
         object : ContentObserver(Handler(Looper.getMainLooper())) {

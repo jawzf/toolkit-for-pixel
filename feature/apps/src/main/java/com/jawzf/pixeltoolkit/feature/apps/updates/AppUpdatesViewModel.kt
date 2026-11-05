@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.viewmodels
+package com.jawzf.pixeltoolkit.feature.apps.updates
 
 import android.content.Context
 import android.content.Intent
@@ -11,13 +11,13 @@ import com.google.gson.Gson
 import com.jawzf.pixeltoolkit.core.data.apps.AppUtil
 import com.jawzf.pixeltoolkit.core.data.apps.NotificationApp
 import com.jawzf.pixeltoolkit.core.design.R
-import com.jawzf.pixeltoolkit.data.repository.GitHubRepository
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.domain.model.TrackedRepo
-import com.jawzf.pixeltoolkit.domain.model.github.GitHubAsset
-import com.jawzf.pixeltoolkit.domain.model.github.GitHubOwner
-import com.jawzf.pixeltoolkit.domain.model.github.GitHubRelease
-import com.jawzf.pixeltoolkit.domain.model.github.GitHubRepo
+import com.jawzf.pixeltoolkit.feature.apps.updates.TrackedRepo
+import com.jawzf.pixeltoolkit.feature.apps.updates.github.GitHubAsset
+import com.jawzf.pixeltoolkit.feature.apps.updates.github.GitHubOwner
+import com.jawzf.pixeltoolkit.feature.apps.updates.github.GitHubRelease
+import com.jawzf.pixeltoolkit.feature.apps.updates.github.GitHubRepo
+import com.jawzf.pixeltoolkit.feature.apps.updates.github.GitHubRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

@@ -88,6 +88,10 @@ import com.jawzf.pixeltoolkit.core.platform.device.DeviceUtils
 import com.jawzf.pixeltoolkit.domain.model.AppBackupItem
 import com.jawzf.pixeltoolkit.domain.model.AppListBackup
 import com.jawzf.pixeltoolkit.domain.model.DeviceBackupInfo
+import com.jawzf.pixeltoolkit.feature.apps.updates.AppUpdatesViewModel
+import com.jawzf.pixeltoolkit.feature.apps.updates.TrackedRepo
+import com.jawzf.pixeltoolkit.feature.apps.updates.UpdateInfo
+import com.jawzf.pixeltoolkit.feature.apps.updates.github.GitHubAuthViewModel
 import com.jawzf.pixeltoolkit.ui.components.AppsActionButtons
 import com.jawzf.pixeltoolkit.ui.components.DeviceHeroCard
 import com.jawzf.pixeltoolkit.ui.components.ImportExportButtons
@@ -95,8 +99,6 @@ import com.jawzf.pixeltoolkit.ui.core.cards.TrackedRepoCard
 import com.jawzf.pixeltoolkit.ui.core.sheets.AddRepoBottomSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.GitHubAuthSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.UpdateBottomSheet
-import com.jawzf.pixeltoolkit.viewmodels.AppUpdatesViewModel
-import com.jawzf.pixeltoolkit.viewmodels.GitHubAuthViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -480,7 +482,7 @@ class YourAndroidActivity : ComponentActivity() {
                             val isNotesLoading = repo.latestReleaseBody.isNullOrBlank()
                             UpdateBottomSheet(
                                 updateInfo =
-                                    com.jawzf.pixeltoolkit.domain.model.UpdateInfo(
+                                    UpdateInfo(
                                         versionName = repo.latestTagName,
                                         releaseNotes = repo.latestReleaseBody ?: "",
                                         downloadUrl = repo.downloadUrl ?: "",
@@ -929,7 +931,7 @@ fun YourAndroidContent(
 
 @Composable
 private fun RepoItem(
-    repo: com.jawzf.pixeltoolkit.domain.model.TrackedRepo,
+    repo: TrackedRepo,
     updatesViewModel: AppUpdatesViewModel,
     refreshingRepoIds: Set<String>,
     context: android.content.Context,

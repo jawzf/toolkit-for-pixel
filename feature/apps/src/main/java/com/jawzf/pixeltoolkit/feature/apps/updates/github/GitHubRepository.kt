@@ -1,10 +1,10 @@
-package com.jawzf.pixeltoolkit.data.repository
+package com.jawzf.pixeltoolkit.feature.apps.updates.github
 
 import android.util.Log
 import com.google.gson.Gson
-import com.jawzf.pixeltoolkit.domain.model.github.GitHubRelease
-import com.jawzf.pixeltoolkit.domain.model.github.GitHubRepo
-import com.jawzf.pixeltoolkit.domain.model.github.GitHubUser
+import com.jawzf.pixeltoolkit.feature.apps.updates.github.GitHubRelease
+import com.jawzf.pixeltoolkit.feature.apps.updates.github.GitHubRepo
+import com.jawzf.pixeltoolkit.feature.apps.updates.github.GitHubUser
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.net.HttpURLConnection

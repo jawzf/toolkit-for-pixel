@@ -1,8 +1,8 @@
-package com.jawzf.pixeltoolkit.data.repository
+package com.jawzf.pixeltoolkit.feature.apps.updates.github
 
 import com.google.gson.Gson
-import com.jawzf.pixeltoolkit.domain.model.github.DeviceCodeResponse
-import com.jawzf.pixeltoolkit.domain.model.github.TokenResponse
+import com.jawzf.pixeltoolkit.feature.apps.updates.github.DeviceCodeResponse
+import com.jawzf.pixeltoolkit.feature.apps.updates.github.TokenResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.FormBody
