@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.composables
+package com.jawzf.pixeltoolkit.feature.apps.freeze.ui
 
 import android.content.Intent
 import android.net.Uri
@@ -86,8 +86,8 @@ import com.jawzf.pixeltoolkit.core.design.modifiers.scrollMotionBlur
 import com.jawzf.pixeltoolkit.core.design.state.LocalMenuStateManager
 import com.jawzf.pixeltoolkit.core.design.state.MenuStateManager
 import com.jawzf.pixeltoolkit.feature.apps.freeze.FreezeManager
-import com.jawzf.pixeltoolkit.utils.ShortcutUtil
-import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
+import com.jawzf.pixeltoolkit.feature.apps.freeze.FreezeState
+import com.jawzf.pixeltoolkit.feature.apps.freeze.ui.sheets.AssignTagsSheet
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -95,7 +95,10 @@ import kotlinx.coroutines.withContext
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun FreezeGridUI(
-    viewModel: MainViewModel,
+    state: FreezeState,
+    isMotionBlurEnabled: Boolean,
+    onResume: () -> Unit,
+    onPinShortcut: (NotificationApp) -> Unit,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp),
     onGetStartedClick: (() -> Unit)? = null,
@@ -106,8 +109,8 @@ fun FreezeGridUI(
     val view = LocalView.current
     val menuState = LocalMenuStateManager.current
     val scope = rememberCoroutineScope()
-    val pickedApps by viewModel.freeze.freezePickedApps
-    val isPickedAppsLoading by viewModel.freeze.isFreezePickedAppsLoading
+    val pickedApps by state.freezePickedApps
+    val isPickedAppsLoading by state.isFreezePickedAppsLoading
 
     val frozenStates = remember { mutableStateMapOf<String, Boolean>() }
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -117,9 +120,9 @@ fun FreezeGridUI(
     val focusManager = LocalFocusManager.current
     var isFocused by remember { mutableStateOf(false) }
 
-    val freezeTags by viewModel.freeze.freezeTags
-    val freezeAppTagMap by viewModel.freeze.freezeAppTagMap
-    val isTagColorCodedEnabled by viewModel.freeze.isFreezeTagColorCodedEnabled
+    val freezeTags by state.freezeTags
+    val freezeAppTagMap by state.freezeAppTagMap
+    val isTagColorCodedEnabled by state.isFreezeTagColorCodedEnabled
 
     var selectedTagId by rememberSaveable { mutableStateOf<String?>(null) }
 
@@ -154,8 +157,8 @@ fun FreezeGridUI(
         val observer =
             LifecycleEventObserver { _, event ->
                 if (event == Lifecycle.Event.ON_RESUME) {
-                    viewModel.check(context)
-                    viewModel.freeze.refreshFreezePickedApps(context)
+                    onResume()
+                    state.refreshFreezePickedApps(context)
                 }
             }
         lifecycleOwner.lifecycle.addObserver(observer)
@@ -220,7 +223,6 @@ fun FreezeGridUI(
             }
         } else {
             val scrollState = androidx.compose.foundation.rememberScrollState()
-            val isMotionBlurEnabled by viewModel.isMotionBlurEnabled
 
             Column(
                 modifier =
@@ -284,7 +286,7 @@ fun FreezeGridUI(
                             onSearch = {
                                 bestMatch?.let { app ->
                                     HapticUtil.performVirtualKeyHaptic(view)
-                                    viewModel.freeze.launchAndUnfreezeApp(context, app.packageName)
+                                    state.launchAndUnfreezeApp(context, app.packageName)
                                     onAppLaunched?.invoke()
                                 }
                             },
@@ -435,7 +437,7 @@ fun FreezeGridUI(
                                                 menuState = menuState,
                                                 onClick = {
                                                     HapticUtil.performVirtualKeyHaptic(view)
-                                                    viewModel.freeze.launchAndUnfreezeApp(
+                                                    state.launchAndUnfreezeApp(
                                                         context,
                                                         app.packageName,
                                                     )
@@ -463,7 +465,7 @@ fun FreezeGridUI(
                                                     }
                                                 },
                                                 onToggleAutoFreeze = { isAutoFreeze ->
-                                                    viewModel.freeze.updateFreezeAppAutoFreeze(
+                                                    state.updateFreezeAppAutoFreeze(
                                                         context,
                                                         app.packageName,
                                                         isAutoFreeze,
@@ -473,12 +475,13 @@ fun FreezeGridUI(
                                                     appForTagAssignment = app
                                                 },
                                                 onRemove = {
-                                                    viewModel.freeze.updateFreezeAppEnabled(
+                                                    state.updateFreezeAppEnabled(
                                                         context,
                                                         app.packageName,
                                                         false,
                                                     )
                                                 },
+                                                onCreateShortcut = { onPinShortcut(app) },
                                             )
                                         }
                                     }
@@ -496,13 +499,13 @@ fun FreezeGridUI(
         }
 
         appForTagAssignment?.let { targetApp ->
-            com.jawzf.pixeltoolkit.ui.core.sheets.AssignTagsSheet(
+            AssignTagsSheet(
                 appName = targetApp.appName,
                 availableTags = freezeTags,
                 assignedTagIds = freezeAppTagMap[targetApp.packageName] ?: emptyList(),
                 onDismissRequest = { appForTagAssignment = null },
                 onSave = { selectedTagIds ->
-                    viewModel.freeze.setAppTags(context, targetApp.packageName, selectedTagIds)
+                    state.setAppTags(context, targetApp.packageName, selectedTagIds)
                 },
             )
         }
@@ -524,6 +527,7 @@ fun AppGridItem(
     onToggleAutoFreeze: (Boolean) -> Unit,
     onAssignTags: () -> Unit,
     onRemove: () -> Unit,
+    onCreateShortcut: () -> Unit,
 ) {
     val view = LocalView.current
     val context = LocalContext.current
@@ -753,7 +757,7 @@ fun AppGridItem(
                     },
                     onClick = {
                         showMenu = false
-                        ShortcutUtil.pinAppShortcut(context, app)
+                        onCreateShortcut()
                     },
                     leadingIcon = {
                         Icon(

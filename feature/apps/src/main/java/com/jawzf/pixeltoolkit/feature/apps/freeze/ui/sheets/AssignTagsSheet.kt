@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.core.sheets
+package com.jawzf.pixeltoolkit.feature.apps.freeze.ui.sheets
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

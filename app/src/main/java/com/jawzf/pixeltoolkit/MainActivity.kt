@@ -72,14 +72,15 @@ import com.jawzf.pixeltoolkit.core.design.state.MenuStateManager
 import com.jawzf.pixeltoolkit.core.design.theme.ToolkitTheme
 import com.jawzf.pixeltoolkit.domain.DIYTabs
 import com.jawzf.pixeltoolkit.domain.registry.initPermissionRegistry
+import com.jawzf.pixeltoolkit.feature.apps.freeze.ui.FreezeGridUI
 import com.jawzf.pixeltoolkit.ui.composables.DIYScreen
-import com.jawzf.pixeltoolkit.ui.composables.FreezeGridUI
 import com.jawzf.pixeltoolkit.ui.composables.SetupFeatures
 import com.jawzf.pixeltoolkit.ui.composables.WelcomeScreen
 import com.jawzf.pixeltoolkit.ui.core.sheets.AddRepoBottomSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.GitHubAuthSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.ShakeForHelp
 import com.jawzf.pixeltoolkit.ui.core.sheets.UpdateBottomSheet
+import com.jawzf.pixeltoolkit.utils.ShortcutUtil
 import com.jawzf.pixeltoolkit.viewmodels.AppUpdatesViewModel
 import com.jawzf.pixeltoolkit.viewmodels.GitHubAuthViewModel
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
@@ -98,7 +99,7 @@ class MainActivity : AppCompatActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        com.jawzf.pixeltoolkit.utils.ShortcutUtil
+        ShortcutUtil
             .updateLauncherDynamicShortcuts(this)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
@@ -750,7 +751,10 @@ class MainActivity : AppCompatActivity() {
 
                                         DIYTabs.FREEZE -> {
                                             FreezeGridUI(
-                                                viewModel = viewModel,
+                                                state = viewModel.freeze,
+                                                isMotionBlurEnabled = viewModel.isMotionBlurEnabled.value,
+                                                onResume = { viewModel.check(context) },
+                                                onPinShortcut = { app -> ShortcutUtil.pinAppShortcut(context, app) },
                                                 modifier = Modifier.fillMaxSize(),
                                                 contentPadding = contentPadding,
                                                 onGetStartedClick = {
