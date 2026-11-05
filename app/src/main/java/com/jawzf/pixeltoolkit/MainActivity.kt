@@ -83,6 +83,7 @@ import com.jawzf.pixeltoolkit.ui.composables.DIYScreen
 import com.jawzf.pixeltoolkit.ui.composables.SetupFeatures
 import com.jawzf.pixeltoolkit.ui.composables.WelcomeScreen
 import com.jawzf.pixeltoolkit.ui.core.sheets.ShakeForHelp
+import com.jawzf.pixeltoolkit.ui.core.sheets.SingleAppSelectionSheet
 import com.jawzf.pixeltoolkit.utils.ShortcutUtil
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 import kotlinx.coroutines.launch
@@ -433,6 +434,12 @@ class MainActivity : AppCompatActivity() {
                             onTrackClick = {
                                 showAddRepoSheet = false
                                 updatesViewModel.clearSearch()
+                            },
+                            appPicker = { onDismiss, onAppSelected ->
+                                SingleAppSelectionSheet(
+                                    onDismissRequest = onDismiss,
+                                    onAppSelected = onAppSelected,
+                                )
                             },
                         )
                     }

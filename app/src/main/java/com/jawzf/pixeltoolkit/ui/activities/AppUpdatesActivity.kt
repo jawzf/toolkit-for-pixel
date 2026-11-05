@@ -59,6 +59,7 @@ import com.jawzf.pixeltoolkit.feature.apps.updates.ui.AddRepoBottomSheet
 import com.jawzf.pixeltoolkit.feature.apps.updates.ui.ReusableTopAppBar
 import com.jawzf.pixeltoolkit.feature.apps.updates.ui.TrackedRepoCard
 import com.jawzf.pixeltoolkit.feature.apps.updates.ui.UpdateBottomSheet
+import com.jawzf.pixeltoolkit.ui.core.sheets.SingleAppSelectionSheet
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -193,6 +194,12 @@ class AppUpdatesActivity : AppCompatActivity() {
                         onTrackClick = {
                             showAddRepoSheet = false
                             updatesViewModel.clearSearch()
+                        },
+                        appPicker = { onDismiss, onAppSelected ->
+                            SingleAppSelectionSheet(
+                                onDismissRequest = onDismiss,
+                                onAppSelected = onAppSelected,
+                            )
                         },
                     )
                 }

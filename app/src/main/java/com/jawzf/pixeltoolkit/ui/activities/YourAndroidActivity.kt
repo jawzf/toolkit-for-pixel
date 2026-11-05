@@ -99,6 +99,7 @@ import com.jawzf.pixeltoolkit.feature.apps.updates.ui.UpdateBottomSheet
 import com.jawzf.pixeltoolkit.ui.components.AppsActionButtons
 import com.jawzf.pixeltoolkit.ui.components.DeviceHeroCard
 import com.jawzf.pixeltoolkit.ui.components.ImportExportButtons
+import com.jawzf.pixeltoolkit.ui.core.sheets.SingleAppSelectionSheet
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -470,6 +471,12 @@ class YourAndroidActivity : ComponentActivity() {
                             onTrackClick = {
                                 showAddRepoSheet = false
                                 updatesViewModel.clearSearch()
+                            },
+                            appPicker = { onDismiss, onAppSelected ->
+                                SingleAppSelectionSheet(
+                                    onDismissRequest = onDismiss,
+                                    onAppSelected = onAppSelected,
+                                )
                             },
                         )
                     }
