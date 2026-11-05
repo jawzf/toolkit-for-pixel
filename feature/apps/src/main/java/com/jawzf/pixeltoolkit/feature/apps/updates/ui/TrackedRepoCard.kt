@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.core.cards
+package com.jawzf.pixeltoolkit.feature.apps.updates.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.combinedClickable

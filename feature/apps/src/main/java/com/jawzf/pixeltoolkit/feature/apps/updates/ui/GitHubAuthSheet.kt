@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.core.sheets
+package com.jawzf.pixeltoolkit.feature.apps.updates.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

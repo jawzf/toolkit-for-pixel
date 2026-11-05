@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.utils
+package com.jawzf.pixeltoolkit.feature.apps.updates
 
 import AutoUpdaterManager
 import android.content.Context

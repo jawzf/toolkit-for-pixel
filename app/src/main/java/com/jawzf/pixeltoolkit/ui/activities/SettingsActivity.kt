@@ -108,12 +108,12 @@ import com.jawzf.pixeltoolkit.domain.registry.FeatureRegistry
 import com.jawzf.pixeltoolkit.domain.registry.PermissionRegistry
 import com.jawzf.pixeltoolkit.feature.apps.AppsSettings
 import com.jawzf.pixeltoolkit.feature.apps.updates.github.GitHubAuthViewModel
+import com.jawzf.pixeltoolkit.feature.apps.updates.ui.GitHubAuthSheet
 import com.jawzf.pixeltoolkit.ui.components.dialogs.AboutSection
 import com.jawzf.pixeltoolkit.ui.core.pickers.AppIconPicker
 import com.jawzf.pixeltoolkit.ui.core.pickers.DefaultTabPicker
 import com.jawzf.pixeltoolkit.ui.core.pickers.PrivilegedModePicker
 import com.jawzf.pixeltoolkit.ui.core.sheets.BugReportBottomSheet
-import com.jawzf.pixeltoolkit.ui.core.sheets.GitHubAuthSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.ImportConfigConfirmationSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.ShakeForHelp
 import com.jawzf.pixeltoolkit.ui.core.sheets.UnsupportedFeaturesConfirmationSheet
