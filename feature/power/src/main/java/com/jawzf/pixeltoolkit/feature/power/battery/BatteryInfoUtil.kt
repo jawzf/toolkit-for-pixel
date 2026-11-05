@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.utils.battery
+package com.jawzf.pixeltoolkit.feature.power.battery
 
 import android.content.Context
 import android.content.Intent
@@ -6,8 +6,6 @@ import android.content.IntentFilter
 import android.os.BatteryManager
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
-import com.jawzf.pixeltoolkit.utils.hardware.ThermalInfo
-import com.jawzf.pixeltoolkit.utils.hardware.ThermalUtil
 
 data class BatteryDetails(
     val level: Int,

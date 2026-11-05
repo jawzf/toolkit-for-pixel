@@ -41,6 +41,8 @@ import com.jawzf.pixeltoolkit.domain.model.DashConfig
 import com.jawzf.pixeltoolkit.domain.model.NotificationLightingStyle
 import com.jawzf.pixeltoolkit.domain.model.RippleConfig
 import com.jawzf.pixeltoolkit.feature.connectivity.hotspot.HotspotController
+import com.jawzf.pixeltoolkit.feature.power.PowerSettings
+import com.jawzf.pixeltoolkit.feature.power.charging.ChargingModeUtil
 import com.jawzf.pixeltoolkit.feature.sound.mode.SoundModeHandler
 import com.jawzf.pixeltoolkit.services.NotificationLightingService
 import com.jawzf.pixeltoolkit.services.NotificationListener
@@ -171,7 +173,7 @@ object CombinedActionExecutor {
                 is Action.DeviceCare -> withContext(Dispatchers.IO) { DeviceCare.run(context, action) }
                 is Action.TurnOffLowPower -> setLowPowerMode(context, false)
                 is Action.SetChargingMode ->
-                    com.jawzf.pixeltoolkit.utils.battery.ChargingModeUtil
+                    ChargingModeUtil
                         .setMode(context, action.mode)
                 is Action.TriggerNotificationLighting -> triggerNotificationLighting(context, action)
                 is Action.HapticVibration -> {
@@ -664,7 +666,7 @@ object CombinedActionExecutor {
                     }
 
                     if (action.changeBatteryNotification) {
-                        repository.setBatteryNotificationEnabled(action.batteryNotificationEnabled)
+                        PowerSettings(context).setBatteryNotificationEnabled(action.batteryNotificationEnabled)
                     }
 
                     if (action.changeSmartPixels) {

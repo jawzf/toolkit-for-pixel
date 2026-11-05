@@ -1,11 +1,11 @@
-package com.jawzf.pixeltoolkit.utils
+package com.jawzf.pixeltoolkit.feature.power.bluetooth
 
 import android.content.Context
 import androidx.annotation.DrawableRes
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.jawzf.pixeltoolkit.core.design.R
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
+import com.jawzf.pixeltoolkit.feature.power.PowerSettings
 
 data class BluetoothDeviceIcon(val id: String, val label: String, @DrawableRes val res: Int)
 
@@ -167,7 +167,7 @@ object BluetoothDeviceIcons {
 
     private fun overrides(context: Context): Map<String, String> =
         try {
-            val json = SettingsRepository(context).getString(KEY_OVERRIDES, null) ?: return emptyMap()
+            val json = PowerSettings(context).getString(KEY_OVERRIDES, null) ?: return emptyMap()
             Gson().fromJson(json, object : TypeToken<Map<String, String>>() {}.type) ?: emptyMap()
         } catch (_: Exception) {
             emptyMap()
@@ -178,7 +178,7 @@ object BluetoothDeviceIcons {
     fun setOverride(context: Context, address: String, iconId: String?) {
         val next = overrides(context).toMutableMap()
         if (iconId == null) next.remove(address) else next[address] = iconId
-        SettingsRepository(context).putString(KEY_OVERRIDES, Gson().toJson(next))
+        PowerSettings(context).putString(KEY_OVERRIDES, Gson().toJson(next))
     }
 
     fun resolve(context: Context, address: String?, name: String): Int {

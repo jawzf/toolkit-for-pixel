@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.utils.battery
+package com.jawzf.pixeltoolkit.feature.power.charging
 
 import android.content.Context
 import android.provider.Settings

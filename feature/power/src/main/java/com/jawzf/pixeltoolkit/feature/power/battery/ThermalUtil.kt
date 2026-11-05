@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.utils.hardware
+package com.jawzf.pixeltoolkit.feature.power.battery
 
 import android.content.Context
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils

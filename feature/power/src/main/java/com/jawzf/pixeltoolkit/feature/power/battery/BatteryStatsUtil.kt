@@ -1,10 +1,10 @@
-package com.jawzf.pixeltoolkit.utils
+package com.jawzf.pixeltoolkit.feature.power.battery
 
 import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
+import com.jawzf.pixeltoolkit.feature.power.PowerSettings
 
 data class BatteryUsageApp(
     val uid: Int,
@@ -21,7 +21,7 @@ object BatteryStatsUtil {
         val res1 = ShellUtils.runCommandWithOutput(context, "dumpsys batterystats --reset")
         ShellUtils.runCommand(context, "cmd battery reset")
         if (res1 != null) {
-            val repo = SettingsRepository(context)
+            val repo = PowerSettings(context)
             repo.putLong("last_battery_stats_reset_time", System.currentTimeMillis())
             BatteryHistoryManager.clearHistory(context)
         }

@@ -37,8 +37,8 @@ import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
 import com.jawzf.pixeltoolkit.core.design.theme.ToolkitTheme
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.services.widgets.BatteriesWidget
+import com.jawzf.pixeltoolkit.feature.power.PowerSettings
+import com.jawzf.pixeltoolkit.feature.power.widget.BatteriesWidget
 import kotlinx.coroutines.launch
 
 class BatteriesWidgetConfigureActivity : ComponentActivity() {
@@ -80,8 +80,8 @@ private fun BatteriesWidgetConfigureSheet(
     val context = LocalContext.current
     val view = LocalView.current
     val scope = rememberCoroutineScope()
-    val key = booleanPreferencesKey(SettingsRepository.KEY_BATTERY_WIDGET_BACKGROUND_ENABLED)
-    val centerKey = booleanPreferencesKey(SettingsRepository.KEY_BATTERY_WIDGET_CENTER_ITEMS)
+    val key = booleanPreferencesKey(PowerSettings.KEY_BATTERY_WIDGET_BACKGROUND_ENABLED)
+    val centerKey = booleanPreferencesKey(PowerSettings.KEY_BATTERY_WIDGET_CENTER_ITEMS)
     var background by remember { mutableStateOf(true) }
     var centerItems by remember { mutableStateOf(false) }
 

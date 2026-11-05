@@ -13,6 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
+import com.jawzf.pixeltoolkit.feature.power.battery.ChargeLimitUtil
 import com.jawzf.pixeltoolkit.island.model.CompactCell
 import com.jawzf.pixeltoolkit.island.model.CompactPlacement
 import com.jawzf.pixeltoolkit.island.model.IslandItem
@@ -203,7 +204,7 @@ class TimeBatteryPlugin : BaseIslandPlugin() {
         val status = batteryIntent.getIntExtra(BatteryManager.EXTRA_STATUS, -1)
         level = (raw * 100f / scale).toInt()
         val plugged = status == BatteryManager.BATTERY_STATUS_CHARGING || status == BatteryManager.BATTERY_STATUS_FULL
-        shielded = com.jawzf.pixeltoolkit.utils.battery.ChargeLimitUtil.isShielded(context, level, plugged)
+        shielded = ChargeLimitUtil.isShielded(context, level, plugged)
         charging = plugged && !shielded
         powerSave = (context.getSystemService(Context.POWER_SERVICE) as? PowerManager)?.isPowerSaveMode ?: false
     }

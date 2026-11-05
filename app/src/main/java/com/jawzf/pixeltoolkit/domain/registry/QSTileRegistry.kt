@@ -9,6 +9,7 @@ import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.feature.connectivity.dns.PrivateDnsTileService
 import com.jawzf.pixeltoolkit.feature.connectivity.nfc.NfcTileService
 import com.jawzf.pixeltoolkit.feature.connectivity.sim.DataSimTileService
+import com.jawzf.pixeltoolkit.feature.power.charging.ChargeQuickTileService
 import com.jawzf.pixeltoolkit.feature.sound.mode.SoundModeTileService
 import com.jawzf.pixeltoolkit.feature.sound.mono.MonoAudioTileService
 import com.jawzf.pixeltoolkit.services.tiles.AdaptiveBrightnessTileService
@@ -17,7 +18,6 @@ import com.jawzf.pixeltoolkit.services.tiles.AppFreezingTileService
 import com.jawzf.pixeltoolkit.services.tiles.AppLockTileService
 import com.jawzf.pixeltoolkit.services.tiles.BubblesTileService
 import com.jawzf.pixeltoolkit.services.tiles.CaffeinateTileService
-import com.jawzf.pixeltoolkit.services.tiles.ChargeQuickTileService
 import com.jawzf.pixeltoolkit.services.tiles.ColorPickerTileService
 import com.jawzf.pixeltoolkit.services.tiles.DefaultLauncherTileService
 import com.jawzf.pixeltoolkit.services.tiles.DeveloperOptionsTileService

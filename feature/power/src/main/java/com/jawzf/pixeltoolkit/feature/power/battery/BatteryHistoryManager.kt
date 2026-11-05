@@ -1,9 +1,9 @@
-package com.jawzf.pixeltoolkit.utils
+package com.jawzf.pixeltoolkit.feature.power.battery
 
 import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
+import com.jawzf.pixeltoolkit.feature.power.PowerSettings
 
 data class BatteryHistoryPoint(
     val timestamp: Long,
@@ -16,7 +16,7 @@ object BatteryHistoryManager {
     private const val HOURLY_INTERVAL_MS = 45 * 60 * 1000L // 45 minutes
 
     fun getHistory(context: Context): List<BatteryHistoryPoint> {
-        val repo = SettingsRepository(context)
+        val repo = PowerSettings(context)
         val json = repo.getString(KEY_HISTORY_POINTS, "[]")
         val lastResetTime = repo.getLong("last_battery_stats_reset_time", -1L)
 
@@ -44,7 +44,7 @@ object BatteryHistoryManager {
         isPlugged: Boolean,
         forceRecord: Boolean = false,
     ) {
-        val repo = SettingsRepository(context)
+        val repo = PowerSettings(context)
         val now = System.currentTimeMillis()
         val currentHistory = getHistory(context).toMutableList()
 
@@ -72,7 +72,7 @@ object BatteryHistoryManager {
     }
 
     fun clearHistory(context: Context) {
-        val repo = SettingsRepository(context)
+        val repo = PowerSettings(context)
         repo.putString(KEY_HISTORY_POINTS, "[]")
     }
 }

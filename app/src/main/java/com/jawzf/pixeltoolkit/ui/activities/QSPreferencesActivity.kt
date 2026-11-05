@@ -13,6 +13,9 @@ import com.jawzf.pixeltoolkit.feature.connectivity.dns.PrivateDnsSettingsActivit
 import com.jawzf.pixeltoolkit.feature.connectivity.dns.PrivateDnsTileService
 import com.jawzf.pixeltoolkit.feature.connectivity.nfc.NfcTileService
 import com.jawzf.pixeltoolkit.feature.connectivity.sim.DataSimTileService
+import com.jawzf.pixeltoolkit.feature.power.battery.BatteryDetailsActivity
+import com.jawzf.pixeltoolkit.feature.power.battery.BatteryNotificationTileService
+import com.jawzf.pixeltoolkit.feature.power.charging.ChargeQuickTileService
 import com.jawzf.pixeltoolkit.feature.sound.mode.SoundModeTileService
 import com.jawzf.pixeltoolkit.utils.DeviceLockUtils
 
@@ -140,8 +143,8 @@ class QSPreferencesActivity : ComponentActivity() {
                 return
             }
 
-            if (componentName.className == "com.jawzf.pixeltoolkit.services.tiles.ChargeQuickTileService" ||
-                componentName.className == "com.jawzf.pixeltoolkit.services.tiles.BatteryNotificationTileService"
+            if (componentName.className == ChargeQuickTileService::class.java.name ||
+                componentName.className == BatteryNotificationTileService::class.java.name
             ) {
                 val intent =
                     Intent(this, BatteryDetailsActivity::class.java).apply {
@@ -167,8 +170,8 @@ class QSPreferencesActivity : ComponentActivity() {
                     "com.jawzf.pixeltoolkit.services.tiles.RefreshRateTileService" -> "Screen refresh rate"
                     "com.jawzf.pixeltoolkit.services.tiles.MapsPowerSavingTileService" -> "Maps power saving mode"
                     "com.jawzf.pixeltoolkit.services.tiles.UsbDebuggingTileService" -> "Quick settings tiles"
-                    "com.jawzf.pixeltoolkit.services.tiles.BatteryNotificationTileService" -> "Batteries"
-                    "com.jawzf.pixeltoolkit.services.tiles.ChargeQuickTileService" -> "Batteries"
+                    BatteryNotificationTileService::class.java.name -> "Batteries"
+                    ChargeQuickTileService::class.java.name -> "Batteries"
                     "com.jawzf.pixeltoolkit.services.tiles.AlwaysOnDisplayTileService" -> "Always on Display"
                     "com.jawzf.pixeltoolkit.services.tiles.UrlShortenerTileService" -> "URL Shortener"
                     else -> null

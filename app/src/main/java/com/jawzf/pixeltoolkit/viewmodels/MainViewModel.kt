@@ -73,6 +73,9 @@ import com.jawzf.pixeltoolkit.domain.model.SystemShortcutsState
 import com.jawzf.pixeltoolkit.domain.registry.SearchRegistry
 import com.jawzf.pixeltoolkit.feature.connectivity.ConnectivitySettings
 import com.jawzf.pixeltoolkit.feature.connectivity.ConnectivityState
+import com.jawzf.pixeltoolkit.feature.power.PowerSettings
+import com.jawzf.pixeltoolkit.feature.power.battery.BatteryNotificationService
+import com.jawzf.pixeltoolkit.feature.power.widget.BatteriesWidgetReceiver
 import com.jawzf.pixeltoolkit.feature.sound.SoundSettings
 import com.jawzf.pixeltoolkit.feature.sound.SoundState
 import com.jawzf.pixeltoolkit.island.service.IslandStatusBarHider
@@ -632,6 +635,7 @@ class MainViewModel : ViewModel() {
     val notificationSnoozeOptions = mutableStateOf<List<Int>>(listOf(15, 30, 60, 120))
 
     lateinit var settingsRepository: SettingsRepository
+    lateinit var powerSettings: PowerSettings
     private var appContext: Context? = null
 
     val gitHubToken = mutableStateOf<String?>(null)
@@ -1218,7 +1222,7 @@ class MainViewModel : ViewModel() {
                         isAccentedCharactersEnabled.value =
                             settingsRepository.getBoolean(key, false)
 
-                    SettingsRepository.KEY_BATTERY_WIDGET_MAX_DEVICES ->
+                    PowerSettings.KEY_BATTERY_WIDGET_MAX_DEVICES ->
                         batteryWidgetMaxDevices.intValue =
                             settingsRepository.getInt(key, 8)
 
@@ -1851,6 +1855,7 @@ class MainViewModel : ViewModel() {
     fun check(context: Context) {
         appContext = context.applicationContext
         settingsRepository = SettingsRepository(context)
+        powerSettings = PowerSettings(context)
         gitHubUser.value = settingsRepository.getGitHubUser()
 
         // Sync with system per-app language settings
@@ -2664,12 +2669,12 @@ class MainViewModel : ViewModel() {
             )
 
         isBluetoothDevicesEnabled.value =
-            settingsRepository.getBoolean(SettingsRepository.KEY_SHOW_BLUETOOTH_DEVICES, false)
+            powerSettings.getBoolean(PowerSettings.KEY_SHOW_BLUETOOTH_DEVICES, false)
         isBluetoothDevicesEnabled.value =
-            settingsRepository.getBoolean(SettingsRepository.KEY_SHOW_BLUETOOTH_DEVICES, false)
-        batteryWidgetMaxDevices.intValue = settingsRepository.getBatteryWidgetMaxDevices()
+            powerSettings.getBoolean(PowerSettings.KEY_SHOW_BLUETOOTH_DEVICES, false)
+        batteryWidgetMaxDevices.intValue = powerSettings.getBatteryWidgetMaxDevices()
         isBatteryWidgetBackgroundEnabled.value =
-            settingsRepository.isBatteryWidgetBackgroundEnabled()
+            powerSettings.isBatteryWidgetBackgroundEnabled()
 
         isScreenLockedSecurityEnabled.value =
             settingsRepository.getBoolean(SettingsRepository.KEY_SCREEN_LOCKED_SECURITY_ENABLED)
@@ -2770,7 +2775,7 @@ class MainViewModel : ViewModel() {
             settingsRepository.isAmbientMusicGlanceForceFillWhileChargingEnabled()
         isAmbientMusicGlanceRespectNotificationsEnabled.value =
             settingsRepository.isAmbientMusicGlanceRespectNotificationsEnabled()
-        isBatteryNotificationEnabled.value = settingsRepository.isBatteryNotificationEnabled()
+        isBatteryNotificationEnabled.value = powerSettings.isBatteryNotificationEnabled()
         isNotificationGlanceEnabled.value =
             settingsRepository.getBoolean(SettingsRepository.KEY_NOTIFICATION_GLANCE_ENABLED)
         isAodForceTurnOffEnabled.value =
@@ -2859,7 +2864,7 @@ class MainViewModel : ViewModel() {
         val intent =
             Intent(
                 context,
-                com.jawzf.pixeltoolkit.services.BatteryNotificationService::class.java,
+                BatteryNotificationService::class.java,
             )
         context.stopService(intent)
     }
@@ -2875,7 +2880,7 @@ class MainViewModel : ViewModel() {
         context: Context,
     ) {
         isBatteryNotificationEnabled.value = enabled
-        settingsRepository.setBatteryNotificationEnabled(enabled)
+        powerSettings.setBatteryNotificationEnabled(enabled)
         if (enabled) {
             startBatteryNotificationService(context)
         } else {
@@ -7435,13 +7440,13 @@ class MainViewModel : ViewModel() {
         context: Context,
     ) {
         isBluetoothDevicesEnabled.value = enabled
-        settingsRepository.setBluetoothDevicesEnabled(enabled)
+        powerSettings.setBluetoothDevicesEnabled(enabled)
 
         // Trigger widget update to fetch data immediately
         val intent =
             Intent(
                 context,
-                com.jawzf.pixeltoolkit.services.widgets.BatteriesWidgetReceiver::class.java,
+                BatteriesWidgetReceiver::class.java,
             ).apply {
                 action = android.appwidget.AppWidgetManager.ACTION_APPWIDGET_UPDATE
             }
@@ -7459,13 +7464,13 @@ class MainViewModel : ViewModel() {
         context: Context,
     ) {
         batteryWidgetMaxDevices.intValue = count
-        settingsRepository.setBatteryWidgetMaxDevices(count)
+        powerSettings.setBatteryWidgetMaxDevices(count)
 
         // Trigger widget update
         val intent =
             Intent(
                 context,
-                com.jawzf.pixeltoolkit.services.widgets.BatteriesWidgetReceiver::class.java,
+                BatteriesWidgetReceiver::class.java,
             ).apply {
                 action = android.appwidget.AppWidgetManager.ACTION_APPWIDGET_UPDATE
             }
@@ -7483,13 +7488,13 @@ class MainViewModel : ViewModel() {
         context: Context,
     ) {
         isBatteryWidgetBackgroundEnabled.value = enabled
-        settingsRepository.setBatteryWidgetBackgroundEnabled(enabled)
+        powerSettings.setBatteryWidgetBackgroundEnabled(enabled)
 
         // Trigger widget update
         val intent =
             Intent(
                 context,
-                com.jawzf.pixeltoolkit.services.widgets.BatteriesWidgetReceiver::class.java,
+                BatteriesWidgetReceiver::class.java,
             ).apply {
                 action = android.appwidget.AppWidgetManager.ACTION_APPWIDGET_UPDATE
             }

@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.services.tiles
+package com.jawzf.pixeltoolkit.feature.power.battery
 
 import android.content.Intent
 import android.graphics.drawable.Icon
@@ -7,12 +7,11 @@ import android.service.quicksettings.Tile
 import androidx.annotation.RequiresApi
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.platform.tiles.BaseTileService
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.services.BatteryNotificationService
+import com.jawzf.pixeltoolkit.feature.power.PowerSettings
 
 @RequiresApi(Build.VERSION_CODES.N)
 class BatteryNotificationTileService : BaseTileService() {
-    private val settingsRepository by lazy { SettingsRepository(this) }
+    private val settingsRepository by lazy { PowerSettings(this) }
 
     override fun onTileClick() {
         val newState = !settingsRepository.isBatteryNotificationEnabled()

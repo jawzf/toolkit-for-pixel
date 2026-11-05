@@ -45,10 +45,10 @@ import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
-import com.jawzf.pixeltoolkit.services.widgets.BatteriesWidgetReceiver
-import com.jawzf.pixeltoolkit.utils.BluetoothDeviceIcon
-import com.jawzf.pixeltoolkit.utils.BluetoothDeviceIcons
-import com.jawzf.pixeltoolkit.utils.BluetoothDeviceOrder
+import com.jawzf.pixeltoolkit.feature.power.bluetooth.BluetoothDeviceIcon
+import com.jawzf.pixeltoolkit.feature.power.bluetooth.BluetoothDeviceIcons
+import com.jawzf.pixeltoolkit.feature.power.bluetooth.BluetoothDeviceOrder
+import com.jawzf.pixeltoolkit.feature.power.widget.BatteriesWidgetReceiver
 import sh.calvin.reorderable.ReorderableColumn
 import sh.calvin.reorderable.ReorderableItem
 

@@ -32,12 +32,12 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import com.google.gson.Gson
 import com.jawzf.pixeltoolkit.core.design.R
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.utils.BatteryRingDrawer
-import com.jawzf.pixeltoolkit.utils.BluetoothBatteryUtils
-import com.jawzf.pixeltoolkit.utils.BluetoothDeviceIcons
-import com.jawzf.pixeltoolkit.utils.BluetoothDeviceOrder
-import com.jawzf.pixeltoolkit.utils.battery.ChargeLimitUtil
+import com.jawzf.pixeltoolkit.feature.power.PowerSettings
+import com.jawzf.pixeltoolkit.feature.power.battery.BatteryRingDrawer
+import com.jawzf.pixeltoolkit.feature.power.battery.ChargeLimitUtil
+import com.jawzf.pixeltoolkit.feature.power.bluetooth.BluetoothBatteryUtils
+import com.jawzf.pixeltoolkit.feature.power.bluetooth.BluetoothDeviceIcons
+import com.jawzf.pixeltoolkit.feature.power.bluetooth.BluetoothDeviceOrder
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 import kotlinx.coroutines.delay
 
@@ -71,7 +71,7 @@ private fun previewItems(
     context: Context,
     maxDevices: Int,
 ): List<PreviewItem> {
-    val settings = SettingsRepository(context)
+    val settings = PowerSettings(context)
     val keyed = mutableListOf<Pair<String, PreviewItem>>()
 
     val manager = context.getSystemService(Context.BATTERY_SERVICE) as BatteryManager
@@ -80,7 +80,7 @@ private fun previewItems(
     keyed += BluetoothDeviceOrder.PHONE to PreviewItem(phoneLevel, R.drawable.rounded_mobile_24, statusIcon(phoneLevel, phoneCharging, ChargeLimitUtil.isShielded(context, phoneLevel, phoneCharging)))
 
     if (settings.isBluetoothDevicesEnabled()) {
-        val json = settings.getString(SettingsRepository.KEY_BLUETOOTH_DEVICES_BATTERY)
+        val json = settings.getString(PowerSettings.KEY_BLUETOOTH_DEVICES_BATTERY)
         val devices =
             try {
                 if (json.isNullOrEmpty()) emptyList() else Gson().fromJson(json, Array<BluetoothBatteryUtils.BluetoothDeviceBattery>::class.java).toList()
@@ -110,7 +110,7 @@ fun BatteriesPreviewCard(
     val context = LocalContext.current
     val maxDevices = viewModel.batteryWidgetMaxDevices.intValue
     val version = BatteriesPreviewTrigger.version.intValue
-    val showPercentage = remember(version) { SettingsRepository(context).isBatteryShowPercentageEnabled() }
+    val showPercentage = remember(version) { PowerSettings(context).isBatteryShowPercentageEnabled() }
     val bluetoothEnabled = viewModel.isBluetoothDevicesEnabled.value
     var settled by remember { mutableIntStateOf(0) }
 

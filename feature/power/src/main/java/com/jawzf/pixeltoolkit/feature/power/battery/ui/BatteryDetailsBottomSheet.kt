@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.core.sheets
+package com.jawzf.pixeltoolkit.feature.power.battery.ui
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
@@ -50,14 +50,12 @@ import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.pickers.SegmentedPicker
 import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
 import com.jawzf.pixeltoolkit.core.platform.device.DeviceUtils
-import com.jawzf.pixeltoolkit.ui.components.battery.BatteryAppsTabContent
-import com.jawzf.pixeltoolkit.ui.components.battery.BatteryInfoTabContent
-import com.jawzf.pixeltoolkit.utils.BatteryStatsUtil
-import com.jawzf.pixeltoolkit.utils.BatteryUsageApp
-import com.jawzf.pixeltoolkit.utils.battery.BatteryDetails
-import com.jawzf.pixeltoolkit.utils.battery.BatteryInfoUtil
-import com.jawzf.pixeltoolkit.utils.battery.ChargingMode
-import com.jawzf.pixeltoolkit.utils.battery.ChargingModeUtil
+import com.jawzf.pixeltoolkit.feature.power.battery.BatteryDetails
+import com.jawzf.pixeltoolkit.feature.power.battery.BatteryInfoUtil
+import com.jawzf.pixeltoolkit.feature.power.battery.BatteryStatsUtil
+import com.jawzf.pixeltoolkit.feature.power.battery.BatteryUsageApp
+import com.jawzf.pixeltoolkit.feature.power.charging.ChargingMode
+import com.jawzf.pixeltoolkit.feature.power.charging.ChargingModeUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -236,7 +234,7 @@ fun BatteryDetailsBottomSheet(
                     )
                 }
             } else {
-                com.jawzf.pixeltoolkit.ui.components.battery.TopAppsBreakdownHeader(
+                TopAppsBreakdownHeader(
                     usageApps = usageApps,
                 )
             }
