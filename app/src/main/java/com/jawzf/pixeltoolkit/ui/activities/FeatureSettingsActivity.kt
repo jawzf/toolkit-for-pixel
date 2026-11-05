@@ -68,13 +68,14 @@ import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.domain.registry.FeatureRegistry
 import com.jawzf.pixeltoolkit.feature.connectivity.ui.NetworksSettingsUI
+import com.jawzf.pixeltoolkit.feature.power.battery.ui.BatteriesPreviewCard
+import com.jawzf.pixeltoolkit.feature.power.battery.ui.BatteriesSettingsUI
 import com.jawzf.pixeltoolkit.feature.sound.ui.AppVolumeSettingsUI
 import com.jawzf.pixeltoolkit.feature.sound.ui.SoundModeTileSettingsUI
 import com.jawzf.pixeltoolkit.feature.sound.ui.VolumeStepsSettingsUI
 import com.jawzf.pixeltoolkit.ui.components.linkActions.LinkPickerScreen
 import com.jawzf.pixeltoolkit.ui.core.sheets.ShakeForHelp
 import com.jawzf.pixeltoolkit.ui.core.sheets.SingleAppSelectionSheet
-import com.jawzf.pixeltoolkit.ui.features.battery.BatteriesSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.consciousgate.CONSCIOUS_GATE_FEATURE_ID
 import com.jawzf.pixeltoolkit.ui.features.display.AodWallpaperPreviewCard
 import com.jawzf.pixeltoolkit.ui.features.display.AodWallpaperSettingsUI
@@ -560,8 +561,8 @@ class FeatureSettingsActivity : AppCompatActivity() {
                             }
 
                             if (featureId == "Batteries") {
-                                com.jawzf.pixeltoolkit.ui.features.battery.BatteriesPreviewCard(
-                                    viewModel = viewModel,
+                                BatteriesPreviewCard(
+                                    state = viewModel.battery,
                                     height = headerHeight - 16.dp,
                                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
                                 )
@@ -1117,7 +1118,9 @@ class FeatureSettingsActivity : AppCompatActivity() {
 
                                     "Batteries" -> {
                                         BatteriesSettingsUI(
-                                            viewModel = viewModel,
+                                            state = viewModel.battery,
+                                            isPostNotificationsEnabled = viewModel.isPostNotificationsEnabled,
+                                            isBluetoothPermissionGranted = viewModel.isBluetoothPermissionGranted,
                                             modifier = Modifier.padding(top = 16.dp),
                                         )
                                     }

@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.features.battery
+package com.jawzf.pixeltoolkit.feature.power.battery.ui
 
 import android.content.Context
 import android.os.BatteryManager
@@ -32,13 +32,13 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import com.google.gson.Gson
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.feature.power.BatteryState
 import com.jawzf.pixeltoolkit.feature.power.PowerSettings
 import com.jawzf.pixeltoolkit.feature.power.battery.BatteryRingDrawer
 import com.jawzf.pixeltoolkit.feature.power.battery.ChargeLimitUtil
 import com.jawzf.pixeltoolkit.feature.power.bluetooth.BluetoothBatteryUtils
 import com.jawzf.pixeltoolkit.feature.power.bluetooth.BluetoothDeviceIcons
 import com.jawzf.pixeltoolkit.feature.power.bluetooth.BluetoothDeviceOrder
-import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 import kotlinx.coroutines.delay
 
 object BatteriesPreviewTrigger {
@@ -103,15 +103,15 @@ private fun previewItems(
 
 @Composable
 fun BatteriesPreviewCard(
-    viewModel: MainViewModel,
+    state: BatteryState,
     height: Dp,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
-    val maxDevices = viewModel.batteryWidgetMaxDevices.intValue
+    val maxDevices = state.batteryWidgetMaxDevices.intValue
     val version = BatteriesPreviewTrigger.version.intValue
     val showPercentage = remember(version) { PowerSettings(context).isBatteryShowPercentageEnabled() }
-    val bluetoothEnabled = viewModel.isBluetoothDevicesEnabled.value
+    val bluetoothEnabled = state.isBluetoothDevicesEnabled.value
     var settled by remember { mutableIntStateOf(0) }
 
     LaunchedEffect(version, maxDevices, bluetoothEnabled) {

@@ -55,19 +55,6 @@ class PowerSettings(
     fun setBatteryWidgetMaxDevices(count: Int) = putInt(KEY_BATTERY_WIDGET_MAX_DEVICES, count)
 
     /**
-     * Executes the is battery widget background enabled operation.
-     * @return The resulting Boolean data.
-     */
-    fun isBatteryWidgetBackgroundEnabled(): Boolean = getBoolean(KEY_BATTERY_WIDGET_BACKGROUND_ENABLED, true)
-
-    /**
-     * Executes the set battery widget background enabled operation.
-     *
-     * @param enabled [Boolean] Target enabled.
-     */
-    fun setBatteryWidgetBackgroundEnabled(enabled: Boolean) = putBoolean(KEY_BATTERY_WIDGET_BACKGROUND_ENABLED, enabled)
-
-    /**
      * Executes the is battery notification enabled operation.
      * @return The resulting Boolean data.
      */

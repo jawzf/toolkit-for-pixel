@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.features.battery
+package com.jawzf.pixeltoolkit.feature.power.battery.ui
 
 import android.annotation.SuppressLint
 import android.bluetooth.BluetoothManager
@@ -68,10 +68,7 @@ private fun pairedDevices(context: Context): List<PairedDevice> =
     }
 
 @Composable
-fun BluetoothDeviceIconsSection(
-    viewModel: com.jawzf.pixeltoolkit.viewmodels.MainViewModel,
-    bluetoothEnabled: Boolean,
-) {
+fun BluetoothDeviceIconsSection(bluetoothEnabled: Boolean) {
     val context = LocalContext.current
     val view = LocalView.current
     val devices =

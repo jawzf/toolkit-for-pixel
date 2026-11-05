@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.activities
+package com.jawzf.pixeltoolkit.feature.power.widget
 
 import android.appwidget.AppWidgetManager
 import android.content.Intent
@@ -38,7 +38,6 @@ import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
 import com.jawzf.pixeltoolkit.core.design.theme.ToolkitTheme
 import com.jawzf.pixeltoolkit.feature.power.PowerSettings
-import com.jawzf.pixeltoolkit.feature.power.widget.BatteriesWidget
 import kotlinx.coroutines.launch
 
 class BatteriesWidgetConfigureActivity : ComponentActivity() {
