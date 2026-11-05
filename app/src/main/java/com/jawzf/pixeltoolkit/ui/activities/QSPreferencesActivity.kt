@@ -13,6 +13,7 @@ import com.jawzf.pixeltoolkit.feature.connectivity.dns.PrivateDnsSettingsActivit
 import com.jawzf.pixeltoolkit.feature.connectivity.dns.PrivateDnsTileService
 import com.jawzf.pixeltoolkit.feature.connectivity.nfc.NfcTileService
 import com.jawzf.pixeltoolkit.feature.connectivity.sim.DataSimTileService
+import com.jawzf.pixeltoolkit.feature.sound.mode.SoundModeTileService
 import com.jawzf.pixeltoolkit.utils.DeviceLockUtils
 
 class QSPreferencesActivity : ComponentActivity() {
@@ -36,7 +37,7 @@ class QSPreferencesActivity : ComponentActivity() {
                 return
             }
             // Special case for Sound Mode to open the system volume panel
-            if (componentName.className == "com.jawzf.pixeltoolkit.services.tiles.SoundModeTileService") {
+            if (componentName.className == SoundModeTileService::class.java.name) {
                 val volumeIntent =
                     Intent("android.settings.panel.action.VOLUME").apply {
                         flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP

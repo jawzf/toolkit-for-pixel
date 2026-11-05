@@ -73,6 +73,7 @@ import com.jawzf.pixeltoolkit.domain.model.SystemShortcutsState
 import com.jawzf.pixeltoolkit.domain.registry.SearchRegistry
 import com.jawzf.pixeltoolkit.feature.connectivity.ConnectivitySettings
 import com.jawzf.pixeltoolkit.feature.connectivity.ConnectivityState
+import com.jawzf.pixeltoolkit.feature.sound.SoundSettings
 import com.jawzf.pixeltoolkit.island.service.IslandStatusBarHider
 import com.jawzf.pixeltoolkit.services.CaffeinateWakeLockService
 import com.jawzf.pixeltoolkit.services.NotificationAutoDismisser
@@ -638,6 +639,7 @@ class MainViewModel : ViewModel() {
     val notificationSnoozeOptions = mutableStateOf<List<Int>>(listOf(15, 30, 60, 120))
 
     lateinit var settingsRepository: SettingsRepository
+    lateinit var soundSettings: SoundSettings
     private var appContext: Context? = null
 
     val gitHubToken = mutableStateOf<String?>(null)
@@ -1260,7 +1262,7 @@ class MainViewModel : ViewModel() {
                         pinnedFeatureKeys.value = settingsRepository.getPinnedFeatures()
                     }
 
-                    SettingsRepository.KEY_CALL_VIBRATIONS_ENABLED -> {
+                    SoundSettings.KEY_CALL_VIBRATIONS_ENABLED -> {
                         isCallVibrationsEnabled.value = settingsRepository.getBoolean(key)
                     }
 
@@ -1859,6 +1861,7 @@ class MainViewModel : ViewModel() {
     fun check(context: Context) {
         appContext = context.applicationContext
         settingsRepository = SettingsRepository(context)
+        soundSettings = SoundSettings(context)
         gitHubUser.value = settingsRepository.getGitHubUser()
 
         // Sync with system per-app language settings
@@ -2360,11 +2363,11 @@ class MainViewModel : ViewModel() {
         hilightAppEffects.clear()
         hilightAppEffects.putAll(settingsRepository.getHilightAppEffects())
         isLockscreenShortcutsEnabled.value = settingsRepository.isLockscreenShortcutsEnabled()
-        isVolumeStepsEnabled.value = settingsRepository.isVolumeStepsEnabled()
-        volumeStepsPerPress.intValue = settingsRepository.getVolumeStepsPerPress()
-        isAppVolumeEnabled.value = settingsRepository.isAppVolumeEnabled()
-        isAppVolumeOverlayEnabled.value = settingsRepository.isAppVolumeOverlayEnabled()
-        appVolumeLevels.value = settingsRepository.getAppVolumeLevels()
+        isVolumeStepsEnabled.value = soundSettings.isVolumeStepsEnabled()
+        volumeStepsPerPress.intValue = soundSettings.getVolumeStepsPerPress()
+        isAppVolumeEnabled.value = soundSettings.isAppVolumeEnabled()
+        isAppVolumeOverlayEnabled.value = soundSettings.isAppVolumeOverlayEnabled()
+        appVolumeLevels.value = soundSettings.getAppVolumeLevels()
         LockscreenShortcutSide.entries.forEach { side ->
             lockscreenShortcutActions[side] = settingsRepository.getRemapActions(side.prefKey)
         }
@@ -2684,7 +2687,7 @@ class MainViewModel : ViewModel() {
         isBatteryWidgetBackgroundEnabled.value =
             settingsRepository.isBatteryWidgetBackgroundEnabled()
         isCallVibrationsEnabled.value =
-            settingsRepository.getBoolean(SettingsRepository.KEY_CALL_VIBRATIONS_ENABLED)
+            settingsRepository.getBoolean(SoundSettings.KEY_CALL_VIBRATIONS_ENABLED)
 
         isScreenLockedSecurityEnabled.value =
             settingsRepository.getBoolean(SettingsRepository.KEY_SCREEN_LOCKED_SECURITY_ENABLED)
@@ -4736,7 +4739,7 @@ class MainViewModel : ViewModel() {
      */
     fun setCallVibrationsEnabled(enabled: Boolean) {
         isCallVibrationsEnabled.value = enabled
-        settingsRepository.putBoolean(SettingsRepository.KEY_CALL_VIBRATIONS_ENABLED, enabled)
+        settingsRepository.putBoolean(SoundSettings.KEY_CALL_VIBRATIONS_ENABLED, enabled)
     }
 
     /**
@@ -4781,22 +4784,22 @@ class MainViewModel : ViewModel() {
 
     fun setVolumeStepsEnabled(enabled: Boolean) {
         isVolumeStepsEnabled.value = enabled
-        settingsRepository.setVolumeStepsEnabled(enabled)
+        soundSettings.setVolumeStepsEnabled(enabled)
     }
 
     fun setVolumeStepsPerPress(steps: Int) {
         volumeStepsPerPress.intValue = steps
-        settingsRepository.setVolumeStepsPerPress(steps)
+        soundSettings.setVolumeStepsPerPress(steps)
     }
 
     fun setAppVolumeEnabled(enabled: Boolean) {
         isAppVolumeEnabled.value = enabled
-        settingsRepository.setAppVolumeEnabled(enabled)
+        soundSettings.setAppVolumeEnabled(enabled)
     }
 
     fun setAppVolumeOverlayEnabled(enabled: Boolean) {
         isAppVolumeOverlayEnabled.value = enabled
-        settingsRepository.setAppVolumeOverlayEnabled(enabled)
+        soundSettings.setAppVolumeOverlayEnabled(enabled)
     }
 
     fun setAppVolumeLevel(
@@ -4804,12 +4807,12 @@ class MainViewModel : ViewModel() {
         level: Float,
     ) {
         appVolumeLevels.value = appVolumeLevels.value + (packageName to level)
-        settingsRepository.setAppVolumeLevels(appVolumeLevels.value)
+        soundSettings.setAppVolumeLevels(appVolumeLevels.value)
     }
 
     fun removeAppVolumeLevel(packageName: String) {
         appVolumeLevels.value = appVolumeLevels.value - packageName
-        settingsRepository.setAppVolumeLevels(appVolumeLevels.value)
+        soundSettings.setAppVolumeLevels(appVolumeLevels.value)
     }
 
     fun setLockscreenShortcutsEnabled(enabled: Boolean) {

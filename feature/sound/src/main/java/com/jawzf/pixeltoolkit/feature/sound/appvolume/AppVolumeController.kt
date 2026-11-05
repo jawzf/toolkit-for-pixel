@@ -11,7 +11,7 @@ import android.os.Parcel
 import android.os.Process
 import android.util.Log
 import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuUtils
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
+import com.jawzf.pixeltoolkit.feature.sound.SoundSettings
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -45,7 +45,7 @@ object AppVolumeController {
         }
 
     fun updateState(context: Context) {
-        val repository = SettingsRepository(context)
+        val repository = SoundSettings(context)
         appContext = context.applicationContext
         enabled = repository.isAppVolumeEnabled()
         levels = repository.getAppVolumeLevels()

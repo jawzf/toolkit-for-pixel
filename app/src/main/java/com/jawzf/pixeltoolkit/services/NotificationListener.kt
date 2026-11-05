@@ -39,6 +39,7 @@ import com.jawzf.pixeltoolkit.domain.model.NotificationLightingColorMode
 import com.jawzf.pixeltoolkit.domain.model.NotificationLightingSide
 import com.jawzf.pixeltoolkit.domain.model.ProgressNotificationData
 import com.jawzf.pixeltoolkit.domain.model.RippleConfig
+import com.jawzf.pixeltoolkit.feature.sound.SoundSettings
 import com.jawzf.pixeltoolkit.island.plugins.notifications.OtpExtractor
 import com.jawzf.pixeltoolkit.services.receivers.FlashlightActionReceiver
 import com.jawzf.pixeltoolkit.services.tiles.ScreenOffAccessibilityService
@@ -1424,7 +1425,7 @@ class NotificationListener : NotificationListenerService() {
         try {
             val prefs =
                 applicationContext.getSharedPreferences("toolkit_prefs", MODE_PRIVATE)
-            if (!prefs.getBoolean(SettingsRepository.KEY_CALL_VIBRATIONS_ENABLED, false)) return
+            if (!prefs.getBoolean(SoundSettings.KEY_CALL_VIBRATIONS_ENABLED, false)) return
 
             val notification = sbn.notification
             val extras = notification.extras ?: return

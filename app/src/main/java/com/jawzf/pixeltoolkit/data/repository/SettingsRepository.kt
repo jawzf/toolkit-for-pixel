@@ -231,7 +231,6 @@ class SettingsRepository(
         const val KEY_APP_CUSTOM_COLORS = "app_custom_colors"
         const val KEY_LOCK_SCREEN_WALLPAPER_SOURCE = "lock_screen_wallpaper_source"
 
-        const val KEY_CALL_VIBRATIONS_ENABLED = "call_vibrations_enabled"
         const val KEY_LAST_CALL_STATE = "last_call_state"
 
         const val KEY_BUTTON_REMAP_ENABLED = "button_remap_enabled"
@@ -261,11 +260,6 @@ class SettingsRepository(
         const val KEY_LOCKSCREEN_SHORTCUT_LEFT_ACTIONS = "lockscreen_shortcut_left_actions"
         const val KEY_LOCKSCREEN_SHORTCUT_RIGHT_ACTIONS = "lockscreen_shortcut_right_actions"
         const val KEY_LOCKSCREEN_SYSTEM_SHORTCUTS_STATE = "lockscreen_system_shortcuts_state"
-        const val KEY_VOLUME_STEPS_ENABLED = "volume_steps_enabled"
-        const val KEY_VOLUME_STEPS_PER_PRESS = "volume_steps_per_press"
-        const val KEY_APP_VOLUME_ENABLED = "app_volume_enabled"
-        const val KEY_APP_VOLUME_LEVELS = "app_volume_levels"
-        const val KEY_APP_VOLUME_OVERLAY_ENABLED = "app_volume_overlay_enabled"
 
         const val KEY_DYNAMIC_NIGHT_LIGHT_ENABLED = "dynamic_night_light_enabled"
         const val KEY_DYNAMIC_NIGHT_LIGHT_SELECTED_APPS = "dynamic_night_light_selected_apps"
@@ -4112,31 +4106,4 @@ class SettingsRepository(
 
     fun setLockscreenSystemShortcutsState(state: SystemShortcutsState) =
         putString(KEY_LOCKSCREEN_SYSTEM_SHORTCUTS_STATE, state.name)
-
-    fun isVolumeStepsEnabled(): Boolean = getBoolean(KEY_VOLUME_STEPS_ENABLED, false)
-
-    fun setVolumeStepsEnabled(enabled: Boolean) = putBoolean(KEY_VOLUME_STEPS_ENABLED, enabled)
-
-    fun getVolumeStepsPerPress(): Int = getInt(KEY_VOLUME_STEPS_PER_PRESS, 2)
-
-    fun setVolumeStepsPerPress(steps: Int) = putInt(KEY_VOLUME_STEPS_PER_PRESS, steps)
-
-    fun isAppVolumeEnabled(): Boolean = getBoolean(KEY_APP_VOLUME_ENABLED, false)
-
-    fun setAppVolumeEnabled(enabled: Boolean) = putBoolean(KEY_APP_VOLUME_ENABLED, enabled)
-
-    fun isAppVolumeOverlayEnabled(): Boolean = getBoolean(KEY_APP_VOLUME_OVERLAY_ENABLED, false)
-
-    fun setAppVolumeOverlayEnabled(enabled: Boolean) = putBoolean(KEY_APP_VOLUME_OVERLAY_ENABLED, enabled)
-
-    fun getAppVolumeLevels(): Map<String, Float> =
-        getString(KEY_APP_VOLUME_LEVELS)?.let {
-            try {
-                gson.fromJson<Map<String, Float>>(it, object : TypeToken<Map<String, Float>>() {}.type)
-            } catch (_: Exception) {
-                null
-            }
-        } ?: emptyMap()
-
-    fun setAppVolumeLevels(levels: Map<String, Float>) = putString(KEY_APP_VOLUME_LEVELS, gson.toJson(levels))
 }

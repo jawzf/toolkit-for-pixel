@@ -15,7 +15,6 @@ import com.jawzf.pixeltoolkit.core.design.haptics.HapticFeedbackType
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuUtils
 import com.jawzf.pixeltoolkit.core.platform.tiles.BaseTileService
-import com.jawzf.pixeltoolkit.feature.sound.mode.SoundModeHandler
 
 @RequiresApi(Build.VERSION_CODES.N)
 class SoundModeTileService : BaseTileService() {
