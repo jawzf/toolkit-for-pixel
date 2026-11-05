@@ -1117,7 +1117,7 @@ object FeatureRegistry {
                 isVisibleInMain = false,
                 hasMoreSettings = false,
             ) {
-                override fun isEnabled(viewModel: MainViewModel) = viewModel.isMapsPowerSavingEnabled.value
+                override fun isEnabled(viewModel: MainViewModel) = viewModel.power.isMapsPowerSavingEnabled.value
 
                 override fun isToggleEnabled(
                     viewModel: MainViewModel,
@@ -1128,7 +1128,7 @@ object FeatureRegistry {
                     viewModel: MainViewModel,
                     context: Context,
                     enabled: Boolean,
-                ) = viewModel.setMapsPowerSavingEnabled(enabled, context)
+                ) = viewModel.power.setMapsPowerSavingEnabled(enabled)
 
                 override fun onClick(
                     context: Context,
@@ -1156,7 +1156,7 @@ object FeatureRegistry {
                 animationRes = R.raw.caffeinate_animation,
             ) {
                 override fun isEnabled(viewModel: MainViewModel) =
-                    viewModel.isCaffeinateActive.value ||
+                    viewModel.power.isCaffeinateActive.value ||
                         CaffeinateController.isActive.value ||
                         CaffeinateController.isStarting.value
 
@@ -1166,9 +1166,9 @@ object FeatureRegistry {
                     enabled: Boolean,
                 ) {
                     if (enabled) {
-                        viewModel.startCaffeinate(context)
+                        viewModel.power.startCaffeinate(context)
                     } else {
-                        viewModel.stopCaffeinate(
+                        viewModel.power.stopCaffeinate(
                             context,
                         )
                     }

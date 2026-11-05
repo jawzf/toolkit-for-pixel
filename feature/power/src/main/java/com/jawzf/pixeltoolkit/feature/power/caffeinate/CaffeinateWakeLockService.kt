@@ -15,9 +15,7 @@ import android.os.IBinder
 import android.os.PowerManager
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
-import com.jawzf.pixeltoolkit.MainActivity
 import com.jawzf.pixeltoolkit.core.design.R
-import com.jawzf.pixeltoolkit.feature.power.caffeinate.CaffeinateController
 
 class CaffeinateWakeLockService : Service() {
     private var wakeLock: PowerManager.WakeLock? = null
@@ -167,7 +165,9 @@ class CaffeinateWakeLockService : Service() {
                 PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
             )
         val mainIntent =
-            com.jawzf.pixeltoolkit.utils.AppIconUtil.mainIntent(this).apply { putExtra("feature", "Caffeinate") }
+            com.jawzf.pixeltoolkit.core.platform.AppComponents
+                .mainIntent(this)
+                .apply { putExtra("feature", "Caffeinate") }
         val mainPendingIntent =
             PendingIntent.getActivity(
                 this,

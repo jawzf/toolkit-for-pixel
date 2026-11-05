@@ -2,7 +2,6 @@ package com.jawzf.pixeltoolkit.viewmodels
 
 import android.Manifest
 import android.app.Activity
-import android.app.ActivityManager
 import android.app.admin.DevicePolicyManager
 import android.content.BroadcastReceiver
 import android.content.ComponentName
@@ -73,10 +72,7 @@ import com.jawzf.pixeltoolkit.feature.connectivity.ConnectivitySettings
 import com.jawzf.pixeltoolkit.feature.connectivity.ConnectivityState
 import com.jawzf.pixeltoolkit.feature.power.BatteryState
 import com.jawzf.pixeltoolkit.feature.power.PowerSettings
-import com.jawzf.pixeltoolkit.feature.power.caffeinate.CaffeinateController
-import com.jawzf.pixeltoolkit.feature.power.caffeinate.CaffeinateWakeLockService
-import com.jawzf.pixeltoolkit.feature.power.maps.MapsChannel
-import com.jawzf.pixeltoolkit.feature.power.maps.MapsState
+import com.jawzf.pixeltoolkit.feature.power.PowerState
 import com.jawzf.pixeltoolkit.feature.sound.SoundSettings
 import com.jawzf.pixeltoolkit.feature.sound.SoundState
 import com.jawzf.pixeltoolkit.island.service.IslandStatusBarHider
@@ -117,13 +113,11 @@ class MainViewModel : ViewModel() {
     val isWriteSecureSettingsEnabled = mutableStateOf(false)
     val isReadPhoneStateEnabled = mutableStateOf(false)
     val isPostNotificationsEnabled = mutableStateOf(false)
-    val isCaffeinateActive = mutableStateOf(false)
     val isShizukuPermissionGranted = mutableStateOf(false)
     val isShizukuAvailable = mutableStateOf(false)
     val pinnedFeatureKeys = mutableStateOf<List<String>>(emptyList())
     val pinnedQsTileKeys = mutableStateOf<List<String>>(emptyList())
     val isNotificationListenerEnabled = mutableStateOf(false)
-    val isMapsPowerSavingEnabled = mutableStateOf(false)
     val isNotificationLightingEnabled = mutableStateOf(false)
     val isOverlayPermissionGranted = mutableStateOf(false)
     val isNotificationLightingAccessibilityEnabled = mutableStateOf(false)
@@ -360,8 +354,6 @@ class MainViewModel : ViewModel() {
 
     val snoozeChannels =
         mutableStateOf<List<com.jawzf.pixeltoolkit.domain.model.SnoozeChannel>>(emptyList())
-    val mapsChannels =
-        mutableStateOf<List<MapsChannel>>(emptyList())
     val isSnoozeHeadsUpEnabled = mutableStateOf(false)
     val isAutoDismissEnabled = mutableStateOf(false)
     val isFlashlightAlwaysTurnOffEnabled = mutableStateOf(false)
@@ -422,6 +414,7 @@ class MainViewModel : ViewModel() {
     val connectivity = ConnectivityState(viewModelScope)
     val sound = SoundState()
     val battery = BatteryState()
+    val power = PowerState()
     val addedQSTiles = mutableStateOf<Set<String>>(emptySet())
     val isHideGestureBarEnabled = mutableStateOf(false)
     val isHideGestureBarOnLauncherEnabled = mutableStateOf(false)
@@ -1077,10 +1070,7 @@ class MainViewModel : ViewModel() {
                         isScreenLockedDisableOnExtendedUnlock.value =
                             settingsRepository.getBoolean(key)
 
-                    SettingsRepository.KEY_MAPS_POWER_SAVING_ENABLED -> {
-                        isMapsPowerSavingEnabled.value = settingsRepository.getBoolean(key)
-                        MapsState.isEnabled = isMapsPowerSavingEnabled.value
-                    }
+                    PowerSettings.KEY_MAPS_POWER_SAVING_ENABLED -> power.onPreferenceChanged(key)
 
                     SettingsRepository.KEY_STATUS_BAR_ICON_CONTROL_ENABLED ->
                         isStatusBarIconControlEnabled.value =
@@ -1224,9 +1214,7 @@ class MainViewModel : ViewModel() {
                         appContext?.let { loadSnoozeChannels(it) }
                     }
 
-                    SettingsRepository.KEY_MAPS_DISCOVERED_CHANNELS, SettingsRepository.KEY_MAPS_DETECTION_CHANNELS -> {
-                        appContext?.let { loadMapsChannels(it) }
-                    }
+                    PowerSettings.KEY_MAPS_DISCOVERED_CHANNELS, PowerSettings.KEY_MAPS_DETECTION_CHANNELS -> power.onPreferenceChanged(key)
 
                     SettingsRepository.KEY_SNOOZE_HEADS_UP_ENABLED -> {
                         isSnoozeHeadsUpEnabled.value = settingsRepository.getBoolean(key)
@@ -2220,8 +2208,6 @@ class MainViewModel : ViewModel() {
         syncRefreshRateState(context)
         hasShizukuPermission.value = ShizukuUtils.hasPermission() || RootUtils.isRootAvailable()
 
-        isMapsPowerSavingEnabled.value =
-            settingsRepository.getBoolean(SettingsRepository.KEY_MAPS_POWER_SAVING_ENABLED)
         isNotificationLightingEnabled.value =
             settingsRepository.getBoolean(SettingsRepository.KEY_EDGE_LIGHTING_ENABLED)
         onlyShowWhenScreenOff.value =
@@ -2288,7 +2274,6 @@ class MainViewModel : ViewModel() {
         ripple.load()
         dash.load()
 
-        MapsState.isEnabled = isMapsPowerSavingEnabled.value
         hapticFeedbackType.value = settingsRepository.getHapticFeedbackType()
         defaultTab.value = settingsRepository.getDIYTab()
         selectedAppIcon.value = settingsRepository.getAppIcon()
@@ -2302,7 +2287,7 @@ class MainViewModel : ViewModel() {
         liveWallpaperCustomVideos.clear()
         liveWallpaperCustomVideos.addAll(settingsRepository.getLiveWallpaperCustomVideos())
 
-        checkCaffeinateActive(context)
+        power.load(context)
 
         // Button Remap & Migration
         isButtonRemapEnabled.value =
@@ -2575,7 +2560,6 @@ class MainViewModel : ViewModel() {
         statusGlanceDoubleTapAction.value = settingsRepository.getStatusGlanceDoubleTapAction()
         statusGlanceLongPressAction.value = settingsRepository.getStatusGlanceLongPressAction()
         loadSnoozeChannels(context)
-        loadMapsChannels(context)
         isSnoozeHeadsUpEnabled.value =
             settingsRepository.getBoolean(SettingsRepository.KEY_SNOOZE_HEADS_UP_ENABLED)
         isAutoDismissEnabled.value =
@@ -3346,21 +3330,6 @@ class MainViewModel : ViewModel() {
             SettingsRepository.KEY_STATUS_BAR_ICON_CONTROL_ENABLED,
             enabled,
         )
-    }
-
-    /**
-     * Executes the set maps power saving enabled operation.
-     *
-     * @param enabled [Boolean] Target enabled.
-     * @param context [Context] Target context.
-     */
-    fun setMapsPowerSavingEnabled(
-        enabled: Boolean,
-        context: Context,
-    ) {
-        isMapsPowerSavingEnabled.value = enabled
-        MapsState.isEnabled = enabled
-        settingsRepository.putBoolean(SettingsRepository.KEY_MAPS_POWER_SAVING_ENABLED, enabled)
     }
 
     /**
@@ -7551,47 +7520,6 @@ class MainViewModel : ViewModel() {
         return success
     }
 
-    /**
-     * Executes the check caffeinate active operation.
-     *
-     * @param context [Context] Target context.
-     */
-    fun checkCaffeinateActive(context: Context) {
-        isCaffeinateActive.value = isCaffeinateServiceRunning(context)
-    }
-
-    /**
-     * Executes the start caffeinate operation.
-     *
-     * @param context [Context] Target context.
-     */
-    fun startCaffeinate(context: Context) {
-        context.startService(Intent(context, CaffeinateWakeLockService::class.java))
-        isCaffeinateActive.value = true
-        CaffeinateController.isActive.value = true
-    }
-
-    /**
-     * Executes the stop caffeinate operation.
-     *
-     * @param context [Context] Target context.
-     */
-    fun stopCaffeinate(context: Context) {
-        CaffeinateController.cancelAll(context)
-        isCaffeinateActive.value = false
-    }
-
-    private fun isCaffeinateServiceRunning(context: Context): Boolean {
-        val manager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-        @Suppress("DEPRECATION")
-        for (service in manager.getRunningServices(Int.MAX_VALUE)) {
-            if (CaffeinateWakeLockService::class.java.name == service.service.className) {
-                return true
-            }
-        }
-        return false
-    }
-
     private fun canDrawOverlays(context: Context): Boolean = PermissionUtils.canDrawOverlays(context)
 
     private fun isNotificationLightingAccessibilityServiceEnabled(context: Context): Boolean =
@@ -8241,40 +8169,6 @@ class MainViewModel : ViewModel() {
         }
         settingsRepository.saveSnoozeBlockedChannels(currentBlocked)
         loadSnoozeChannels(context)
-    }
-
-    private fun loadMapsChannels(context: Context) {
-        val discovered = settingsRepository.loadMapsDiscoveredChannels()
-        val detectionIds = settingsRepository.loadMapsDetectionChannels()
-
-        mapsChannels.value =
-            discovered
-                .map { channel ->
-                    channel.copy(isEnabled = detectionIds.contains(channel.id))
-                }.distinctBy { it.id }
-                .sortedBy { it.name }
-    }
-
-    /**
-     * Executes the set maps channel detected operation.
-     *
-     * @param channelId [String] Target channel id.
-     * @param detected [Boolean] Target detected.
-     * @param context [Context] Target context.
-     */
-    fun setMapsChannelDetected(
-        channelId: String,
-        detected: Boolean,
-        context: Context,
-    ) {
-        val currentDetected = settingsRepository.loadMapsDetectionChannels().toMutableSet()
-        if (detected) {
-            currentDetected.add(channelId)
-        } else {
-            currentDetected.remove(channelId)
-        }
-        settingsRepository.saveMapsDetectionChannels(currentDetected)
-        loadMapsChannels(context)
     }
 
     /**

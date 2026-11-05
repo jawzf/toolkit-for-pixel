@@ -5,8 +5,6 @@ import android.provider.Settings
 import android.service.quicksettings.Tile
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.platform.tiles.BaseTileService
-import com.jawzf.pixeltoolkit.feature.power.caffeinate.CaffeinateController
-import com.jawzf.pixeltoolkit.feature.power.caffeinate.CaffeinateWakeLockService
 
 class CaffeinateTileService : BaseTileService() {
     private val handler = android.os.Handler(android.os.Looper.getMainLooper())

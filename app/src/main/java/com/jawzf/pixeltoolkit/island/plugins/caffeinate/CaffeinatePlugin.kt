@@ -151,7 +151,8 @@ class CaffeinatePlugin : BaseIslandPlugin() {
     private fun open() {
         try {
             context.startActivity(
-                com.jawzf.pixeltoolkit.utils.AppIconUtil.mainIntent(context)
+                com.jawzf.pixeltoolkit.core.platform.AppComponents
+                    .mainIntent(context)
                     .putExtra("feature", "Caffeinate")
                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
             )

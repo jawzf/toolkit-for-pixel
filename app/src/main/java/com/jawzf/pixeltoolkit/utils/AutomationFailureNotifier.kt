@@ -72,7 +72,7 @@ object AutomationFailureNotifier {
             PendingIntent.getActivity(
                 context,
                 0,
-                com.jawzf.pixeltoolkit.utils.AppIconUtil.mainIntent(context).apply {
+                com.jawzf.pixeltoolkit.core.platform.AppComponents.mainIntent(context).apply {
                     flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
                 },
                 PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,

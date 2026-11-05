@@ -15,7 +15,9 @@ import com.jawzf.pixeltoolkit.feature.connectivity.nfc.NfcTileService
 import com.jawzf.pixeltoolkit.feature.connectivity.sim.DataSimTileService
 import com.jawzf.pixeltoolkit.feature.power.battery.BatteryDetailsActivity
 import com.jawzf.pixeltoolkit.feature.power.battery.BatteryNotificationTileService
+import com.jawzf.pixeltoolkit.feature.power.caffeinate.CaffeinateTileService
 import com.jawzf.pixeltoolkit.feature.power.charging.ChargeQuickTileService
+import com.jawzf.pixeltoolkit.feature.power.maps.MapsPowerSavingTileService
 import com.jawzf.pixeltoolkit.feature.sound.mode.SoundModeTileService
 import com.jawzf.pixeltoolkit.utils.DeviceLockUtils
 
@@ -157,7 +159,7 @@ class QSPreferencesActivity : ComponentActivity() {
 
             val feature =
                 when (componentName.className) {
-                    "com.jawzf.pixeltoolkit.services.tiles.CaffeinateTileService" -> "Caffeinate"
+                    CaffeinateTileService::class.java.name -> "Caffeinate"
                     "com.jawzf.pixeltoolkit.services.tiles.NotificationLightingTileService" -> "Notification lighting"
                     "com.jawzf.pixeltoolkit.services.tiles.DynamicNightLightTileService" -> "Dynamic night light"
                     "com.jawzf.pixeltoolkit.services.tiles.AppLockTileService" -> "App lock"
@@ -168,7 +170,7 @@ class QSPreferencesActivity : ComponentActivity() {
                     NfcTileService::class.java.name -> "NFC"
                     "com.jawzf.pixeltoolkit.services.tiles.AdaptiveBrightnessTileService" -> "Quick settings tiles"
                     "com.jawzf.pixeltoolkit.services.tiles.RefreshRateTileService" -> "Screen refresh rate"
-                    "com.jawzf.pixeltoolkit.services.tiles.MapsPowerSavingTileService" -> "Maps power saving mode"
+                    MapsPowerSavingTileService::class.java.name -> "Maps power saving mode"
                     "com.jawzf.pixeltoolkit.services.tiles.UsbDebuggingTileService" -> "Quick settings tiles"
                     BatteryNotificationTileService::class.java.name -> "Batteries"
                     ChargeQuickTileService::class.java.name -> "Batteries"

@@ -1141,7 +1141,7 @@ class FeatureSettingsActivity : AppCompatActivity() {
 
                                     "Maps power saving mode" -> {
                                         MapsPowerSavingSettingsUI(
-                                            viewModel = viewModel,
+                                            state = viewModel.power,
                                             modifier = Modifier.padding(top = 16.dp),
                                             highlightSetting = highlightSetting,
                                         )

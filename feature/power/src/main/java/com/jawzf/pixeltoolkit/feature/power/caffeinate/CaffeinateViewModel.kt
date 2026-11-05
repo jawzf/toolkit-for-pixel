@@ -7,8 +7,6 @@ import android.content.pm.PackageManager
 import androidx.compose.runtime.mutableStateOf
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
-import com.jawzf.pixeltoolkit.feature.power.caffeinate.CaffeinateController
-import com.jawzf.pixeltoolkit.feature.power.caffeinate.CaffeinateWakeLockService
 
 class CaffeinateViewModel : ViewModel() {
     val isActive get() = CaffeinateController.isActive

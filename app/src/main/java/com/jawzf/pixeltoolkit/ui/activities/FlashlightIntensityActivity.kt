@@ -78,7 +78,7 @@ class FlashlightIntensityActivity : ComponentActivity() {
         if (componentName != null && componentName.className != "com.jawzf.pixeltoolkit.services.tiles.FlashlightTileService") {
             // Redirect to MainActivity for other tiles
             val mainIntent =
-                com.jawzf.pixeltoolkit.utils.AppIconUtil.mainIntent(this).apply {
+                com.jawzf.pixeltoolkit.core.platform.AppComponents.mainIntent(this).apply {
                     action = intent.action
                     putExtra("android.intent.extra.COMPONENT_NAME", componentName)
                     flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP

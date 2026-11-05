@@ -34,7 +34,7 @@ import com.jawzf.pixeltoolkit.domain.model.ScaleAnimationsProfile
 import com.jawzf.pixeltoolkit.domain.model.SystemShortcutsState
 import com.jawzf.pixeltoolkit.domain.model.TrackedRepo
 import com.jawzf.pixeltoolkit.domain.model.github.GitHubUser
-import com.jawzf.pixeltoolkit.feature.power.maps.MapsChannel
+import com.jawzf.pixeltoolkit.feature.power.PowerSettings
 import com.jawzf.pixeltoolkit.ui.core.pickers.NetworkType
 import com.jawzf.pixeltoolkit.utils.DuoBatteryLevels
 import kotlinx.coroutines.channels.awaitClose
@@ -178,9 +178,6 @@ class SettingsRepository(
         const val KEY_SMART_PIXELS_DISABLE_ON_CAST = "smart_pixels_disable_on_cast"
         const val KEY_WIDGET_ENABLED = "widget_enabled"
         const val KEY_STATUS_BAR_ICON_CONTROL_ENABLED = "status_bar_icon_control_enabled"
-        const val KEY_MAPS_POWER_SAVING_ENABLED = "maps_power_saving_enabled"
-        const val KEY_MAPS_DISCOVERED_CHANNELS = "maps_discovered_channels"
-        const val KEY_MAPS_DETECTION_CHANNELS = "maps_detection_channels"
         const val KEY_EDGE_LIGHTING_ENABLED = "edge_lighting_enabled"
         const val KEY_HILIGHT_NOTIFICATIONS_ENABLED = "hilight_notifications_enabled"
         const val KEY_HILIGHT_APP_EFFECTS = "hilight_app_effects"
@@ -1571,73 +1568,13 @@ class SettingsRepository(
         putString(KEY_SNOOZE_BLOCKED_CHANNELS, json)
     }
 
-    // Maps Channels Helper
-    fun loadMapsDiscoveredChannels(): List<MapsChannel> {
-        val json = prefs.getString(KEY_MAPS_DISCOVERED_CHANNELS, null)
-        return if (json != null) {
-            try {
-                gson
-                    .fromJson(
-                        json,
-                        Array<MapsChannel>::class.java,
-                    ).toList()
-            } catch (e: Exception) {
-                emptyList()
-            }
-        } else {
-            emptyList()
-        }
-    }
-
-    /**
-     * Executes the save maps discovered channels operation.
-     *
-     * @param channels [List<MapsChannel>] Target channels.
-     */
-    fun saveMapsDiscoveredChannels(channels: List<MapsChannel>) {
-        val json = gson.toJson(channels)
-        putString(KEY_MAPS_DISCOVERED_CHANNELS, json)
-    }
-
-    /**
-     * Executes the load maps detection channels operation.
-     * @return The resulting Set<String> data.
-     */
-    fun loadMapsDetectionChannels(): Set<String> {
-        val json = prefs.getString(KEY_MAPS_DETECTION_CHANNELS, null)
-        return if (json != null) {
-            try {
-                gson.fromJson(json, Array<String>::class.java).toSet()
-            } catch (e: Exception) {
-                emptySet()
-            }
-        } else {
-            // Default to navigation related channel IDs if none are selected yet
-            setOf(
-                "navigation_notification_channel",
-                "primary_navigation_channel_v1",
-                "primary_navigation_channel_v2",
-            )
-        }
-    }
-
-    /**
-     * Executes the save maps detection channels operation.
-     *
-     * @param channels [Set<String>] Target channels.
-     */
-    fun saveMapsDetectionChannels(channels: Set<String>) {
-        val json = gson.toJson(channels)
-        putString(KEY_MAPS_DETECTION_CHANNELS, json)
-    }
-
     fun resetKeysWithPrefixes(prefixes: List<String>) {
         val protected =
             setOf(
                 KEY_GITHUB_ACCESS_TOKEN,
                 KEY_SHIZUKU_AUTH_TOKEN,
                 KEY_SNOOZE_DISCOVERED_CHANNELS,
-                KEY_MAPS_DISCOVERED_CHANNELS,
+                PowerSettings.KEY_MAPS_DISCOVERED_CHANNELS,
                 KEY_SHUT_UP_ORIGINAL_SETTINGS,
             )
         val editor = prefs.edit()

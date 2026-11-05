@@ -119,7 +119,7 @@ class QsTileActionRouter : BroadcastReceiver() {
     private fun fallbackLaunch(context: Context) {
         try {
             val launchIntent =
-                com.jawzf.pixeltoolkit.utils.AppIconUtil.mainIntent(context).apply {
+                com.jawzf.pixeltoolkit.core.platform.AppComponents.mainIntent(context).apply {
                     addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 }
             context.startActivity(launchIntent)

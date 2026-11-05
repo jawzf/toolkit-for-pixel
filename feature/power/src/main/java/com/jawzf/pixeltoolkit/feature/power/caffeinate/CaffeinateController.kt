@@ -7,8 +7,6 @@ import android.content.Intent
 import android.service.quicksettings.TileService
 import androidx.compose.runtime.mutableStateOf
 import androidx.core.content.ContextCompat
-import com.jawzf.pixeltoolkit.feature.power.caffeinate.CaffeinateTileService
-import com.jawzf.pixeltoolkit.feature.power.caffeinate.CaffeinateWakeLockService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
