@@ -28,6 +28,7 @@ import com.jawzf.pixeltoolkit.core.design.haptics.performHapticFeedback
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.feature.sound.SoundSettings
 import com.jawzf.pixeltoolkit.feature.sound.appvolume.AppVolumeController
+import com.jawzf.pixeltoolkit.feature.sound.appvolume.AppVolumeOverlayHandler
 import com.jawzf.pixeltoolkit.feature.sound.appvolume.VolumePanelDetector
 import com.jawzf.pixeltoolkit.feature.sound.volumesteps.VolumeStepsHandler
 import com.jawzf.pixeltoolkit.island.service.IslandCoordinator
@@ -38,7 +39,6 @@ import com.jawzf.pixeltoolkit.services.handlers.AmbientGlanceHandler
 import com.jawzf.pixeltoolkit.services.handlers.AodForceTurnOffHandler
 import com.jawzf.pixeltoolkit.services.handlers.AodWallpaperOverlayHandler
 import com.jawzf.pixeltoolkit.services.handlers.AppFlowHandler
-import com.jawzf.pixeltoolkit.services.handlers.AppVolumeOverlayHandler
 import com.jawzf.pixeltoolkit.services.handlers.ButtonRemapHandler
 import com.jawzf.pixeltoolkit.services.handlers.DuoOverlayHandler
 import com.jawzf.pixeltoolkit.services.handlers.FaceUnlockBrightnessHandler

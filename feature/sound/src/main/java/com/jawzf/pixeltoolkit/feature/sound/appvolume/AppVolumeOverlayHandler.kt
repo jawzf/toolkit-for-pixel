@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.services.handlers
+package com.jawzf.pixeltoolkit.feature.sound.appvolume
 
 import android.accessibilityservice.AccessibilityService
 import android.annotation.SuppressLint
@@ -31,13 +31,10 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.ui.graphics.toArgb
+import androidx.core.graphics.drawable.toBitmap
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.feature.sound.SoundSettings
-import com.jawzf.pixeltoolkit.feature.sound.appvolume.AppVolumeController
-import com.jawzf.pixeltoolkit.feature.sound.appvolume.VolumePanelDetector
-import com.jawzf.pixeltoolkit.ui.activities.AppVolumeControlActivity
-import com.jawzf.pixeltoolkit.utils.AppUtil
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -289,7 +286,7 @@ class AppVolumeOverlayHandler(
     private fun loadIcon(packageName: String): Bitmap? =
         iconCache[packageName]
             ?: runCatching {
-                AppUtil.drawableToBitmap(service.packageManager.getApplicationIcon(packageName))
+                service.packageManager.getApplicationIcon(packageName).toBitmap()
             }.getOrNull()?.also { iconCache[packageName] = it }
 
     private fun dp(value: Int) = (value * density).toInt()

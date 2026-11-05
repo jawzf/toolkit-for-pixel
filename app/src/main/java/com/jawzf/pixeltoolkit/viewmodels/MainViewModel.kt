@@ -74,6 +74,7 @@ import com.jawzf.pixeltoolkit.domain.registry.SearchRegistry
 import com.jawzf.pixeltoolkit.feature.connectivity.ConnectivitySettings
 import com.jawzf.pixeltoolkit.feature.connectivity.ConnectivityState
 import com.jawzf.pixeltoolkit.feature.sound.SoundSettings
+import com.jawzf.pixeltoolkit.feature.sound.SoundState
 import com.jawzf.pixeltoolkit.island.service.IslandStatusBarHider
 import com.jawzf.pixeltoolkit.services.CaffeinateWakeLockService
 import com.jawzf.pixeltoolkit.services.NotificationAutoDismisser
@@ -149,11 +150,6 @@ class MainViewModel : ViewModel() {
     val isLockscreenShortcutsEnabled = mutableStateOf(false)
     val lockscreenShortcutActions = mutableStateMapOf<LockscreenShortcutSide, List<Action>>()
     val lockscreenSystemShortcutsState = mutableStateOf(SystemShortcutsState.UNKNOWN)
-    val isVolumeStepsEnabled = mutableStateOf(false)
-    val volumeStepsPerPress = mutableIntStateOf(2)
-    val isAppVolumeEnabled = mutableStateOf(false)
-    val isAppVolumeOverlayEnabled = mutableStateOf(false)
-    val appVolumeLevels = mutableStateOf<Map<String, Float>>(emptyMap())
     val remapHapticType = mutableStateOf(HapticFeedbackType.DOUBLE)
     val isDynamicNightLightEnabled = mutableStateOf(false)
     val isSmartPixelsEnabled = mutableStateOf(false)
@@ -387,7 +383,6 @@ class MainViewModel : ViewModel() {
     val appLanguage = mutableStateOf("en")
 
     val isBluetoothDevicesEnabled = mutableStateOf(false)
-    val isCallVibrationsEnabled = mutableStateOf(false)
     val isBatteryNotificationEnabled = mutableStateOf(false)
     val isAodEnabled = mutableStateOf(false)
     val isNotificationGlanceEnabled = mutableStateOf(false)
@@ -424,6 +419,7 @@ class MainViewModel : ViewModel() {
     val isOnboardingCompleted =
         mutableStateOf(true) // Default to true so it doesn't flash on first check if not loaded
     val connectivity = ConnectivityState(viewModelScope)
+    val sound = SoundState()
     val addedQSTiles = mutableStateOf<Set<String>>(emptySet())
     val isHideGestureBarEnabled = mutableStateOf(false)
     val isHideGestureBarOnLauncherEnabled = mutableStateOf(false)
@@ -627,9 +623,6 @@ class MainViewModel : ViewModel() {
     // Battery Saver Constants
     val batterySaverConstants = mutableStateOf<Map<String, String>>(emptyMap())
 
-    // Audio Safe Volume State
-    val isAudioSafeVolumeDisabled = mutableStateOf(false)
-
     // Battery Saver Low Power Trigger Level
     val lowPowerTriggerLevel = mutableIntStateOf(0)
 
@@ -639,7 +632,6 @@ class MainViewModel : ViewModel() {
     val notificationSnoozeOptions = mutableStateOf<List<Int>>(listOf(15, 30, 60, 120))
 
     lateinit var settingsRepository: SettingsRepository
-    lateinit var soundSettings: SoundSettings
     private var appContext: Context? = null
 
     val gitHubToken = mutableStateOf<String?>(null)
@@ -699,7 +691,7 @@ class MainViewModel : ViewModel() {
                         }
 
                         Settings.Global.getUriFor("audio_safe_volume_state") -> {
-                            appContext?.let { syncAudioSafeVolumeState(it) }
+                            appContext?.let { sound.syncAudioSafeVolumeState(it) }
                         }
 
                         Settings.Global.getUriFor("low_power_trigger_level") -> {
@@ -1262,9 +1254,7 @@ class MainViewModel : ViewModel() {
                         pinnedFeatureKeys.value = settingsRepository.getPinnedFeatures()
                     }
 
-                    SoundSettings.KEY_CALL_VIBRATIONS_ENABLED -> {
-                        isCallVibrationsEnabled.value = settingsRepository.getBoolean(key)
-                    }
+                    SoundSettings.KEY_CALL_VIBRATIONS_ENABLED -> sound.onPreferenceChanged(key)
 
                     SettingsRepository.KEY_LIKE_SONG_TOAST_ENABLED -> {
                         isLikeSongToastEnabled.value = settingsRepository.getBoolean(key)
@@ -1861,7 +1851,6 @@ class MainViewModel : ViewModel() {
     fun check(context: Context) {
         appContext = context.applicationContext
         settingsRepository = SettingsRepository(context)
-        soundSettings = SoundSettings(context)
         gitHubUser.value = settingsRepository.getGitHubUser()
 
         // Sync with system per-app language settings
@@ -2175,7 +2164,6 @@ class MainViewModel : ViewModel() {
         }
 
         loadBatterySaverConstants(context)
-        syncAudioSafeVolumeState(context)
         syncLowPowerTriggerLevel(context)
         syncShowNotificationSnooze(context)
         loadNotificationSnoozeOptions(context)
@@ -2363,11 +2351,7 @@ class MainViewModel : ViewModel() {
         hilightAppEffects.clear()
         hilightAppEffects.putAll(settingsRepository.getHilightAppEffects())
         isLockscreenShortcutsEnabled.value = settingsRepository.isLockscreenShortcutsEnabled()
-        isVolumeStepsEnabled.value = soundSettings.isVolumeStepsEnabled()
-        volumeStepsPerPress.intValue = soundSettings.getVolumeStepsPerPress()
-        isAppVolumeEnabled.value = soundSettings.isAppVolumeEnabled()
-        isAppVolumeOverlayEnabled.value = soundSettings.isAppVolumeOverlayEnabled()
-        appVolumeLevels.value = soundSettings.getAppVolumeLevels()
+        sound.load(context)
         LockscreenShortcutSide.entries.forEach { side ->
             lockscreenShortcutActions[side] = settingsRepository.getRemapActions(side.prefKey)
         }
@@ -2686,8 +2670,6 @@ class MainViewModel : ViewModel() {
         batteryWidgetMaxDevices.intValue = settingsRepository.getBatteryWidgetMaxDevices()
         isBatteryWidgetBackgroundEnabled.value =
             settingsRepository.isBatteryWidgetBackgroundEnabled()
-        isCallVibrationsEnabled.value =
-            settingsRepository.getBoolean(SoundSettings.KEY_CALL_VIBRATIONS_ENABLED)
 
         isScreenLockedSecurityEnabled.value =
             settingsRepository.getBoolean(SettingsRepository.KEY_SCREEN_LOCKED_SECURITY_ENABLED)
@@ -4733,16 +4715,6 @@ class MainViewModel : ViewModel() {
     }
 
     /**
-     * Executes the set call vibrations enabled operation.
-     *
-     * @param enabled [Boolean] Target enabled.
-     */
-    fun setCallVibrationsEnabled(enabled: Boolean) {
-        isCallVibrationsEnabled.value = enabled
-        settingsRepository.putBoolean(SoundSettings.KEY_CALL_VIBRATIONS_ENABLED, enabled)
-    }
-
-    /**
      * Executes the set button remap use shizuku operation.
      *
      * @param enabled [Boolean] Target enabled.
@@ -4780,39 +4752,6 @@ class MainViewModel : ViewModel() {
     fun setPowerCameraFlipEnabled(enabled: Boolean) {
         isPowerCameraFlipEnabled.value = enabled
         settingsRepository.putBoolean(SettingsRepository.KEY_BUTTON_REMAP_POWER_CAMERA_FLIP, enabled)
-    }
-
-    fun setVolumeStepsEnabled(enabled: Boolean) {
-        isVolumeStepsEnabled.value = enabled
-        soundSettings.setVolumeStepsEnabled(enabled)
-    }
-
-    fun setVolumeStepsPerPress(steps: Int) {
-        volumeStepsPerPress.intValue = steps
-        soundSettings.setVolumeStepsPerPress(steps)
-    }
-
-    fun setAppVolumeEnabled(enabled: Boolean) {
-        isAppVolumeEnabled.value = enabled
-        soundSettings.setAppVolumeEnabled(enabled)
-    }
-
-    fun setAppVolumeOverlayEnabled(enabled: Boolean) {
-        isAppVolumeOverlayEnabled.value = enabled
-        soundSettings.setAppVolumeOverlayEnabled(enabled)
-    }
-
-    fun setAppVolumeLevel(
-        packageName: String,
-        level: Float,
-    ) {
-        appVolumeLevels.value = appVolumeLevels.value + (packageName to level)
-        soundSettings.setAppVolumeLevels(appVolumeLevels.value)
-    }
-
-    fun removeAppVolumeLevel(packageName: String) {
-        appVolumeLevels.value = appVolumeLevels.value - packageName
-        soundSettings.setAppVolumeLevels(appVolumeLevels.value)
     }
 
     fun setLockscreenShortcutsEnabled(enabled: Boolean) {
@@ -9377,36 +9316,6 @@ class MainViewModel : ViewModel() {
                 constantsStr,
             )
             batterySaverConstants.value = map
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
-
-    /**
-     * Executes the sync audio safe volume state operation.
-     *
-     * @param context [Context] Target context.
-     */
-    fun syncAudioSafeVolumeState(context: Context) {
-        val rawValue = Settings.Global.getInt(context.contentResolver, "audio_safe_volume_state", 3)
-        // 1 = Disable (toggle is on), 3 = Active (toggle is off)
-        isAudioSafeVolumeDisabled.value = (rawValue == 1)
-    }
-
-    /**
-     * Executes the set audio safe volume disabled operation.
-     *
-     * @param context [Context] Target context.
-     * @param disabled [Boolean] Target disabled.
-     */
-    fun setAudioSafeVolumeDisabled(
-        context: Context,
-        disabled: Boolean,
-    ) {
-        val targetValue = if (disabled) 1 else 3
-        try {
-            Settings.Global.putInt(context.contentResolver, "audio_safe_volume_state", targetValue)
-            isAudioSafeVolumeDisabled.value = disabled
         } catch (e: Exception) {
             e.printStackTrace()
         }

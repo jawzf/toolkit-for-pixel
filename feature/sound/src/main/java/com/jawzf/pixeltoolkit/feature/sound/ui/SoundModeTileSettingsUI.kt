@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.features.system
+package com.jawzf.pixeltoolkit.feature.sound.ui
 
 import android.content.Intent
 import android.net.Uri
