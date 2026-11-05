@@ -73,6 +73,9 @@ import com.jawzf.pixeltoolkit.core.design.theme.ToolkitTheme
 import com.jawzf.pixeltoolkit.domain.DIYTabs
 import com.jawzf.pixeltoolkit.domain.registry.initPermissionRegistry
 import com.jawzf.pixeltoolkit.feature.apps.freeze.ui.FreezeGridUI
+import com.jawzf.pixeltoolkit.feature.apps.updates.AppUpdatesViewModel
+import com.jawzf.pixeltoolkit.feature.apps.updates.UpdateInfo
+import com.jawzf.pixeltoolkit.feature.apps.updates.github.GitHubAuthViewModel
 import com.jawzf.pixeltoolkit.ui.composables.DIYScreen
 import com.jawzf.pixeltoolkit.ui.composables.SetupFeatures
 import com.jawzf.pixeltoolkit.ui.composables.WelcomeScreen
@@ -81,8 +84,6 @@ import com.jawzf.pixeltoolkit.ui.core.sheets.GitHubAuthSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.ShakeForHelp
 import com.jawzf.pixeltoolkit.ui.core.sheets.UpdateBottomSheet
 import com.jawzf.pixeltoolkit.utils.ShortcutUtil
-import com.jawzf.pixeltoolkit.viewmodels.AppUpdatesViewModel
-import com.jawzf.pixeltoolkit.viewmodels.GitHubAuthViewModel
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 import kotlinx.coroutines.launch
 
@@ -443,7 +444,7 @@ class MainActivity : AppCompatActivity() {
                             val isNotesLoading = repo.latestReleaseBody.isNullOrBlank()
                             UpdateBottomSheet(
                                 updateInfo =
-                                    com.jawzf.pixeltoolkit.domain.model.UpdateInfo(
+                                    UpdateInfo(
                                         versionName = repo.latestTagName,
                                         releaseNotes = repo.latestReleaseBody ?: "",
                                         downloadUrl = repo.downloadUrl ?: "",

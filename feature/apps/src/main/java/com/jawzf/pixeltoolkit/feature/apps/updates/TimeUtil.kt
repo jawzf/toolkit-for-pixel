@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.utils
+package com.jawzf.pixeltoolkit.feature.apps.updates
 
 import android.content.Context
 import com.jawzf.pixeltoolkit.core.design.R

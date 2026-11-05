@@ -46,8 +46,8 @@ import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.components.SegmentedDropdownMenu
 import com.jawzf.pixeltoolkit.core.design.components.SegmentedDropdownMenuItem
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
-import com.jawzf.pixeltoolkit.domain.model.TrackedRepo
-import com.jawzf.pixeltoolkit.utils.TimeUtil
+import com.jawzf.pixeltoolkit.feature.apps.updates.TimeUtil
+import com.jawzf.pixeltoolkit.feature.apps.updates.TrackedRepo
 
 @OptIn(
     ExperimentalMaterial3ExpressiveApi::class,
@@ -100,11 +100,12 @@ fun TrackedRepoCard(
                     modifier = Modifier.size(56.dp),
                 ) {
                     // Main Image (App Icon or Android Icon)
-                    if (repo.mappedPackageName != null) {
+                    val mappedPackageName = repo.mappedPackageName
+                    if (mappedPackageName != null) {
                         val appIcon =
-                            remember(repo.mappedPackageName) {
+                            remember(mappedPackageName) {
                                 try {
-                                    context.packageManager.getApplicationIcon(repo.mappedPackageName)
+                                    context.packageManager.getApplicationIcon(mappedPackageName)
                                 } catch (e: Exception) {
                                     null
                                 }

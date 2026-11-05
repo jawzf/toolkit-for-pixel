@@ -1,12 +1,12 @@
-package com.jawzf.pixeltoolkit.viewmodels
+package com.jawzf.pixeltoolkit.feature.apps.updates.github
 
 import android.content.Context
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jawzf.pixeltoolkit.data.repository.GitHubAuthRepository
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
+import com.jawzf.pixeltoolkit.feature.apps.AppsSettings
+import com.jawzf.pixeltoolkit.feature.apps.updates.github.GitHubAuthRepository
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
@@ -15,15 +15,14 @@ import kotlinx.coroutines.launch
 class GitHubAuthViewModel : ViewModel() {
     private val authRepository = GitHubAuthRepository()
     private val gitHubRepository =
-        com.jawzf.pixeltoolkit.data.repository
-            .GitHubRepository()
+        GitHubRepository()
 
     private val _authState = mutableStateOf<AuthState>(AuthState.Idle)
     val authState: State<AuthState> = _authState
 
     private val _currentUser =
-        mutableStateOf<com.jawzf.pixeltoolkit.domain.model.github.GitHubUser?>(null)
-    val currentUser: State<com.jawzf.pixeltoolkit.domain.model.github.GitHubUser?> = _currentUser
+        mutableStateOf<GitHubUser?>(null)
+    val currentUser: State<GitHubUser?> = _currentUser
 
     private var pollingJob: Job? = null
 
@@ -95,7 +94,7 @@ class GitHubAuthViewModel : ViewModel() {
         context: Context,
         token: String,
     ) {
-        SettingsRepository(context).saveGitHubToken(token)
+        AppsSettings(context).saveGitHubToken(token)
         loadUser(token, context)
     }
 
@@ -107,20 +106,20 @@ class GitHubAuthViewModel : ViewModel() {
             val user = gitHubRepository.getUserProfile(token)
             if (user != null) {
                 _currentUser.value = user
-                SettingsRepository(context).saveGitHubUser(user)
+                AppsSettings(context).saveGitHubUser(user)
             }
         }
     }
 
     fun loadCachedUser(context: Context) {
         viewModelScope.launch {
-            _currentUser.value = SettingsRepository(context).getGitHubUser()
+            _currentUser.value = AppsSettings(context).getGitHubUser()
         }
     }
 
     fun signOut(context: Context) {
-        SettingsRepository(context).saveGitHubToken(null)
-        SettingsRepository(context).saveGitHubUser(null)
+        AppsSettings(context).saveGitHubToken(null)
+        AppsSettings(context).saveGitHubUser(null)
         _currentUser.value = null
         _authState.value = AuthState.Idle
         pollingJob?.cancel()

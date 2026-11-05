@@ -39,7 +39,7 @@ import coil.compose.AsyncImage
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.cards.FeatureTagIcon
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
-import com.jawzf.pixeltoolkit.domain.model.github.GitHubUser
+import com.jawzf.pixeltoolkit.feature.apps.updates.github.GitHubUser
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable

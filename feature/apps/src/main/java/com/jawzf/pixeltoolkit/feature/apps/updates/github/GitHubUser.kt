@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.domain.model.github
+package com.jawzf.pixeltoolkit.feature.apps.updates.github
 
 import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName

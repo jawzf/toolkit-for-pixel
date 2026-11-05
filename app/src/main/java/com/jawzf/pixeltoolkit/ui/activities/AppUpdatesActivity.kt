@@ -53,11 +53,12 @@ import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.modifiers.scrollMotionBlur
 import com.jawzf.pixeltoolkit.core.design.theme.ToolkitTheme
+import com.jawzf.pixeltoolkit.feature.apps.updates.AppUpdatesViewModel
+import com.jawzf.pixeltoolkit.feature.apps.updates.UpdateInfo
 import com.jawzf.pixeltoolkit.ui.components.ReusableTopAppBar
 import com.jawzf.pixeltoolkit.ui.core.cards.TrackedRepoCard
 import com.jawzf.pixeltoolkit.ui.core.sheets.AddRepoBottomSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.UpdateBottomSheet
-import com.jawzf.pixeltoolkit.viewmodels.AppUpdatesViewModel
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -202,7 +203,7 @@ class AppUpdatesActivity : AppCompatActivity() {
                         val isNotesLoading = repo.latestReleaseBody.isNullOrBlank()
                         UpdateBottomSheet(
                             updateInfo =
-                                com.jawzf.pixeltoolkit.domain.model.UpdateInfo(
+                                UpdateInfo(
                                     versionName = repo.latestTagName,
                                     releaseNotes = repo.latestReleaseBody ?: "",
                                     downloadUrl = repo.downloadUrl ?: "",

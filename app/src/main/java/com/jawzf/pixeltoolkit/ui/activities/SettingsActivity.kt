@@ -106,6 +106,8 @@ import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.domain.DIYTabs
 import com.jawzf.pixeltoolkit.domain.registry.FeatureRegistry
 import com.jawzf.pixeltoolkit.domain.registry.PermissionRegistry
+import com.jawzf.pixeltoolkit.feature.apps.AppsSettings
+import com.jawzf.pixeltoolkit.feature.apps.updates.github.GitHubAuthViewModel
 import com.jawzf.pixeltoolkit.ui.components.dialogs.AboutSection
 import com.jawzf.pixeltoolkit.ui.core.pickers.AppIconPicker
 import com.jawzf.pixeltoolkit.ui.core.pickers.DefaultTabPicker
@@ -116,7 +118,6 @@ import com.jawzf.pixeltoolkit.ui.core.sheets.ImportConfigConfirmationSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.ShakeForHelp
 import com.jawzf.pixeltoolkit.ui.core.sheets.UnsupportedFeaturesConfirmationSheet
 import com.jawzf.pixeltoolkit.utils.PermissionUIHelper
-import com.jawzf.pixeltoolkit.viewmodels.GitHubAuthViewModel
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -334,7 +335,7 @@ fun SettingsContent(
             com.jawzf.pixeltoolkit.data.repository
                 .SettingsRepository(context)
         }
-    var currentUser by remember { mutableStateOf(settingsRepo.getGitHubUser()) }
+    var currentUser by remember { mutableStateOf(AppsSettings(context).getGitHubUser()) }
 
     val onImportConfig: (Boolean) -> Unit = { keepPrefs ->
         selectedImportUri?.let { uri ->
@@ -1269,7 +1270,7 @@ fun SettingsContent(
             viewModel = gitHubAuthViewModel,
             onDismissRequest = {
                 showGitHubAuthSheet = false
-                currentUser = settingsRepo.getGitHubUser()
+                currentUser = AppsSettings(context).getGitHubUser()
             },
         )
     }
