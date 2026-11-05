@@ -39,7 +39,6 @@ import com.jawzf.pixeltoolkit.core.data.log.LogManager
 import com.jawzf.pixeltoolkit.core.data.prefs.AppSelection
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.apps.AppUtil
-import com.jawzf.pixeltoolkit.core.design.apps.NotificationApp
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticFeedbackType
 import com.jawzf.pixeltoolkit.core.platform.device.DeviceUtils
 import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionGrantUtil
@@ -68,9 +67,7 @@ import com.jawzf.pixeltoolkit.domain.model.ScaleAnimationsProfile
 import com.jawzf.pixeltoolkit.domain.model.SearchableItem
 import com.jawzf.pixeltoolkit.domain.model.SystemShortcutsState
 import com.jawzf.pixeltoolkit.domain.registry.SearchRegistry
-import com.jawzf.pixeltoolkit.feature.apps.AppsSettings
-import com.jawzf.pixeltoolkit.feature.apps.freeze.AppTag
-import com.jawzf.pixeltoolkit.feature.apps.freeze.FreezeManager
+import com.jawzf.pixeltoolkit.feature.apps.freeze.FreezeState
 import com.jawzf.pixeltoolkit.feature.connectivity.ConnectivitySettings
 import com.jawzf.pixeltoolkit.feature.connectivity.ConnectivityState
 import com.jawzf.pixeltoolkit.feature.power.BatteryState
@@ -411,6 +408,7 @@ class MainViewModel : ViewModel() {
         SecurityState(viewModelScope) { context, requesterId ->
             StatusBarManager.requestRestore(context, requesterId)
         }
+    val freeze = FreezeState(viewModelScope)
     val addedQSTiles = mutableStateOf<Set<String>>(emptySet())
     val isHideGestureBarEnabled = mutableStateOf(false)
     val isHideGestureBarOnLauncherEnabled = mutableStateOf(false)
@@ -510,17 +508,6 @@ class MainViewModel : ViewModel() {
     val consciousGateMessage = mutableStateOf("")
     val isUseUsageAccess = mutableStateOf(false)
     val isHiddenDebuggingSupport = mutableStateOf(false)
-    val isFreezeWhenLockedEnabled = mutableStateOf(false)
-    val freezeLockDelayIndex = mutableIntStateOf(1) // Default: 1 minute
-    val freezePickedApps = mutableStateOf<List<NotificationApp>>(emptyList())
-    val isFreezePickedAppsLoading = mutableStateOf(false)
-    val freezeAutoExcludedApps = mutableStateOf<Set<String>>(emptySet())
-    val isFreezeDontFreezeActiveAppsEnabled = mutableStateOf(false)
-    val freezeMode = mutableIntStateOf(0)
-    val isFreezeShowInLauncherEnabled = mutableStateOf(true)
-    val freezeTags = mutableStateOf<List<AppTag>>(emptyList())
-    val freezeAppTagMap = mutableStateOf<Map<String, List<String>>>(emptyMap())
-    val isFreezeTagColorCodedEnabled = mutableStateOf(false)
 
     // Search state
     val searchQuery = mutableStateOf("")
@@ -609,7 +596,6 @@ class MainViewModel : ViewModel() {
     val notificationSnoozeOptions = mutableStateOf<List<Int>>(listOf(15, 30, 60, 120))
 
     lateinit var settingsRepository: SettingsRepository
-    private lateinit var appsSettings: AppsSettings
     private var appContext: Context? = null
 
     val gitHubToken = mutableStateOf<String?>(null)
@@ -1075,44 +1061,7 @@ class MainViewModel : ViewModel() {
                         appContext?.let { updateAppDetectionService(it) }
                     }
 
-                    AppsSettings.KEY_FREEZE_WHEN_LOCKED_ENABLED ->
-                        isFreezeWhenLockedEnabled.value =
-                            settingsRepository.getBoolean(key)
-
-                    AppsSettings.KEY_FREEZE_DONT_FREEZE_ACTIVE_APPS ->
-                        isFreezeDontFreezeActiveAppsEnabled.value =
-                            settingsRepository.getBoolean(key)
-
-                    AppsSettings.KEY_FREEZE_LOCK_DELAY_INDEX ->
-                        freezeLockDelayIndex.intValue =
-                            settingsRepository.getInt(key, 1)
-
-                    AppsSettings.KEY_FREEZE_AUTO_EXCLUDED_APPS -> {
-                        freezeAutoExcludedApps.value =
-                            appsSettings.getFreezeAutoExcludedApps()
-                    }
-
-                    AppsSettings.KEY_FREEZE_MODE -> {
-                        freezeMode.intValue = appsSettings.getFreezeMode()
-                    }
-
-                    AppsSettings.KEY_FREEZE_SHOW_IN_LAUNCHER -> {
-                        val enabled = settingsRepository.getBoolean(key, true)
-                        isFreezeShowInLauncherEnabled.value = enabled
-                        appContext?.let { ctx ->
-                            val componentName =
-                                ComponentName(ctx, "com.jawzf.pixeltoolkit.AppFreezingLauncher")
-                            try {
-                                ctx.packageManager.setComponentEnabledSetting(
-                                    componentName,
-                                    if (enabled) PackageManager.COMPONENT_ENABLED_STATE_ENABLED else PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-                                    PackageManager.DONT_KILL_APP,
-                                )
-                            } catch (e: Exception) {
-                                e.printStackTrace()
-                            }
-                        }
-                    }
+                    in FreezeState.PREFERENCE_KEYS -> freeze.onPreferenceChanged(key)
 
                     SettingsRepository.KEY_USE_ROOT, SettingsRepository.KEY_PRIVILEGED_MODE -> refreshPrivilegedMode()
 
@@ -1796,7 +1745,6 @@ class MainViewModel : ViewModel() {
     fun check(context: Context) {
         appContext = context.applicationContext
         settingsRepository = SettingsRepository(context)
-        appsSettings = AppsSettings(context)
         gitHubUser.value = settingsRepository.getGitHubUser()
 
         // Sync with system per-app language settings
@@ -2609,7 +2557,6 @@ class MainViewModel : ViewModel() {
 
         isDeviceAdminEnabled.value = isDeviceAdminActive(context)
 
-        freezeMode.intValue = appsSettings.getFreezeMode()
         isAppLockEnabled.value =
             settingsRepository.getBoolean(SettingsRepository.KEY_APP_LOCK_ENABLED)
         appLockAutoLockDelayIndex.intValue =
@@ -2621,40 +2568,7 @@ class MainViewModel : ViewModel() {
         isConsciousGateFeelEverySecondEnabled.value = settingsRepository.getConsciousGateFeelEverySecond()
         consciousGateTitle.value = settingsRepository.getConsciousGateTitle(context)
         consciousGateMessage.value = settingsRepository.getConsciousGateMessage(context)
-        isFreezeWhenLockedEnabled.value =
-            appsSettings.getBoolean(AppsSettings.KEY_FREEZE_WHEN_LOCKED_ENABLED)
-        isFreezeDontFreezeActiveAppsEnabled.value =
-            appsSettings.getBoolean(AppsSettings.KEY_FREEZE_DONT_FREEZE_ACTIVE_APPS)
-        freezeLockDelayIndex.intValue =
-            appsSettings.getInt(AppsSettings.KEY_FREEZE_LOCK_DELAY_INDEX, 1)
-        freezeAutoExcludedApps.value = appsSettings.getFreezeAutoExcludedApps()
-        isFreezeShowInLauncherEnabled.value =
-            appsSettings.getBoolean(AppsSettings.KEY_FREEZE_SHOW_IN_LAUNCHER, true)
-        freezeTags.value = appsSettings.getFreezeTags()
-        freezeAppTagMap.value = appsSettings.getFreezeAppTagMap()
-        isFreezeTagColorCodedEnabled.value =
-            appsSettings.getBoolean(
-                AppsSettings.KEY_FREEZE_TAG_COLOR_CODED_ENABLED,
-                false,
-            )
-
-        // Sync PackageManager component enabled state on startup
-        val showLauncher = isFreezeShowInLauncherEnabled.value
-        val componentName = ComponentName(context, "com.jawzf.pixeltoolkit.AppFreezingLauncher")
-        try {
-            val currentState = context.packageManager.getComponentEnabledSetting(componentName)
-            val targetState =
-                if (showLauncher) PackageManager.COMPONENT_ENABLED_STATE_ENABLED else PackageManager.COMPONENT_ENABLED_STATE_DISABLED
-            if (currentState != targetState) {
-                context.packageManager.setComponentEnabledSetting(
-                    componentName,
-                    targetState,
-                    PackageManager.DONT_KILL_APP,
-                )
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
+        freeze.load(context)
 
         isDeveloperModeEnabled.value =
             settingsRepository.getBoolean(SettingsRepository.KEY_DEVELOPER_MODE_ENABLED)
@@ -6503,80 +6417,6 @@ class MainViewModel : ViewModel() {
         )
     }
 
-
-
-
-    /**
-     * Executes the set freeze when locked enabled operation.
-     *
-     * @param enabled [Boolean] Target enabled.
-     * @param context [Context] Target context.
-     */
-    fun setFreezeWhenLockedEnabled(
-        enabled: Boolean,
-        context: Context,
-    ) {
-        isFreezeWhenLockedEnabled.value = enabled
-        appsSettings.putBoolean(AppsSettings.KEY_FREEZE_WHEN_LOCKED_ENABLED, enabled)
-    }
-
-    /**
-     * Executes the set freeze dont freeze active apps enabled operation.
-     *
-     * @param enabled [Boolean] Target enabled.
-     * @param context [Context] Target context.
-     */
-    fun setFreezeDontFreezeActiveAppsEnabled(
-        enabled: Boolean,
-        context: Context,
-    ) {
-        isFreezeDontFreezeActiveAppsEnabled.value = enabled
-        appsSettings.putBoolean(
-            AppsSettings.KEY_FREEZE_DONT_FREEZE_ACTIVE_APPS,
-            enabled,
-        )
-    }
-
-    /**
-     * Executes the set freeze lock delay index operation.
-     *
-     * @param index [Int] Target index.
-     * @param context [Context] Target context.
-     */
-    fun setFreezeLockDelayIndex(
-        index: Int,
-        context: Context,
-    ) {
-        freezeLockDelayIndex.intValue = index
-        appsSettings.putInt(AppsSettings.KEY_FREEZE_LOCK_DELAY_INDEX, index)
-    }
-
-    /**
-     * Executes the set freeze show in launcher enabled operation.
-     *
-     * @param enabled [Boolean] Target enabled.
-     * @param context [Context] Target context.
-     */
-    fun setFreezeShowInLauncherEnabled(
-        enabled: Boolean,
-        context: Context,
-    ) {
-        isFreezeShowInLauncherEnabled.value = enabled
-        appsSettings.putBoolean(AppsSettings.KEY_FREEZE_SHOW_IN_LAUNCHER, enabled)
-
-        // Dynamically enable or disable the AppFreezingLauncher activity-alias component
-        val componentName = ComponentName(context, "com.jawzf.pixeltoolkit.AppFreezingLauncher")
-        try {
-            context.packageManager.setComponentEnabledSetting(
-                componentName,
-                if (enabled) PackageManager.COMPONENT_ENABLED_STATE_ENABLED else PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-                PackageManager.DONT_KILL_APP,
-            )
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
-
     /**
      * Executes the save notification lighting pulse count operation.
      *
@@ -7579,377 +7419,6 @@ class MainViewModel : ViewModel() {
         settingsRepository.updateConsciousGateAppSelection(packageName, enabled)
     }
 
-    // Freeze App Selection Methods
-    fun saveFreezeSelectedApps(
-        context: Context,
-        apps: List<AppSelection>,
-    ) {
-        settingsRepository.saveFreezeSelectedApps(apps)
-        refreshFreezePickedApps(
-            context,
-            silent = false,
-        ) // Full refresh if list structure changes significantly
-    }
-
-    /**
-     * Executes the load freeze selected apps operation.
-     *
-     * @param context [Context] Target context.
-     * @return The resulting List<AppSelection> data.
-     */
-    fun loadFreezeSelectedApps(context: Context): List<AppSelection> = settingsRepository.loadFreezeSelectedApps()
-
-    /**
-     * Executes the update freeze app enabled operation.
-     *
-     * @param context [Context] Target context.
-     * @param packageName [String] Target package name.
-     * @param enabled [Boolean] Target enabled.
-     */
-    fun updateFreezeAppEnabled(
-        context: Context,
-        packageName: String,
-        enabled: Boolean,
-    ) {
-        settingsRepository.updateFreezeAppSelection(packageName, enabled)
-        refreshFreezePickedApps(context, silent = true)
-    }
-
-    fun updateFreezeAppAutoFreeze(
-        context: Context,
-        packageName: String,
-        autoFreezeEnabled: Boolean,
-    ) {
-        val currentSet = freezeAutoExcludedApps.value.toMutableSet()
-        if (autoFreezeEnabled) {
-            currentSet.remove(packageName)
-        } else {
-            currentSet.add(packageName)
-        }
-        freezeAutoExcludedApps.value = currentSet
-
-        appsSettings.saveFreezeAutoExcludedApps(currentSet)
-
-        refreshFreezePickedApps(context, silent = true)
-    }
-
-    private fun syncNeverAutoFreezeApps(context: Context) {
-        val neverAutoFreezeTagIds =
-            freezeTags.value
-                .filter { it.neverAutoFreeze }
-                .map { it.id }
-                .toSet()
-        if (neverAutoFreezeTagIds.isEmpty()) return
-
-        val currentExcluded = freezeAutoExcludedApps.value.toMutableSet()
-        var changed = false
-        freezeAppTagMap.value.forEach { (pkg, tagIds) ->
-            if (tagIds.any { neverAutoFreezeTagIds.contains(it) }) {
-                if (currentExcluded.add(pkg)) {
-                    changed = true
-                }
-            }
-        }
-        if (changed) {
-            freezeAutoExcludedApps.value = currentExcluded
-            appsSettings.saveFreezeAutoExcludedApps(currentExcluded)
-            refreshFreezePickedApps(context, silent = true)
-        }
-    }
-
-    /**
-     * Executes the add freeze tag operation.
-     *
-     * @param context [Context] Target context.
-     * @param tag [AppTag] Target tag.
-     */
-    fun addFreezeTag(
-        context: Context,
-        tag: AppTag,
-    ) {
-        val updated = freezeTags.value + tag
-        freezeTags.value = updated
-        appsSettings.saveFreezeTags(updated)
-        syncNeverAutoFreezeApps(context)
-    }
-
-    /**
-     * Executes the update freeze tag operation.
-     *
-     * @param context [Context] Target context.
-     * @param tag [AppTag] Target tag.
-     */
-    fun updateFreezeTag(
-        context: Context,
-        tag: AppTag,
-    ) {
-        val updated = freezeTags.value.map { if (it.id == tag.id) tag else it }
-        freezeTags.value = updated
-        appsSettings.saveFreezeTags(updated)
-        syncNeverAutoFreezeApps(context)
-    }
-
-    /**
-     * Executes the delete freeze tag operation.
-     *
-     * @param context [Context] Target context.
-     * @param tagId [String] Target tag id.
-     */
-    fun deleteFreezeTag(
-        context: Context,
-        tagId: String,
-    ) {
-        val updatedTags = freezeTags.value.filter { it.id != tagId }
-        freezeTags.value = updatedTags
-        appsSettings.saveFreezeTags(updatedTags)
-
-        val updatedMap =
-            freezeAppTagMap.value
-                .mapValues { (_, tagIds) ->
-                    tagIds.filter { it != tagId }
-                }.filterValues { it.isNotEmpty() }
-        freezeAppTagMap.value = updatedMap
-        appsSettings.saveFreezeAppTagMap(updatedMap)
-    }
-
-    /**
-     * Executes the set app tags operation.
-     *
-     * @param context [Context] Target context.
-     * @param packageName [String] Target package name.
-     * @param tagIds [List<String>] Target tag ids.
-     */
-    fun setAppTags(
-        context: Context,
-        packageName: String,
-        tagIds: List<String>,
-    ) {
-        val currentMap = freezeAppTagMap.value.toMutableMap()
-        if (tagIds.isEmpty()) {
-            currentMap.remove(packageName)
-        } else {
-            currentMap[packageName] = tagIds
-        }
-        freezeAppTagMap.value = currentMap
-        appsSettings.saveFreezeAppTagMap(currentMap)
-        syncNeverAutoFreezeApps(context)
-    }
-
-    /**
-     * Executes the set freeze tag color coded operation.
-     *
-     * @param enabled [Boolean] Target enabled.
-     */
-    fun setFreezeTagColorCoded(enabled: Boolean) {
-        isFreezeTagColorCodedEnabled.value = enabled
-        appsSettings.putBoolean(
-            AppsSettings.KEY_FREEZE_TAG_COLOR_CODED_ENABLED,
-            enabled,
-        )
-    }
-
-    /**
-     * Executes the refresh freeze picked apps operation.
-     *
-     * @param context [Context] Target context.
-     * @param silent [Boolean] Target silent.
-     */
-    fun refreshFreezePickedApps(
-        context: Context,
-        silent: Boolean = false,
-    ) {
-        viewModelScope.launch {
-            if (!silent) isFreezePickedAppsLoading.value = true
-            try {
-                // Background processing for heavy list operations
-                val result =
-                    withContext(Dispatchers.Default) {
-                        // Only load apps that are actually marked as secondary selected (picked)
-                        val selections = loadFreezeSelectedApps(context).filter { it.isEnabled }
-                        if (selections.isEmpty()) return@withContext emptyList()
-
-                        // Efficiently load only the apps that are actually marked as secondary selected (picked)
-                        val pickedPkgNames = selections.map { it.packageName }
-                        val relevantApps = AppUtil.getAppsByPackageNames(context, pickedPkgNames)
-
-                        val merged = AppUtil.mergeWithSavedApps(relevantApps, selections)
-                        val currentExcluded = freezeAutoExcludedApps.value
-
-                        // Cleanup: remove package names that are no longer picked (still on main because it updates state)
-                        val filteredExcluded =
-                            currentExcluded.filter { pickedPkgNames.contains(it) }.toSet()
-
-                        // Prepare final list in background
-                        merged
-                            .map { it.copy(isEnabled = !filteredExcluded.contains(it.packageName)) }
-                            .sortedBy { it.appName.lowercase() }
-                    }
-
-                // Final state update on Main
-                freezePickedApps.value = result
-
-                // Exclude check (this part still needs to update state if cleaned up)
-                val currentExcluded = freezeAutoExcludedApps.value
-                val selections = loadFreezeSelectedApps(context).filter { it.isEnabled }
-                val pickedPkgNames = selections.map { it.packageName }
-                val filteredExcluded =
-                    currentExcluded.filter { pickedPkgNames.contains(it) }.toSet()
-                if (filteredExcluded.size != currentExcluded.size) {
-                    freezeAutoExcludedApps.value = filteredExcluded
-                    appsSettings.saveFreezeAutoExcludedApps(filteredExcluded)
-                }
-            } finally {
-                if (!silent) isFreezePickedAppsLoading.value = false
-            }
-        }
-    }
-
-    /**
-     * Executes the freeze all auto operation.
-     *
-     * @param context [Context] Target context.
-     */
-    fun freezeAllAuto(context: Context) {
-        viewModelScope.launch(Dispatchers.IO) {
-            FreezeManager
-                .freezeAll(context)
-        }
-    }
-
-    /**
-     * Executes the unfreeze all auto operation.
-     *
-     * @param context [Context] Target context.
-     */
-    fun unfreezeAllAuto(context: Context) {
-        viewModelScope.launch(Dispatchers.IO) {
-            FreezeManager
-                .unfreezeAll(context)
-        }
-    }
-
-    /**
-     * Executes the freeze all manual operation.
-     *
-     * @param context [Context] Target context.
-     */
-    fun freezeAllManual(context: Context) {
-        viewModelScope.launch(Dispatchers.IO) {
-            FreezeManager
-                .freezeAllManual(context)
-        }
-    }
-
-    /**
-     * Executes the unfreeze all manual operation.
-     *
-     * @param context [Context] Target context.
-     */
-    fun unfreezeAllManual(context: Context) {
-        viewModelScope.launch(Dispatchers.IO) {
-            FreezeManager
-                .unfreezeAllManual(context)
-        }
-    }
-
-    /**
-     * Executes the launch and unfreeze app operation.
-     *
-     * @param context [Context] Target context.
-     * @param packageName [String] Target package name.
-     */
-    fun launchAndUnfreezeApp(
-        context: Context,
-        packageName: String,
-    ) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val isFrozen =
-                FreezeManager
-                    .isAppFrozen(context, packageName)
-            if (isFrozen) {
-                FreezeManager
-                    .unfreezeApp(context, packageName)
-                // Small delay to ensure system registers the change before launch
-                delay(100)
-            }
-
-            val launchIntent = context.packageManager.getLaunchIntentForPackage(packageName)
-            if (launchIntent != null) {
-                launchIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                context.startActivity(launchIntent)
-            }
-        }
-    }
-
-    /**
-     * Executes the freeze all apps operation.
-     *
-     * @param context [Context] Target context.
-     */
-    fun freezeAllApps(context: Context) {
-        viewModelScope.launch(Dispatchers.IO) {
-            FreezeManager
-                .freezeAllManual(context)
-            refreshFreezePickedApps(context)
-        }
-    }
-
-    /**
-     * Executes the unfreeze all apps operation.
-     *
-     * @param context [Context] Target context.
-     */
-    fun unfreezeAllApps(context: Context) {
-        viewModelScope.launch(Dispatchers.IO) {
-            FreezeManager
-                .unfreezeAllManual(context)
-            refreshFreezePickedApps(context)
-        }
-    }
-
-    /**
-     * Executes the freeze automatic apps operation.
-     *
-     * @param context [Context] Target context.
-     */
-    fun freezeAutomaticApps(context: Context) {
-        viewModelScope.launch(Dispatchers.IO) {
-            FreezeManager
-                .freezeAll(context)
-            refreshFreezePickedApps(context)
-        }
-    }
-
-    /**
-     * Executes the any apps currently frozen operation.
-     *
-     * @param context [Context] Target context.
-     * @return The resulting Boolean data.
-     */
-    fun anyAppsCurrentlyFrozen(context: Context): Boolean {
-        val picked = freezePickedApps.value
-        return picked.any {
-            FreezeManager.isAppFrozen(
-                context,
-                it.packageName,
-            )
-        }
-    }
-
-    /**
-     * Executes the set freeze mode operation.
-     *
-     * @param mode [Int] Target mode.
-     * @param context [Context] Target context.
-     */
-    fun setFreezeMode(
-        mode: Int,
-        context: Context,
-    ) {
-        freezeMode.intValue = mode
-        appsSettings.putInt(AppsSettings.KEY_FREEZE_MODE, mode)
-    }
-
     /**
      * Executes the load snooze channels operation.
      *
@@ -8258,124 +7727,11 @@ class MainViewModel : ViewModel() {
             settingsRepository.syncSystemSettingsWithSaved()
             com.jawzf.pixeltoolkit.domain.diy.DIYRepository
                 .reloadAutomations()
-            refreshFreezePickedApps(context, silent = true)
+            freeze.refreshFreezePickedApps(context, silent = true)
             check(context)
         }
         return success
     }
-
-    data class FreezeBackupData(
-        val apps: List<AppSelection>? = null,
-        val tags: List<AppTag>? = null,
-        val appTagMap: Map<String, List<String>>? = null,
-    )
-
-    /**
-     * Executes the export freeze apps operation.
-     *
-     * @param outputStream [java.io.OutputStream] Target output stream.
-     */
-    fun exportFreezeApps(outputStream: java.io.OutputStream) {
-        try {
-            val apps = settingsRepository.loadFreezeSelectedApps()
-            val tags = appsSettings.getFreezeTags()
-            val appTagMap = appsSettings.getFreezeAppTagMap()
-            val backupData = FreezeBackupData(apps = apps, tags = tags, appTagMap = appTagMap)
-            val gson = com.google.gson.Gson()
-            val json = gson.toJson(backupData)
-            outputStream.write(json.toByteArray())
-            outputStream.flush()
-        } catch (e: Exception) {
-            e.printStackTrace()
-        } finally {
-            try {
-                outputStream.close()
-            } catch (e: Exception) {
-            }
-        }
-    }
-
-    /**
-     * Executes the import freeze apps operation.
-     *
-     * @param context [Context] Target context.
-     * @param inputStream [java.io.InputStream] Target input stream.
-     * @return The resulting Boolean data.
-     */
-    fun importFreezeApps(
-        context: Context,
-        inputStream: java.io.InputStream,
-    ): Boolean =
-        try {
-            val json = inputStream.bufferedReader().use { it.readText() }
-            val gson = com.google.gson.Gson()
-
-            var importedApps: List<AppSelection> = emptyList()
-            var importedTags: List<AppTag> = emptyList()
-            var importedMap: Map<String, List<String>> = emptyMap()
-
-            // Gracefully handle legacy backup (JSON Array of AppSelection) vs new backup (FreezeBackupData object)
-            if (json.trim().startsWith("[")) {
-                importedApps = gson.fromJson(json, Array<AppSelection>::class.java).toList()
-            } else {
-                val backupData = gson.fromJson(json, FreezeBackupData::class.java)
-                if (backupData != null) {
-                    importedApps = backupData.apps ?: emptyList()
-                    importedTags = backupData.tags ?: emptyList()
-                    importedMap = backupData.appTagMap ?: emptyMap()
-                }
-            }
-
-            // Filter out non-installed apps
-            val pm = context.packageManager
-            val allowSystem = isEnableUnsupportedFeatures.value
-            val installedApps =
-                importedApps.filter { app ->
-                    try {
-                        pm.getPackageInfo(app.packageName, 0)
-                        allowSystem || !AppUtil.hasSystemFlag(context, app.packageName)
-                    } catch (e: Exception) {
-                        false
-                    }
-                }
-
-            settingsRepository.saveFreezeSelectedApps(installedApps)
-
-            if (importedTags.isNotEmpty()) {
-                val currentTags = appsSettings.getFreezeTags().toMutableList()
-                importedTags.forEach { importedTag ->
-                    if (currentTags.none { it.id == importedTag.id }) {
-                        currentTags.add(importedTag)
-                    }
-                }
-                freezeTags.value = currentTags
-                appsSettings.saveFreezeTags(currentTags)
-            }
-
-            if (importedMap.isNotEmpty()) {
-                val installedPkgs = installedApps.map { it.packageName }.toSet()
-                val currentMap = appsSettings.getFreezeAppTagMap().toMutableMap()
-                importedMap.forEach { (pkg, tagIds) ->
-                    if (installedPkgs.contains(pkg)) {
-                        currentMap[pkg] = tagIds
-                    }
-                }
-                freezeAppTagMap.value = currentMap
-                appsSettings.saveFreezeAppTagMap(currentMap)
-                syncNeverAutoFreezeApps(context)
-            }
-
-            refreshFreezePickedApps(context, silent = true)
-            true
-        } catch (e: Exception) {
-            e.printStackTrace()
-            false
-        } finally {
-            try {
-                inputStream.close()
-            } catch (e: Exception) {
-            }
-        }
 
     /**
      * Executes the set auto accessibility enabled operation.

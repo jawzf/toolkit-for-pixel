@@ -16,5 +16,6 @@ class AppsSettingsTest {
         assertEquals("freeze_tags", AppsSettings.KEY_FREEZE_TAGS)
         assertEquals("freeze_app_tag_map", AppsSettings.KEY_FREEZE_APP_TAG_MAP)
         assertEquals("freeze_tag_color_coded_enabled", AppsSettings.KEY_FREEZE_TAG_COLOR_CODED_ENABLED)
+        assertEquals("freeze_selected_apps", AppsSettings.KEY_FREEZE_SELECTED_APPS)
     }
 }

@@ -83,7 +83,7 @@ fun FreezeSettingsUI(
 
     val isShizukuAvailable by viewModel.isShizukuAvailable
     val isShizukuPermissionGranted by viewModel.isShizukuPermissionGranted
-    val pickedApps by viewModel.freezePickedApps
+    val pickedApps by viewModel.freeze.freezePickedApps
 
     var tagToEdit by remember { mutableStateOf<AppTag?>(null) }
     var isTagEditorSheetOpen by remember { mutableStateOf(false) }
@@ -91,8 +91,8 @@ fun FreezeSettingsUI(
     var isMenuExpanded by remember { mutableStateOf(false) }
 
     val pagerState = rememberPagerState(pageCount = { 2 })
-    LaunchedEffect(viewModel.freezeMode.intValue) {
-        pagerState.animateScrollToPage(viewModel.freezeMode.intValue)
+    LaunchedEffect(viewModel.freeze.freezeMode.intValue) {
+        pagerState.animateScrollToPage(viewModel.freeze.freezeMode.intValue)
     }
 
     val exportLauncher =
@@ -102,7 +102,7 @@ fun FreezeSettingsUI(
             uri?.let {
                 try {
                     context.contentResolver.openOutputStream(it)?.use { stream ->
-                        viewModel.exportFreezeApps(stream)
+                        viewModel.freeze.exportFreezeApps(stream)
                     }
                 } catch (e: Exception) {
                     e.printStackTrace()
@@ -117,7 +117,7 @@ fun FreezeSettingsUI(
             uri?.let {
                 try {
                     context.contentResolver.openInputStream(it)?.use { stream ->
-                        viewModel.importFreezeApps(context, stream)
+                        viewModel.freeze.importFreezeApps(context, stream, viewModel.isEnableUnsupportedFeatures.value)
                     }
                 } catch (e: Exception) {
                     e.printStackTrace()
@@ -133,7 +133,7 @@ fun FreezeSettingsUI(
     var initialEnabledPackageNames by remember { mutableStateOf<Set<String>?>(null) }
 
     LaunchedEffect(Unit) {
-        viewModel.refreshFreezePickedApps(context)
+        viewModel.freeze.refreshFreezePickedApps(context)
     }
 
     Column(
@@ -176,7 +176,7 @@ fun FreezeSettingsUI(
                     Button(
                         onClick = {
                             HapticUtil.performVirtualKeyHaptic(view)
-                            viewModel.freezeAllAuto(context)
+                            viewModel.freeze.freezeAllAuto(context)
                         },
                         modifier = Modifier.weight(1f),
                         enabled = isShizukuAvailable && isShizukuPermissionGranted,
@@ -198,7 +198,7 @@ fun FreezeSettingsUI(
                     Button(
                         onClick = {
                             HapticUtil.performVirtualKeyHaptic(view)
-                            viewModel.unfreezeAllAuto(context)
+                            viewModel.freeze.unfreezeAllAuto(context)
                         },
                         modifier = Modifier.weight(1f),
                         enabled = isShizukuAvailable && isShizukuPermissionGranted,
@@ -238,7 +238,7 @@ fun FreezeSettingsUI(
                                 text = { Text(stringResource(R.string.action_freeze_all)) },
                                 onClick = {
                                     HapticUtil.performVirtualKeyHaptic(view)
-                                    viewModel.freezeAllManual(context)
+                                    viewModel.freeze.freezeAllManual(context)
                                     isMenuExpanded = false
                                 },
                                 leadingIcon = {
@@ -253,7 +253,7 @@ fun FreezeSettingsUI(
                                 text = { Text(stringResource(R.string.action_unfreeze_all)) },
                                 onClick = {
                                     HapticUtil.performVirtualKeyHaptic(view)
-                                    viewModel.unfreezeAllManual(context)
+                                    viewModel.freeze.unfreezeAllManual(context)
                                     isMenuExpanded = false
                                 },
                                 leadingIcon = {
@@ -315,9 +315,9 @@ fun FreezeSettingsUI(
                 iconRes = R.drawable.rounded_mode_cool_24,
                 title = stringResource(R.string.freeze_show_in_launcher_title),
                 subtitle = stringResource(R.string.freeze_show_in_launcher_desc),
-                isChecked = viewModel.isFreezeShowInLauncherEnabled.value,
+                isChecked = viewModel.freeze.isFreezeShowInLauncherEnabled.value,
                 onCheckedChange = { enabled ->
-                    viewModel.setFreezeShowInLauncherEnabled(enabled, context)
+                    viewModel.freeze.setFreezeShowInLauncherEnabled(enabled, context)
                 },
                 enabled = true,
             )
@@ -333,14 +333,14 @@ fun FreezeSettingsUI(
         RoundedCardContainer {
             SegmentedPicker(
                 items = FreezeMode.entries,
-                selectedItem = FreezeMode.fromInt(viewModel.freezeMode.intValue),
+                selectedItem = FreezeMode.fromInt(viewModel.freeze.freezeMode.intValue),
                 onItemSelected = { mode ->
-                    if (viewModel.freezeMode.intValue != mode.value) {
-                        if (viewModel.anyAppsCurrentlyFrozen(context)) {
+                    if (viewModel.freeze.freezeMode.intValue != mode.value) {
+                        if (viewModel.freeze.anyAppsCurrentlyFrozen(context)) {
                             showModeWarningResult = true
                         } else {
                             HapticUtil.performVirtualKeyHaptic(view)
-                            viewModel.setFreezeMode(mode.value, context)
+                            viewModel.freeze.setFreezeMode(mode.value, context)
                         }
                     }
                 },
@@ -488,7 +488,7 @@ fun FreezeSettingsUI(
             }
         }
 
-        val tags by viewModel.freezeTags
+        val tags by viewModel.freeze.freezeTags
         RoundedCardContainer(spacing = 2.dp) {
             if (tags.isEmpty()) {
                 Text(
@@ -586,10 +586,10 @@ fun FreezeSettingsUI(
                 iconRes = R.drawable.rounded_palette_24,
                 title = stringResource(R.string.freeze_tag_color_coded_title),
                 description = stringResource(R.string.freeze_tag_color_coded_desc),
-                isChecked = viewModel.isFreezeTagColorCodedEnabled.value,
+                isChecked = viewModel.freeze.isFreezeTagColorCodedEnabled.value,
                 onCheckedChange = { isChecked ->
                     HapticUtil.performVirtualKeyHaptic(view)
-                    viewModel.setFreezeTagColorCoded(isChecked)
+                    viewModel.freeze.setFreezeTagColorCoded(isChecked)
                 },
                 modifier =
                     Modifier
@@ -615,13 +615,13 @@ fun FreezeSettingsUI(
             IconToggleItem(
                 iconRes = R.drawable.rounded_lock_clock_24,
                 title = stringResource(R.string.freeze_when_locked_title),
-                isChecked = viewModel.isFreezeWhenLockedEnabled.value,
+                isChecked = viewModel.freeze.isFreezeWhenLockedEnabled.value,
                 onCheckedChange = { enabled ->
                     if (enabled && !isAccessibilityEnabled) {
                         permissionsToRequest = listOf("ACCESSIBILITY")
                         showPermissionSheet = true
                     } else {
-                        viewModel.setFreezeWhenLockedEnabled(enabled, context)
+                        viewModel.freeze.setFreezeWhenLockedEnabled(enabled, context)
                     }
                 },
                 enabled = true,
@@ -631,7 +631,7 @@ fun FreezeSettingsUI(
             IconToggleItem(
                 iconRes = R.drawable.rounded_app_badging_24,
                 title = stringResource(R.string.freeze_dont_freeze_active_apps_title),
-                isChecked = viewModel.isFreezeDontFreezeActiveAppsEnabled.value,
+                isChecked = viewModel.freeze.isFreezeDontFreezeActiveAppsEnabled.value,
                 onCheckedChange = { enabled ->
                     val missing = mutableListOf<String>()
                     if (!PermissionUtils.hasUsageStatsPermission(context)) missing.add("USAGE_STATS")
@@ -641,7 +641,7 @@ fun FreezeSettingsUI(
                         permissionsToRequest = missing
                         showPermissionSheet = true
                     } else {
-                        viewModel.setFreezeDontFreezeActiveAppsEnabled(enabled, context)
+                        viewModel.freeze.setFreezeDontFreezeActiveAppsEnabled(enabled, context)
                     }
                 },
                 enabled = true,
@@ -662,7 +662,7 @@ fun FreezeSettingsUI(
                     text = stringResource(R.string.freeze_delay_title),
                     style = MaterialTheme.typography.bodyLarge,
                     color =
-                        if (viewModel.isFreezeWhenLockedEnabled.value) {
+                        if (viewModel.freeze.isFreezeWhenLockedEnabled.value) {
                             MaterialTheme.colorScheme.onSurface
                         } else {
                             MaterialTheme.colorScheme.onSurface.copy(
@@ -680,11 +680,13 @@ fun FreezeSettingsUI(
                         stringResource(R.string.delay_manual),
                     )
                 Slider(
-                    value = viewModel.freezeLockDelayIndex.intValue.toFloat(),
-                    onValueChange = { viewModel.setFreezeLockDelayIndex(it.toInt(), context) },
+                    value =
+                        viewModel.freeze.freezeLockDelayIndex.intValue
+                            .toFloat(),
+                    onValueChange = { viewModel.freeze.setFreezeLockDelayIndex(it.toInt(), context) },
                     valueRange = 0f..4f,
                     steps = 3,
-                    enabled = viewModel.isFreezeWhenLockedEnabled.value,
+                    enabled = viewModel.freeze.isFreezeWhenLockedEnabled.value,
                     modifier = Modifier.padding(top = 4.dp),
                 )
 
@@ -703,7 +705,7 @@ fun FreezeSettingsUI(
             }
         }
 
-        val isFreezePickedAppsLoading by viewModel.isFreezePickedAppsLoading
+        val isFreezePickedAppsLoading by viewModel.freeze.isFreezePickedAppsLoading
 
         if (isFreezePickedAppsLoading) {
             Row(
@@ -743,7 +745,7 @@ fun FreezeSettingsUI(
             RoundedCardContainer(
                 modifier = Modifier.fillMaxWidth(),
             ) {
-                val appTagMap by viewModel.freezeAppTagMap
+                val appTagMap by viewModel.freeze.freezeAppTagMap
                 val neverAutoFreezeTagIds = tags.filter { it.neverAutoFreeze }.map { it.id }.toSet()
 
                 sortedApps.forEach { app ->
@@ -757,7 +759,7 @@ fun FreezeSettingsUI(
                         enabled = !isLockedByTag,
                         onCheckedChange = { isChecked ->
                             if (!isLockedByTag) {
-                                viewModel.updateFreezeAppAutoFreeze(
+                                viewModel.freeze.updateFreezeAppAutoFreeze(
                                     context,
                                     app.packageName,
                                     isChecked,
@@ -775,13 +777,13 @@ fun FreezeSettingsUI(
                 onDismissRequest = { isTagEditorSheetOpen = false },
                 onSave = { tag ->
                     if (tagToEdit == null) {
-                        viewModel.addFreezeTag(context, tag)
+                        viewModel.freeze.addFreezeTag(context, tag)
                     } else {
-                        viewModel.updateFreezeTag(context, tag)
+                        viewModel.freeze.updateFreezeTag(context, tag)
                     }
                 },
                 onDelete = { tagId ->
-                    viewModel.deleteFreezeTag(context, tagId)
+                    viewModel.freeze.deleteFreezeTag(context, tagId)
                 },
             )
         }
@@ -867,10 +869,10 @@ fun FreezeSettingsUI(
                 showInvertSelection = false,
                 hideSystemAppsByDefault = true,
                 onDismissRequest = { isAppSelectionSheetOpen = false },
-                onLoadApps = { viewModel.loadFreezeSelectedApps(it) },
-                onSaveApps = { ctx, apps -> viewModel.saveFreezeSelectedApps(ctx, apps) },
+                onLoadApps = { viewModel.freeze.loadFreezeSelectedApps(it) },
+                onSaveApps = { ctx, apps -> viewModel.freeze.saveFreezeSelectedApps(ctx, apps) },
                 onAppToggle = { ctx, pkg, enabled ->
-                    viewModel.updateFreezeAppEnabled(
+                    viewModel.freeze.updateFreezeAppEnabled(
                         ctx,
                         pkg,
                         enabled,

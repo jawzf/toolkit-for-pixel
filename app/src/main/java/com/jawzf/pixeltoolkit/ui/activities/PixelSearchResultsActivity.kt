@@ -126,6 +126,7 @@ import com.jawzf.pixeltoolkit.domain.registry.FeatureRegistry
 import com.jawzf.pixeltoolkit.domain.registry.QSTileInfo
 import com.jawzf.pixeltoolkit.domain.registry.QSTileRegistry
 import com.jawzf.pixeltoolkit.domain.registry.SearchRegistry
+import com.jawzf.pixeltoolkit.feature.apps.AppsSettings
 import com.jawzf.pixeltoolkit.feature.apps.freeze.FreezeManager
 import com.jawzf.pixeltoolkit.ui.activities.PixelSearchbarSettingsActivity
 import com.jawzf.pixeltoolkit.ui.activities.WallpaperActivity
@@ -417,7 +418,7 @@ fun PixelSearchResultsScreen(
             if (isAppsEnabled) {
                 val installed = AppUtil.getInstalledApps(context, includeSelf = true)
                 val installedPkgs = installed.map { it.packageName }.toSet()
-                val freezeSelections = repository.loadFreezeSelectedApps()
+                val freezeSelections = AppsSettings(context).loadFreezeSelectedApps()
                 val missingFrozenPkgs = freezeSelections
                     .map { it.packageName }
                     .filter { !installedPkgs.contains(it) }
@@ -798,7 +799,7 @@ fun PixelSearchResultsScreen(
                                                     onDismiss()
                                                     scope.launch(Dispatchers.IO) {
                                                         FreezeManager.unfreezeApp(context, app.packageName)
-                                                        viewModel.refreshFreezePickedApps(context, silent = true)
+                                                        viewModel.freeze.refreshFreezePickedApps(context, silent = true)
                                                         performSearch(query)
                                                     }
                                                 },

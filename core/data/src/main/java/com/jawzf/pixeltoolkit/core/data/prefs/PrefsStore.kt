@@ -2,6 +2,7 @@ package com.jawzf.pixeltoolkit.core.data.prefs
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.google.gson.Gson
 import com.jawzf.pixeltoolkit.core.platform.PlatformPrefs
 
 /** Generic access to the app's main preference file. Feature settings classes build on this. */
@@ -10,6 +11,7 @@ open class PrefsStore(
 ) {
     protected val prefs: SharedPreferences =
         context.getSharedPreferences(PlatformPrefs.PREFS_NAME, Context.MODE_PRIVATE)
+    private val gson = Gson()
 
     /**
      * Registers a listener to be notified when shared preference values change.
@@ -180,4 +182,26 @@ open class PrefsStore(
      * @param key [String] Preference key name to remove.
      */
     fun remove(key: String) = prefs.edit().remove(key).apply()
+
+    // App Selection Helper Generic
+    protected fun loadAppSelection(key: String): List<AppSelection> {
+        val json = prefs.getString(key, null)
+        return if (json != null) {
+            try {
+                gson.fromJson(json, Array<AppSelection>::class.java).toList()
+            } catch (e: Exception) {
+                emptyList()
+            }
+        } else {
+            emptyList()
+        }
+    }
+
+    protected fun saveAppSelection(
+        key: String,
+        apps: List<AppSelection>,
+    ) {
+        val json = gson.toJson(apps)
+        putString(key, json)
+    }
 }

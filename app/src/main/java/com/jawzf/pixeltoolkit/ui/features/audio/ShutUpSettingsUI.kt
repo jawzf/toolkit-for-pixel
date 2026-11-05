@@ -212,7 +212,7 @@ fun ShutUpSettingsUI(
         }
 
         if (selectedConfigForEditing != null) {
-            val frozenApps = remember { viewModel.loadFreezeSelectedApps(context) }
+            val frozenApps = remember { viewModel.freeze.loadFreezeSelectedApps(context) }
             val isFrozen =
                 remember(selectedConfigForEditing) {
                     frozenApps.any { it.packageName == selectedConfigForEditing?.packageName }

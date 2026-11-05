@@ -3,6 +3,7 @@ package com.jawzf.pixeltoolkit.feature.apps
 import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.jawzf.pixeltoolkit.core.data.prefs.AppSelection
 import com.jawzf.pixeltoolkit.core.data.prefs.PrefsStore
 import com.jawzf.pixeltoolkit.feature.apps.freeze.AppTag
 
@@ -94,7 +95,27 @@ class AppsSettings(
      */
     fun getFreezeMode(): Int = getInt(KEY_FREEZE_MODE, 0)
 
+    fun loadFreezeSelectedApps(): List<AppSelection> = loadAppSelection(KEY_FREEZE_SELECTED_APPS)
+
+    /** Only enabled apps are stored. */
+    fun saveFreezeSelectedApps(apps: List<AppSelection>) = saveAppSelection(KEY_FREEZE_SELECTED_APPS, apps.filter { it.isEnabled })
+
+    fun updateFreezeAppSelection(
+        packageName: String,
+        enabled: Boolean,
+    ) {
+        val current = loadFreezeSelectedApps().toMutableList()
+        val index = current.indexOfFirst { it.packageName == packageName }
+        if (index != -1) {
+            current[index] = current[index].copy(isEnabled = enabled)
+        } else {
+            current.add(AppSelection(packageName, enabled))
+        }
+        saveFreezeSelectedApps(current)
+    }
+
     companion object {
+        const val KEY_FREEZE_SELECTED_APPS = "freeze_selected_apps"
         const val KEY_FREEZE_WHEN_LOCKED_ENABLED = "freeze_when_locked_enabled"
         const val KEY_FREEZE_LOCK_DELAY_INDEX = "freeze_lock_delay_index"
         const val KEY_FREEZE_AUTO_EXCLUDED_APPS = "freeze_auto_excluded_apps"

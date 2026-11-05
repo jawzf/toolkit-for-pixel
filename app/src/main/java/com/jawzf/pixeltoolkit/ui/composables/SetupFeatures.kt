@@ -1117,7 +1117,7 @@ fun SetupFeatures(
                     activity = context as? Activity,
                 )
             }
-        val freezePickedApps by viewModel.freezePickedApps
+        val freezePickedApps by viewModel.freeze.freezePickedApps
         val matchingFrozenApps =
             remember(searchQuery, freezePickedApps) {
                 if (searchQuery.isBlank()) {
@@ -1691,7 +1691,7 @@ private fun SearchResultsSection(
                 activity = context as? Activity,
             )
         }
-    val freezePickedApps by viewModel.freezePickedApps
+    val freezePickedApps by viewModel.freeze.freezePickedApps
     val matchingFrozenApps =
         remember(query, freezePickedApps) {
             if (query.isBlank()) {

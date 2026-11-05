@@ -72,7 +72,7 @@ class AppFreezingActivity : ComponentActivity() {
 
             LaunchedEffect(Unit) {
                 viewModel.check(context)
-                viewModel.refreshFreezePickedApps(context)
+                viewModel.freeze.refreshFreezePickedApps(context)
             }
 
             val isPitchBlackThemeEnabled by viewModel.isPitchBlackThemeEnabled
@@ -192,7 +192,7 @@ class AppFreezingActivity : ComponentActivity() {
                                         onClick = {
                                             HapticUtil.performVirtualKeyHaptic(view)
                                             fabMenuExpanded = false
-                                            viewModel.freezeAllAuto(context)
+                                            viewModel.freeze.freezeAllAuto(context)
                                         },
                                         itemContainerColor = itemBg,
                                         colors = fabColors,
@@ -209,7 +209,7 @@ class AppFreezingActivity : ComponentActivity() {
                                         onClick = {
                                             HapticUtil.performVirtualKeyHaptic(view)
                                             fabMenuExpanded = false
-                                            viewModel.unfreezeAllAuto(context)
+                                            viewModel.freeze.unfreezeAllAuto(context)
                                         },
                                         itemContainerColor = itemBg,
                                         colors = fabColors,
@@ -226,7 +226,7 @@ class AppFreezingActivity : ComponentActivity() {
                                         onClick = {
                                             HapticUtil.performVirtualKeyHaptic(view)
                                             fabMenuExpanded = false
-                                            viewModel.freezeAllManual(context)
+                                            viewModel.freeze.freezeAllManual(context)
                                         },
                                         itemContainerColor = itemBg,
                                         colors = fabColors,
@@ -243,7 +243,7 @@ class AppFreezingActivity : ComponentActivity() {
                                         onClick = {
                                             HapticUtil.performVirtualKeyHaptic(view)
                                             fabMenuExpanded = false
-                                            viewModel.unfreezeAllManual(context)
+                                            viewModel.freeze.unfreezeAllManual(context)
                                         },
                                         itemContainerColor = itemBg,
                                         colors = fabColors,
