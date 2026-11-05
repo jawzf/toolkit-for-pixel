@@ -45,7 +45,7 @@ object AppUtil {
                         .getInstalledApplications(0)
                         .filter { appInfo ->
                             // Filter out our own app unless requested
-                            includeSelf || !appInfo.packageName.contains("toolkit")
+                            includeSelf || appInfo.packageName != context.packageName
                         }
 
                 val apps =
