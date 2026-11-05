@@ -21,6 +21,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.jawzf.pixeltoolkit.core.data.apps.AppUtil
 import com.jawzf.pixeltoolkit.core.data.prefs.AppSelection
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.cards.FeatureCard
@@ -33,7 +34,6 @@ import com.jawzf.pixeltoolkit.domain.model.ShutUpAppConfig
 import com.jawzf.pixeltoolkit.ui.core.pickers.RestoreModePicker
 import com.jawzf.pixeltoolkit.ui.core.sheets.AppSelectionSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.ShutUpPerAppSettingsSheet
-import com.jawzf.pixeltoolkit.utils.AppUtil
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
@@ -212,7 +212,7 @@ fun ShutUpSettingsUI(
         }
 
         if (selectedConfigForEditing != null) {
-            val frozenApps = remember { viewModel.loadFreezeSelectedApps(context) }
+            val frozenApps = remember { viewModel.freeze.loadFreezeSelectedApps(context) }
             val isFrozen =
                 remember(selectedConfigForEditing) {
                     frozenApps.any { it.packageName == selectedConfigForEditing?.packageName }

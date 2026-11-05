@@ -9,7 +9,7 @@ import android.graphics.drawable.Icon
 import android.os.Build
 import android.os.Bundle
 import android.service.notification.StatusBarNotification
-import com.jawzf.pixeltoolkit.utils.AppUtil
+import com.jawzf.pixeltoolkit.core.data.apps.AppUtil
 
 
 enum class CallActionRole { Answer, Decline, HangUp, Mute, Speaker, Hold, Video, Other }

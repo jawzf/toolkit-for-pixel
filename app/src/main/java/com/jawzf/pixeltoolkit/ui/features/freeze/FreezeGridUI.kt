@@ -76,6 +76,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
+import com.jawzf.pixeltoolkit.core.data.apps.NotificationApp
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.color.ColorUtil
 import com.jawzf.pixeltoolkit.core.design.components.SegmentedDropdownMenu
@@ -84,7 +85,6 @@ import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.modifiers.scrollMotionBlur
 import com.jawzf.pixeltoolkit.core.design.state.LocalMenuStateManager
 import com.jawzf.pixeltoolkit.core.design.state.MenuStateManager
-import com.jawzf.pixeltoolkit.domain.model.NotificationApp
 import com.jawzf.pixeltoolkit.feature.apps.freeze.FreezeManager
 import com.jawzf.pixeltoolkit.utils.ShortcutUtil
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
@@ -106,8 +106,8 @@ fun FreezeGridUI(
     val view = LocalView.current
     val menuState = LocalMenuStateManager.current
     val scope = rememberCoroutineScope()
-    val pickedApps by viewModel.freezePickedApps
-    val isPickedAppsLoading by viewModel.isFreezePickedAppsLoading
+    val pickedApps by viewModel.freeze.freezePickedApps
+    val isPickedAppsLoading by viewModel.freeze.isFreezePickedAppsLoading
 
     val frozenStates = remember { mutableStateMapOf<String, Boolean>() }
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -117,9 +117,9 @@ fun FreezeGridUI(
     val focusManager = LocalFocusManager.current
     var isFocused by remember { mutableStateOf(false) }
 
-    val freezeTags by viewModel.freezeTags
-    val freezeAppTagMap by viewModel.freezeAppTagMap
-    val isTagColorCodedEnabled by viewModel.isFreezeTagColorCodedEnabled
+    val freezeTags by viewModel.freeze.freezeTags
+    val freezeAppTagMap by viewModel.freeze.freezeAppTagMap
+    val isTagColorCodedEnabled by viewModel.freeze.isFreezeTagColorCodedEnabled
 
     var selectedTagId by rememberSaveable { mutableStateOf<String?>(null) }
 
@@ -155,7 +155,7 @@ fun FreezeGridUI(
             LifecycleEventObserver { _, event ->
                 if (event == Lifecycle.Event.ON_RESUME) {
                     viewModel.check(context)
-                    viewModel.refreshFreezePickedApps(context)
+                    viewModel.freeze.refreshFreezePickedApps(context)
                 }
             }
         lifecycleOwner.lifecycle.addObserver(observer)
@@ -284,7 +284,7 @@ fun FreezeGridUI(
                             onSearch = {
                                 bestMatch?.let { app ->
                                     HapticUtil.performVirtualKeyHaptic(view)
-                                    viewModel.launchAndUnfreezeApp(context, app.packageName)
+                                    viewModel.freeze.launchAndUnfreezeApp(context, app.packageName)
                                     onAppLaunched?.invoke()
                                 }
                             },
@@ -435,7 +435,7 @@ fun FreezeGridUI(
                                                 menuState = menuState,
                                                 onClick = {
                                                     HapticUtil.performVirtualKeyHaptic(view)
-                                                    viewModel.launchAndUnfreezeApp(
+                                                    viewModel.freeze.launchAndUnfreezeApp(
                                                         context,
                                                         app.packageName,
                                                     )
@@ -463,7 +463,7 @@ fun FreezeGridUI(
                                                     }
                                                 },
                                                 onToggleAutoFreeze = { isAutoFreeze ->
-                                                    viewModel.updateFreezeAppAutoFreeze(
+                                                    viewModel.freeze.updateFreezeAppAutoFreeze(
                                                         context,
                                                         app.packageName,
                                                         isAutoFreeze,
@@ -473,7 +473,7 @@ fun FreezeGridUI(
                                                     appForTagAssignment = app
                                                 },
                                                 onRemove = {
-                                                    viewModel.updateFreezeAppEnabled(
+                                                    viewModel.freeze.updateFreezeAppEnabled(
                                                         context,
                                                         app.packageName,
                                                         false,
@@ -502,7 +502,7 @@ fun FreezeGridUI(
                 assignedTagIds = freezeAppTagMap[targetApp.packageName] ?: emptyList(),
                 onDismissRequest = { appForTagAssignment = null },
                 onSave = { selectedTagIds ->
-                    viewModel.setAppTags(context, targetApp.packageName, selectedTagIds)
+                    viewModel.freeze.setAppTags(context, targetApp.packageName, selectedTagIds)
                 },
             )
         }

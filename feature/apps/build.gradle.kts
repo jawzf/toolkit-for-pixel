@@ -1,5 +1,5 @@
 plugins {
-    id("toolkit.android.library")
+    id("toolkit.android.library.compose")
 }
 
 android {
@@ -15,4 +15,6 @@ dependencies {
     implementation(libs.gson)
     implementation(libs.shizuku.api)
     implementation(libs.hiddenapibypass)
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.compose.ui)
 }

@@ -28,6 +28,7 @@ import android.widget.TextClock
 import android.widget.TextView
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.services.NotificationListener
+import com.jawzf.pixeltoolkit.utils.CarConnectionMonitor
 import java.io.File
 import java.util.Random
 
@@ -136,7 +137,7 @@ class AmbientGlanceHandler(
 
     private fun checkAndroidAutoNow() {
         if (overlayView == null || !isDockedMode) return
-        if (com.jawzf.pixeltoolkit.utils.AppUtil.isAndroidAutoRunning(service)) {
+        if (CarConnectionMonitor.isAndroidAutoRunning(service)) {
             fadeOutAndRemove()
         }
     }
@@ -149,7 +150,7 @@ class AmbientGlanceHandler(
                 if (overlayView == null || !isDockedMode) return
 
                 // Dismiss if Android Auto is running
-                if (com.jawzf.pixeltoolkit.utils.AppUtil
+                if (CarConnectionMonitor
                         .isAndroidAutoRunning(service)
                 ) {
                     fadeOutAndRemove()
@@ -188,7 +189,7 @@ class AmbientGlanceHandler(
                 if (overlayView == null || isDetached) return
 
                 // Dismiss if Android Auto is running
-                if (com.jawzf.pixeltoolkit.utils.AppUtil
+                if (CarConnectionMonitor
                         .isAndroidAutoRunning(service)
                 ) {
                     fadeOutAndRemove()
@@ -281,7 +282,7 @@ class AmbientGlanceHandler(
 
         if (intent.action == "SHOW_AMBIENT_GLANCE") {
             // Skip if Android Auto is running
-            if (com.jawzf.pixeltoolkit.utils.AppUtil
+            if (CarConnectionMonitor
                     .isAndroidAutoRunning(service)
             ) {
                 return
@@ -715,7 +716,7 @@ class AmbientGlanceHandler(
 
     private fun showOverlay() {
         // Skip if Android Auto is running
-        if (com.jawzf.pixeltoolkit.utils.AppUtil
+        if (CarConnectionMonitor
                 .isAndroidAutoRunning(service)
         ) {
             return
@@ -1184,7 +1185,7 @@ class AmbientGlanceHandler(
                     } else {
                         handler.post(burnInProtectionRunnable)
                         registerDisplayListener()
-                        com.jawzf.pixeltoolkit.utils.CarConnectionMonitor.addListener(carConnectionListener)
+                        CarConnectionMonitor.addListener(carConnectionListener)
                         checkAndroidAutoNow()
                     }
                 }?.start()
@@ -1243,7 +1244,7 @@ class AmbientGlanceHandler(
 
         if (isEnabled && isDocked) {
             // Skip if Android Auto is running
-            if (com.jawzf.pixeltoolkit.utils.AppUtil
+            if (CarConnectionMonitor
                     .isAndroidAutoRunning(service)
             ) {
                 return
@@ -1320,7 +1321,7 @@ class AmbientGlanceHandler(
         handler.removeCallbacks(revertToMusicRunnable)
         handler.removeCallbacks(burnInProtectionRunnable)
         unregisterDisplayListener()
-        com.jawzf.pixeltoolkit.utils.CarConnectionMonitor.removeListener(carConnectionListener)
+        CarConnectionMonitor.removeListener(carConnectionListener)
 
         // Clear active unread notifications from the overlay on dismissal
         NotificationListener.clearUnreadNotifications()

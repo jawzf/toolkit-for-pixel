@@ -309,8 +309,6 @@ class SettingsRepository(
         const val KEY_HIDDEN_DEBUGGING_SUPPORT = "hidden_debugging_support"
         const val KEY_USE_USAGE_ACCESS = "use_usage_access"
 
-        const val KEY_FREEZE_SELECTED_APPS = "freeze_selected_apps"
-
         const val KEY_DEVELOPER_MODE_ENABLED = "developer_mode_enabled"
         const val KEY_HAPTIC_FEEDBACK_TYPE = "haptic_feedback_type"
         const val KEY_DEFAULT_TAB = "default_tab"
@@ -947,28 +945,6 @@ class SettingsRepository(
         putString(KEY_APP_ICON, appIcon.key)
     }
 
-    // App Selection Helper Generic
-    private fun loadAppSelection(key: String): List<AppSelection> {
-        val json = prefs.getString(key, null)
-        return if (json != null) {
-            try {
-                gson.fromJson(json, Array<AppSelection>::class.java).toList()
-            } catch (e: Exception) {
-                emptyList()
-            }
-        } else {
-            emptyList()
-        }
-    }
-
-    private fun saveAppSelection(
-        key: String,
-        apps: List<AppSelection>,
-    ) {
-        val json = gson.toJson(apps)
-        putString(key, json)
-    }
-
     // Feature specific App selections
 
     fun loadNotificationLightingSelectedApps() = loadAppSelection(KEY_EDGE_LIGHTING_SELECTED_APPS)
@@ -1140,29 +1116,6 @@ class SettingsRepository(
             ?: context.getString(com.jawzf.pixeltoolkit.core.design.R.string.conscious_gate_default_message)
 
     fun setConsciousGateMessage(message: String) = putString(KEY_CONSCIOUS_GATE_MESSAGE, message)
-
-    /**
-     * Executes the load freeze selected apps operation.
-     */
-    fun loadFreezeSelectedApps() = loadAppSelection(KEY_FREEZE_SELECTED_APPS)
-
-    /**
-     * Executes the save freeze selected apps operation.
-     *
-     * @param apps [List<AppSelection>] Target apps.
-     */
-    fun saveFreezeSelectedApps(apps: List<AppSelection>) = saveAppSelection(KEY_FREEZE_SELECTED_APPS, apps.filter { it.isEnabled })
-
-    /**
-     * Executes the update freeze app selection operation.
-     *
-     * @param packageName [String] Target package name.
-     * @param enabled [Boolean] Target enabled.
-     */
-    fun updateFreezeAppSelection(
-        packageName: String,
-        enabled: Boolean,
-    ) = updateAppSelection(KEY_FREEZE_SELECTED_APPS, packageName, enabled)
 
     /**
      * Executes the load flashlight pulse selected apps operation.
@@ -1383,19 +1336,7 @@ class SettingsRepository(
         } else {
             current.add(AppSelection(packageName, enabled))
         }
-        // Special case for freeze apps to only save enabled ones is handled in saveFreezeSelectedApps
-        // But here we are using generic generic save for key?
-        // Wait, saveFreezeSelectedApps filters.
-        // My generic updateAppSelection calls... wait, no.
-        // I should call the specific save method or generic save method?
-        // If I use generic saveAppSelection(key, current), for freeze apps, I might save disabled apps if I don't filter.
-        // Let's look at saveFreezeSelectedApps: it calls saveAppSelection(KEY..., apps.filter { it.isEnabled })
-
-        if (key == KEY_FREEZE_SELECTED_APPS) {
-            saveAppSelection(key, current.filter { it.isEnabled })
-        } else {
-            saveAppSelection(key, current)
-        }
+        saveAppSelection(key, current)
     }
 
     // Snooze Notifications Helper

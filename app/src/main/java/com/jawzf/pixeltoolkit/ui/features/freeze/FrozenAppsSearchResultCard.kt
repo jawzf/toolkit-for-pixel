@@ -34,12 +34,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.MainActivity
+import com.jawzf.pixeltoolkit.core.data.apps.NotificationApp
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.state.LocalMenuStateManager
 import com.jawzf.pixeltoolkit.domain.DIYTabs
-import com.jawzf.pixeltoolkit.domain.model.NotificationApp
 import com.jawzf.pixeltoolkit.feature.apps.freeze.FreezeManager
 import com.jawzf.pixeltoolkit.ui.composables.AppGridItem
 import com.jawzf.pixeltoolkit.ui.core.sheets.AssignTagsSheet
@@ -62,9 +62,9 @@ fun FrozenAppsSearchResultCard(
     val scope = rememberCoroutineScope()
     val menuState = LocalMenuStateManager.current
 
-    val freezeTags by viewModel.freezeTags
-    val freezeAppTagMap by viewModel.freezeAppTagMap
-    val isTagColorCodedEnabled by viewModel.isFreezeTagColorCodedEnabled
+    val freezeTags by viewModel.freeze.freezeTags
+    val freezeAppTagMap by viewModel.freeze.freezeAppTagMap
+    val isTagColorCodedEnabled by viewModel.freeze.isFreezeTagColorCodedEnabled
 
     val frozenStates = remember { mutableStateMapOf<String, Boolean>() }
 
@@ -190,7 +190,7 @@ fun FrozenAppsSearchResultCard(
                                 menuState = menuState,
                                 onClick = {
                                     HapticUtil.performVirtualKeyHaptic(view)
-                                    viewModel.launchAndUnfreezeApp(context, app.packageName)
+                                    viewModel.freeze.launchAndUnfreezeApp(context, app.packageName)
                                 },
                                 onToggleFreeze = {
                                     scope.launch(Dispatchers.IO) {
@@ -204,11 +204,11 @@ fun FrozenAppsSearchResultCard(
                                         withContext(Dispatchers.Main) {
                                             frozenStates[app.packageName] = updatedState
                                         }
-                                        viewModel.refreshFreezePickedApps(context, silent = true)
+                                        viewModel.freeze.refreshFreezePickedApps(context, silent = true)
                                     }
                                 },
                                 onToggleAutoFreeze = { isAutoFreeze ->
-                                    viewModel.updateFreezeAppAutoFreeze(
+                                    viewModel.freeze.updateFreezeAppAutoFreeze(
                                         context,
                                         app.packageName,
                                         isAutoFreeze,
@@ -218,7 +218,7 @@ fun FrozenAppsSearchResultCard(
                                     appForTagAssignment = app
                                 },
                                 onRemove = {
-                                    viewModel.updateFreezeAppEnabled(
+                                    viewModel.freeze.updateFreezeAppEnabled(
                                         context,
                                         app.packageName,
                                         false,
@@ -244,7 +244,7 @@ fun FrozenAppsSearchResultCard(
             assignedTagIds = freezeAppTagMap[targetApp.packageName] ?: emptyList(),
             onDismissRequest = { appForTagAssignment = null },
             onSave = { selectedTagIds ->
-                viewModel.setAppTags(context, targetApp.packageName, selectedTagIds)
+                viewModel.freeze.setAppTags(context, targetApp.packageName, selectedTagIds)
             },
         )
     }

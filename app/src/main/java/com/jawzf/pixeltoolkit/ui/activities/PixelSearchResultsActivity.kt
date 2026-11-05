@@ -107,6 +107,8 @@ import androidx.core.view.WindowCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.jawzf.pixeltoolkit.FeatureSettingsActivity
+import com.jawzf.pixeltoolkit.core.data.apps.AppUtil
+import com.jawzf.pixeltoolkit.core.data.apps.NotificationApp
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.cards.FeatureCard
 import com.jawzf.pixeltoolkit.core.design.color.ColorUtil
@@ -118,20 +120,19 @@ import com.jawzf.pixeltoolkit.core.design.modifiers.progressiveBlur
 import com.jawzf.pixeltoolkit.core.design.theme.ToolkitTheme
 import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.domain.model.NotificationApp
 import com.jawzf.pixeltoolkit.domain.model.PixelSearchResultItem
 import com.jawzf.pixeltoolkit.domain.model.PixelSearchTab
 import com.jawzf.pixeltoolkit.domain.registry.FeatureRegistry
 import com.jawzf.pixeltoolkit.domain.registry.QSTileInfo
 import com.jawzf.pixeltoolkit.domain.registry.QSTileRegistry
 import com.jawzf.pixeltoolkit.domain.registry.SearchRegistry
+import com.jawzf.pixeltoolkit.feature.apps.AppsSettings
 import com.jawzf.pixeltoolkit.feature.apps.freeze.FreezeManager
 import com.jawzf.pixeltoolkit.ui.activities.PixelSearchbarSettingsActivity
 import com.jawzf.pixeltoolkit.ui.activities.WallpaperActivity
 import com.jawzf.pixeltoolkit.ui.activities.YourAndroidActivity
 import com.jawzf.pixeltoolkit.ui.core.sheets.PixelSearchFileActionSheet
 import com.jawzf.pixeltoolkit.ui.features.tiles.QSTilesSearchResultCard
-import com.jawzf.pixeltoolkit.utils.AppUtil
 import com.jawzf.pixeltoolkit.utils.FileSearchUtil
 import com.jawzf.pixeltoolkit.utils.ShortcutUtil
 import com.jawzf.pixeltoolkit.utils.WindowingUtils
@@ -417,7 +418,7 @@ fun PixelSearchResultsScreen(
             if (isAppsEnabled) {
                 val installed = AppUtil.getInstalledApps(context, includeSelf = true)
                 val installedPkgs = installed.map { it.packageName }.toSet()
-                val freezeSelections = repository.loadFreezeSelectedApps()
+                val freezeSelections = AppsSettings(context).loadFreezeSelectedApps()
                 val missingFrozenPkgs = freezeSelections
                     .map { it.packageName }
                     .filter { !installedPkgs.contains(it) }
@@ -770,7 +771,7 @@ fun PixelSearchResultsScreen(
                                     onClick = {
                                         HapticUtil.performVirtualKeyHaptic(view)
                                         if (app.isFrozen) {
-                                            viewModel.launchAndUnfreezeApp(context, app.packageName)
+                                            viewModel.freeze.launchAndUnfreezeApp(context, app.packageName)
                                         } else {
                                             launchApp(context, app.packageName)
                                         }
@@ -798,7 +799,7 @@ fun PixelSearchResultsScreen(
                                                     onDismiss()
                                                     scope.launch(Dispatchers.IO) {
                                                         FreezeManager.unfreezeApp(context, app.packageName)
-                                                        viewModel.refreshFreezePickedApps(context, silent = true)
+                                                        viewModel.freeze.refreshFreezePickedApps(context, silent = true)
                                                         performSearch(query)
                                                     }
                                                 },

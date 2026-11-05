@@ -607,7 +607,7 @@ class MainActivity : AppCompatActivity() {
                                                         onClick = {
                                                             HapticUtil.performVirtualKeyHaptic(view)
                                                             isFreezeMenuExpanded = false
-                                                            viewModel.freezeAllAuto(context)
+                                                            viewModel.freeze.freezeAllAuto(context)
                                                         },
                                                         itemContainerColor = itemBg,
                                                         colors = fabColors,
@@ -624,7 +624,7 @@ class MainActivity : AppCompatActivity() {
                                                         onClick = {
                                                             HapticUtil.performVirtualKeyHaptic(view)
                                                             isFreezeMenuExpanded = false
-                                                            viewModel.unfreezeAllAuto(context)
+                                                            viewModel.freeze.unfreezeAllAuto(context)
                                                         },
                                                         itemContainerColor = itemBg,
                                                         colors = fabColors,
@@ -641,7 +641,7 @@ class MainActivity : AppCompatActivity() {
                                                         onClick = {
                                                             HapticUtil.performVirtualKeyHaptic(view)
                                                             isFreezeMenuExpanded = false
-                                                            viewModel.freezeAllManual(context)
+                                                            viewModel.freeze.freezeAllManual(context)
                                                         },
                                                         itemContainerColor = itemBg,
                                                         colors = fabColors,
@@ -658,7 +658,7 @@ class MainActivity : AppCompatActivity() {
                                                         onClick = {
                                                             HapticUtil.performVirtualKeyHaptic(view)
                                                             isFreezeMenuExpanded = false
-                                                            viewModel.unfreezeAllManual(context)
+                                                            viewModel.freeze.unfreezeAllManual(context)
                                                         },
                                                         itemContainerColor = itemBg,
                                                         colors = fabColors,

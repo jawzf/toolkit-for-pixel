@@ -43,6 +43,7 @@ import android.view.WindowManager
 import androidx.core.content.ContextCompat
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.jawzf.pixeltoolkit.core.data.apps.AppUtil
 import com.jawzf.pixeltoolkit.core.data.prefs.AppSelection
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
@@ -50,7 +51,6 @@ import com.jawzf.pixeltoolkit.domain.model.ActiveNotificationAlert
 import com.jawzf.pixeltoolkit.domain.model.ProgressNotificationData
 import com.jawzf.pixeltoolkit.feature.power.battery.ChargeLimitUtil
 import com.jawzf.pixeltoolkit.services.NotificationListener
-import com.jawzf.pixeltoolkit.utils.AppUtil
 import com.jawzf.pixeltoolkit.utils.DuoOverlayView
 import com.jawzf.pixeltoolkit.utils.FlashlightUtil
 import com.jawzf.pixeltoolkit.utils.OverlayHelper

@@ -53,6 +53,7 @@ import com.jawzf.pixeltoolkit.services.handlers.StatusBarIconHandler
 import com.jawzf.pixeltoolkit.services.handlers.StatusGlanceHandler
 import com.jawzf.pixeltoolkit.services.receivers.FlashlightActionReceiver
 import com.jawzf.pixeltoolkit.utils.CameraSession
+import com.jawzf.pixeltoolkit.utils.CarConnectionMonitor
 import com.jawzf.pixeltoolkit.utils.PowerButtonGestures
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -805,7 +806,7 @@ class ScreenOffAccessibilityService :
         val prefs = getSharedPreferences(SettingsRepository.PREFS_NAME, MODE_PRIVATE)
         if (prefs.getBoolean(SettingsRepository.KEY_AMBIENT_MUSIC_GLANCE_ENABLED, false)) {
             // Skip if Android Auto is running
-            if (com.jawzf.pixeltoolkit.utils.AppUtil
+            if (CarConnectionMonitor
                     .isAndroidAutoRunning(this)
             ) {
                 return
