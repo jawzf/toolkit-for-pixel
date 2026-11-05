@@ -45,6 +45,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.drawable.toBitmap
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.design.apps.AppIcons
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.theme.Shapes
 import com.jawzf.pixeltoolkit.feature.power.battery.BatteryUsageApp
@@ -220,7 +221,7 @@ fun TopAppsBreakdownHeader(usageApps: List<BatteryUsageApp>) {
 
                 androidx.compose.runtime.LaunchedEffect(app.packageName) {
                     if (app.packageName != null) {
-                        com.jawzf.pixeltoolkit.utils.AppUtil.getAppBrandColor(
+                        AppIcons.getAppBrandColor(
                             context,
                             app.packageName,
                         ) { argb ->

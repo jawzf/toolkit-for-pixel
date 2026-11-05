@@ -41,6 +41,7 @@ import com.jawzf.pixeltoolkit.domain.model.DashConfig
 import com.jawzf.pixeltoolkit.domain.model.NotificationLightingStyle
 import com.jawzf.pixeltoolkit.domain.model.RippleConfig
 import com.jawzf.pixeltoolkit.feature.connectivity.hotspot.HotspotController
+import com.jawzf.pixeltoolkit.feature.power.PowerSettings
 import com.jawzf.pixeltoolkit.feature.power.charging.ChargingModeUtil
 import com.jawzf.pixeltoolkit.feature.sound.mode.SoundModeHandler
 import com.jawzf.pixeltoolkit.services.NotificationLightingService
@@ -665,7 +666,7 @@ object CombinedActionExecutor {
                     }
 
                     if (action.changeBatteryNotification) {
-                        repository.setBatteryNotificationEnabled(action.batteryNotificationEnabled)
+                        PowerSettings(context).setBatteryNotificationEnabled(action.batteryNotificationEnabled)
                     }
 
                     if (action.changeSmartPixels) {

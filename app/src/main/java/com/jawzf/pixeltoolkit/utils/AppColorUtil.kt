@@ -3,6 +3,7 @@ package com.jawzf.pixeltoolkit.utils
 import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.jawzf.pixeltoolkit.core.design.apps.AppIcons
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 
 object AppColorUtil {
@@ -68,6 +69,6 @@ object AppColorUtil {
             callback(override)
             return
         }
-        AppUtil.getAppBrandColor(context, packageName, callback)
+        AppIcons.getAppBrandColor(context, packageName, callback)
     }
 }

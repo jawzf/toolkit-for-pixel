@@ -1,7 +1,7 @@
 package com.jawzf.pixeltoolkit.feature.power.bluetooth
 
 import android.content.Context
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
+import com.jawzf.pixeltoolkit.feature.power.PowerSettings
 
 object BluetoothDeviceOrder {
     const val SEPARATOR = "|"
@@ -9,7 +9,11 @@ object BluetoothDeviceOrder {
     private const val KEY = "bluetooth_device_order"
 
     private fun saved(context: Context): List<String> =
-        SettingsRepository(context).getString(KEY, null)?.split(",")?.filter { it.isNotBlank() }.orEmpty()
+        PowerSettings(context)
+            .getString(KEY, null)
+            ?.split(",")
+            ?.filter { it.isNotBlank() }
+            .orEmpty()
 
     fun load(context: Context, addresses: List<String>, hiddenByDefault: Set<String> = emptySet()): List<String> {
         val saved = saved(context)
@@ -30,7 +34,7 @@ object BluetoothDeviceOrder {
         val missingHidden = missing.filter { previous.indexOf(it) >= previousSeparator }
         val separatorAt = order.indexOf(SEPARATOR)
         val merged = order.take(separatorAt) + missingVisible + order.drop(separatorAt) + missingHidden
-        SettingsRepository(context).putString(KEY, merged.joinToString(","))
+        PowerSettings(context).putString(KEY, merged.joinToString(","))
     }
 
     fun visibleAddresses(context: Context, addresses: List<String>): List<String> = apply(context, addresses) { it }

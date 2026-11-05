@@ -18,15 +18,13 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.ColorUtils
 import com.google.gson.Gson
 import com.jawzf.pixeltoolkit.core.design.R
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.feature.power.battery.BatteryDetailsActivity
-import com.jawzf.pixeltoolkit.feature.power.battery.BatteryRingDrawer
+import com.jawzf.pixeltoolkit.feature.power.PowerSettings
 import com.jawzf.pixeltoolkit.feature.power.bluetooth.BluetoothBatteryUtils
 import com.jawzf.pixeltoolkit.feature.power.bluetooth.BluetoothDeviceIcons
 import com.jawzf.pixeltoolkit.feature.power.bluetooth.BluetoothDeviceOrder
 
 class BatteryNotificationService : Service() {
-    private lateinit var settingsRepository: SettingsRepository
+    private lateinit var settingsRepository: PowerSettings
     private val NOTIF_ID = 8822
     private val CHANNEL_ID = "battery_notification_channel"
 
@@ -36,8 +34,8 @@ class BatteryNotificationService : Service() {
                 sharedPreferences: SharedPreferences?,
                 key: String?,
             ) {
-                if (key == SettingsRepository.KEY_BLUETOOTH_DEVICES_BATTERY ||
-                    key == SettingsRepository.KEY_SHOW_BLUETOOTH_DEVICES
+                if (key == PowerSettings.KEY_BLUETOOTH_DEVICES_BATTERY ||
+                    key == PowerSettings.KEY_SHOW_BLUETOOTH_DEVICES
                 ) {
                     updateNotification()
                 }
@@ -48,7 +46,7 @@ class BatteryNotificationService : Service() {
 
     override fun onCreate() {
         super.onCreate()
-        settingsRepository = SettingsRepository(this)
+        settingsRepository = PowerSettings(this)
         createNotificationChannel()
         settingsRepository.registerOnSharedPreferenceChangeListener(preferenceChangeListener)
 
@@ -172,9 +170,9 @@ class BatteryNotificationService : Service() {
 
         // Bluetooth
         val isShowBluetoothEnabled =
-            settingsRepository.getBoolean(SettingsRepository.KEY_SHOW_BLUETOOTH_DEVICES)
+            settingsRepository.getBoolean(PowerSettings.KEY_SHOW_BLUETOOTH_DEVICES)
         val bluetoothJson =
-            settingsRepository.getString(SettingsRepository.KEY_BLUETOOTH_DEVICES_BATTERY)
+            settingsRepository.getString(PowerSettings.KEY_BLUETOOTH_DEVICES_BATTERY)
 
         if (isShowBluetoothEnabled && !bluetoothJson.isNullOrEmpty() && bluetoothJson != "[]") {
             try {

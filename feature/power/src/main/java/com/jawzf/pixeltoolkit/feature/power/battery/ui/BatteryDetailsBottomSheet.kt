@@ -54,8 +54,6 @@ import com.jawzf.pixeltoolkit.feature.power.battery.BatteryDetails
 import com.jawzf.pixeltoolkit.feature.power.battery.BatteryInfoUtil
 import com.jawzf.pixeltoolkit.feature.power.battery.BatteryStatsUtil
 import com.jawzf.pixeltoolkit.feature.power.battery.BatteryUsageApp
-import com.jawzf.pixeltoolkit.feature.power.battery.ui.BatteryAppsTabContent
-import com.jawzf.pixeltoolkit.feature.power.battery.ui.BatteryInfoTabContent
 import com.jawzf.pixeltoolkit.feature.power.charging.ChargingMode
 import com.jawzf.pixeltoolkit.feature.power.charging.ChargingModeUtil
 import kotlinx.coroutines.Dispatchers

@@ -10,6 +10,7 @@ import com.jawzf.pixeltoolkit.domain.diy.Automation
 import com.jawzf.pixeltoolkit.domain.diy.DIYRepository
 import com.jawzf.pixeltoolkit.feature.connectivity.ConnectivitySettings
 import com.jawzf.pixeltoolkit.feature.connectivity.sim.SimCarrierUtil
+import com.jawzf.pixeltoolkit.feature.power.PowerSettings
 import com.jawzf.pixeltoolkit.feature.power.battery.BatteryNotificationService
 import com.jawzf.pixeltoolkit.services.AppDetectionService
 import com.jawzf.pixeltoolkit.services.widgets.StackHost
@@ -129,7 +130,7 @@ object ServiceUtils {
         context: Context,
         settingsRepository: SettingsRepository,
     ) {
-        val isBatteryNotificationEnabled = settingsRepository.isBatteryNotificationEnabled()
+        val isBatteryNotificationEnabled = PowerSettings(context).isBatteryNotificationEnabled()
 
         val intent = Intent(context, BatteryNotificationService::class.java)
         if (isBatteryNotificationEnabled) {

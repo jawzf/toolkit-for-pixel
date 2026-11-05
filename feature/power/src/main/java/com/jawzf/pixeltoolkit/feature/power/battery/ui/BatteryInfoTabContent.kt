@@ -43,7 +43,7 @@ import com.jawzf.pixeltoolkit.core.design.pickers.MultiSegmentedPicker
 import com.jawzf.pixeltoolkit.core.design.theme.Shapes
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuUtils
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
+import com.jawzf.pixeltoolkit.feature.power.PowerSettings
 import com.jawzf.pixeltoolkit.feature.power.battery.BatteryDetails
 import com.jawzf.pixeltoolkit.feature.power.battery.BatteryInfoUtil
 import com.jawzf.pixeltoolkit.feature.power.battery.BatteryStatsUtil
@@ -435,7 +435,7 @@ fun BatteryInfoTabContent(
     )
 
     if (showSettings) {
-        val settingsRepository = remember { SettingsRepository(context) }
+        val settingsRepository = remember { PowerSettings(context) }
         var enableAdaptive by remember {
             mutableStateOf(settingsRepository.getBoolean("charge_opt_toggle_adaptive", true))
         }

@@ -39,6 +39,7 @@ import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuUtils
+import com.jawzf.pixeltoolkit.feature.power.PowerSettings
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 
 @OptIn(androidx.compose.material3.ExperimentalMaterial3ExpressiveApi::class)
@@ -85,8 +86,7 @@ fun BatteriesSettingsUI(
 
             var showPercentage by remember {
                 mutableStateOf(
-                    com.jawzf.pixeltoolkit.data.repository
-                        .SettingsRepository(context)
+                    PowerSettings(context)
                         .isBatteryShowPercentageEnabled(),
                 )
             }
@@ -97,8 +97,7 @@ fun BatteriesSettingsUI(
                 onCheckedChange = { enabled ->
                     HapticUtil.performVirtualKeyHaptic(view)
                     showPercentage = enabled
-                    com.jawzf.pixeltoolkit.data.repository
-                        .SettingsRepository(context)
+                    PowerSettings(context)
                         .setBatteryShowPercentageEnabled(enabled)
                     BatteriesPreviewTrigger.bump()
                     viewModel.setBluetoothDevicesEnabled(viewModel.isBluetoothDevicesEnabled.value, context)
@@ -151,8 +150,7 @@ fun BatteriesSettingsUI(
             if (isBluetoothEnabled && isPermissionGranted) {
                 var separateChannels by remember {
                     mutableStateOf(
-                        com.jawzf.pixeltoolkit.data.repository
-                            .SettingsRepository(context)
+                        PowerSettings(context)
                             .isBatterySeparateChannelsEnabled(),
                     )
                 }
@@ -163,8 +161,7 @@ fun BatteriesSettingsUI(
                     isChecked = separateChannels,
                     onCheckedChange = { enabled ->
                         separateChannels = enabled
-                        com.jawzf.pixeltoolkit.data.repository
-                            .SettingsRepository(context)
+                        PowerSettings(context)
                             .setBatterySeparateChannelsEnabled(enabled)
                         if (enabled && !ShellUtils.hasPermission(context)) {
                             if (ShizukuUtils.isShizukuAvailable()) {

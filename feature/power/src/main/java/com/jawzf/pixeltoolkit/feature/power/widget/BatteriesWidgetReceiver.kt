@@ -5,6 +5,7 @@ import android.content.Intent
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.GlanceAppWidgetReceiver
 import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
+import com.jawzf.pixeltoolkit.feature.power.PowerSettings
 import com.jawzf.pixeltoolkit.feature.power.bluetooth.BluetoothBatteryUtils
 import kotlinx.coroutines.launch
 
@@ -66,8 +67,7 @@ class BatteriesWidgetReceiver : GlanceAppWidgetReceiver() {
                         androidx.glance.appwidget.GlanceAppWidgetManager(context)
                     // Check permissions first
                     val repository =
-                        com.jawzf.pixeltoolkit.data.repository
-                            .SettingsRepository(context)
+                        PowerSettings(context)
                     val hasPerm =
                         PermissionUtils.hasBluetoothPermission(
                             context,
@@ -102,15 +102,15 @@ class BatteriesWidgetReceiver : GlanceAppWidgetReceiver() {
                         ) { prefs ->
                             val KEY_SHOW =
                                 androidx.datastore.preferences.core.booleanPreferencesKey(
-                                    com.jawzf.pixeltoolkit.data.repository.SettingsRepository.KEY_SHOW_BLUETOOTH_DEVICES,
+                                    PowerSettings.KEY_SHOW_BLUETOOTH_DEVICES,
                                 )
                             val KEY_DATA =
                                 androidx.datastore.preferences.core.stringPreferencesKey(
-                                    com.jawzf.pixeltoolkit.data.repository.SettingsRepository.KEY_BLUETOOTH_DEVICES_BATTERY,
+                                    PowerSettings.KEY_BLUETOOTH_DEVICES_BATTERY,
                                 )
                             val KEY_MAX =
                                 androidx.datastore.preferences.core.intPreferencesKey(
-                                    com.jawzf.pixeltoolkit.data.repository.SettingsRepository.KEY_BATTERY_WIDGET_MAX_DEVICES,
+                                    PowerSettings.KEY_BATTERY_WIDGET_MAX_DEVICES,
                                 )
 
                             prefs[KEY_SHOW] = isEnabled

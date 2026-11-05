@@ -14,6 +14,7 @@ dependencies {
     implementation(libs.androidx.compose.foundation)
     implementation(libs.androidx.compose.material3.v150alpha24)
     implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.palette)
     implementation(libs.coil.compose)
     implementation(libs.lottie.compose)
 }

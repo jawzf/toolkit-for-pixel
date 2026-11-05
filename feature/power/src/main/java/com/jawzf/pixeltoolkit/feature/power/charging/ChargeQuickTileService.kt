@@ -3,11 +3,12 @@ package com.jawzf.pixeltoolkit.feature.power.charging
 import android.content.Intent
 import android.graphics.drawable.Icon
 import android.service.quicksettings.Tile
-import com.jawzf.pixeltoolkit.FeatureSettingsActivity
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
+import com.jawzf.pixeltoolkit.core.platform.AppComponents
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.core.platform.tiles.BaseTileService
+import com.jawzf.pixeltoolkit.feature.power.PowerSettings
 
 class ChargeQuickTileService : BaseTileService() {
     companion object {
@@ -20,7 +21,7 @@ class ChargeQuickTileService : BaseTileService() {
             HapticUtil
                 .performHapticForService(this)
             val intent =
-                Intent(this, FeatureSettingsActivity::class.java).apply {
+                Intent().setClassName(this, AppComponents.FEATURE_SETTINGS_ACTIVITY).apply {
                     flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
                     putExtra("feature", "Quick settings tiles")
                 }
@@ -42,8 +43,7 @@ class ChargeQuickTileService : BaseTileService() {
         val chargeOptimizationEnabled = getSecureInt(CHARGE_OPTIMIZATION_MODE, 0) == 1
 
         val settingsRepository =
-            com.jawzf.pixeltoolkit.data.repository
-                .SettingsRepository(this)
+            PowerSettings(this)
         val enableAdaptive = settingsRepository.getBoolean("charge_opt_toggle_adaptive", true)
         val enableLimit = settingsRepository.getBoolean("charge_opt_toggle_limit", true)
         val enableDeactivated = settingsRepository.getBoolean("charge_opt_toggle_deactivated", true)

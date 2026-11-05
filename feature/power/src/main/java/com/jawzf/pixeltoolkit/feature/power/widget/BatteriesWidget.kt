@@ -46,7 +46,7 @@ import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
 import com.google.gson.Gson
 import com.jawzf.pixeltoolkit.core.design.R
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
+import com.jawzf.pixeltoolkit.feature.power.PowerSettings
 import com.jawzf.pixeltoolkit.feature.power.battery.BatteryDetailsActivity
 import com.jawzf.pixeltoolkit.feature.power.battery.BatteryRingDrawer
 import com.jawzf.pixeltoolkit.feature.power.battery.ChargeLimitUtil
@@ -66,7 +66,12 @@ class BatteriesWidget : GlanceAppWidget() {
                 val prefs = currentState<Preferences>()
                 val settings = WidgetSettings.from(prefs)
                 val items = buildItems(context, prefs, settings).take(settings.maxDevices)
-                BatteryGrid(items, settings.backgroundEnabled, settings.centerItems, SettingsRepository(context).isBatteryShowPercentageEnabled())
+                BatteryGrid(
+                    items,
+                    settings.backgroundEnabled,
+                    settings.centerItems,
+                    PowerSettings(context).isBatteryShowPercentageEnabled(),
+                )
             }
         }
     }
@@ -79,9 +84,9 @@ class BatteriesWidget : GlanceAppWidget() {
         companion object {
             fun from(prefs: Preferences) =
                 WidgetSettings(
-                    maxDevices = prefs[intPreferencesKey(SettingsRepository.KEY_BATTERY_WIDGET_MAX_DEVICES)] ?: 8,
-                    backgroundEnabled = prefs[booleanPreferencesKey(SettingsRepository.KEY_BATTERY_WIDGET_BACKGROUND_ENABLED)] ?: true,
-                    centerItems = prefs[booleanPreferencesKey(SettingsRepository.KEY_BATTERY_WIDGET_CENTER_ITEMS)] ?: false,
+                    maxDevices = prefs[intPreferencesKey(PowerSettings.KEY_BATTERY_WIDGET_MAX_DEVICES)] ?: 8,
+                    backgroundEnabled = prefs[booleanPreferencesKey(PowerSettings.KEY_BATTERY_WIDGET_BACKGROUND_ENABLED)] ?: true,
+                    centerItems = prefs[booleanPreferencesKey(PowerSettings.KEY_BATTERY_WIDGET_CENTER_ITEMS)] ?: false,
                 )
         }
     }
@@ -106,8 +111,8 @@ class BatteriesWidget : GlanceAppWidget() {
             batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_STATUS) == BatteryManager.BATTERY_STATUS_CHARGING
         items += Item(BluetoothDeviceOrder.PHONE, phoneLevel, R.drawable.rounded_mobile_24, statusIcon(phoneLevel, phoneCharging, ChargeLimitUtil.isShielded(context, phoneLevel, phoneCharging)))
 
-        val bluetoothEnabled = prefs[booleanPreferencesKey(SettingsRepository.KEY_SHOW_BLUETOOTH_DEVICES)] ?: false
-        val bluetoothJson = prefs[stringPreferencesKey(SettingsRepository.KEY_BLUETOOTH_DEVICES_BATTERY)]
+        val bluetoothEnabled = prefs[booleanPreferencesKey(PowerSettings.KEY_SHOW_BLUETOOTH_DEVICES)] ?: false
+        val bluetoothJson = prefs[stringPreferencesKey(PowerSettings.KEY_BLUETOOTH_DEVICES_BATTERY)]
         if (bluetoothEnabled && !bluetoothJson.isNullOrEmpty() && bluetoothJson != "[]") {
             val devices =
                 try {

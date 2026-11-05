@@ -52,6 +52,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.design.apps.AppIcons
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.pickers.ColorSwatchPicker
 import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
@@ -297,7 +298,7 @@ private fun AppColorRow(
     var brandColor by remember(app.packageName) { mutableStateOf<Int?>(null) }
 
     LaunchedEffect(app.packageName) {
-        AppUtil.getAppBrandColor(context, app.packageName) { brandColor = it }
+        AppIcons.getAppBrandColor(context, app.packageName) { brandColor = it }
     }
 
     val effectiveColor = selectedColor ?: brandColor

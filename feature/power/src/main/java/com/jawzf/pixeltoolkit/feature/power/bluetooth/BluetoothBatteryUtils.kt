@@ -5,6 +5,7 @@ import android.bluetooth.BluetoothManager
 import android.content.Context
 import androidx.annotation.Keep
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
+import com.jawzf.pixeltoolkit.feature.power.PowerSettings
 
 object BluetoothBatteryUtils {
     @Keep
@@ -105,7 +106,7 @@ object BluetoothBatteryUtils {
 
         val batteryList = mutableListOf<BluetoothDeviceBattery>()
         val reader = PartReader(context)
-        val separate = com.jawzf.pixeltoolkit.data.repository.SettingsRepository(context).isBatterySeparateChannelsEnabled()
+        val separate = PowerSettings(context).isBatterySeparateChannelsEnabled()
 
         devices.forEach { device ->
             try {
