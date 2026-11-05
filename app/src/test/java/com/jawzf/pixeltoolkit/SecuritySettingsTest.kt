@@ -20,5 +20,11 @@ class SecuritySettingsTest {
         assertEquals("face_unlock_auto_illuminate", SecuritySettings.KEY_FACE_UNLOCK_AUTO_ILLUMINATE)
         assertEquals("face_unlock_ambient_threshold_lux", SecuritySettings.KEY_FACE_UNLOCK_AMBIENT_THRESHOLD)
         assertEquals("face_unlock_light_tint", SecuritySettings.KEY_FACE_UNLOCK_LIGHT_TINT)
+        assertEquals("screen_locked_security_enabled", SecuritySettings.KEY_SCREEN_LOCKED_SECURITY_ENABLED)
+        assertEquals("screen_locked_disable_on_extended_unlock", SecuritySettings.KEY_SCREEN_LOCKED_DISABLE_ON_EXTENDED_UNLOCK)
+        assertEquals(
+            "screen_locked_disable_notification_interactions",
+            SecuritySettings.KEY_SCREEN_LOCKED_DISABLE_NOTIFICATION_INTERACTIONS,
+        )
     }
 }

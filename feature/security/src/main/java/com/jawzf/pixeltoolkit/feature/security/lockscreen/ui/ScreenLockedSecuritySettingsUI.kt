@@ -20,15 +20,16 @@ import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.cards.IconToggleItem
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.modifiers.highlight
+import com.jawzf.pixeltoolkit.core.design.sheets.PermissionItem
 import com.jawzf.pixeltoolkit.core.design.sheets.PermissionsBottomSheet
 import com.jawzf.pixeltoolkit.core.platform.auth.BiometricHelper
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
-import com.jawzf.pixeltoolkit.utils.PermissionUIHelper
-import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
+import com.jawzf.pixeltoolkit.feature.security.SecurityState
 
 @Composable
 fun ScreenLockedSecuritySettingsUI(
-    viewModel: MainViewModel,
+    state: SecurityState,
+    permissionItems: (keys: List<String>) -> List<PermissionItem>,
     modifier: Modifier = Modifier,
     highlightSetting: String? = null,
 ) {
@@ -39,7 +40,7 @@ fun ScreenLockedSecuritySettingsUI(
 
     if (showPermissionSheet) {
         val permKey = if (ShellUtils.isRootEnabled(context)) "ROOT" else "SHIZUKU"
-        val permissionItems = PermissionUIHelper.getPermissionItems(listOf(permKey), context, viewModel)
+        val permissionItems = permissionItems(listOf(permKey))
 
         if (permissionItems.isNotEmpty()) {
             PermissionsBottomSheet(
@@ -72,7 +73,7 @@ fun ScreenLockedSecuritySettingsUI(
             IconToggleItem(
                 title = stringResource(R.string.screen_locked_security_title),
                 description = stringResource(R.string.screen_locked_security_desc),
-                isChecked = viewModel.isScreenLockedSecurityEnabled.value,
+                isChecked = state.isScreenLockedSecurityEnabled.value,
                 onCheckedChange = { isChecked ->
                     if (!isShellGranted) {
                         showPermissionSheet = true
@@ -89,14 +90,14 @@ fun ScreenLockedSecuritySettingsUI(
                                     )
                                 },
                             onSuccess = {
-                                viewModel.setScreenLockedSecurityEnabled(
+                                state.setScreenLockedSecurityEnabled(
                                     isChecked,
                                     context,
                                 )
                             },
                         )
                     } else {
-                        viewModel.setScreenLockedSecurityEnabled(isChecked, context)
+                        state.setScreenLockedSecurityEnabled(isChecked, context)
                     }
                 },
                 enabled = true,
@@ -112,12 +113,12 @@ fun ScreenLockedSecuritySettingsUI(
             IconToggleItem(
                 title = stringResource(R.string.screen_locked_disable_notification_interactions_title),
                 description = stringResource(R.string.screen_locked_disable_notification_interactions_desc),
-                isChecked = viewModel.isDisableNotificationInteractions.value && isShellGranted,
+                isChecked = state.isDisableNotificationInteractions.value && isShellGranted,
                 onCheckedChange = { isChecked ->
                     if (!isShellGranted) {
                         showPermissionSheet = true
                     } else {
-                        viewModel.setDisableNotificationInteractions(isChecked, context)
+                        state.setDisableNotificationInteractions(isChecked, context)
                     }
                 },
                 onDisabledClick = {
@@ -134,9 +135,9 @@ fun ScreenLockedSecuritySettingsUI(
 
             IconToggleItem(
                 title = stringResource(R.string.screen_locked_keep_qs_on_extended_unlock_title),
-                isChecked = viewModel.isScreenLockedDisableOnExtendedUnlock.value,
+                isChecked = state.isScreenLockedDisableOnExtendedUnlock.value,
                 onCheckedChange = { isChecked ->
-                    viewModel.setScreenLockedDisableOnExtendedUnlock(isChecked)
+                    state.setScreenLockedDisableOnExtendedUnlock(isChecked)
                 },
                 iconRes = R.drawable.rounded_lock_24,
                 modifier = Modifier.highlight(highlightSetting == "screen_locked_disable_on_extended_unlock"),

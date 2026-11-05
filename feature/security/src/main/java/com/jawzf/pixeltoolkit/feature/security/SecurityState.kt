@@ -13,6 +13,7 @@ import kotlinx.coroutines.launch
 /** Compose state for the security screens. */
 class SecurityState(
     private val scope: CoroutineScope,
+    private val onStatusBarRestore: (context: Context, requesterId: String) -> Unit,
 ) {
     private lateinit var settings: SecuritySettings
     private var appContext: Context? = null
@@ -29,11 +30,18 @@ class SecurityState(
     val isFaceUnlockTriggerUnlock = mutableStateOf(true)
     val isFaceUnlockAutoIlluminate = mutableStateOf(false)
     val isFaceUnlockLightTint = mutableStateOf(false)
+    val isScreenLockedSecurityEnabled = mutableStateOf(false)
+    val isDisableNotificationInteractions = mutableStateOf(false)
+    val isScreenLockedDisableOnExtendedUnlock = mutableStateOf(false)
 
     /** Reads the saved values. Call before anything else. */
     fun load(context: Context) {
         appContext = context.applicationContext
         settings = SecuritySettings(context)
+        readAll()
+    }
+
+    private fun readAll() {
         isScreenshotShareCleanupEnabled.value = settings.isScreenshotShareCleanupEnabled()
         screenshotShareCleanupDelayMinutes.intValue = settings.getScreenshotShareCleanupDelayMinutes()
         isScreenshotAutoCleanEnabled.value = settings.isScreenshotAutoCleanEnabled()
@@ -46,49 +54,20 @@ class SecurityState(
         isFaceUnlockTriggerUnlock.value = settings.isFaceUnlockTriggerUnlockEnabled()
         isFaceUnlockAutoIlluminate.value = settings.isFaceUnlockAutoIlluminateEnabled()
         isFaceUnlockLightTint.value = settings.isFaceUnlockLightTintEnabled()
+        isScreenLockedSecurityEnabled.value =
+            settings.getBoolean(SecuritySettings.KEY_SCREEN_LOCKED_SECURITY_ENABLED)
+        isDisableNotificationInteractions.value =
+            settings.getBoolean(
+                SecuritySettings.KEY_SCREEN_LOCKED_DISABLE_NOTIFICATION_INTERACTIONS,
+                false,
+            )
+        isScreenLockedDisableOnExtendedUnlock.value =
+            settings.getBoolean(SecuritySettings.KEY_SCREEN_LOCKED_DISABLE_ON_EXTENDED_UNLOCK, false)
     }
 
-    /** Updates the state for a changed preference key; ignores other keys. */
+    /** Re-reads the state when one of its preference keys changes; ignores other keys. */
     fun onPreferenceChanged(key: String) {
-        when (key) {
-            SecuritySettings.KEY_SCREENSHOT_SHARE_CLEANUP_ENABLED ->
-                isScreenshotShareCleanupEnabled.value = settings.isScreenshotShareCleanupEnabled()
-
-            SecuritySettings.KEY_SCREENSHOT_SHARE_CLEANUP_DELAY ->
-                screenshotShareCleanupDelayMinutes.intValue = settings.getScreenshotShareCleanupDelayMinutes()
-
-            SecuritySettings.KEY_SCREENSHOT_AUTO_CLEAN_ENABLED ->
-                isScreenshotAutoCleanEnabled.value = settings.isScreenshotAutoCleanEnabled()
-
-            SecuritySettings.KEY_SCREENSHOT_AUTO_CLEAN_DAYS ->
-                screenshotAutoCleanDays.intValue = settings.getScreenshotAutoCleanDays()
-
-            SecuritySettings.KEY_SCREENSHOTS_CLEANED_COUNT ->
-                screenshotsCleanedCount.intValue = settings.getScreenshotsCleanedCount()
-
-            SecuritySettings.KEY_SCREENSHOTS_CLEANED_BYTES ->
-                screenshotsCleanedBytes.longValue = settings.getScreenshotsCleanedBytes()
-
-            SecuritySettings.KEY_FACE_UNLOCK_BRIGHTNESS_ENABLED ->
-                isFaceUnlockBrightnessEnabled.value = settings.isFaceUnlockBrightnessEnabled()
-
-            SecuritySettings.KEY_FACE_UNLOCK_MAX_BRIGHTNESS ->
-                faceUnlockMaxBrightness.intValue = settings.getFaceUnlockMaxBrightness()
-
-            SecuritySettings.KEY_FACE_UNLOCK_AMBIENT_THRESHOLD ->
-                faceUnlockAmbientThreshold.floatValue = settings.getFaceUnlockAmbientThreshold()
-
-            SecuritySettings.KEY_FACE_UNLOCK_TRIGGER_UNLOCK ->
-                isFaceUnlockTriggerUnlock.value = settings.isFaceUnlockTriggerUnlockEnabled()
-
-            SecuritySettings.KEY_FACE_UNLOCK_AUTO_ILLUMINATE ->
-                isFaceUnlockAutoIlluminate.value = settings.isFaceUnlockAutoIlluminateEnabled()
-
-            SecuritySettings.KEY_FACE_UNLOCK_LIGHT_TINT ->
-                isFaceUnlockLightTint.value = settings.isFaceUnlockLightTintEnabled()
-
-            else -> {}
-        }
+        if (key in PREFERENCE_KEYS) readAll()
     }
 
     fun setScreenshotShareCleanupEnabled(enabled: Boolean) {
@@ -152,5 +131,73 @@ class SecurityState(
     fun setFaceUnlockLightTint(enabled: Boolean) {
         settings.setFaceUnlockLightTintEnabled(enabled)
         isFaceUnlockLightTint.value = enabled
+    }
+
+    /**
+     * Executes the set screen locked security enabled operation.
+     *
+     * @param enabled [Boolean] Target enabled.
+     * @param context [Context] Target context.
+     */
+    fun setScreenLockedSecurityEnabled(
+        enabled: Boolean,
+        context: Context,
+    ) {
+        isScreenLockedSecurityEnabled.value = enabled
+        settings.putBoolean(
+            SecuritySettings.KEY_SCREEN_LOCKED_SECURITY_ENABLED,
+            enabled,
+        )
+        if (!enabled) {
+            onStatusBarRestore(
+                context,
+                REQUESTER_QS,
+            )
+        }
+    }
+
+    fun setScreenLockedDisableOnExtendedUnlock(enabled: Boolean) {
+        isScreenLockedDisableOnExtendedUnlock.value = enabled
+        settings.putBoolean(SecuritySettings.KEY_SCREEN_LOCKED_DISABLE_ON_EXTENDED_UNLOCK, enabled)
+    }
+
+    fun setDisableNotificationInteractions(
+        enabled: Boolean,
+        context: Context,
+    ) {
+        isDisableNotificationInteractions.value = enabled
+        settings.putBoolean(
+            SecuritySettings.KEY_SCREEN_LOCKED_DISABLE_NOTIFICATION_INTERACTIONS,
+            enabled,
+        )
+        if (!enabled) {
+            onStatusBarRestore(
+                context,
+                REQUESTER_NOTIFICATION_INTERACTIONS,
+            )
+        }
+    }
+
+    companion object {
+        private val PREFERENCE_KEYS =
+            setOf(
+                SecuritySettings.KEY_SCREENSHOT_SHARE_CLEANUP_ENABLED,
+                SecuritySettings.KEY_SCREENSHOT_SHARE_CLEANUP_DELAY,
+                SecuritySettings.KEY_SCREENSHOT_AUTO_CLEAN_ENABLED,
+                SecuritySettings.KEY_SCREENSHOT_AUTO_CLEAN_DAYS,
+                SecuritySettings.KEY_SCREENSHOTS_CLEANED_COUNT,
+                SecuritySettings.KEY_SCREENSHOTS_CLEANED_BYTES,
+                SecuritySettings.KEY_FACE_UNLOCK_BRIGHTNESS_ENABLED,
+                SecuritySettings.KEY_FACE_UNLOCK_MAX_BRIGHTNESS,
+                SecuritySettings.KEY_FACE_UNLOCK_AMBIENT_THRESHOLD,
+                SecuritySettings.KEY_FACE_UNLOCK_TRIGGER_UNLOCK,
+                SecuritySettings.KEY_FACE_UNLOCK_AUTO_ILLUMINATE,
+                SecuritySettings.KEY_FACE_UNLOCK_LIGHT_TINT,
+                SecuritySettings.KEY_SCREEN_LOCKED_SECURITY_ENABLED,
+                SecuritySettings.KEY_SCREEN_LOCKED_DISABLE_ON_EXTENDED_UNLOCK,
+            )
+
+        const val REQUESTER_QS = "DisableQsWhenLocked"
+        const val REQUESTER_NOTIFICATION_INTERACTIONS = "DisableNotificationInteractions"
     }
 }

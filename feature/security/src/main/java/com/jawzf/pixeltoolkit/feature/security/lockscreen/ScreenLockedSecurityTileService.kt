@@ -6,9 +6,9 @@ import android.graphics.drawable.Icon
 import android.os.Build
 import android.service.quicksettings.Tile
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.platform.AppComponents
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.core.platform.tiles.BaseTileService
-import com.jawzf.pixeltoolkit.ui.activities.TileAuthActivity
 
 class ScreenLockedSecurityTileService : BaseTileService() {
     override fun onTileClick() {
@@ -16,7 +16,7 @@ class ScreenLockedSecurityTileService : BaseTileService() {
         val isEnabled = prefs.getBoolean("screen_locked_security_enabled", false)
 
         val intent =
-            Intent(this, TileAuthActivity::class.java).apply {
+            Intent().setClassName(this, AppComponents.TILE_AUTH_ACTIVITY).apply {
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK
                 putExtra("feature_pref_key", "screen_locked_security_enabled")
                 putExtra("auth_title", "Screen Locked Security")

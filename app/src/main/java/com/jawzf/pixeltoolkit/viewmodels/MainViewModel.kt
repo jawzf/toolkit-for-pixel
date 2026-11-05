@@ -91,6 +91,7 @@ import com.jawzf.pixeltoolkit.utils.PowerButtonGestures
 import com.jawzf.pixeltoolkit.utils.RefreshRateUtils
 import com.jawzf.pixeltoolkit.utils.SplitScreenUtil
 import com.jawzf.pixeltoolkit.utils.StatusBarInsetsUtils
+import com.jawzf.pixeltoolkit.utils.StatusBarManager
 import com.jawzf.pixeltoolkit.utils.SurfaceFlingerControl
 import com.jawzf.pixeltoolkit.utils.TestNotificationUtil
 import com.jawzf.pixeltoolkit.utils.overlay.writeTo
@@ -403,7 +404,10 @@ class MainViewModel : ViewModel() {
     val sound = SoundState()
     val battery = BatteryState()
     val power = PowerState(viewModelScope)
-    val security = SecurityState(viewModelScope)
+    val security =
+        SecurityState(viewModelScope) { context, requesterId ->
+            StatusBarManager.requestRestore(context, requesterId)
+        }
     val addedQSTiles = mutableStateOf<Set<String>>(emptySet())
     val isHideGestureBarEnabled = mutableStateOf(false)
     val isHideGestureBarOnLauncherEnabled = mutableStateOf(false)
@@ -472,10 +476,6 @@ class MainViewModel : ViewModel() {
         val isSelected: Boolean,
     )
 
-
-    val isScreenLockedSecurityEnabled = mutableStateOf(false)
-    val isDisableNotificationInteractions = mutableStateOf(false)
-    val isScreenLockedDisableOnExtendedUnlock = mutableStateOf(false)
     val isDeviceAdminEnabled = mutableStateOf(false)
     val isDeveloperModeEnabled = mutableStateOf(false)
     val isNotificationPolicyAccessGranted = mutableStateOf(false)
@@ -1043,13 +1043,9 @@ class MainViewModel : ViewModel() {
                     SettingsRepository.KEY_STATUS_GLANCE_LONG_PRESS_ACTION ->
                         statusGlanceLongPressAction.value = settingsRepository.getStatusGlanceLongPressAction()
 
-                    SettingsRepository.KEY_SCREEN_LOCKED_SECURITY_ENABLED ->
-                        isScreenLockedSecurityEnabled.value =
-                            settingsRepository.getBoolean(key)
-
-                    SettingsRepository.KEY_SCREEN_LOCKED_DISABLE_ON_EXTENDED_UNLOCK ->
-                        isScreenLockedDisableOnExtendedUnlock.value =
-                            settingsRepository.getBoolean(key)
+                    SecuritySettings.KEY_SCREEN_LOCKED_SECURITY_ENABLED,
+                    SecuritySettings.KEY_SCREEN_LOCKED_DISABLE_ON_EXTENDED_UNLOCK,
+                    -> security.onPreferenceChanged(key)
 
                     PowerSettings.KEY_MAPS_POWER_SAVING_ENABLED -> power.onPreferenceChanged(key)
 
@@ -2606,15 +2602,6 @@ class MainViewModel : ViewModel() {
 
         battery.load(context)
 
-        isScreenLockedSecurityEnabled.value =
-            settingsRepository.getBoolean(SettingsRepository.KEY_SCREEN_LOCKED_SECURITY_ENABLED)
-        isDisableNotificationInteractions.value =
-            settingsRepository.getBoolean(
-                SettingsRepository.KEY_SCREEN_LOCKED_DISABLE_NOTIFICATION_INTERACTIONS,
-                false,
-            )
-        isScreenLockedDisableOnExtendedUnlock.value =
-            settingsRepository.getBoolean(SettingsRepository.KEY_SCREEN_LOCKED_DISABLE_ON_EXTENDED_UNLOCK, false)
         isDeviceAdminEnabled.value = isDeviceAdminActive(context)
 
         freezeMode.intValue = settingsRepository.getFreezeMode()
@@ -8136,51 +8123,6 @@ class MainViewModel : ViewModel() {
     ) {
         flashlightLastIntensity.value = intensity
         settingsRepository.putInt(SettingsRepository.KEY_FLASHLIGHT_LAST_INTENSITY, intensity)
-    }
-
-    /**
-     * Executes the set screen locked security enabled operation.
-     *
-     * @param enabled [Boolean] Target enabled.
-     * @param context [Context] Target context.
-     */
-    fun setScreenLockedSecurityEnabled(
-        enabled: Boolean,
-        context: Context,
-    ) {
-        isScreenLockedSecurityEnabled.value = enabled
-        settingsRepository.putBoolean(
-            SettingsRepository.KEY_SCREEN_LOCKED_SECURITY_ENABLED,
-            enabled,
-        )
-        if (!enabled) {
-            com.jawzf.pixeltoolkit.utils.StatusBarManager.requestRestore(
-                context,
-                "DisableQsWhenLocked",
-            )
-        }
-    }
-
-    fun setScreenLockedDisableOnExtendedUnlock(enabled: Boolean) {
-        isScreenLockedDisableOnExtendedUnlock.value = enabled
-        settingsRepository.putBoolean(SettingsRepository.KEY_SCREEN_LOCKED_DISABLE_ON_EXTENDED_UNLOCK, enabled)
-    }
-
-    fun setDisableNotificationInteractions(
-        enabled: Boolean,
-        context: Context,
-    ) {
-        isDisableNotificationInteractions.value = enabled
-        settingsRepository.putBoolean(
-            SettingsRepository.KEY_SCREEN_LOCKED_DISABLE_NOTIFICATION_INTERACTIONS,
-            enabled,
-        )
-        if (!enabled) {
-            com.jawzf.pixeltoolkit.utils.StatusBarManager.requestRestore(
-                context,
-                SecurityReceiver.REQUESTER_NOTIFICATION_INTERACTIONS,
-            )
-        }
     }
 
     /**

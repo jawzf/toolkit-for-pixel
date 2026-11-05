@@ -80,5 +80,9 @@ class SecuritySettings(
         const val KEY_FACE_UNLOCK_AUTO_ILLUMINATE = "face_unlock_auto_illuminate"
         const val KEY_FACE_UNLOCK_AMBIENT_THRESHOLD = "face_unlock_ambient_threshold_lux"
         const val KEY_FACE_UNLOCK_LIGHT_TINT = "face_unlock_light_tint"
+        const val KEY_SCREEN_LOCKED_SECURITY_ENABLED = "screen_locked_security_enabled"
+        const val KEY_SCREEN_LOCKED_DISABLE_ON_EXTENDED_UNLOCK = "screen_locked_disable_on_extended_unlock"
+        const val KEY_SCREEN_LOCKED_DISABLE_NOTIFICATION_INTERACTIONS =
+            "screen_locked_disable_notification_interactions"
     }
 }

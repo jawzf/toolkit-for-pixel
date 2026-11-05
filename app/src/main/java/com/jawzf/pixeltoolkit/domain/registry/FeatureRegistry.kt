@@ -2122,7 +2122,7 @@ object FeatureRegistry {
                             listOf("SHIZUKU")
                         }
 
-                override fun isEnabled(viewModel: MainViewModel) = viewModel.isScreenLockedSecurityEnabled.value
+                override fun isEnabled(viewModel: MainViewModel) = viewModel.security.isScreenLockedSecurityEnabled.value
 
                 override fun isToggleEnabled(
                     viewModel: MainViewModel,
@@ -2133,7 +2133,7 @@ object FeatureRegistry {
                     viewModel: MainViewModel,
                     context: Context,
                     enabled: Boolean,
-                ) = viewModel.setScreenLockedSecurityEnabled(enabled, context)
+                ) = viewModel.security.setScreenLockedSecurityEnabled(enabled, context)
             },
             object : Feature(
                 id = "App lock",

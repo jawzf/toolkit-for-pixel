@@ -1053,7 +1053,8 @@ class FeatureSettingsActivity : AppCompatActivity() {
 
                                     "Screen locked security" -> {
                                         ScreenLockedSecuritySettingsUI(
-                                            viewModel = viewModel,
+                                            state = viewModel.security,
+                                            permissionItems = { keys -> PermissionUIHelper.getPermissionItems(keys, context, viewModel) },
                                             modifier = Modifier.padding(top = 16.dp),
                                             highlightSetting = highlightSetting,
                                         )
