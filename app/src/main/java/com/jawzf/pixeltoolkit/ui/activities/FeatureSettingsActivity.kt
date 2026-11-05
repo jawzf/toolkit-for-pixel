@@ -76,6 +76,7 @@ import com.jawzf.pixeltoolkit.feature.power.maps.ui.MapsPowerSavingSettingsUI
 import com.jawzf.pixeltoolkit.feature.power.saver.ui.PowerAndBatterySettingsUI
 import com.jawzf.pixeltoolkit.feature.power.standby.ui.StandbyAppsSettingsUI
 import com.jawzf.pixeltoolkit.feature.security.faceunlock.ui.FaceUnlockBrightnessSettingsUI
+import com.jawzf.pixeltoolkit.feature.security.lockscreen.ui.ScreenLockedSecuritySettingsUI
 import com.jawzf.pixeltoolkit.feature.security.screenshots.ui.ScreenshotsSettingsUI
 import com.jawzf.pixeltoolkit.feature.sound.ui.AppVolumeSettingsUI
 import com.jawzf.pixeltoolkit.feature.sound.ui.SoundModeTileSettingsUI
@@ -126,7 +127,6 @@ import com.jawzf.pixeltoolkit.ui.features.system.NotificationSnoozingSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.OtherCustomizationsSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.QuickSettingsTilesSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.RefreshRateSettingsUI
-import com.jawzf.pixeltoolkit.ui.features.system.ScreenLockedSecuritySettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.ScreenOffWidgetSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.ShutUpSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.SnoozeNotificationsSettingsUI

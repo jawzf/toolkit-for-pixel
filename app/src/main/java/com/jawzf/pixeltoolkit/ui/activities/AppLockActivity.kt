@@ -33,6 +33,7 @@ import androidx.core.content.ContextCompat
 import coil.compose.AsyncImage
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.theme.ToolkitTheme
+import com.jawzf.pixeltoolkit.core.platform.auth.BiometricHelper
 import com.jawzf.pixeltoolkit.services.tiles.ScreenOffAccessibilityService
 import java.util.concurrent.Executor
 
@@ -99,7 +100,7 @@ class AppLockActivity : AppCompatActivity() {
                 .Builder()
                 .setTitle("App Lock")
                 .setSubtitle("Unlock to access $appLabel")
-                .setAllowedAuthenticators(com.jawzf.pixeltoolkit.utils.BiometricHelper.allowedAuthenticators)
+                .setAllowedAuthenticators(BiometricHelper.allowedAuthenticators)
                 .setConfirmationRequired(false)
                 .build()
 
