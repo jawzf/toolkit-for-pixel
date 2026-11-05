@@ -70,7 +70,7 @@ abstract class BaseTileService : TileService() {
     private fun setTileAddedState(isAdded: Boolean) {
         getSharedPreferences(PlatformPrefs.PREFS_NAME, MODE_PRIVATE)
             .edit {
-                putBoolean("${this::class.java.name}_is_added", isAdded)
+                putBoolean("${this@BaseTileService::class.java.name}_is_added", isAdded)
             }
     }
 

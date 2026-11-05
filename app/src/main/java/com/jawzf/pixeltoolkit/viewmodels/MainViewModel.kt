@@ -8694,14 +8694,8 @@ class MainViewModel : ViewModel() {
 
     private fun updateAddedQSTiles(context: Context) {
         var tilesString = ""
-        try {
-            tilesString = Settings.Secure.getString(context.contentResolver, "sysui_qs_tiles") ?: ""
-        } catch (e: Exception) {
-            // sysui_qs_tiles is restricted on Android 14+ (API 34+) for apps targeting API 34+
-            e.printStackTrace()
-        }
 
-        if (tilesString.isBlank() && ShellUtils.hasPermission(context)) {
+        if (ShellUtils.hasPermission(context)) {
             try {
                 tilesString = ShellUtils.runCommandWithOutput(context, "settings get secure sysui_qs_tiles", notifyOnError = false) ?: ""
                 if (tilesString == "null") tilesString = ""
