@@ -73,6 +73,8 @@ import com.jawzf.pixeltoolkit.feature.power.battery.ui.BatteriesSettingsUI
 import com.jawzf.pixeltoolkit.feature.power.caffeinate.CaffeinateViewModel
 import com.jawzf.pixeltoolkit.feature.power.caffeinate.ui.CaffeinateSettingsUI
 import com.jawzf.pixeltoolkit.feature.power.maps.ui.MapsPowerSavingSettingsUI
+import com.jawzf.pixeltoolkit.feature.power.saver.ui.PowerAndBatterySettingsUI
+import com.jawzf.pixeltoolkit.feature.power.standby.ui.StandbyAppsSettingsUI
 import com.jawzf.pixeltoolkit.feature.sound.ui.AppVolumeSettingsUI
 import com.jawzf.pixeltoolkit.feature.sound.ui.SoundModeTileSettingsUI
 import com.jawzf.pixeltoolkit.feature.sound.ui.VolumeStepsSettingsUI
@@ -122,14 +124,12 @@ import com.jawzf.pixeltoolkit.ui.features.system.NavigationSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.NotificationLightingSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.NotificationSnoozingSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.OtherCustomizationsSettingsUI
-import com.jawzf.pixeltoolkit.ui.features.system.PowerAndBatterySettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.QuickSettingsTilesSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.RefreshRateSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.ScreenLockedSecuritySettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.ScreenOffWidgetSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.ShutUpSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.SnoozeNotificationsSettingsUI
-import com.jawzf.pixeltoolkit.ui.features.system.StandbyAppsSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.StatusBarIconSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.TextAnimationsSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.ToolkitOnDisplaySettingsUI

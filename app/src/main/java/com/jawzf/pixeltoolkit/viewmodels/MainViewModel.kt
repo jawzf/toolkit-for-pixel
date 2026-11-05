@@ -49,7 +49,6 @@ import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.domain.diy.Action
 import com.jawzf.pixeltoolkit.domain.model.AppIcon
 import com.jawzf.pixeltoolkit.domain.model.AppSelection
-import com.jawzf.pixeltoolkit.domain.model.AppStandbyInfo
 import com.jawzf.pixeltoolkit.domain.model.AutoDismissAppConfig
 import com.jawzf.pixeltoolkit.domain.model.AutoDismissChannel
 import com.jawzf.pixeltoolkit.domain.model.AutoDismissStat
@@ -73,6 +72,7 @@ import com.jawzf.pixeltoolkit.feature.connectivity.ConnectivityState
 import com.jawzf.pixeltoolkit.feature.power.BatteryState
 import com.jawzf.pixeltoolkit.feature.power.PowerSettings
 import com.jawzf.pixeltoolkit.feature.power.PowerState
+import com.jawzf.pixeltoolkit.feature.power.standby.AppStandbyInfo
 import com.jawzf.pixeltoolkit.feature.sound.SoundSettings
 import com.jawzf.pixeltoolkit.feature.sound.SoundState
 import com.jawzf.pixeltoolkit.island.service.IslandStatusBarHider

@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.features.system
+package com.jawzf.pixeltoolkit.feature.power.saver.ui
 
 import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility

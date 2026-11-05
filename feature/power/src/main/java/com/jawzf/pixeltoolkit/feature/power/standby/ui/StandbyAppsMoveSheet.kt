@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.features.apps.sheets
+package com.jawzf.pixeltoolkit.feature.power.standby.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
