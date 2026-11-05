@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Build
 import android.os.IBinder
 import android.util.Log
+import com.jawzf.pixeltoolkit.core.data.prefs.AppSelection
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuUtils
@@ -74,11 +75,11 @@ object FreezeManager {
         if (json != null) {
             val gson = com.google.gson.Gson()
             try {
-                val apps: List<com.jawzf.pixeltoolkit.domain.model.AppSelection> =
+                val apps: List<AppSelection> =
                     gson
                         .fromJson(
                             json,
-                            Array<com.jawzf.pixeltoolkit.domain.model.AppSelection>::class.java,
+                            Array<AppSelection>::class.java,
                         ).toList()
                 val excludedSet: Set<String> =
                     if (excludedJson != null) {
@@ -205,11 +206,11 @@ object FreezeManager {
         if (json != null) {
             val gson = com.google.gson.Gson()
             try {
-                val apps: List<com.jawzf.pixeltoolkit.domain.model.AppSelection> =
+                val apps: List<AppSelection> =
                     gson
                         .fromJson(
                             json,
-                            Array<com.jawzf.pixeltoolkit.domain.model.AppSelection>::class.java,
+                            Array<AppSelection>::class.java,
                         ).toList()
                 apps.forEach { app ->
                     freezeApp(context, app.packageName)
@@ -231,11 +232,11 @@ object FreezeManager {
         if (json != null) {
             val gson = com.google.gson.Gson()
             try {
-                val apps: List<com.jawzf.pixeltoolkit.domain.model.AppSelection> =
+                val apps: List<AppSelection> =
                     gson
                         .fromJson(
                             json,
-                            Array<com.jawzf.pixeltoolkit.domain.model.AppSelection>::class.java,
+                            Array<AppSelection>::class.java,
                         ).toList()
                 val excludedSet: Set<String> =
                     if (excludedJson != null) {
@@ -264,11 +265,11 @@ object FreezeManager {
         if (json != null) {
             val gson = com.google.gson.Gson()
             try {
-                val apps: List<com.jawzf.pixeltoolkit.domain.model.AppSelection> =
+                val apps: List<AppSelection> =
                     gson
                         .fromJson(
                             json,
-                            Array<com.jawzf.pixeltoolkit.domain.model.AppSelection>::class.java,
+                            Array<AppSelection>::class.java,
                         ).toList()
                 apps.forEach { app ->
                     unfreezeApp(context, app.packageName)

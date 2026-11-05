@@ -73,6 +73,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
+import com.jawzf.pixeltoolkit.core.data.prefs.AppSelection
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.cards.AppToggleItem
 import com.jawzf.pixeltoolkit.core.design.components.CategoryExpandableSection
@@ -96,7 +97,6 @@ import com.jawzf.pixeltoolkit.domain.diy.DIYRepository
 import com.jawzf.pixeltoolkit.domain.diy.Metric
 import com.jawzf.pixeltoolkit.domain.diy.Trigger
 import com.jawzf.pixeltoolkit.domain.model.AppPermission
-import com.jawzf.pixeltoolkit.domain.model.AppSelection
 import com.jawzf.pixeltoolkit.domain.model.NotificationApp
 import com.jawzf.pixeltoolkit.ui.core.sheets.BluetoothDeviceSelectionSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.NotificationTriggerSheet
