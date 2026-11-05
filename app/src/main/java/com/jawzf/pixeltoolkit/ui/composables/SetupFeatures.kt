@@ -155,7 +155,7 @@ fun SetupFeatures(
     }
 
     LaunchedEffect(Unit) {
-        viewModel.refreshFreezePickedApps(context, silent = true)
+        viewModel.freeze.refreshFreezePickedApps(context, silent = true)
     }
 
     // Periodic check for Caffeinate status

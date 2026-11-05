@@ -113,7 +113,11 @@ class FreezeState(
                     try {
                         ctx.packageManager.setComponentEnabledSetting(
                             componentName,
-                            if (enabled) PackageManager.COMPONENT_ENABLED_STATE_ENABLED else PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                            if (enabled) {
+                                PackageManager.COMPONENT_ENABLED_STATE_ENABLED
+                            } else {
+                                PackageManager.COMPONENT_ENABLED_STATE_DISABLED
+                            },
                             PackageManager.DONT_KILL_APP,
                         )
                     } catch (e: Exception) {
@@ -164,7 +168,11 @@ class FreezeState(
         try {
             context.packageManager.setComponentEnabledSetting(
                 componentName,
-                if (enabled) PackageManager.COMPONENT_ENABLED_STATE_ENABLED else PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                if (enabled) {
+                    PackageManager.COMPONENT_ENABLED_STATE_ENABLED
+                } else {
+                    PackageManager.COMPONENT_ENABLED_STATE_DISABLED
+                },
                 PackageManager.DONT_KILL_APP,
             )
         } catch (e: Exception) {
@@ -443,7 +451,7 @@ class FreezeState(
         } finally {
             try {
                 outputStream.close()
-            } catch (e: Exception) {
+            } catch (ignored: Exception) {
             }
         }
     }
@@ -522,7 +530,7 @@ class FreezeState(
         } finally {
             try {
                 inputStream.close()
-            } catch (e: Exception) {
+            } catch (ignored: Exception) {
             }
         }
 

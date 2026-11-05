@@ -771,7 +771,7 @@ fun PixelSearchResultsScreen(
                                     onClick = {
                                         HapticUtil.performVirtualKeyHaptic(view)
                                         if (app.isFrozen) {
-                                            viewModel.launchAndUnfreezeApp(context, app.packageName)
+                                            viewModel.freeze.launchAndUnfreezeApp(context, app.packageName)
                                         } else {
                                             launchApp(context, app.packageName)
                                         }

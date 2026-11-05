@@ -24,9 +24,9 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextClock
 import android.widget.TextView
-import com.jawzf.pixeltoolkit.core.data.apps.AppUtil
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.services.NotificationListener
+import com.jawzf.pixeltoolkit.utils.CarConnectionMonitor
 import java.io.File
 import java.util.Random
 
@@ -136,7 +136,7 @@ class AmbientDreamService : DreamService() {
                 if (isDetached) return
 
                 // Revert to clock if Android Auto is running
-                if (AppUtil
+                if (CarConnectionMonitor
                         .isAndroidAutoRunning(this@AmbientDreamService)
                 ) {
                     switchToClockMode()
@@ -153,7 +153,7 @@ class AmbientDreamService : DreamService() {
                 if (isDetached) return
 
                 // Revert to clock if Android Auto is running
-                if (AppUtil
+                if (CarConnectionMonitor
                         .isAndroidAutoRunning(this@AmbientDreamService)
                 ) {
                     switchToClockMode()
@@ -655,7 +655,7 @@ class AmbientDreamService : DreamService() {
         if (isDetached) return
 
         // Skip if Android Auto is running
-        if (AppUtil
+        if (CarConnectionMonitor
                 .isAndroidAutoRunning(this)
         ) {
             switchToClockMode()
@@ -881,7 +881,7 @@ class AmbientDreamService : DreamService() {
         if (isMusicMode) return
 
         // Skip if Android Auto is running
-        if (AppUtil
+        if (CarConnectionMonitor
                 .isAndroidAutoRunning(this)
         ) {
             return

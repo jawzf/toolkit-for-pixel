@@ -48,6 +48,7 @@ import com.jawzf.pixeltoolkit.services.receivers.FlashlightActionReceiver
 import com.jawzf.pixeltoolkit.services.tiles.ScreenOffAccessibilityService
 import com.jawzf.pixeltoolkit.services.widgets.PixelSearchbarWidget
 import com.jawzf.pixeltoolkit.utils.AppColorUtil
+import com.jawzf.pixeltoolkit.utils.CarConnectionMonitor
 import com.jawzf.pixeltoolkit.utils.PriorityModeUtil
 import com.jawzf.pixeltoolkit.utils.call.CallNotificationParser
 import com.jawzf.pixeltoolkit.utils.call.CallStateRepository
@@ -816,7 +817,7 @@ class NotificationListener : NotificationListenerService() {
 
         if (isEnabled) {
             // Skip if Android Auto is running
-            if (AppUtil.isAndroidAutoRunning(this)) {
+            if (CarConnectionMonitor.isAndroidAutoRunning(this)) {
                 return
             }
 
