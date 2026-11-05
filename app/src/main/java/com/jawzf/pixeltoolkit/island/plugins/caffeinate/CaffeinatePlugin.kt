@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.MainActivity
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.domain.controller.CaffeinateController
+import com.jawzf.pixeltoolkit.feature.power.caffeinate.CaffeinateController
 import com.jawzf.pixeltoolkit.island.model.CompactCell
 import com.jawzf.pixeltoolkit.island.model.CompactPlacement
 import com.jawzf.pixeltoolkit.island.model.ExpandedContent
@@ -151,7 +151,8 @@ class CaffeinatePlugin : BaseIslandPlugin() {
     private fun open() {
         try {
             context.startActivity(
-                com.jawzf.pixeltoolkit.utils.AppIconUtil.mainIntent(context)
+                com.jawzf.pixeltoolkit.core.platform.AppComponents
+                    .mainIntent(context)
                     .putExtra("feature", "Caffeinate")
                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
             )

@@ -161,7 +161,7 @@ fun SetupFeatures(
     // Periodic check for Caffeinate status
     LaunchedEffect(Unit) {
         while (true) {
-            viewModel.checkCaffeinateActive(context)
+            viewModel.power.checkCaffeinateActive(context)
             delay(2000)
         }
     }

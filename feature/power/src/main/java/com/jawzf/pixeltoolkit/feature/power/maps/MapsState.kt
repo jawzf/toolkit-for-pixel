@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.domain
+package com.jawzf.pixeltoolkit.feature.power.maps
 
 object MapsState {
     var hasNavigationNotification = false

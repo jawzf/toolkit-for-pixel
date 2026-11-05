@@ -1,5 +1,8 @@
 package com.jawzf.pixeltoolkit.core.platform
 
+import android.content.Context
+import android.content.Intent
+
 /** Class names of components that stay in :app, for code in core and feature modules. */
 object AppComponents {
     const val NOTIFICATION_LISTENER = "com.jawzf.pixeltoolkit.services.NotificationListener"
@@ -11,6 +14,12 @@ object AppComponents {
     const val ACCESSIBILITY_SHORTCUT_SERVICE_3 = "com.jawzf.pixeltoolkit.services.AccessibilityShortcutService3"
     const val SPLIT_SCREEN_SHORTCUT_SERVICE = "com.jawzf.pixeltoolkit.services.SplitScreenShortcutService"
     const val FEATURE_SETTINGS_ACTIVITY = "com.jawzf.pixeltoolkit.FeatureSettingsActivity"
+    const val MAIN_ACTIVITY = "com.jawzf.pixeltoolkit.MainActivity"
+
+    /** The app's launch intent, or MainActivity when the launcher alias is disabled. */
+    fun mainIntent(context: Context): Intent =
+        context.packageManager.getLaunchIntentForPackage(context.packageName)
+            ?: Intent().setClassName(context, MAIN_ACTIVITY)
 }
 
 /** Preference keys the platform helpers read; the same values as in SettingsRepository. */

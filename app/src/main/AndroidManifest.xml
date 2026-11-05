@@ -831,28 +831,6 @@
         </receiver>
 
         <service
-            android:name=".services.tiles.CaffeinateTileService"
-            android:exported="true"
-            android:icon="@drawable/rounded_coffee_24"
-            android:label="Caffeinate"
-            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
-            <intent-filter>
-                <action android:name="android.service.quicksettings.action.QS_TILE" />
-            </intent-filter>
-            <meta-data
-                android:name="android.service.quicksettings.TILE_CATEGORY"
-                android:value="android.service.quicksettings.CATEGORY_UTILITIES" />
-        </service>
-        <service
-            android:name=".services.CaffeinateWakeLockService"
-            android:exported="false"
-            android:foregroundServiceType="specialUse">
-            <property
-                android:name="android.app.property.FOREGROUND_SERVICE_TYPE_SPECIAL_USE_DESCRIPTION"
-                android:value="Caffeinate Service" />
-        </service>
-
-        <service
             android:name=".services.tiles.UiBlurTileService"
             android:exported="true"
             android:icon="@drawable/rounded_blur_on_24"
@@ -1158,20 +1136,6 @@
             <meta-data
                 android:name="android.service.quicksettings.TOGGLEABLE_TILE"
                 android:value="true" />
-            <meta-data
-                android:name="android.service.quicksettings.TILE_CATEGORY"
-                android:value="android.service.quicksettings.CATEGORY_UTILITIES" />
-        </service>
-
-        <service
-            android:name=".services.tiles.MapsPowerSavingTileService"
-            android:exported="true"
-            android:icon="@drawable/rounded_navigation_24"
-            android:label="@string/tile_maps_power_saving"
-            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
-            <intent-filter>
-                <action android:name="android.service.quicksettings.action.QS_TILE" />
-            </intent-filter>
             <meta-data
                 android:name="android.service.quicksettings.TILE_CATEGORY"
                 android:value="android.service.quicksettings.CATEGORY_UTILITIES" />

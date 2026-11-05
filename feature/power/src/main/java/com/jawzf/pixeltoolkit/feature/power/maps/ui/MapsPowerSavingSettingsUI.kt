@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.features.system
+package com.jawzf.pixeltoolkit.feature.power.maps.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -8,7 +8,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.core.design.R
@@ -16,15 +15,14 @@ import com.jawzf.pixeltoolkit.core.design.cards.IconToggleItem
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.modifiers.highlight
-import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
+import com.jawzf.pixeltoolkit.feature.power.PowerState
 
 @Composable
 fun MapsPowerSavingSettingsUI(
-    viewModel: MainViewModel,
+    state: PowerState,
     modifier: Modifier = Modifier,
     highlightSetting: String? = null,
 ) {
-    val context = LocalContext.current
     val view = LocalView.current
 
     Column(
@@ -46,20 +44,20 @@ fun MapsPowerSavingSettingsUI(
             spacing = 2.dp,
             cornerRadius = 24.dp,
         ) {
-            viewModel.mapsChannels.value.forEach { channel ->
+            state.mapsChannels.value.forEach { channel ->
                 IconToggleItem(
                     iconRes = R.drawable.rounded_navigation_24,
                     title = channel.name,
                     isChecked = channel.isEnabled,
                     onCheckedChange = { checked ->
                         HapticUtil.performVirtualKeyHaptic(view)
-                        viewModel.setMapsChannelDetected(channel.id, checked, context)
+                        state.setMapsChannelDetected(channel.id, checked)
                     },
                     modifier = Modifier.highlight(highlightSetting == channel.id),
                 )
             }
 
-            if (viewModel.mapsChannels.value.isEmpty()) {
+            if (state.mapsChannels.value.isEmpty()) {
                 Text(
                     text = "No Maps channels discovered yet. They will appear here once detected while navigating.",
                     modifier = Modifier.padding(16.dp),

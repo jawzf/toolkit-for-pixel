@@ -4,6 +4,7 @@ import android.content.Context
 import com.google.gson.Gson
 import com.jawzf.pixeltoolkit.core.data.prefs.PrefsStore
 import com.jawzf.pixeltoolkit.feature.power.bluetooth.BluetoothBatteryUtils
+import com.jawzf.pixeltoolkit.feature.power.maps.MapsChannel
 
 class PowerSettings(
     context: Context,
@@ -67,6 +68,66 @@ class PowerSettings(
      */
     fun setBatteryNotificationEnabled(enabled: Boolean) = putBoolean(KEY_BATTERY_NOTIFICATION_ENABLED, enabled)
 
+    // Maps Channels Helper
+    fun loadMapsDiscoveredChannels(): List<MapsChannel> {
+        val json = prefs.getString(KEY_MAPS_DISCOVERED_CHANNELS, null)
+        return if (json != null) {
+            try {
+                gson
+                    .fromJson(
+                        json,
+                        Array<MapsChannel>::class.java,
+                    ).toList()
+            } catch (e: Exception) {
+                emptyList()
+            }
+        } else {
+            emptyList()
+        }
+    }
+
+    /**
+     * Executes the save maps discovered channels operation.
+     *
+     * @param channels [List<MapsChannel>] Target channels.
+     */
+    fun saveMapsDiscoveredChannels(channels: List<MapsChannel>) {
+        val json = gson.toJson(channels)
+        putString(KEY_MAPS_DISCOVERED_CHANNELS, json)
+    }
+
+    /**
+     * Executes the load maps detection channels operation.
+     * @return The resulting Set<String> data.
+     */
+    fun loadMapsDetectionChannels(): Set<String> {
+        val json = prefs.getString(KEY_MAPS_DETECTION_CHANNELS, null)
+        return if (json != null) {
+            try {
+                gson.fromJson(json, Array<String>::class.java).toSet()
+            } catch (e: Exception) {
+                emptySet()
+            }
+        } else {
+            // Default to navigation related channel IDs if none are selected yet
+            setOf(
+                "navigation_notification_channel",
+                "primary_navigation_channel_v1",
+                "primary_navigation_channel_v2",
+            )
+        }
+    }
+
+    /**
+     * Executes the save maps detection channels operation.
+     *
+     * @param channels [Set<String>] Target channels.
+     */
+    fun saveMapsDetectionChannels(channels: Set<String>) {
+        val json = gson.toJson(channels)
+        putString(KEY_MAPS_DETECTION_CHANNELS, json)
+    }
+
     companion object {
         const val KEY_BLUETOOTH_DEVICES_BATTERY = "bluetooth_devices_battery"
         const val KEY_SHOW_BLUETOOTH_DEVICES = "show_bluetooth_devices"
@@ -76,5 +137,8 @@ class PowerSettings(
         const val KEY_BATTERY_WIDGET_MAX_DEVICES = "battery_widget_max_devices"
         const val KEY_BATTERY_WIDGET_BACKGROUND_ENABLED = "battery_widget_background_enabled"
         const val KEY_BATTERY_NOTIFICATION_ENABLED = "battery_notification_enabled"
+        const val KEY_MAPS_POWER_SAVING_ENABLED = "maps_power_saving_enabled"
+        const val KEY_MAPS_DISCOVERED_CHANNELS = "maps_discovered_channels"
+        const val KEY_MAPS_DETECTION_CHANNELS = "maps_detection_channels"
     }
 }

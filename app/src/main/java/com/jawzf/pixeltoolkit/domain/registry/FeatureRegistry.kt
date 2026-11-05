@@ -9,10 +9,10 @@ import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.platform.device.DeviceUtils
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.domain.controller.CaffeinateController
 import com.jawzf.pixeltoolkit.domain.model.Feature
 import com.jawzf.pixeltoolkit.domain.model.SearchSetting
 import com.jawzf.pixeltoolkit.domain.model.SystemShortcutsState
+import com.jawzf.pixeltoolkit.feature.power.caffeinate.CaffeinateController
 import com.jawzf.pixeltoolkit.ui.activities.PixelSearchbarSettingsActivity
 import com.jawzf.pixeltoolkit.ui.features.consciousgate.CONSCIOUS_GATE_FEATURE_ID
 import com.jawzf.pixeltoolkit.ui.features.display.ISLAND_BEHAVIOR_FEATURE_ID
@@ -1117,7 +1117,7 @@ object FeatureRegistry {
                 isVisibleInMain = false,
                 hasMoreSettings = false,
             ) {
-                override fun isEnabled(viewModel: MainViewModel) = viewModel.isMapsPowerSavingEnabled.value
+                override fun isEnabled(viewModel: MainViewModel) = viewModel.power.isMapsPowerSavingEnabled.value
 
                 override fun isToggleEnabled(
                     viewModel: MainViewModel,
@@ -1128,7 +1128,7 @@ object FeatureRegistry {
                     viewModel: MainViewModel,
                     context: Context,
                     enabled: Boolean,
-                ) = viewModel.setMapsPowerSavingEnabled(enabled, context)
+                ) = viewModel.power.setMapsPowerSavingEnabled(enabled)
 
                 override fun onClick(
                     context: Context,
@@ -1156,7 +1156,7 @@ object FeatureRegistry {
                 animationRes = R.raw.caffeinate_animation,
             ) {
                 override fun isEnabled(viewModel: MainViewModel) =
-                    viewModel.isCaffeinateActive.value ||
+                    viewModel.power.isCaffeinateActive.value ||
                         CaffeinateController.isActive.value ||
                         CaffeinateController.isStarting.value
 
@@ -1166,9 +1166,9 @@ object FeatureRegistry {
                     enabled: Boolean,
                 ) {
                     if (enabled) {
-                        viewModel.startCaffeinate(context)
+                        viewModel.power.startCaffeinate(context)
                     } else {
-                        viewModel.stopCaffeinate(
+                        viewModel.power.stopCaffeinate(
                             context,
                         )
                     }

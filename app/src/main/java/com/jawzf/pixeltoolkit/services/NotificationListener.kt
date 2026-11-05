@@ -27,7 +27,6 @@ import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.platform.device.DeviceUtils
 import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.domain.MapsState
 import com.jawzf.pixeltoolkit.domain.controller.HilightController
 import com.jawzf.pixeltoolkit.domain.controller.HilightProgressTracker
 import com.jawzf.pixeltoolkit.domain.model.ActiveNotificationAlert
@@ -39,6 +38,8 @@ import com.jawzf.pixeltoolkit.domain.model.NotificationLightingColorMode
 import com.jawzf.pixeltoolkit.domain.model.NotificationLightingSide
 import com.jawzf.pixeltoolkit.domain.model.ProgressNotificationData
 import com.jawzf.pixeltoolkit.domain.model.RippleConfig
+import com.jawzf.pixeltoolkit.feature.power.maps.MapsChannel
+import com.jawzf.pixeltoolkit.feature.power.maps.MapsState
 import com.jawzf.pixeltoolkit.feature.sound.SoundSettings
 import com.jawzf.pixeltoolkit.island.plugins.notifications.OtpExtractor
 import com.jawzf.pixeltoolkit.services.receivers.FlashlightActionReceiver
@@ -409,13 +410,13 @@ class NotificationListener : NotificationListenerService() {
                     )
                 val discoveredJson = prefs.getString("maps_discovered_channels", null)
                 val gson = com.google.gson.Gson()
-                val discoveredChannels: MutableList<com.jawzf.pixeltoolkit.domain.model.MapsChannel> =
+                val discoveredChannels: MutableList<MapsChannel> =
                     if (discoveredJson != null) {
                         try {
                             gson
                                 .fromJson(
                                     discoveredJson,
-                                    Array<com.jawzf.pixeltoolkit.domain.model.MapsChannel>::class.java,
+                                    Array<MapsChannel>::class.java,
                                 ).toMutableList()
                         } catch (_: Exception) {
                             mutableListOf()
@@ -442,7 +443,7 @@ class NotificationListener : NotificationListenerService() {
                         }
 
                     discoveredChannels.add(
-                        com.jawzf.pixeltoolkit.domain.model.MapsChannel(
+                        MapsChannel(
                             channelId,
                             name,
                         ),

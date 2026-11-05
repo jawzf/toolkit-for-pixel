@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.features.system
+package com.jawzf.pixeltoolkit.feature.power.caffeinate.ui
 
 import android.Manifest
 import android.content.Context
@@ -29,7 +29,7 @@ import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.pickers.MultiSegmentedPicker
 import com.jawzf.pixeltoolkit.core.design.sheets.PermissionItem
 import com.jawzf.pixeltoolkit.core.design.sheets.PermissionsBottomSheet
-import com.jawzf.pixeltoolkit.viewmodels.CaffeinateViewModel
+import com.jawzf.pixeltoolkit.feature.power.caffeinate.CaffeinateViewModel
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable

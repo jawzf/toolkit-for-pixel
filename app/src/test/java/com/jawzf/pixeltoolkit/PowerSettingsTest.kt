@@ -15,5 +15,8 @@ class PowerSettingsTest {
         assertEquals("battery_widget_max_devices", PowerSettings.KEY_BATTERY_WIDGET_MAX_DEVICES)
         assertEquals("battery_widget_background_enabled", PowerSettings.KEY_BATTERY_WIDGET_BACKGROUND_ENABLED)
         assertEquals("battery_notification_enabled", PowerSettings.KEY_BATTERY_NOTIFICATION_ENABLED)
+        assertEquals("maps_power_saving_enabled", PowerSettings.KEY_MAPS_POWER_SAVING_ENABLED)
+        assertEquals("maps_discovered_channels", PowerSettings.KEY_MAPS_DISCOVERED_CHANNELS)
+        assertEquals("maps_detection_channels", PowerSettings.KEY_MAPS_DETECTION_CHANNELS)
     }
 }

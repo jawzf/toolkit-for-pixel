@@ -87,7 +87,7 @@ fun FrozenAppsSearchResultCard(
         if (onNavigateToFreezeTab != null) {
             onNavigateToFreezeTab()
         } else {
-            val intent = com.jawzf.pixeltoolkit.utils.AppIconUtil.mainIntent(context).apply {
+            val intent = com.jawzf.pixeltoolkit.core.platform.AppComponents.mainIntent(context).apply {
                 putExtra("target_tab", DIYTabs.FREEZE.name)
                 flags = Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP
             }

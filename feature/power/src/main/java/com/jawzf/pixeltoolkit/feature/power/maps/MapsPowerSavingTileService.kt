@@ -1,25 +1,25 @@
-package com.jawzf.pixeltoolkit.services.tiles
+package com.jawzf.pixeltoolkit.feature.power.maps
 
 import android.content.Intent
 import android.graphics.drawable.Icon
 import android.os.Build
 import android.service.quicksettings.Tile
 import androidx.annotation.RequiresApi
-import com.jawzf.pixeltoolkit.FeatureSettingsActivity
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.platform.AppComponents
 import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.core.platform.tiles.BaseTileService
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
+import com.jawzf.pixeltoolkit.feature.power.PowerSettings
 
 @RequiresApi(Build.VERSION_CODES.N)
 class MapsPowerSavingTileService : BaseTileService() {
-    private val settingsRepository by lazy { SettingsRepository(this) }
+    private val settingsRepository by lazy { PowerSettings(this) }
 
     override fun onClick() {
         if (!hasFeaturePermission()) {
             val intent =
-                Intent(this, FeatureSettingsActivity::class.java).apply {
+                Intent().setClassName(this, AppComponents.FEATURE_SETTINGS_ACTIVITY).apply {
                     flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
                     putExtra("feature", "Maps power saving mode")
                 }
@@ -46,13 +46,13 @@ class MapsPowerSavingTileService : BaseTileService() {
 
     override fun onTileClick() {
         val newState = !isMapsPowerSavingEnabled()
-        settingsRepository.putBoolean(SettingsRepository.KEY_MAPS_POWER_SAVING_ENABLED, newState)
-        // MapsState.isEnabled is also updated in MainViewModel when preference changes
+        settingsRepository.putBoolean(PowerSettings.KEY_MAPS_POWER_SAVING_ENABLED, newState)
+        // MapsState.isEnabled is also updated in PowerState when preference changes
     }
 
     private fun isMapsPowerSavingEnabled(): Boolean =
         settingsRepository.getBoolean(
-            SettingsRepository.KEY_MAPS_POWER_SAVING_ENABLED,
+            PowerSettings.KEY_MAPS_POWER_SAVING_ENABLED,
             false,
         )
 }
