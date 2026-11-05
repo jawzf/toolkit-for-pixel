@@ -10,9 +10,10 @@ import android.os.Build
 import androidx.core.graphics.applyCanvas
 import androidx.core.graphics.createBitmap
 import com.jawzf.pixeltoolkit.ShortcutHandlerActivity
+import com.jawzf.pixeltoolkit.core.design.apps.AppUtil
+import com.jawzf.pixeltoolkit.core.design.apps.NotificationApp
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.domain.diy.Action
-import com.jawzf.pixeltoolkit.domain.model.NotificationApp
 import com.jawzf.pixeltoolkit.ui.activities.PinnedActionActivity
 import java.util.UUID
 

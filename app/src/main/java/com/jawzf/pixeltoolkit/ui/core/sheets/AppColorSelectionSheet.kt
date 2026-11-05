@@ -54,12 +54,12 @@ import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.core.data.prefs.AppSelection
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.apps.AppIcons
+import com.jawzf.pixeltoolkit.core.design.apps.AppUtil
+import com.jawzf.pixeltoolkit.core.design.apps.NotificationApp
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.pickers.ColorSwatchPicker
 import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
-import com.jawzf.pixeltoolkit.domain.model.NotificationApp
 import com.jawzf.pixeltoolkit.utils.AppColorUtil
-import com.jawzf.pixeltoolkit.utils.AppUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 

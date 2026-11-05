@@ -11,6 +11,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.design.apps.AppUtil
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticFeedbackType
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
@@ -28,7 +29,6 @@ import com.jawzf.pixeltoolkit.island.ui.components.IslandBitmap
 import com.jawzf.pixeltoolkit.island.ui.components.MarqueeText
 import com.jawzf.pixeltoolkit.island.ui.components.RollingText
 import com.jawzf.pixeltoolkit.services.tiles.ScreenOffAccessibilityService
-import com.jawzf.pixeltoolkit.utils.AppUtil
 import java.util.Locale
 
 class ConsciousGatePlugin : BaseIslandPlugin() {

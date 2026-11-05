@@ -48,6 +48,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.design.apps.NotificationApp
 import com.jawzf.pixeltoolkit.core.design.cards.AppToggleItem
 import com.jawzf.pixeltoolkit.core.design.cards.FeatureCard
 import com.jawzf.pixeltoolkit.core.design.cards.IconToggleItem
@@ -724,7 +725,7 @@ fun FreezeSettingsUI(
                 remember(pickedApps, initialEnabledPackageNames) {
                     val allowed = initialEnabledPackageNames ?: emptySet()
                     pickedApps.sortedWith(
-                        compareByDescending<com.jawzf.pixeltoolkit.domain.model.NotificationApp> {
+                        compareByDescending<NotificationApp> {
                             allowed.contains(
                                 it.packageName,
                             )

@@ -75,6 +75,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import com.jawzf.pixeltoolkit.core.data.prefs.AppSelection
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.design.apps.AppUtil
+import com.jawzf.pixeltoolkit.core.design.apps.NotificationApp
 import com.jawzf.pixeltoolkit.core.design.cards.AppToggleItem
 import com.jawzf.pixeltoolkit.core.design.components.CategoryExpandableSection
 import com.jawzf.pixeltoolkit.core.design.components.ToolkitFloatingToolbar
@@ -97,7 +99,6 @@ import com.jawzf.pixeltoolkit.domain.diy.DIYRepository
 import com.jawzf.pixeltoolkit.domain.diy.Metric
 import com.jawzf.pixeltoolkit.domain.diy.Trigger
 import com.jawzf.pixeltoolkit.domain.model.AppPermission
-import com.jawzf.pixeltoolkit.domain.model.NotificationApp
 import com.jawzf.pixeltoolkit.ui.core.sheets.BluetoothDeviceSelectionSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.NotificationTriggerSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.SoundModeSettingsSheet
@@ -105,7 +106,6 @@ import com.jawzf.pixeltoolkit.ui.core.sheets.SystemMetricSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.WifiNetworkSelectionSheet
 import com.jawzf.pixeltoolkit.ui.features.location.sheets.LocationTriggerSheet
 import com.jawzf.pixeltoolkit.ui.features.system.ActionSequenceEditor
-import com.jawzf.pixeltoolkit.utils.AppUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

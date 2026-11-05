@@ -108,6 +108,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.jawzf.pixeltoolkit.FeatureSettingsActivity
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.design.apps.AppUtil
+import com.jawzf.pixeltoolkit.core.design.apps.NotificationApp
 import com.jawzf.pixeltoolkit.core.design.cards.FeatureCard
 import com.jawzf.pixeltoolkit.core.design.color.ColorUtil
 import com.jawzf.pixeltoolkit.core.design.components.SegmentedDropdownMenuItem
@@ -118,7 +120,6 @@ import com.jawzf.pixeltoolkit.core.design.modifiers.progressiveBlur
 import com.jawzf.pixeltoolkit.core.design.theme.ToolkitTheme
 import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.domain.model.NotificationApp
 import com.jawzf.pixeltoolkit.domain.model.PixelSearchResultItem
 import com.jawzf.pixeltoolkit.domain.model.PixelSearchTab
 import com.jawzf.pixeltoolkit.domain.registry.FeatureRegistry
@@ -131,7 +132,6 @@ import com.jawzf.pixeltoolkit.ui.activities.WallpaperActivity
 import com.jawzf.pixeltoolkit.ui.activities.YourAndroidActivity
 import com.jawzf.pixeltoolkit.ui.core.sheets.PixelSearchFileActionSheet
 import com.jawzf.pixeltoolkit.ui.features.tiles.QSTilesSearchResultCard
-import com.jawzf.pixeltoolkit.utils.AppUtil
 import com.jawzf.pixeltoolkit.utils.FileSearchUtil
 import com.jawzf.pixeltoolkit.utils.ShortcutUtil
 import com.jawzf.pixeltoolkit.utils.WindowingUtils

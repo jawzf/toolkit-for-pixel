@@ -27,6 +27,7 @@ import android.widget.LinearLayout
 import android.widget.TextClock
 import android.widget.TextView
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.design.apps.AppUtil
 import com.jawzf.pixeltoolkit.services.NotificationListener
 import java.io.File
 import java.util.Random
@@ -136,7 +137,7 @@ class AmbientGlanceHandler(
 
     private fun checkAndroidAutoNow() {
         if (overlayView == null || !isDockedMode) return
-        if (com.jawzf.pixeltoolkit.utils.AppUtil.isAndroidAutoRunning(service)) {
+        if (AppUtil.isAndroidAutoRunning(service)) {
             fadeOutAndRemove()
         }
     }
@@ -149,7 +150,7 @@ class AmbientGlanceHandler(
                 if (overlayView == null || !isDockedMode) return
 
                 // Dismiss if Android Auto is running
-                if (com.jawzf.pixeltoolkit.utils.AppUtil
+                if (AppUtil
                         .isAndroidAutoRunning(service)
                 ) {
                     fadeOutAndRemove()
@@ -188,7 +189,7 @@ class AmbientGlanceHandler(
                 if (overlayView == null || isDetached) return
 
                 // Dismiss if Android Auto is running
-                if (com.jawzf.pixeltoolkit.utils.AppUtil
+                if (AppUtil
                         .isAndroidAutoRunning(service)
                 ) {
                     fadeOutAndRemove()
@@ -281,7 +282,7 @@ class AmbientGlanceHandler(
 
         if (intent.action == "SHOW_AMBIENT_GLANCE") {
             // Skip if Android Auto is running
-            if (com.jawzf.pixeltoolkit.utils.AppUtil
+            if (AppUtil
                     .isAndroidAutoRunning(service)
             ) {
                 return
@@ -715,7 +716,7 @@ class AmbientGlanceHandler(
 
     private fun showOverlay() {
         // Skip if Android Auto is running
-        if (com.jawzf.pixeltoolkit.utils.AppUtil
+        if (AppUtil
                 .isAndroidAutoRunning(service)
         ) {
             return
@@ -1243,7 +1244,7 @@ class AmbientGlanceHandler(
 
         if (isEnabled && isDocked) {
             // Skip if Android Auto is running
-            if (com.jawzf.pixeltoolkit.utils.AppUtil
+            if (AppUtil
                     .isAndroidAutoRunning(service)
             ) {
                 return
