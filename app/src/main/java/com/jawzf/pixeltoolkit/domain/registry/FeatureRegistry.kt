@@ -2697,7 +2697,7 @@ object FeatureRegistry {
                 parentFeatureId = "Security",
             ) {
                 override fun isEnabled(viewModel: MainViewModel) =
-                    viewModel.isScreenshotShareCleanupEnabled.value || viewModel.isScreenshotAutoCleanEnabled.value
+                    viewModel.security.isScreenshotShareCleanupEnabled.value || viewModel.security.isScreenshotAutoCleanEnabled.value
 
                 override fun onToggle(
                     viewModel: MainViewModel,

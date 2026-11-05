@@ -85,6 +85,7 @@ dependencies {
     implementation(project(":feature:connectivity"))
     implementation(project(":feature:sound"))
     implementation(project(":feature:power"))
+    implementation(project(":feature:security"))
     compileOnly(project(":stub"))
     implementation(libs.aboutlibraries.core)
     implementation(libs.aboutlibraries.compose.m3)

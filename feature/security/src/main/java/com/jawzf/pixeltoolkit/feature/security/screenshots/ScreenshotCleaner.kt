@@ -11,8 +11,7 @@ import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.feature.security.screenshots.ScreenshotTrashWorker
+import com.jawzf.pixeltoolkit.feature.security.SecuritySettings
 import java.util.concurrent.TimeUnit
 
 object ScreenshotCleaner {
@@ -92,7 +91,7 @@ object ScreenshotCleaner {
                 context.contentResolver.update(uri, values, null) > 0
             }.getOrDefault(false)
         if (!trashed) return null
-        SettingsRepository(context).recordScreenshotCleaned(size)
+        SecuritySettings(context).recordScreenshotCleaned(size)
         return size
     }
 
@@ -109,7 +108,7 @@ object ScreenshotCleaner {
                 val values = ContentValues().apply { put(MediaStore.MediaColumns.IS_TRASHED, 0) }
                 context.contentResolver.update(uri, values, extras) > 0
             }.getOrDefault(false)
-        if (restored && bytes > 0) SettingsRepository(context).recordScreenshotRestored(bytes)
+        if (restored && bytes > 0) SecuritySettings(context).recordScreenshotRestored(bytes)
         return restored
     }
 

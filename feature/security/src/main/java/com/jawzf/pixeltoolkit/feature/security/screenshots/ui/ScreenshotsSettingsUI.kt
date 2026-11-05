@@ -28,16 +28,21 @@ import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.modifiers.highlight
 import com.jawzf.pixeltoolkit.core.design.pickers.SegmentedPicker
+import com.jawzf.pixeltoolkit.core.design.sheets.PermissionItem
 import com.jawzf.pixeltoolkit.core.design.sheets.PermissionsBottomSheet
-import com.jawzf.pixeltoolkit.utils.PermissionUIHelper
-import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
+import com.jawzf.pixeltoolkit.feature.security.SecurityState
 
 private val SHARE_DELAY_MINUTES = listOf(0, 60, 24 * 60)
 private val AUTO_CLEAN_DAYS = listOf(1, 7, 30)
 
 @Composable
 fun ScreenshotsSettingsUI(
-    viewModel: MainViewModel,
+    state: SecurityState,
+    isAccessibilityEnabled: Boolean,
+    isStoragePermissionGranted: Boolean,
+    isPostNotificationsEnabled: Boolean,
+    permissionItems: (keys: List<String>) -> List<PermissionItem>,
+    onPermissionsDismissed: () -> Unit,
     modifier: Modifier = Modifier,
     highlightSetting: String? = null,
 ) {
@@ -47,19 +52,19 @@ fun ScreenshotsSettingsUI(
 
     fun missingPermissions(needsNotifications: Boolean): List<String> =
         buildList {
-            if (!viewModel.isAccessibilityEnabled.value) add("ACCESSIBILITY")
-            if (!viewModel.isStoragePermissionGranted.value) add("STORAGE")
-            if (needsNotifications && !viewModel.isPostNotificationsEnabled.value) add("POST_NOTIFICATIONS")
+            if (!isAccessibilityEnabled) add("ACCESSIBILITY")
+            if (!isStoragePermissionGranted) add("STORAGE")
+            if (needsNotifications && !isPostNotificationsEnabled) add("POST_NOTIFICATIONS")
         }
 
     requestingPermissionsFor?.let { permKeys ->
         PermissionsBottomSheet(
             onDismissRequest = {
                 requestingPermissionsFor = null
-                viewModel.check(context)
+                onPermissionsDismissed()
             },
             featureTitle = stringResource(R.string.feat_screenshots_title),
-            permissions = PermissionUIHelper.getPermissionItems(permKeys, context, viewModel),
+            permissions = permissionItems(permKeys),
         )
     }
 
@@ -78,21 +83,21 @@ fun ScreenshotsSettingsUI(
                 iconRes = R.drawable.rounded_share_24,
                 title = stringResource(R.string.feat_screenshot_share_cleanup_title),
                 description = stringResource(R.string.feat_screenshot_share_cleanup_desc),
-                isChecked = viewModel.isScreenshotShareCleanupEnabled.value,
+                isChecked = state.isScreenshotShareCleanupEnabled.value,
                 onCheckedChange = { checked ->
                     HapticUtil.performVirtualKeyHaptic(view)
                     val missing = missingPermissions(needsNotifications = false)
                     if (checked && missing.isNotEmpty()) {
                         requestingPermissionsFor = missing
                     } else {
-                        viewModel.setScreenshotShareCleanupEnabled(checked)
+                        state.setScreenshotShareCleanupEnabled(checked)
                     }
                 },
                 modifier = Modifier.highlight(highlightSetting == "screenshot_share_cleanup_enabled"),
             )
 
             AnimatedVisibility(
-                visible = viewModel.isScreenshotShareCleanupEnabled.value,
+                visible = state.isScreenshotShareCleanupEnabled.value,
                 enter = fadeIn() + expandVertically(),
                 exit = fadeOut() + shrinkVertically(),
             ) {
@@ -102,10 +107,10 @@ fun ScreenshotsSettingsUI(
                 ) {
                     SegmentedPicker(
                         items = SHARE_DELAY_MINUTES,
-                        selectedItem = viewModel.screenshotShareCleanupDelayMinutes.intValue,
+                        selectedItem = state.screenshotShareCleanupDelayMinutes.intValue,
                         onItemSelected = {
                             HapticUtil.performVirtualKeyHaptic(view)
-                            viewModel.setScreenshotShareCleanupDelayMinutes(it)
+                            state.setScreenshotShareCleanupDelayMinutes(it)
                         },
                         labelProvider = { minutes ->
                             when (minutes) {
@@ -130,21 +135,21 @@ fun ScreenshotsSettingsUI(
                 iconRes = R.drawable.rounded_timer_24,
                 title = stringResource(R.string.screenshot_auto_clean_title),
                 description = stringResource(R.string.screenshot_auto_clean_note),
-                isChecked = viewModel.isScreenshotAutoCleanEnabled.value,
+                isChecked = state.isScreenshotAutoCleanEnabled.value,
                 onCheckedChange = { checked ->
                     HapticUtil.performVirtualKeyHaptic(view)
                     val missing = missingPermissions(needsNotifications = true)
                     if (checked && missing.isNotEmpty()) {
                         requestingPermissionsFor = missing
                     } else {
-                        viewModel.setScreenshotAutoCleanEnabled(checked)
+                        state.setScreenshotAutoCleanEnabled(checked)
                     }
                 },
                 modifier = Modifier.highlight(highlightSetting == "screenshot_auto_clean_enabled"),
             )
 
             AnimatedVisibility(
-                visible = viewModel.isScreenshotAutoCleanEnabled.value,
+                visible = state.isScreenshotAutoCleanEnabled.value,
                 enter = fadeIn() + expandVertically(),
                 exit = fadeOut() + shrinkVertically(),
             ) {
@@ -154,10 +159,10 @@ fun ScreenshotsSettingsUI(
                 ) {
                     SegmentedPicker(
                         items = AUTO_CLEAN_DAYS,
-                        selectedItem = viewModel.screenshotAutoCleanDays.intValue,
+                        selectedItem = state.screenshotAutoCleanDays.intValue,
                         onItemSelected = {
                             HapticUtil.performVirtualKeyHaptic(view)
-                            viewModel.setScreenshotAutoCleanDays(it)
+                            state.setScreenshotAutoCleanDays(it)
                         },
                         labelProvider = { days -> context.resources.getQuantityString(R.plurals.screenshot_days, days, days) },
                         title = R.string.screenshot_auto_clean_days_title,
@@ -175,13 +180,13 @@ fun ScreenshotsSettingsUI(
             IconToggleItem(
                 iconRes = R.drawable.rounded_delete_24,
                 title = stringResource(R.string.screenshots_cleaned_count_title),
-                description = viewModel.screenshotsCleanedCount.intValue.toString(),
+                description = state.screenshotsCleanedCount.intValue.toString(),
                 showToggle = false,
             )
             IconToggleItem(
                 iconRes = R.drawable.rounded_save_24,
                 title = stringResource(R.string.screenshots_storage_saved_title),
-                description = Formatter.formatShortFileSize(context, viewModel.screenshotsCleanedBytes.longValue),
+                description = Formatter.formatShortFileSize(context, state.screenshotsCleanedBytes.longValue),
                 showToggle = false,
             )
         }

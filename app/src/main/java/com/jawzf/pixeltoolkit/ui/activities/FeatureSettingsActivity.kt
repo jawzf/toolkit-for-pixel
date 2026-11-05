@@ -135,6 +135,7 @@ import com.jawzf.pixeltoolkit.ui.features.system.TextAnimationsSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.ToolkitOnDisplaySettingsUI
 import com.jawzf.pixeltoolkit.ui.features.widgets.WidgetStackSettingsUI
 import com.jawzf.pixeltoolkit.utils.BiometricSecurityHelper
+import com.jawzf.pixeltoolkit.utils.PermissionUIHelper
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 import com.jawzf.pixeltoolkit.viewmodels.StatusBarIconViewModel
 import kotlinx.coroutines.delay
@@ -1068,7 +1069,12 @@ class FeatureSettingsActivity : AppCompatActivity() {
 
                                     "Screenshots" -> {
                                         ScreenshotsSettingsUI(
-                                            viewModel = viewModel,
+                                            state = viewModel.security,
+                                            isAccessibilityEnabled = viewModel.isAccessibilityEnabled.value,
+                                            isStoragePermissionGranted = viewModel.isStoragePermissionGranted.value,
+                                            isPostNotificationsEnabled = viewModel.isPostNotificationsEnabled.value,
+                                            permissionItems = { keys -> PermissionUIHelper.getPermissionItems(keys, context, viewModel) },
+                                            onPermissionsDismissed = { viewModel.check(context) },
                                             modifier = Modifier.padding(top = 16.dp),
                                             highlightSetting = highlightSetting,
                                         )

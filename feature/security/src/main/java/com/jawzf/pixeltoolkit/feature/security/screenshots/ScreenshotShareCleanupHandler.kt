@@ -6,10 +6,7 @@ import android.content.res.Resources
 import android.view.accessibility.AccessibilityEvent
 import android.widget.Toast
 import com.jawzf.pixeltoolkit.core.design.R
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.feature.security.screenshots.ScreenshotCleaner
-import com.jawzf.pixeltoolkit.feature.security.screenshots.ScreenshotCleanupNotifier
-import com.jawzf.pixeltoolkit.feature.security.screenshots.ScreenshotShareTracker
+import com.jawzf.pixeltoolkit.feature.security.SecuritySettings
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -20,7 +17,7 @@ class ScreenshotShareCleanupHandler(
     private val service: AccessibilityService,
     private val scope: CoroutineScope,
 ) {
-    private val settings = SettingsRepository(service)
+    private val settings = SecuritySettings(service)
     private val tracker by lazy { ScreenshotShareTracker(SHARE_SHEET, systemImageEditorPackage() ?: MARKUP) }
     private var screenshotId: Long? = null
 

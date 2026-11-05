@@ -3,8 +3,6 @@ package com.jawzf.pixeltoolkit.feature.security.screenshots
 import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import com.jawzf.pixeltoolkit.feature.security.screenshots.ScreenshotCleaner
-import com.jawzf.pixeltoolkit.feature.security.screenshots.ScreenshotCleanupNotifier
 
 class ScreenshotTrashWorker(
     appContext: Context,
