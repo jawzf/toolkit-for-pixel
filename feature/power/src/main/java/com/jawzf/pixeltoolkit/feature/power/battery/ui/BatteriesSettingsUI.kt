@@ -22,6 +22,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -39,13 +40,15 @@ import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuUtils
+import com.jawzf.pixeltoolkit.feature.power.BatteryState
 import com.jawzf.pixeltoolkit.feature.power.PowerSettings
-import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 
 @OptIn(androidx.compose.material3.ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun BatteriesSettingsUI(
-    viewModel: MainViewModel,
+    state: BatteryState,
+    isPostNotificationsEnabled: MutableState<Boolean>,
+    isBluetoothPermissionGranted: MutableState<Boolean>,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
@@ -61,8 +64,8 @@ fun BatteriesSettingsUI(
         val notificationPermission =
             rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
                 if (granted) {
-                    viewModel.isPostNotificationsEnabled.value = true
-                    viewModel.setBatteryNotificationEnabled(true, context)
+                    isPostNotificationsEnabled.value = true
+                    state.setBatteryNotificationEnabled(true, context)
                 }
             }
 
@@ -70,16 +73,16 @@ fun BatteriesSettingsUI(
             IconToggleItem(
                 iconRes = R.drawable.rounded_battery_charging_60_24,
                 title = stringResource(R.string.batteries_notification_title),
-                isChecked = viewModel.isBatteryNotificationEnabled.value,
+                isChecked = state.isBatteryNotificationEnabled.value,
                 onCheckedChange = { enabled ->
                     HapticUtil.performVirtualKeyHaptic(view)
                     if (enabled &&
                         android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU &&
-                        !viewModel.isPostNotificationsEnabled.value
+                        !isPostNotificationsEnabled.value
                     ) {
                         notificationPermission.launch(android.Manifest.permission.POST_NOTIFICATIONS)
                     } else {
-                        viewModel.setBatteryNotificationEnabled(enabled, context)
+                        state.setBatteryNotificationEnabled(enabled, context)
                     }
                 },
             )
@@ -100,15 +103,15 @@ fun BatteriesSettingsUI(
                     PowerSettings(context)
                         .setBatteryShowPercentageEnabled(enabled)
                     BatteriesPreviewTrigger.bump()
-                    viewModel.setBluetoothDevicesEnabled(viewModel.isBluetoothDevicesEnabled.value, context)
+                    state.setBluetoothDevicesEnabled(state.isBluetoothDevicesEnabled.value, context)
                 },
             )
         }
 
         RoundedCardContainer {
             // Bluetooth Devices
-            val isBluetoothEnabled = viewModel.isBluetoothDevicesEnabled.value
-            val isPermissionGranted = viewModel.isBluetoothPermissionGranted.value
+            val isBluetoothEnabled = state.isBluetoothDevicesEnabled.value
+            val isPermissionGranted = isBluetoothPermissionGranted.value
 
             val launcher =
                 rememberLauncherForActivityResult(
@@ -116,8 +119,8 @@ fun BatteriesSettingsUI(
                 ) { permissions ->
                     val allGranted = permissions.values.all { it }
                     if (allGranted) {
-                        viewModel.isBluetoothPermissionGranted.value = true
-                        viewModel.setBluetoothDevicesEnabled(true, context)
+                        isBluetoothPermissionGranted.value = true
+                        state.setBluetoothDevicesEnabled(true, context)
                     }
                 }
 
@@ -128,7 +131,7 @@ fun BatteriesSettingsUI(
                 onCheckedChange = { enabled ->
                     if (enabled) {
                         if (isPermissionGranted) {
-                            viewModel.setBluetoothDevicesEnabled(true, context)
+                            state.setBluetoothDevicesEnabled(true, context)
                         } else {
                             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
                                 launcher.launch(
@@ -138,11 +141,11 @@ fun BatteriesSettingsUI(
                                     ),
                                 )
                             } else {
-                                viewModel.setBluetoothDevicesEnabled(true, context)
+                                state.setBluetoothDevicesEnabled(true, context)
                             }
                         }
                     } else {
-                        viewModel.setBluetoothDevicesEnabled(false, context)
+                        state.setBluetoothDevicesEnabled(false, context)
                     }
                 },
             )
@@ -172,7 +175,7 @@ fun BatteriesSettingsUI(
                                     .show()
                             }
                         }
-                        viewModel.setBluetoothDevicesEnabled(true, context)
+                        state.setBluetoothDevicesEnabled(true, context)
                         BatteriesPreviewTrigger.bump()
                     },
                 )
@@ -186,7 +189,7 @@ fun BatteriesSettingsUI(
                 modifier = Modifier.padding(start = 16.dp, bottom = 0.dp),
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
-            BluetoothDeviceIconsSection(viewModel, viewModel.isBluetoothDevicesEnabled.value && viewModel.isBluetoothPermissionGranted.value)
+            BluetoothDeviceIconsSection(state.isBluetoothDevicesEnabled.value && isBluetoothPermissionGranted.value)
         }
 
         // Max Devices Slider
@@ -223,12 +226,12 @@ fun BatteriesSettingsUI(
                         modifier = Modifier.fillMaxWidth(),
                     ) {
                         Slider(
-                            value = viewModel.batteryWidgetMaxDevices.intValue.toFloat(),
+                            value = state.batteryWidgetMaxDevices.intValue.toFloat(),
                             onValueChange = {
                                 val newInt = it.toInt()
-                                if (newInt != viewModel.batteryWidgetMaxDevices.intValue) {
+                                if (newInt != state.batteryWidgetMaxDevices.intValue) {
                                     HapticUtil.performVirtualKeyHaptic(view)
-                                    viewModel.setBatteryWidgetMaxDevices(newInt, context)
+                                    state.setBatteryWidgetMaxDevices(newInt, context)
                                 }
                             },
                             valueRange = 1f..16f,
@@ -237,7 +240,7 @@ fun BatteriesSettingsUI(
                         )
                         Spacer(modifier = Modifier.width(12.dp))
                         Text(
-                            text = viewModel.batteryWidgetMaxDevices.intValue.toString(),
+                            text = state.batteryWidgetMaxDevices.intValue.toString(),
                             style = MaterialTheme.typography.titleMedium,
                             color = MaterialTheme.colorScheme.primary,
                         )

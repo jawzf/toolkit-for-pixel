@@ -19,4 +19,5 @@ dependencies {
     implementation(libs.androidx.compose.material3.v150alpha24)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.glance.appwidget)
+    implementation(libs.reorderable)
 }

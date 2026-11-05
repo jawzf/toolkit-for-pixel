@@ -38,7 +38,6 @@ import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
 import com.jawzf.pixeltoolkit.core.design.theme.ToolkitTheme
 import com.jawzf.pixeltoolkit.feature.power.PowerSettings
-import com.jawzf.pixeltoolkit.feature.power.widget.BatteriesWidget
 import kotlinx.coroutines.launch
 
 class BatteriesWidgetConfigureActivity : ComponentActivity() {

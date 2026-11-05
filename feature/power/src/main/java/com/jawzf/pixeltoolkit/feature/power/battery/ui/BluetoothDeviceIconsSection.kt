@@ -68,10 +68,7 @@ private fun pairedDevices(context: Context): List<PairedDevice> =
     }
 
 @Composable
-fun BluetoothDeviceIconsSection(
-    viewModel: com.jawzf.pixeltoolkit.viewmodels.MainViewModel,
-    bluetoothEnabled: Boolean,
-) {
+fun BluetoothDeviceIconsSection(bluetoothEnabled: Boolean) {
     val context = LocalContext.current
     val view = LocalView.current
     val devices =

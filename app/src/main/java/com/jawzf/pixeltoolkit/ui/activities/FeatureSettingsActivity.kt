@@ -562,7 +562,7 @@ class FeatureSettingsActivity : AppCompatActivity() {
 
                             if (featureId == "Batteries") {
                                 BatteriesPreviewCard(
-                                    viewModel = viewModel,
+                                    state = viewModel.battery,
                                     height = headerHeight - 16.dp,
                                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
                                 )
@@ -1118,7 +1118,9 @@ class FeatureSettingsActivity : AppCompatActivity() {
 
                                     "Batteries" -> {
                                         BatteriesSettingsUI(
-                                            viewModel = viewModel,
+                                            state = viewModel.battery,
+                                            isPostNotificationsEnabled = viewModel.isPostNotificationsEnabled,
+                                            isBluetoothPermissionGranted = viewModel.isBluetoothPermissionGranted,
                                             modifier = Modifier.padding(top = 16.dp),
                                         )
                                     }

@@ -73,9 +73,8 @@ import com.jawzf.pixeltoolkit.domain.model.SystemShortcutsState
 import com.jawzf.pixeltoolkit.domain.registry.SearchRegistry
 import com.jawzf.pixeltoolkit.feature.connectivity.ConnectivitySettings
 import com.jawzf.pixeltoolkit.feature.connectivity.ConnectivityState
+import com.jawzf.pixeltoolkit.feature.power.BatteryState
 import com.jawzf.pixeltoolkit.feature.power.PowerSettings
-import com.jawzf.pixeltoolkit.feature.power.battery.BatteryNotificationService
-import com.jawzf.pixeltoolkit.feature.power.widget.BatteriesWidgetReceiver
 import com.jawzf.pixeltoolkit.feature.sound.SoundSettings
 import com.jawzf.pixeltoolkit.feature.sound.SoundState
 import com.jawzf.pixeltoolkit.island.service.IslandStatusBarHider
@@ -385,8 +384,6 @@ class MainViewModel : ViewModel() {
     val isUsageStatsPermissionGranted = mutableStateOf(false)
     val appLanguage = mutableStateOf("en")
 
-    val isBluetoothDevicesEnabled = mutableStateOf(false)
-    val isBatteryNotificationEnabled = mutableStateOf(false)
     val isAodEnabled = mutableStateOf(false)
     val isNotificationGlanceEnabled = mutableStateOf(false)
     val isAodForceTurnOffEnabled = mutableStateOf(false)
@@ -423,6 +420,7 @@ class MainViewModel : ViewModel() {
         mutableStateOf(true) // Default to true so it doesn't flash on first check if not loaded
     val connectivity = ConnectivityState(viewModelScope)
     val sound = SoundState()
+    val battery = BatteryState()
     val addedQSTiles = mutableStateOf<Set<String>>(emptySet())
     val isHideGestureBarEnabled = mutableStateOf(false)
     val isHideGestureBarOnLauncherEnabled = mutableStateOf(false)
@@ -596,8 +594,6 @@ class MainViewModel : ViewModel() {
     val isLongPressSymbolsEnabled = mutableStateOf(false)
     val isAccentedCharactersEnabled = mutableStateOf(false)
 
-    val batteryWidgetMaxDevices = mutableIntStateOf(8)
-    val isBatteryWidgetBackgroundEnabled = mutableStateOf(true)
     val isAmbientMusicGlanceDockedModeEnabled = mutableStateOf(false)
     val isAmbientMusicGlanceRandomShapesEnabled = mutableStateOf(false)
     val ambientMusicGlanceAlbumArtMode = mutableStateOf("default")
@@ -635,7 +631,6 @@ class MainViewModel : ViewModel() {
     val notificationSnoozeOptions = mutableStateOf<List<Int>>(listOf(15, 30, 60, 120))
 
     lateinit var settingsRepository: SettingsRepository
-    lateinit var powerSettings: PowerSettings
     private var appContext: Context? = null
 
     val gitHubToken = mutableStateOf<String?>(null)
@@ -1222,9 +1217,7 @@ class MainViewModel : ViewModel() {
                         isAccentedCharactersEnabled.value =
                             settingsRepository.getBoolean(key, false)
 
-                    PowerSettings.KEY_BATTERY_WIDGET_MAX_DEVICES ->
-                        batteryWidgetMaxDevices.intValue =
-                            settingsRepository.getInt(key, 8)
+                    PowerSettings.KEY_BATTERY_WIDGET_MAX_DEVICES -> battery.onPreferenceChanged(key)
 
                     SettingsRepository.KEY_SNOOZE_DISCOVERED_CHANNELS, SettingsRepository.KEY_SNOOZE_BLOCKED_CHANNELS -> {
                         appContext?.let { loadSnoozeChannels(it) }
@@ -1855,7 +1848,6 @@ class MainViewModel : ViewModel() {
     fun check(context: Context) {
         appContext = context.applicationContext
         settingsRepository = SettingsRepository(context)
-        powerSettings = PowerSettings(context)
         gitHubUser.value = settingsRepository.getGitHubUser()
 
         // Sync with system per-app language settings
@@ -2668,13 +2660,7 @@ class MainViewModel : ViewModel() {
                 false,
             )
 
-        isBluetoothDevicesEnabled.value =
-            powerSettings.getBoolean(PowerSettings.KEY_SHOW_BLUETOOTH_DEVICES, false)
-        isBluetoothDevicesEnabled.value =
-            powerSettings.getBoolean(PowerSettings.KEY_SHOW_BLUETOOTH_DEVICES, false)
-        batteryWidgetMaxDevices.intValue = powerSettings.getBatteryWidgetMaxDevices()
-        isBatteryWidgetBackgroundEnabled.value =
-            powerSettings.isBatteryWidgetBackgroundEnabled()
+        battery.load(context)
 
         isScreenLockedSecurityEnabled.value =
             settingsRepository.getBoolean(SettingsRepository.KEY_SCREEN_LOCKED_SECURITY_ENABLED)
@@ -2775,7 +2761,6 @@ class MainViewModel : ViewModel() {
             settingsRepository.isAmbientMusicGlanceForceFillWhileChargingEnabled()
         isAmbientMusicGlanceRespectNotificationsEnabled.value =
             settingsRepository.isAmbientMusicGlanceRespectNotificationsEnabled()
-        isBatteryNotificationEnabled.value = powerSettings.isBatteryNotificationEnabled()
         isNotificationGlanceEnabled.value =
             settingsRepository.getBoolean(SettingsRepository.KEY_NOTIFICATION_GLANCE_ENABLED)
         isAodForceTurnOffEnabled.value =
@@ -2847,7 +2832,7 @@ class MainViewModel : ViewModel() {
         updateMotionBlurState(context)
 
         refreshTrackedUpdates(context)
-        if (isBatteryNotificationEnabled.value) {
+        if (battery.isBatteryNotificationEnabled.value) {
             startBatteryNotificationService(context)
         }
 
@@ -2858,34 +2843,6 @@ class MainViewModel : ViewModel() {
     private fun startBatteryNotificationService(context: Context) {
         com.jawzf.pixeltoolkit.utils.ServiceUtils
             .startRequiredServices(context)
-    }
-
-    private fun stopBatteryNotificationService(context: Context) {
-        val intent =
-            Intent(
-                context,
-                BatteryNotificationService::class.java,
-            )
-        context.stopService(intent)
-    }
-
-    /**
-     * Executes the set battery notification enabled operation.
-     *
-     * @param enabled [Boolean] Target enabled.
-     * @param context [Context] Target context.
-     */
-    fun setBatteryNotificationEnabled(
-        enabled: Boolean,
-        context: Context,
-    ) {
-        isBatteryNotificationEnabled.value = enabled
-        powerSettings.setBatteryNotificationEnabled(enabled)
-        if (enabled) {
-            startBatteryNotificationService(context)
-        } else {
-            stopBatteryNotificationService(context)
-        }
     }
 
     /**
@@ -7427,78 +7384,6 @@ class MainViewModel : ViewModel() {
     ) {
         isKeyboardClipboardEnabled.value = enabled
         settingsRepository.putBoolean(SettingsRepository.KEY_KEYBOARD_CLIPBOARD_ENABLED, enabled)
-    }
-
-    /**
-     * Executes the set bluetooth devices enabled operation.
-     *
-     * @param enabled [Boolean] Target enabled.
-     * @param context [Context] Target context.
-     */
-    fun setBluetoothDevicesEnabled(
-        enabled: Boolean,
-        context: Context,
-    ) {
-        isBluetoothDevicesEnabled.value = enabled
-        powerSettings.setBluetoothDevicesEnabled(enabled)
-
-        // Trigger widget update to fetch data immediately
-        val intent =
-            Intent(
-                context,
-                BatteriesWidgetReceiver::class.java,
-            ).apply {
-                action = android.appwidget.AppWidgetManager.ACTION_APPWIDGET_UPDATE
-            }
-        context.sendBroadcast(intent)
-    }
-
-    /**
-     * Executes the set battery widget max devices operation.
-     *
-     * @param count [Int] Target count.
-     * @param context [Context] Target context.
-     */
-    fun setBatteryWidgetMaxDevices(
-        count: Int,
-        context: Context,
-    ) {
-        batteryWidgetMaxDevices.intValue = count
-        powerSettings.setBatteryWidgetMaxDevices(count)
-
-        // Trigger widget update
-        val intent =
-            Intent(
-                context,
-                BatteriesWidgetReceiver::class.java,
-            ).apply {
-                action = android.appwidget.AppWidgetManager.ACTION_APPWIDGET_UPDATE
-            }
-        context.sendBroadcast(intent)
-    }
-
-    /**
-     * Executes the set battery widget background enabled operation.
-     *
-     * @param enabled [Boolean] Target enabled.
-     * @param context [Context] Target context.
-     */
-    fun setBatteryWidgetBackgroundEnabled(
-        enabled: Boolean,
-        context: Context,
-    ) {
-        isBatteryWidgetBackgroundEnabled.value = enabled
-        powerSettings.setBatteryWidgetBackgroundEnabled(enabled)
-
-        // Trigger widget update
-        val intent =
-            Intent(
-                context,
-                BatteriesWidgetReceiver::class.java,
-            ).apply {
-                action = android.appwidget.AppWidgetManager.ACTION_APPWIDGET_UPDATE
-            }
-        context.sendBroadcast(intent)
     }
 
     private fun isAccessibilityServiceEnabled(context: Context): Boolean = PermissionUtils.isAccessibilityServiceEnabled(context)
