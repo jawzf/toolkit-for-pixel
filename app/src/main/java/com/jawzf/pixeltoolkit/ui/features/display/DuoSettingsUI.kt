@@ -43,12 +43,12 @@ import com.jawzf.pixeltoolkit.core.design.pickers.ColorSwatchPicker
 import com.jawzf.pixeltoolkit.core.design.sheets.PermissionsBottomSheet
 import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.domain.diy.Action
 import com.jawzf.pixeltoolkit.domain.diy.ActionRegistry
 import com.jawzf.pixeltoolkit.domain.diy.displayName
 import com.jawzf.pixeltoolkit.domain.diy.matches
 import com.jawzf.pixeltoolkit.domain.model.AppSelection
+import com.jawzf.pixeltoolkit.feature.apps.AppsSettings
 import com.jawzf.pixeltoolkit.ui.core.sheets.AppSelectionSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.CustomSettingsSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.DeviceEffectsSettingsSheet
@@ -1091,7 +1091,7 @@ fun DuoSettingsUI(
 
     if (showFreezeTagSettings && configAction is Action.FreezeTag) {
         val availableTags = remember {
-            SettingsRepository(context).getFreezeTags()
+            AppsSettings(context).getFreezeTags()
         }
         FreezeTagSettingsSheet(
             initialAction = configAction as Action.FreezeTag,

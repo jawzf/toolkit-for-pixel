@@ -1,9 +1,13 @@
 package com.jawzf.pixeltoolkit.feature.apps.freeze
 
+import androidx.annotation.Keep
+import com.google.gson.annotations.SerializedName
+
+@Keep
 data class AppTag(
-    val id: String,
-    val name: String,
-    val colorHex: String,
-    val iconName: String,
-    val neverAutoFreeze: Boolean = false,
+    @SerializedName("id") val id: String,
+    @SerializedName("name") val name: String,
+    @SerializedName("colorHex") val colorHex: String,
+    @SerializedName("iconName") val iconName: String,
+    @SerializedName("neverAutoFreeze") val neverAutoFreeze: Boolean = false,
 )

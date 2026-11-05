@@ -16,6 +16,7 @@ object AppComponents {
     const val FEATURE_SETTINGS_ACTIVITY = "com.jawzf.pixeltoolkit.FeatureSettingsActivity"
     const val TILE_AUTH_ACTIVITY = "com.jawzf.pixeltoolkit.ui.activities.TileAuthActivity"
     const val MAIN_ACTIVITY = "com.jawzf.pixeltoolkit.MainActivity"
+    const val APP_FREEZING_ACTIVITY = "com.jawzf.pixeltoolkit.ui.activities.AppFreezingActivity"
 
     /** The app's launch intent, or MainActivity when the launcher alias is disabled. */
     fun mainIntent(context: Context): Intent =

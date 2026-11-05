@@ -4,15 +4,15 @@ import android.app.PendingIntent
 import android.content.Intent
 import android.os.Build
 import android.service.quicksettings.Tile
+import com.jawzf.pixeltoolkit.core.platform.AppComponents
 import com.jawzf.pixeltoolkit.core.platform.tiles.BaseTileService
-import com.jawzf.pixeltoolkit.ui.activities.AppFreezingActivity
 
 class AppFreezingTileService : BaseTileService() {
     override val isSensitiveTile: Boolean = true
 
     override fun onTileClick() {
         val intent =
-            Intent(this, AppFreezingActivity::class.java).apply {
+            Intent().setClassName(this, AppComponents.APP_FREEZING_ACTIVITY).apply {
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
             }
 

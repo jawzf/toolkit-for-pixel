@@ -46,6 +46,7 @@ import com.jawzf.pixeltoolkit.domain.diy.Action
 import com.jawzf.pixeltoolkit.domain.diy.ActionRegistry
 import com.jawzf.pixeltoolkit.domain.diy.displayName
 import com.jawzf.pixeltoolkit.domain.model.AppSelection
+import com.jawzf.pixeltoolkit.feature.apps.AppsSettings
 import com.jawzf.pixeltoolkit.ui.core.sheets.AppSelectionSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.ChargingModeSettingsSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.CustomSettingsSheet
@@ -527,9 +528,7 @@ fun ActionSequenceEditor(
     if (showFreezeTagSettings && configAction is Action.FreezeTag) {
         val availableTags =
             remember {
-                com.jawzf.pixeltoolkit.data.repository
-                    .SettingsRepository(context)
-                    .getFreezeTags()
+                AppsSettings(context).getFreezeTags()
             }
         com.jawzf.pixeltoolkit.ui.core.sheets.FreezeTagSettingsSheet(
             initialAction = configAction as Action.FreezeTag,

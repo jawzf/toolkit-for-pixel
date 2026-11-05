@@ -39,6 +39,7 @@ import com.jawzf.pixeltoolkit.domain.diy.DIYRepository
 import com.jawzf.pixeltoolkit.domain.model.DashConfig
 import com.jawzf.pixeltoolkit.domain.model.NotificationLightingStyle
 import com.jawzf.pixeltoolkit.domain.model.RippleConfig
+import com.jawzf.pixeltoolkit.feature.apps.AppsSettings
 import com.jawzf.pixeltoolkit.feature.apps.freeze.FreezeManager
 import com.jawzf.pixeltoolkit.feature.connectivity.hotspot.HotspotController
 import com.jawzf.pixeltoolkit.feature.power.PowerSettings
@@ -802,10 +803,7 @@ object CombinedActionExecutor {
                 }
 
                 is Action.FreezeTag -> {
-                    val repository =
-                        com.jawzf.pixeltoolkit.data.repository
-                            .SettingsRepository(context)
-                    val appTagMap = repository.getFreezeAppTagMap()
+                    val appTagMap = AppsSettings(context).getFreezeAppTagMap()
                     val selectedTags = action.tagIds.toSet()
 
                     if (selectedTags.isNotEmpty()) {
