@@ -25,10 +25,4 @@
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowContentOverlay">@null</item>
     </style>
-
-    <style name="Theme.Toolkit.FullScreenAlarm" parent="Theme.Toolkit">
-        <item name="android:windowIsFloating">false</item>
-        <item name="android:windowIsTranslucent">false</item>
-        <item name="android:windowNoTitle">true</item>
-    </style>
 </resources>
