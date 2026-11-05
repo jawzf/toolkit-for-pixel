@@ -41,6 +41,7 @@ import com.jawzf.pixeltoolkit.domain.model.DashConfig
 import com.jawzf.pixeltoolkit.domain.model.NotificationLightingStyle
 import com.jawzf.pixeltoolkit.domain.model.RippleConfig
 import com.jawzf.pixeltoolkit.feature.connectivity.hotspot.HotspotController
+import com.jawzf.pixeltoolkit.feature.sound.mode.SoundModeHandler
 import com.jawzf.pixeltoolkit.services.NotificationLightingService
 import com.jawzf.pixeltoolkit.services.NotificationListener
 import com.jawzf.pixeltoolkit.services.tiles.ScreenOffAccessibilityService
@@ -478,8 +479,7 @@ object CombinedActionExecutor {
                 }
 
                 is Action.CycleSoundModes -> {
-                    com.jawzf.pixeltoolkit.services.handlers
-                        .SoundModeHandler(context)
+                    SoundModeHandler(context)
                         .cycleNextMode()
                 }
 

@@ -1,6 +1,6 @@
-package com.jawzf.pixeltoolkit.services.handlers
+package com.jawzf.pixeltoolkit.feature.sound.volumesteps
 
-internal object VolumeStepMath {
+object VolumeStepMath {
     const val MIN_REPEAT_INTERVAL_MS = 150L
     const val REPEAT_MS_PER_STEP = 100L
 

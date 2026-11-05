@@ -1,6 +1,6 @@
 package com.jawzf.pixeltoolkit.services
 
-import com.jawzf.pixeltoolkit.services.handlers.VolumeStepMath
+import com.jawzf.pixeltoolkit.feature.sound.volumesteps.VolumeStepMath
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

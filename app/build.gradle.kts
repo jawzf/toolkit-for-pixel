@@ -83,6 +83,7 @@ dependencies {
     implementation(project(":core:platform"))
     implementation(project(":core:data"))
     implementation(project(":feature:connectivity"))
+    implementation(project(":feature:sound"))
     compileOnly(project(":stub"))
     implementation(libs.aboutlibraries.core)
     implementation(libs.aboutlibraries.compose.m3)

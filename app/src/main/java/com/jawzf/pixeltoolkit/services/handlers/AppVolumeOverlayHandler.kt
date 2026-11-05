@@ -33,11 +33,11 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.ui.graphics.toArgb
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
+import com.jawzf.pixeltoolkit.feature.sound.SoundSettings
+import com.jawzf.pixeltoolkit.feature.sound.appvolume.AppVolumeController
+import com.jawzf.pixeltoolkit.feature.sound.appvolume.VolumePanelDetector
 import com.jawzf.pixeltoolkit.ui.activities.AppVolumeControlActivity
 import com.jawzf.pixeltoolkit.utils.AppUtil
-import com.jawzf.pixeltoolkit.utils.VolumePanelDetector
-import com.jawzf.pixeltoolkit.utils.media.AppVolumeController
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -50,7 +50,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 class AppVolumeOverlayHandler(
     private val service: AccessibilityService,
 ) {
-    private val settings = SettingsRepository(service)
+    private val settings = SoundSettings(service)
     private val handler = Handler(Looper.getMainLooper())
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
     private val windowManager = service.getSystemService(WindowManager::class.java)
@@ -97,7 +97,7 @@ class AppVolumeOverlayHandler(
 
     private val prefsListener =
         SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
-            if (key == SettingsRepository.KEY_APP_VOLUME_OVERLAY_ENABLED || key == SettingsRepository.KEY_APP_VOLUME_ENABLED) {
+            if (key == SoundSettings.KEY_APP_VOLUME_OVERLAY_ENABLED || key == SoundSettings.KEY_APP_VOLUME_ENABLED) {
                 handler.post { onWindowsChanged() }
             }
         }

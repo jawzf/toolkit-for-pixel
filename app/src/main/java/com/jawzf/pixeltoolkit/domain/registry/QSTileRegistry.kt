@@ -9,6 +9,8 @@ import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.feature.connectivity.dns.PrivateDnsTileService
 import com.jawzf.pixeltoolkit.feature.connectivity.nfc.NfcTileService
 import com.jawzf.pixeltoolkit.feature.connectivity.sim.DataSimTileService
+import com.jawzf.pixeltoolkit.feature.sound.mode.SoundModeTileService
+import com.jawzf.pixeltoolkit.feature.sound.mono.MonoAudioTileService
 import com.jawzf.pixeltoolkit.services.tiles.AdaptiveBrightnessTileService
 import com.jawzf.pixeltoolkit.services.tiles.AlwaysOnDisplayTileService
 import com.jawzf.pixeltoolkit.services.tiles.AppFreezingTileService
@@ -28,7 +30,6 @@ import com.jawzf.pixeltoolkit.services.tiles.HeadsUpNotificationsTileService
 import com.jawzf.pixeltoolkit.services.tiles.IslandTileService
 import com.jawzf.pixeltoolkit.services.tiles.LockdownTileService
 import com.jawzf.pixeltoolkit.services.tiles.MapsPowerSavingTileService
-import com.jawzf.pixeltoolkit.services.tiles.MonoAudioTileService
 import com.jawzf.pixeltoolkit.services.tiles.NotificationLightingTileService
 import com.jawzf.pixeltoolkit.services.tiles.PrivateNotificationsTileService
 import com.jawzf.pixeltoolkit.services.tiles.RefreshRateTileService
@@ -36,7 +37,6 @@ import com.jawzf.pixeltoolkit.services.tiles.RestartSystemUiTileService
 import com.jawzf.pixeltoolkit.services.tiles.ScaleAnimationsTileService
 import com.jawzf.pixeltoolkit.services.tiles.ScreenLockedSecurityTileService
 import com.jawzf.pixeltoolkit.services.tiles.SmartPixelsTileService
-import com.jawzf.pixeltoolkit.services.tiles.SoundModeTileService
 import com.jawzf.pixeltoolkit.services.tiles.StayAwakeTileService
 import com.jawzf.pixeltoolkit.services.tiles.TapToWakeTileService
 import com.jawzf.pixeltoolkit.services.tiles.ToolkitOnDisplayTileService

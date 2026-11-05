@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.services.receivers
+package com.jawzf.pixeltoolkit.feature.sound.callvibration
 
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -6,7 +6,7 @@ import android.content.Intent
 import android.telephony.TelephonyManager
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticFeedbackType
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
+import com.jawzf.pixeltoolkit.feature.sound.SoundSettings
 
 class CallVibrationReceiver : BroadcastReceiver() {
     companion object {
@@ -19,7 +19,7 @@ class CallVibrationReceiver : BroadcastReceiver() {
         intent: Intent,
     ) {
         val prefs = context.getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE)
-        if (!prefs.getBoolean(SettingsRepository.KEY_CALL_VIBRATIONS_ENABLED, false)) return
+        if (!prefs.getBoolean(SoundSettings.KEY_CALL_VIBRATIONS_ENABLED, false)) return
 
         if (intent.action == Intent.ACTION_NEW_OUTGOING_CALL) {
             isOutgoing = true

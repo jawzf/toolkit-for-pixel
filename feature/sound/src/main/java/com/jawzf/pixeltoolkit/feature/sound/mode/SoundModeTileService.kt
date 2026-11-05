@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.services.tiles
+package com.jawzf.pixeltoolkit.feature.sound.mode
 
 import android.app.NotificationManager
 import android.content.BroadcastReceiver
@@ -15,7 +15,6 @@ import com.jawzf.pixeltoolkit.core.design.haptics.HapticFeedbackType
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuUtils
 import com.jawzf.pixeltoolkit.core.platform.tiles.BaseTileService
-import com.jawzf.pixeltoolkit.services.handlers.SoundModeHandler
 
 @RequiresApi(Build.VERSION_CODES.N)
 class SoundModeTileService : BaseTileService() {

@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.services.handlers
+package com.jawzf.pixeltoolkit.feature.sound.volumesteps
 
 import android.content.Context
 import android.media.AudioAttributes
@@ -9,12 +9,12 @@ import android.os.Looper
 import android.os.SystemClock
 import android.view.KeyEvent
 import android.view.ViewConfiguration
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
+import com.jawzf.pixeltoolkit.feature.sound.SoundSettings
 
 class VolumeStepsHandler(
     context: Context,
 ) {
-    private val settingsRepository = SettingsRepository(context)
+    private val settingsRepository = SoundSettings(context)
     private val audioManager = context.getSystemService(AudioManager::class.java)
     private val handler = Handler(Looper.getMainLooper())
     private var repeatRaise = true

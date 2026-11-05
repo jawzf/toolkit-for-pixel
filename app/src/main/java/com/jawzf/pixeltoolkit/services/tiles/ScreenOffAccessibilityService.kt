@@ -26,6 +26,10 @@ import androidx.core.content.ContextCompat
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticFeedbackType
 import com.jawzf.pixeltoolkit.core.design.haptics.performHapticFeedback
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
+import com.jawzf.pixeltoolkit.feature.sound.SoundSettings
+import com.jawzf.pixeltoolkit.feature.sound.appvolume.AppVolumeController
+import com.jawzf.pixeltoolkit.feature.sound.appvolume.VolumePanelDetector
+import com.jawzf.pixeltoolkit.feature.sound.volumesteps.VolumeStepsHandler
 import com.jawzf.pixeltoolkit.island.service.IslandCoordinator
 import com.jawzf.pixeltoolkit.services.InputEventListenerService
 import com.jawzf.pixeltoolkit.services.LiveUpdateSnoozer
@@ -46,13 +50,10 @@ import com.jawzf.pixeltoolkit.services.handlers.ScreenshotAutoCleanHandler
 import com.jawzf.pixeltoolkit.services.handlers.ScreenshotShareCleanupHandler
 import com.jawzf.pixeltoolkit.services.handlers.StatusBarIconHandler
 import com.jawzf.pixeltoolkit.services.handlers.StatusGlanceHandler
-import com.jawzf.pixeltoolkit.services.handlers.VolumeStepsHandler
 import com.jawzf.pixeltoolkit.services.receivers.FlashlightActionReceiver
 import com.jawzf.pixeltoolkit.utils.CameraSession
 import com.jawzf.pixeltoolkit.utils.FreezeManager
 import com.jawzf.pixeltoolkit.utils.PowerButtonGestures
-import com.jawzf.pixeltoolkit.utils.VolumePanelDetector
-import com.jawzf.pixeltoolkit.utils.media.AppVolumeController
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -288,8 +289,8 @@ class ScreenOffAccessibilityService :
                 key == SettingsRepository.KEY_LOCKSCREEN_SHORTCUT_RIGHT_ACTIONS
             ) {
                 lockscreenShortcutsHandler.updateState()
-            } else if (key == SettingsRepository.KEY_APP_VOLUME_ENABLED ||
-                key == SettingsRepository.KEY_APP_VOLUME_LEVELS
+            } else if (key == SoundSettings.KEY_APP_VOLUME_ENABLED ||
+                key == SoundSettings.KEY_APP_VOLUME_LEVELS
             ) {
                 AppVolumeController.updateState(this)
             } else if (key == "button_remap_enabled" ||

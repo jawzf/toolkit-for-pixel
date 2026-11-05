@@ -65,10 +65,10 @@ import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
 import com.jawzf.pixeltoolkit.core.design.theme.ToolkitTheme
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
+import com.jawzf.pixeltoolkit.feature.sound.SoundSettings
+import com.jawzf.pixeltoolkit.feature.sound.appvolume.AppVolumeController
 import com.jawzf.pixeltoolkit.island.ui.components.EqualizerBars
 import com.jawzf.pixeltoolkit.utils.AppUtil
-import com.jawzf.pixeltoolkit.utils.media.AppVolumeController
 import kotlinx.coroutines.delay
 import kotlin.math.roundToInt
 
@@ -109,7 +109,7 @@ private class PlayerRow(
 @Composable
 private fun NowPlayingSheet(onDismiss: () -> Unit) {
     val context = LocalContext.current
-    val settings = remember { SettingsRepository(context) }
+    val settings = remember { SoundSettings(context) }
     val playing by AppVolumeController.playingPackages.collectAsState()
     val levels = remember { mutableStateMapOf<String, Float>().apply { putAll(settings.getAppVolumeLevels()) } }
     val rows =
