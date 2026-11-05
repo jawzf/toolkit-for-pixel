@@ -75,6 +75,7 @@ import com.jawzf.pixeltoolkit.feature.power.caffeinate.ui.CaffeinateSettingsUI
 import com.jawzf.pixeltoolkit.feature.power.maps.ui.MapsPowerSavingSettingsUI
 import com.jawzf.pixeltoolkit.feature.power.saver.ui.PowerAndBatterySettingsUI
 import com.jawzf.pixeltoolkit.feature.power.standby.ui.StandbyAppsSettingsUI
+import com.jawzf.pixeltoolkit.feature.security.faceunlock.ui.FaceUnlockBrightnessSettingsUI
 import com.jawzf.pixeltoolkit.feature.security.screenshots.ui.ScreenshotsSettingsUI
 import com.jawzf.pixeltoolkit.feature.sound.ui.AppVolumeSettingsUI
 import com.jawzf.pixeltoolkit.feature.sound.ui.SoundModeTileSettingsUI
@@ -108,7 +109,6 @@ import com.jawzf.pixeltoolkit.ui.features.system.BACK_GESTURE_FEATURE_ID
 import com.jawzf.pixeltoolkit.ui.features.system.BackGestureSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.ButtonRemapSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.DynamicNightLightSettingsUI
-import com.jawzf.pixeltoolkit.ui.features.system.FaceUnlockBrightnessSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.FlashlightPulseSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.FlashlightSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.FreezeSettingsUI
@@ -1061,7 +1061,10 @@ class FeatureSettingsActivity : AppCompatActivity() {
 
                                     "Face unlock brightness" -> {
                                         FaceUnlockBrightnessSettingsUI(
-                                            viewModel = viewModel,
+                                            state = viewModel.security,
+                                            isAccessibilityEnabled = viewModel.isAccessibilityEnabled.value,
+                                            permissionItems = { keys -> PermissionUIHelper.getPermissionItems(keys, context, viewModel) },
+                                            onPermissionsDismissed = { viewModel.check(context) },
                                             modifier = Modifier.padding(top = 16.dp),
                                             highlightSetting = highlightSetting,
                                         )

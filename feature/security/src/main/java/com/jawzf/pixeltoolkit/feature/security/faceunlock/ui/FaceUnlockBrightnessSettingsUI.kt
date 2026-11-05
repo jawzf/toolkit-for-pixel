@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.features.system
+package com.jawzf.pixeltoolkit.feature.security.faceunlock.ui
 
 import android.hardware.Sensor
 import android.hardware.SensorEvent
@@ -41,10 +41,10 @@ import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.modifiers.highlight
 import com.jawzf.pixeltoolkit.core.design.pickers.SegmentedPicker
+import com.jawzf.pixeltoolkit.core.design.sheets.PermissionItem
 import com.jawzf.pixeltoolkit.core.design.sheets.PermissionsBottomSheet
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
-import com.jawzf.pixeltoolkit.utils.PermissionUIHelper
-import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
+import com.jawzf.pixeltoolkit.feature.security.SecurityState
 import kotlin.math.ln
 import kotlin.math.pow
 import kotlin.math.roundToInt
@@ -76,7 +76,10 @@ private fun formatLux(lux: Float): String =
 
 @Composable
 fun FaceUnlockBrightnessSettingsUI(
-    viewModel: MainViewModel,
+    state: SecurityState,
+    isAccessibilityEnabled: Boolean,
+    permissionItems: (keys: List<String>) -> List<PermissionItem>,
+    onPermissionsDismissed: () -> Unit,
     modifier: Modifier = Modifier,
     highlightSetting: String? = null,
 ) {
@@ -107,10 +110,10 @@ fun FaceUnlockBrightnessSettingsUI(
         PermissionsBottomSheet(
             onDismissRequest = {
                 requestingPermissionsFor = null
-                viewModel.check(context)
+                onPermissionsDismissed()
             },
             featureTitle = stringResource(R.string.feat_face_unlock_brightness_title),
-            permissions = PermissionUIHelper.getPermissionItems(permKeys, context, viewModel),
+            permissions = permissionItems(permKeys),
         )
     }
 
@@ -128,13 +131,13 @@ fun FaceUnlockBrightnessSettingsUI(
             IconToggleItem(
                 iconRes = R.drawable.rounded_face_24,
                 title = stringResource(R.string.feat_face_unlock_brightness_title),
-                isChecked = viewModel.isFaceUnlockBrightnessEnabled.value,
+                isChecked = state.isFaceUnlockBrightnessEnabled.value,
                 onCheckedChange = { checked ->
                     HapticUtil.performVirtualKeyHaptic(view)
-                    if (checked && !viewModel.isAccessibilityEnabled.value) {
+                    if (checked && !isAccessibilityEnabled) {
                         requestingPermissionsFor = listOf("ACCESSIBILITY")
                     } else {
-                        viewModel.setFaceUnlockBrightnessEnabled(checked)
+                        state.setFaceUnlockBrightnessEnabled(checked)
                     }
                 },
                 modifier = Modifier.highlight(highlightSetting == "face_unlock_brightness_enabled"),
@@ -142,7 +145,7 @@ fun FaceUnlockBrightnessSettingsUI(
         }
 
         AnimatedVisibility(
-            visible = viewModel.isFaceUnlockBrightnessEnabled.value,
+            visible = state.isFaceUnlockBrightnessEnabled.value,
             enter = fadeIn() + expandVertically(),
             exit = fadeOut() + shrinkVertically(),
         ) {
@@ -166,10 +169,10 @@ fun FaceUnlockBrightnessSettingsUI(
                     )
                     SegmentedPicker(
                         items = MAX_BRIGHTNESS_OPTIONS,
-                        selectedItem = viewModel.faceUnlockMaxBrightness.intValue,
+                        selectedItem = state.faceUnlockMaxBrightness.intValue,
                         onItemSelected = {
                             HapticUtil.performVirtualKeyHaptic(view)
-                            viewModel.setFaceUnlockMaxBrightness(it)
+                            state.setFaceUnlockMaxBrightness(it)
                         },
                         labelProvider = { "$it%" },
                         title = R.string.flashlight_pulse_max_brightness,
@@ -179,8 +182,8 @@ fun FaceUnlockBrightnessSettingsUI(
 
                 ConfigSliderItem(
                     title = stringResource(R.string.face_unlock_ambient_threshold_title),
-                    value = luxToPosition(viewModel.faceUnlockAmbientThreshold.floatValue),
-                    onValueChange = { viewModel.setFaceUnlockAmbientThreshold(positionToLux(it)) },
+                    value = luxToPosition(state.faceUnlockAmbientThreshold.floatValue),
+                    onValueChange = { state.setFaceUnlockAmbientThreshold(positionToLux(it)) },
                     valueRange = 0f..100f,
                     increment = 2f,
                     valueFormatter = { formatLux(positionToLux(it)) },
@@ -188,7 +191,7 @@ fun FaceUnlockBrightnessSettingsUI(
                     description = currentLux?.let { stringResource(R.string.face_unlock_ambient_now, formatLux(it)) },
                     trailingContent =
                         currentLux?.let { lux ->
-                            { AmbientMatchChip(matches = lux < viewModel.faceUnlockAmbientThreshold.floatValue) }
+                            { AmbientMatchChip(matches = lux < state.faceUnlockAmbientThreshold.floatValue) }
                         },
                     modifier = Modifier.highlight(highlightSetting == "face_unlock_ambient_threshold"),
                 )
@@ -196,10 +199,10 @@ fun FaceUnlockBrightnessSettingsUI(
                 IconToggleItem(
                     iconRes = R.drawable.rounded_brightness_auto_24,
                     title = stringResource(R.string.face_unlock_auto_illuminate_title),
-                    isChecked = viewModel.isFaceUnlockAutoIlluminate.value,
+                    isChecked = state.isFaceUnlockAutoIlluminate.value,
                     onCheckedChange = { checked ->
                         HapticUtil.performVirtualKeyHaptic(view)
-                        viewModel.setFaceUnlockAutoIlluminate(checked)
+                        state.setFaceUnlockAutoIlluminate(checked)
                     },
                     modifier = Modifier.highlight(highlightSetting == "face_unlock_auto_illuminate"),
                 )
@@ -207,13 +210,13 @@ fun FaceUnlockBrightnessSettingsUI(
                 IconToggleItem(
                     iconRes = R.drawable.rounded_lock_24,
                     title = stringResource(R.string.face_unlock_trigger_unlock_title),
-                    isChecked = viewModel.isFaceUnlockTriggerUnlock.value && ShellUtils.hasPermission(context),
+                    isChecked = state.isFaceUnlockTriggerUnlock.value && ShellUtils.hasPermission(context),
                     onCheckedChange = { checked ->
                         HapticUtil.performVirtualKeyHaptic(view)
                         if (checked && !ShellUtils.hasPermission(context)) {
                             requestingPermissionsFor = listOf(if (ShellUtils.isRootEnabled(context)) "ROOT" else "SHIZUKU")
                         } else {
-                            viewModel.setFaceUnlockTriggerUnlock(checked)
+                            state.setFaceUnlockTriggerUnlock(checked)
                         }
                     },
                     modifier = Modifier.highlight(highlightSetting == "face_unlock_trigger_unlock"),
@@ -222,10 +225,10 @@ fun FaceUnlockBrightnessSettingsUI(
                 IconToggleItem(
                     iconRes = R.drawable.rounded_sunny_24,
                     title = stringResource(R.string.face_unlock_light_tint_title),
-                    isChecked = viewModel.isFaceUnlockLightTint.value,
+                    isChecked = state.isFaceUnlockLightTint.value,
                     onCheckedChange = { checked ->
                         HapticUtil.performVirtualKeyHaptic(view)
-                        viewModel.setFaceUnlockLightTint(checked)
+                        state.setFaceUnlockLightTint(checked)
                     },
                     modifier = Modifier.highlight(highlightSetting == "face_unlock_light_tint"),
                 )

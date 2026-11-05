@@ -42,6 +42,30 @@ class SecuritySettings(
             putLong(KEY_SCREENSHOTS_CLEANED_BYTES, (getScreenshotsCleanedBytes() - bytes).coerceAtLeast(0L))
         }
 
+    fun isFaceUnlockBrightnessEnabled(): Boolean = getBoolean(KEY_FACE_UNLOCK_BRIGHTNESS_ENABLED, false)
+
+    fun setFaceUnlockBrightnessEnabled(enabled: Boolean) = putBoolean(KEY_FACE_UNLOCK_BRIGHTNESS_ENABLED, enabled)
+
+    fun getFaceUnlockMaxBrightness(): Int = getInt(KEY_FACE_UNLOCK_MAX_BRIGHTNESS, 100)
+
+    fun setFaceUnlockMaxBrightness(value: Int) = putInt(KEY_FACE_UNLOCK_MAX_BRIGHTNESS, value)
+
+    fun getFaceUnlockAmbientThreshold(): Float = getFloat(KEY_FACE_UNLOCK_AMBIENT_THRESHOLD, 10f)
+
+    fun setFaceUnlockAmbientThreshold(value: Float) = putFloat(KEY_FACE_UNLOCK_AMBIENT_THRESHOLD, value)
+
+    fun isFaceUnlockAutoIlluminateEnabled(): Boolean = getBoolean(KEY_FACE_UNLOCK_AUTO_ILLUMINATE, false)
+
+    fun setFaceUnlockAutoIlluminateEnabled(enabled: Boolean) = putBoolean(KEY_FACE_UNLOCK_AUTO_ILLUMINATE, enabled)
+
+    fun isFaceUnlockTriggerUnlockEnabled(): Boolean = getBoolean(KEY_FACE_UNLOCK_TRIGGER_UNLOCK, true)
+
+    fun setFaceUnlockTriggerUnlockEnabled(enabled: Boolean) = putBoolean(KEY_FACE_UNLOCK_TRIGGER_UNLOCK, enabled)
+
+    fun isFaceUnlockLightTintEnabled(): Boolean = getBoolean(KEY_FACE_UNLOCK_LIGHT_TINT, false)
+
+    fun setFaceUnlockLightTintEnabled(enabled: Boolean) = putBoolean(KEY_FACE_UNLOCK_LIGHT_TINT, enabled)
+
     companion object {
         const val KEY_SCREENSHOT_SHARE_CLEANUP_ENABLED = "screenshot_share_cleanup_enabled"
         const val KEY_SCREENSHOT_SHARE_CLEANUP_DELAY = "screenshot_share_cleanup_delay"
@@ -50,5 +74,11 @@ class SecuritySettings(
         const val KEY_SCREENSHOT_AUTO_CLEAN_LAST_ID = "screenshot_auto_clean_last_id"
         const val KEY_SCREENSHOTS_CLEANED_COUNT = "screenshots_cleaned_count"
         const val KEY_SCREENSHOTS_CLEANED_BYTES = "screenshots_cleaned_bytes"
+        const val KEY_FACE_UNLOCK_BRIGHTNESS_ENABLED = "face_unlock_brightness_enabled"
+        const val KEY_FACE_UNLOCK_MAX_BRIGHTNESS = "face_unlock_max_brightness"
+        const val KEY_FACE_UNLOCK_TRIGGER_UNLOCK = "face_unlock_trigger_unlock"
+        const val KEY_FACE_UNLOCK_AUTO_ILLUMINATE = "face_unlock_auto_illuminate"
+        const val KEY_FACE_UNLOCK_AMBIENT_THRESHOLD = "face_unlock_ambient_threshold_lux"
+        const val KEY_FACE_UNLOCK_LIGHT_TINT = "face_unlock_light_tint"
     }
 }

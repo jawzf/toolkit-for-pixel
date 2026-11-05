@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.utils
+package com.jawzf.pixeltoolkit.core.platform.device
 
 import android.accessibilityservice.AccessibilityService
 import android.graphics.Rect

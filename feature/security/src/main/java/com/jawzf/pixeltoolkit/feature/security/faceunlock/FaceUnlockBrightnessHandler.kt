@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.services.handlers
+package com.jawzf.pixeltoolkit.feature.security.faceunlock
 
 import android.accessibilityservice.AccessibilityService
 import android.annotation.SuppressLint
@@ -62,17 +62,17 @@ import androidx.lifecycle.setViewTreeViewModelStoreOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
+import com.jawzf.pixeltoolkit.core.design.overlay.OverlayLifecycleOwner
 import com.jawzf.pixeltoolkit.core.design.theme.AppFontFamily
+import com.jawzf.pixeltoolkit.core.platform.device.LockscreenShortcutDetector
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.island.service.OverlayLifecycleOwner
-import com.jawzf.pixeltoolkit.utils.LockscreenShortcutDetector
+import com.jawzf.pixeltoolkit.feature.security.SecuritySettings
 import kotlin.concurrent.thread
 
 class FaceUnlockBrightnessHandler(
     private val service: AccessibilityService,
 ) {
-    private val settings = SettingsRepository(service)
+    private val settings = SecuritySettings(service)
     private val handler = Handler(Looper.getMainLooper())
     private val windowManager = service.getSystemService(WindowManager::class.java)
     private val keyguardManager = service.getSystemService(KeyguardManager::class.java)

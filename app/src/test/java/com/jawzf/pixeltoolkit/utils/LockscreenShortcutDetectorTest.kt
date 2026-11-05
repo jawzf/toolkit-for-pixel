@@ -1,5 +1,6 @@
 package com.jawzf.pixeltoolkit.utils
 
+import com.jawzf.pixeltoolkit.core.platform.device.LockscreenShortcutDetector
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test

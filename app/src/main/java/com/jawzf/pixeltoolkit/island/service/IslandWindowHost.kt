@@ -21,6 +21,7 @@ import androidx.lifecycle.setViewTreeLifecycleOwner
 import androidx.lifecycle.setViewTreeViewModelStoreOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
+import com.jawzf.pixeltoolkit.core.design.overlay.OverlayLifecycleOwner
 import com.jawzf.pixeltoolkit.island.model.IslandStage
 import com.jawzf.pixeltoolkit.island.state.CameraAnchor
 import com.jawzf.pixeltoolkit.island.state.CameraGeometry
