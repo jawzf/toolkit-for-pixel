@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.features.battery
+package com.jawzf.pixeltoolkit.feature.power.battery.ui
 
 import android.content.Intent
 import android.net.Uri
@@ -186,7 +186,7 @@ fun BatteriesSettingsUI(
                 modifier = Modifier.padding(start = 16.dp, bottom = 0.dp),
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
-            com.jawzf.pixeltoolkit.ui.features.battery.BluetoothDeviceIconsSection(viewModel, viewModel.isBluetoothDevicesEnabled.value && viewModel.isBluetoothPermissionGranted.value)
+            BluetoothDeviceIconsSection(viewModel, viewModel.isBluetoothDevicesEnabled.value && viewModel.isBluetoothPermissionGranted.value)
         }
 
         // Max Devices Slider

@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.features.battery
+package com.jawzf.pixeltoolkit.feature.power.battery.ui
 
 import android.annotation.SuppressLint
 import android.bluetooth.BluetoothManager
