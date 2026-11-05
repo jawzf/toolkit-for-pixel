@@ -9,9 +9,9 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
+import com.jawzf.pixeltoolkit.core.data.apps.AppUtil
+import com.jawzf.pixeltoolkit.core.data.apps.NotificationApp
 import com.jawzf.pixeltoolkit.core.data.prefs.AppSelection
-import com.jawzf.pixeltoolkit.core.design.apps.AppUtil
-import com.jawzf.pixeltoolkit.core.design.apps.NotificationApp
 import com.jawzf.pixeltoolkit.feature.apps.AppsSettings
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

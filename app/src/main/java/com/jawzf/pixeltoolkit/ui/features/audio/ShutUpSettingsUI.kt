@@ -21,9 +21,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.jawzf.pixeltoolkit.core.data.apps.AppUtil
 import com.jawzf.pixeltoolkit.core.data.prefs.AppSelection
 import com.jawzf.pixeltoolkit.core.design.R
-import com.jawzf.pixeltoolkit.core.design.apps.AppUtil
 import com.jawzf.pixeltoolkit.core.design.cards.FeatureCard
 import com.jawzf.pixeltoolkit.core.design.cards.IconToggleItem
 import com.jawzf.pixeltoolkit.core.design.components.ConfigSliderItem

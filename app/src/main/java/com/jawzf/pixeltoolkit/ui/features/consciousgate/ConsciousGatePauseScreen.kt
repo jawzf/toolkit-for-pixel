@@ -54,8 +54,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
+import com.jawzf.pixeltoolkit.core.data.apps.AppUtil
 import com.jawzf.pixeltoolkit.core.design.R
-import com.jawzf.pixeltoolkit.core.design.apps.AppUtil
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive

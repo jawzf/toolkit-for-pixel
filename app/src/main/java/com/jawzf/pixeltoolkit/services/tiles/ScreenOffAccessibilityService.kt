@@ -23,7 +23,7 @@ import android.os.Vibrator
 import android.view.KeyEvent
 import android.view.accessibility.AccessibilityEvent
 import androidx.core.content.ContextCompat
-import com.jawzf.pixeltoolkit.core.design.apps.AppUtil
+import com.jawzf.pixeltoolkit.core.data.apps.AppUtil
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticFeedbackType
 import com.jawzf.pixeltoolkit.core.design.haptics.performHapticFeedback
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository

@@ -12,7 +12,7 @@ import android.media.session.MediaSessionManager
 import android.media.session.PlaybackState
 import android.os.Handler
 import android.os.SystemClock
-import com.jawzf.pixeltoolkit.core.design.apps.AppUtil
+import com.jawzf.pixeltoolkit.core.data.apps.AppUtil
 import com.jawzf.pixeltoolkit.services.NotificationListener
 import java.io.File
 import kotlin.math.abs

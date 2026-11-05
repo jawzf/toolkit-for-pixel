@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.core.design.apps
+package com.jawzf.pixeltoolkit.core.data.apps
 
 import android.content.Context
 import android.content.pm.ApplicationInfo

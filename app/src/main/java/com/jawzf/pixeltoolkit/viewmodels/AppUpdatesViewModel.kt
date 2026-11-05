@@ -8,9 +8,9 @@ import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
+import com.jawzf.pixeltoolkit.core.data.apps.AppUtil
+import com.jawzf.pixeltoolkit.core.data.apps.NotificationApp
 import com.jawzf.pixeltoolkit.core.design.R
-import com.jawzf.pixeltoolkit.core.design.apps.AppUtil
-import com.jawzf.pixeltoolkit.core.design.apps.NotificationApp
 import com.jawzf.pixeltoolkit.data.repository.GitHubRepository
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.domain.model.TrackedRepo

@@ -25,8 +25,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import com.jawzf.pixeltoolkit.core.data.apps.AppUtil
 import com.jawzf.pixeltoolkit.core.design.R
-import com.jawzf.pixeltoolkit.core.design.apps.AppUtil
 import com.jawzf.pixeltoolkit.core.design.cards.ConfigPickerItem
 import com.jawzf.pixeltoolkit.core.design.cards.FeatureCard
 import com.jawzf.pixeltoolkit.core.design.cards.IconToggleItem

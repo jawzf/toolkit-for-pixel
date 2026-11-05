@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.core.design.apps
+package com.jawzf.pixeltoolkit.core.data.apps
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.ImageBitmap

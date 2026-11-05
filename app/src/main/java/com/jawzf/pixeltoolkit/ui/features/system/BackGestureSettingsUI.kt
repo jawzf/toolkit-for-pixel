@@ -47,8 +47,8 @@ import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupPositionProvider
 import androidx.compose.ui.window.PopupProperties
 import androidx.lifecycle.compose.LifecycleResumeEffect
+import com.jawzf.pixeltoolkit.core.data.apps.AppUtil
 import com.jawzf.pixeltoolkit.core.design.R
-import com.jawzf.pixeltoolkit.core.design.apps.AppUtil
 import com.jawzf.pixeltoolkit.core.design.cards.FeatureCard
 import com.jawzf.pixeltoolkit.core.design.components.ConfigSliderItem
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer

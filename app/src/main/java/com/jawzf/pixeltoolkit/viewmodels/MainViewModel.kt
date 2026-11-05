@@ -34,11 +34,11 @@ import androidx.core.os.LocaleListCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jawzf.pixeltoolkit.ToolkitApp
+import com.jawzf.pixeltoolkit.core.data.apps.AppUtil
 import com.jawzf.pixeltoolkit.core.data.backup.ConfigBackup
 import com.jawzf.pixeltoolkit.core.data.log.LogManager
 import com.jawzf.pixeltoolkit.core.data.prefs.AppSelection
 import com.jawzf.pixeltoolkit.core.design.R
-import com.jawzf.pixeltoolkit.core.design.apps.AppUtil
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticFeedbackType
 import com.jawzf.pixeltoolkit.core.platform.device.DeviceUtils
 import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionGrantUtil

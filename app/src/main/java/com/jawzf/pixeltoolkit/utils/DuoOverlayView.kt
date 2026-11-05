@@ -20,8 +20,8 @@ import android.view.animation.OvershootInterpolator
 import android.view.animation.PathInterpolator
 import androidx.core.content.ContextCompat
 import androidx.palette.graphics.Palette
+import com.jawzf.pixeltoolkit.core.data.apps.AppUtil
 import com.jawzf.pixeltoolkit.core.design.R
-import com.jawzf.pixeltoolkit.core.design.apps.AppUtil
 import com.jawzf.pixeltoolkit.services.dreams.AmbientDreamService
 import kotlin.math.cos
 import kotlin.math.sin

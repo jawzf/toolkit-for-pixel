@@ -73,10 +73,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
+import com.jawzf.pixeltoolkit.core.data.apps.AppUtil
+import com.jawzf.pixeltoolkit.core.data.apps.NotificationApp
 import com.jawzf.pixeltoolkit.core.data.prefs.AppSelection
 import com.jawzf.pixeltoolkit.core.design.R
-import com.jawzf.pixeltoolkit.core.design.apps.AppUtil
-import com.jawzf.pixeltoolkit.core.design.apps.NotificationApp
 import com.jawzf.pixeltoolkit.core.design.cards.AppToggleItem
 import com.jawzf.pixeltoolkit.core.design.components.CategoryExpandableSection
 import com.jawzf.pixeltoolkit.core.design.components.ToolkitFloatingToolbar

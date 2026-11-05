@@ -8,7 +8,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.SystemClock
 import android.service.notification.StatusBarNotification
-import com.jawzf.pixeltoolkit.core.design.apps.AppUtil
+import com.jawzf.pixeltoolkit.core.data.apps.AppUtil
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

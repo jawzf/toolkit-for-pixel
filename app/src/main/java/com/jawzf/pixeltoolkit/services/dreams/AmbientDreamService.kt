@@ -24,8 +24,8 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextClock
 import android.widget.TextView
+import com.jawzf.pixeltoolkit.core.data.apps.AppUtil
 import com.jawzf.pixeltoolkit.core.design.R
-import com.jawzf.pixeltoolkit.core.design.apps.AppUtil
 import com.jawzf.pixeltoolkit.services.NotificationListener
 import java.io.File
 import java.util.Random

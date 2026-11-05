@@ -22,8 +22,8 @@ import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import android.util.Log
 import androidx.annotation.RequiresApi
+import com.jawzf.pixeltoolkit.core.data.apps.AppUtil
 import com.jawzf.pixeltoolkit.core.data.prefs.AppSelection
-import com.jawzf.pixeltoolkit.core.design.apps.AppUtil
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticFeedbackType
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.platform.device.DeviceUtils

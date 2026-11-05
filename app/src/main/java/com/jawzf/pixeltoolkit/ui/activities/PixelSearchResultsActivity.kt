@@ -107,9 +107,9 @@ import androidx.core.view.WindowCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.jawzf.pixeltoolkit.FeatureSettingsActivity
+import com.jawzf.pixeltoolkit.core.data.apps.AppUtil
+import com.jawzf.pixeltoolkit.core.data.apps.NotificationApp
 import com.jawzf.pixeltoolkit.core.design.R
-import com.jawzf.pixeltoolkit.core.design.apps.AppUtil
-import com.jawzf.pixeltoolkit.core.design.apps.NotificationApp
 import com.jawzf.pixeltoolkit.core.design.cards.FeatureCard
 import com.jawzf.pixeltoolkit.core.design.color.ColorUtil
 import com.jawzf.pixeltoolkit.core.design.components.SegmentedDropdownMenuItem
