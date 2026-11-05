@@ -67,6 +67,7 @@ import com.jawzf.pixeltoolkit.core.platform.device.DeviceUtils
 import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.domain.registry.FeatureRegistry
+import com.jawzf.pixeltoolkit.feature.apps.applock.ui.AppLockSettingsUI
 import com.jawzf.pixeltoolkit.feature.apps.freeze.ui.FreezeSettingsUI
 import com.jawzf.pixeltoolkit.feature.connectivity.ui.NetworksSettingsUI
 import com.jawzf.pixeltoolkit.feature.power.battery.ui.BatteriesPreviewCard
@@ -103,7 +104,6 @@ import com.jawzf.pixeltoolkit.ui.features.display.IslandPlacementSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.display.IslandSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.display.IslandVisualsSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.display.StatusGlanceSettingsUI
-import com.jawzf.pixeltoolkit.ui.features.security.AppLockSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.ActivityLauncherSearchBar
 import com.jawzf.pixeltoolkit.ui.features.system.ActivityLauncherSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.AlwaysOnDisplaySettingsUI

@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit
+package com.jawzf.pixeltoolkit.feature.apps.applock
 
 import android.content.Intent
 import android.content.pm.PackageManager
