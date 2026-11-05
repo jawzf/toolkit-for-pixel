@@ -8,5 +8,6 @@ android {
 
 dependencies {
     implementation(project(":core:platform"))
+    implementation(libs.androidx.core.ktx)
     implementation(libs.gson)
 }

@@ -1,5 +1,5 @@
 plugins {
-    id("toolkit.android.library.compose")
+    id("toolkit.android.library")
 }
 
 android {
