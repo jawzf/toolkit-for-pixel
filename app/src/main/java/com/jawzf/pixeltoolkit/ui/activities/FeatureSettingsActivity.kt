@@ -1106,7 +1106,14 @@ class FeatureSettingsActivity : AppCompatActivity() {
                                             isShizukuPermissionGranted = viewModel.isShizukuPermissionGranted.value,
                                             isAccessibilityEnabled = viewModel.isAccessibilityEnabled.value,
                                             isEnableUnsupportedFeatures = viewModel.isEnableUnsupportedFeatures.value,
-                                            permissionItems = { keys -> PermissionUIHelper.getPermissionItems(keys, context, viewModel, context as? android.app.Activity) },
+                                            permissionItems = { keys ->
+                                                PermissionUIHelper.getPermissionItems(
+                                                    keys,
+                                                    context,
+                                                    viewModel,
+                                                    context as? android.app.Activity,
+                                                )
+                                            },
                                             appPicker = { onDismiss ->
                                                 AppSelectionSheet(
                                                     restrictSystemApps = !viewModel.isEnableUnsupportedFeatures.value,
