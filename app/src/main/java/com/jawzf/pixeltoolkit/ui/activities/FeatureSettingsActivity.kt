@@ -68,6 +68,9 @@ import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.domain.registry.FeatureRegistry
 import com.jawzf.pixeltoolkit.feature.connectivity.ui.NetworksSettingsUI
+import com.jawzf.pixeltoolkit.feature.sound.ui.AppVolumeSettingsUI
+import com.jawzf.pixeltoolkit.feature.sound.ui.SoundModeTileSettingsUI
+import com.jawzf.pixeltoolkit.feature.sound.ui.VolumeStepsSettingsUI
 import com.jawzf.pixeltoolkit.ui.components.linkActions.LinkPickerScreen
 import com.jawzf.pixeltoolkit.ui.core.sheets.ShakeForHelp
 import com.jawzf.pixeltoolkit.ui.features.battery.BatteriesSettingsUI
@@ -93,7 +96,6 @@ import com.jawzf.pixeltoolkit.ui.features.security.ScreenshotsSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.ActivityLauncherSearchBar
 import com.jawzf.pixeltoolkit.ui.features.system.ActivityLauncherSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.AlwaysOnDisplaySettingsUI
-import com.jawzf.pixeltoolkit.ui.features.system.AppVolumeSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.AutoDismissNotificationsSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.BACK_GESTURE_FEATURE_ID
 import com.jawzf.pixeltoolkit.ui.features.system.BackGestureSettingsUI
@@ -124,12 +126,10 @@ import com.jawzf.pixeltoolkit.ui.features.system.ScreenLockedSecuritySettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.ScreenOffWidgetSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.ShutUpSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.SnoozeNotificationsSettingsUI
-import com.jawzf.pixeltoolkit.ui.features.system.SoundModeTileSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.StandbyAppsSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.StatusBarIconSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.TextAnimationsSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.ToolkitOnDisplaySettingsUI
-import com.jawzf.pixeltoolkit.ui.features.system.VolumeStepsSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.widgets.WidgetStackSettingsUI
 import com.jawzf.pixeltoolkit.utils.BiometricSecurityHelper
 import com.jawzf.pixeltoolkit.viewmodels.CaffeinateViewModel

@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.activities
+package com.jawzf.pixeltoolkit.feature.sound.appvolume
 
 import android.content.BroadcastReceiver
 import android.content.Context

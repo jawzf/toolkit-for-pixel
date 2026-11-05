@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.services.handlers
+package com.jawzf.pixeltoolkit.feature.sound.appvolume
 
 import android.accessibilityservice.AccessibilityService
 import android.annotation.SuppressLint
@@ -34,9 +34,9 @@ import androidx.compose.ui.graphics.toArgb
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.feature.sound.SoundSettings
+import com.jawzf.pixeltoolkit.feature.sound.appvolume.AppVolumeControlActivity
 import com.jawzf.pixeltoolkit.feature.sound.appvolume.AppVolumeController
 import com.jawzf.pixeltoolkit.feature.sound.appvolume.VolumePanelDetector
-import com.jawzf.pixeltoolkit.ui.activities.AppVolumeControlActivity
 import com.jawzf.pixeltoolkit.utils.AppUtil
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
