@@ -46,14 +46,18 @@ import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.sheets.PermissionItem
 import com.jawzf.pixeltoolkit.core.design.sheets.PermissionsBottomSheet
+import com.jawzf.pixeltoolkit.feature.power.PowerState
 import com.jawzf.pixeltoolkit.feature.power.standby.AppStandbyInfo
-import com.jawzf.pixeltoolkit.feature.power.standby.ui.StandbyAppsMoveSheet
-import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun StandbyAppsSettingsUI(
-    viewModel: MainViewModel,
+    state: PowerState,
+    isShizukuAvailable: Boolean,
+    isShizukuPermissionGranted: Boolean,
+    isRootAvailable: Boolean,
+    isRootPermissionGranted: Boolean,
+    onRequestShizukuPermission: () -> Unit,
     modifier: Modifier = Modifier,
     selectedPackages: Set<String> = emptySet(),
     onSelectionChange: (Set<String>) -> Unit = {},
@@ -70,12 +74,12 @@ fun StandbyAppsSettingsUI(
     }
 
     val isShizukuGranted =
-        viewModel.isShizukuAvailable.value && viewModel.isShizukuPermissionGranted.value
-    val isRootGranted = viewModel.isRootAvailable.value && viewModel.isRootPermissionGranted.value
+        isShizukuAvailable && isShizukuPermissionGranted
+    val isRootGranted = isRootAvailable && isRootPermissionGranted
     val isShellGranted = isShizukuGranted || isRootGranted
 
     LaunchedEffect(Unit) {
-        viewModel.loadStandbyApps(context)
+        state.loadStandbyApps(context)
     }
 
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -83,7 +87,7 @@ fun StandbyAppsSettingsUI(
         val observer =
             LifecycleEventObserver { _, event ->
                 if (event == Lifecycle.Event.ON_RESUME) {
-                    viewModel.loadStandbyApps(context)
+                    state.loadStandbyApps(context)
                 }
             }
         lifecycleOwner.lifecycle.addObserver(observer)
@@ -98,7 +102,7 @@ fun StandbyAppsSettingsUI(
             onBucketSelected = { targetBucket ->
                 onShowMoveSheetChange(false)
                 if (isShellGranted) {
-                    viewModel.setAppsStandbyBucket(selectedPackages, targetBucket, context)
+                    state.setAppsStandbyBucket(selectedPackages, targetBucket, context)
                     onSelectionChange(emptySet())
                 } else {
                     requestingPermissionFor = true
@@ -111,11 +115,11 @@ fun StandbyAppsSettingsUI(
         val shizukuPermission =
             PermissionItem(
                 iconRes = R.drawable.rounded_adb_24,
-                title = if (!viewModel.isShizukuAvailable.value) R.string.perm_shizuku_title else R.string.perm_shizuku_grant_title,
-                description = if (!viewModel.isShizukuAvailable.value) R.string.perm_shizuku_desc else R.string.perm_shizuku_grant_desc,
+                title = if (!isShizukuAvailable) R.string.perm_shizuku_title else R.string.perm_shizuku_grant_title,
+                description = if (!isShizukuAvailable) R.string.perm_shizuku_desc else R.string.perm_shizuku_grant_desc,
                 dependentFeatures = listOf(R.string.feat_standby_apps_title),
                 actionLabel =
-                    if (!viewModel.isShizukuAvailable.value) {
+                    if (!isShizukuAvailable) {
                         R.string.perm_shizuku_install_action
                     } else if (isShellGranted) {
                         R.string.perm_action_granted
@@ -123,7 +127,7 @@ fun StandbyAppsSettingsUI(
                         R.string.perm_action_grant
                     },
                 action = {
-                    if (!viewModel.isShizukuAvailable.value) {
+                    if (!isShizukuAvailable) {
                         val intent =
                             Intent(
                                 Intent.ACTION_VIEW,
@@ -133,7 +137,7 @@ fun StandbyAppsSettingsUI(
                             }
                         context.startActivity(intent)
                     } else {
-                        viewModel.requestShizukuPermission()
+                        onRequestShizukuPermission()
                     }
                 },
                 isGranted = isShellGranted,
@@ -146,8 +150,8 @@ fun StandbyAppsSettingsUI(
         )
     }
 
-    val appsList = viewModel.standbyAppsList.value
-    val isLoading = viewModel.isStandbyAppsLoading.value
+    val appsList = state.standbyAppsList.value
+    val isLoading = state.isStandbyAppsLoading.value
 
     if (isLoading) {
         Row(
@@ -225,7 +229,7 @@ fun StandbyAppsSettingsUI(
                                     },
                                     onMoveBucket = { targetBucket ->
                                         if (isShellGranted) {
-                                            viewModel.setAppStandbyBucket(
+                                            state.setAppStandbyBucket(
                                                 app.packageName,
                                                 targetBucket,
                                                 context,

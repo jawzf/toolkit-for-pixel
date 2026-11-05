@@ -1301,7 +1301,8 @@ class FeatureSettingsActivity : AppCompatActivity() {
 
                                     "Power and Battery" -> {
                                         PowerAndBatterySettingsUI(
-                                            viewModel = viewModel,
+                                            state = viewModel.power,
+                                            isWriteSecureSettingsEnabled = viewModel.isWriteSecureSettingsEnabled.value,
                                             modifier = Modifier.padding(top = 16.dp),
                                             highlightSetting = highlightSetting,
                                         )
@@ -1323,7 +1324,12 @@ class FeatureSettingsActivity : AppCompatActivity() {
 
                                     "Standby apps" -> {
                                         StandbyAppsSettingsUI(
-                                            viewModel = viewModel,
+                                            state = viewModel.power,
+                                            isShizukuAvailable = viewModel.isShizukuAvailable.value,
+                                            isShizukuPermissionGranted = viewModel.isShizukuPermissionGranted.value,
+                                            isRootAvailable = viewModel.isRootAvailable.value,
+                                            isRootPermissionGranted = viewModel.isRootPermissionGranted.value,
+                                            onRequestShizukuPermission = { viewModel.requestShizukuPermission() },
                                             modifier = Modifier.padding(top = 16.dp),
                                             selectedPackages = standbyAppsSelectedPackages,
                                             onSelectionChange = { standbyAppsSelectedPackages = it },

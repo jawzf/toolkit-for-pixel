@@ -50,7 +50,7 @@ object ServiceUtils {
                 SimCarrierUtil.applySavedCarrierNames(context)
             }
 
-            if (settingsRepository.isPowerSavingApplyOnBootEnabled()) {
+            if (PowerSettings(context).isPowerSavingApplyOnBootEnabled()) {
                 val triggerLevel =
                     android.provider.Settings.Global.getInt(
                         context.contentResolver,

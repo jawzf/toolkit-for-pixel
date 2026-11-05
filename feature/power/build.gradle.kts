@@ -20,4 +20,5 @@ dependencies {
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.glance.appwidget)
     implementation(libs.reorderable)
+    implementation(libs.coil.compose)
 }

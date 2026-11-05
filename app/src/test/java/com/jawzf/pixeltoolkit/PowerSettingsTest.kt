@@ -18,5 +18,6 @@ class PowerSettingsTest {
         assertEquals("maps_power_saving_enabled", PowerSettings.KEY_MAPS_POWER_SAVING_ENABLED)
         assertEquals("maps_discovered_channels", PowerSettings.KEY_MAPS_DISCOVERED_CHANNELS)
         assertEquals("maps_detection_channels", PowerSettings.KEY_MAPS_DETECTION_CHANNELS)
+        assertEquals("power_saving_apply_on_boot", PowerSettings.KEY_POWER_SAVING_APPLY_ON_BOOT)
     }
 }

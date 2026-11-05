@@ -29,21 +29,22 @@ import com.jawzf.pixeltoolkit.core.design.components.ConfigSliderItem
 import com.jawzf.pixeltoolkit.core.design.components.SegmentedDropdownMenuItem
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
+import com.jawzf.pixeltoolkit.feature.power.PowerSettings
+import com.jawzf.pixeltoolkit.feature.power.PowerState
 
 @Composable
 fun PowerAndBatterySettingsUI(
-    viewModel: MainViewModel,
+    state: PowerState,
+    isWriteSecureSettingsEnabled: Boolean,
     modifier: Modifier = Modifier,
     highlightSetting: String? = null,
 ) {
     val context = LocalContext.current
     val view = LocalView.current
-    val settingsRepository = remember { SettingsRepository(context) }
-    val isEnabled = viewModel.isWriteSecureSettingsEnabled.value
+    val settingsRepository = remember { PowerSettings(context) }
+    val isEnabled = isWriteSecureSettingsEnabled
 
-    val constants = viewModel.batterySaverConstants.value
+    val constants = state.batterySaverConstants.value
 
     // Helpers to get current value with standard default fallbacks
     fun getBool(
@@ -88,9 +89,9 @@ fun PowerAndBatterySettingsUI(
             ConfigSliderItem(
                 title = stringResource(R.string.label_low_power_trigger_level),
                 description = stringResource(R.string.desc_low_power_trigger_level),
-                value = viewModel.lowPowerTriggerLevel.intValue.toFloat(),
+                value = state.lowPowerTriggerLevel.intValue.toFloat(),
                 onValueChange = {
-                    viewModel.setLowPowerTriggerLevel(context, it.toInt())
+                    state.setLowPowerTriggerLevel(context, it.toInt())
                     HapticUtil.performSliderHaptic(view)
                 },
                 valueRange = 0f..100f,
@@ -104,7 +105,7 @@ fun PowerAndBatterySettingsUI(
                 description = stringResource(R.string.desc_advertise_is_enabled),
                 isChecked = getBool("advertise_is_enabled", true),
                 onCheckedChange = {
-                    viewModel.updateBatterySaverConstant(
+                    state.updateBatterySaverConstant(
                         context,
                         "advertise_is_enabled",
                         it.toString(),
@@ -119,7 +120,7 @@ fun PowerAndBatterySettingsUI(
                 description = stringResource(R.string.desc_enable_firewall),
                 isChecked = getBool("enable_firewall", true),
                 onCheckedChange = {
-                    viewModel.updateBatterySaverConstant(context, "enable_firewall", it.toString())
+                    state.updateBatterySaverConstant(context, "enable_firewall", it.toString())
                     HapticUtil.performUIHaptic(view)
                 },
                 enabled = isEnabled,
@@ -130,7 +131,7 @@ fun PowerAndBatterySettingsUI(
                 description = stringResource(R.string.desc_force_all_apps_standby),
                 isChecked = getBool("force_all_apps_standby", true),
                 onCheckedChange = {
-                    viewModel.updateBatterySaverConstant(
+                    state.updateBatterySaverConstant(
                         context,
                         "force_all_apps_standby",
                         it.toString(),
@@ -145,7 +146,7 @@ fun PowerAndBatterySettingsUI(
                 description = stringResource(R.string.desc_force_background_check),
                 isChecked = getBool("force_background_check", true),
                 onCheckedChange = {
-                    viewModel.updateBatterySaverConstant(
+                    state.updateBatterySaverConstant(
                         context,
                         "force_background_check",
                         it.toString(),
@@ -171,7 +172,7 @@ fun PowerAndBatterySettingsUI(
                 description = stringResource(R.string.desc_enable_brightness_adjustment),
                 isChecked = brightnessAdjust,
                 onCheckedChange = {
-                    viewModel.updateBatterySaverConstant(
+                    state.updateBatterySaverConstant(
                         context,
                         "enable_brightness_adjustment",
                         it.toString(),
@@ -191,7 +192,7 @@ fun PowerAndBatterySettingsUI(
                     value = getFloat("adjust_brightness_factor", 0.8f) * 100f,
                     onValueChange = {
                         val factor = it / 100f
-                        viewModel.updateBatterySaverConstant(
+                        state.updateBatterySaverConstant(
                             context,
                             "adjust_brightness_factor",
                             factor.toString(),
@@ -210,7 +211,7 @@ fun PowerAndBatterySettingsUI(
                 description = stringResource(R.string.desc_disable_animation),
                 isChecked = getBool("disable_animation", false),
                 onCheckedChange = {
-                    viewModel.updateBatterySaverConstant(
+                    state.updateBatterySaverConstant(
                         context,
                         "disable_animation",
                         it.toString(),
@@ -225,7 +226,7 @@ fun PowerAndBatterySettingsUI(
                 description = stringResource(R.string.desc_disable_aod),
                 isChecked = getBool("disable_aod", true),
                 onCheckedChange = {
-                    viewModel.updateBatterySaverConstant(context, "disable_aod", it.toString())
+                    state.updateBatterySaverConstant(context, "disable_aod", it.toString())
                     HapticUtil.performUIHaptic(view)
                 },
                 enabled = isEnabled,
@@ -236,7 +237,7 @@ fun PowerAndBatterySettingsUI(
                 description = stringResource(R.string.desc_enable_night_mode),
                 isChecked = getBool("enable_night_mode", true),
                 onCheckedChange = {
-                    viewModel.updateBatterySaverConstant(
+                    state.updateBatterySaverConstant(
                         context,
                         "enable_night_mode",
                         it.toString(),
@@ -261,7 +262,7 @@ fun PowerAndBatterySettingsUI(
                 description = stringResource(R.string.desc_disable_launch_boost),
                 isChecked = getBool("disable_launch_boost", true),
                 onCheckedChange = {
-                    viewModel.updateBatterySaverConstant(
+                    state.updateBatterySaverConstant(
                         context,
                         "disable_launch_boost",
                         it.toString(),
@@ -276,7 +277,7 @@ fun PowerAndBatterySettingsUI(
                 description = stringResource(R.string.desc_enable_quick_doze),
                 isChecked = getBool("enable_quick_doze", true),
                 onCheckedChange = {
-                    viewModel.updateBatterySaverConstant(
+                    state.updateBatterySaverConstant(
                         context,
                         "enable_quick_doze",
                         it.toString(),
@@ -291,7 +292,7 @@ fun PowerAndBatterySettingsUI(
                 description = stringResource(R.string.desc_disable_optional_sensors),
                 isChecked = getBool("disable_optional_sensors", true),
                 onCheckedChange = {
-                    viewModel.updateBatterySaverConstant(
+                    state.updateBatterySaverConstant(
                         context,
                         "disable_optional_sensors",
                         it.toString(),
@@ -316,7 +317,7 @@ fun PowerAndBatterySettingsUI(
                 description = stringResource(R.string.desc_enable_datasaver),
                 isChecked = getBool("enable_datasaver", false),
                 onCheckedChange = {
-                    viewModel.updateBatterySaverConstant(context, "enable_datasaver", it.toString())
+                    state.updateBatterySaverConstant(context, "enable_datasaver", it.toString())
                     HapticUtil.performUIHaptic(view)
                 },
                 enabled = isEnabled,
@@ -327,7 +328,7 @@ fun PowerAndBatterySettingsUI(
                 description = stringResource(R.string.desc_defer_full_backup),
                 isChecked = getBool("defer_full_backup", true),
                 onCheckedChange = {
-                    viewModel.updateBatterySaverConstant(
+                    state.updateBatterySaverConstant(
                         context,
                         "defer_full_backup",
                         it.toString(),
@@ -342,7 +343,7 @@ fun PowerAndBatterySettingsUI(
                 description = stringResource(R.string.desc_defer_keyvalue_backup),
                 isChecked = getBool("defer_keyvalue_backup", true),
                 onCheckedChange = {
-                    viewModel.updateBatterySaverConstant(
+                    state.updateBatterySaverConstant(
                         context,
                         "defer_keyvalue_backup",
                         it.toString(),
@@ -367,7 +368,7 @@ fun PowerAndBatterySettingsUI(
                 description = stringResource(R.string.desc_disable_vibration),
                 isChecked = getBool("disable_vibration", false),
                 onCheckedChange = {
-                    viewModel.updateBatterySaverConstant(
+                    state.updateBatterySaverConstant(
                         context,
                         "disable_vibration",
                         it.toString(),
@@ -402,7 +403,7 @@ fun PowerAndBatterySettingsUI(
                     SegmentedDropdownMenuItem(
                         text = { Text(optionLabel) },
                         onClick = {
-                            viewModel.updateBatterySaverConstant(
+                            state.updateBatterySaverConstant(
                                 context,
                                 "soundtrigger_mode",
                                 option.toString(),
@@ -451,7 +452,7 @@ fun PowerAndBatterySettingsUI(
                     SegmentedDropdownMenuItem(
                         text = { Text(optionLabel) },
                         onClick = {
-                            viewModel.updateBatterySaverConstant(
+                            state.updateBatterySaverConstant(
                                 context,
                                 "location_mode",
                                 option.toString(),
@@ -485,7 +486,7 @@ fun PowerAndBatterySettingsUI(
         RoundedCardContainer {
             Button(
                 onClick = {
-                    viewModel.resetBatterySaverConstants(context)
+                    state.resetBatterySaverConstants(context)
                     HapticUtil.performUIHaptic(view)
                     Toast
                         .makeText(
