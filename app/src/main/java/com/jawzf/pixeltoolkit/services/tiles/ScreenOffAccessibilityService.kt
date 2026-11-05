@@ -26,6 +26,7 @@ import androidx.core.content.ContextCompat
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticFeedbackType
 import com.jawzf.pixeltoolkit.core.design.haptics.performHapticFeedback
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
+import com.jawzf.pixeltoolkit.feature.security.faceunlock.FaceUnlockBrightnessHandler
 import com.jawzf.pixeltoolkit.feature.security.screenshots.ScreenshotAutoCleanHandler
 import com.jawzf.pixeltoolkit.feature.security.screenshots.ScreenshotShareCleanupHandler
 import com.jawzf.pixeltoolkit.feature.sound.SoundSettings
@@ -43,7 +44,6 @@ import com.jawzf.pixeltoolkit.services.handlers.AodWallpaperOverlayHandler
 import com.jawzf.pixeltoolkit.services.handlers.AppFlowHandler
 import com.jawzf.pixeltoolkit.services.handlers.ButtonRemapHandler
 import com.jawzf.pixeltoolkit.services.handlers.DuoOverlayHandler
-import com.jawzf.pixeltoolkit.services.handlers.FaceUnlockBrightnessHandler
 import com.jawzf.pixeltoolkit.services.handlers.FlashlightHandler
 import com.jawzf.pixeltoolkit.services.handlers.LockscreenShortcutsHandler
 import com.jawzf.pixeltoolkit.services.handlers.NotificationLightingHandler

@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.features.system
+package com.jawzf.pixeltoolkit.feature.security.faceunlock.ui
 
 import android.hardware.Sensor
 import android.hardware.SensorEvent
