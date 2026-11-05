@@ -75,6 +75,7 @@ import com.jawzf.pixeltoolkit.feature.power.caffeinate.ui.CaffeinateSettingsUI
 import com.jawzf.pixeltoolkit.feature.power.maps.ui.MapsPowerSavingSettingsUI
 import com.jawzf.pixeltoolkit.feature.power.saver.ui.PowerAndBatterySettingsUI
 import com.jawzf.pixeltoolkit.feature.power.standby.ui.StandbyAppsSettingsUI
+import com.jawzf.pixeltoolkit.feature.security.screenshots.ui.ScreenshotsSettingsUI
 import com.jawzf.pixeltoolkit.feature.sound.ui.AppVolumeSettingsUI
 import com.jawzf.pixeltoolkit.feature.sound.ui.SoundModeTileSettingsUI
 import com.jawzf.pixeltoolkit.feature.sound.ui.VolumeStepsSettingsUI
@@ -99,7 +100,6 @@ import com.jawzf.pixeltoolkit.ui.features.display.IslandSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.display.IslandVisualsSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.display.StatusGlanceSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.security.AppLockSettingsUI
-import com.jawzf.pixeltoolkit.ui.features.security.ScreenshotsSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.ActivityLauncherSearchBar
 import com.jawzf.pixeltoolkit.ui.features.system.ActivityLauncherSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.AlwaysOnDisplaySettingsUI

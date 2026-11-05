@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.services.handlers
+package com.jawzf.pixeltoolkit.feature.security.screenshots
 
 import android.content.Context
 import android.database.ContentObserver
@@ -6,8 +6,8 @@ import android.os.Handler
 import android.os.Looper
 import android.provider.MediaStore
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.utils.ScreenshotCleaner
-import com.jawzf.pixeltoolkit.utils.ScreenshotCleanupNotifier
+import com.jawzf.pixeltoolkit.feature.security.screenshots.ScreenshotCleaner
+import com.jawzf.pixeltoolkit.feature.security.screenshots.ScreenshotCleanupNotifier
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

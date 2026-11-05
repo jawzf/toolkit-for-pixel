@@ -26,6 +26,8 @@ import androidx.core.content.ContextCompat
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticFeedbackType
 import com.jawzf.pixeltoolkit.core.design.haptics.performHapticFeedback
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
+import com.jawzf.pixeltoolkit.feature.security.screenshots.ScreenshotAutoCleanHandler
+import com.jawzf.pixeltoolkit.feature.security.screenshots.ScreenshotShareCleanupHandler
 import com.jawzf.pixeltoolkit.feature.sound.SoundSettings
 import com.jawzf.pixeltoolkit.feature.sound.appvolume.AppVolumeController
 import com.jawzf.pixeltoolkit.feature.sound.appvolume.AppVolumeOverlayHandler
@@ -46,8 +48,6 @@ import com.jawzf.pixeltoolkit.services.handlers.FlashlightHandler
 import com.jawzf.pixeltoolkit.services.handlers.LockscreenShortcutsHandler
 import com.jawzf.pixeltoolkit.services.handlers.NotificationLightingHandler
 import com.jawzf.pixeltoolkit.services.handlers.OmniGestureOverlayHandler
-import com.jawzf.pixeltoolkit.services.handlers.ScreenshotAutoCleanHandler
-import com.jawzf.pixeltoolkit.services.handlers.ScreenshotShareCleanupHandler
 import com.jawzf.pixeltoolkit.services.handlers.StatusBarIconHandler
 import com.jawzf.pixeltoolkit.services.handlers.StatusGlanceHandler
 import com.jawzf.pixeltoolkit.services.receivers.FlashlightActionReceiver

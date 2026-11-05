@@ -1,5 +1,6 @@
 package com.jawzf.pixeltoolkit.utils
 
+import com.jawzf.pixeltoolkit.feature.security.screenshots.ScreenshotShareTracker
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull

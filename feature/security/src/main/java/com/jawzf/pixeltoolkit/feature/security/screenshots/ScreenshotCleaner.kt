@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.utils
+package com.jawzf.pixeltoolkit.feature.security.screenshots
 
 import android.content.ContentUris
 import android.content.ContentValues
@@ -12,7 +12,7 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.services.ScreenshotTrashWorker
+import com.jawzf.pixeltoolkit.feature.security.screenshots.ScreenshotTrashWorker
 import java.util.concurrent.TimeUnit
 
 object ScreenshotCleaner {

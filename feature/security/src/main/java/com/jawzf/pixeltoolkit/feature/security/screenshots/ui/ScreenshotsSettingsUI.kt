@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.features.security
+package com.jawzf.pixeltoolkit.feature.security.screenshots.ui
 
 import android.text.format.Formatter
 import androidx.compose.animation.AnimatedVisibility
