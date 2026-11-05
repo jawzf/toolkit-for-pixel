@@ -43,10 +43,10 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.jawzf.pixeltoolkit.core.data.prefs.AppSelection
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.domain.model.AppSelection
 import com.jawzf.pixeltoolkit.services.NotificationListener
 import com.jawzf.pixeltoolkit.utils.AppUtil
 import com.jawzf.pixeltoolkit.utils.PriorityModeUtil

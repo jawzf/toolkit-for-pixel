@@ -21,6 +21,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.jawzf.pixeltoolkit.core.data.prefs.AppSelection
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.cards.FeatureCard
 import com.jawzf.pixeltoolkit.core.design.cards.IconToggleItem
@@ -28,7 +29,6 @@ import com.jawzf.pixeltoolkit.core.design.components.ConfigSliderItem
 import com.jawzf.pixeltoolkit.core.design.components.SegmentedDropdownMenu
 import com.jawzf.pixeltoolkit.core.design.components.SegmentedDropdownMenuItem
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
-import com.jawzf.pixeltoolkit.domain.model.AppSelection
 import com.jawzf.pixeltoolkit.domain.model.ShutUpAppConfig
 import com.jawzf.pixeltoolkit.ui.core.pickers.RestoreModePicker
 import com.jawzf.pixeltoolkit.ui.core.sheets.AppSelectionSheet

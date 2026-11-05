@@ -39,6 +39,8 @@ import com.jawzf.pixeltoolkit.domain.diy.DIYRepository
 import com.jawzf.pixeltoolkit.domain.model.DashConfig
 import com.jawzf.pixeltoolkit.domain.model.NotificationLightingStyle
 import com.jawzf.pixeltoolkit.domain.model.RippleConfig
+import com.jawzf.pixeltoolkit.feature.apps.AppsSettings
+import com.jawzf.pixeltoolkit.feature.apps.freeze.FreezeManager
 import com.jawzf.pixeltoolkit.feature.connectivity.hotspot.HotspotController
 import com.jawzf.pixeltoolkit.feature.power.PowerSettings
 import com.jawzf.pixeltoolkit.feature.power.caffeinate.CaffeinateController
@@ -801,10 +803,7 @@ object CombinedActionExecutor {
                 }
 
                 is Action.FreezeTag -> {
-                    val repository =
-                        com.jawzf.pixeltoolkit.data.repository
-                            .SettingsRepository(context)
-                    val appTagMap = repository.getFreezeAppTagMap()
+                    val appTagMap = AppsSettings(context).getFreezeAppTagMap()
                     val selectedTags = action.tagIds.toSet()
 
                     if (selectedTags.isNotEmpty()) {
@@ -816,10 +815,10 @@ object CombinedActionExecutor {
 
                         matchingPackages.forEach { pkg ->
                             if (action.mode == "Freeze") {
-                                com.jawzf.pixeltoolkit.utils.FreezeManager
+                                FreezeManager
                                     .freezeApp(context, pkg)
                             } else {
-                                com.jawzf.pixeltoolkit.utils.FreezeManager.unfreezeApp(
+                                FreezeManager.unfreezeApp(
                                     context,
                                     pkg,
                                 )
@@ -954,7 +953,7 @@ object CombinedActionExecutor {
                 is Action.FreezeApps -> {
                     val failed =
                         action.packageNames.filterNot { pkg ->
-                            com.jawzf.pixeltoolkit.utils.FreezeManager
+                            FreezeManager
                                 .freezeApp(context, pkg)
                         }
                     if (failed.isNotEmpty()) error(context.getString(R.string.automation_failed_apps, failed.joinToString()))
@@ -962,7 +961,7 @@ object CombinedActionExecutor {
                 is Action.UnfreezeApps -> {
                     val failed =
                         action.packageNames.filterNot { pkg ->
-                            com.jawzf.pixeltoolkit.utils.FreezeManager
+                            FreezeManager
                                 .unfreezeApp(context, pkg)
                         }
                     if (failed.isNotEmpty()) error(context.getString(R.string.automation_failed_apps, failed.joinToString()))

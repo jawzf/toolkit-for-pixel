@@ -4,6 +4,7 @@ import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.core.platform.tiles.BaseTileService
+import com.jawzf.pixeltoolkit.feature.apps.freeze.AppFreezingTileService
 import com.jawzf.pixeltoolkit.feature.connectivity.dns.PrivateDnsTileService
 import com.jawzf.pixeltoolkit.feature.connectivity.nfc.NfcTileService
 import com.jawzf.pixeltoolkit.feature.connectivity.sim.DataSimController

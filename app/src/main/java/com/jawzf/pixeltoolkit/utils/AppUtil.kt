@@ -10,8 +10,8 @@ import android.net.Uri
 import android.util.Log
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.core.graphics.createBitmap
+import com.jawzf.pixeltoolkit.core.data.prefs.AppSelection
 import com.jawzf.pixeltoolkit.core.design.apps.AppIcons
-import com.jawzf.pixeltoolkit.domain.model.AppSelection
 import com.jawzf.pixeltoolkit.domain.model.NotificationApp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

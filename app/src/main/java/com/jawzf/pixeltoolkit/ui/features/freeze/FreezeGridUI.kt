@@ -85,7 +85,7 @@ import com.jawzf.pixeltoolkit.core.design.modifiers.scrollMotionBlur
 import com.jawzf.pixeltoolkit.core.design.state.LocalMenuStateManager
 import com.jawzf.pixeltoolkit.core.design.state.MenuStateManager
 import com.jawzf.pixeltoolkit.domain.model.NotificationApp
-import com.jawzf.pixeltoolkit.utils.FreezeManager
+import com.jawzf.pixeltoolkit.feature.apps.freeze.FreezeManager
 import com.jawzf.pixeltoolkit.utils.ShortcutUtil
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 import kotlinx.coroutines.Dispatchers

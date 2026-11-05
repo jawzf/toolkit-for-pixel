@@ -41,7 +41,7 @@ import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.color.ColorUtil
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
-import com.jawzf.pixeltoolkit.domain.model.AppTag
+import com.jawzf.pixeltoolkit.feature.apps.freeze.AppTag
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

@@ -125,6 +125,7 @@ import com.jawzf.pixeltoolkit.domain.registry.FeatureRegistry
 import com.jawzf.pixeltoolkit.domain.registry.QSTileInfo
 import com.jawzf.pixeltoolkit.domain.registry.QSTileRegistry
 import com.jawzf.pixeltoolkit.domain.registry.SearchRegistry
+import com.jawzf.pixeltoolkit.feature.apps.freeze.FreezeManager
 import com.jawzf.pixeltoolkit.ui.activities.PixelSearchbarSettingsActivity
 import com.jawzf.pixeltoolkit.ui.activities.WallpaperActivity
 import com.jawzf.pixeltoolkit.ui.activities.YourAndroidActivity
@@ -132,7 +133,6 @@ import com.jawzf.pixeltoolkit.ui.core.sheets.PixelSearchFileActionSheet
 import com.jawzf.pixeltoolkit.ui.features.tiles.QSTilesSearchResultCard
 import com.jawzf.pixeltoolkit.utils.AppUtil
 import com.jawzf.pixeltoolkit.utils.FileSearchUtil
-import com.jawzf.pixeltoolkit.utils.FreezeManager
 import com.jawzf.pixeltoolkit.utils.ShortcutUtil
 import com.jawzf.pixeltoolkit.utils.WindowingUtils
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel

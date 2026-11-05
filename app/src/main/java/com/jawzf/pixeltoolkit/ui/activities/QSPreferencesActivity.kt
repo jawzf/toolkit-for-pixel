@@ -9,6 +9,7 @@ import android.provider.Settings
 import android.util.Log
 import androidx.activity.ComponentActivity
 import com.jawzf.pixeltoolkit.FeatureSettingsActivity
+import com.jawzf.pixeltoolkit.feature.apps.freeze.AppFreezingTileService
 import com.jawzf.pixeltoolkit.feature.connectivity.dns.PrivateDnsSettingsActivity
 import com.jawzf.pixeltoolkit.feature.connectivity.dns.PrivateDnsTileService
 import com.jawzf.pixeltoolkit.feature.connectivity.nfc.NfcTileService
@@ -165,7 +166,7 @@ class QSPreferencesActivity : ComponentActivity() {
                     "com.jawzf.pixeltoolkit.services.tiles.DynamicNightLightTileService" -> "Dynamic night light"
                     "com.jawzf.pixeltoolkit.services.tiles.AppLockTileService" -> "App lock"
                     ScreenLockedSecurityTileService::class.java.name -> "Screen locked security"
-                    "com.jawzf.pixeltoolkit.services.tiles.AppFreezingTileService" -> "Freeze"
+                    AppFreezingTileService::class.java.name -> "Freeze"
                     "com.jawzf.pixeltoolkit.services.tiles.FlashlightPulseTileService" -> "Notification lighting"
                     "com.jawzf.pixeltoolkit.services.tiles.StayAwakeTileService" -> "Quick settings tiles"
                     NfcTileService::class.java.name -> "NFC"

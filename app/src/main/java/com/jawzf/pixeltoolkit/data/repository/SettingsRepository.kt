@@ -6,6 +6,7 @@ import android.provider.Settings
 import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.jawzf.pixeltoolkit.core.data.prefs.AppSelection
 import com.jawzf.pixeltoolkit.core.data.prefs.PrefsStore
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticFeedbackType
 import com.jawzf.pixeltoolkit.core.platform.shell.RootUtils
@@ -16,8 +17,6 @@ import com.jawzf.pixeltoolkit.domain.controller.BackGestureStore
 import com.jawzf.pixeltoolkit.domain.diy.Action
 import com.jawzf.pixeltoolkit.domain.diy.ActionGsonAdapter
 import com.jawzf.pixeltoolkit.domain.model.AppIcon
-import com.jawzf.pixeltoolkit.domain.model.AppSelection
-import com.jawzf.pixeltoolkit.domain.model.AppTag
 import com.jawzf.pixeltoolkit.domain.model.AutoDismissAppConfig
 import com.jawzf.pixeltoolkit.domain.model.AutoDismissChannel
 import com.jawzf.pixeltoolkit.domain.model.AutoDismissStat
@@ -310,16 +309,7 @@ class SettingsRepository(
         const val KEY_HIDDEN_DEBUGGING_SUPPORT = "hidden_debugging_support"
         const val KEY_USE_USAGE_ACCESS = "use_usage_access"
 
-        const val KEY_FREEZE_WHEN_LOCKED_ENABLED = "freeze_when_locked_enabled"
-        const val KEY_FREEZE_LOCK_DELAY_INDEX = "freeze_lock_delay_index"
-        const val KEY_FREEZE_AUTO_EXCLUDED_APPS = "freeze_auto_excluded_apps"
         const val KEY_FREEZE_SELECTED_APPS = "freeze_selected_apps"
-        const val KEY_FREEZE_DONT_FREEZE_ACTIVE_APPS = "freeze_dont_freeze_active_apps"
-        const val KEY_FREEZE_MODE = "freeze_mode"
-        const val KEY_FREEZE_SHOW_IN_LAUNCHER = "freeze_show_in_launcher"
-        const val KEY_FREEZE_TAGS = "freeze_tags"
-        const val KEY_FREEZE_APP_TAG_MAP = "freeze_app_tag_map"
-        const val KEY_FREEZE_TAG_COLOR_CODED_ENABLED = "freeze_tag_color_coded_enabled"
 
         const val KEY_DEVELOPER_MODE_ENABLED = "developer_mode_enabled"
         const val KEY_HAPTIC_FEEDBACK_TYPE = "haptic_feedback_type"
@@ -906,88 +896,6 @@ class SettingsRepository(
      * @param mode [Int] Target mode.
      */
     fun saveNotificationLightingSystemMode(mode: Int) = putInt(KEY_EDGE_LIGHTING_SYSTEM_MODE, mode)
-
-    /**
-     * Executes the get freeze auto excluded apps operation.
-     * @return The resulting Set<String> data.
-     */
-    fun getFreezeAutoExcludedApps(): Set<String> {
-        val json = prefs.getString(KEY_FREEZE_AUTO_EXCLUDED_APPS, null)
-        return if (json != null) {
-            try {
-                gson.fromJson(json, Array<String>::class.java).toSet()
-            } catch (e: Exception) {
-                emptySet()
-            }
-        } else {
-            emptySet()
-        }
-    }
-
-    /**
-     * Executes the save freeze auto excluded apps operation.
-     *
-     * @param apps [Set<String>] Target apps.
-     */
-    fun saveFreezeAutoExcludedApps(apps: Set<String>) {
-        val json = gson.toJson(apps)
-        putString(KEY_FREEZE_AUTO_EXCLUDED_APPS, json)
-    }
-
-    /**
-     * Executes the get freeze tags operation.
-     * @return The resulting List<AppTag> data.
-     */
-    fun getFreezeTags(): List<AppTag> {
-        val json = prefs.getString(KEY_FREEZE_TAGS, null) ?: return emptyList()
-        return try {
-            val type = object : TypeToken<List<AppTag>>() {}.type
-            gson.fromJson(json, type) ?: emptyList()
-        } catch (e: Exception) {
-            emptyList()
-        }
-    }
-
-    /**
-     * Executes the save freeze tags operation.
-     *
-     * @param tags [List<AppTag>] Target tags.
-     */
-    fun saveFreezeTags(tags: List<AppTag>) {
-        val json = gson.toJson(tags)
-        putString(KEY_FREEZE_TAGS, json)
-    }
-
-    /**
-     * Executes the get freeze app tag map operation.
-     * @return The resulting Map<String, List<String>> data.
-     */
-    fun getFreezeAppTagMap(): Map<String, List<String>> {
-        val json = prefs.getString(KEY_FREEZE_APP_TAG_MAP, null) ?: return emptyMap()
-        return try {
-            val type = object : TypeToken<Map<String, List<String>>>() {}.type
-            gson.fromJson(json, type) ?: emptyMap()
-        } catch (e: Exception) {
-            emptyMap()
-        }
-    }
-
-    /**
-     * Executes the save freeze app tag map operation.
-     *
-     * @param map [Map<String] Target map.
-     * @param List<String>> Target list string.
-     */
-    fun saveFreezeAppTagMap(map: Map<String, List<String>>) {
-        val json = gson.toJson(map)
-        putString(KEY_FREEZE_APP_TAG_MAP, json)
-    }
-
-    /**
-     * Executes the get freeze mode operation.
-     * @return The resulting Int data.
-     */
-    fun getFreezeMode(): Int = getInt(KEY_FREEZE_MODE, 0)
 
     /**
      * Executes the get haptic feedback type operation.

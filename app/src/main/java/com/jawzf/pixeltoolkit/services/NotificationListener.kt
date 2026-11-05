@@ -22,6 +22,7 @@ import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import android.util.Log
 import androidx.annotation.RequiresApi
+import com.jawzf.pixeltoolkit.core.data.prefs.AppSelection
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticFeedbackType
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.platform.device.DeviceUtils
@@ -1609,12 +1610,12 @@ class NotificationListener : NotificationListenerService() {
                 prefs.getString(SettingsRepository.KEY_NOTIFICATION_GLANCE_SELECTED_APPS, null)
             if (json == null) return true
 
-            val selectedApps: List<com.jawzf.pixeltoolkit.domain.model.AppSelection> =
+            val selectedApps: List<AppSelection> =
                 com.google.gson
                     .Gson()
                     .fromJson(
                         json,
-                        Array<com.jawzf.pixeltoolkit.domain.model.AppSelection>::class.java,
+                        Array<AppSelection>::class.java,
                     ).toList()
 
             val app = selectedApps.find { it.packageName == packageName }
@@ -1732,11 +1733,11 @@ class NotificationListener : NotificationListenerService() {
             // If no saved preferences, allow all apps by default
 
             val gson = com.google.gson.Gson()
-            val selectedApps: List<com.jawzf.pixeltoolkit.domain.model.AppSelection> =
+            val selectedApps: List<AppSelection> =
                 gson
                     .fromJson(
                         json,
-                        Array<com.jawzf.pixeltoolkit.domain.model.AppSelection>::class.java,
+                        Array<AppSelection>::class.java,
                     ).toList()
 
             // Find the app in the saved list
@@ -1767,11 +1768,11 @@ class NotificationListener : NotificationListenerService() {
             }
 
             val gson = com.google.gson.Gson()
-            val selectedApps: List<com.jawzf.pixeltoolkit.domain.model.AppSelection> =
+            val selectedApps: List<AppSelection> =
                 gson
                     .fromJson(
                         json,
-                        Array<com.jawzf.pixeltoolkit.domain.model.AppSelection>::class.java,
+                        Array<AppSelection>::class.java,
                     ).toList()
 
             // Find the app in the saved list
