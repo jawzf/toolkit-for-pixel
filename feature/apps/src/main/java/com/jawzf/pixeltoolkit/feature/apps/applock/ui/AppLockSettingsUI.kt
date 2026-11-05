@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.features.security
+package com.jawzf.pixeltoolkit.feature.apps.applock.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -17,7 +17,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.cards.ConfigPickerItem
 import com.jawzf.pixeltoolkit.core.design.cards.FeatureCard
@@ -29,15 +28,17 @@ import com.jawzf.pixeltoolkit.core.design.sheets.PermissionItem
 import com.jawzf.pixeltoolkit.core.design.sheets.PermissionsBottomSheet
 import com.jawzf.pixeltoolkit.core.platform.auth.BiometricHelper
 import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
-import com.jawzf.pixeltoolkit.ui.core.sheets.AppSelectionSheet
-import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
-import com.jawzf.pixeltoolkit.viewmodels.PermissionViewModel
+import com.jawzf.pixeltoolkit.feature.apps.applock.AppLockState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppLockSettingsUI(
-    viewModel: MainViewModel,
-    permissionViewModel: PermissionViewModel = viewModel(),
+    state: AppLockState,
+    isUseUsageAccess: Boolean,
+    isAccessibilityEnabled: Boolean,
+    isUsageStatsPermissionGranted: Boolean,
+    onPermissionsDismissed: () -> Unit,
+    appPicker: @Composable (onDismiss: () -> Unit) -> Unit,
     modifier: Modifier = Modifier,
     highlightKey: String? = null,
 ) {
@@ -45,10 +46,7 @@ fun AppLockSettingsUI(
     var isAppSelectionSheetOpen by remember { mutableStateOf(false) }
     var showPermissionSheet by remember { mutableStateOf(false) }
 
-    val isAppLockEnabled by viewModel.isAppLockEnabled
-    val isUseUsageAccess by viewModel.isUseUsageAccess
-    val isAccessibilityEnabled by permissionViewModel.isAccessibilityEnabled
-    val isUsageStatsPermissionGranted by viewModel.isUsageStatsPermissionGranted
+    val isAppLockEnabled by state.isAppLockEnabled
 
     val canEnableAppLock =
         if (isUseUsageAccess) isUsageStatsPermissionGranted && isAccessibilityEnabled else isAccessibilityEnabled
@@ -99,10 +97,10 @@ fun AppLockSettingsUI(
                                         R.string.app_lock_disable_auth_subtitle,
                                     )
                                 },
-                            onSuccess = { viewModel.setAppLockEnabled(enabled, context) },
+                            onSuccess = { state.setAppLockEnabled(enabled, context) },
                         )
                     } else {
-                        viewModel.setAppLockEnabled(enabled, context)
+                        state.setAppLockEnabled(enabled, context)
                     }
                 },
                 enabled = canEnableAppLock,
@@ -127,14 +125,14 @@ fun AppLockSettingsUI(
                 description = stringResource(R.string.app_lock_auto_lock_delay_desc),
                 iconRes = R.drawable.rounded_lock_clock_24,
                 isEnabled = isAppLockEnabled,
-                selectedValue = delayLabels[viewModel.appLockAutoLockDelayIndex.intValue],
+                selectedValue = delayLabels[state.appLockAutoLockDelayIndex.intValue],
                 modifier = Modifier.highlight(highlightKey == "app_lock_auto_lock_delay"),
             ) {
                 delayLabels.forEachIndexed { index, label ->
                     SegmentedDropdownMenuItem(
                         text = { Text(label) },
                         onClick = {
-                            viewModel.setAppLockAutoLockDelayIndex(index)
+                            state.setAppLockAutoLockDelayIndex(index)
                         },
                     )
                 }
@@ -163,18 +161,7 @@ fun AppLockSettingsUI(
         )
 
         if (isAppSelectionSheetOpen) {
-            AppSelectionSheet(
-                onDismissRequest = { isAppSelectionSheetOpen = false },
-                onLoadApps = { viewModel.loadAppLockSelectedApps(it) },
-                onSaveApps = { ctx, apps -> viewModel.saveAppLockSelectedApps(ctx, apps) },
-                onAppToggle = { ctx, pkg, enabled ->
-                    viewModel.updateAppLockAppEnabled(
-                        ctx,
-                        pkg,
-                        enabled,
-                    )
-                },
-            )
+            appPicker { isAppSelectionSheetOpen = false }
         }
 
         if (showPermissionSheet) {
@@ -209,8 +196,7 @@ fun AppLockSettingsUI(
             PermissionsBottomSheet(
                 onDismissRequest = {
                     showPermissionSheet = false
-                    permissionViewModel.refreshPermissions(context)
-                    viewModel.check(context)
+                    onPermissionsDismissed()
                 },
                 featureTitle = R.string.feat_app_lock_title,
                 permissions = permissionsList,

@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.services.tiles
+package com.jawzf.pixeltoolkit.feature.apps.applock
 
 import android.app.PendingIntent
 import android.content.Intent
@@ -6,9 +6,9 @@ import android.graphics.drawable.Icon
 import android.os.Build
 import android.service.quicksettings.Tile
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.platform.AppComponents
 import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.core.platform.tiles.BaseTileService
-import com.jawzf.pixeltoolkit.ui.activities.TileAuthActivity
 
 class AppLockTileService : BaseTileService() {
     override fun onTileClick() {
@@ -16,7 +16,7 @@ class AppLockTileService : BaseTileService() {
         val isEnabled = prefs.getBoolean("app_lock_enabled", false)
 
         val intent =
-            Intent(this, TileAuthActivity::class.java).apply {
+            Intent().setClassName(this, AppComponents.TILE_AUTH_ACTIVITY).apply {
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK
                 putExtra("feature_pref_key", "app_lock_enabled")
                 putExtra("auth_title", "App Lock Security")

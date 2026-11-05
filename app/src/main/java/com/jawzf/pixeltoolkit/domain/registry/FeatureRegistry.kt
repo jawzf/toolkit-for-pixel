@@ -2172,7 +2172,7 @@ object FeatureRegistry {
                             listOf("ACCESSIBILITY")
                         }
 
-                override fun isEnabled(viewModel: MainViewModel) = viewModel.isAppLockEnabled.value
+                override fun isEnabled(viewModel: MainViewModel) = viewModel.appLock.isAppLockEnabled.value
 
                 override fun isToggleEnabled(
                     viewModel: MainViewModel,
@@ -2189,7 +2189,7 @@ object FeatureRegistry {
                     viewModel: MainViewModel,
                     context: Context,
                     enabled: Boolean,
-                ) = viewModel.setAppLockEnabled(enabled, context)
+                ) = viewModel.appLock.setAppLockEnabled(enabled, context)
             },
             object : Feature(
                 id = CONSCIOUS_GATE_FEATURE_ID,

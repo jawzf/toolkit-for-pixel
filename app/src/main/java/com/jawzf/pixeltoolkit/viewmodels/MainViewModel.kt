@@ -67,6 +67,8 @@ import com.jawzf.pixeltoolkit.domain.model.ScaleAnimationsProfile
 import com.jawzf.pixeltoolkit.domain.model.SearchableItem
 import com.jawzf.pixeltoolkit.domain.model.SystemShortcutsState
 import com.jawzf.pixeltoolkit.domain.registry.SearchRegistry
+import com.jawzf.pixeltoolkit.feature.apps.AppsSettings
+import com.jawzf.pixeltoolkit.feature.apps.applock.AppLockState
 import com.jawzf.pixeltoolkit.feature.apps.freeze.FreezeState
 import com.jawzf.pixeltoolkit.feature.connectivity.ConnectivitySettings
 import com.jawzf.pixeltoolkit.feature.connectivity.ConnectivityState
@@ -409,6 +411,7 @@ class MainViewModel : ViewModel() {
             StatusBarManager.requestRestore(context, requesterId)
         }
     val freeze = FreezeState(viewModelScope)
+    val appLock = AppLockState { context -> updateAppDetectionService(context) }
     val addedQSTiles = mutableStateOf<Set<String>>(emptySet())
     val isHideGestureBarEnabled = mutableStateOf(false)
     val isHideGestureBarOnLauncherEnabled = mutableStateOf(false)
@@ -498,8 +501,6 @@ class MainViewModel : ViewModel() {
     val ripple = RippleSettings { settingsRepository }
     val dash = DashSettings { settingsRepository }
     val skipPersistentNotifications = mutableStateOf(false)
-    val isAppLockEnabled = mutableStateOf(false)
-    val appLockAutoLockDelayIndex = mutableIntStateOf(0)
     val isConsciousGateEnabled = mutableStateOf(false)
     val consciousGateDelaySeconds = mutableIntStateOf(5)
     val consciousGateReappearMinutes = mutableIntStateOf(0)
@@ -1051,10 +1052,7 @@ class MainViewModel : ViewModel() {
                         lockscreenSystemShortcutsState.value =
                             settingsRepository.getLockscreenSystemShortcutsState()
 
-                    SettingsRepository.KEY_APP_LOCK_ENABLED -> {
-                        isAppLockEnabled.value = settingsRepository.getBoolean(key)
-                        appContext?.let { updateAppDetectionService(it) }
-                    }
+                    AppsSettings.KEY_APP_LOCK_ENABLED -> appLock.onPreferenceChanged(key)
 
                     SettingsRepository.KEY_USE_USAGE_ACCESS -> {
                         isUseUsageAccess.value = settingsRepository.getBoolean(key)
@@ -2557,10 +2555,6 @@ class MainViewModel : ViewModel() {
 
         isDeviceAdminEnabled.value = isDeviceAdminActive(context)
 
-        isAppLockEnabled.value =
-            settingsRepository.getBoolean(SettingsRepository.KEY_APP_LOCK_ENABLED)
-        appLockAutoLockDelayIndex.intValue =
-            settingsRepository.getInt(SettingsRepository.KEY_APP_LOCK_AUTO_LOCK_DELAY_INDEX, 0)
         isConsciousGateEnabled.value =
             settingsRepository.getBoolean(SettingsRepository.KEY_CONSCIOUS_GATE_ENABLED)
         consciousGateDelaySeconds.intValue = settingsRepository.getConsciousGateDelaySeconds()
@@ -2569,6 +2563,7 @@ class MainViewModel : ViewModel() {
         consciousGateTitle.value = settingsRepository.getConsciousGateTitle(context)
         consciousGateMessage.value = settingsRepository.getConsciousGateMessage(context)
         freeze.load(context)
+        appLock.load(context)
 
         isDeveloperModeEnabled.value =
             settingsRepository.getBoolean(SettingsRepository.KEY_DEVELOPER_MODE_ENABLED)
@@ -5759,31 +5754,6 @@ class MainViewModel : ViewModel() {
     }
 
     /**
-     * Executes the set app lock enabled operation.
-     *
-     * @param enabled [Boolean] Target enabled.
-     * @param context [Context] Target context.
-     */
-    fun setAppLockEnabled(
-        enabled: Boolean,
-        context: Context,
-    ) {
-        isAppLockEnabled.value = enabled
-        settingsRepository.putBoolean(SettingsRepository.KEY_APP_LOCK_ENABLED, enabled)
-        updateAppDetectionService(context)
-    }
-
-    /**
-     * Executes the set app lock auto lock delay index operation.
-     *
-     * @param index [Int] Target index.
-     */
-    fun setAppLockAutoLockDelayIndex(index: Int) {
-        appLockAutoLockDelayIndex.intValue = index
-        settingsRepository.putInt(SettingsRepository.KEY_APP_LOCK_AUTO_LOCK_DELAY_INDEX, index)
-    }
-
-    /**
      * Executes the set conscious gate enabled operation.
      *
      * @param enabled [Boolean] Target enabled.
@@ -7368,37 +7338,6 @@ class MainViewModel : ViewModel() {
         enabled: Boolean,
     ) {
         settingsRepository.updateDynamicNightLightAppSelection(packageName, enabled)
-    }
-
-    // App Lock App Selection Methods
-    fun saveAppLockSelectedApps(
-        context: Context,
-        apps: List<AppSelection>,
-    ) {
-        settingsRepository.saveAppLockSelectedApps(apps)
-    }
-
-    /**
-     * Executes the load app lock selected apps operation.
-     *
-     * @param context [Context] Target context.
-     * @return The resulting List<AppSelection> data.
-     */
-    fun loadAppLockSelectedApps(context: Context): List<AppSelection> = settingsRepository.loadAppLockSelectedApps()
-
-    /**
-     * Executes the update app lock app enabled operation.
-     *
-     * @param context [Context] Target context.
-     * @param packageName [String] Target package name.
-     * @param enabled [Boolean] Target enabled.
-     */
-    fun updateAppLockAppEnabled(
-        context: Context,
-        packageName: String,
-        enabled: Boolean,
-    ) {
-        settingsRepository.updateAppLockAppSelection(packageName, enabled)
     }
 
     // Conscious Gate App Selection Methods

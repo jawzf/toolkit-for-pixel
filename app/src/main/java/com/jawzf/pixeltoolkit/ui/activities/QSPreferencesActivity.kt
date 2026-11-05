@@ -9,6 +9,7 @@ import android.provider.Settings
 import android.util.Log
 import androidx.activity.ComponentActivity
 import com.jawzf.pixeltoolkit.FeatureSettingsActivity
+import com.jawzf.pixeltoolkit.feature.apps.applock.AppLockTileService
 import com.jawzf.pixeltoolkit.feature.apps.freeze.AppFreezingTileService
 import com.jawzf.pixeltoolkit.feature.connectivity.dns.PrivateDnsSettingsActivity
 import com.jawzf.pixeltoolkit.feature.connectivity.dns.PrivateDnsTileService
@@ -164,7 +165,7 @@ class QSPreferencesActivity : ComponentActivity() {
                     CaffeinateTileService::class.java.name -> "Caffeinate"
                     "com.jawzf.pixeltoolkit.services.tiles.NotificationLightingTileService" -> "Notification lighting"
                     "com.jawzf.pixeltoolkit.services.tiles.DynamicNightLightTileService" -> "Dynamic night light"
-                    "com.jawzf.pixeltoolkit.services.tiles.AppLockTileService" -> "App lock"
+                    AppLockTileService::class.java.name -> "App lock"
                     ScreenLockedSecurityTileService::class.java.name -> "Screen locked security"
                     AppFreezingTileService::class.java.name -> "Freeze"
                     "com.jawzf.pixeltoolkit.services.tiles.FlashlightPulseTileService" -> "Notification lighting"
