@@ -100,11 +100,12 @@ fun TrackedRepoCard(
                     modifier = Modifier.size(56.dp),
                 ) {
                     // Main Image (App Icon or Android Icon)
-                    if (repo.mappedPackageName != null) {
+                    val mappedPackageName = repo.mappedPackageName
+                    if (mappedPackageName != null) {
                         val appIcon =
-                            remember(repo.mappedPackageName) {
+                            remember(mappedPackageName) {
                                 try {
-                                    context.packageManager.getApplicationIcon(repo.mappedPackageName)
+                                    context.packageManager.getApplicationIcon(mappedPackageName)
                                 } catch (e: Exception) {
                                     null
                                 }
