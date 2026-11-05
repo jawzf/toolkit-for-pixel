@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.utils
+package com.jawzf.pixeltoolkit.feature.security.screenshots
 
 import android.Manifest
 import android.app.NotificationChannel
@@ -16,7 +16,6 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import com.jawzf.pixeltoolkit.core.design.R
-import com.jawzf.pixeltoolkit.receivers.ScreenshotCleanupActionReceiver
 
 object ScreenshotCleanupNotifier {
     private const val CHANNEL_ID = "screenshot_cleanup"

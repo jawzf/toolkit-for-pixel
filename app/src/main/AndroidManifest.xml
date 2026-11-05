@@ -1452,9 +1452,6 @@
             android:name=".receivers.UrlShortenerActionReceiver"
             android:exported="false" />
 
-        <receiver
-            android:name=".receivers.ScreenshotCleanupActionReceiver"
-            android:exported="false" />
 
 
     </application>

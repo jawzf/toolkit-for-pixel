@@ -72,6 +72,8 @@ import com.jawzf.pixeltoolkit.feature.connectivity.ConnectivityState
 import com.jawzf.pixeltoolkit.feature.power.BatteryState
 import com.jawzf.pixeltoolkit.feature.power.PowerSettings
 import com.jawzf.pixeltoolkit.feature.power.PowerState
+import com.jawzf.pixeltoolkit.feature.security.SecuritySettings
+import com.jawzf.pixeltoolkit.feature.security.SecurityState
 import com.jawzf.pixeltoolkit.feature.sound.SoundSettings
 import com.jawzf.pixeltoolkit.feature.sound.SoundState
 import com.jawzf.pixeltoolkit.island.service.IslandStatusBarHider
@@ -87,7 +89,6 @@ import com.jawzf.pixeltoolkit.utils.AppUtil
 import com.jawzf.pixeltoolkit.utils.DuoBatteryLevels
 import com.jawzf.pixeltoolkit.utils.PowerButtonGestures
 import com.jawzf.pixeltoolkit.utils.RefreshRateUtils
-import com.jawzf.pixeltoolkit.utils.ScreenshotCleaner
 import com.jawzf.pixeltoolkit.utils.SplitScreenUtil
 import com.jawzf.pixeltoolkit.utils.StatusBarInsetsUtils
 import com.jawzf.pixeltoolkit.utils.SurfaceFlingerControl
@@ -395,12 +396,6 @@ class MainViewModel : ViewModel() {
     val aodWallpaperExtendedTextScale = mutableFloatStateOf(1f)
     val currentWallpaperBitmap = mutableStateOf<Bitmap?>(null)
     val isFaceUnlockBrightnessEnabled = mutableStateOf(false)
-    val isScreenshotShareCleanupEnabled = mutableStateOf(false)
-    val screenshotShareCleanupDelayMinutes = mutableIntStateOf(0)
-    val isScreenshotAutoCleanEnabled = mutableStateOf(false)
-    val screenshotAutoCleanDays = mutableIntStateOf(7)
-    val screenshotsCleanedCount = mutableIntStateOf(0)
-    val screenshotsCleanedBytes = mutableLongStateOf(0L)
     val faceUnlockMaxBrightness = mutableIntStateOf(100)
     val faceUnlockAmbientThreshold = mutableFloatStateOf(10f)
     val isFaceUnlockTriggerUnlock = mutableStateOf(true)
@@ -414,6 +409,7 @@ class MainViewModel : ViewModel() {
     val sound = SoundState()
     val battery = BatteryState()
     val power = PowerState(viewModelScope)
+    val security = SecurityState(viewModelScope)
     val addedQSTiles = mutableStateOf<Set<String>>(emptySet())
     val isHideGestureBarEnabled = mutableStateOf(false)
     val isHideGestureBarOnLauncherEnabled = mutableStateOf(false)
@@ -1356,23 +1352,13 @@ class MainViewModel : ViewModel() {
                     SettingsRepository.KEY_FACE_UNLOCK_BRIGHTNESS_ENABLED ->
                         isFaceUnlockBrightnessEnabled.value = settingsRepository.isFaceUnlockBrightnessEnabled()
 
-                    SettingsRepository.KEY_SCREENSHOT_SHARE_CLEANUP_ENABLED ->
-                        isScreenshotShareCleanupEnabled.value = settingsRepository.isScreenshotShareCleanupEnabled()
-
-                    SettingsRepository.KEY_SCREENSHOT_SHARE_CLEANUP_DELAY ->
-                        screenshotShareCleanupDelayMinutes.intValue = settingsRepository.getScreenshotShareCleanupDelayMinutes()
-
-                    SettingsRepository.KEY_SCREENSHOT_AUTO_CLEAN_ENABLED ->
-                        isScreenshotAutoCleanEnabled.value = settingsRepository.isScreenshotAutoCleanEnabled()
-
-                    SettingsRepository.KEY_SCREENSHOT_AUTO_CLEAN_DAYS ->
-                        screenshotAutoCleanDays.intValue = settingsRepository.getScreenshotAutoCleanDays()
-
-                    SettingsRepository.KEY_SCREENSHOTS_CLEANED_COUNT ->
-                        screenshotsCleanedCount.intValue = settingsRepository.getScreenshotsCleanedCount()
-
-                    SettingsRepository.KEY_SCREENSHOTS_CLEANED_BYTES ->
-                        screenshotsCleanedBytes.longValue = settingsRepository.getScreenshotsCleanedBytes()
+                    SecuritySettings.KEY_SCREENSHOT_SHARE_CLEANUP_ENABLED,
+                    SecuritySettings.KEY_SCREENSHOT_SHARE_CLEANUP_DELAY,
+                    SecuritySettings.KEY_SCREENSHOT_AUTO_CLEAN_ENABLED,
+                    SecuritySettings.KEY_SCREENSHOT_AUTO_CLEAN_DAYS,
+                    SecuritySettings.KEY_SCREENSHOTS_CLEANED_COUNT,
+                    SecuritySettings.KEY_SCREENSHOTS_CLEANED_BYTES,
+                    -> security.onPreferenceChanged(key)
 
                     SettingsRepository.KEY_FACE_UNLOCK_MAX_BRIGHTNESS ->
                         faceUnlockMaxBrightness.intValue = settingsRepository.getFaceUnlockMaxBrightness()
@@ -2782,12 +2768,7 @@ class MainViewModel : ViewModel() {
         pixelSearchBubblesWeb.value = settingsRepository.isPixelSearchBubblesWebEnabled()
         pixelSearchEngine.value = settingsRepository.getPixelSearchEngine()
         isFaceUnlockBrightnessEnabled.value = settingsRepository.isFaceUnlockBrightnessEnabled()
-        isScreenshotShareCleanupEnabled.value = settingsRepository.isScreenshotShareCleanupEnabled()
-        screenshotShareCleanupDelayMinutes.intValue = settingsRepository.getScreenshotShareCleanupDelayMinutes()
-        isScreenshotAutoCleanEnabled.value = settingsRepository.isScreenshotAutoCleanEnabled()
-        screenshotAutoCleanDays.intValue = settingsRepository.getScreenshotAutoCleanDays()
-        screenshotsCleanedCount.intValue = settingsRepository.getScreenshotsCleanedCount()
-        screenshotsCleanedBytes.longValue = settingsRepository.getScreenshotsCleanedBytes()
+        security.load(context)
         faceUnlockMaxBrightness.intValue = settingsRepository.getFaceUnlockMaxBrightness()
         faceUnlockAmbientThreshold.floatValue = settingsRepository.getFaceUnlockAmbientThreshold()
         isFaceUnlockTriggerUnlock.value = settingsRepository.isFaceUnlockTriggerUnlockEnabled()
@@ -8712,39 +8693,6 @@ class MainViewModel : ViewModel() {
     fun setFaceUnlockBrightnessEnabled(enabled: Boolean) {
         settingsRepository.setFaceUnlockBrightnessEnabled(enabled)
         isFaceUnlockBrightnessEnabled.value = enabled
-    }
-
-    fun setScreenshotShareCleanupEnabled(enabled: Boolean) {
-        settingsRepository.setScreenshotShareCleanupEnabled(enabled)
-        isScreenshotShareCleanupEnabled.value = enabled
-        if (!enabled) appContext?.let { ScreenshotCleaner.cancelAll(it, ScreenshotCleaner.TAG_SHARED) }
-    }
-
-    fun setScreenshotShareCleanupDelayMinutes(minutes: Int) {
-        settingsRepository.setScreenshotShareCleanupDelayMinutes(minutes)
-        screenshotShareCleanupDelayMinutes.intValue = minutes
-    }
-
-    fun setScreenshotAutoCleanEnabled(enabled: Boolean) {
-        isScreenshotAutoCleanEnabled.value = enabled
-        val context = appContext
-        if (context == null) {
-            settingsRepository.setScreenshotAutoCleanEnabled(enabled)
-            return
-        }
-        viewModelScope.launch(Dispatchers.IO) {
-            if (enabled) {
-                settingsRepository.setScreenshotAutoCleanLastId(ScreenshotCleaner.latestScreenshotId(context))
-            } else {
-                ScreenshotCleaner.cancelAll(context, ScreenshotCleaner.TAG_AUTO_CLEAN)
-            }
-            settingsRepository.setScreenshotAutoCleanEnabled(enabled)
-        }
-    }
-
-    fun setScreenshotAutoCleanDays(days: Int) {
-        settingsRepository.setScreenshotAutoCleanDays(days)
-        screenshotAutoCleanDays.intValue = days
     }
 
     fun setFaceUnlockAmbientThreshold(value: Float) {

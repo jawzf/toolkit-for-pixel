@@ -1,13 +1,11 @@
-package com.jawzf.pixeltoolkit.receivers
+package com.jawzf.pixeltoolkit.feature.security.screenshots
 
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.widget.Toast
 import com.jawzf.pixeltoolkit.core.design.R
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.utils.ScreenshotCleaner
-import com.jawzf.pixeltoolkit.utils.ScreenshotCleanupNotifier
+import com.jawzf.pixeltoolkit.feature.security.SecuritySettings
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -45,7 +43,7 @@ class ScreenshotCleanupActionReceiver : BroadcastReceiver() {
                     ACTION_UNDO -> {
                         val trashedBytes = intent.getLongExtra(EXTRA_TRASHED_BYTES, NOT_TRASHED)
                         val restored = trashedBytes == NOT_TRASHED || ScreenshotCleaner.restore(context, mediaId, trashedBytes)
-                        if (restored && SettingsRepository(context).isScreenshotAutoCleanEnabled()) {
+                        if (restored && SecuritySettings(context).isScreenshotAutoCleanEnabled()) {
                             ScreenshotCleaner.schedule(context, mediaId, days * MINUTES_PER_DAY, ScreenshotCleaner.TAG_AUTO_CLEAN)
                             ScreenshotCleanupNotifier.show(context, mediaId, days)
                         } else {

@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.utils
+package com.jawzf.pixeltoolkit.feature.security.screenshots
 
 class ScreenshotShareTracker(
     private val shareSheetPackage: String,
