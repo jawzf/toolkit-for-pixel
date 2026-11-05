@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -23,6 +24,7 @@ import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.core.graphics.drawable.toBitmap
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.cards.FeatureCard
 import com.jawzf.pixeltoolkit.core.design.cards.IconToggleItem
@@ -31,23 +33,24 @@ import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.modifiers.highlight
 import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
+import com.jawzf.pixeltoolkit.feature.sound.SoundState
 import com.jawzf.pixeltoolkit.feature.sound.appvolume.AppVolumeController
-import com.jawzf.pixeltoolkit.ui.core.sheets.SingleAppSelectionSheet
-import com.jawzf.pixeltoolkit.utils.AppUtil
-import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 import kotlin.math.roundToInt
 
 @Composable
 fun AppVolumeSettingsUI(
-    viewModel: MainViewModel,
+    state: SoundState,
+    isAccessibilityEnabled: Boolean,
+    isShizukuPermissionGranted: Boolean,
+    appPicker: @Composable (onDismiss: () -> Unit, onAppSelected: (packageName: String) -> Unit) -> Unit,
     modifier: Modifier = Modifier,
     highlightSetting: String? = null,
 ) {
     val context = LocalContext.current
     val view = LocalView.current
     val playing by AppVolumeController.playingPackages.collectAsState()
-    val levels = viewModel.appVolumeLevels.value
-    val isEnabled = viewModel.isAppVolumeEnabled.value
+    val levels = state.appVolumeLevels.value
+    val isEnabled = state.isAppVolumeEnabled.value
     var showAppPicker by remember { mutableStateOf(false) }
     var editingPackage by remember { mutableStateOf<String?>(null) }
 
@@ -66,16 +69,16 @@ fun AppVolumeSettingsUI(
                 iconRes = R.drawable.rounded_speaker_group_24,
                 title = stringResource(R.string.app_volume_enable_title),
                 isChecked = isEnabled,
-                onCheckedChange = { viewModel.setAppVolumeEnabled(it) },
-                enabled = viewModel.isAccessibilityEnabled.value && viewModel.isShizukuPermissionGranted.value,
+                onCheckedChange = { state.setAppVolumeEnabled(it) },
+                enabled = isAccessibilityEnabled && isShizukuPermissionGranted,
                 modifier = Modifier.highlight(highlightSetting == "enable_app_volume"),
             )
             IconToggleItem(
                 iconRes = R.drawable.rounded_volume_up_24,
                 title = stringResource(R.string.app_volume_overlay_title),
-                isChecked = viewModel.isAppVolumeOverlayEnabled.value,
-                onCheckedChange = { viewModel.setAppVolumeOverlayEnabled(it) },
-                enabled = isEnabled && viewModel.isAccessibilityEnabled.value && viewModel.isShizukuPermissionGranted.value,
+                isChecked = state.isAppVolumeOverlayEnabled.value,
+                onCheckedChange = { state.setAppVolumeOverlayEnabled(it) },
+                enabled = isEnabled && isAccessibilityEnabled && isShizukuPermissionGranted,
                 modifier = Modifier.highlight(highlightSetting == "app_volume_overlay"),
             )
         }
@@ -97,8 +100,9 @@ fun AppVolumeSettingsUI(
                     remember(packageName) {
                         runCatching {
                             BitmapPainter(
-                                AppUtil
-                                    .drawableToBitmap(context.packageManager.getApplicationIcon(packageName))
+                                context.packageManager
+                                    .getApplicationIcon(packageName)
+                                    .toBitmap()
                                     .asImageBitmap(),
                             )
                         }.getOrNull()
@@ -124,7 +128,7 @@ fun AppVolumeSettingsUI(
                                 IconButton(
                                     onClick = {
                                         HapticUtil.performVirtualKeyHaptic(view)
-                                        viewModel.removeAppVolumeLevel(packageName)
+                                        state.removeAppVolumeLevel(packageName)
                                     },
                                 ) {
                                     Icon(
@@ -161,14 +165,10 @@ fun AppVolumeSettingsUI(
     }
 
     if (showAppPicker) {
-        SingleAppSelectionSheet(
-            onDismissRequest = { showAppPicker = false },
-            includeSystemApps = true,
-            onAppSelected = { app ->
-                showAppPicker = false
-                editingPackage = app.packageName
-            },
-        )
+        appPicker({ showAppPicker = false }) { packageName ->
+            showAppPicker = false
+            editingPackage = packageName
+        }
     }
 
     editingPackage?.let { packageName ->
@@ -176,7 +176,7 @@ fun AppVolumeSettingsUI(
             title = appLabel(packageName),
             level = levels[packageName] ?: 1f,
             onLevelChange = { AppVolumeController.preview(packageName, it) },
-            onLevelChangeFinished = { viewModel.setAppVolumeLevel(packageName, it) },
+            onLevelChangeFinished = { state.setAppVolumeLevel(packageName, it) },
             onDismiss = {
                 editingPackage = null
                 AppVolumeController.refresh()
@@ -185,6 +185,7 @@ fun AppVolumeSettingsUI(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun AppVolumeSheet(
     title: String,

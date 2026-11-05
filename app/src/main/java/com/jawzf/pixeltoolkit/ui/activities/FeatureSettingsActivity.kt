@@ -73,6 +73,7 @@ import com.jawzf.pixeltoolkit.feature.sound.ui.SoundModeTileSettingsUI
 import com.jawzf.pixeltoolkit.feature.sound.ui.VolumeStepsSettingsUI
 import com.jawzf.pixeltoolkit.ui.components.linkActions.LinkPickerScreen
 import com.jawzf.pixeltoolkit.ui.core.sheets.ShakeForHelp
+import com.jawzf.pixeltoolkit.ui.core.sheets.SingleAppSelectionSheet
 import com.jawzf.pixeltoolkit.ui.features.battery.BatteriesSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.consciousgate.CONSCIOUS_GATE_FEATURE_ID
 import com.jawzf.pixeltoolkit.ui.features.display.AodWallpaperPreviewCard
@@ -976,7 +977,8 @@ class FeatureSettingsActivity : AppCompatActivity() {
 
                                     "Volume steps" -> {
                                         VolumeStepsSettingsUI(
-                                            viewModel = viewModel,
+                                            state = viewModel.sound,
+                                            isAccessibilityEnabled = viewModel.isAccessibilityEnabled.value,
                                             modifier = Modifier.padding(top = 16.dp),
                                             highlightSetting = highlightSetting,
                                         )
@@ -984,7 +986,16 @@ class FeatureSettingsActivity : AppCompatActivity() {
 
                                     "App volume" -> {
                                         AppVolumeSettingsUI(
-                                            viewModel = viewModel,
+                                            state = viewModel.sound,
+                                            isAccessibilityEnabled = viewModel.isAccessibilityEnabled.value,
+                                            isShizukuPermissionGranted = viewModel.isShizukuPermissionGranted.value,
+                                            appPicker = { onDismiss, onAppSelected ->
+                                                SingleAppSelectionSheet(
+                                                    onDismissRequest = onDismiss,
+                                                    includeSystemApps = true,
+                                                    onAppSelected = { app -> onAppSelected(app.packageName) },
+                                                )
+                                            },
                                             modifier = Modifier.padding(top = 16.dp),
                                             highlightSetting = highlightSetting,
                                         )

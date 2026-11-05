@@ -102,7 +102,7 @@ object FeatureRegistry {
                 hasMoreSettings = false,
                 parentFeatureId = "Sound",
             ) {
-                override fun isEnabled(viewModel: MainViewModel) = viewModel.isCallVibrationsEnabled.value
+                override fun isEnabled(viewModel: MainViewModel) = viewModel.sound.isCallVibrationsEnabled.value
 
                 override fun isToggleEnabled(
                     viewModel: MainViewModel,
@@ -113,7 +113,7 @@ object FeatureRegistry {
                     viewModel: MainViewModel,
                     context: Context,
                     enabled: Boolean,
-                ) = viewModel.setCallVibrationsEnabled(enabled)
+                ) = viewModel.sound.setCallVibrationsEnabled(enabled)
 
                 override fun onClick(
                     context: Context,
@@ -131,7 +131,7 @@ object FeatureRegistry {
                 hasMoreSettings = false,
                 parentFeatureId = "Sound",
             ) {
-                override fun isEnabled(viewModel: MainViewModel) = viewModel.isAudioSafeVolumeDisabled.value
+                override fun isEnabled(viewModel: MainViewModel) = viewModel.sound.isAudioSafeVolumeDisabled.value
 
                 override fun isToggleEnabled(
                     viewModel: MainViewModel,
@@ -142,7 +142,7 @@ object FeatureRegistry {
                     viewModel: MainViewModel,
                     context: Context,
                     enabled: Boolean,
-                ) = viewModel.setAudioSafeVolumeDisabled(context, enabled)
+                ) = viewModel.sound.setAudioSafeVolumeDisabled(context, enabled)
 
                 override fun onClick(
                     context: Context,
@@ -1906,7 +1906,7 @@ object FeatureRegistry {
                     ),
                 parentFeatureId = "Sound",
             ) {
-                override fun isEnabled(viewModel: MainViewModel) = viewModel.isVolumeStepsEnabled.value
+                override fun isEnabled(viewModel: MainViewModel) = viewModel.sound.isVolumeStepsEnabled.value
 
                 override fun isToggleEnabled(
                     viewModel: MainViewModel,
@@ -1917,7 +1917,7 @@ object FeatureRegistry {
                     viewModel: MainViewModel,
                     context: Context,
                     enabled: Boolean,
-                ) = viewModel.setVolumeStepsEnabled(enabled)
+                ) = viewModel.sound.setVolumeStepsEnabled(enabled)
             },
             object : Feature(
                 id = "App volume",
@@ -1951,7 +1951,7 @@ object FeatureRegistry {
                     ),
                 parentFeatureId = "Sound",
             ) {
-                override fun isEnabled(viewModel: MainViewModel) = viewModel.isAppVolumeEnabled.value
+                override fun isEnabled(viewModel: MainViewModel) = viewModel.sound.isAppVolumeEnabled.value
 
                 override fun isToggleEnabled(
                     viewModel: MainViewModel,
@@ -1962,7 +1962,7 @@ object FeatureRegistry {
                     viewModel: MainViewModel,
                     context: Context,
                     enabled: Boolean,
-                ) = viewModel.setAppVolumeEnabled(enabled)
+                ) = viewModel.sound.setAppVolumeEnabled(enabled)
             },
             object : Feature(
                 id = "Dynamic night light",

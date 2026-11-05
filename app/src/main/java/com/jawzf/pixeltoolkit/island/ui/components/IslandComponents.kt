@@ -26,7 +26,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -52,8 +51,6 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.material3.Text
 import androidx.compose.foundation.layout.Row
 import com.jawzf.pixeltoolkit.island.ui.IslandMotion
-import kotlinx.coroutines.delay
-import kotlin.random.Random
 
 @Composable
 fun IslandBitmap(
@@ -100,42 +97,6 @@ fun resolveIconTint(tint: Color): Color {
 @Composable
 fun IslandIcon(res: Int, tint: Color = Color.White, size: Dp = 20.dp, modifier: Modifier = Modifier) {
     Icon(painterResource(res), contentDescription = null, tint = resolveIconTint(tint), modifier = modifier.squareFit(size))
-}
-
-@Composable
-fun EqualizerBars(
-    playing: Boolean,
-    color: Color,
-    modifier: Modifier = Modifier,
-    size: Dp = 18.dp,
-) {
-    val levels = remember { mutableStateListOf(0.16f, 0.16f, 0.16f) }
-    LaunchedEffect(playing) {
-        if (!playing) {
-            for (i in levels.indices) levels[i] = 0.16f
-            return@LaunchedEffect
-        }
-        val random = Random(System.nanoTime())
-        while (true) {
-            for (i in levels.indices) levels[i] = 0.15f + random.nextFloat() * 0.85f
-            delay(180L + random.nextLong(160L))
-        }
-    }
-    val animated = levels.mapIndexed { i, level ->
-        animateFloatAsState(level, IslandMotion.float(), label = "eq$i").value
-    }
-    Canvas(modifier.squareFit(size)) {
-        val barWidth = this.size.width / 5f
-        animated.forEachIndexed { i, level ->
-            val h = this.size.height * level
-            drawRoundRect(
-                color = color,
-                topLeft = Offset(barWidth * (i * 2f), (this.size.height - h) / 2f),
-                size = Size(barWidth, h),
-                cornerRadius = CornerRadius(barWidth / 2f),
-            )
-        }
-    }
 }
 
 @Composable

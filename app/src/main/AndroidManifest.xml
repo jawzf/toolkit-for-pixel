@@ -548,14 +548,6 @@
             android:theme="@style/Theme.Toolkit.Translucent" />
 
         <activity
-            android:name=".ui.activities.AppVolumeControlActivity"
-            android:excludeFromRecents="true"
-            android:exported="false"
-            android:noHistory="true"
-            android:taskAffinity=""
-            android:theme="@style/Theme.Toolkit.Translucent" />
-
-        <activity
             android:name=".ui.activities.FlashlightIntensityActivity"
             android:excludeFromRecents="true"
             android:exported="true"

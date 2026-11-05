@@ -33,6 +33,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
@@ -61,14 +62,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.toBitmap
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.design.components.EqualizerBars
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
 import com.jawzf.pixeltoolkit.core.design.theme.ToolkitTheme
 import com.jawzf.pixeltoolkit.feature.sound.SoundSettings
-import com.jawzf.pixeltoolkit.feature.sound.appvolume.AppVolumeController
-import com.jawzf.pixeltoolkit.island.ui.components.EqualizerBars
-import com.jawzf.pixeltoolkit.utils.AppUtil
 import kotlinx.coroutines.delay
 import kotlin.math.roundToInt
 
@@ -106,6 +106,7 @@ private class PlayerRow(
     var isPresent by mutableStateOf(true)
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun NowPlayingSheet(onDismiss: () -> Unit) {
     val context = LocalContext.current
@@ -205,7 +206,10 @@ private fun PlayerVolumeRow(
     val icon =
         remember(row.packageName) {
             runCatching {
-                AppUtil.drawableToBitmap(context.packageManager.getApplicationIcon(row.packageName)).asImageBitmap()
+                context.packageManager
+                    .getApplicationIcon(row.packageName)
+                    .toBitmap()
+                    .asImageBitmap()
             }.getOrNull()
         }
     val visibleState = remember { MutableTransitionState(row.isInitial) }.apply { targetState = row.isPresent }

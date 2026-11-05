@@ -22,7 +22,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import com.jawzf.pixeltoolkit.island.gestures.IslandSlideFeedback
 import com.jawzf.pixeltoolkit.island.gestures.SlideFeedback
-import com.jawzf.pixeltoolkit.island.ui.components.EqualizerBars
+import com.jawzf.pixeltoolkit.core.design.components.EqualizerBars
 import com.jawzf.pixeltoolkit.island.ui.components.MediaArtCue
 import com.jawzf.pixeltoolkit.island.ui.components.TrackSkipPill
 import com.jawzf.pixeltoolkit.island.ui.components.IslandBitmap
