@@ -36,25 +36,26 @@ import com.jawzf.pixeltoolkit.core.design.components.ConfigSliderItem
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.modifiers.highlight
-import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
+import com.jawzf.pixeltoolkit.feature.input.InputState
 import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun KeyboardSettingsUI(
-    viewModel: MainViewModel,
+    state: InputState,
+    isKeyboardEnabled: Boolean,
+    isKeyboardSelected: Boolean,
+    onRefresh: () -> Unit,
     modifier: Modifier = Modifier,
     highlightSetting: String? = null,
 ) {
     val context = LocalContext.current
     val view = LocalView.current
     var text by remember { mutableStateOf("") }
-    val isKeyboardEnabled by viewModel.isKeyboardEnabled
-    val isKeyboardSelected by viewModel.isKeyboardSelected
 
     LaunchedEffect(Unit) {
         while (true) {
-            viewModel.check(context)
+            onRefresh()
             delay(2000)
         }
     }
@@ -85,7 +86,7 @@ fun KeyboardSettingsUI(
             ) {
                 if (!isKeyboardEnabled) {
                     Button(
-                        onClick = { viewModel.openImeSettings(context) },
+                        onClick = { state.openImeSettings(context) },
                         modifier = Modifier.fillMaxWidth(),
                     ) {
                         Icon(
@@ -98,7 +99,7 @@ fun KeyboardSettingsUI(
                     }
                 } else if (!isKeyboardSelected) {
                     Button(
-                        onClick = { viewModel.showImePicker(context) },
+                        onClick = { state.showImePicker(context) },
                         modifier = Modifier.fillMaxWidth(),
                     ) {
                         Icon(
@@ -136,9 +137,9 @@ fun KeyboardSettingsUI(
         RoundedCardContainer(spacing = 2.dp) {
             ConfigSliderItem(
                 title = stringResource(R.string.label_keyboard_height),
-                value = viewModel.keyboardHeight.floatValue,
+                value = state.keyboardHeight.floatValue,
                 onValueChange = {
-                    viewModel.setKeyboardHeight(it, context)
+                    state.setKeyboardHeight(it, context)
                     HapticUtil
                         .performSliderHaptic(view)
                 },
@@ -149,9 +150,9 @@ fun KeyboardSettingsUI(
 
             ConfigSliderItem(
                 title = stringResource(R.string.label_keyboard_bottom_padding),
-                value = viewModel.keyboardBottomPadding.floatValue,
+                value = state.keyboardBottomPadding.floatValue,
                 onValueChange = {
-                    viewModel.setKeyboardBottomPadding(it, context)
+                    state.setKeyboardBottomPadding(it, context)
                     HapticUtil
                         .performSliderHaptic(view)
                 },
@@ -162,9 +163,9 @@ fun KeyboardSettingsUI(
 
             ConfigSliderItem(
                 title = stringResource(R.string.label_keyboard_roundness),
-                value = viewModel.keyboardRoundness.floatValue,
+                value = state.keyboardRoundness.floatValue,
                 onValueChange = {
-                    viewModel.setKeyboardRoundness(it, context)
+                    state.setKeyboardRoundness(it, context)
                     HapticUtil
                         .performSliderHaptic(view)
                 },
@@ -206,10 +207,10 @@ fun KeyboardSettingsUI(
                         )
 
                     shapes.forEach { (labelRes, value) ->
-                        val isSelected = viewModel.keyboardShape.intValue == value
+                        val isSelected = state.keyboardShape.intValue == value
                         androidx.compose.material3.ToggleButton(
                             checked = isSelected,
-                            onCheckedChange = { viewModel.setKeyboardShape(value, context) },
+                            onCheckedChange = { state.setKeyboardShape(value, context) },
                             modifier = Modifier.weight(1f),
                             shapes =
                                 when (value) {
@@ -235,16 +236,16 @@ fun KeyboardSettingsUI(
             IconToggleItem(
                 iconRes = R.drawable.rounded_keyboard_arrow_down_24,
                 title = stringResource(R.string.label_keyboard_functions_bottom),
-                isChecked = viewModel.isKeyboardFunctionsBottom.value,
-                onCheckedChange = { viewModel.setKeyboardFunctionsBottom(it, context) },
+                isChecked = state.isKeyboardFunctionsBottom.value,
+                onCheckedChange = { state.setKeyboardFunctionsBottom(it, context) },
                 modifier = Modifier.highlight(highlightSetting == "keyboard_functions_bottom"),
             )
 
             ConfigSliderItem(
                 title = stringResource(R.string.label_keyboard_functions_padding),
-                value = viewModel.keyboardFunctionsPadding.floatValue,
+                value = state.keyboardFunctionsPadding.floatValue,
                 onValueChange = {
-                    viewModel.setKeyboardFunctionsPadding(it, context)
+                    state.setKeyboardFunctionsPadding(it, context)
                     HapticUtil
                         .performSliderHaptic(view)
                 },
@@ -258,17 +259,17 @@ fun KeyboardSettingsUI(
             IconToggleItem(
                 iconRes = R.drawable.rounded_mobile_vibrate_24,
                 title = stringResource(R.string.label_keyboard_haptics),
-                isChecked = viewModel.isKeyboardHapticsEnabled.value,
-                onCheckedChange = { viewModel.setKeyboardHapticsEnabled(it, context) },
+                isChecked = state.isKeyboardHapticsEnabled.value,
+                onCheckedChange = { state.setKeyboardHapticsEnabled(it, context) },
                 modifier = Modifier.highlight(highlightSetting == "keyboard_haptics"),
             )
 
-            if (viewModel.isKeyboardHapticsEnabled.value) {
+            if (state.isKeyboardHapticsEnabled.value) {
                 ConfigSliderItem(
                     title = stringResource(R.string.label_keyboard_haptic_strength),
-                    value = viewModel.keyboardHapticStrength.floatValue,
+                    value = state.keyboardHapticStrength.floatValue,
                     onValueChange = {
-                        viewModel.setKeyboardHapticStrength(it, context)
+                        state.setKeyboardHapticStrength(it, context)
                     },
                     modifier = Modifier.highlight(highlightSetting == "keyboard_haptic_strength"),
                 )
@@ -277,69 +278,69 @@ fun KeyboardSettingsUI(
             IconToggleItem(
                 iconRes = R.drawable.rounded_nightlight_24,
                 title = stringResource(R.string.label_keyboard_always_dark),
-                isChecked = viewModel.isKeyboardAlwaysDark.value,
-                onCheckedChange = { viewModel.setKeyboardAlwaysDark(it, context) },
+                isChecked = state.isKeyboardAlwaysDark.value,
+                onCheckedChange = { state.setKeyboardAlwaysDark(it, context) },
                 modifier = Modifier.highlight(highlightSetting == "keyboard_always_dark"),
             )
 
             IconToggleItem(
                 iconRes = R.drawable.rounded_invert_colors_24,
                 title = stringResource(R.string.label_keyboard_pitch_black),
-                isChecked = viewModel.isKeyboardPitchBlack.value,
-                onCheckedChange = { viewModel.setKeyboardPitchBlack(it, context) },
+                isChecked = state.isKeyboardPitchBlack.value,
+                onCheckedChange = { state.setKeyboardPitchBlack(it, context) },
                 modifier = Modifier.highlight(highlightSetting == "keyboard_pitch_black"),
             )
 
             IconToggleItem(
                 iconRes = R.drawable.rounded_content_paste_24,
                 title = stringResource(R.string.label_keyboard_clipboard_enabled),
-                isChecked = viewModel.isKeyboardClipboardEnabled.value,
-                onCheckedChange = { viewModel.setKeyboardClipboardEnabled(it, context) },
+                isChecked = state.isKeyboardClipboardEnabled.value,
+                onCheckedChange = { state.setKeyboardClipboardEnabled(it, context) },
                 modifier = Modifier.highlight(highlightSetting == "keyboard_clipboard_enabled"),
             )
 
             IconToggleItem(
                 iconRes = R.drawable.rounded_keyboard_24,
                 title = stringResource(R.string.label_keyboard_long_press_symbols),
-                isChecked = viewModel.isLongPressSymbolsEnabled.value,
-                onCheckedChange = { viewModel.setLongPressSymbolsEnabled(it, context) },
+                isChecked = state.isLongPressSymbolsEnabled.value,
+                onCheckedChange = { state.setLongPressSymbolsEnabled(it, context) },
                 modifier = Modifier.highlight(highlightSetting == "keyboard_long_press_symbols"),
             )
 
             IconToggleItem(
                 iconRes = R.drawable.rounded_keyboard_24,
                 title = stringResource(R.string.label_keyboard_accented_characters),
-                isChecked = viewModel.isAccentedCharactersEnabled.value,
-                onCheckedChange = { viewModel.setAccentedCharactersEnabled(it, context) },
-                enabled = viewModel.isLongPressSymbolsEnabled.value,
+                isChecked = state.isAccentedCharactersEnabled.value,
+                onCheckedChange = { state.setAccentedCharactersEnabled(it, context) },
+                enabled = state.isLongPressSymbolsEnabled.value,
                 modifier = Modifier.highlight(highlightSetting == "keyboard_accented_characters"),
             )
 
             IconToggleItem(
                 iconRes = R.drawable.rounded_book_2_24,
                 title = "User Dictionary (Learn words)",
-                isChecked = viewModel.isUserDictionaryEnabled.value,
-                onCheckedChange = { viewModel.setUserDictionaryEnabled(it, context) },
+                isChecked = state.isUserDictionaryEnabled.value,
+                onCheckedChange = { state.setUserDictionaryEnabled(it, context) },
                 modifier = Modifier.highlight(highlightSetting == "user_dictionary_enabled"),
             )
 
-            if (viewModel.isUserDictionaryEnabled.value) {
+            if (state.isUserDictionaryEnabled.value) {
                 IconToggleItem(
                     iconRes = R.drawable.rounded_settings_24,
                     title = "Manage Learned Words",
                     isChecked = false,
                     showToggle = false,
-                    onCheckedChange = { viewModel.isUserDictionarySheetVisible.value = true },
+                    onCheckedChange = { state.isUserDictionarySheetVisible.value = true },
                 )
             }
         }
 
         Spacer(Modifier.height(32.dp))
 
-        if (viewModel.isUserDictionarySheetVisible.value) {
+        if (state.isUserDictionarySheetVisible.value) {
             UserDictionaryBottomSheet(
-                viewModel = viewModel,
-                onDismissRequest = { viewModel.isUserDictionarySheetVisible.value = false },
+                state = state,
+                onDismissRequest = { state.isUserDictionarySheetVisible.value = false },
             )
         }
     }

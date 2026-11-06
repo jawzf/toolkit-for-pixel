@@ -74,8 +74,7 @@ import com.jawzf.pixeltoolkit.feature.apps.freeze.FreezeState
 import com.jawzf.pixeltoolkit.feature.apps.updates.github.GitHubUser
 import com.jawzf.pixeltoolkit.feature.connectivity.ConnectivitySettings
 import com.jawzf.pixeltoolkit.feature.connectivity.ConnectivityState
-import com.jawzf.pixeltoolkit.feature.input.InputSettings
-import com.jawzf.pixeltoolkit.feature.input.ime.ToolkitInputMethodService
+import com.jawzf.pixeltoolkit.feature.input.InputState
 import com.jawzf.pixeltoolkit.feature.power.BatteryState
 import com.jawzf.pixeltoolkit.feature.power.PowerSettings
 import com.jawzf.pixeltoolkit.feature.power.PowerState
@@ -417,6 +416,7 @@ class MainViewModel : ViewModel() {
     val freeze = FreezeState(viewModelScope)
     val appLock = AppLockState { context -> updateAppDetectionService(context) }
     val consciousGate = ConsciousGateState { context -> updateAppDetectionService(context) }
+    val input = InputState(viewModelScope)
     val addedQSTiles = mutableStateOf<Set<String>>(emptySet())
     val isHideGestureBarEnabled = mutableStateOf(false)
     val isHideGestureBarOnLauncherEnabled = mutableStateOf(false)
@@ -540,18 +540,6 @@ class MainViewModel : ViewModel() {
     val isPowerSaveModeEnabled = mutableStateOf(false)
     private var powerSaveReceiver: BroadcastReceiver? = null
 
-    // Keyboard Customization
-    val keyboardHeight = mutableFloatStateOf(54f)
-    val keyboardBottomPadding = mutableFloatStateOf(0f)
-    val keyboardRoundness = mutableFloatStateOf(24f)
-    val isKeyboardHapticsEnabled = mutableStateOf(true)
-    val isKeyboardFunctionsBottom = mutableStateOf(false)
-    val keyboardFunctionsPadding = mutableFloatStateOf(0f)
-    val keyboardHapticStrength = mutableFloatStateOf(0.5f)
-    val keyboardShape = mutableIntStateOf(0) // 0=Round, 1=Flat, 2=Inverse
-    val isKeyboardAlwaysDark = mutableStateOf(false)
-    val isKeyboardPitchBlack = mutableStateOf(false)
-    val isKeyboardClipboardEnabled = mutableStateOf(true)
     val isKeyboardEnabled = mutableStateOf(false)
     val isKeyboardSelected = mutableStateOf(false)
     val isWriteSettingsEnabled = mutableStateOf(false)
@@ -559,11 +547,6 @@ class MainViewModel : ViewModel() {
     val isBubblePermissionGranted = mutableStateOf(false)
     val isSensitiveNotificationsGranted = mutableStateOf(true)
     val isLocalNetworkGranted = mutableStateOf(true)
-    val isUserDictionaryEnabled = mutableStateOf(false)
-    val userDictionaryWords = mutableStateOf<Map<String, Long>>(emptyMap())
-    val isUserDictionarySheetVisible = mutableStateOf(false)
-    val isLongPressSymbolsEnabled = mutableStateOf(false)
-    val isAccentedCharactersEnabled = mutableStateOf(false)
 
     val isAmbientMusicGlanceDockedModeEnabled = mutableStateOf(false)
     val isAmbientMusicGlanceRandomShapesEnabled = mutableStateOf(false)
@@ -1083,57 +1066,7 @@ class MainViewModel : ViewModel() {
                             settingsRepository.isSecureSensitiveTilesEnabled()
                     }
 
-                    InputSettings.KEY_KEYBOARD_HEIGHT ->
-                        keyboardHeight.floatValue =
-                            settingsRepository.getFloat(key, 54f)
-
-                    InputSettings.KEY_KEYBOARD_BOTTOM_PADDING ->
-                        keyboardBottomPadding.floatValue =
-                            settingsRepository.getFloat(key, 0f)
-
-                    InputSettings.KEY_KEYBOARD_ROUNDNESS ->
-                        keyboardRoundness.floatValue =
-                            settingsRepository.getFloat(key, 24f)
-
-                    InputSettings.KEY_KEYBOARD_HAPTICS_ENABLED ->
-                        isKeyboardHapticsEnabled.value =
-                            settingsRepository.getBoolean(key)
-
-                    InputSettings.KEY_KEYBOARD_FUNCTIONS_BOTTOM ->
-                        isKeyboardFunctionsBottom.value =
-                            settingsRepository.getBoolean(key)
-
-                    InputSettings.KEY_KEYBOARD_FUNCTIONS_PADDING ->
-                        keyboardFunctionsPadding.floatValue =
-                            settingsRepository.getFloat(key, 0f)
-
-                    InputSettings.KEY_KEYBOARD_HAPTIC_STRENGTH ->
-                        keyboardHapticStrength.floatValue =
-                            settingsRepository.getFloat(key, 0.5f)
-
-                    InputSettings.KEY_KEYBOARD_SHAPE ->
-                        keyboardShape.intValue =
-                            settingsRepository.getInt(key, 0)
-
-                    InputSettings.KEY_KEYBOARD_ALWAYS_DARK ->
-                        isKeyboardAlwaysDark.value =
-                            settingsRepository.getBoolean(key, false)
-
-                    InputSettings.KEY_KEYBOARD_PITCH_BLACK ->
-                        isKeyboardPitchBlack.value =
-                            settingsRepository.getBoolean(key, false)
-
-                    InputSettings.KEY_KEYBOARD_CLIPBOARD_ENABLED ->
-                        isKeyboardClipboardEnabled.value =
-                            settingsRepository.getBoolean(key, true)
-
-                    InputSettings.KEY_KEYBOARD_LONG_PRESS_SYMBOLS ->
-                        isLongPressSymbolsEnabled.value =
-                            settingsRepository.getBoolean(key, false)
-
-                    InputSettings.KEY_KEYBOARD_ACCENTED_CHARACTERS ->
-                        isAccentedCharactersEnabled.value =
-                            settingsRepository.getBoolean(key, false)
+                    in InputState.PREFERENCE_KEYS -> input.onPreferenceChanged(key)
 
                     PowerSettings.KEY_BATTERY_WIDGET_MAX_DEVICES -> battery.onPreferenceChanged(key)
 
@@ -2519,36 +2452,7 @@ class MainViewModel : ViewModel() {
         isShowLegacyFeatures.value = settingsRepository.isShowLegacyFeatures()
         isSecureSensitiveTilesEnabled.value = settingsRepository.isSecureSensitiveTilesEnabled()
 
-        keyboardHeight.floatValue =
-            settingsRepository.getFloat(InputSettings.KEY_KEYBOARD_HEIGHT, 54f)
-        keyboardBottomPadding.floatValue =
-            settingsRepository.getFloat(InputSettings.KEY_KEYBOARD_BOTTOM_PADDING, 0f)
-        keyboardRoundness.floatValue =
-            settingsRepository.getFloat(InputSettings.KEY_KEYBOARD_ROUNDNESS, 24f)
-        isKeyboardHapticsEnabled.value =
-            settingsRepository.getBoolean(InputSettings.KEY_KEYBOARD_HAPTICS_ENABLED, true)
-        isKeyboardFunctionsBottom.value =
-            settingsRepository.getBoolean(InputSettings.KEY_KEYBOARD_FUNCTIONS_BOTTOM, false)
-        keyboardFunctionsPadding.floatValue =
-            settingsRepository.getFloat(InputSettings.KEY_KEYBOARD_FUNCTIONS_PADDING, 0f)
-        keyboardHapticStrength.floatValue =
-            settingsRepository.getFloat(InputSettings.KEY_KEYBOARD_HAPTIC_STRENGTH, 0.5f)
-        keyboardShape.intValue = settingsRepository.getInt(InputSettings.KEY_KEYBOARD_SHAPE, 0)
-        isKeyboardAlwaysDark.value =
-            settingsRepository.getBoolean(InputSettings.KEY_KEYBOARD_ALWAYS_DARK, false)
-        isKeyboardPitchBlack.value =
-            settingsRepository.getBoolean(InputSettings.KEY_KEYBOARD_PITCH_BLACK, false)
-        isKeyboardClipboardEnabled.value =
-            settingsRepository.getBoolean(InputSettings.KEY_KEYBOARD_CLIPBOARD_ENABLED, true)
-        isUserDictionaryEnabled.value =
-            settingsRepository.getBoolean(InputSettings.KEY_USER_DICTIONARY_ENABLED, false)
-        isLongPressSymbolsEnabled.value =
-            settingsRepository.getBoolean(InputSettings.KEY_KEYBOARD_LONG_PRESS_SYMBOLS, false)
-        isAccentedCharactersEnabled.value =
-            settingsRepository.getBoolean(
-                InputSettings.KEY_KEYBOARD_ACCENTED_CHARACTERS,
-                false,
-            )
+        input.load(context)
 
         battery.load(context)
 
@@ -2870,123 +2774,6 @@ class MainViewModel : ViewModel() {
         privilegedMode.value = ShellUtils.getSelectedMode(ctx)
         isRootEnabled.value = ShellUtils.isRootEnabled(ctx)
         usesAuthToken.value = ShellUtils.usesAuthToken(ctx)
-    }
-
-    /**
-     * Executes the set user dictionary enabled operation.
-     *
-     * @param enabled [Boolean] Target enabled.
-     * @param context [Context] Target context.
-     */
-    fun setUserDictionaryEnabled(
-        enabled: Boolean,
-        context: Context,
-    ) {
-        isUserDictionaryEnabled.value = enabled
-        InputSettings(context).setUserDictionaryEnabled(enabled)
-    }
-
-    /**
-     * Executes the set long press symbols enabled operation.
-     *
-     * @param enabled [Boolean] Target enabled.
-     * @param context [Context] Target context.
-     */
-    fun setLongPressSymbolsEnabled(
-        enabled: Boolean,
-        context: Context,
-    ) {
-        isLongPressSymbolsEnabled.value = enabled
-        settingsRepository.putBoolean(InputSettings.KEY_KEYBOARD_LONG_PRESS_SYMBOLS, enabled)
-    }
-
-    /**
-     * Executes the set accented characters enabled operation.
-     *
-     * @param enabled [Boolean] Target enabled.
-     * @param context [Context] Target context.
-     */
-    fun setAccentedCharactersEnabled(
-        enabled: Boolean,
-        context: Context,
-    ) {
-        isAccentedCharactersEnabled.value = enabled
-        InputSettings(context).setAccentedCharactersEnabled(enabled)
-    }
-
-    /**
-     * Executes the load user dictionary words operation.
-     *
-     * @param context [Context] Target context.
-     */
-    fun loadUserDictionaryWords(context: Context) {
-        context.applicationContext as? ToolkitInputMethodService
-
-        viewModelScope.launch(Dispatchers.IO) {
-            val file = java.io.File(context.filesDir, "user_dict.txt")
-            if (file.exists()) {
-                val map = mutableMapOf<String, Long>()
-                file.forEachLine { line ->
-                    val parts = line.split(" ")
-                    if (parts.size >= 2) {
-                        map[parts[0]] = parts[1].toLongOrNull() ?: 1L
-                    }
-                }
-                withContext(Dispatchers.Main) {
-                    userDictionaryWords.value = map
-                }
-            } else {
-                withContext(Dispatchers.Main) {
-                    userDictionaryWords.value = emptyMap()
-                }
-            }
-        }
-    }
-
-    /**
-     * Executes the delete user word operation.
-     *
-     * @param word [String] Target word.
-     * @param context [Context] Target context.
-     */
-    fun deleteUserWord(
-        word: String,
-        context: Context,
-    ) {
-        viewModelScope.launch(Dispatchers.IO) {
-            // Read, remove, write
-            val file = java.io.File(context.filesDir, "user_dict.txt")
-            if (file.exists()) {
-                val lines = file.readLines().filter { !it.startsWith("$word ") }
-                file.writeText(lines.joinToString("\n"))
-                loadUserDictionaryWords(context)
-                settingsRepository.putLong(
-                    InputSettings.KEY_USER_DICT_LAST_UPDATE,
-                    System.currentTimeMillis(),
-                )
-            }
-        }
-    }
-
-    /**
-     * Executes the clear user dictionary operation.
-     *
-     * @param context [Context] Target context.
-     */
-    fun clearUserDictionary(context: Context) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val file = java.io.File(context.filesDir, "user_dict.txt")
-            if (file.exists()) {
-                file.delete()
-                withContext(Dispatchers.Main) {
-                    userDictionaryWords.value = emptyMap()
-                }
-                settingsRepository.putLong(
-                    InputSettings.KEY_USER_DICT_LAST_UPDATE,
-                    System.currentTimeMillis(),
-                )
-            }
-        }
     }
 
     /**
@@ -6572,17 +6359,6 @@ class MainViewModel : ViewModel() {
     }
 
     /**
-     * Executes the open ime settings operation.
-     *
-     * @param context [Context] Target context.
-     */
-    fun openImeSettings(context: Context) {
-        val intent = Intent(Settings.ACTION_INPUT_METHOD_SETTINGS)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        context.startActivity(intent)
-    }
-
-    /**
      * Executes the request write secure settings permission operation.
      *
      * @param context [Context] Target context.
@@ -6612,16 +6388,6 @@ class MainViewModel : ViewModel() {
      */
     fun requestWriteSettingsPermission(context: Context) {
         PermissionUtils.openWriteSettings(context)
-    }
-
-    /**
-     * Executes the show ime picker operation.
-     *
-     * @param context [Context] Target context.
-     */
-    fun showImePicker(context: Context) {
-        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.showInputMethodPicker()
     }
 
     /**
@@ -6781,160 +6547,6 @@ class MainViewModel : ViewModel() {
         selectedAppIcon.value = appIcon
         settingsRepository.setAppIcon(appIcon)
         AppIconUtil.setAppIcon(context, appIcon)
-    }
-
-    /**
-     * Executes the set keyboard height operation.
-     *
-     * @param height [Float] Target height.
-     * @param context [Context] Target context.
-     */
-    fun setKeyboardHeight(
-        height: Float,
-        context: Context,
-    ) {
-        keyboardHeight.floatValue = height
-        settingsRepository.putFloat(InputSettings.KEY_KEYBOARD_HEIGHT, height)
-    }
-
-    /**
-     * Executes the set keyboard bottom padding operation.
-     *
-     * @param padding [Float] Target padding.
-     * @param context [Context] Target context.
-     */
-    fun setKeyboardBottomPadding(
-        padding: Float,
-        context: Context,
-    ) {
-        keyboardBottomPadding.floatValue = padding
-        settingsRepository.putFloat(InputSettings.KEY_KEYBOARD_BOTTOM_PADDING, padding)
-    }
-
-    /**
-     * Executes the set keyboard roundness operation.
-     *
-     * @param roundness [Float] Target roundness.
-     * @param context [Context] Target context.
-     */
-    fun setKeyboardRoundness(
-        roundness: Float,
-        context: Context,
-    ) {
-        keyboardRoundness.floatValue = roundness
-        settingsRepository.putFloat(InputSettings.KEY_KEYBOARD_ROUNDNESS, roundness)
-    }
-
-    /**
-     * Executes the set keyboard haptics enabled operation.
-     *
-     * @param enabled [Boolean] Target enabled.
-     * @param context [Context] Target context.
-     */
-    fun setKeyboardHapticsEnabled(
-        enabled: Boolean,
-        context: Context,
-    ) {
-        isKeyboardHapticsEnabled.value = enabled
-        settingsRepository.putBoolean(InputSettings.KEY_KEYBOARD_HAPTICS_ENABLED, enabled)
-    }
-
-    /**
-     * Executes the set keyboard functions bottom operation.
-     *
-     * @param isBottom [Boolean] Target is bottom.
-     * @param context [Context] Target context.
-     */
-    fun setKeyboardFunctionsBottom(
-        isBottom: Boolean,
-        context: Context,
-    ) {
-        isKeyboardFunctionsBottom.value = isBottom
-        settingsRepository.putBoolean(InputSettings.KEY_KEYBOARD_FUNCTIONS_BOTTOM, isBottom)
-    }
-
-    /**
-     * Executes the set keyboard functions padding operation.
-     *
-     * @param padding [Float] Target padding.
-     * @param context [Context] Target context.
-     */
-    fun setKeyboardFunctionsPadding(
-        padding: Float,
-        context: Context,
-    ) {
-        keyboardFunctionsPadding.floatValue = padding
-        settingsRepository.putFloat(InputSettings.KEY_KEYBOARD_FUNCTIONS_PADDING, padding)
-    }
-
-    /**
-     * Executes the set keyboard haptic strength operation.
-     *
-     * @param strength [Float] Target strength.
-     * @param context [Context] Target context.
-     */
-    fun setKeyboardHapticStrength(
-        strength: Float,
-        context: Context,
-    ) {
-        keyboardHapticStrength.floatValue = strength
-        settingsRepository.putFloat(InputSettings.KEY_KEYBOARD_HAPTIC_STRENGTH, strength)
-    }
-
-    /**
-     * Executes the set keyboard shape operation.
-     *
-     * @param shape [Int] Target shape.
-     * @param context [Context] Target context.
-     */
-    fun setKeyboardShape(
-        shape: Int,
-        context: Context,
-    ) {
-        keyboardShape.intValue = shape
-        settingsRepository.putInt(InputSettings.KEY_KEYBOARD_SHAPE, shape)
-    }
-
-    /**
-     * Executes the set keyboard always dark operation.
-     *
-     * @param enabled [Boolean] Target enabled.
-     * @param context [Context] Target context.
-     */
-    fun setKeyboardAlwaysDark(
-        enabled: Boolean,
-        context: Context,
-    ) {
-        isKeyboardAlwaysDark.value = enabled
-        settingsRepository.putBoolean(InputSettings.KEY_KEYBOARD_ALWAYS_DARK, enabled)
-    }
-
-    /**
-     * Executes the set keyboard pitch black operation.
-     *
-     * @param enabled [Boolean] Target enabled.
-     * @param context [Context] Target context.
-     */
-    fun setKeyboardPitchBlack(
-        enabled: Boolean,
-        context: Context,
-    ) {
-        isKeyboardPitchBlack.value = enabled
-        settingsRepository.putBoolean(InputSettings.KEY_KEYBOARD_PITCH_BLACK, enabled)
-    }
-
-    /**
-     * Executes the set keyboard clipboard enabled operation.
-     *
-     * @param enabled [Boolean] Target enabled.
-     * @param context [Context] Target context.
-     */
-    fun setKeyboardClipboardEnabled(
-        enabled: Boolean,
-        context: Context,
-    ) {
-        isKeyboardClipboardEnabled.value = enabled
-        settingsRepository.putBoolean(InputSettings.KEY_KEYBOARD_CLIPBOARD_ENABLED, enabled)
     }
 
     private fun isAccessibilityServiceEnabled(context: Context): Boolean = PermissionUtils.isAccessibilityServiceEnabled(context)

@@ -1193,7 +1193,10 @@ class FeatureSettingsActivity : AppCompatActivity() {
 
                                     "System Keyboard" -> {
                                         KeyboardSettingsUI(
-                                            viewModel = viewModel,
+                                            state = viewModel.input,
+                                            isKeyboardEnabled = viewModel.isKeyboardEnabled.value,
+                                            isKeyboardSelected = viewModel.isKeyboardSelected.value,
+                                            onRefresh = { viewModel.check(context) },
                                             modifier = Modifier.padding(top = 16.dp),
                                             highlightSetting = highlightSetting,
                                         )
