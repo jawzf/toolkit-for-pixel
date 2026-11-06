@@ -47,12 +47,12 @@ import com.jawzf.pixeltoolkit.domain.diy.Action
 import com.jawzf.pixeltoolkit.domain.diy.ActionRegistry
 import com.jawzf.pixeltoolkit.domain.diy.displayName
 import com.jawzf.pixeltoolkit.feature.apps.AppsSettings
-import com.jawzf.pixeltoolkit.feature.notifications.hilight.ui.HilightEffectSettingsSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.AppSelectionSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.ChargingModeSettingsSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.CustomSettingsSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.DeviceCareSettingsSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.DimWallpaperSettingsSheet
+import com.jawzf.pixeltoolkit.ui.core.sheets.HilightEffectSettingsSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.NotificationLightingActionSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.OpenActivityPicker
 import com.jawzf.pixeltoolkit.ui.core.sheets.OverlayControlSettingsSheet

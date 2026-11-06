@@ -1263,7 +1263,7 @@ object FeatureRegistry {
                     ),
                 parentFeatureId = "Hilight",
             ) {
-                override fun isEnabled(viewModel: MainViewModel) = viewModel.isHilightNotificationsEnabled.value
+                override fun isEnabled(viewModel: MainViewModel) = viewModel.hilight.isHilightNotificationsEnabled.value
 
                 override fun isDeviceSupported(context: Context) = DeviceUtils.isHilightDevice()
 
@@ -1279,7 +1279,7 @@ object FeatureRegistry {
                     viewModel: MainViewModel,
                     context: Context,
                     enabled: Boolean,
-                ) = viewModel.setHilightNotificationsEnabled(enabled)
+                ) = viewModel.hilight.setHilightNotificationsEnabled(enabled)
             },
             object : Feature(
                 id = "Hilight live progress",
@@ -1300,7 +1300,7 @@ object FeatureRegistry {
                     ),
                 parentFeatureId = "Hilight",
             ) {
-                override fun isEnabled(viewModel: MainViewModel) = viewModel.isHilightProgressEnabled.value
+                override fun isEnabled(viewModel: MainViewModel) = viewModel.hilight.isHilightProgressEnabled.value
 
                 override fun isDeviceSupported(context: Context) = DeviceUtils.isHilightDevice()
 
@@ -1316,7 +1316,7 @@ object FeatureRegistry {
                     viewModel: MainViewModel,
                     context: Context,
                     enabled: Boolean,
-                ) = viewModel.setHilightProgressEnabled(enabled)
+                ) = viewModel.hilight.setHilightProgressEnabled(enabled)
             },
             object : Feature(
                 id = "Flashlight pulse",

@@ -3,10 +3,11 @@ package com.jawzf.pixeltoolkit.core.data.apps
 import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.jawzf.pixeltoolkit.core.data.prefs.PrefsStore
 import com.jawzf.pixeltoolkit.core.design.apps.AppIcons
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 
 object AppColorUtil {
+    private const val KEY_APP_CUSTOM_COLORS = "app_custom_colors"
     private val gson = Gson()
 
     @Volatile
@@ -15,8 +16,8 @@ object AppColorUtil {
     fun getOverrides(context: Context): Map<String, Int> {
         cache?.let { return it }
         val json =
-            SettingsRepository(context)
-                .getString(SettingsRepository.KEY_APP_CUSTOM_COLORS, null)
+            PrefsStore(context)
+                .getString(KEY_APP_CUSTOM_COLORS, null)
         val parsed =
             if (json.isNullOrBlank()) {
                 emptyMap()
@@ -45,14 +46,14 @@ object AppColorUtil {
         val updated = getOverrides(context).toMutableMap()
         if (color == null) updated.remove(packageName) else updated[packageName] = color
         cache = updated
-        SettingsRepository(context)
-            .putString(SettingsRepository.KEY_APP_CUSTOM_COLORS, gson.toJson(updated))
+        PrefsStore(context)
+            .putString(KEY_APP_CUSTOM_COLORS, gson.toJson(updated))
     }
 
     fun clearAll(context: Context) {
         cache = emptyMap()
-        SettingsRepository(context)
-            .putString(SettingsRepository.KEY_APP_CUSTOM_COLORS, gson.toJson(emptyMap<String, Int>()))
+        PrefsStore(context)
+            .putString(KEY_APP_CUSTOM_COLORS, gson.toJson(emptyMap<String, Int>()))
     }
 
     fun invalidateCache() {

@@ -40,6 +40,7 @@ import com.jawzf.pixeltoolkit.domain.model.NotificationActionItem
 import com.jawzf.pixeltoolkit.domain.model.NotificationLightingColorMode
 import com.jawzf.pixeltoolkit.domain.model.NotificationLightingSide
 import com.jawzf.pixeltoolkit.domain.model.RippleConfig
+import com.jawzf.pixeltoolkit.feature.notifications.NotificationSettings
 import com.jawzf.pixeltoolkit.feature.notifications.autodismiss.NotificationAutoDismisser
 import com.jawzf.pixeltoolkit.feature.notifications.hilight.HilightController
 import com.jawzf.pixeltoolkit.feature.notifications.hilight.HilightProgressTracker
@@ -1408,7 +1409,7 @@ class NotificationListener : NotificationListenerService() {
 
     private fun handleHilight(sbn: StatusBarNotification) {
         if (!DeviceUtils.isHilightDevice()) return
-        val settings = SettingsRepository(applicationContext)
+        val settings = NotificationSettings(applicationContext)
         if (!settings.isHilightNotificationsEnabled()) return
         val flags = sbn.notification.flags
         val skipFlags = Notification.FLAG_ONGOING_EVENT or Notification.FLAG_FOREGROUND_SERVICE or Notification.FLAG_GROUP_SUMMARY

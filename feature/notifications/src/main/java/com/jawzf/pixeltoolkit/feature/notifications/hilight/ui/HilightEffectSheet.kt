@@ -38,7 +38,6 @@ import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.pickers.ColorSwatchPicker
 import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
-import com.jawzf.pixeltoolkit.domain.diy.Action
 import com.jawzf.pixeltoolkit.feature.notifications.hilight.HilightController
 import com.jawzf.pixeltoolkit.feature.notifications.hilight.HilightEffect
 import com.jawzf.pixeltoolkit.feature.notifications.hilight.HilightFrames
@@ -159,20 +158,6 @@ fun HilightEffectEditor(
             Text(stringResource(R.string.hilight_try_it))
         }
     }
-}
-
-@Composable
-fun HilightEffectSettingsSheet(
-    initialAction: Action.Hilight,
-    onDismiss: () -> Unit,
-    onSave: (Action.Hilight) -> Unit,
-) {
-    HilightEffectSheet(
-        title = stringResource(R.string.diy_action_hilight),
-        initialEffect = initialAction.toEffect(),
-        onDismiss = onDismiss,
-        onSave = { onSave(Action.Hilight(it.pattern, it.color, it.durationMs, it.brightness, it.repeats)) },
-    )
 }
 
 @Composable

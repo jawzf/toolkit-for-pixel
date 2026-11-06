@@ -7,6 +7,7 @@ import android.content.IntentFilter
 import android.os.Build
 import com.jawzf.pixeltoolkit.core.data.log.LogManager
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
+import com.jawzf.pixeltoolkit.core.platform.AppGlobals
 import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuUtils
 import com.jawzf.pixeltoolkit.services.receivers.SecurityReceiver
 import com.jawzf.pixeltoolkit.utils.StatusBarManager
@@ -27,6 +28,7 @@ class ToolkitApp : Application() {
     override fun onCreate() {
         super.onCreate()
         context = applicationContext
+        AppGlobals.init(this)
         HapticUtil.initialize(this)
 
         try {

@@ -5,7 +5,7 @@ import android.os.PowerManager
 import com.jawzf.pixeltoolkit.core.platform.device.DeviceUtils
 import com.jawzf.pixeltoolkit.core.platform.device.PriorityModeUtil
 import com.jawzf.pixeltoolkit.core.platform.device.ProgressNotificationData
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
+import com.jawzf.pixeltoolkit.feature.notifications.NotificationSettings
 import com.jawzf.pixeltoolkit.feature.notifications.hilight.HilightLights
 import com.jawzf.pixeltoolkit.feature.notifications.hilight.HilightProgressColorMode
 import com.jawzf.pixeltoolkit.feature.notifications.hilight.HilightProgressFrames
@@ -31,7 +31,7 @@ object HilightProgressTracker {
         context: Context,
         data: ProgressNotificationData?,
     ) = synchronized(this) {
-        val settings = SettingsRepository(context)
+        val settings = NotificationSettings(context)
         if (!DeviceUtils.isHilightDevice() || !settings.isHilightProgressEnabled()) {
             reset()
             return
@@ -73,7 +73,7 @@ object HilightProgressTracker {
 
     private fun show(
         context: Context,
-        settings: SettingsRepository,
+        settings: NotificationSettings,
         durationMs: Long,
         frame: (Long, HilightProgressColorMode, Int, Int) -> IntArray,
     ) {

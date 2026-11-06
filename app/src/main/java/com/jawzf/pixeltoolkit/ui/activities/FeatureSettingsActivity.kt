@@ -884,7 +884,7 @@ class FeatureSettingsActivity : AppCompatActivity() {
 
                                 if (featureId == "Hilight") {
                                     HilightSettingsUI(
-                                        viewModel = viewModel,
+                                        state = viewModel.hilight,
                                         highlightSetting = highlightSetting,
                                     )
                                 }
@@ -926,7 +926,13 @@ class FeatureSettingsActivity : AppCompatActivity() {
 
                                     "Hilight notifications" -> {
                                         HilightNotificationsSettingsUI(
-                                            viewModel = viewModel,
+                                            state = viewModel.hilight,
+                                            appPicker = { onDismiss, onAppSelected ->
+                                                SingleAppSelectionSheet(
+                                                    onDismissRequest = onDismiss,
+                                                    onAppSelected = onAppSelected,
+                                                )
+                                            },
                                             modifier = Modifier.padding(top = 16.dp),
                                             highlightSetting = highlightSetting,
                                         )
@@ -934,7 +940,7 @@ class FeatureSettingsActivity : AppCompatActivity() {
 
                                     "Hilight live progress" -> {
                                         HilightProgressSettingsUI(
-                                            viewModel = viewModel,
+                                            state = viewModel.hilight,
                                             modifier = Modifier.padding(top = 16.dp),
                                             highlightSetting = highlightSetting,
                                         )
