@@ -57,6 +57,33 @@ class DisplaySettings(
         )
     }
 
+    /**
+     * Executes the load dynamic night light selected apps operation.
+     */
+    fun loadDynamicNightLightSelectedApps(): List<AppSelection> = loadAppSelection(KEY_DYNAMIC_NIGHT_LIGHT_SELECTED_APPS)
+
+    /**
+     * Executes the save dynamic night light selected apps operation.
+     *
+     * @param apps [List<AppSelection>] Target apps.
+     */
+    fun saveDynamicNightLightSelectedApps(apps: List<AppSelection>) = saveAppSelection(KEY_DYNAMIC_NIGHT_LIGHT_SELECTED_APPS, apps)
+
+    /**
+     * Executes the update dynamic night light app selection operation.
+     *
+     * @param packageName [String] Target package name.
+     * @param enabled [Boolean] Target enabled.
+     */
+    fun updateDynamicNightLightAppSelection(
+        packageName: String,
+        enabled: Boolean,
+    ) {
+        saveDynamicNightLightSelectedApps(
+            withSelection(loadDynamicNightLightSelectedApps(), packageName, enabled),
+        )
+    }
+
     private fun withSelection(
         current: List<AppSelection>,
         packageName: String,
@@ -348,6 +375,8 @@ class DisplaySettings(
     fun setLockScreenClockSeedColor(value: Int) = putInt(KEY_LOCK_SCREEN_CLOCK_SEED_COLOR, value)
 
     companion object {
+        const val KEY_DYNAMIC_NIGHT_LIGHT_ENABLED = "dynamic_night_light_enabled"
+        const val KEY_DYNAMIC_NIGHT_LIGHT_SELECTED_APPS = "dynamic_night_light_selected_apps"
         const val KEY_SMART_PIXELS_ENABLED = "smart_pixels_enabled"
         const val KEY_SMART_PIXELS_INTENSITY = "smart_pixels_intensity"
         const val KEY_SMART_PIXELS_DISABLE_ON_CAST = "smart_pixels_disable_on_cast"

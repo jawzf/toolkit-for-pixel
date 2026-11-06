@@ -68,6 +68,7 @@ import com.jawzf.pixeltoolkit.feature.connectivity.ConnectivitySettings
 import com.jawzf.pixeltoolkit.feature.connectivity.ConnectivityState
 import com.jawzf.pixeltoolkit.feature.display.aod.AodState
 import com.jawzf.pixeltoolkit.feature.display.lockclock.LockClockState
+import com.jawzf.pixeltoolkit.feature.display.nightlight.NightLightState
 import com.jawzf.pixeltoolkit.feature.display.ondisplay.ToolkitOnDisplayState
 import com.jawzf.pixeltoolkit.feature.display.pixels.SmartPixelsState
 import com.jawzf.pixeltoolkit.feature.display.refresh.RefreshRatePanelState
@@ -137,7 +138,6 @@ class MainViewModel : ViewModel() {
     val lockscreenShortcutActions = mutableStateMapOf<LockscreenShortcutSide, List<Action>>()
     val lockscreenSystemShortcutsState = mutableStateOf(SystemShortcutsState.UNKNOWN)
     val remapHapticType = mutableStateOf(HapticFeedbackType.DOUBLE)
-    val isDynamicNightLightEnabled = mutableStateOf(false)
 
     val isDuoEnabled = mutableStateOf(false)
     val isDuoIslandCombined = mutableStateOf(false)
@@ -382,6 +382,7 @@ class MainViewModel : ViewModel() {
     val toolkitOnDisplay = ToolkitOnDisplayState()
     val lockClock = LockClockState()
     val statusBarControl = StatusBarControlState()
+    val nightLight = NightLightState { updateAppDetectionService(it) }
     val addedQSTiles = mutableStateOf<Set<String>>(emptySet())
     val isHideGestureBarEnabled = mutableStateOf(false)
     val isHideGestureBarOnLauncherEnabled = mutableStateOf(false)
@@ -571,10 +572,6 @@ class MainViewModel : ViewModel() {
                 if (key == null) return
 
                 when (key) {
-                    SettingsRepository.KEY_DYNAMIC_NIGHT_LIGHT_ENABLED ->
-                        isDynamicNightLightEnabled.value =
-                            settingsRepository.getBoolean(key)
-
                     SettingsRepository.KEY_DUO_ENABLED ->
                         isDuoEnabled.value = settingsRepository.isDuoEnabled()
 
@@ -963,6 +960,7 @@ class MainViewModel : ViewModel() {
                     in AodState.PREFERENCE_KEYS -> aod.onPreferenceChanged(key)
                     in ToolkitOnDisplayState.PREFERENCE_KEYS -> toolkitOnDisplay.onPreferenceChanged(key)
                     in StatusBarControlState.PREFERENCE_KEYS -> statusBarControl.onPreferenceChanged(key)
+                    in NightLightState.PREFERENCE_KEYS -> nightLight.onPreferenceChanged(key)
 
                     PowerSettings.KEY_MAPS_DISCOVERED_CHANNELS, PowerSettings.KEY_MAPS_DETECTION_CHANNELS -> power.onPreferenceChanged(key)
 
@@ -1429,6 +1427,7 @@ class MainViewModel : ViewModel() {
             settingsRepository.getPixelSearchbarMusicPackage()
         lockClock.load(context)
         statusBarControl.load(context)
+        nightLight.load(context)
         loadShutUpConfigs()
         recentSearches.value = settingsRepository.getRecentSearches()
 
@@ -1771,8 +1770,6 @@ class MainViewModel : ViewModel() {
                 HapticFeedbackType.DOUBLE
             }
 
-        isDynamicNightLightEnabled.value =
-            settingsRepository.getBoolean(SettingsRepository.KEY_DYNAMIC_NIGHT_LIGHT_ENABLED)
         smartPixels.load(context)
         isDuoEnabled.value = settingsRepository.isDuoEnabled()
         isDuoAutoDetect.value = settingsRepository.isDuoAutoDetectEnabled()
@@ -3257,21 +3254,6 @@ class MainViewModel : ViewModel() {
     ) {
         remapHapticType.value = type
         settingsRepository.putString(SettingsRepository.KEY_BUTTON_REMAP_HAPTIC_TYPE, type.name)
-    }
-
-    /**
-     * Executes the set dynamic night light enabled operation.
-     *
-     * @param enabled [Boolean] Target enabled.
-     * @param context [Context] Target context.
-     */
-    fun setDynamicNightLightEnabled(
-        enabled: Boolean,
-        context: Context,
-    ) {
-        isDynamicNightLightEnabled.value = enabled
-        settingsRepository.putBoolean(SettingsRepository.KEY_DYNAMIC_NIGHT_LIGHT_ENABLED, enabled)
-        updateAppDetectionService(context)
     }
 
     fun setDuoEnabled(enabled: Boolean) {
@@ -5042,37 +5024,6 @@ class MainViewModel : ViewModel() {
         PermissionUtils.isNotificationLightingAccessibilityServiceEnabled(context)
 
     private fun isDefaultBrowser(context: Context): Boolean = PermissionUtils.isDefaultBrowser(context)
-
-    // Dynamic Night Light App Selection Methods
-    fun saveDynamicNightLightSelectedApps(
-        context: Context,
-        apps: List<AppSelection>,
-    ) {
-        settingsRepository.saveDynamicNightLightSelectedApps(apps)
-    }
-
-    /**
-     * Executes the load dynamic night light selected apps operation.
-     *
-     * @param context [Context] Target context.
-     * @return The resulting List<AppSelection> data.
-     */
-    fun loadDynamicNightLightSelectedApps(context: Context): List<AppSelection> = settingsRepository.loadDynamicNightLightSelectedApps()
-
-    /**
-     * Executes the update dynamic night light app enabled operation.
-     *
-     * @param context [Context] Target context.
-     * @param packageName [String] Target package name.
-     * @param enabled [Boolean] Target enabled.
-     */
-    fun updateDynamicNightLightAppEnabled(
-        context: Context,
-        packageName: String,
-        enabled: Boolean,
-    ) {
-        settingsRepository.updateDynamicNightLightAppSelection(packageName, enabled)
-    }
 
     /**
      * Executes the set flashlight always turn off enabled operation.

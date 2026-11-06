@@ -1999,7 +1999,7 @@ object FeatureRegistry {
                             )
                         }
 
-                override fun isEnabled(viewModel: MainViewModel) = viewModel.isDynamicNightLightEnabled.value
+                override fun isEnabled(viewModel: MainViewModel) = viewModel.nightLight.isDynamicNightLightEnabled.value
 
                 override fun isToggleEnabled(
                     viewModel: MainViewModel,
@@ -2017,7 +2017,7 @@ object FeatureRegistry {
                     viewModel: MainViewModel,
                     context: Context,
                     enabled: Boolean,
-                ) = viewModel.setDynamicNightLightEnabled(enabled, context)
+                ) = viewModel.nightLight.setDynamicNightLightEnabled(enabled, context)
             },
             object : Feature(
                 id = "Smart pixels",

@@ -23,13 +23,13 @@ import com.jawzf.pixeltoolkit.core.design.cards.IconToggleItem
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.modifiers.highlight
-import com.jawzf.pixeltoolkit.ui.core.sheets.AppSelectionSheet
-import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
+import com.jawzf.pixeltoolkit.feature.display.nightlight.NightLightState
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun DynamicNightLightSettingsUI(
-    viewModel: MainViewModel,
+    state: NightLightState,
+    appSelectionSheet: @Composable (onDismiss: () -> Unit) -> Unit,
     modifier: Modifier = Modifier,
     highlightSetting: String? = null,
 ) {
@@ -48,9 +48,9 @@ fun DynamicNightLightSettingsUI(
             IconToggleItem(
                 iconRes = R.drawable.rounded_nightlight_24,
                 title = stringResource(R.string.dynamic_night_light_enable_title),
-                isChecked = viewModel.isDynamicNightLightEnabled.value,
+                isChecked = state.isDynamicNightLightEnabled.value,
                 onCheckedChange = { checked ->
-                    viewModel.setDynamicNightLightEnabled(checked, context)
+                    state.setDynamicNightLightEnabled(checked, context)
                 },
                 modifier = Modifier.highlight(highlightSetting == "dynamic_night_light_toggle"),
             )
@@ -75,24 +75,7 @@ fun DynamicNightLightSettingsUI(
         }
 
         if (showAppSelectionSheet) {
-            AppSelectionSheet(
-                onDismissRequest = { showAppSelectionSheet = false },
-                onLoadApps = { viewModel.loadDynamicNightLightSelectedApps(it) },
-                onSaveApps = { ctx, apps ->
-                    viewModel.saveDynamicNightLightSelectedApps(
-                        ctx,
-                        apps,
-                    )
-                },
-                onAppToggle = { ctx, pkg, enabled ->
-                    viewModel.updateDynamicNightLightAppEnabled(
-                        ctx,
-                        pkg,
-                        enabled,
-                    )
-                },
-                context = context,
-            )
+            appSelectionSheet { showAppSelectionSheet = false }
         }
     }
 }

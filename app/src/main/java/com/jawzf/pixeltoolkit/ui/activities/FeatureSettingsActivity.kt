@@ -1046,7 +1046,22 @@ class FeatureSettingsActivity : AppCompatActivity() {
 
                                     "Dynamic night light" -> {
                                         DynamicNightLightSettingsUI(
-                                            viewModel = viewModel,
+                                            state = viewModel.nightLight,
+                                            appSelectionSheet = { onDismiss ->
+                                                AppSelectionSheet(
+                                                    onDismissRequest = onDismiss,
+                                                    onLoadApps = {
+                                                        viewModel.nightLight.loadDynamicNightLightSelectedApps()
+                                                    },
+                                                    onSaveApps = { _, apps ->
+                                                        viewModel.nightLight.saveDynamicNightLightSelectedApps(apps)
+                                                    },
+                                                    onAppToggle = { _, pkg, enabled ->
+                                                        viewModel.nightLight.updateDynamicNightLightAppEnabled(pkg, enabled)
+                                                    },
+                                                    context = context,
+                                                )
+                                            },
                                             modifier = Modifier.padding(top = 16.dp),
                                             highlightSetting = highlightSetting,
                                         )
