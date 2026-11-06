@@ -1,6 +1,6 @@
-package com.jawzf.pixeltoolkit.services.widgets
+package com.jawzf.pixeltoolkit.feature.widgets.stack
 
-import com.jawzf.pixeltoolkit.domain.model.WidgetStackConfig
+import com.jawzf.pixeltoolkit.feature.widgets.stack.WidgetStackConfig
 
 object StackPositions {
     fun restore(

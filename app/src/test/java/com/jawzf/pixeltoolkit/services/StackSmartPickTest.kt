@@ -1,6 +1,6 @@
 package com.jawzf.pixeltoolkit.services
 
-import com.jawzf.pixeltoolkit.services.widgets.StackSmartPick
+import com.jawzf.pixeltoolkit.feature.widgets.stack.StackSmartPick
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test

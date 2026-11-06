@@ -16,8 +16,8 @@ import com.jawzf.pixeltoolkit.feature.display.DisplaySettings
 import com.jawzf.pixeltoolkit.feature.input.InputSettings
 import com.jawzf.pixeltoolkit.feature.power.PowerSettings
 import com.jawzf.pixeltoolkit.feature.power.battery.BatteryNotificationService
+import com.jawzf.pixeltoolkit.feature.widgets.stack.StackHost
 import com.jawzf.pixeltoolkit.services.AppDetectionService
-import com.jawzf.pixeltoolkit.services.widgets.StackHost
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

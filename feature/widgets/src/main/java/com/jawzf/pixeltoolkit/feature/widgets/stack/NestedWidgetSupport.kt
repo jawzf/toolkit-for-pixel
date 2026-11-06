@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.services.widgets
+package com.jawzf.pixeltoolkit.feature.widgets.stack
 
 import android.appwidget.AppWidgetManager
 import android.content.Context

@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.domain.model
+package com.jawzf.pixeltoolkit.feature.widgets.stack
 
 import androidx.annotation.Keep
 
@@ -23,6 +23,7 @@ data class WidgetStackConfig(
 
     fun withSmart(on: Boolean) = copy(smartMode = on)
 
+    @Keep
     enum class ControlsMode {
         ALWAYS,
 

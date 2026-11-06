@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.island.plugins.media
+package com.jawzf.pixeltoolkit.core.data.media
 
 import android.content.ComponentName
 import android.content.Context
@@ -13,7 +13,8 @@ import android.media.session.PlaybackState
 import android.os.Handler
 import android.os.SystemClock
 import com.jawzf.pixeltoolkit.core.data.apps.AppUtil
-import com.jawzf.pixeltoolkit.services.NotificationListener
+import com.jawzf.pixeltoolkit.core.platform.AppComponents
+import com.jawzf.pixeltoolkit.core.platform.media.MediaArtBridge
 import java.io.File
 import kotlin.math.abs
 
@@ -35,7 +36,7 @@ class MediaSessionSource(
         val mgr = manager ?: return
         if (sessionsListener != null) return
         try {
-            val component = ComponentName(context, NotificationListener::class.java)
+            val component = ComponentName(context, AppComponents.NOTIFICATION_LISTENER)
             val listener = MediaSessionManager.OnActiveSessionsChangedListener { update(it) }
             sessionsListener = listener
             mgr.addOnActiveSessionsChangedListener(listener, component, handler)
@@ -162,10 +163,10 @@ class MediaSessionSource(
             val artist = metadata?.getString(MediaMetadata.METADATA_KEY_ARTIST)
             if (!title.isNullOrBlank()) {
                 val hash = abs("${title}_$artist".hashCode().toLong())
-                NotificationListener.getCachedBitmap(hash)?.let { return it }
+                MediaArtBridge.getCachedBitmap(hash)?.let { return it }
                 decode(File(context.cacheDir, "art_$hash.png"))?.let { return it }
             }
-            NotificationListener.getLatestArtBitmap()?.let { return it }
+            MediaArtBridge.getLatestArtBitmap()?.let { return it }
             return decode(File(context.cacheDir, "temp_album_art.png"))
         }
 

@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.services.widgets
+package com.jawzf.pixeltoolkit.feature.widgets.stack
 
 import android.app.PendingIntent
 import android.appwidget.AppWidgetHost
@@ -14,9 +14,9 @@ import android.util.SizeF
 import android.view.View
 import android.widget.RemoteViews
 import com.jawzf.pixeltoolkit.core.design.R
-import com.jawzf.pixeltoolkit.data.repository.WidgetStackRepository
-import com.jawzf.pixeltoolkit.domain.model.WidgetStackConfig
-import com.jawzf.pixeltoolkit.ui.activities.WidgetStackConfigureActivity
+import com.jawzf.pixeltoolkit.core.platform.AppComponents
+import com.jawzf.pixeltoolkit.feature.widgets.stack.WidgetStackConfig
+import com.jawzf.pixeltoolkit.feature.widgets.stack.WidgetStackRepository
 import java.util.concurrent.ConcurrentHashMap
 
 class StackWidgetProvider : AppWidgetProvider() {
@@ -298,7 +298,7 @@ class StackWidgetProvider : AppWidgetProvider() {
             stackWidgetId: Int,
         ): PendingIntent {
             val intent =
-                Intent(context, WidgetStackConfigureActivity::class.java).apply {
+                Intent().setClassName(context, AppComponents.WIDGET_STACK_CONFIGURE_ACTIVITY).apply {
                     flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
                     putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, stackWidgetId)
                 }
