@@ -38,6 +38,7 @@ import com.google.gson.reflect.TypeToken
 import com.jawzf.pixeltoolkit.core.data.prefs.AppSelection
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
+import com.jawzf.pixeltoolkit.feature.display.DisplaySettings
 import com.jawzf.pixeltoolkit.feature.power.battery.ChargeLimitUtil
 import com.jawzf.pixeltoolkit.services.NotificationListener
 import com.jawzf.pixeltoolkit.utils.StatusGlanceView
@@ -712,7 +713,7 @@ class StatusGlanceHandler(
     }
 
     private fun getExcludedPackages(): Set<String> {
-        val excludedAppsJson = settingsRepository.getString(SettingsRepository.KEY_AOD_WALLPAPER_MEDIA_EXCLUDED_APPS, null)
+        val excludedAppsJson = settingsRepository.getString(DisplaySettings.KEY_AOD_WALLPAPER_MEDIA_EXCLUDED_APPS, null)
         return if (!excludedAppsJson.isNullOrBlank()) {
             try {
                 val listType = object : TypeToken<List<AppSelection>>() {}.type

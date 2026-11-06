@@ -720,27 +720,28 @@ object CombinedActionExecutor {
                     }
 
                     if (action.changeAlwaysOnDisplay) {
+                        val displaySettings = DisplaySettings(context)
                         when (action.alwaysOnDisplayMode) {
                             "Off" -> {
-                                repository.setAodEnabled(false)
+                                displaySettings.setAodEnabled(false)
                                 repository.putBoolean(
-                                    com.jawzf.pixeltoolkit.data.repository.SettingsRepository.KEY_AOD_FORCE_TURN_OFF_ENABLED,
+                                    DisplaySettings.KEY_AOD_FORCE_TURN_OFF_ENABLED,
                                     false,
                                 )
                             }
 
                             "On" -> {
-                                repository.setAodEnabled(true)
+                                displaySettings.setAodEnabled(true)
                                 repository.putBoolean(
-                                    com.jawzf.pixeltoolkit.data.repository.SettingsRepository.KEY_AOD_FORCE_TURN_OFF_ENABLED,
+                                    DisplaySettings.KEY_AOD_FORCE_TURN_OFF_ENABLED,
                                     false,
                                 )
                             }
 
                             "Dynamic" -> {
-                                repository.setAodEnabled(true)
+                                displaySettings.setAodEnabled(true)
                                 repository.putBoolean(
-                                    com.jawzf.pixeltoolkit.data.repository.SettingsRepository.KEY_AOD_FORCE_TURN_OFF_ENABLED,
+                                    DisplaySettings.KEY_AOD_FORCE_TURN_OFF_ENABLED,
                                     true,
                                 )
                             }

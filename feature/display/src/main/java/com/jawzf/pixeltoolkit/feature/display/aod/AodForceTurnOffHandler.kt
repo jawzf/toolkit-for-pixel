@@ -13,10 +13,10 @@ import android.view.Gravity
 import android.view.View
 import android.view.WindowManager
 import android.widget.FrameLayout
-import com.jawzf.pixeltoolkit.utils.DeviceLockUtils
 
 class AodForceTurnOffHandler(
     private val service: AccessibilityService,
+    private val lockDevice: () -> Unit,
 ) {
     private var windowManager: WindowManager? = null
     private var overlayView: View? = null
@@ -110,7 +110,7 @@ class AodForceTurnOffHandler(
     }
 
     private fun lockScreen() {
-        DeviceLockUtils.performAccessibilityLock(service)
+        lockDevice()
     }
 
     fun removeOverlay() {

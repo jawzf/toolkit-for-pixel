@@ -50,6 +50,7 @@ import com.jawzf.pixeltoolkit.core.design.overlay.OverlayWindows
 import com.jawzf.pixeltoolkit.core.platform.device.ProgressNotificationData
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.domain.model.ActiveNotificationAlert
+import com.jawzf.pixeltoolkit.feature.display.DisplaySettings
 import com.jawzf.pixeltoolkit.feature.power.battery.ChargeLimitUtil
 import com.jawzf.pixeltoolkit.services.NotificationListener
 import com.jawzf.pixeltoolkit.utils.DuoOverlayView
@@ -521,7 +522,7 @@ class DuoOverlayHandler(
     }
 
     private fun getExcludedPackages(): Set<String> {
-        val excludedAppsJson = settingsRepository.getString(SettingsRepository.KEY_AOD_WALLPAPER_MEDIA_EXCLUDED_APPS, null)
+        val excludedAppsJson = settingsRepository.getString(DisplaySettings.KEY_AOD_WALLPAPER_MEDIA_EXCLUDED_APPS, null)
         return if (!excludedAppsJson.isNullOrBlank()) {
             try {
                 val listType = object : TypeToken<List<AppSelection>>() {}.type

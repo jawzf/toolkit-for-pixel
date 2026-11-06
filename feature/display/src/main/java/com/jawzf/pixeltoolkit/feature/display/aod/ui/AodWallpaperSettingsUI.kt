@@ -34,15 +34,21 @@ import com.jawzf.pixeltoolkit.core.design.components.SegmentedDropdownMenuItem
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.modifiers.highlight
+import com.jawzf.pixeltoolkit.core.design.sheets.PermissionItem
 import com.jawzf.pixeltoolkit.core.design.sheets.PermissionsBottomSheet
-import com.jawzf.pixeltoolkit.ui.core.sheets.AppSelectionSheet
-import com.jawzf.pixeltoolkit.utils.PermissionUIHelper
-import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
+import com.jawzf.pixeltoolkit.feature.display.aod.AodState
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun AodWallpaperSettingsUI(
-    viewModel: MainViewModel,
+    state: AodState,
+    isAccessibilityEnabled: Boolean,
+    isStoragePermissionGranted: Boolean,
+    isNotificationListenerEnabled: Boolean,
+    isWriteSecureSettingsEnabled: Boolean,
+    permissionItemsFor: (List<String>) -> List<PermissionItem>,
+    onRefreshPermissions: () -> Unit,
+    mediaAppSelectionSheet: @Composable (onDismiss: () -> Unit) -> Unit,
     modifier: Modifier = Modifier,
     highlightSetting: String? = null,
 ) {
@@ -52,31 +58,28 @@ fun AodWallpaperSettingsUI(
     var showMediaAppSelectionSheet by remember { mutableStateOf(false) }
     var requestingPermissionsFor by remember { mutableStateOf<Pair<Int, List<String>>?>(null) }
 
-    val isAccessibilityEnabled = viewModel.isAccessibilityEnabled.value
-    val isStoragePermissionGranted = viewModel.isStoragePermissionGranted.value
-
     LaunchedEffect(Unit) {
-        viewModel.check(context)
+        onRefreshPermissions()
     }
 
     if (requestingPermissionsFor != null) {
         val (featureTitle, permKeys) = requestingPermissionsFor!!
-        val permissionItems = PermissionUIHelper.getPermissionItems(permKeys, context, viewModel)
+        val permissionItems = permissionItemsFor(permKeys)
         PermissionsBottomSheet(
             onDismissRequest = {
                 requestingPermissionsFor = null
-                viewModel.check(context)
+                onRefreshPermissions()
             },
             featureTitle = featureTitle,
             permissions = permissionItems,
         )
     }
 
-    val isWallpaperEnabled = viewModel.isAodWallpaperEnabled.value
-    val opacity = viewModel.aodWallpaperOpacity.floatValue
-    val blurRadius = viewModel.aodWallpaperBlur.floatValue
-    val vignetteIntensity = viewModel.aodWallpaperVignette.floatValue
-    val blackThreshold = viewModel.aodWallpaperBlackThreshold.floatValue
+    val isWallpaperEnabled = state.isAodWallpaperEnabled.value
+    val opacity = state.aodWallpaperOpacity.floatValue
+    val blurRadius = state.aodWallpaperBlur.floatValue
+    val vignetteIntensity = state.aodWallpaperVignette.floatValue
+    val blackThreshold = state.aodWallpaperBlackThreshold.floatValue
 
     fun requestMainPermissions() {
         val missing = mutableListOf<String>()
@@ -105,11 +108,11 @@ fun AodWallpaperSettingsUI(
                         if (!isAccessibilityEnabled || !isStoragePermissionGranted) {
                             requestMainPermissions()
                         } else {
-                            viewModel.toggleAodWallpaperEnabled(true)
-                            viewModel.loadCurrentWallpaperBitmap(context)
+                            state.toggleAodWallpaperEnabled(true)
+                            state.loadCurrentWallpaperBitmap(context)
                         }
                     } else {
-                        viewModel.toggleAodWallpaperEnabled(false)
+                        state.toggleAodWallpaperEnabled(false)
                     }
                 },
                 enabled = true,
@@ -125,10 +128,10 @@ fun AodWallpaperSettingsUI(
                 IconToggleItem(
                     iconRes = R.drawable.rounded_do_not_disturb_on_24,
                     title = stringResource(R.string.feat_aod_wallpaper_disable_on_dnd),
-                    isChecked = viewModel.isAodWallpaperDisableOnDnd.value,
+                    isChecked = state.isAodWallpaperDisableOnDnd.value,
                     onCheckedChange = { checked ->
                         HapticUtil.performVirtualKeyHaptic(view)
-                        viewModel.setAodWallpaperDisableOnDnd(checked)
+                        state.setAodWallpaperDisableOnDnd(checked)
                     },
                     modifier = Modifier.highlight(highlightSetting == "aod_wallpaper_disable_on_dnd"),
                 )
@@ -143,7 +146,7 @@ fun AodWallpaperSettingsUI(
                     ConfigSliderItem(
                         title = stringResource(R.string.feat_aod_wallpaper_opacity),
                         value = (opacity * 100f).coerceIn(10f, 75f),
-                        onValueChange = { viewModel.setAodWallpaperOpacity(it / 100f) },
+                        onValueChange = { state.setAodWallpaperOpacity(it / 100f) },
                         valueRange = 10f..75f,
                         increment = 5f,
                         valueFormatter = { "${it.toInt()}%" },
@@ -153,7 +156,7 @@ fun AodWallpaperSettingsUI(
                     ConfigSliderItem(
                         title = stringResource(R.string.feat_aod_wallpaper_blur),
                         value = blurRadius,
-                        onValueChange = { viewModel.setAodWallpaperBlur(it) },
+                        onValueChange = { state.setAodWallpaperBlur(it) },
                         valueRange = 0f..25f,
                         increment = 1f,
                         valueFormatter = { if (it == 0f) "Off" else "${it.toInt()}" },
@@ -163,7 +166,7 @@ fun AodWallpaperSettingsUI(
                     ConfigSliderItem(
                         title = stringResource(R.string.feat_aod_wallpaper_vignette),
                         value = vignetteIntensity,
-                        onValueChange = { viewModel.setAodWallpaperVignette(it) },
+                        onValueChange = { state.setAodWallpaperVignette(it) },
                         valueRange = 0f..100f,
                         increment = 5f,
                         valueFormatter = { if (it == 0f) "Off" else "${it.toInt()}%" },
@@ -173,7 +176,7 @@ fun AodWallpaperSettingsUI(
                     ConfigSliderItem(
                         title = stringResource(R.string.feat_aod_wallpaper_black_threshold),
                         value = blackThreshold,
-                        onValueChange = { viewModel.setAodWallpaperBlackThreshold(it) },
+                        onValueChange = { state.setAodWallpaperBlackThreshold(it) },
                         valueRange = 0f..50f,
                         increment = 1f,
                         valueFormatter = { if (it == 0f) "Off" else "${it.toInt()}" },
@@ -192,7 +195,7 @@ fun AodWallpaperSettingsUI(
                             "10m" to stringResource(R.string.feat_aod_wallpaper_timeout_10m),
                             "custom" to stringResource(R.string.feat_aod_wallpaper_timeout_custom),
                         )
-                    val currentTimeout = viewModel.aodWallpaperTimeout.value
+                    val currentTimeout = state.aodWallpaperTimeout.value
                     val selectedLabel =
                         timeoutOptions.firstOrNull { it.first == currentTimeout }?.second
                             ?: stringResource(R.string.feat_aod_wallpaper_timeout_3m)
@@ -206,7 +209,7 @@ fun AodWallpaperSettingsUI(
                                 text = { Text(label) },
                                 onClick = {
                                     HapticUtil.performVirtualKeyHaptic(view)
-                                    viewModel.setAodWallpaperTimeout(optionValue)
+                                    state.setAodWallpaperTimeout(optionValue)
                                 },
                             )
                         }
@@ -217,11 +220,11 @@ fun AodWallpaperSettingsUI(
                         enter = expandVertically(animationSpec = tween(durationMillis = 300)) + fadeIn(animationSpec = tween(durationMillis = 300)),
                         exit = shrinkVertically(animationSpec = tween(durationMillis = 300)) + fadeOut(animationSpec = tween(durationMillis = 300)),
                     ) {
-                        val customTimeout = viewModel.aodWallpaperCustomTimeout.floatValue
+                        val customTimeout = state.aodWallpaperCustomTimeout.floatValue
                         ConfigSliderItem(
                             title = stringResource(R.string.feat_aod_wallpaper_custom_timeout_slider),
                             value = customTimeout,
-                            onValueChange = { viewModel.setAodWallpaperCustomTimeout(it) },
+                            onValueChange = { state.setAodWallpaperCustomTimeout(it) },
                             valueRange = 1f..180f,
                             increment = 1f,
                             valueFormatter = {
@@ -235,10 +238,9 @@ fun AodWallpaperSettingsUI(
             }
         }
 
-        val isNotificationListenerGranted = viewModel.isNotificationListenerEnabled.value
-        val isAlbumArtEnabled = viewModel.isAodWallpaperUseAlbumArt.value
-        val isKeepOnMedia = viewModel.isAodWallpaperKeepOnMedia.value
-        val isTimeoutNever = viewModel.aodWallpaperTimeout.value == "never" || viewModel.aodWallpaperTimeout.value == "0"
+        val isAlbumArtEnabled = state.isAodWallpaperUseAlbumArt.value
+        val isKeepOnMedia = state.isAodWallpaperKeepOnMedia.value
+        val isTimeoutNever = state.aodWallpaperTimeout.value == "never" || state.aodWallpaperTimeout.value == "0"
 
         Text(
             text = stringResource(R.string.feat_aod_wallpaper_media_section_title),
@@ -255,19 +257,19 @@ fun AodWallpaperSettingsUI(
                 onCheckedChange = { checked ->
                     HapticUtil.performVirtualKeyHaptic(view)
                     if (checked) {
-                        if (!isNotificationListenerGranted) {
+                        if (!isNotificationListenerEnabled) {
                             requestingPermissionsFor =
                                 Pair(R.string.feat_aod_wallpaper_use_album_art, listOf("NOTIFICATION_LISTENER"))
                         } else {
-                            viewModel.setAodWallpaperUseAlbumArt(true)
+                            state.setAodWallpaperUseAlbumArt(true)
                         }
                     } else {
-                        viewModel.setAodWallpaperUseAlbumArt(false)
+                        state.setAodWallpaperUseAlbumArt(false)
                     }
                 },
                 enabled = true,
                 onDisabledClick = {
-                    if (!isNotificationListenerGranted) {
+                    if (!isNotificationListenerEnabled) {
                         requestingPermissionsFor =
                             Pair(R.string.feat_aod_wallpaper_use_album_art, listOf("NOTIFICATION_LISTENER"))
                     }
@@ -286,7 +288,7 @@ fun AodWallpaperSettingsUI(
                     isChecked = if (isTimeoutNever) true else isKeepOnMedia,
                     onCheckedChange = { checked ->
                         HapticUtil.performVirtualKeyHaptic(view)
-                        viewModel.setAodWallpaperKeepOnMedia(checked)
+                        state.setAodWallpaperKeepOnMedia(checked)
                     },
                     enabled = !isTimeoutNever,
                     modifier = Modifier.highlight(highlightSetting == "aod_wallpaper_keep_on_media"),
@@ -310,7 +312,7 @@ fun AodWallpaperSettingsUI(
             }
         }
 
-        val isExtendedMedia = viewModel.isAodWallpaperExtendedMedia.value
+        val isExtendedMedia = state.isAodWallpaperExtendedMedia.value
 
         Text(
             text = stringResource(R.string.feat_aod_wallpaper_extended_section_title),
@@ -328,14 +330,14 @@ fun AodWallpaperSettingsUI(
                     HapticUtil.performVirtualKeyHaptic(view)
                     val missing =
                         buildList {
-                            if (!isNotificationListenerGranted) add("NOTIFICATION_LISTENER")
-                            if (!viewModel.isWriteSecureSettingsEnabled.value) add("WRITE_SECURE_SETTINGS")
+                            if (!isNotificationListenerEnabled) add("NOTIFICATION_LISTENER")
+                            if (!isWriteSecureSettingsEnabled) add("WRITE_SECURE_SETTINGS")
                         }
                     if (checked && missing.isNotEmpty()) {
                         requestingPermissionsFor =
                             Pair(R.string.feat_aod_wallpaper_extended_media, missing)
                     } else {
-                        viewModel.setAodWallpaperExtendedMedia(checked)
+                        state.setAodWallpaperExtendedMedia(checked)
                     }
                 },
                 modifier = Modifier.highlight(highlightSetting == "aod_wallpaper_extended_media"),
@@ -349,10 +351,10 @@ fun AodWallpaperSettingsUI(
                 IconToggleItem(
                     iconRes = R.drawable.rounded_apps_24,
                     title = stringResource(R.string.feat_aod_wallpaper_extended_app_icon),
-                    isChecked = viewModel.isAodWallpaperExtendedAppIcon.value,
+                    isChecked = state.isAodWallpaperExtendedAppIcon.value,
                     onCheckedChange = { checked ->
                         HapticUtil.performVirtualKeyHaptic(view)
-                        viewModel.setAodWallpaperExtendedAppIcon(checked)
+                        state.setAodWallpaperExtendedAppIcon(checked)
                     },
                     modifier = Modifier.highlight(highlightSetting == "aod_wallpaper_extended_app_icon"),
                 )
@@ -365,8 +367,8 @@ fun AodWallpaperSettingsUI(
             ) {
                 ConfigSliderItem(
                     title = stringResource(R.string.status_glance_font_size_title),
-                    value = (viewModel.aodWallpaperExtendedTextScale.floatValue * 100f).coerceIn(70f, 200f),
-                    onValueChange = { viewModel.setAodWallpaperExtendedTextScale(it / 100f) },
+                    value = (state.aodWallpaperExtendedTextScale.floatValue * 100f).coerceIn(70f, 200f),
+                    onValueChange = { state.setAodWallpaperExtendedTextScale(it / 100f) },
                     valueRange = 70f..200f,
                     increment = 5f,
                     valueFormatter = { "${it.toInt()}%" },
@@ -378,15 +380,7 @@ fun AodWallpaperSettingsUI(
         Spacer(modifier = Modifier.height(80.dp))
 
         if (showMediaAppSelectionSheet) {
-            AppSelectionSheet(
-                onDismissRequest = { showMediaAppSelectionSheet = false },
-                onLoadApps = { viewModel.loadAodWallpaperMediaApps(it) },
-                onSaveApps = { ctx, apps -> viewModel.saveAodWallpaperMediaApps(ctx, apps) },
-                onAppToggle = { ctx, pkg, enabled ->
-                    viewModel.updateAodWallpaperMediaAppEnabled(ctx, pkg, enabled)
-                },
-                context = context,
-            )
+            mediaAppSelectionSheet { showMediaAppSelectionSheet = false }
         }
     }
 }

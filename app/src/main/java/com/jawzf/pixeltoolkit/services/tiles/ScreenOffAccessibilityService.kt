@@ -56,6 +56,7 @@ import com.jawzf.pixeltoolkit.services.handlers.StatusGlanceHandler
 import com.jawzf.pixeltoolkit.services.receivers.FlashlightActionReceiver
 import com.jawzf.pixeltoolkit.utils.CameraSession
 import com.jawzf.pixeltoolkit.utils.CarConnectionMonitor
+import com.jawzf.pixeltoolkit.utils.DeviceLockUtils
 import com.jawzf.pixeltoolkit.utils.PowerButtonGestures
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -239,26 +240,26 @@ class ScreenOffAccessibilityService :
                 key == DisplaySettings.KEY_SMART_PIXELS_DISABLE_ON_CAST
             ) {
                 smartPixelsHandler.updateState()
-            } else if (key == SettingsRepository.KEY_AOD_WALLPAPER_ENABLED ||
-                key == SettingsRepository.KEY_AOD_WALLPAPER_OPACITY ||
-                key == SettingsRepository.KEY_AOD_WALLPAPER_TIMEOUT ||
-                key == SettingsRepository.KEY_AOD_WALLPAPER_CUSTOM_TIMEOUT ||
-                key == SettingsRepository.KEY_AOD_WALLPAPER_BLUR ||
-                key == SettingsRepository.KEY_AOD_WALLPAPER_VIGNETTE ||
-                key == SettingsRepository.KEY_AOD_WALLPAPER_BLACK_THRESHOLD ||
-                key == SettingsRepository.KEY_AOD_WALLPAPER_CUSTOM_IMAGE ||
-                key == SettingsRepository.KEY_AOD_WALLPAPER_USE_ALBUM_ART ||
-                key == SettingsRepository.KEY_AOD_WALLPAPER_KEEP_ON_MEDIA ||
-                key == SettingsRepository.KEY_AOD_WALLPAPER_EXTENDED_MEDIA ||
-                key == SettingsRepository.KEY_AOD_WALLPAPER_EXTENDED_APP_ICON ||
-                key == SettingsRepository.KEY_AOD_WALLPAPER_EXTENDED_TEXT_SCALE ||
-                key == SettingsRepository.KEY_AOD_WALLPAPER_MEDIA_EXCLUDED_APPS
+            } else if (key == DisplaySettings.KEY_AOD_WALLPAPER_ENABLED ||
+                key == DisplaySettings.KEY_AOD_WALLPAPER_OPACITY ||
+                key == DisplaySettings.KEY_AOD_WALLPAPER_TIMEOUT ||
+                key == DisplaySettings.KEY_AOD_WALLPAPER_CUSTOM_TIMEOUT ||
+                key == DisplaySettings.KEY_AOD_WALLPAPER_BLUR ||
+                key == DisplaySettings.KEY_AOD_WALLPAPER_VIGNETTE ||
+                key == DisplaySettings.KEY_AOD_WALLPAPER_BLACK_THRESHOLD ||
+                key == DisplaySettings.KEY_AOD_WALLPAPER_CUSTOM_IMAGE ||
+                key == DisplaySettings.KEY_AOD_WALLPAPER_USE_ALBUM_ART ||
+                key == DisplaySettings.KEY_AOD_WALLPAPER_KEEP_ON_MEDIA ||
+                key == DisplaySettings.KEY_AOD_WALLPAPER_EXTENDED_MEDIA ||
+                key == DisplaySettings.KEY_AOD_WALLPAPER_EXTENDED_APP_ICON ||
+                key == DisplaySettings.KEY_AOD_WALLPAPER_EXTENDED_TEXT_SCALE ||
+                key == DisplaySettings.KEY_AOD_WALLPAPER_MEDIA_EXCLUDED_APPS
             ) {
-                if (key == SettingsRepository.KEY_AOD_WALLPAPER_CUSTOM_IMAGE) {
+                if (key == DisplaySettings.KEY_AOD_WALLPAPER_CUSTOM_IMAGE) {
                     aodWallpaperOverlayHandler.invalidateWallpaperCache()
                 }
                 aodWallpaperOverlayHandler.updateState()
-                if (key == SettingsRepository.KEY_AOD_WALLPAPER_MEDIA_EXCLUDED_APPS) {
+                if (key == DisplaySettings.KEY_AOD_WALLPAPER_MEDIA_EXCLUDED_APPS) {
                     duoOverlayHandler.updateState()
                     statusGlanceHandler.updateState()
                 }
@@ -324,8 +325,9 @@ class ScreenOffAccessibilityService :
             )
         appFlowHandler = AppFlowHandler(this, this)
         ambientGlanceHandler = AmbientGlanceHandler(this)
-        aodForceTurnOffHandler = AodForceTurnOffHandler(this)
-        aodWallpaperOverlayHandler = AodWallpaperOverlayHandler(this)
+        aodForceTurnOffHandler = AodForceTurnOffHandler(this) { DeviceLockUtils.performAccessibilityLock(this) }
+        aodWallpaperOverlayHandler =
+            AodWallpaperOverlayHandler(this, NotificationListener::getCachedBitmap, NotificationListener::getLatestArtBitmap)
         omniGestureOverlayHandler = OmniGestureOverlayHandler(this)
         statusBarIconHandler = StatusBarIconHandler(this)
         faceUnlockBrightnessHandler = FaceUnlockBrightnessHandler(this)

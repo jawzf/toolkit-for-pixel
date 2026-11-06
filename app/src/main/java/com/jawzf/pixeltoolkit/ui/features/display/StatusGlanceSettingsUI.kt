@@ -531,19 +531,10 @@ fun StatusGlanceSettingsUI(
         AppSelectionSheet(
             title = stringResource(R.string.duo_media_skip_apps_title),
             onDismissRequest = { showMediaAppSelectionSheet = false },
-            onLoadApps = { viewModel.loadAodWallpaperMediaApps(it) },
-            onSaveApps = { ctx, apps ->
-                viewModel.saveAodWallpaperMediaApps(
-                    ctx,
-                    apps,
-                )
-            },
-            onAppToggle = { ctx, pkg, enabled ->
-                viewModel.updateAodWallpaperMediaAppEnabled(
-                    ctx,
-                    pkg,
-                    enabled,
-                )
+            onLoadApps = { viewModel.aod.loadAodWallpaperMediaApps() },
+            onSaveApps = { _, apps -> viewModel.aod.saveAodWallpaperMediaApps(apps) },
+            onAppToggle = { _, pkg, enabled ->
+                viewModel.aod.updateAodWallpaperMediaAppEnabled(pkg, enabled)
             },
             context = context,
         )

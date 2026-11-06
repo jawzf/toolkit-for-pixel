@@ -368,7 +368,7 @@ object FeatureRegistry {
                 parentFeatureId = "Display",
                 animationRes = R.raw.aod_animation,
             ) {
-                override fun isEnabled(viewModel: MainViewModel) = viewModel.isAodEnabled.value
+                override fun isEnabled(viewModel: MainViewModel) = viewModel.aod.isAodEnabled.value
 
                 override fun isToggleEnabled(
                     viewModel: MainViewModel,
@@ -380,7 +380,7 @@ object FeatureRegistry {
                     context: Context,
                     enabled: Boolean,
                 ) {
-                    viewModel.setAodEnabled(enabled)
+                    viewModel.aod.setAodEnabled(enabled)
                 }
             },
             object : Feature(
@@ -395,7 +395,7 @@ object FeatureRegistry {
                 showToggle = true,
                 parentFeatureId = "Display",
             ) {
-                override fun isEnabled(viewModel: MainViewModel) = viewModel.isAodWallpaperEnabled.value
+                override fun isEnabled(viewModel: MainViewModel) = viewModel.aod.isAodWallpaperEnabled.value
 
                 override fun isToggleEnabled(
                     viewModel: MainViewModel,
@@ -407,8 +407,8 @@ object FeatureRegistry {
                     context: Context,
                     enabled: Boolean,
                 ) {
-                    viewModel.toggleAodWallpaperEnabled(enabled)
-                    if (enabled) viewModel.loadCurrentWallpaperBitmap(context)
+                    viewModel.aod.toggleAodWallpaperEnabled(enabled)
+                    if (enabled) viewModel.aod.loadCurrentWallpaperBitmap(context)
                 }
             },
             object : Feature(

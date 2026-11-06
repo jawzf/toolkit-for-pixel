@@ -54,30 +54,30 @@ import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.components.SegmentedDropdownMenu
 import com.jawzf.pixeltoolkit.core.design.components.SegmentedDropdownMenuItem
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
-import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
+import com.jawzf.pixeltoolkit.feature.display.aod.AodState
 
 @OptIn(ExperimentalTextApi::class)
 @Composable
 fun AodWallpaperPreviewCard(
-    viewModel: MainViewModel,
+    state: AodState,
+    isStoragePermissionGranted: Boolean,
     height: Dp,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
     val view = LocalView.current
 
-    val isStoragePermissionGranted = viewModel.isStoragePermissionGranted.value
-    val wallpaperBitmap = viewModel.currentWallpaperBitmap.value
-    val isWallpaperEnabled = viewModel.isAodWallpaperEnabled.value
-    val opacity = viewModel.aodWallpaperOpacity.floatValue
-    val blurRadius = viewModel.aodWallpaperBlur.floatValue
-    val vignetteIntensity = viewModel.aodWallpaperVignette.floatValue
-    val blackThreshold = viewModel.aodWallpaperBlackThreshold.floatValue
-    val hasCustomImage = viewModel.hasAodWallpaperCustomImage.value
+    val wallpaperBitmap = state.currentWallpaperBitmap.value
+    val isWallpaperEnabled = state.isAodWallpaperEnabled.value
+    val opacity = state.aodWallpaperOpacity.floatValue
+    val blurRadius = state.aodWallpaperBlur.floatValue
+    val vignetteIntensity = state.aodWallpaperVignette.floatValue
+    val blackThreshold = state.aodWallpaperBlackThreshold.floatValue
+    val hasCustomImage = state.hasAodWallpaperCustomImage.value
 
     LaunchedEffect(isStoragePermissionGranted) {
         if (isStoragePermissionGranted) {
-            viewModel.loadCurrentWallpaperBitmap(context)
+            state.loadCurrentWallpaperBitmap(context)
         }
     }
 
@@ -116,7 +116,7 @@ fun AodWallpaperPreviewCard(
         rememberLauncherForActivityResult(
             contract = ActivityResultContracts.GetContent(),
         ) { uri ->
-            uri?.let { viewModel.setCustomAodWallpaper(context, it) }
+            uri?.let { state.setCustomAodWallpaper(context, it) }
         }
 
     Box(
@@ -226,7 +226,7 @@ fun AodWallpaperPreviewCard(
                     onClick = {
                         HapticUtil.performVirtualKeyHaptic(view)
                         isPreviewMenuExpanded = false
-                        viewModel.removeCustomAodWallpaper(context)
+                        state.removeCustomAodWallpaper(context)
                     },
                     leadingIcon = {
                         Icon(

@@ -562,7 +562,8 @@ class FeatureSettingsActivity : AppCompatActivity() {
 
                             if (featureId == "AOD wallpaper") {
                                 AodWallpaperPreviewCard(
-                                    viewModel = viewModel,
+                                    state = viewModel.aod,
+                                    isStoragePermissionGranted = viewModel.isStoragePermissionGranted.value,
                                     height = headerHeight - 16.dp,
                                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
                                 )
@@ -1412,7 +1413,26 @@ class FeatureSettingsActivity : AppCompatActivity() {
 
                                     "AOD wallpaper" -> {
                                         AodWallpaperSettingsUI(
-                                            viewModel = viewModel,
+                                            state = viewModel.aod,
+                                            isAccessibilityEnabled = viewModel.isAccessibilityEnabled.value,
+                                            isStoragePermissionGranted = viewModel.isStoragePermissionGranted.value,
+                                            isNotificationListenerEnabled = viewModel.isNotificationListenerEnabled.value,
+                                            isWriteSecureSettingsEnabled = viewModel.isWriteSecureSettingsEnabled.value,
+                                            permissionItemsFor = { keys ->
+                                                PermissionUIHelper.getPermissionItems(keys, context, viewModel)
+                                            },
+                                            onRefreshPermissions = { viewModel.check(context) },
+                                            mediaAppSelectionSheet = { onDismiss ->
+                                                AppSelectionSheet(
+                                                    onDismissRequest = onDismiss,
+                                                    onLoadApps = { viewModel.aod.loadAodWallpaperMediaApps() },
+                                                    onSaveApps = { _, apps -> viewModel.aod.saveAodWallpaperMediaApps(apps) },
+                                                    onAppToggle = { _, pkg, enabled ->
+                                                        viewModel.aod.updateAodWallpaperMediaAppEnabled(pkg, enabled)
+                                                    },
+                                                    context = context,
+                                                )
+                                            },
                                             modifier = Modifier.padding(top = 16.dp),
                                             highlightSetting = highlightSetting,
                                         )
@@ -1420,7 +1440,24 @@ class FeatureSettingsActivity : AppCompatActivity() {
 
                                     "Always on Display" -> {
                                         AlwaysOnDisplaySettingsUI(
-                                            viewModel = viewModel,
+                                            state = viewModel.aod,
+                                            isAccessibilityEnabled = viewModel.isAccessibilityEnabled.value,
+                                            isWriteSecureSettingsEnabled = viewModel.isWriteSecureSettingsEnabled.value,
+                                            permissionItemsFor = { keys ->
+                                                PermissionUIHelper.getPermissionItems(keys, context, viewModel)
+                                            },
+                                            onRefreshPermissions = { viewModel.check(context) },
+                                            appSelectionSheet = { onDismiss ->
+                                                AppSelectionSheet(
+                                                    onDismissRequest = onDismiss,
+                                                    onLoadApps = { viewModel.aod.loadNotificationGlanceSelectedApps() },
+                                                    onSaveApps = { _, apps -> viewModel.aod.saveNotificationGlanceSelectedApps(apps) },
+                                                    onAppToggle = { _, pkg, enabled ->
+                                                        viewModel.aod.updateNotificationGlanceAppEnabled(pkg, enabled)
+                                                    },
+                                                    context = context,
+                                                )
+                                            },
                                             modifier = Modifier.padding(top = 16.dp),
                                             highlightSetting = highlightSetting,
                                         )

@@ -46,10 +46,11 @@ import com.google.gson.reflect.TypeToken
 import com.jawzf.pixeltoolkit.core.data.apps.AppUtil
 import com.jawzf.pixeltoolkit.core.data.prefs.AppSelection
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.platform.AppComponents
+import com.jawzf.pixeltoolkit.core.platform.PlatformPrefs
 import com.jawzf.pixeltoolkit.core.platform.device.PriorityModeUtil
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.services.NotificationListener
+import com.jawzf.pixeltoolkit.feature.display.DisplaySettings
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -59,6 +60,8 @@ import java.io.File
 
 class AodWallpaperOverlayHandler(
     private val service: AccessibilityService,
+    private val getCachedArt: (Long) -> Bitmap?,
+    private val getLatestArt: () -> Bitmap?,
 ) {
     private var windowManager: WindowManager? = null
     private var overlayContainer: FrameLayout? = null
@@ -127,7 +130,7 @@ class AodWallpaperOverlayHandler(
     }
 
     private fun getExcludedPackages(): Set<String> {
-        val excludedAppsJson = prefs.getString(SettingsRepository.KEY_AOD_WALLPAPER_MEDIA_EXCLUDED_APPS, null)
+        val excludedAppsJson = prefs.getString(DisplaySettings.KEY_AOD_WALLPAPER_MEDIA_EXCLUDED_APPS, null)
         return if (!excludedAppsJson.isNullOrBlank()) {
             try {
                 val listType = object : TypeToken<List<AppSelection>>() {}.type
@@ -142,9 +145,9 @@ class AodWallpaperOverlayHandler(
     }
 
     private fun checkAndApplyMediaState() {
-        val keepOnMedia = prefs.getBoolean(SettingsRepository.KEY_AOD_WALLPAPER_KEEP_ON_MEDIA, false)
-        val useAlbumArt = prefs.getBoolean(SettingsRepository.KEY_AOD_WALLPAPER_USE_ALBUM_ART, false)
-        val aodEnabled = prefs.getBoolean(SettingsRepository.KEY_AOD_WALLPAPER_ENABLED, false)
+        val keepOnMedia = prefs.getBoolean(DisplaySettings.KEY_AOD_WALLPAPER_KEEP_ON_MEDIA, false)
+        val useAlbumArt = prefs.getBoolean(DisplaySettings.KEY_AOD_WALLPAPER_USE_ALBUM_ART, false)
+        val aodEnabled = prefs.getBoolean(DisplaySettings.KEY_AOD_WALLPAPER_ENABLED, false)
 
         val controller = activeMediaController
         val excludedPackages = getExcludedPackages()
@@ -200,8 +203,8 @@ class AodWallpaperOverlayHandler(
 
     private val timeoutRunnable: Runnable = Runnable {
         if (isOverlayAdded && isScreenOff) {
-            val keepOnMedia = prefs.getBoolean(SettingsRepository.KEY_AOD_WALLPAPER_KEEP_ON_MEDIA, false)
-            val useAlbumArt = prefs.getBoolean(SettingsRepository.KEY_AOD_WALLPAPER_USE_ALBUM_ART, false)
+            val keepOnMedia = prefs.getBoolean(DisplaySettings.KEY_AOD_WALLPAPER_KEEP_ON_MEDIA, false)
+            val useAlbumArt = prefs.getBoolean(DisplaySettings.KEY_AOD_WALLPAPER_USE_ALBUM_ART, false)
             if (keepOnMedia && useAlbumArt && isMediaPlaying) {
                 handler.removeCallbacks(timeoutRunnable)
                 return@Runnable
@@ -212,7 +215,7 @@ class AodWallpaperOverlayHandler(
 
     private val prefs by lazy {
         service.getSharedPreferences(
-            SettingsRepository.PREFS_NAME,
+            PlatformPrefs.PREFS_NAME,
             AccessibilityService.MODE_PRIVATE,
         )
     }
@@ -398,7 +401,7 @@ class AodWallpaperOverlayHandler(
     }
 
     fun onUserPresent() {
-        if (!prefs.getBoolean(SettingsRepository.KEY_AOD_WALLPAPER_ENABLED, false)) return
+        if (!prefs.getBoolean(DisplaySettings.KEY_AOD_WALLPAPER_ENABLED, false)) return
         onScreenOn()
     }
 
@@ -425,7 +428,7 @@ class AodWallpaperOverlayHandler(
 
     fun updateState() {
         if (isScreenOff && isDeviceInteractive()) isScreenOff = false
-        val enabled = prefs.getBoolean(SettingsRepository.KEY_AOD_WALLPAPER_ENABLED, false)
+        val enabled = prefs.getBoolean(DisplaySettings.KEY_AOD_WALLPAPER_ENABLED, false)
         if (enabled && isScreenOff && !isSuppressedByPriorityMode()) {
             showOverlay()
         } else {
@@ -434,7 +437,7 @@ class AodWallpaperOverlayHandler(
     }
 
     private fun isSuppressedByPriorityMode(): Boolean {
-        if (!prefs.getBoolean(SettingsRepository.KEY_AOD_WALLPAPER_DISABLE_ON_DND, false)) return false
+        if (!prefs.getBoolean(DisplaySettings.KEY_AOD_WALLPAPER_DISABLE_ON_DND, false)) return false
         return PriorityModeUtil.isActive(service)
     }
 
@@ -587,10 +590,10 @@ class AodWallpaperOverlayHandler(
     }
 
     private fun applyExtendedTextScale() {
-        val scale = prefs.getFloat(SettingsRepository.KEY_AOD_WALLPAPER_EXTENDED_TEXT_SCALE, 1f).coerceIn(0.7f, 2f)
+        val scale = prefs.getFloat(DisplaySettings.KEY_AOD_WALLPAPER_EXTENDED_TEXT_SCALE, 1f).coerceIn(0.7f, 2f)
         mediaTitleText?.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f * scale)
         mediaSubtitleText?.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f * scale)
-        val useAppIcon = prefs.getBoolean(SettingsRepository.KEY_AOD_WALLPAPER_EXTENDED_APP_ICON, false)
+        val useAppIcon = prefs.getBoolean(DisplaySettings.KEY_AOD_WALLPAPER_EXTENDED_APP_ICON, false)
         val iconSizePx =
             TypedValue
                 .applyDimension(
@@ -611,7 +614,7 @@ class AodWallpaperOverlayHandler(
     private fun updateExtendedInfo() {
         val layer = extendedLayer ?: return
         applyExtendedTextScale()
-        val enabled = prefs.getBoolean(SettingsRepository.KEY_AOD_WALLPAPER_EXTENDED_MEDIA, false)
+        val enabled = prefs.getBoolean(DisplaySettings.KEY_AOD_WALLPAPER_EXTENDED_MEDIA, false)
         setLockScreenMediaSuppressed(enabled && isScreenOff)
 
         val metadata = activeMediaController?.metadata
@@ -634,7 +637,7 @@ class AodWallpaperOverlayHandler(
     private fun updateNoteIcon() {
         val icon = mediaNoteIcon ?: return
         val packageName = activeMediaController?.packageName
-        if (!prefs.getBoolean(SettingsRepository.KEY_AOD_WALLPAPER_EXTENDED_APP_ICON, false) || packageName == null) {
+        if (!prefs.getBoolean(DisplaySettings.KEY_AOD_WALLPAPER_EXTENDED_APP_ICON, false) || packageName == null) {
             appIconCachePackage = null
             icon.colorFilter = null
             icon.setImageResource(R.drawable.rounded_music_note_24)
@@ -666,8 +669,8 @@ class AodWallpaperOverlayHandler(
     }
 
     private fun needsMediaSession(): Boolean =
-        prefs.getBoolean(SettingsRepository.KEY_AOD_WALLPAPER_USE_ALBUM_ART, false) ||
-            prefs.getBoolean(SettingsRepository.KEY_AOD_WALLPAPER_EXTENDED_MEDIA, false)
+        prefs.getBoolean(DisplaySettings.KEY_AOD_WALLPAPER_USE_ALBUM_ART, false) ||
+            prefs.getBoolean(DisplaySettings.KEY_AOD_WALLPAPER_EXTENDED_MEDIA, false)
 
     private fun buildMaskedContainer(): FrameLayout {
         return object : FrameLayout(service) {
@@ -682,7 +685,7 @@ class AodWallpaperOverlayHandler(
                     return
                 }
 
-                val intensity = prefs.getFloat(SettingsRepository.KEY_AOD_WALLPAPER_VIGNETTE, 0f)
+                val intensity = prefs.getFloat(DisplaySettings.KEY_AOD_WALLPAPER_VIGNETTE, 0f)
                 val hasVignette = intensity > 0f
 
                 val saveCount = if (hasVignette) {
@@ -725,9 +728,9 @@ class AodWallpaperOverlayHandler(
             return
         }
         registerDisplayListener()
-        val opacity = prefs.getFloat(SettingsRepository.KEY_AOD_WALLPAPER_OPACITY, 0.3f)
-        val blurRadius = prefs.getFloat(SettingsRepository.KEY_AOD_WALLPAPER_BLUR, 0f)
-        val blackThreshold = prefs.getFloat(SettingsRepository.KEY_AOD_WALLPAPER_BLACK_THRESHOLD, 15f)
+        val opacity = prefs.getFloat(DisplaySettings.KEY_AOD_WALLPAPER_OPACITY, 0.3f)
+        val blurRadius = prefs.getFloat(DisplaySettings.KEY_AOD_WALLPAPER_BLUR, 0f)
+        val blackThreshold = prefs.getFloat(DisplaySettings.KEY_AOD_WALLPAPER_BLACK_THRESHOLD, 15f)
 
         val luminanceFilter = android.graphics.ColorMatrixColorFilter(
             android.graphics.ColorMatrix(
@@ -833,16 +836,16 @@ class AodWallpaperOverlayHandler(
 
     private fun scheduleTimeout() {
         handler.removeCallbacks(timeoutRunnable)
-        val keepOnMedia = prefs.getBoolean(SettingsRepository.KEY_AOD_WALLPAPER_KEEP_ON_MEDIA, false)
-        val useAlbumArt = prefs.getBoolean(SettingsRepository.KEY_AOD_WALLPAPER_USE_ALBUM_ART, false)
+        val keepOnMedia = prefs.getBoolean(DisplaySettings.KEY_AOD_WALLPAPER_KEEP_ON_MEDIA, false)
+        val useAlbumArt = prefs.getBoolean(DisplaySettings.KEY_AOD_WALLPAPER_USE_ALBUM_ART, false)
         if (keepOnMedia && useAlbumArt && isMediaPlaying) {
             return
         }
 
         val timeoutStr = try {
-            prefs.getString(SettingsRepository.KEY_AOD_WALLPAPER_TIMEOUT, "3m") ?: "3m"
+            prefs.getString(DisplaySettings.KEY_AOD_WALLPAPER_TIMEOUT, "3m") ?: "3m"
         } catch (e: Exception) {
-            val oldInt = prefs.getInt(SettingsRepository.KEY_AOD_WALLPAPER_TIMEOUT, 3)
+            val oldInt = prefs.getInt(DisplaySettings.KEY_AOD_WALLPAPER_TIMEOUT, 3)
             if (oldInt == 0) "never" else "${oldInt}m"
         }
 
@@ -856,7 +859,7 @@ class AodWallpaperOverlayHandler(
         return when {
             timeout == "never" || timeout == "0" -> 0L
             timeout == "custom" -> {
-                val customSecs = prefs.getFloat(SettingsRepository.KEY_AOD_WALLPAPER_CUSTOM_TIMEOUT, 30f).toLong()
+                val customSecs = prefs.getFloat(DisplaySettings.KEY_AOD_WALLPAPER_CUSTOM_TIMEOUT, 30f).toLong()
                 customSecs * 1000L
             }
             timeout.endsWith("s") -> (timeout.dropLast(1).toLongOrNull() ?: 0L) * 1000L
@@ -955,7 +958,7 @@ class AodWallpaperOverlayHandler(
                 val msm = service.getSystemService(Context.MEDIA_SESSION_SERVICE) as? MediaSessionManager
                 mediaSessionManager = msm
                 if (msm != null) {
-                    val componentName = ComponentName(service, NotificationListener::class.java)
+                    val componentName = ComponentName(service, AppComponents.NOTIFICATION_LISTENER)
                     msm.addOnActiveSessionsChangedListener(activeSessionsListener, componentName)
                     isMediaListenerRegistered = true
                     val initialSessions = msm.getActiveSessions(componentName)
@@ -1005,7 +1008,7 @@ class AodWallpaperOverlayHandler(
             val artist = metadata?.getString(MediaMetadata.METADATA_KEY_ARTIST)
             if (!title.isNullOrBlank()) {
                 val hashToUse = kotlin.math.abs("${title}_$artist".hashCode().toLong())
-                bitmap = NotificationListener.getCachedBitmap(hashToUse)
+                bitmap = getCachedArt(hashToUse)
                 if (bitmap == null) {
                     val artFile = File(service.cacheDir, "art_$hashToUse.png")
                     if (artFile.exists()) {
@@ -1019,7 +1022,7 @@ class AodWallpaperOverlayHandler(
         }
 
         if (bitmap == null) {
-            bitmap = NotificationListener.getLatestArtBitmap()
+            bitmap = getLatestArt()
         }
         if (bitmap == null) {
             val tempArtFile = File(service.cacheDir, "temp_album_art.png")
@@ -1036,7 +1039,7 @@ class AodWallpaperOverlayHandler(
 
     private fun evaluateAndApplyDisplayBitmap(animated: Boolean = false) {
         updateExtendedInfo()
-        val useAlbumArt = prefs.getBoolean(SettingsRepository.KEY_AOD_WALLPAPER_USE_ALBUM_ART, false)
+        val useAlbumArt = prefs.getBoolean(DisplaySettings.KEY_AOD_WALLPAPER_USE_ALBUM_ART, false)
         val art = currentArtBitmap
         val shouldShowArt = useAlbumArt && isMediaPlaying && art != null
 
@@ -1070,7 +1073,7 @@ class AodWallpaperOverlayHandler(
             crossfadeAnimator = null
             imageView.setImageBitmap(bitmap)
         } else {
-            val targetOpacity = prefs.getFloat(SettingsRepository.KEY_AOD_WALLPAPER_OPACITY, 0.3f)
+            val targetOpacity = prefs.getFloat(DisplaySettings.KEY_AOD_WALLPAPER_OPACITY, 0.3f)
             crossfadeAnimator?.cancel()
             crossfadeAnimator = ValueAnimator.ofFloat(1f, 0f).apply {
                 duration = 350
@@ -1115,7 +1118,7 @@ class AodWallpaperOverlayHandler(
 
     private fun extractCurrentWallpaper(): Bitmap? {
         return try {
-            if (prefs.getBoolean(SettingsRepository.KEY_AOD_WALLPAPER_CUSTOM_IMAGE, false)) {
+            if (prefs.getBoolean(DisplaySettings.KEY_AOD_WALLPAPER_CUSTOM_IMAGE, false)) {
                 val file = File(service.filesDir, "custom_aod_wallpaper.png")
                 if (file.exists()) {
                     val customBmp = AppUtil.decodeSampledBitmapFromFile(file.absolutePath, reqWidth = 1440, reqHeight = 3200)
@@ -1172,9 +1175,9 @@ class AodWallpaperOverlayHandler(
     }
 
     private fun hideOverlay() {
-        val keepOnMedia = prefs.getBoolean(SettingsRepository.KEY_AOD_WALLPAPER_KEEP_ON_MEDIA, false)
-        val useAlbumArt = prefs.getBoolean(SettingsRepository.KEY_AOD_WALLPAPER_USE_ALBUM_ART, false)
-        val aodEnabled = prefs.getBoolean(SettingsRepository.KEY_AOD_WALLPAPER_ENABLED, false)
+        val keepOnMedia = prefs.getBoolean(DisplaySettings.KEY_AOD_WALLPAPER_KEEP_ON_MEDIA, false)
+        val useAlbumArt = prefs.getBoolean(DisplaySettings.KEY_AOD_WALLPAPER_USE_ALBUM_ART, false)
+        val aodEnabled = prefs.getBoolean(DisplaySettings.KEY_AOD_WALLPAPER_ENABLED, false)
 
         if (!isScreenOff || !aodEnabled || !useAlbumArt || !keepOnMedia) {
             unregisterMediaSessionListener()

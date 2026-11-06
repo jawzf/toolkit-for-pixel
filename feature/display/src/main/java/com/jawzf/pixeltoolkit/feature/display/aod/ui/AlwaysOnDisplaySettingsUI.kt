@@ -17,7 +17,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -26,37 +25,38 @@ import com.jawzf.pixeltoolkit.core.design.cards.IconToggleItem
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.modifiers.highlight
+import com.jawzf.pixeltoolkit.core.design.sheets.PermissionItem
 import com.jawzf.pixeltoolkit.core.design.sheets.PermissionsBottomSheet
-import com.jawzf.pixeltoolkit.ui.core.sheets.AppSelectionSheet
-import com.jawzf.pixeltoolkit.utils.PermissionUIHelper
-import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
+import com.jawzf.pixeltoolkit.feature.display.aod.AodState
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun AlwaysOnDisplaySettingsUI(
-    viewModel: MainViewModel,
+    state: AodState,
+    isAccessibilityEnabled: Boolean,
+    isWriteSecureSettingsEnabled: Boolean,
+    permissionItemsFor: (List<String>) -> List<PermissionItem>,
+    onRefreshPermissions: () -> Unit,
+    appSelectionSheet: @Composable (onDismiss: () -> Unit) -> Unit,
     modifier: Modifier = Modifier,
     highlightSetting: String? = null,
 ) {
-    val context = LocalContext.current
     val view = LocalView.current
 
     var showAppSelectionSheet by remember { mutableStateOf(false) }
     var requestingPermissionsFor by remember { mutableStateOf<Pair<Int, List<String>>?>(null) }
 
-    val isAccessibilityEnabled = viewModel.isAccessibilityEnabled.value
-
     LaunchedEffect(Unit) {
-        viewModel.check(context)
+        onRefreshPermissions()
     }
 
     if (requestingPermissionsFor != null) {
         val (featureTitle, permKeys) = requestingPermissionsFor!!
-        val permissionItems = PermissionUIHelper.getPermissionItems(permKeys, context, viewModel)
+        val permissionItems = permissionItemsFor(permKeys)
         PermissionsBottomSheet(
             onDismissRequest = {
                 requestingPermissionsFor = null
-                viewModel.check(context)
+                onRefreshPermissions()
             },
             featureTitle = featureTitle,
             permissions = permissionItems,
@@ -78,14 +78,14 @@ fun AlwaysOnDisplaySettingsUI(
             IconToggleItem(
                 iconRes = R.drawable.rounded_mobile_text_2_24,
                 title = stringResource(R.string.feat_always_on_display_title),
-                isChecked = viewModel.isAodEnabled.value,
+                isChecked = state.isAodEnabled.value,
                 onCheckedChange = { checked ->
                     HapticUtil.performVirtualKeyHaptic(view)
-                    if (checked && !viewModel.isWriteSecureSettingsEnabled.value) {
+                    if (checked && !isWriteSecureSettingsEnabled) {
                         requestingPermissionsFor =
                             Pair(R.string.feat_always_on_display_title, listOf("WRITE_SECURE_SETTINGS"))
                     } else {
-                        viewModel.setAodEnabled(checked)
+                        state.setAodEnabled(checked)
                     }
                 },
                 modifier = Modifier.highlight(highlightSetting == "aod_toggle"),
@@ -103,10 +103,10 @@ fun AlwaysOnDisplaySettingsUI(
             IconToggleItem(
                 iconRes = R.drawable.rounded_notification_settings_24,
                 title = stringResource(R.string.feat_notification_glance_title),
-                isChecked = viewModel.isNotificationGlanceEnabled.value,
+                isChecked = state.isNotificationGlanceEnabled.value,
                 onCheckedChange = { checked ->
                     HapticUtil.performVirtualKeyHaptic(view)
-                    viewModel.toggleNotificationGlanceEnabled(checked)
+                    state.toggleNotificationGlanceEnabled(checked)
                 },
                 modifier = Modifier.highlight(highlightSetting == "notification_glance_enabled"),
             )
@@ -114,10 +114,10 @@ fun AlwaysOnDisplaySettingsUI(
             IconToggleItem(
                 iconRes = R.drawable.rounded_apps_24,
                 title = stringResource(R.string.notification_glance_same_as_lighting_title),
-                isChecked = viewModel.isNotificationGlanceSameAsLightingEnabled.value,
+                isChecked = state.isNotificationGlanceSameAsLightingEnabled.value,
                 onCheckedChange = { checked ->
                     HapticUtil.performVirtualKeyHaptic(view)
-                    viewModel.setNotificationGlanceSameAsLightingEnabled(checked)
+                    state.setNotificationGlanceSameAsLightingEnabled(checked)
                 },
                 modifier = Modifier.highlight(highlightSetting == "notification_glance_same_apps"),
             )
@@ -125,14 +125,14 @@ fun AlwaysOnDisplaySettingsUI(
             IconToggleItem(
                 iconRes = R.drawable.rounded_power_settings_new_24,
                 title = stringResource(R.string.feat_aod_force_turn_off_title),
-                isChecked = viewModel.isAodForceTurnOffEnabled.value,
+                isChecked = state.isAodForceTurnOffEnabled.value,
                 onCheckedChange = { checked ->
                     HapticUtil.performVirtualKeyHaptic(view)
                     if (checked && !isAccessibilityEnabled) {
                         requestingPermissionsFor =
                             Pair(R.string.feat_aod_force_turn_off_title, listOf("ACCESSIBILITY"))
                     } else {
-                        viewModel.toggleAodForceTurnOffEnabled(checked)
+                        state.toggleAodForceTurnOffEnabled(checked)
                     }
                 },
                 enabled = true,
@@ -160,14 +160,14 @@ fun AlwaysOnDisplaySettingsUI(
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
 
-        if (!viewModel.isNotificationGlanceSameAsLightingEnabled.value) {
+        if (!state.isNotificationGlanceSameAsLightingEnabled.value) {
             Button(
                 onClick = {
                     HapticUtil.performVirtualKeyHaptic(view)
                     showAppSelectionSheet = true
                 },
                 modifier = Modifier.fillMaxWidth(),
-                enabled = viewModel.isNotificationGlanceEnabled.value,
+                enabled = state.isNotificationGlanceEnabled.value,
             ) {
                 Text(stringResource(R.string.action_select_apps))
             }
@@ -176,24 +176,7 @@ fun AlwaysOnDisplaySettingsUI(
         Spacer(modifier = Modifier.height(80.dp))
 
         if (showAppSelectionSheet) {
-            AppSelectionSheet(
-                onDismissRequest = { showAppSelectionSheet = false },
-                onLoadApps = { viewModel.loadNotificationGlanceSelectedApps(it) },
-                onSaveApps = { ctx, apps ->
-                    viewModel.saveNotificationGlanceSelectedApps(
-                        ctx,
-                        apps,
-                    )
-                },
-                onAppToggle = { ctx, pkg, enabled ->
-                    viewModel.updateNotificationGlanceAppEnabled(
-                        ctx,
-                        pkg,
-                        enabled,
-                    )
-                },
-                context = context,
-            )
+            appSelectionSheet { showAppSelectionSheet = false }
         }
     }
 }
