@@ -30,6 +30,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.design.components.ColorCircle
 import com.jawzf.pixeltoolkit.core.design.components.ConfigSliderItem
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
@@ -37,7 +38,6 @@ import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
 import com.jawzf.pixeltoolkit.domain.diy.Action
 import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingColorMode
 import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingStyle
-import com.jawzf.pixeltoolkit.feature.notifications.lighting.ui.ColorCircle
 import com.jawzf.pixeltoolkit.feature.notifications.lighting.ui.GlowSidesPicker
 import com.jawzf.pixeltoolkit.feature.notifications.lighting.ui.NotificationLightingColorModePicker
 import com.jawzf.pixeltoolkit.feature.notifications.lighting.ui.NotificationLightingStylePicker

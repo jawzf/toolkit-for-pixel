@@ -948,7 +948,24 @@ class FeatureSettingsActivity : AppCompatActivity() {
 
                                     "Notification lighting" -> {
                                         NotificationLightingSettingsUI(
-                                            viewModel = viewModel,
+                                            state = viewModel.lighting,
+                                            isShizukuPermissionGranted = viewModel.isShizukuPermissionGranted.value,
+                                            onRefreshPermissions = { viewModel.check(context) },
+                                            appSelectionSheet = { onDismiss ->
+                                                AppSelectionSheet(
+                                                    onDismissRequest = onDismiss,
+                                                    onLoadApps = {
+                                                        viewModel.lighting.loadNotificationLightingSelectedApps()
+                                                    },
+                                                    onSaveApps = { _, apps ->
+                                                        viewModel.lighting.saveNotificationLightingSelectedApps(apps)
+                                                    },
+                                                    onAppToggle = { _, pkg, enabled ->
+                                                        viewModel.lighting.updateNotificationLightingAppEnabled(pkg, enabled)
+                                                    },
+                                                    context = context,
+                                                )
+                                            },
                                             modifier = Modifier.padding(top = 16.dp),
                                             highlightSetting = highlightSetting,
                                         )
