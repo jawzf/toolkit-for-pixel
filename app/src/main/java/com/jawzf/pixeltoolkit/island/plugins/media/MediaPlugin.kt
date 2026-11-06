@@ -5,8 +5,15 @@ import android.graphics.Bitmap
 import android.media.MediaMetadata
 import android.media.session.MediaController
 import android.media.session.PlaybackState
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
+import com.jawzf.pixeltoolkit.core.data.media.MediaSessionSource
+import com.jawzf.pixeltoolkit.core.design.components.EqualizerBars
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
+import com.jawzf.pixeltoolkit.island.gestures.IslandSlideFeedback
+import com.jawzf.pixeltoolkit.island.gestures.SlideFeedback
 import com.jawzf.pixeltoolkit.island.model.CompactCell
 import com.jawzf.pixeltoolkit.island.model.CompactPlacement
 import com.jawzf.pixeltoolkit.island.model.ExpandedContent
@@ -18,19 +25,13 @@ import com.jawzf.pixeltoolkit.island.plugins.BaseIslandPlugin
 import com.jawzf.pixeltoolkit.island.plugins.accentFrom
 import com.jawzf.pixeltoolkit.island.plugins.launchPackage
 import com.jawzf.pixeltoolkit.island.plugins.sendPendingIntent
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import com.jawzf.pixeltoolkit.island.gestures.IslandSlideFeedback
-import com.jawzf.pixeltoolkit.island.gestures.SlideFeedback
-import com.jawzf.pixeltoolkit.core.design.components.EqualizerBars
+import com.jawzf.pixeltoolkit.island.ui.components.IslandBitmap
 import com.jawzf.pixeltoolkit.island.ui.components.MediaArtCue
 import com.jawzf.pixeltoolkit.island.ui.components.TrackSkipPill
-import com.jawzf.pixeltoolkit.island.ui.components.IslandBitmap
 import com.jawzf.pixeltoolkit.services.NotificationListener
-import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class MediaPlugin : BaseIslandPlugin() {

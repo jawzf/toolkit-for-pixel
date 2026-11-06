@@ -7,6 +7,8 @@ import android.content.Intent
 import android.provider.CalendarContract
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.unit.dp
+import com.jawzf.pixeltoolkit.core.platform.device.CalendarEventUtil
+import com.jawzf.pixeltoolkit.core.platform.device.UpcomingCalendarEvent
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.island.model.CompactCell
 import com.jawzf.pixeltoolkit.island.model.CompactPlacement
@@ -16,8 +18,6 @@ import com.jawzf.pixeltoolkit.island.model.IslandPriority
 import com.jawzf.pixeltoolkit.island.model.LineContent
 import com.jawzf.pixeltoolkit.island.plugins.BaseIslandPlugin
 import com.jawzf.pixeltoolkit.island.ui.components.RollingText
-import com.jawzf.pixeltoolkit.utils.CalendarEventUtil
-import com.jawzf.pixeltoolkit.utils.UpcomingCalendarEvent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.features.widgets
+package com.jawzf.pixeltoolkit.feature.widgets.stack.ui
 
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProviderInfo
@@ -60,7 +60,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.graphics.drawable.toBitmap
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
-import com.jawzf.pixeltoolkit.services.widgets.StackWidgetProvider
+import com.jawzf.pixeltoolkit.feature.widgets.stack.StackWidgetProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlin.math.roundToInt

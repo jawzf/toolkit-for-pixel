@@ -69,11 +69,11 @@ import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.theme.ToolkitTheme
 import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
-import com.jawzf.pixeltoolkit.data.repository.WidgetStackRepository
-import com.jawzf.pixeltoolkit.domain.model.WidgetStackConfig
-import com.jawzf.pixeltoolkit.services.widgets.StackHost
-import com.jawzf.pixeltoolkit.services.widgets.StackWidgetProvider
-import com.jawzf.pixeltoolkit.ui.features.widgets.WidgetPickerSheet
+import com.jawzf.pixeltoolkit.feature.widgets.stack.StackHost
+import com.jawzf.pixeltoolkit.feature.widgets.stack.StackWidgetProvider
+import com.jawzf.pixeltoolkit.feature.widgets.stack.WidgetStackConfig
+import com.jawzf.pixeltoolkit.feature.widgets.stack.WidgetStackRepository
+import com.jawzf.pixeltoolkit.feature.widgets.stack.ui.WidgetPickerSheet
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 import kotlinx.coroutines.delay
 

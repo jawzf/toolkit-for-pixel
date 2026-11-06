@@ -1,7 +1,7 @@
 package com.jawzf.pixeltoolkit.services
 
-import com.jawzf.pixeltoolkit.domain.model.WidgetStackConfig
-import com.jawzf.pixeltoolkit.services.widgets.StackPositions
+import com.jawzf.pixeltoolkit.feature.widgets.stack.StackPositions
+import com.jawzf.pixeltoolkit.feature.widgets.stack.WidgetStackConfig
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

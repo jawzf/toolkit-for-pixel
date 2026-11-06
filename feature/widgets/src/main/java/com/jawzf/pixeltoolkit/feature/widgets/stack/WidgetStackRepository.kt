@@ -1,11 +1,11 @@
-package com.jawzf.pixeltoolkit.data.repository
+package com.jawzf.pixeltoolkit.feature.widgets.stack
 
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.edit
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.jawzf.pixeltoolkit.domain.model.WidgetStackConfig
+import com.jawzf.pixeltoolkit.feature.widgets.stack.WidgetStackConfig
 
 class WidgetStackRepository(
     context: Context,

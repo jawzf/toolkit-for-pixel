@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.features.widgets
+package com.jawzf.pixeltoolkit.feature.widgets.stack.ui
 
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
@@ -34,9 +34,9 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
-import com.jawzf.pixeltoolkit.data.repository.WidgetStackRepository
-import com.jawzf.pixeltoolkit.domain.model.WidgetStackConfig
-import com.jawzf.pixeltoolkit.services.widgets.StackWidgetProvider
+import com.jawzf.pixeltoolkit.feature.widgets.stack.StackWidgetProvider
+import com.jawzf.pixeltoolkit.feature.widgets.stack.WidgetStackConfig
+import com.jawzf.pixeltoolkit.feature.widgets.stack.WidgetStackRepository
 import com.jawzf.pixeltoolkit.ui.activities.WidgetStackConfigureActivity
 
 @Composable

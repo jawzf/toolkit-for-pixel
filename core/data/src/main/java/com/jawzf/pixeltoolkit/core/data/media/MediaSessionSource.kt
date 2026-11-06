@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.island.plugins.media
+package com.jawzf.pixeltoolkit.core.data.media
 
 import android.content.ComponentName
 import android.content.Context

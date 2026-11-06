@@ -78,6 +78,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.platform.device.CalendarEventUtil
+import com.jawzf.pixeltoolkit.core.platform.device.UpcomingCalendarEvent
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.feature.power.PowerSettings
 import com.jawzf.pixeltoolkit.feature.power.bluetooth.BluetoothBatteryUtils
@@ -113,8 +115,6 @@ import com.jawzf.pixeltoolkit.island.ui.components.MarqueeText
 import com.jawzf.pixeltoolkit.island.ui.components.accentGlow
 import com.jawzf.pixeltoolkit.island.ui.components.cameraClearance
 import com.jawzf.pixeltoolkit.island.ui.islandTextColor
-import com.jawzf.pixeltoolkit.utils.CalendarEventUtil
-import com.jawzf.pixeltoolkit.utils.UpcomingCalendarEvent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch

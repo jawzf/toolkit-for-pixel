@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.services.widgets
+package com.jawzf.pixeltoolkit.feature.widgets.stack
 
 import android.app.PendingIntent
 import android.appwidget.AppWidgetHost
@@ -14,8 +14,8 @@ import android.util.SizeF
 import android.view.View
 import android.widget.RemoteViews
 import com.jawzf.pixeltoolkit.core.design.R
-import com.jawzf.pixeltoolkit.data.repository.WidgetStackRepository
-import com.jawzf.pixeltoolkit.domain.model.WidgetStackConfig
+import com.jawzf.pixeltoolkit.feature.widgets.stack.WidgetStackConfig
+import com.jawzf.pixeltoolkit.feature.widgets.stack.WidgetStackRepository
 import com.jawzf.pixeltoolkit.ui.activities.WidgetStackConfigureActivity
 import java.util.concurrent.ConcurrentHashMap
 
