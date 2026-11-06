@@ -50,6 +50,7 @@ import com.jawzf.pixeltoolkit.domain.diy.displayName
 import com.jawzf.pixeltoolkit.domain.diy.matches
 import com.jawzf.pixeltoolkit.domain.model.AppPermission
 import com.jawzf.pixeltoolkit.feature.apps.AppsSettings
+import com.jawzf.pixeltoolkit.feature.display.glance.ui.StatusGlanceBatteryOptionsBottomSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.AppSelectionSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.CustomSettingsSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.DeviceEffectsSettingsSheet
@@ -64,7 +65,6 @@ import com.jawzf.pixeltoolkit.ui.core.sheets.SoundModeSettingsSheet
 import com.jawzf.pixeltoolkit.ui.features.apps.sheets.KeyboardSelectionSheet
 import com.jawzf.pixeltoolkit.ui.features.audio.sheets.SetModeSettingsSheet
 import com.jawzf.pixeltoolkit.ui.features.audio.sheets.SetVolumeSettingsSheet
-import com.jawzf.pixeltoolkit.ui.features.display.sheets.StatusGlanceBatteryOptionsBottomSheet
 import com.jawzf.pixeltoolkit.ui.features.display.sheets.StatusGlanceCalendarOptionsBottomSheet
 import com.jawzf.pixeltoolkit.ui.features.system.LikeSongSettingsSheet
 import com.jawzf.pixeltoolkit.utils.PermissionUIHelper
