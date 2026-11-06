@@ -79,7 +79,6 @@ import com.jawzf.pixeltoolkit.feature.connectivity.ui.NetworksSettingsUI
 import com.jawzf.pixeltoolkit.feature.display.aod.ui.AlwaysOnDisplaySettingsUI
 import com.jawzf.pixeltoolkit.feature.display.aod.ui.AodWallpaperPreviewCard
 import com.jawzf.pixeltoolkit.feature.display.aod.ui.AodWallpaperSettingsUI
-import com.jawzf.pixeltoolkit.feature.display.duo.ui.DuoSettingsUI
 import com.jawzf.pixeltoolkit.feature.display.lockclock.ui.LockScreenClockSettingsUI
 import com.jawzf.pixeltoolkit.feature.display.nightlight.ui.DynamicNightLightSettingsUI
 import com.jawzf.pixeltoolkit.feature.display.ondisplay.ui.ToolkitOnDisplaySettingsUI
@@ -118,6 +117,7 @@ import com.jawzf.pixeltoolkit.feature.widgets.stack.ui.WidgetStackSettingsUI
 import com.jawzf.pixeltoolkit.ui.core.sheets.AppSelectionSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.ShakeForHelp
 import com.jawzf.pixeltoolkit.ui.core.sheets.SingleAppSelectionSheet
+import com.jawzf.pixeltoolkit.ui.features.display.DuoSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.display.ISLAND_BEHAVIOR_FEATURE_ID
 import com.jawzf.pixeltoolkit.ui.features.display.ISLAND_DURATION_FEATURE_ID
 import com.jawzf.pixeltoolkit.ui.features.display.ISLAND_NOTIFICATIONS_FEATURE_ID
