@@ -12,6 +12,7 @@ import com.jawzf.pixeltoolkit.services.receivers.SecurityDeviceAdminReceiver
 import com.jawzf.pixeltoolkit.services.receivers.ShizukuActionReceiver
 import com.jawzf.pixeltoolkit.services.tiles.ScreenOffAccessibilityService
 import com.jawzf.pixeltoolkit.ui.activities.BubbleWebActivity
+import com.jawzf.pixeltoolkit.ui.activities.ColorPickerActivity
 import com.jawzf.pixeltoolkit.ui.activities.RipplePositionPickerActivity
 import com.jawzf.pixeltoolkit.ui.activities.WidgetStackConfigureActivity
 import org.junit.Assert.assertEquals
@@ -34,6 +35,7 @@ class AppContractTest {
         assertEquals(BubbleWebActivity.EXTRA_PRIVATE_MODE, AppComponents.BUBBLE_EXTRA_PRIVATE_MODE)
         assertEquals(RipplePositionPickerActivity::class.java.name, AppComponents.RIPPLE_POSITION_PICKER_ACTIVITY)
         assertEquals(WidgetStackConfigureActivity::class.java.name, AppComponents.WIDGET_STACK_CONFIGURE_ACTIVITY)
+        assertEquals(ColorPickerActivity::class.java.name, AppComponents.COLOR_PICKER_ACTIVITY)
     }
 
     @Test
@@ -44,5 +46,6 @@ class AppContractTest {
         assertEquals(SettingsRepository.KEY_SHIZUKU_AUTH_TOKEN, PlatformPrefs.KEY_SHIZUKU_AUTH_TOKEN)
         assertEquals(SettingsRepository.KEY_SECURE_SENSITIVE_TILES, PlatformPrefs.KEY_SECURE_SENSITIVE_TILES)
         assertEquals(SettingsRepository.KEY_ENABLE_UNSUPPORTED_FEATURES, PlatformPrefs.KEY_ENABLE_UNSUPPORTED_FEATURES)
+        assertEquals(SettingsRepository.KEY_HIDDEN_DEBUGGING_SUPPORT, PlatformPrefs.KEY_HIDDEN_DEBUGGING_SUPPORT)
     }
 }

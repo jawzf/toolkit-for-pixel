@@ -5,8 +5,8 @@ import android.graphics.drawable.Icon
 import android.os.Build
 import android.service.quicksettings.Tile
 import androidx.annotation.RequiresApi
-import com.jawzf.pixeltoolkit.FeatureSettingsActivity
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.platform.AppComponents
 import com.jawzf.pixeltoolkit.core.platform.shell.RootUtils
 import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuUtils
 import com.jawzf.pixeltoolkit.core.platform.tiles.BaseTileService
@@ -18,7 +18,7 @@ class RestartSystemUiTileService : BaseTileService() {
     override fun onClick() {
         if (!hasFeaturePermission()) {
             val intent =
-                Intent(this, FeatureSettingsActivity::class.java).apply {
+                Intent().setClassName(this, AppComponents.FEATURE_SETTINGS_ACTIVITY).apply {
                     flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
                     putExtra("feature", "Quick settings tiles")
                 }

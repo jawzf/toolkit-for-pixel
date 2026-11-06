@@ -30,7 +30,11 @@ import com.jawzf.pixeltoolkit.feature.power.charging.ChargeQuickTileService
 import com.jawzf.pixeltoolkit.feature.power.maps.MapsPowerSavingTileService
 import com.jawzf.pixeltoolkit.feature.security.lockscreen.ScreenLockedSecurityTileService
 import com.jawzf.pixeltoolkit.feature.sound.mode.SoundModeTileService
+import com.jawzf.pixeltoolkit.feature.tiles.AdaptiveBrightnessTileService
+import com.jawzf.pixeltoolkit.feature.tiles.DeveloperOptionsTileService
 import com.jawzf.pixeltoolkit.feature.tiles.HapticsTileService
+import com.jawzf.pixeltoolkit.feature.tiles.StayAwakeTileService
+import com.jawzf.pixeltoolkit.feature.tiles.UsbDebuggingTileService
 import com.jawzf.pixeltoolkit.utils.DeviceLockUtils
 
 class QSPreferencesActivity : ComponentActivity() {
@@ -121,7 +125,7 @@ class QSPreferencesActivity : ComponentActivity() {
                 return
             }
 
-            if (componentName.className == "com.jawzf.pixeltoolkit.services.tiles.AdaptiveBrightnessTileService") {
+            if (componentName.className == AdaptiveBrightnessTileService::class.java.name) {
                 val displayIntent =
                     Intent(Settings.ACTION_DISPLAY_SETTINGS).apply {
                         flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
@@ -131,7 +135,7 @@ class QSPreferencesActivity : ComponentActivity() {
                 return
             }
 
-            if (componentName.className == "com.jawzf.pixeltoolkit.services.tiles.UsbDebuggingTileService") {
+            if (componentName.className == UsbDebuggingTileService::class.java.name) {
                 val intent =
                     Intent(this, DebuggingSettingsActivity::class.java).apply {
                         flags = Intent.FLAG_ACTIVITY_NEW_TASK
@@ -147,7 +151,7 @@ class QSPreferencesActivity : ComponentActivity() {
                 return
             }
 
-            if (componentName.className == "com.jawzf.pixeltoolkit.services.tiles.DeveloperOptionsTileService") {
+            if (componentName.className == DeveloperOptionsTileService::class.java.name) {
                 val devIntent =
                     Intent(Settings.ACTION_APPLICATION_DEVELOPMENT_SETTINGS).apply {
                         flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
@@ -178,12 +182,12 @@ class QSPreferencesActivity : ComponentActivity() {
                     ScreenLockedSecurityTileService::class.java.name -> "Screen locked security"
                     AppFreezingTileService::class.java.name -> "Freeze"
                     FlashlightPulseTileService::class.java.name -> "Notification lighting"
-                    "com.jawzf.pixeltoolkit.services.tiles.StayAwakeTileService" -> "Quick settings tiles"
+                    StayAwakeTileService::class.java.name -> "Quick settings tiles"
                     NfcTileService::class.java.name -> "NFC"
-                    "com.jawzf.pixeltoolkit.services.tiles.AdaptiveBrightnessTileService" -> "Quick settings tiles"
+                    AdaptiveBrightnessTileService::class.java.name -> "Quick settings tiles"
                     RefreshRateTileService::class.java.name -> "Screen refresh rate"
                     MapsPowerSavingTileService::class.java.name -> "Maps power saving mode"
-                    "com.jawzf.pixeltoolkit.services.tiles.UsbDebuggingTileService" -> "Quick settings tiles"
+                    UsbDebuggingTileService::class.java.name -> "Quick settings tiles"
                     BatteryNotificationTileService::class.java.name -> "Batteries"
                     ChargeQuickTileService::class.java.name -> "Batteries"
                     AlwaysOnDisplayTileService::class.java.name -> "Always on Display"

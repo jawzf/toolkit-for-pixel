@@ -61,7 +61,7 @@ class HapticsTileService : BaseTileService() {
     }
 }
 
-internal object HapticsSettings {
+object HapticsSettings {
     const val VIBRATE_ON = "vibrate_on"
 
     fun isEnabled(context: android.content.Context): Boolean {

@@ -217,7 +217,7 @@ class SettingsRepository(
         const val KEY_CIRCLE_TO_SEARCH_GESTURE_WIDTH = "circle_to_search_gesture_width"
         const val KEY_CIRCLE_TO_SEARCH_PREVIEW_ENABLED = "circle_to_search_preview_enabled"
 
-        const val KEY_HIDDEN_DEBUGGING_SUPPORT = "hidden_debugging_support"
+        const val KEY_HIDDEN_DEBUGGING_SUPPORT = PlatformPrefs.KEY_HIDDEN_DEBUGGING_SUPPORT
         const val KEY_USE_USAGE_ACCESS = "use_usage_access"
 
         const val KEY_DEVELOPER_MODE_ENABLED = "developer_mode_enabled"

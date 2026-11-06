@@ -2,8 +2,8 @@ package com.jawzf.pixeltoolkit.core.platform.device
 
 import android.content.Context
 import android.provider.Settings
+import com.jawzf.pixeltoolkit.core.platform.PlatformPrefs
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 
 object HiddenDebuggingUtils {
     enum class DetectResult { HIDDEN, NOT_HIDDEN, INCONCLUSIVE, SHELL_UNAVAILABLE }
@@ -28,7 +28,9 @@ object HiddenDebuggingUtils {
     }
 
     fun isSupportEnabled(context: Context): Boolean =
-        SettingsRepository(context).getBoolean(SettingsRepository.KEY_HIDDEN_DEBUGGING_SUPPORT, false)
+        context
+            .getSharedPreferences(PlatformPrefs.PREFS_NAME, Context.MODE_PRIVATE)
+            .getBoolean(PlatformPrefs.KEY_HIDDEN_DEBUGGING_SUPPORT, false)
 
     fun isDevOptionsEnabled(context: Context): Boolean = readGlobal(context, Settings.Global.DEVELOPMENT_SETTINGS_ENABLED)
 
