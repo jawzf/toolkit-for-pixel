@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.features.system
+package com.jawzf.pixeltoolkit.feature.display.lockclock.ui
 
 import android.app.Activity
 import androidx.compose.foundation.background
@@ -50,18 +50,18 @@ import com.jawzf.pixeltoolkit.core.design.components.ConfigSliderItem
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.pickers.SegmentedPicker
-import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
+import com.jawzf.pixeltoolkit.feature.display.lockclock.LockClockState
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun LockScreenClockSettingsUI(
-    viewModel: MainViewModel,
+    state: LockClockState,
     modifier: Modifier = Modifier,
     highlightSetting: String? = null,
 ) {
     val context = LocalContext.current
     val view = LocalView.current
-    val currentClockId by viewModel.lockScreenClockId
+    val currentClockId by state.lockScreenClockId
     val isDark = isSystemInDarkTheme()
 
     val inversionMatrix =
@@ -210,10 +210,10 @@ fun LockScreenClockSettingsUI(
                                 HapticUtil.performUIHaptic(view)
                                 if (option.id == "DEFAULT") {
                                     if (!isDefaultStyleSelected) {
-                                        viewModel.setLockScreenClockId("DEFAULT", context)
+                                        state.setLockScreenClockId("DEFAULT", context)
                                     }
                                 } else {
-                                    viewModel.setLockScreenClockId(option.id, context)
+                                    state.setLockScreenClockId(option.id, context)
                                 }
                             }
                         },
@@ -266,10 +266,10 @@ fun LockScreenClockSettingsUI(
                         rowOptions.forEach { colorOption ->
                             ColorCircle(
                                 colorOption = colorOption,
-                                isSelected = viewModel.lockScreenClockSelectedColorId.value == colorOption.id,
+                                isSelected = state.lockScreenClockSelectedColorId.value == colorOption.id,
                                 onClick = {
                                     HapticUtil.performUIHaptic(view)
-                                    viewModel.setLockScreenClockColor(
+                                    state.setLockScreenClockColor(
                                         colorOption.id,
                                         colorOption.seedColor,
                                         context,
@@ -283,12 +283,12 @@ fun LockScreenClockSettingsUI(
 
             ConfigSliderItem(
                 title = stringResource(R.string.label_color_tone),
-                value = viewModel.lockScreenClockColorTone.intValue.toFloat(),
-                onValueChange = { viewModel.setLockScreenClockColorTone(it.toInt(), context) },
+                value = state.lockScreenClockColorTone.intValue.toFloat(),
+                onValueChange = { state.setLockScreenClockColorTone(it.toInt(), context) },
                 valueRange = 0f..100f,
                 valueFormatter = { "${it.toInt()}%" },
                 iconRes = R.drawable.rounded_palette_24,
-                enabled = viewModel.lockScreenClockSelectedColorId.value != "DEFAULT",
+                enabled = state.lockScreenClockSelectedColorId.value != "DEFAULT",
             )
         }
 
@@ -304,14 +304,14 @@ fun LockScreenClockSettingsUI(
                 SegmentedPicker(
                     items = listOf("DEFAULT", "DIGITAL_CLOCK_FLEX"),
                     selectedItem = currentClockId ?: "DEFAULT",
-                    onItemSelected = { viewModel.setLockScreenClockId(it, context) },
+                    onItemSelected = { state.setLockScreenClockId(it, context) },
                     labelProvider = { if (it == "DEFAULT") "Default" else "Flex" },
                 )
 
                 ConfigSliderItem(
                     title = stringResource(R.string.label_weight),
-                    value = viewModel.lockScreenClockWeight.intValue.toFloat(),
-                    onValueChange = { viewModel.setLockScreenClockWeight(it.toInt(), context) },
+                    value = state.lockScreenClockWeight.intValue.toFloat(),
+                    onValueChange = { state.setLockScreenClockWeight(it.toInt(), context) },
                     valueRange = 100f..1000f,
                     increment = 10f,
                     valueFormatter = { it.toInt().toString() },
@@ -320,8 +320,8 @@ fun LockScreenClockSettingsUI(
 
                 ConfigSliderItem(
                     title = stringResource(R.string.label_width),
-                    value = viewModel.lockScreenClockWidth.intValue.toFloat(),
-                    onValueChange = { viewModel.setLockScreenClockWidth(it.toInt(), context) },
+                    value = state.lockScreenClockWidth.intValue.toFloat(),
+                    onValueChange = { state.setLockScreenClockWidth(it.toInt(), context) },
                     valueRange = 25f..200f,
                     increment = 5f,
                     valueFormatter = { it.toInt().toString() },
@@ -330,8 +330,8 @@ fun LockScreenClockSettingsUI(
 
                 ConfigSliderItem(
                     title = stringResource(R.string.label_roundness),
-                    value = viewModel.lockScreenClockRoundness.intValue.toFloat(),
-                    onValueChange = { viewModel.setLockScreenClockRoundness(it.toInt(), context) },
+                    value = state.lockScreenClockRoundness.intValue.toFloat(),
+                    onValueChange = { state.setLockScreenClockRoundness(it.toInt(), context) },
                     valueRange = 0f..100f,
                     increment = 5f,
                     valueFormatter = { it.toInt().toString() },
