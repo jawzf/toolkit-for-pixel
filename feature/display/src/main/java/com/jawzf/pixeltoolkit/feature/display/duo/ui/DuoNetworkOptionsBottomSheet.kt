@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.features.display.sheets
+package com.jawzf.pixeltoolkit.feature.display.duo.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -17,12 +17,12 @@ import com.jawzf.pixeltoolkit.core.design.cards.IconToggleItem
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
-import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
+import com.jawzf.pixeltoolkit.feature.display.duo.DuoState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DuoBatteryPercentageOptionsBottomSheet(
-    viewModel: MainViewModel,
+fun DuoNetworkOptionsBottomSheet(
+    state: DuoState,
     onDismissRequest: () -> Unit,
 ) {
     val view = LocalView.current
@@ -39,7 +39,7 @@ fun DuoBatteryPercentageOptionsBottomSheet(
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             Text(
-                text = stringResource(R.string.duo_battery_percentage_options_title),
+                text = stringResource(R.string.duo_network_options_title),
                 style = MaterialTheme.typography.titleLarge,
                 color = MaterialTheme.colorScheme.onSurface,
                 modifier = Modifier.padding(start = 8.dp, bottom = 4.dp),
@@ -50,13 +50,13 @@ fun DuoBatteryPercentageOptionsBottomSheet(
                 cornerRadius = 24.dp,
             ) {
                 IconToggleItem(
-                    iconRes = R.drawable.rounded_palette_24,
-                    title = stringResource(R.string.duo_battery_percentage_only_colored_title),
-                    description = stringResource(R.string.duo_battery_percentage_only_colored_desc),
-                    isChecked = viewModel.duo.isDuoBatteryPercentageOnlyColored.value,
+                    iconRes = R.drawable.rounded_android_wifi_3_bar_24,
+                    title = stringResource(R.string.duo_differentiate_wifi_title),
+                    description = stringResource(R.string.duo_differentiate_wifi_desc),
+                    isChecked = state.isDuoDifferentiateWifi.value,
                     onCheckedChange = { checked ->
                         HapticUtil.performVirtualKeyHaptic(view)
-                        viewModel.duo.setDuoBatteryPercentageOnlyColored(checked)
+                        state.setDuoDifferentiateWifi(checked)
                     },
                 )
             }

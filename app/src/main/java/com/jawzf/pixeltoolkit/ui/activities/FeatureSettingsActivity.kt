@@ -68,6 +68,7 @@ import com.jawzf.pixeltoolkit.core.design.theme.ToolkitTheme
 import com.jawzf.pixeltoolkit.core.platform.device.DeviceUtils
 import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
+import com.jawzf.pixeltoolkit.domain.diy.displayName
 import com.jawzf.pixeltoolkit.domain.registry.FeatureRegistry
 import com.jawzf.pixeltoolkit.domain.registry.PermissionRegistry
 import com.jawzf.pixeltoolkit.feature.apps.applock.ui.AppLockSettingsUI
@@ -130,6 +131,7 @@ import com.jawzf.pixeltoolkit.ui.features.display.IslandPlacementSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.display.IslandSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.display.IslandVisualsSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.display.StatusGlanceSettingsUI
+import com.jawzf.pixeltoolkit.ui.features.display.actions.GestureActionPickerSheet
 import com.jawzf.pixeltoolkit.ui.features.system.ActivityLauncherSearchBar
 import com.jawzf.pixeltoolkit.ui.features.system.ActivityLauncherSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.ButtonRemapSettingsUI
@@ -1304,7 +1306,40 @@ class FeatureSettingsActivity : AppCompatActivity() {
 
                                     "Duo" -> {
                                         DuoSettingsUI(
-                                            viewModel = viewModel,
+                                            state = viewModel.duo,
+                                            isFoldableCameraDevice = viewModel.isFoldableCameraDevice.value,
+                                            isUnsupportedFeaturesEnabled = viewModel.isEnableUnsupportedFeatures.value,
+                                            isAccessibilityEnabled = viewModel.isAccessibilityEnabled.value,
+                                            isNotificationListenerEnabled = viewModel.isNotificationListenerEnabled.value,
+                                            isIslandEnabled = viewModel.isIslandEnabled.value,
+                                            isIslandBatteryIdleColorEnabled = viewModel.isIslandBatteryIdleColorEnabled.value,
+                                            islandBatteryIdleColor = viewModel.islandBatteryIdleColor.value,
+                                            onIslandBatteryIdleColorEnabledChange = { viewModel.setIslandBatteryIdleColorEnabled(it) },
+                                            onIslandBatteryIdleColorChange = { viewModel.setIslandBatteryIdleColor(it) },
+                                            permissionItemsFor = { keys ->
+                                                PermissionUIHelper.getPermissionItems(keys, context, viewModel)
+                                            },
+                                            onRefreshPermissions = { viewModel.check(context) },
+                                            actionLabel = { it.displayName(context) },
+                                            gesturePicker = { currentAction, onActionSelected, onClosed ->
+                                                GestureActionPickerSheet(
+                                                    viewModel = viewModel,
+                                                    currentAction = currentAction,
+                                                    onActionSelected = onActionSelected,
+                                                    onPickerClosed = onClosed,
+                                                )
+                                            },
+                                            mediaAppSelectionSheet = { onDismiss ->
+                                                AppSelectionSheet(
+                                                    onDismissRequest = onDismiss,
+                                                    onLoadApps = { viewModel.aod.loadAodWallpaperMediaApps() },
+                                                    onSaveApps = { _, apps -> viewModel.aod.saveAodWallpaperMediaApps(apps) },
+                                                    onAppToggle = { _, pkg, enabled ->
+                                                        viewModel.aod.updateAodWallpaperMediaAppEnabled(pkg, enabled)
+                                                    },
+                                                    context = context,
+                                                )
+                                            },
                                             modifier = Modifier.padding(top = 16.dp),
                                             highlightSetting = highlightSetting,
                                         )

@@ -33,6 +33,7 @@ import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.pickers.SegmentedPicker
 import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
+import com.jawzf.pixeltoolkit.feature.display.duo.ui.BatteryColorOptions
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -238,6 +239,14 @@ fun IslandBatteryOptions(
             }
         }
 
-        BatteryColorOptions(viewModel, showIdleColor = true, showLevels = true)
+        BatteryColorOptions(
+            state = viewModel.duo,
+            isIslandBatteryIdleColorEnabled = viewModel.isIslandBatteryIdleColorEnabled.value,
+            islandBatteryIdleColor = viewModel.islandBatteryIdleColor.value,
+            onIslandBatteryIdleColorEnabledChange = { viewModel.setIslandBatteryIdleColorEnabled(it) },
+            onIslandBatteryIdleColorChange = { viewModel.setIslandBatteryIdleColor(it) },
+            showIdleColor = true,
+            showLevels = true,
+        )
     }
 }

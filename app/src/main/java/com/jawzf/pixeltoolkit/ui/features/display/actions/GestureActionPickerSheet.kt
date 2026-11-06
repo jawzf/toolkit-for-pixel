@@ -29,6 +29,7 @@ import com.jawzf.pixeltoolkit.core.data.prefs.AppSelection
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.cards.IconToggleItem
 import com.jawzf.pixeltoolkit.core.design.components.CategoryExpandableSection
+import com.jawzf.pixeltoolkit.core.design.components.RemapActionItem
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.sheets.PermissionsBottomSheet
@@ -53,7 +54,6 @@ import com.jawzf.pixeltoolkit.ui.features.apps.sheets.KeyboardSelectionSheet
 import com.jawzf.pixeltoolkit.ui.features.audio.sheets.SetModeSettingsSheet
 import com.jawzf.pixeltoolkit.ui.features.audio.sheets.SetVolumeSettingsSheet
 import com.jawzf.pixeltoolkit.ui.features.system.LikeSongSettingsSheet
-import com.jawzf.pixeltoolkit.ui.features.system.RemapActionItem
 import com.jawzf.pixeltoolkit.utils.PermissionUIHelper
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 

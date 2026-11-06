@@ -12,9 +12,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.design.components.RemapActionItem
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
-import com.jawzf.pixeltoolkit.ui.features.system.RemapActionItem
 
 val HORIZONTAL_SLIDE_MODES = listOf(
     Triple("none", R.string.duo_action_horizontal_slide_none, R.drawable.rounded_do_not_disturb_on_24),

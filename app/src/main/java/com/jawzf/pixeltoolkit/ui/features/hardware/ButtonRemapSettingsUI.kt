@@ -44,6 +44,7 @@ import androidx.lifecycle.LifecycleEventObserver
 import com.jawzf.pixeltoolkit.core.data.action.Action
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.cards.IconToggleItem
+import com.jawzf.pixeltoolkit.core.design.components.RemapActionItem
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticFeedbackType
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
@@ -441,68 +442,6 @@ fun ButtonRemapSettingsUI(
                 modifier = Modifier.padding(16.dp),
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
-        }
-    }
-}
-
-@Composable
-fun RemapActionItem(
-    title: Any, // Can be Int or String
-    iconRes: Int,
-    isSelected: Boolean,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-    hasSettings: Boolean = false,
-    onSettingsClick: () -> Unit = {},
-) {
-    val view = LocalView.current
-    Row(
-        modifier =
-            modifier
-                .fillMaxWidth()
-                .clickable {
-                    HapticUtil.performUIHaptic(view)
-                    onClick()
-                }.background(
-                    color = MaterialTheme.colorScheme.surfaceBright,
-                    shape = RoundedCornerShape(MaterialTheme.shapes.extraSmall.bottomEnd),
-                ).padding(12.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
-    ) {
-        RadioButton(
-            selected = isSelected,
-            onClick = onClick,
-        )
-
-        val resolvedTitle =
-            when (title) {
-                is Int -> stringResource(id = title)
-                is String -> title
-                else -> ""
-            }
-
-        Icon(
-            painter = painterResource(id = iconRes),
-            contentDescription = resolvedTitle,
-            modifier = Modifier.size(24.dp),
-            tint = MaterialTheme.colorScheme.primary,
-        )
-
-        Text(
-            text = resolvedTitle,
-            style = MaterialTheme.typography.bodyLarge,
-            modifier = Modifier.weight(1f),
-            color = if (isSelected) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant,
-        )
-        if (hasSettings && isSelected) {
-            IconButton(onClick = onSettingsClick) {
-                Icon(
-                    painter = painterResource(id = R.drawable.rounded_settings_24),
-                    contentDescription = stringResource(R.string.content_desc_settings),
-                    tint = MaterialTheme.colorScheme.primary,
-                )
-            }
         }
     }
 }
