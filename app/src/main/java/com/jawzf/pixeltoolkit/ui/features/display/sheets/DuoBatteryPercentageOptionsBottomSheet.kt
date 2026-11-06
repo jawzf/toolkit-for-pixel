@@ -53,10 +53,10 @@ fun DuoBatteryPercentageOptionsBottomSheet(
                     iconRes = R.drawable.rounded_palette_24,
                     title = stringResource(R.string.duo_battery_percentage_only_colored_title),
                     description = stringResource(R.string.duo_battery_percentage_only_colored_desc),
-                    isChecked = viewModel.isDuoBatteryPercentageOnlyColored.value,
+                    isChecked = viewModel.duo.isDuoBatteryPercentageOnlyColored.value,
                     onCheckedChange = { checked ->
                         HapticUtil.performVirtualKeyHaptic(view)
-                        viewModel.setDuoBatteryPercentageOnlyColored(checked)
+                        viewModel.duo.setDuoBatteryPercentageOnlyColored(checked)
                     },
                 )
             }

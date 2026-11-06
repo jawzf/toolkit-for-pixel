@@ -665,7 +665,7 @@ fun IslandSettingsUI(
         }
 
         AnimatedVisibility(
-            visible = viewModel.isDuoEnabled.value && viewModel.isIslandEnabled.value,
+            visible = viewModel.duo.isDuoEnabled.value && viewModel.isIslandEnabled.value,
             enter = expandVertically() + fadeIn(),
             exit = shrinkVertically() + fadeOut(),
         ) {
@@ -676,10 +676,10 @@ fun IslandSettingsUI(
                 IconToggleItem(
                     iconRes = R.drawable.rounded_link_24,
                     title = stringResource(R.string.island_combine_with_duo),
-                    isChecked = viewModel.isDuoIslandCombined.value,
+                    isChecked = viewModel.duo.isDuoIslandCombined.value,
                     onCheckedChange = { checked ->
                         HapticUtil.performVirtualKeyHaptic(view)
-                        viewModel.setDuoIslandCombined(checked)
+                        viewModel.duo.setDuoIslandCombined(checked)
                     },
                     modifier = Modifier.highlight(highlightSetting == "duo_island_combined"),
                 )

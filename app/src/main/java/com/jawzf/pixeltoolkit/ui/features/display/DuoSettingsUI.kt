@@ -84,7 +84,7 @@ fun DuoSettingsUI(
     val displayConfiguration = androidx.compose.ui.platform.LocalConfiguration.current
     LaunchedEffect(displayConfiguration.screenWidthDp, displayConfiguration.screenHeightDp,
         displayConfiguration.orientation) {
-        viewModel.refreshDuoCameraPlacement()
+        viewModel.duo.refreshDuoCameraPlacement()
     }
 
     var requestingPermissionsFor by remember { mutableStateOf<Pair<Int, List<String>>?>(null) }
@@ -152,10 +152,10 @@ fun DuoSettingsUI(
 
     fun applyActionForGesture(gesture: String?, action: Action?) {
         when (gesture) {
-            "tap" -> viewModel.setDuoTapAction(action)
-            "double_tap" -> viewModel.setDuoDoubleTapAction(action)
-            "long_press" -> viewModel.setDuoLongPressAction(action)
-            "swipe_down" -> viewModel.setDuoSwipeDownAction(action)
+            "tap" -> viewModel.duo.setDuoTapAction(action)
+            "double_tap" -> viewModel.duo.setDuoDoubleTapAction(action)
+            "long_press" -> viewModel.duo.setDuoLongPressAction(action)
+            "swipe_down" -> viewModel.duo.setDuoSwipeDownAction(action)
         }
     }
 
@@ -186,13 +186,13 @@ fun DuoSettingsUI(
                 iconRes = R.drawable.rounded_motion_play_24,
                 title = stringResource(R.string.duo_enable_title),
                 description = stringResource(R.string.duo_enable_desc),
-                isChecked = viewModel.isDuoEnabled.value,
+                isChecked = viewModel.duo.isDuoEnabled.value,
                 onCheckedChange = { checked ->
                     HapticUtil.performVirtualKeyHaptic(view)
                     if (checked && !viewModel.isAccessibilityEnabled.value) {
                         requestingPermissionsFor = Pair(R.string.duo_title, listOf("ACCESSIBILITY"))
                     } else {
-                        viewModel.setDuoEnabled(checked)
+                        viewModel.duo.setDuoEnabled(checked)
                     }
                 },
                 modifier = Modifier.highlight(highlightSetting == "duo_enabled"),
@@ -220,40 +220,40 @@ fun DuoSettingsUI(
                 IconToggleItem(
                     iconRes = R.drawable.rounded_center_focus_strong_24,
                     title = stringResource(R.string.foldable_orientation_profiles_title),
-                    isChecked = viewModel.isDuoOrientationProfiles.value,
-                    onCheckedChange = { viewModel.setDuoOrientationProfiles(it) },
+                    isChecked = viewModel.duo.isDuoOrientationProfiles.value,
+                    onCheckedChange = { viewModel.duo.setDuoOrientationProfiles(it) },
                 )
                 IconToggleItem(
                     iconRes = R.drawable.rounded_visibility_off_24,
                     title = stringResource(R.string.foldable_hide_current_orientation_title),
-                    isChecked = viewModel.isDuoHiddenInCurrentOrientation.value,
-                    onCheckedChange = { viewModel.setDuoHiddenInCurrentOrientation(it) },
+                    isChecked = viewModel.duo.isDuoHiddenInCurrentOrientation.value,
+                    onCheckedChange = { viewModel.duo.setDuoHiddenInCurrentOrientation(it) },
                 )
             }
             IconToggleItem(
                 iconRes = R.drawable.rounded_center_focus_strong_24,
                 title = stringResource(R.string.duo_auto_detect_title),
                 description = stringResource(R.string.duo_auto_detect_desc),
-                isChecked = viewModel.isDuoAutoDetect.value,
+                isChecked = viewModel.duo.isDuoAutoDetect.value,
                 onCheckedChange = { checked ->
                     HapticUtil.performVirtualKeyHaptic(view)
-                    viewModel.setDuoAutoDetect(checked)
+                    viewModel.duo.setDuoAutoDetect(checked)
                 },
                 modifier = Modifier.highlight(highlightSetting == "duo_use_auto_detect"),
             )
 
             AnimatedVisibility(
-                visible = !viewModel.isDuoAutoDetect.value,
+                visible = !viewModel.duo.isDuoAutoDetect.value,
                 enter = fadeIn() + expandVertically(),
                 exit = fadeOut() + shrinkVertically(),
             ) {
                 Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
                     ConfigSliderItem(
                         title = stringResource(R.string.duo_camera_offset_x_title),
-                        value = viewModel.duoCameraOffsetX.floatValue,
+                        value = viewModel.duo.duoCameraOffsetX.floatValue,
                         onValueChange = {
                             HapticUtil.performUIHaptic(view)
-                            viewModel.setDuoCameraOffsetX(it)
+                            viewModel.duo.setDuoCameraOffsetX(it)
                         },
                         valueRange = 0f..100f,
                         increment = 1f,
@@ -262,10 +262,10 @@ fun DuoSettingsUI(
                     )
                     ConfigSliderItem(
                         title = stringResource(R.string.duo_camera_offset_y_title),
-                        value = viewModel.duoCameraOffsetY.floatValue,
+                        value = viewModel.duo.duoCameraOffsetY.floatValue,
                         onValueChange = {
                             HapticUtil.performUIHaptic(view)
-                            viewModel.setDuoCameraOffsetY(it)
+                            viewModel.duo.setDuoCameraOffsetY(it)
                         },
                         valueRange = 0f..20f,
                         increment = 0.5f,
@@ -276,7 +276,7 @@ fun DuoSettingsUI(
             }
 
             AnimatedVisibility(
-                visible = viewModel.hasMultipleDuoDisplays.value,
+                visible = viewModel.duo.hasMultipleDuoDisplays.value,
                 enter = fadeIn() + expandVertically(),
                 exit = fadeOut() + shrinkVertically(),
             ) {
@@ -290,10 +290,10 @@ fun DuoSettingsUI(
 
             ConfigSliderItem(
                 title = stringResource(R.string.duo_camera_size_title),
-                value = viewModel.duoCameraSize.floatValue,
+                value = viewModel.duo.duoCameraSize.floatValue,
                 onValueChange = {
                     HapticUtil.performUIHaptic(view)
-                    viewModel.setDuoCameraSize(it)
+                    viewModel.duo.setDuoCameraSize(it)
                 },
                 valueRange = 0.05f..2.0f,
                 increment = 0.05f,
@@ -315,10 +315,10 @@ fun DuoSettingsUI(
         ) {
             ConfigSliderItem(
                 title = stringResource(R.string.duo_ring_radius_title),
-                value = viewModel.duoRingRadius.floatValue,
+                value = viewModel.duo.duoRingRadius.floatValue,
                 onValueChange = {
                     HapticUtil.performUIHaptic(view)
-                    viewModel.setDuoRingRadius(it)
+                    viewModel.duo.setDuoRingRadius(it)
                 },
                 valueRange = 0.1f..1.6f,
                 increment = 0.05f,
@@ -327,10 +327,10 @@ fun DuoSettingsUI(
             )
             ConfigSliderItem(
                 title = stringResource(R.string.duo_arc_thickness_title),
-                value = viewModel.duoArcThickness.floatValue,
+                value = viewModel.duo.duoArcThickness.floatValue,
                 onValueChange = {
                     HapticUtil.performUIHaptic(view)
-                    viewModel.setDuoArcThickness(it)
+                    viewModel.duo.setDuoArcThickness(it)
                 },
                 valueRange = 0.5f..10f,
                 increment = 0.5f,
@@ -339,10 +339,10 @@ fun DuoSettingsUI(
             )
             ConfigSliderItem(
                 title = stringResource(R.string.duo_dot_size_title),
-                value = viewModel.duoDotSize.floatValue,
+                value = viewModel.duo.duoDotSize.floatValue,
                 onValueChange = {
                     HapticUtil.performUIHaptic(view)
-                    viewModel.setDuoDotSize(it)
+                    viewModel.duo.setDuoDotSize(it)
                 },
                 valueRange = 0.5f..8f,
                 increment = 0.5f,
@@ -365,10 +365,10 @@ fun DuoSettingsUI(
             IconToggleItem(
                 iconRes = R.drawable.rounded_battery_charging_60_24,
                 title = stringResource(R.string.duo_show_battery_title),
-                isChecked = viewModel.isDuoShowBattery.value,
+                isChecked = viewModel.duo.isDuoShowBattery.value,
                 onCheckedChange = { checked ->
                     HapticUtil.performVirtualKeyHaptic(view)
-                    viewModel.setDuoShowBattery(checked)
+                    viewModel.duo.setDuoShowBattery(checked)
                 },
                 onSettingsClick = {
                     showBatteryOptionsSheet = true
@@ -378,11 +378,11 @@ fun DuoSettingsUI(
             IconToggleItem(
                 iconRes = R.drawable.rounded_battery_android_frame_6_24,
                 title = stringResource(R.string.duo_show_battery_percentage_title),
-                isChecked = viewModel.isDuoShowBatteryPercentage.value,
-                enabled = viewModel.isDuoShowBattery.value,
+                isChecked = viewModel.duo.isDuoShowBatteryPercentage.value,
+                enabled = viewModel.duo.isDuoShowBattery.value,
                 onCheckedChange = { checked ->
                     HapticUtil.performVirtualKeyHaptic(view)
-                    viewModel.setDuoShowBatteryPercentage(checked)
+                    viewModel.duo.setDuoShowBatteryPercentage(checked)
                 },
                 onSettingsClick = {
                     showBatteryPercentageOptionsSheet = true
@@ -392,11 +392,11 @@ fun DuoSettingsUI(
             IconToggleItem(
                 iconRes = R.drawable.rounded_signal_cellular_alt_24,
                 title = stringResource(R.string.duo_show_networks_title),
-                isChecked = viewModel.isDuoShowNetworks.value,
-                enabled = viewModel.isDuoShowBattery.value,
+                isChecked = viewModel.duo.isDuoShowNetworks.value,
+                enabled = viewModel.duo.isDuoShowBattery.value,
                 onCheckedChange = { checked ->
                     HapticUtil.performVirtualKeyHaptic(view)
-                    viewModel.setDuoShowNetworks(checked)
+                    viewModel.duo.setDuoShowNetworks(checked)
                 },
                 onSettingsClick = {
                     showNetworkOptionsSheet = true
@@ -406,11 +406,11 @@ fun DuoSettingsUI(
             IconToggleItem(
                 iconRes = R.drawable.rounded_schedule_24,
                 title = stringResource(R.string.duo_show_time_title),
-                isChecked = viewModel.isDuoShowTime.value,
-                enabled = viewModel.isDuoShowBattery.value,
+                isChecked = viewModel.duo.isDuoShowTime.value,
+                enabled = viewModel.duo.isDuoShowBattery.value,
                 onCheckedChange = { checked ->
                     HapticUtil.performVirtualKeyHaptic(view)
-                    viewModel.setDuoShowTime(checked)
+                    viewModel.duo.setDuoShowTime(checked)
                 },
                 onSettingsClick = {
                     showTimeOptionsSheet = true
@@ -420,13 +420,13 @@ fun DuoSettingsUI(
             IconToggleItem(
                 iconRes = R.drawable.rounded_motion_play_24,
                 title = stringResource(R.string.duo_show_media_title),
-                isChecked = viewModel.isDuoShowMedia.value,
+                isChecked = viewModel.duo.isDuoShowMedia.value,
                 onCheckedChange = { checked ->
                     HapticUtil.performVirtualKeyHaptic(view)
                     if (checked && !viewModel.isNotificationListenerEnabled.value) {
                         requestingPermissionsFor = Pair(R.string.duo_title, listOf("NOTIFICATION_LISTENER"))
                     } else {
-                        viewModel.setDuoShowMedia(checked)
+                        viewModel.duo.setDuoShowMedia(checked)
                     }
                 },
                 onSettingsClick = {
@@ -435,17 +435,17 @@ fun DuoSettingsUI(
                 modifier = Modifier.highlight(highlightSetting == "duo_show_media"),
             )
             AnimatedVisibility(
-                visible = viewModel.isDuoShowMedia.value,
+                visible = viewModel.duo.isDuoShowMedia.value,
                 enter = expandVertically() + fadeIn(),
                 exit = shrinkVertically() + fadeOut(),
             ) {
                 IconToggleItem(
                     iconRes = R.drawable.rounded_rotate_right_24,
                     title = stringResource(R.string.duo_rotate_album_art_title),
-                    isChecked = viewModel.isDuoRotateAlbumArt.value,
+                    isChecked = viewModel.duo.isDuoRotateAlbumArt.value,
                     onCheckedChange = { checked ->
                         HapticUtil.performVirtualKeyHaptic(view)
-                        viewModel.setDuoRotateAlbumArt(checked)
+                        viewModel.duo.setDuoRotateAlbumArt(checked)
                     },
                     modifier = Modifier.highlight(highlightSetting == "duo_rotate_album_art"),
                 )
@@ -453,13 +453,13 @@ fun DuoSettingsUI(
             IconToggleItem(
                 iconRes = R.drawable.rounded_downloading_24,
                 title = stringResource(R.string.duo_show_progress_title),
-                isChecked = viewModel.isDuoShowProgress.value,
+                isChecked = viewModel.duo.isDuoShowProgress.value,
                 onCheckedChange = { checked ->
                     HapticUtil.performVirtualKeyHaptic(view)
                     if (checked && !viewModel.isNotificationListenerEnabled.value) {
                         requestingPermissionsFor = Pair(R.string.duo_title, listOf("NOTIFICATION_LISTENER"))
                     } else {
-                        viewModel.setDuoShowProgress(checked)
+                        viewModel.duo.setDuoShowProgress(checked)
                     }
                 },
                 modifier = Modifier.highlight(highlightSetting == "duo_show_progress"),
@@ -467,10 +467,10 @@ fun DuoSettingsUI(
             IconToggleItem(
                 iconRes = R.drawable.rounded_flashlight_on_24,
                 title = stringResource(R.string.duo_show_flashlight_title),
-                isChecked = viewModel.isDuoShowFlashlight.value,
+                isChecked = viewModel.duo.isDuoShowFlashlight.value,
                 onCheckedChange = { checked ->
                     HapticUtil.performVirtualKeyHaptic(view)
-                    viewModel.setDuoShowFlashlight(checked)
+                    viewModel.duo.setDuoShowFlashlight(checked)
                 },
                 modifier = Modifier.highlight(highlightSetting == "duo_show_flashlight"),
             )
@@ -490,57 +490,57 @@ fun DuoSettingsUI(
             IconToggleItem(
                 iconRes = R.drawable.rounded_palette_24,
                 title = stringResource(R.string.duo_material_you_title),
-                isChecked = viewModel.isDuoUseMaterialYou.value,
+                isChecked = viewModel.duo.isDuoUseMaterialYou.value,
                 onCheckedChange = { checked ->
                     HapticUtil.performVirtualKeyHaptic(view)
-                    viewModel.setDuoUseMaterialYou(checked)
+                    viewModel.duo.setDuoUseMaterialYou(checked)
                 },
                 modifier = Modifier.highlight(highlightSetting == "duo_use_material_you"),
             )
             AnimatedVisibility(
-                visible = !viewModel.isDuoUseMaterialYou.value,
+                visible = !viewModel.duo.isDuoUseMaterialYou.value,
                 enter = expandVertically() + fadeIn(),
                 exit = shrinkVertically() + fadeOut(),
             ) {
                 ColorSwatchPicker(
-                    selectedColorHex = viewModel.duoCustomColor.value,
+                    selectedColorHex = viewModel.duo.duoCustomColor.value,
                     onColorSelected = { hex ->
-                        viewModel.setDuoCustomColor(hex)
+                        viewModel.duo.setDuoCustomColor(hex)
                     },
                 )
             }
             IconToggleItem(
                 iconRes = R.drawable.rounded_pinch_24,
                 title = stringResource(R.string.island_hide_on_shade_title),
-                isChecked = viewModel.isDuoHideOnShade.value,
+                isChecked = viewModel.duo.isDuoHideOnShade.value,
                 onCheckedChange = { checked ->
                     HapticUtil.performVirtualKeyHaptic(view)
-                    viewModel.setDuoHideOnShade(checked)
+                    viewModel.duo.setDuoHideOnShade(checked)
                 },
                 modifier = Modifier.highlight(highlightSetting == "duo_hide_on_shade"),
             )
             IconToggleItem(
                 iconRes = R.drawable.rounded_fullscreen_portrait_24,
                 title = stringResource(R.string.keep_in_full_screen_title),
-                isChecked = viewModel.isDuoKeepInFullscreen.value,
+                isChecked = viewModel.duo.isDuoKeepInFullscreen.value,
                 onCheckedChange = { checked ->
                     HapticUtil.performVirtualKeyHaptic(view)
-                    viewModel.setDuoKeepInFullscreen(checked)
+                    viewModel.duo.setDuoKeepInFullscreen(checked)
                 },
                 modifier = Modifier.highlight(highlightSetting == "duo_keep_in_fullscreen"),
             )
             AnimatedVisibility(
-                visible = viewModel.isDuoKeepInFullscreen.value,
+                visible = viewModel.duo.isDuoKeepInFullscreen.value,
                 enter = expandVertically() + fadeIn(),
                 exit = shrinkVertically() + fadeOut(),
             ) {
                 IconToggleItem(
                     iconRes = R.drawable.rounded_do_not_touch_24,
                     title = stringResource(R.string.disable_interactions_in_full_screen_title),
-                    isChecked = viewModel.isDuoDisableInteractionsInFullscreen.value,
+                    isChecked = viewModel.duo.isDuoDisableInteractionsInFullscreen.value,
                     onCheckedChange = { checked ->
                         HapticUtil.performVirtualKeyHaptic(view)
-                        viewModel.setDuoDisableInteractionsInFullscreen(checked)
+                        viewModel.duo.setDuoDisableInteractionsInFullscreen(checked)
                     },
                     modifier = Modifier.highlight(highlightSetting == "duo_disable_interactions_in_fullscreen"),
                 )
@@ -549,32 +549,32 @@ fun DuoSettingsUI(
             IconToggleItem(
                 iconRes = R.drawable.rounded_mobile_off_24,
                 title = stringResource(R.string.duo_hide_when_screen_off_title),
-                isChecked = if (areUnsupportedFeaturesEnabled) viewModel.isDuoHideWhenScreenOff.value else true,
+                isChecked = if (areUnsupportedFeaturesEnabled) viewModel.duo.isDuoHideWhenScreenOff.value else true,
                 enabled = areUnsupportedFeaturesEnabled,
                 onCheckedChange = { checked ->
                     HapticUtil.performVirtualKeyHaptic(view)
-                    viewModel.setDuoHideWhenScreenOff(checked)
+                    viewModel.duo.setDuoHideWhenScreenOff(checked)
                 },
                 modifier = Modifier.highlight(highlightSetting == "duo_hide_when_screen_off"),
             )
             IconToggleItem(
                 iconRes = R.drawable.rounded_nightlight_24,
                 title = stringResource(R.string.duo_hide_when_screen_off_only_idle_title),
-                isChecked = if (areUnsupportedFeaturesEnabled) viewModel.isDuoHideWhenScreenOffOnlyIdle.value else false,
-                enabled = areUnsupportedFeaturesEnabled && viewModel.isDuoHideWhenScreenOff.value,
+                isChecked = if (areUnsupportedFeaturesEnabled) viewModel.duo.isDuoHideWhenScreenOffOnlyIdle.value else false,
+                enabled = areUnsupportedFeaturesEnabled && viewModel.duo.isDuoHideWhenScreenOff.value,
                 onCheckedChange = { checked ->
                     HapticUtil.performVirtualKeyHaptic(view)
-                    viewModel.setDuoHideWhenScreenOffOnlyIdle(checked)
+                    viewModel.duo.setDuoHideWhenScreenOffOnlyIdle(checked)
                 },
                 modifier = Modifier.highlight(highlightSetting == "duo_hide_when_screen_off_only_idle"),
             )
             IconToggleItem(
                 iconRes = R.drawable.rounded_mobile_lock_portrait_24,
                 title = stringResource(R.string.duo_hide_when_locked_title),
-                isChecked = viewModel.isDuoHideWhenLocked.value,
+                isChecked = viewModel.duo.isDuoHideWhenLocked.value,
                 onCheckedChange = { checked ->
                     HapticUtil.performVirtualKeyHaptic(view)
-                    viewModel.setDuoHideWhenLocked(checked)
+                    viewModel.duo.setDuoHideWhenLocked(checked)
                 },
                 modifier = Modifier.highlight(highlightSetting == "duo_hide_when_locked"),
             )
@@ -600,8 +600,8 @@ fun DuoSettingsUI(
             spacing = 2.dp,
             cornerRadius = 24.dp,
         ) {
-            val tapAction = viewModel.duoTapAction.value
-            val tapForBriefActive = viewModel.isDuoIslandCombined.value && viewModel.isDuoTapForBrief.value
+            val tapAction = viewModel.duo.duoTapAction.value
+            val tapForBriefActive = viewModel.duo.isDuoIslandCombined.value && viewModel.duo.isDuoTapForBrief.value
             IconToggleItem(
                 iconRes = R.drawable.rounded_pan_tool_alt_24,
                 title = stringResource(R.string.duo_action_tap_title),
@@ -616,23 +616,23 @@ fun DuoSettingsUI(
             )
 
             AnimatedVisibility(
-                visible = viewModel.isDuoIslandCombined.value,
+                visible = viewModel.duo.isDuoIslandCombined.value,
                 enter = expandVertically() + fadeIn(),
                 exit = shrinkVertically() + fadeOut(),
             ) {
                 IconToggleItem(
                     iconRes = R.drawable.rounded_calendar_today_24,
                     title = stringResource(R.string.duo_tap_for_brief_title),
-                    isChecked = viewModel.isDuoTapForBrief.value,
+                    isChecked = viewModel.duo.isDuoTapForBrief.value,
                     onCheckedChange = { checked ->
                         HapticUtil.performVirtualKeyHaptic(view)
-                        viewModel.setDuoTapForBrief(checked)
+                        viewModel.duo.setDuoTapForBrief(checked)
                     },
                     modifier = Modifier.highlight(highlightSetting == "duo_tap_for_brief"),
                 )
             }
 
-            val doubleTapAction = viewModel.duoDoubleTapAction.value
+            val doubleTapAction = viewModel.duo.duoDoubleTapAction.value
             IconToggleItem(
                 iconRes = R.drawable.rounded_touch_app_24,
                 title = stringResource(R.string.duo_action_double_tap_title),
@@ -645,7 +645,7 @@ fun DuoSettingsUI(
                 modifier = Modifier.highlight(highlightSetting == "duo_double_tap_action"),
             )
 
-            val longPressAction = viewModel.duoLongPressAction.value
+            val longPressAction = viewModel.duo.duoLongPressAction.value
             IconToggleItem(
                 iconRes = R.drawable.rounded_front_hand_24,
                 title = stringResource(R.string.duo_action_long_press_title),
@@ -658,7 +658,7 @@ fun DuoSettingsUI(
                 modifier = Modifier.highlight(highlightSetting == "duo_long_press_action"),
             )
 
-            val swipeDownAction = viewModel.duoSwipeDownAction.value
+            val swipeDownAction = viewModel.duo.duoSwipeDownAction.value
             IconToggleItem(
                 iconRes = R.drawable.rounded_south_24,
                 title = stringResource(R.string.duo_action_swipe_down_title),
@@ -671,14 +671,14 @@ fun DuoSettingsUI(
                 modifier = Modifier.highlight(highlightSetting == "duo_swipe_down_action"),
             )
 
-            val baseSlideDescription = when (viewModel.duoSlideMode.value) {
+            val baseSlideDescription = when (viewModel.duo.duoSlideMode.value) {
                 "volume" -> stringResource(R.string.duo_action_horizontal_slide_volume)
                 "brightness" -> stringResource(R.string.duo_action_horizontal_slide_brightness)
                 "sound_mode" -> stringResource(R.string.duo_action_horizontal_slide_sound_mode)
                 else -> stringResource(R.string.duo_action_horizontal_slide_none)
             }
-            val slideModeDescription = if (viewModel.isDuoSlideTrack.value) {
-                if (viewModel.duoSlideMode.value != "none") {
+            val slideModeDescription = if (viewModel.duo.isDuoSlideTrack.value) {
+                if (viewModel.duo.duoSlideMode.value != "none") {
                     "$baseSlideDescription • " + stringResource(R.string.duo_action_horizontal_slide_track)
                 } else {
                     stringResource(R.string.duo_action_horizontal_slide_track)
@@ -698,7 +698,7 @@ fun DuoSettingsUI(
                 modifier = Modifier.highlight(highlightSetting == "duo_slide_mode"),
             )
 
-            val isMirrorableMode = viewModel.isDuoSlideTrack.value || viewModel.duoSlideMode.value == "sound_mode"
+            val isMirrorableMode = viewModel.duo.isDuoSlideTrack.value || viewModel.duo.duoSlideMode.value == "sound_mode"
             AnimatedVisibility(
                 visible = isMirrorableMode,
                 enter = expandVertically() + fadeIn(),
@@ -707,10 +707,10 @@ fun DuoSettingsUI(
                 IconToggleItem(
                     iconRes = R.drawable.rounded_compare_arrows_24,
                     title = stringResource(R.string.duo_slide_mirror_direction_title),
-                    isChecked = viewModel.isDuoSlideInvertDirection.value,
+                    isChecked = viewModel.duo.isDuoSlideInvertDirection.value,
                     onCheckedChange = { checked ->
                         HapticUtil.performVirtualKeyHaptic(view)
-                        viewModel.setDuoSlideInvertDirection(checked)
+                        viewModel.duo.setDuoSlideInvertDirection(checked)
                     },
                     modifier = Modifier.highlight(highlightSetting == "duo_slide_invert_direction"),
                 )
@@ -718,7 +718,7 @@ fun DuoSettingsUI(
         }
 
         AnimatedVisibility(
-            visible = viewModel.isDuoEnabled.value && viewModel.isIslandEnabled.value,
+            visible = viewModel.duo.isDuoEnabled.value && viewModel.isIslandEnabled.value,
             enter = expandVertically() + fadeIn(),
             exit = shrinkVertically() + fadeOut(),
         ) {
@@ -729,10 +729,10 @@ fun DuoSettingsUI(
                 IconToggleItem(
                     iconRes = R.drawable.rounded_link_24,
                     title = stringResource(R.string.duo_combine_with_island),
-                    isChecked = viewModel.isDuoIslandCombined.value,
+                    isChecked = viewModel.duo.isDuoIslandCombined.value,
                     onCheckedChange = { checked ->
                         HapticUtil.performVirtualKeyHaptic(view)
-                        viewModel.setDuoIslandCombined(checked)
+                        viewModel.duo.setDuoIslandCombined(checked)
                     },
                     modifier = Modifier.highlight(highlightSetting == "duo_island_combined"),
                 )
@@ -769,9 +769,9 @@ fun DuoSettingsUI(
                         RemapActionItem(
                             title = stringResource(titleRes),
                             iconRes = iconRes,
-                            isSelected = viewModel.duoSlideMode.value == modeKey,
+                            isSelected = viewModel.duo.duoSlideMode.value == modeKey,
                             onClick = {
-                                viewModel.setDuoSlideMode(modeKey)
+                                viewModel.duo.setDuoSlideMode(modeKey)
                                 showSlideModeSheet = false
                             },
                         )
@@ -783,10 +783,10 @@ fun DuoSettingsUI(
                         iconRes = R.drawable.rounded_skip_next_24,
                         title = stringResource(R.string.duo_action_horizontal_slide_track),
                         description = stringResource(R.string.duo_action_horizontal_slide_track_desc),
-                        isChecked = viewModel.isDuoSlideTrack.value,
+                        isChecked = viewModel.duo.isDuoSlideTrack.value,
                         onCheckedChange = { checked ->
                             HapticUtil.performVirtualKeyHaptic(view)
-                            viewModel.setDuoSlideTrackEnabled(checked)
+                            viewModel.duo.setDuoSlideTrackEnabled(checked)
                         },
                     )
                 }
@@ -797,10 +797,10 @@ fun DuoSettingsUI(
     if (pickingActionForGesture != null) {
         val currentGesture = pickingActionForGesture
         val currentAction = when (currentGesture) {
-            "tap" -> viewModel.duoTapAction.value
-            "double_tap" -> viewModel.duoDoubleTapAction.value
-            "long_press" -> viewModel.duoLongPressAction.value
-            "swipe_down" -> viewModel.duoSwipeDownAction.value
+            "tap" -> viewModel.duo.duoTapAction.value
+            "double_tap" -> viewModel.duo.duoDoubleTapAction.value
+            "long_press" -> viewModel.duo.duoLongPressAction.value
+            "swipe_down" -> viewModel.duo.duoSwipeDownAction.value
             else -> null
         }
 

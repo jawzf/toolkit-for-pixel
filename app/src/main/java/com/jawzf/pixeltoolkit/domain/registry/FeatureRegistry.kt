@@ -757,7 +757,7 @@ object FeatureRegistry {
                 parentFeatureId = "Display",
                 animationRes = R.raw.duo_motion,
             ) {
-                override fun isEnabled(viewModel: MainViewModel) = viewModel.isDuoEnabled.value
+                override fun isEnabled(viewModel: MainViewModel) = viewModel.duo.isDuoEnabled.value
 
                 override fun isToggleEnabled(
                     viewModel: MainViewModel,
@@ -768,7 +768,7 @@ object FeatureRegistry {
                     viewModel: MainViewModel,
                     context: Context,
                     enabled: Boolean,
-                ) = viewModel.setDuoEnabled(enabled)
+                ) = viewModel.duo.setDuoEnabled(enabled)
             },
             object : Feature(
                 id = "Island",
