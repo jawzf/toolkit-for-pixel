@@ -132,6 +132,7 @@ import com.jawzf.pixeltoolkit.ui.features.display.IslandSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.display.IslandVisualsSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.display.StatusGlanceSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.display.actions.GestureActionPickerSheet
+import com.jawzf.pixeltoolkit.ui.features.display.sheets.StatusGlanceCalendarOptionsBottomSheet
 import com.jawzf.pixeltoolkit.ui.features.system.ActivityLauncherSearchBar
 import com.jawzf.pixeltoolkit.ui.features.system.ActivityLauncherSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.ButtonRemapSettingsUI
@@ -1395,7 +1396,41 @@ class FeatureSettingsActivity : AppCompatActivity() {
 
                                     "Status glance" -> {
                                         StatusGlanceSettingsUI(
-                                            viewModel = viewModel,
+                                            state = viewModel.statusGlance,
+                                            isFoldableCameraDevice = viewModel.isFoldableCameraDevice.value,
+                                            isAccessibilityEnabled = viewModel.isAccessibilityEnabled.value,
+                                            isCalendarPermissionGranted = viewModel.isCalendarPermissionGranted.value,
+                                            isNotificationListenerEnabled = viewModel.isNotificationListenerEnabled.value,
+                                            permissionItemsFor = { keys ->
+                                                PermissionUIHelper.getPermissionItems(keys, context, viewModel)
+                                            },
+                                            onRefreshPermissions = { viewModel.check(context) },
+                                            actionLabel = { it.displayName(context) },
+                                            gesturePicker = { currentAction, onActionSelected, onClosed ->
+                                                GestureActionPickerSheet(
+                                                    viewModel = viewModel,
+                                                    currentAction = currentAction,
+                                                    onActionSelected = onActionSelected,
+                                                    onPickerClosed = onClosed,
+                                                )
+                                            },
+                                            mediaAppSelectionSheet = { onDismiss ->
+                                                AppSelectionSheet(
+                                                    onDismissRequest = onDismiss,
+                                                    onLoadApps = { viewModel.aod.loadAodWallpaperMediaApps() },
+                                                    onSaveApps = { _, apps -> viewModel.aod.saveAodWallpaperMediaApps(apps) },
+                                                    onAppToggle = { _, pkg, enabled ->
+                                                        viewModel.aod.updateAodWallpaperMediaAppEnabled(pkg, enabled)
+                                                    },
+                                                    context = context,
+                                                )
+                                            },
+                                            calendarOptionsSheet = { onDismiss ->
+                                                StatusGlanceCalendarOptionsBottomSheet(
+                                                    viewModel = viewModel,
+                                                    onDismissRequest = onDismiss,
+                                                )
+                                            },
                                             modifier = Modifier.padding(top = 16.dp),
                                             highlightSetting = highlightSetting,
                                         )
