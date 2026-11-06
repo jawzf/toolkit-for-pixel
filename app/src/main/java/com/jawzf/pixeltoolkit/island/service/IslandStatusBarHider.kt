@@ -1,7 +1,7 @@
 package com.jawzf.pixeltoolkit.island.service
 
 import android.content.Context
-import com.jawzf.pixeltoolkit.utils.StatusBarManager
+import com.jawzf.pixeltoolkit.core.platform.statusbar.StatusBarManager
 
 object IslandStatusBarHider {
     private const val REQUESTER_ID = "IslandDynamicHide"

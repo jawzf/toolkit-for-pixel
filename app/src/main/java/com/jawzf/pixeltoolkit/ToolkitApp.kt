@@ -10,8 +10,8 @@ import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.platform.AppGlobals
 import com.jawzf.pixeltoolkit.core.platform.device.CarConnectionMonitor
 import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuUtils
+import com.jawzf.pixeltoolkit.core.platform.statusbar.StatusBarManager
 import com.jawzf.pixeltoolkit.services.receivers.SecurityReceiver
-import com.jawzf.pixeltoolkit.utils.StatusBarManager
 import eu.darken.porter.bridge.PorterShizukuBridge
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

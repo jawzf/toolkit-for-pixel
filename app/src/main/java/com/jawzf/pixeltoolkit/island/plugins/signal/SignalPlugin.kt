@@ -18,6 +18,7 @@ import android.telephony.TelephonyManager
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.design.pickers.NetworkType
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.island.model.CompactCell
 import com.jawzf.pixeltoolkit.island.model.CompactPlacement
@@ -25,7 +26,6 @@ import com.jawzf.pixeltoolkit.island.model.IslandItem
 import com.jawzf.pixeltoolkit.island.model.IslandPriority
 import com.jawzf.pixeltoolkit.island.plugins.BaseIslandPlugin
 import com.jawzf.pixeltoolkit.island.ui.components.IslandIcon
-import com.jawzf.pixeltoolkit.ui.core.pickers.NetworkType
 
 class SignalPlugin : BaseIslandPlugin() {
     override val id = "signal"

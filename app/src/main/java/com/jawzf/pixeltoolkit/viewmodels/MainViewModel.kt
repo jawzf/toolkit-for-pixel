@@ -47,6 +47,8 @@ import com.jawzf.pixeltoolkit.core.platform.shell.PrivilegedMode
 import com.jawzf.pixeltoolkit.core.platform.shell.RootUtils
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuUtils
+import com.jawzf.pixeltoolkit.core.platform.statusbar.StatusBarInsetsUtils
+import com.jawzf.pixeltoolkit.core.platform.statusbar.StatusBarManager
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.domain.diy.Action
 import com.jawzf.pixeltoolkit.domain.model.AppIcon
@@ -94,8 +96,6 @@ import com.jawzf.pixeltoolkit.utils.AppIconUtil
 import com.jawzf.pixeltoolkit.utils.DuoBatteryLevels
 import com.jawzf.pixeltoolkit.utils.PowerButtonGestures
 import com.jawzf.pixeltoolkit.utils.SplitScreenUtil
-import com.jawzf.pixeltoolkit.utils.StatusBarInsetsUtils
-import com.jawzf.pixeltoolkit.utils.StatusBarManager
 import com.jawzf.pixeltoolkit.utils.SurfaceFlingerControl
 import com.jawzf.pixeltoolkit.utils.TestNotificationUtil
 import kotlinx.coroutines.Dispatchers
@@ -2523,7 +2523,7 @@ class MainViewModel : ViewModel() {
         )
 
         if (!enabled) {
-            com.jawzf.pixeltoolkit.utils.StatusBarManager.requestRestore(
+            StatusBarManager.requestRestore(
                 context,
                 "GestureBarAutomation",
             )
@@ -3164,13 +3164,13 @@ class MainViewModel : ViewModel() {
         enabled: Boolean,
     ) {
         if (enabled) {
-            com.jawzf.pixeltoolkit.utils.StatusBarManager.requestDisable(
+            StatusBarManager.requestDisable(
                 context,
                 "HideGestureBar",
-                setOf(com.jawzf.pixeltoolkit.utils.StatusBarManager.FLAG_HOME),
+                setOf(StatusBarManager.FLAG_HOME),
             )
         } else {
-            com.jawzf.pixeltoolkit.utils.StatusBarManager.requestRestore(
+            StatusBarManager.requestRestore(
                 context,
                 "HideGestureBar",
             )

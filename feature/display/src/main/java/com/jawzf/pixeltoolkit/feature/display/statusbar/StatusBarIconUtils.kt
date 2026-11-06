@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.utils
+package com.jawzf.pixeltoolkit.feature.display.statusbar
 
 import android.content.Context
 import android.provider.Settings

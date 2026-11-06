@@ -82,6 +82,8 @@ import com.jawzf.pixeltoolkit.feature.display.lockclock.ui.LockScreenClockSettin
 import com.jawzf.pixeltoolkit.feature.display.ondisplay.ui.ToolkitOnDisplaySettingsUI
 import com.jawzf.pixeltoolkit.feature.display.pixels.ui.SmartPixelsSettingsUI
 import com.jawzf.pixeltoolkit.feature.display.refresh.ui.RefreshRateSettingsUI
+import com.jawzf.pixeltoolkit.feature.display.statusbar.StatusBarIconViewModel
+import com.jawzf.pixeltoolkit.feature.display.statusbar.ui.StatusBarIconSettingsUI
 import com.jawzf.pixeltoolkit.feature.display.wallpaper.ui.LiveWallpaperSettingsUI
 import com.jawzf.pixeltoolkit.feature.input.gesture.ui.BACK_GESTURE_FEATURE_ID
 import com.jawzf.pixeltoolkit.feature.input.gesture.ui.BackGestureSettingsUI
@@ -137,14 +139,12 @@ import com.jawzf.pixeltoolkit.ui.features.system.OtherCustomizationsSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.QuickSettingsTilesSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.ScreenOffWidgetSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.ShutUpSettingsUI
-import com.jawzf.pixeltoolkit.ui.features.system.StatusBarIconSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.TextAnimationsSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.widgets.WidgetStackSettingsUI
 import com.jawzf.pixeltoolkit.utils.BiometricSecurityHelper
 import com.jawzf.pixeltoolkit.utils.PermissionUIHelper
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 import com.jawzf.pixeltoolkit.viewmodels.PermissionViewModel
-import com.jawzf.pixeltoolkit.viewmodels.StatusBarIconViewModel
 import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class)

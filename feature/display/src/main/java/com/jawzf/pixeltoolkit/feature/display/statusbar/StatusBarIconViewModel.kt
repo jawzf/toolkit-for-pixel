@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.viewmodels
+package com.jawzf.pixeltoolkit.feature.display.statusbar
 
 import android.content.Context
 import android.content.Intent
@@ -10,15 +10,16 @@ import android.provider.Settings
 import androidx.compose.runtime.mutableStateOf
 import androidx.core.content.edit
 import androidx.lifecycle.ViewModel
+import com.jawzf.pixeltoolkit.core.design.pickers.NetworkType
 import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.core.platform.shell.RootUtils
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuUtils
-import com.jawzf.pixeltoolkit.domain.StatusBarIconRegistry
-import com.jawzf.pixeltoolkit.ui.core.pickers.NetworkType
-import com.jawzf.pixeltoolkit.utils.resetAllIconVisibilities
-import com.jawzf.pixeltoolkit.utils.updateIconBlacklistSetting
-import com.jawzf.pixeltoolkit.utils.writeSecureSetting
+import com.jawzf.pixeltoolkit.core.platform.statusbar.StatusBarManager
+import com.jawzf.pixeltoolkit.feature.display.statusbar.StatusBarIconRegistry
+import com.jawzf.pixeltoolkit.feature.display.statusbar.resetAllIconVisibilities
+import com.jawzf.pixeltoolkit.feature.display.statusbar.updateIconBlacklistSetting
+import com.jawzf.pixeltoolkit.feature.display.statusbar.writeSecureSetting
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -702,19 +703,19 @@ class StatusBarIconViewModel : ViewModel() {
     private fun applyAdvancedFlags(context: Context) {
         val flags = mutableSetOf<String>()
         if (isHideSystemIconsEnabled.value && !isHideSystemIconsLockedOnlyEnabled.value) {
-            flags.add(com.jawzf.pixeltoolkit.utils.StatusBarManager.FLAG_SYSTEM_ICONS)
+            flags.add(StatusBarManager.FLAG_SYSTEM_ICONS)
         }
-        if (isHideClockEnabled.value) flags.add(com.jawzf.pixeltoolkit.utils.StatusBarManager.FLAG_CLOCK)
-        if (isHideNotificationIconsEnabled.value) flags.add(com.jawzf.pixeltoolkit.utils.StatusBarManager.FLAG_NOTIFICATION_ICONS)
+        if (isHideClockEnabled.value) flags.add(StatusBarManager.FLAG_CLOCK)
+        if (isHideNotificationIconsEnabled.value) flags.add(StatusBarManager.FLAG_NOTIFICATION_ICONS)
 
         if (flags.isNotEmpty()) {
-            com.jawzf.pixeltoolkit.utils.StatusBarManager.requestDisable(
+            StatusBarManager.requestDisable(
                 context,
                 ADVANCED_FLAGS_REQUESTER_ID,
                 flags,
             )
         } else {
-            com.jawzf.pixeltoolkit.utils.StatusBarManager.requestRestore(
+            StatusBarManager.requestRestore(
                 context,
                 ADVANCED_FLAGS_REQUESTER_ID,
             )

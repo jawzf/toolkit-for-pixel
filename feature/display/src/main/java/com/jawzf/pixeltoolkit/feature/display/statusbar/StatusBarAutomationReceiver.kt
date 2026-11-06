@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.services.receivers
+package com.jawzf.pixeltoolkit.feature.display.statusbar
 
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -7,7 +7,7 @@ import android.provider.Settings
 import com.jawzf.pixeltoolkit.core.platform.shell.RootUtils
 import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuUtils
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.viewmodels.StatusBarIconViewModel
+import com.jawzf.pixeltoolkit.feature.display.statusbar.StatusBarIconViewModel
 
 class StatusBarAutomationReceiver : BroadcastReceiver() {
     override fun onReceive(

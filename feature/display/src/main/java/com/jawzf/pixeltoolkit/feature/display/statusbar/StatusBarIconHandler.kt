@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.services.handlers
+package com.jawzf.pixeltoolkit.feature.display.statusbar
 
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -10,11 +10,11 @@ import android.net.NetworkCapabilities
 import android.os.BatteryManager
 import android.provider.Settings
 import android.telephony.TelephonyManager
+import com.jawzf.pixeltoolkit.core.design.pickers.NetworkType
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.domain.StatusBarIconRegistry
-import com.jawzf.pixeltoolkit.ui.core.pickers.NetworkType
-import com.jawzf.pixeltoolkit.utils.updateIconBlacklistSetting
-import com.jawzf.pixeltoolkit.viewmodels.StatusBarIconViewModel
+import com.jawzf.pixeltoolkit.feature.display.statusbar.StatusBarIconRegistry
+import com.jawzf.pixeltoolkit.feature.display.statusbar.StatusBarIconViewModel
+import com.jawzf.pixeltoolkit.feature.display.statusbar.updateIconBlacklistSetting
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
