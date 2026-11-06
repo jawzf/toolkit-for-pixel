@@ -239,6 +239,14 @@ fun IslandBatteryOptions(
             }
         }
 
-        BatteryColorOptions(viewModel, showIdleColor = true, showLevels = true)
+        BatteryColorOptions(
+            state = viewModel.duo,
+            isIslandBatteryIdleColorEnabled = viewModel.isIslandBatteryIdleColorEnabled.value,
+            islandBatteryIdleColor = viewModel.islandBatteryIdleColor.value,
+            onIslandBatteryIdleColorEnabledChange = { viewModel.setIslandBatteryIdleColorEnabled(it) },
+            onIslandBatteryIdleColorChange = { viewModel.setIslandBatteryIdleColor(it) },
+            showIdleColor = true,
+            showLevels = true,
+        )
     }
 }
