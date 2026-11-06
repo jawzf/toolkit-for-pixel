@@ -75,6 +75,8 @@ import com.jawzf.pixeltoolkit.feature.apps.consciousgate.ui.CONSCIOUS_GATE_FEATU
 import com.jawzf.pixeltoolkit.feature.apps.consciousgate.ui.ConsciousGateSettingsUI
 import com.jawzf.pixeltoolkit.feature.apps.freeze.ui.FreezeSettingsUI
 import com.jawzf.pixeltoolkit.feature.connectivity.ui.NetworksSettingsUI
+import com.jawzf.pixeltoolkit.feature.display.pixels.ui.SmartPixelsSettingsUI
+import com.jawzf.pixeltoolkit.feature.display.refresh.ui.RefreshRateSettingsUI
 import com.jawzf.pixeltoolkit.feature.input.gesture.ui.BACK_GESTURE_FEATURE_ID
 import com.jawzf.pixeltoolkit.feature.input.gesture.ui.BackGestureSettingsUI
 import com.jawzf.pixeltoolkit.feature.input.ime.ui.KeyboardSettingsUI
@@ -132,7 +134,6 @@ import com.jawzf.pixeltoolkit.ui.features.system.LockscreenShortcutsSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.NavigationSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.OtherCustomizationsSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.QuickSettingsTilesSettingsUI
-import com.jawzf.pixeltoolkit.ui.features.system.RefreshRateSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.ScreenOffWidgetSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.ShutUpSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.StatusBarIconSettingsUI
@@ -1049,8 +1050,16 @@ class FeatureSettingsActivity : AppCompatActivity() {
                                     }
 
                                     "Smart pixels" -> {
-                                        com.jawzf.pixeltoolkit.ui.features.system.SmartPixelsSettingsUI(
-                                            viewModel = viewModel,
+                                        SmartPixelsSettingsUI(
+                                            state = viewModel.smartPixels,
+                                            isAccessibilityEnabled = viewModel.isAccessibilityEnabled.value,
+                                            permissionItems =
+                                                PermissionUIHelper.getPermissionItems(
+                                                    listOf("ACCESSIBILITY"),
+                                                    context,
+                                                    viewModel,
+                                                ),
+                                            onRefreshPermissions = { viewModel.check(context) },
                                             modifier = Modifier.padding(top = 16.dp),
                                             highlightSetting = highlightSetting,
                                         )
@@ -1381,7 +1390,21 @@ class FeatureSettingsActivity : AppCompatActivity() {
 
                                     "Screen refresh rate" -> {
                                         RefreshRateSettingsUI(
-                                            viewModel = viewModel,
+                                            state = viewModel.refreshRate,
+                                            isRootEnabled = viewModel.isRootEnabled.value,
+                                            isPermissionGranted =
+                                                if (viewModel.isRootEnabled.value) {
+                                                    viewModel.isRootPermissionGranted.value
+                                                } else {
+                                                    viewModel.isShizukuPermissionGranted.value
+                                                },
+                                            onRequestPermission = {
+                                                if (viewModel.isRootEnabled.value) {
+                                                    viewModel.check(context)
+                                                } else {
+                                                    viewModel.requestShizukuPermission()
+                                                }
+                                            },
                                             modifier = Modifier.padding(top = 16.dp),
                                             highlightSetting = highlightSetting,
                                         )

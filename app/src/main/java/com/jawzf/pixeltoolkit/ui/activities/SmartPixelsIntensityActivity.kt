@@ -74,14 +74,14 @@ fun SmartPixelsIntensityOverlay(
     val context = LocalContext.current
     val view = LocalView.current
 
-    var intensity by remember(viewModel.smartPixelsIntensity.floatValue) {
-        mutableFloatStateOf(viewModel.smartPixelsIntensity.floatValue)
+    var intensity by remember(viewModel.smartPixels.smartPixelsIntensity.floatValue) {
+        mutableFloatStateOf(viewModel.smartPixels.smartPixelsIntensity.floatValue)
     }
 
     LaunchedEffect(Unit) {
         delay(100)
         // Automatically turn on Smart Pixels on long-press launch so intensity is previewed
-        viewModel.setSmartPixelsEnabled(context, true)
+        viewModel.smartPixels.setSmartPixelsEnabled(true)
     }
 
     Box(
@@ -133,7 +133,7 @@ fun SmartPixelsIntensityOverlay(
                     onValueChange = { newVal ->
                         if (newVal != intensity) {
                             intensity = newVal
-                            viewModel.setSmartPixelsIntensity(context, newVal)
+                            viewModel.smartPixels.setSmartPixelsIntensity(newVal)
                             HapticUtil.performSliderHaptic(view)
                         }
                     },
@@ -154,7 +154,7 @@ fun SmartPixelsIntensityOverlay(
 
                     Button(
                         onClick = {
-                            viewModel.setSmartPixelsEnabled(context, false)
+                            viewModel.smartPixels.setSmartPixelsEnabled(false)
                             onDismiss()
                         },
                         modifier = Modifier.weight(1f),

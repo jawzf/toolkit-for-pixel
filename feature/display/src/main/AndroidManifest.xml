@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <application>
+        <service
+            android:name="com.jawzf.pixeltoolkit.feature.display.pixels.SmartPixelsTileService"
+            android:exported="true"
+            android:icon="@drawable/rounded_grain_24"
+            android:label="@string/feat_smart_pixels_title"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.TILE_CATEGORY"
+                android:value="android.service.quicksettings.CATEGORY_DISPLAY" />
+        </service>
+
+        <service
+            android:name="com.jawzf.pixeltoolkit.feature.display.refresh.RefreshRateTileService"
+            android:exported="true"
+            android:icon="@drawable/rounded_shutter_speed_24"
+            android:label="@string/tile_refresh_rate"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.TILE_CATEGORY"
+                android:value="android.service.quicksettings.CATEGORY_DISPLAY" />
+        </service>
+    </application>
+
+</manifest>

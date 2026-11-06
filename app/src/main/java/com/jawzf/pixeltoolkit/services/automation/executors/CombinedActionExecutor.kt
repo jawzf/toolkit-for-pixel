@@ -38,6 +38,7 @@ import com.jawzf.pixeltoolkit.domain.diy.DIYRepository
 import com.jawzf.pixeltoolkit.feature.apps.AppsSettings
 import com.jawzf.pixeltoolkit.feature.apps.freeze.FreezeManager
 import com.jawzf.pixeltoolkit.feature.connectivity.hotspot.HotspotController
+import com.jawzf.pixeltoolkit.feature.display.DisplaySettings
 import com.jawzf.pixeltoolkit.feature.input.InputSettings
 import com.jawzf.pixeltoolkit.feature.input.gesture.OmniTriggerUtil
 import com.jawzf.pixeltoolkit.feature.notifications.NotificationSettings
@@ -676,7 +677,7 @@ object CombinedActionExecutor {
 
                     if (action.changeSmartPixels) {
                         repository.putBoolean(
-                            com.jawzf.pixeltoolkit.data.repository.SettingsRepository.KEY_SMART_PIXELS_ENABLED,
+                            DisplaySettings.KEY_SMART_PIXELS_ENABLED,
                             action.smartPixelsEnabled,
                         )
                     }

@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.utils
+package com.jawzf.pixeltoolkit.feature.display.refresh
 
 import android.content.Context
 import android.hardware.display.DisplayManager

@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.features.system
+package com.jawzf.pixeltoolkit.feature.display.pixels.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,7 +11,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -21,33 +20,33 @@ import com.jawzf.pixeltoolkit.core.design.components.ConfigSliderItem
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.modifiers.highlight
+import com.jawzf.pixeltoolkit.core.design.sheets.PermissionItem
 import com.jawzf.pixeltoolkit.core.design.sheets.PermissionsBottomSheet
-import com.jawzf.pixeltoolkit.utils.PermissionUIHelper
-import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
+import com.jawzf.pixeltoolkit.feature.display.pixels.SmartPixelsState
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun SmartPixelsSettingsUI(
-    viewModel: MainViewModel,
+    state: SmartPixelsState,
+    isAccessibilityEnabled: Boolean,
+    permissionItems: List<PermissionItem>,
+    onRefreshPermissions: () -> Unit,
     modifier: Modifier = Modifier,
     highlightSetting: String? = null,
 ) {
-    val context = LocalContext.current
     val view = LocalView.current
-    val isAccessibilityEnabled by viewModel.isAccessibilityEnabled
-    val isSmartPixelsEnabled by viewModel.isSmartPixelsEnabled
+    val isSmartPixelsEnabled by state.isSmartPixelsEnabled
     var showPermissionSheet by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
-        viewModel.check(context)
+        onRefreshPermissions()
     }
 
     if (showPermissionSheet) {
-        val permissionItems = PermissionUIHelper.getPermissionItems(listOf("ACCESSIBILITY"), context, viewModel)
         PermissionsBottomSheet(
             onDismissRequest = {
                 showPermissionSheet = false
-                viewModel.check(context)
+                onRefreshPermissions()
             },
             featureTitle = R.string.feat_smart_pixels_title,
             permissions = permissionItems,
@@ -66,7 +65,7 @@ fun SmartPixelsSettingsUI(
                 onCheckedChange = { checked ->
                     HapticUtil.performUIHaptic(view)
                     if (isAccessibilityEnabled) {
-                        viewModel.setSmartPixelsEnabled(context, checked)
+                        state.setSmartPixelsEnabled(checked)
                     } else {
                         showPermissionSheet = true
                     }
@@ -77,8 +76,8 @@ fun SmartPixelsSettingsUI(
             )
         }
 
-        var sliderValue by remember(viewModel.smartPixelsIntensity.floatValue) {
-            mutableStateOf(viewModel.smartPixelsIntensity.floatValue)
+        var sliderValue by remember(state.smartPixelsIntensity.floatValue) {
+            mutableStateOf(state.smartPixelsIntensity.floatValue)
         }
 
         RoundedCardContainer(
@@ -93,7 +92,7 @@ fun SmartPixelsSettingsUI(
                 },
                 onValueChangeFinished = {
                     HapticUtil.performUIHaptic(view)
-                    viewModel.setSmartPixelsIntensity(context, sliderValue)
+                    state.setSmartPixelsIntensity(sliderValue)
                 },
                 valueRange = 10f..90f,
                 increment = 5f,
@@ -111,10 +110,10 @@ fun SmartPixelsSettingsUI(
                 iconRes = R.drawable.rounded_cast_24,
                 title = stringResource(R.string.smart_pixels_disable_on_cast_title),
                 description = stringResource(R.string.smart_pixels_disable_on_cast_desc),
-                isChecked = viewModel.isSmartPixelsDisableOnCastEnabled.value,
+                isChecked = state.isSmartPixelsDisableOnCastEnabled.value,
                 onCheckedChange = { checked ->
                     HapticUtil.performUIHaptic(view)
-                    viewModel.setSmartPixelsDisableOnCastEnabled(context, checked)
+                    state.setSmartPixelsDisableOnCastEnabled(checked)
                 },
                 enabled = isSmartPixelsEnabled && isAccessibilityEnabled,
                 modifier = Modifier.highlight(highlightSetting == "smart_pixels_disable_on_cast_toggle"),

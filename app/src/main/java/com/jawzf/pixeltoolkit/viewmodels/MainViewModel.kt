@@ -64,6 +64,8 @@ import com.jawzf.pixeltoolkit.feature.apps.freeze.FreezeState
 import com.jawzf.pixeltoolkit.feature.apps.updates.github.GitHubUser
 import com.jawzf.pixeltoolkit.feature.connectivity.ConnectivitySettings
 import com.jawzf.pixeltoolkit.feature.connectivity.ConnectivityState
+import com.jawzf.pixeltoolkit.feature.display.pixels.SmartPixelsState
+import com.jawzf.pixeltoolkit.feature.display.refresh.RefreshRatePanelState
 import com.jawzf.pixeltoolkit.feature.input.InputState
 import com.jawzf.pixeltoolkit.feature.notifications.NotificationSettings
 import com.jawzf.pixeltoolkit.feature.notifications.NotificationState
@@ -88,7 +90,6 @@ import com.jawzf.pixeltoolkit.services.tiles.ScreenOffAccessibilityService
 import com.jawzf.pixeltoolkit.utils.AppIconUtil
 import com.jawzf.pixeltoolkit.utils.DuoBatteryLevels
 import com.jawzf.pixeltoolkit.utils.PowerButtonGestures
-import com.jawzf.pixeltoolkit.utils.RefreshRateUtils
 import com.jawzf.pixeltoolkit.utils.SplitScreenUtil
 import com.jawzf.pixeltoolkit.utils.StatusBarInsetsUtils
 import com.jawzf.pixeltoolkit.utils.StatusBarManager
@@ -134,9 +135,6 @@ class MainViewModel : ViewModel() {
     val lockscreenSystemShortcutsState = mutableStateOf(SystemShortcutsState.UNKNOWN)
     val remapHapticType = mutableStateOf(HapticFeedbackType.DOUBLE)
     val isDynamicNightLightEnabled = mutableStateOf(false)
-    val isSmartPixelsEnabled = mutableStateOf(false)
-    val smartPixelsIntensity = mutableFloatStateOf(50f)
-    val isSmartPixelsDisableOnCastEnabled = mutableStateOf(true)
 
     val isDuoEnabled = mutableStateOf(false)
     val isDuoIslandCombined = mutableStateOf(false)
@@ -394,6 +392,8 @@ class MainViewModel : ViewModel() {
     val lighting = LightingState()
     val flashlightPulse = FlashlightPulseState()
     val input = InputState(viewModelScope) { context -> updateAppDetectionService(context) }
+    val smartPixels = SmartPixelsState()
+    val refreshRate = RefreshRatePanelState()
     val addedQSTiles = mutableStateOf<Set<String>>(emptySet())
     val isHideGestureBarEnabled = mutableStateOf(false)
     val isHideGestureBarOnLauncherEnabled = mutableStateOf(false)
@@ -510,10 +510,6 @@ class MainViewModel : ViewModel() {
     val isTouchSensitivityEnabled = mutableStateOf(false)
     val isAutoRotateEnabled = mutableStateOf(false)
     val screenTimeout = mutableStateOf(30000L)
-    val refreshRateMode = mutableStateOf(RefreshRateUtils.MODE_FIXED)
-    val fixedRefreshRate = mutableFloatStateOf(0f)
-    val minRefreshRate = mutableFloatStateOf(0f)
-    val peakRefreshRate = mutableFloatStateOf(0f)
     val fontScale = mutableFloatStateOf(1.0f)
     val fontWeight = mutableIntStateOf(0)
     val animatorDurationScale = mutableFloatStateOf(1.0f)
@@ -574,7 +570,7 @@ class MainViewModel : ViewModel() {
                         Settings.System.getUriFor("peak_refresh_rate"),
                         Settings.System.getUriFor("min_refresh_rate"),
                         -> {
-                            appContext?.let { syncRefreshRateState(it) }
+                            appContext?.let { refreshRate.syncRefreshRateState(it) }
                         }
 
                         Settings.Global.getUriFor("battery_saver_constants") -> {
@@ -613,18 +609,6 @@ class MainViewModel : ViewModel() {
                     SettingsRepository.KEY_DYNAMIC_NIGHT_LIGHT_ENABLED ->
                         isDynamicNightLightEnabled.value =
                             settingsRepository.getBoolean(key)
-
-                    SettingsRepository.KEY_SMART_PIXELS_ENABLED ->
-                        isSmartPixelsEnabled.value =
-                            settingsRepository.getBoolean(key)
-
-                    SettingsRepository.KEY_SMART_PIXELS_INTENSITY ->
-                        smartPixelsIntensity.floatValue =
-                            settingsRepository.getFloat(key, 50f)
-
-                    SettingsRepository.KEY_SMART_PIXELS_DISABLE_ON_CAST ->
-                        isSmartPixelsDisableOnCastEnabled.value =
-                            settingsRepository.getBoolean(key, true)
 
                     SettingsRepository.KEY_DUO_ENABLED ->
                         isDuoEnabled.value = settingsRepository.isDuoEnabled()
@@ -1013,6 +997,8 @@ class MainViewModel : ViewModel() {
                     in NotificationState.PREFERENCE_KEYS -> notifications.onPreferenceChanged(key)
                     in LightingState.PREFERENCE_KEYS -> lighting.onPreferenceChanged(key)
                     in FlashlightPulseState.PREFERENCE_KEYS -> flashlightPulse.onPreferenceChanged(key)
+                    in SmartPixelsState.PREFERENCE_KEYS -> smartPixels.onPreferenceChanged(key)
+                    in RefreshRatePanelState.PREFERENCE_KEYS -> refreshRate.onPreferenceChanged(key)
 
                     PowerSettings.KEY_MAPS_DISCOVERED_CHANNELS, PowerSettings.KEY_MAPS_DETECTION_CHANNELS -> power.onPreferenceChanged(key)
 
@@ -1070,17 +1056,6 @@ class MainViewModel : ViewModel() {
                     SettingsRepository.KEY_SMALLEST_WIDTH ->
                         smallestWidth.intValue =
                             settingsRepository.getSmallestWidth()
-
-                    SettingsRepository.KEY_REFRESH_RATE_MODE ->
-                        refreshRateMode.value =
-                            settingsRepository.getRefreshRateMode()
-
-                    SettingsRepository.KEY_REFRESH_RATE_FIXED,
-                    SettingsRepository.KEY_REFRESH_RATE_MIN,
-                    SettingsRepository.KEY_REFRESH_RATE_PEAK,
-                    -> {
-                        appContext?.let { syncRefreshRateState(it) }
-                    }
 
                     SettingsRepository.KEY_NOTIFICATION_GLANCE_ENABLED ->
                         isNotificationGlanceEnabled.value =
@@ -1838,8 +1813,7 @@ class MainViewModel : ViewModel() {
         windowAnimationScale.floatValue =
             settingsRepository.getAnimationScale(Settings.Global.WINDOW_ANIMATION_SCALE)
         smallestWidth.intValue = settingsRepository.getSmallestWidth()
-        refreshRateMode.value = settingsRepository.getRefreshRateMode()
-        syncRefreshRateState(context)
+        refreshRate.load(context)
         hasShizukuPermission.value = ShizukuUtils.hasPermission() || RootUtils.isRootAvailable()
 
         isUseUsageAccess.value =
@@ -1938,12 +1912,7 @@ class MainViewModel : ViewModel() {
 
         isDynamicNightLightEnabled.value =
             settingsRepository.getBoolean(SettingsRepository.KEY_DYNAMIC_NIGHT_LIGHT_ENABLED)
-        isSmartPixelsEnabled.value =
-            settingsRepository.getBoolean(SettingsRepository.KEY_SMART_PIXELS_ENABLED)
-        smartPixelsIntensity.floatValue =
-            settingsRepository.getFloat(SettingsRepository.KEY_SMART_PIXELS_INTENSITY, 50f)
-        isSmartPixelsDisableOnCastEnabled.value =
-            settingsRepository.getBoolean(SettingsRepository.KEY_SMART_PIXELS_DISABLE_ON_CAST, true)
+        smartPixels.load(context)
         isDuoEnabled.value = settingsRepository.isDuoEnabled()
         isDuoAutoDetect.value = settingsRepository.isDuoAutoDetectEnabled()
         duoCameraOffsetX.floatValue = settingsRepository.getDuoCameraOffsetX()
@@ -3760,48 +3729,6 @@ class MainViewModel : ViewModel() {
         updateAppDetectionService(context)
     }
 
-    /**
-     * Executes the set smart pixels enabled operation.
-     *
-     * @param context [Context] Target context.
-     * @param enabled [Boolean] Target enabled.
-     */
-    fun setSmartPixelsEnabled(
-        context: Context,
-        enabled: Boolean,
-    ) {
-        isSmartPixelsEnabled.value = enabled
-        settingsRepository.putBoolean(SettingsRepository.KEY_SMART_PIXELS_ENABLED, enabled)
-    }
-
-    /**
-     * Executes the set smart pixels intensity operation.
-     *
-     * @param context [Context] Target context.
-     * @param intensity [Float] Target intensity.
-     */
-    fun setSmartPixelsIntensity(
-        context: Context,
-        intensity: Float,
-    ) {
-        smartPixelsIntensity.floatValue = intensity
-        settingsRepository.putFloat(SettingsRepository.KEY_SMART_PIXELS_INTENSITY, intensity)
-    }
-
-    /**
-     * Executes the set smart pixels disable on cast enabled operation.
-     *
-     * @param context [Context] Target context.
-     * @param enabled [Boolean] Target enabled.
-     */
-    fun setSmartPixelsDisableOnCastEnabled(
-        context: Context,
-        enabled: Boolean,
-    ) {
-        isSmartPixelsDisableOnCastEnabled.value = enabled
-        settingsRepository.putBoolean(SettingsRepository.KEY_SMART_PIXELS_DISABLE_ON_CAST, enabled)
-    }
-
     fun setDuoEnabled(enabled: Boolean) {
         isDuoEnabled.value = enabled
         settingsRepository.setDuoEnabled(enabled)
@@ -5297,233 +5224,6 @@ class MainViewModel : ViewModel() {
     fun setScreenTimeout(timeoutMs: Long) {
         screenTimeout.value = timeoutMs
         settingsRepository.setScreenTimeout(timeoutMs)
-    }
-
-    /**
-     * Executes the set refresh rate mode operation.
-     *
-     * @param mode [String] Target mode.
-     */
-    fun setRefreshRateMode(mode: String) {
-        refreshRateMode.value = mode
-        if (mode == RefreshRateUtils.MODE_RANGE) {
-            if (minRefreshRate.floatValue <= 0f && peakRefreshRate.floatValue <= 0f) {
-                val seedValue =
-                    when {
-                        fixedRefreshRate.floatValue > 0f ->
-                            RefreshRateUtils.normalizeRate(
-                                fixedRefreshRate.floatValue,
-                            )
-
-                        else -> 60f
-                    }
-                minRefreshRate.floatValue = seedValue
-                peakRefreshRate.floatValue = seedValue
-            }
-        } else if (fixedRefreshRate.floatValue <= 0f) {
-            fixedRefreshRate.floatValue =
-                when {
-                    peakRefreshRate.floatValue > 0f -> RefreshRateUtils.normalizeRate(peakRefreshRate.floatValue)
-                    minRefreshRate.floatValue > 0f -> RefreshRateUtils.normalizeRate(minRefreshRate.floatValue)
-                    else -> 60f
-                }
-        }
-        settingsRepository.setRefreshRateMode(mode)
-    }
-
-    /**
-     * Executes the update fixed refresh rate operation.
-     *
-     * @param value [Float] Target value.
-     */
-    fun updateFixedRefreshRate(value: Float) {
-        fixedRefreshRate.floatValue = value
-    }
-
-    /**
-     * Executes the update min refresh rate operation.
-     *
-     * @param value [Float] Target value.
-     */
-    fun updateMinRefreshRate(value: Float) {
-        val safeMin = value.coerceAtMost(peakRefreshRate.floatValue.takeIf { it > 0f } ?: value)
-        minRefreshRate.floatValue = safeMin
-        if (peakRefreshRate.floatValue > 0f && peakRefreshRate.floatValue < safeMin) {
-            peakRefreshRate.floatValue = safeMin
-        }
-    }
-
-    /**
-     * Executes the update peak refresh rate operation.
-     *
-     * @param value [Float] Target value.
-     */
-    fun updatePeakRefreshRate(value: Float) {
-        val safePeak = value.coerceAtLeast(minRefreshRate.floatValue.takeIf { it > 0f } ?: value)
-        peakRefreshRate.floatValue = safePeak
-        if (minRefreshRate.floatValue > safePeak) {
-            minRefreshRate.floatValue = safePeak
-        }
-    }
-
-    /**
-     * Executes the apply fixed refresh rate operation.
-     *
-     * @param context [Context] Target context.
-     */
-    fun applyFixedRefreshRate(context: Context) {
-        val value = fixedRefreshRate.floatValue
-        if (value <= 0f) {
-            resetRefreshRate(context)
-            return
-        }
-
-        if (RefreshRateUtils.applyFixedRefreshRate(context, value)) {
-            val normalized = RefreshRateUtils.normalizeRate(value)
-            fixedRefreshRate.floatValue = normalized
-            minRefreshRate.floatValue = normalized
-            peakRefreshRate.floatValue = normalized
-            refreshRateMode.value = RefreshRateUtils.MODE_FIXED
-            persistRefreshRateStateIfNeeded(
-                mode = RefreshRateUtils.MODE_FIXED,
-                fixed = normalized,
-                min = normalized,
-                peak = normalized,
-            )
-        } else {
-            syncRefreshRateState(context)
-        }
-    }
-
-    /**
-     * Executes the apply refresh rate range operation.
-     *
-     * @param context [Context] Target context.
-     */
-    fun applyRefreshRateRange(context: Context) {
-        val minValue = minRefreshRate.floatValue
-        val peakValue = peakRefreshRate.floatValue
-        if (minValue <= 0f || peakValue <= 0f) {
-            persistRefreshRateStateIfNeeded(
-                mode = RefreshRateUtils.MODE_RANGE,
-                fixed = fixedRefreshRate.floatValue,
-                min = minValue,
-                peak = peakValue,
-            )
-            return
-        }
-
-        if (RefreshRateUtils.applyRangeRefreshRate(context, minValue, peakValue)) {
-            val normalizedMin = RefreshRateUtils.normalizeRate(minValue)
-            val normalizedPeak = RefreshRateUtils.normalizeRate(maxOf(minValue, peakValue))
-            minRefreshRate.floatValue = normalizedMin
-            peakRefreshRate.floatValue = normalizedPeak
-            fixedRefreshRate.floatValue = normalizedPeak
-            refreshRateMode.value = RefreshRateUtils.MODE_RANGE
-            persistRefreshRateStateIfNeeded(
-                mode = RefreshRateUtils.MODE_RANGE,
-                fixed = normalizedPeak,
-                min = normalizedMin,
-                peak = normalizedPeak,
-            )
-        } else {
-            syncRefreshRateState(context)
-        }
-    }
-
-    /**
-     * Executes the reset refresh rate operation.
-     *
-     * @param context [Context] Target context.
-     */
-    fun resetRefreshRate(context: Context) {
-        val restoreInfinityPeak = settingsRepository.shouldRestoreInfinityPeakOnRefreshRateReset()
-        if (RefreshRateUtils.resetRefreshRate(context, restoreInfinityPeak)) {
-            fixedRefreshRate.floatValue = 0f
-            minRefreshRate.floatValue = 0f
-            peakRefreshRate.floatValue = 0f
-            persistRefreshRateStateIfNeeded(
-                mode = refreshRateMode.value,
-                fixed = 0f,
-                min = 0f,
-                peak = 0f,
-            )
-        } else {
-            syncRefreshRateState(context)
-        }
-    }
-
-    private fun syncRefreshRateState(context: Context) {
-        val refreshRateState = RefreshRateUtils.getCurrentState(context)
-        if (refreshRateState.isSystemManaged) {
-            settingsRepository.setRestoreInfinityPeakOnRefreshRateReset(
-                refreshRateState.usesInfinityDefaultPeak,
-            )
-        }
-        val actualMin = refreshRateState.min
-        val actualPeak = refreshRateState.peak
-        val hasCustom = !refreshRateState.isSystemManaged && (actualMin > 0f || actualPeak > 0f)
-        val storedMode = settingsRepository.getRefreshRateMode()
-
-        if (!hasCustom) {
-            fixedRefreshRate.floatValue = 0f
-            minRefreshRate.floatValue = 0f
-            peakRefreshRate.floatValue = 0f
-            persistRefreshRateStateIfNeeded(
-                mode = storedMode,
-                fixed = 0f,
-                min = 0f,
-                peak = 0f,
-            )
-            return
-        }
-
-        val resolvedMin = if (actualMin > 0f) actualMin else actualPeak
-        val resolvedPeak = if (actualPeak > 0f) actualPeak else actualMin
-        val resolvedMode =
-            if (resolvedMin > 0f && resolvedPeak > 0f && resolvedMin != resolvedPeak) {
-                RefreshRateUtils.MODE_RANGE
-            } else {
-                storedMode
-            }
-
-        refreshRateMode.value = resolvedMode
-        fixedRefreshRate.floatValue = resolvedPeak
-        minRefreshRate.floatValue = resolvedMin
-        peakRefreshRate.floatValue = resolvedPeak
-        persistRefreshRateStateIfNeeded(
-            mode = resolvedMode,
-            fixed = resolvedPeak,
-            min = resolvedMin,
-            peak = resolvedPeak,
-        )
-    }
-
-    private fun persistRefreshRateStateIfNeeded(
-        mode: String,
-        fixed: Float,
-        min: Float,
-        peak: Float,
-    ) {
-        val storedMode = settingsRepository.getRefreshRateMode()
-        val storedFixed = settingsRepository.getFloat(SettingsRepository.KEY_REFRESH_RATE_FIXED, 0f)
-        val storedMin = settingsRepository.getFloat(SettingsRepository.KEY_REFRESH_RATE_MIN, 0f)
-        val storedPeak = settingsRepository.getFloat(SettingsRepository.KEY_REFRESH_RATE_PEAK, 0f)
-
-        if (storedMode == mode &&
-            storedFixed == fixed &&
-            storedMin == min &&
-            storedPeak == peak
-        ) {
-            return
-        }
-
-        settingsRepository.saveRefreshRateState(
-            mode = mode,
-            fixed = fixed,
-            min = min,
-            peak = peak,
-        )
     }
 
     /**

@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.services.handlers
+package com.jawzf.pixeltoolkit.feature.display.pixels
 
 import android.accessibilityservice.AccessibilityService
 import android.animation.ObjectAnimator
@@ -14,11 +14,12 @@ import android.util.Log
 import android.view.Display
 import android.view.View
 import android.view.WindowManager
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.services.NotificationListener
+import com.jawzf.pixeltoolkit.core.platform.PlatformPrefs
+import com.jawzf.pixeltoolkit.feature.display.DisplaySettings
 
 class SmartPixelsHandler(
     private val service: AccessibilityService,
+    private val isScreenCaptureActive: () -> Boolean,
 ) {
     private var windowManager: WindowManager? = null
     private var displayManager: DisplayManager? = null
@@ -54,7 +55,7 @@ class SmartPixelsHandler(
 
     private val prefs by lazy {
         service.getSharedPreferences(
-            SettingsRepository.PREFS_NAME,
+            PlatformPrefs.PREFS_NAME,
             AccessibilityService.MODE_PRIVATE,
         )
     }
@@ -88,7 +89,7 @@ class SmartPixelsHandler(
 
     private fun isScreenCastingOrMirroring(): Boolean {
         if (isScreenRecordingActive) return true
-        if (NotificationListener.isScreenCaptureActive()) return true
+        if (isScreenCaptureActive()) return true
         val displays = displayManager?.displays ?: return false
         for (display in displays) {
             if (display.displayId == Display.DEFAULT_DISPLAY) continue
@@ -104,9 +105,9 @@ class SmartPixelsHandler(
     }
 
     fun updateState() {
-        val enabled = prefs.getBoolean(SettingsRepository.KEY_SMART_PIXELS_ENABLED, false)
-        val disableOnCast = prefs.getBoolean(SettingsRepository.KEY_SMART_PIXELS_DISABLE_ON_CAST, true)
-        val intensity = prefs.getFloat(SettingsRepository.KEY_SMART_PIXELS_INTENSITY, 50f)
+        val enabled = prefs.getBoolean(DisplaySettings.KEY_SMART_PIXELS_ENABLED, false)
+        val disableOnCast = prefs.getBoolean(DisplaySettings.KEY_SMART_PIXELS_DISABLE_ON_CAST, true)
+        val intensity = prefs.getFloat(DisplaySettings.KEY_SMART_PIXELS_INTENSITY, 50f)
 
         if (enabled && !(disableOnCast && isScreenCastingOrMirroring())) {
             showOverlay(intensity)

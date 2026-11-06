@@ -89,6 +89,7 @@ dependencies {
     implementation(project(":feature:apps"))
     implementation(project(":feature:input"))
     implementation(project(":feature:notifications"))
+    implementation(project(":feature:display"))
     compileOnly(project(":stub"))
     implementation(libs.aboutlibraries.core)
     implementation(libs.aboutlibraries.compose.m3)

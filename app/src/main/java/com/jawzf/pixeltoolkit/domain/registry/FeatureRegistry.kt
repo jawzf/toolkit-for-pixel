@@ -2052,7 +2052,7 @@ object FeatureRegistry {
                 hasMoreSettings = true,
                 parentFeatureId = "Display",
             ) {
-                override fun isEnabled(viewModel: MainViewModel) = viewModel.isSmartPixelsEnabled.value
+                override fun isEnabled(viewModel: MainViewModel) = viewModel.smartPixels.isSmartPixelsEnabled.value
 
                 override fun isToggleEnabled(
                     viewModel: MainViewModel,
@@ -2063,7 +2063,7 @@ object FeatureRegistry {
                     viewModel: MainViewModel,
                     context: Context,
                     enabled: Boolean,
-                ) = viewModel.setSmartPixelsEnabled(context, enabled)
+                ) = viewModel.smartPixels.setSmartPixelsEnabled(enabled)
             },
             object : Feature(
                 id = "LiveWallpaper",

@@ -20,6 +20,8 @@ import com.jawzf.pixeltoolkit.domain.model.RemapSlot
 import com.jawzf.pixeltoolkit.domain.model.ScaleAnimationsProfile
 import com.jawzf.pixeltoolkit.domain.model.SystemShortcutsState
 import com.jawzf.pixeltoolkit.feature.apps.AppsSettings
+import com.jawzf.pixeltoolkit.feature.display.DisplaySettings
+import com.jawzf.pixeltoolkit.feature.display.refresh.RefreshRateUtils
 import com.jawzf.pixeltoolkit.feature.notifications.NotificationSettings
 import com.jawzf.pixeltoolkit.feature.power.PowerSettings
 import com.jawzf.pixeltoolkit.ui.core.pickers.NetworkType
@@ -159,9 +161,6 @@ class SettingsRepository(
 
         // Keys
         const val KEY_DEBUGGING_TILE_TAP_ACTION = "debugging_tile_tap_action"
-        const val KEY_SMART_PIXELS_ENABLED = "smart_pixels_enabled"
-        const val KEY_SMART_PIXELS_INTENSITY = "smart_pixels_intensity"
-        const val KEY_SMART_PIXELS_DISABLE_ON_CAST = "smart_pixels_disable_on_cast"
         const val KEY_WIDGET_ENABLED = "widget_enabled"
         const val KEY_STATUS_BAR_ICON_CONTROL_ENABLED = "status_bar_icon_control_enabled"
         const val KEY_LOCK_SCREEN_WALLPAPER_SOURCE = "lock_screen_wallpaper_source"
@@ -295,11 +294,6 @@ class SettingsRepository(
         const val KEY_SCALE_ANIMATIONS_MODE = "scale_animations_mode"
         const val KEY_SCALE_ANIMATIONS_DEFAULT_PROFILE = "scale_animations_default_profile"
         const val KEY_SCALE_ANIMATIONS_GLOVE_PROFILE = "scale_animations_glove_profile"
-        const val KEY_REFRESH_RATE_MODE = "refresh_rate_mode"
-        const val KEY_REFRESH_RATE_FIXED = "refresh_rate_fixed"
-        const val KEY_REFRESH_RATE_MIN = "refresh_rate_min"
-        const val KEY_REFRESH_RATE_PEAK = "refresh_rate_peak"
-        const val KEY_REFRESH_RATE_DEFAULT_PEAK_INFINITY = "refresh_rate_default_peak_infinity"
 
         // Duo
         const val KEY_DUO_ENABLED = "duo_enabled"
@@ -1605,30 +1599,31 @@ class SettingsRepository(
                     getFloat(KEY_WINDOW_ANIMATION_SCALE, 1.0f),
                 )
             }
-            if (contains(KEY_REFRESH_RATE_FIXED) ||
-                contains(KEY_REFRESH_RATE_MIN) ||
-                contains(
-                    KEY_REFRESH_RATE_PEAK,
+            val display = DisplaySettings(context)
+            if (display.contains(DisplaySettings.KEY_REFRESH_RATE_FIXED) ||
+                display.contains(DisplaySettings.KEY_REFRESH_RATE_MIN) ||
+                display.contains(
+                    DisplaySettings.KEY_REFRESH_RATE_PEAK,
                 )
             ) {
-                val mode = getRefreshRateMode()
-                val fixed = getFloat(KEY_REFRESH_RATE_FIXED, 0f)
-                val min = getFloat(KEY_REFRESH_RATE_MIN, 0f)
-                val peak = getFloat(KEY_REFRESH_RATE_PEAK, 0f)
+                val mode = display.getRefreshRateMode()
+                val fixed = display.getFloat(DisplaySettings.KEY_REFRESH_RATE_FIXED, 0f)
+                val min = display.getFloat(DisplaySettings.KEY_REFRESH_RATE_MIN, 0f)
+                val peak = display.getFloat(DisplaySettings.KEY_REFRESH_RATE_PEAK, 0f)
 
                 if (fixed <= 0f && min <= 0f && peak <= 0f) {
-                    com.jawzf.pixeltoolkit.utils.RefreshRateUtils.resetRefreshRate(
+                    RefreshRateUtils.resetRefreshRate(
                         context,
-                        shouldRestoreInfinityPeakOnRefreshRateReset(),
+                        display.shouldRestoreInfinityPeakOnRefreshRateReset(),
                     )
-                } else if (mode == com.jawzf.pixeltoolkit.utils.RefreshRateUtils.MODE_RANGE && min > 0f && peak > 0f) {
-                    com.jawzf.pixeltoolkit.utils.RefreshRateUtils.applyRangeRefreshRate(
+                } else if (mode == RefreshRateUtils.MODE_RANGE && min > 0f && peak > 0f) {
+                    RefreshRateUtils.applyRangeRefreshRate(
                         context,
                         min,
                         peak,
                     )
                 } else if (fixed > 0f || peak > 0f) {
-                    com.jawzf.pixeltoolkit.utils.RefreshRateUtils.applyFixedRefreshRate(
+                    RefreshRateUtils.applyFixedRefreshRate(
                         context,
                         if (fixed > 0f) fixed else peak,
                     )
@@ -1778,54 +1773,6 @@ class SettingsRepository(
      * @param mode [String] Target mode.
      */
     fun setScaleAnimationsMode(mode: String) = putString(KEY_SCALE_ANIMATIONS_MODE, mode)
-
-    /**
-     * Executes the get refresh rate mode operation.
-     * @return The resulting String data.
-     */
-    fun getRefreshRateMode(): String =
-        getString(KEY_REFRESH_RATE_MODE, com.jawzf.pixeltoolkit.utils.RefreshRateUtils.MODE_FIXED)
-            ?: com.jawzf.pixeltoolkit.utils.RefreshRateUtils.MODE_FIXED
-
-    /**
-     * Executes the set refresh rate mode operation.
-     *
-     * @param mode [String] Target mode.
-     */
-    fun setRefreshRateMode(mode: String) = putString(KEY_REFRESH_RATE_MODE, mode)
-
-    /**
-     * Executes the save refresh rate state operation.
-     *
-     * @param mode [String] Target mode.
-     * @param fixed [Float] Target fixed.
-     * @param min [Float] Target min.
-     * @param peak [Float] Target peak.
-     */
-    fun saveRefreshRateState(
-        mode: String,
-        fixed: Float,
-        min: Float,
-        peak: Float,
-    ) {
-        putString(KEY_REFRESH_RATE_MODE, mode)
-        putFloat(KEY_REFRESH_RATE_FIXED, fixed)
-        putFloat(KEY_REFRESH_RATE_MIN, min)
-        putFloat(KEY_REFRESH_RATE_PEAK, peak)
-    }
-
-    /**
-     * Executes the should restore infinity peak on refresh rate reset operation.
-     * @return The resulting Boolean data.
-     */
-    fun shouldRestoreInfinityPeakOnRefreshRateReset(): Boolean = getBoolean(KEY_REFRESH_RATE_DEFAULT_PEAK_INFINITY, false)
-
-    /**
-     * Executes the set restore infinity peak on refresh rate reset operation.
-     *
-     * @param enabled [Boolean] Target enabled.
-     */
-    fun setRestoreInfinityPeakOnRefreshRateReset(enabled: Boolean) = putBoolean(KEY_REFRESH_RATE_DEFAULT_PEAK_INFINITY, enabled)
 
     /**
      * Executes the get scale animations profile operation.
