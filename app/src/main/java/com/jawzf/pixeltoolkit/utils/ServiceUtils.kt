@@ -11,6 +11,7 @@ import com.jawzf.pixeltoolkit.domain.diy.DIYRepository
 import com.jawzf.pixeltoolkit.feature.apps.AppsSettings
 import com.jawzf.pixeltoolkit.feature.connectivity.ConnectivitySettings
 import com.jawzf.pixeltoolkit.feature.connectivity.sim.SimCarrierUtil
+import com.jawzf.pixeltoolkit.feature.input.InputSettings
 import com.jawzf.pixeltoolkit.feature.power.PowerSettings
 import com.jawzf.pixeltoolkit.feature.power.battery.BatteryNotificationService
 import com.jawzf.pixeltoolkit.services.AppDetectionService
@@ -92,7 +93,7 @@ object ServiceUtils {
             settingsRepository.getBoolean(SettingsRepository.KEY_DYNAMIC_NIGHT_LIGHT_ENABLED)
         val isHideGestureBarOnLauncherEnabled =
             settingsRepository.getBoolean(SettingsRepository.KEY_HIDE_GESTURE_BAR_ON_LAUNCHER_ENABLED)
-        val hasBackGestureApps = settingsRepository.loadBackGestureAppConfigs().isNotEmpty()
+        val hasBackGestureApps = InputSettings(context).loadBackGestureAppConfigs().isNotEmpty()
         val isUseUsageAccess =
             settingsRepository.getBoolean(SettingsRepository.KEY_USE_USAGE_ACCESS)
 

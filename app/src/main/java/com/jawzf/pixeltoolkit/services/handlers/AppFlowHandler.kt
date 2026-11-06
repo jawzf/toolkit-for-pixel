@@ -24,10 +24,11 @@ import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuUtils.toggleShizuku
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.domain.diy.Automation
 import com.jawzf.pixeltoolkit.domain.diy.DIYRepository
-import com.jawzf.pixeltoolkit.domain.model.BackGestureAppConfig
 import com.jawzf.pixeltoolkit.feature.apps.applock.AppLockActivity
 import com.jawzf.pixeltoolkit.feature.apps.consciousgate.ConsciousGateActivity
 import com.jawzf.pixeltoolkit.feature.apps.freeze.FreezeManager
+import com.jawzf.pixeltoolkit.feature.input.InputSettings
+import com.jawzf.pixeltoolkit.feature.input.gesture.BackGestureAppConfig
 import com.jawzf.pixeltoolkit.services.automation.executors.CombinedActionExecutor
 import com.jawzf.pixeltoolkit.services.tiles.ScreenOffAccessibilityService
 import com.jawzf.pixeltoolkit.utils.StatusBarManager
@@ -51,11 +52,12 @@ class AppFlowHandler(
     private val lastLeaveTimes = mutableMapOf<String, Long>()
     private val activeCountdowns = mutableMapOf<String, Job>()
     private val settingsRepository by lazy { SettingsRepository(context) }
+    private val inputSettings by lazy { InputSettings(context) }
     private val backGestureDispatcher = Dispatchers.IO.limitedParallelism(1)
     private var backGestureConfigs: Map<String, BackGestureAppConfig>? = null
     private val backGestureConfigsListener =
         SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
-            if (key == SettingsRepository.KEY_BACK_GESTURE_APP_CONFIGS) backGestureConfigs = null
+            if (key == InputSettings.KEY_BACK_GESTURE_APP_CONFIGS) backGestureConfigs = null
         }
 
     private val shutUpReceiver =
@@ -602,10 +604,11 @@ class AppFlowHandler(
     }
 
     private fun checkBackGestureApps(packageName: String) {
-        val configs = backGestureConfigs ?: settingsRepository.loadBackGestureAppConfigs().associateBy { it.packageName }.also { backGestureConfigs = it }
-        if (configs.isEmpty() && settingsRepository.backGesture.overrideOwner == null) return
+        val configs =
+            backGestureConfigs ?: inputSettings.loadBackGestureAppConfigs().associateBy { it.packageName }.also { backGestureConfigs = it }
+        if (configs.isEmpty() && inputSettings.backGesture.overrideOwner == null) return
         scope.launch(backGestureDispatcher) {
-            settingsRepository.backGesture.onAppChanged(packageName, configs)
+            inputSettings.backGesture.onAppChanged(packageName, configs)
         }
     }
 

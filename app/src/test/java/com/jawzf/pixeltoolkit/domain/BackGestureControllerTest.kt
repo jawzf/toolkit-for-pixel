@@ -1,8 +1,8 @@
 package com.jawzf.pixeltoolkit.domain
 
-import com.jawzf.pixeltoolkit.domain.controller.BackGestureController
-import com.jawzf.pixeltoolkit.domain.controller.BackGestureStore
-import com.jawzf.pixeltoolkit.domain.model.BackGestureAppConfig
+import com.jawzf.pixeltoolkit.feature.input.gesture.BackGestureAppConfig
+import com.jawzf.pixeltoolkit.feature.input.gesture.BackGestureController
+import com.jawzf.pixeltoolkit.feature.input.gesture.BackGestureStore
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test

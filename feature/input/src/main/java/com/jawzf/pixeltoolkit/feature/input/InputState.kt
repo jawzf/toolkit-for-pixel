@@ -7,6 +7,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
+import com.jawzf.pixeltoolkit.feature.input.gesture.BackGestureAppConfig
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -16,6 +17,8 @@ import java.io.File
 /** Compose state and actions for the keyboard. */
 class InputState(
     private val scope: CoroutineScope,
+    /** Called when the per-app list changes, so the app-detection service can start or stop. */
+    private val onAppDetectionChanged: (Context) -> Unit,
 ) {
     private lateinit var settings: InputSettings
 
@@ -36,6 +39,10 @@ class InputState(
     val isUserDictionarySheetVisible = mutableStateOf(false)
     val isLongPressSymbolsEnabled = mutableStateOf(false)
     val isAccentedCharactersEnabled = mutableStateOf(false)
+
+    val backGestureLeftScale = mutableFloatStateOf(1f)
+    val backGestureRightScale = mutableFloatStateOf(1f)
+    val backGestureAppConfigs = mutableStateOf<List<BackGestureAppConfig>>(emptyList())
 
     /** Reads the saved values. Call before anything else. */
     fun load(context: Context) {
@@ -369,6 +376,48 @@ class InputState(
     ) {
         isKeyboardClipboardEnabled.value = enabled
         settings.putBoolean(InputSettings.KEY_KEYBOARD_CLIPBOARD_ENABLED, enabled)
+    }
+
+    fun refreshBackGestureState() {
+        backGestureLeftScale.floatValue = settings.backGesture.defaultScale(left = true)
+        backGestureRightScale.floatValue = settings.backGesture.defaultScale(left = false)
+        backGestureAppConfigs.value = settings.loadBackGestureAppConfigs()
+    }
+
+    fun applyBackGestureScale(left: Boolean) {
+        val scale = if (left) backGestureLeftScale.floatValue else backGestureRightScale.floatValue
+        scope.launch(Dispatchers.IO) {
+            settings.backGesture.setDefaultScale(left, scale)
+        }
+    }
+
+    fun updateBackGestureAppConfig(
+        config: BackGestureAppConfig,
+        context: Context,
+    ) {
+        val current = backGestureAppConfigs.value
+        val configs =
+            if (current.any { it.packageName == config.packageName }) {
+                current.map { if (it.packageName == config.packageName) config else it }
+            } else {
+                current + config
+            }
+        backGestureAppConfigs.value = configs
+        settings.saveBackGestureAppConfigs(configs)
+        onAppDetectionChanged(context)
+    }
+
+    fun removeBackGestureAppConfig(
+        packageName: String,
+        context: Context,
+    ) {
+        val configs = backGestureAppConfigs.value.filterNot { it.packageName == packageName }
+        backGestureAppConfigs.value = configs
+        settings.saveBackGestureAppConfigs(configs)
+        onAppDetectionChanged(context)
+        scope.launch(Dispatchers.IO) {
+            settings.backGesture.onAppRemoved(packageName)
+        }
     }
 
     companion object {

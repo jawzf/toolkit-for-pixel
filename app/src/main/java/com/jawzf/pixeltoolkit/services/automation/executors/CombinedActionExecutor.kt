@@ -42,6 +42,8 @@ import com.jawzf.pixeltoolkit.domain.model.RippleConfig
 import com.jawzf.pixeltoolkit.feature.apps.AppsSettings
 import com.jawzf.pixeltoolkit.feature.apps.freeze.FreezeManager
 import com.jawzf.pixeltoolkit.feature.connectivity.hotspot.HotspotController
+import com.jawzf.pixeltoolkit.feature.input.InputSettings
+import com.jawzf.pixeltoolkit.feature.input.gesture.OmniTriggerUtil
 import com.jawzf.pixeltoolkit.feature.power.PowerSettings
 import com.jawzf.pixeltoolkit.feature.power.caffeinate.CaffeinateController
 import com.jawzf.pixeltoolkit.feature.power.charging.ChargingModeUtil
@@ -587,7 +589,7 @@ object CombinedActionExecutor {
                 }
 
                 is Action.CircleToSearch -> {
-                    com.jawzf.pixeltoolkit.utils.OmniTriggerUtil
+                    OmniTriggerUtil
                         .trigger(context)
                 }
 
@@ -636,8 +638,8 @@ object CombinedActionExecutor {
                     resolve(action.island, settings.isIslandEnabled())?.let(settings::setIslandEnabled)
                     resolve(action.statusGlance, settings.isStatusGlanceEnabled())?.let(settings::setStatusGlanceEnabled)
                 }
-                is Action.TurnOffBackGesture -> withContext(Dispatchers.IO) { SettingsRepository(context).backGesture.turnOff() }
-                is Action.TurnOnBackGesture -> withContext(Dispatchers.IO) { SettingsRepository(context).backGesture.turnOn() }
+                is Action.TurnOffBackGesture -> withContext(Dispatchers.IO) { InputSettings(context).backGesture.turnOff() }
+                is Action.TurnOnBackGesture -> withContext(Dispatchers.IO) { InputSettings(context).backGesture.turnOn() }
                 is Action.TurnOnDuo -> SettingsRepository(context).setDuoEnabled(true)
                 is Action.TurnOffDuo -> SettingsRepository(context).setDuoEnabled(false)
                 is Action.ToggleDuo -> SettingsRepository(context).let { it.setDuoEnabled(!it.isDuoEnabled()) }

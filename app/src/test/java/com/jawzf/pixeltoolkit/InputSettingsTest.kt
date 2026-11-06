@@ -24,5 +24,11 @@ class InputSettingsTest {
         assertEquals("user_dict_last_update", InputSettings.KEY_USER_DICT_LAST_UPDATE)
         assertEquals("link_preview_enabled", InputSettings.KEY_LINK_PREVIEW_ENABLED)
         assertEquals("link_preview_images_enabled", InputSettings.KEY_LINK_PREVIEW_IMAGES_ENABLED)
+        assertEquals("back_gesture_inset_scale_left", InputSettings.SECURE_BACK_GESTURE_INSET_SCALE_LEFT)
+        assertEquals("back_gesture_inset_scale_right", InputSettings.SECURE_BACK_GESTURE_INSET_SCALE_RIGHT)
+        assertEquals("back_gesture_override_owner", InputSettings.KEY_BACK_GESTURE_OVERRIDE_OWNER)
+        assertEquals("back_gesture_restore_left_scale", InputSettings.KEY_BACK_GESTURE_RESTORE_LEFT_SCALE)
+        assertEquals("back_gesture_restore_right_scale", InputSettings.KEY_BACK_GESTURE_RESTORE_RIGHT_SCALE)
+        assertEquals("back_gesture_app_configs", InputSettings.KEY_BACK_GESTURE_APP_CONFIGS)
     }
 }

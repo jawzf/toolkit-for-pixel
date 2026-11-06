@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.utils
+package com.jawzf.pixeltoolkit.feature.input.gesture
 
 import android.annotation.SuppressLint
 import android.content.Context

@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.features.system
+package com.jawzf.pixeltoolkit.feature.input.gesture.ui
 
 import android.content.Intent
 import android.net.Uri
@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -48,6 +49,7 @@ import androidx.compose.ui.window.PopupPositionProvider
 import androidx.compose.ui.window.PopupProperties
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import com.jawzf.pixeltoolkit.core.data.apps.AppUtil
+import com.jawzf.pixeltoolkit.core.data.apps.NotificationApp
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.cards.FeatureCard
 import com.jawzf.pixeltoolkit.core.design.components.ConfigSliderItem
@@ -58,9 +60,8 @@ import com.jawzf.pixeltoolkit.core.design.sheets.PermissionItem
 import com.jawzf.pixeltoolkit.core.design.sheets.PermissionsBottomSheet
 import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
 import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
-import com.jawzf.pixeltoolkit.domain.model.BackGestureAppConfig
-import com.jawzf.pixeltoolkit.ui.core.sheets.SingleAppSelectionSheet
-import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
+import com.jawzf.pixeltoolkit.feature.input.InputState
+import com.jawzf.pixeltoolkit.feature.input.gesture.BackGestureAppConfig
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -73,7 +74,13 @@ private enum class EdgeSide { LEFT, RIGHT }
 
 @Composable
 fun BackGestureSettingsUI(
-    viewModel: MainViewModel,
+    state: InputState,
+    canWriteSecure: Boolean,
+    isAppDetectionGranted: Boolean,
+    isShizukuAvailable: Boolean,
+    isUseUsageAccess: Boolean,
+    onRequestShizukuPermission: () -> Unit,
+    appPicker: @Composable (onDismiss: () -> Unit, onAppSelected: (NotificationApp) -> Unit) -> Unit,
     modifier: Modifier = Modifier,
     highlightSetting: String? = null,
 ) {
@@ -86,20 +93,15 @@ fun BackGestureSettingsUI(
     val offLabel = stringResource(R.string.feat_back_gesture_off)
 
     LifecycleResumeEffect(Unit) {
-        viewModel.refreshBackGestureState()
+        state.refreshBackGestureState()
         onPauseOrDispose {}
     }
 
-    val isShellGranted =
-        (viewModel.isShizukuAvailable.value && viewModel.isShizukuPermissionGranted.value) ||
-            (viewModel.isRootAvailable.value && viewModel.isRootPermissionGranted.value)
-    val canWriteSecure = viewModel.isWriteSecureSettingsEnabled.value || isShellGranted
-    val isAppDetectionGranted =
-        if (viewModel.isUseUsageAccess.value) viewModel.isUsageStatsPermissionGranted.value else viewModel.isAccessibilityEnabled.value
-
     if (showPermissions) {
         BackGesturePermissionsSheet(
-            viewModel = viewModel,
+            isShizukuAvailable = isShizukuAvailable,
+            useUsageAccess = isUseUsageAccess,
+            onRequestShizukuPermission = onRequestShizukuPermission,
             isShellGranted = canWriteSecure,
             isAppDetectionGranted = isAppDetectionGranted,
             onDismiss = { showPermissions = false },
@@ -119,17 +121,17 @@ fun BackGestureSettingsUI(
         ) {
             EdgeWidthSlider(
                 left = true,
-                value = viewModel.backGestureLeftScale.floatValue,
+                value = state.backGestureLeftScale.floatValue,
                 onValueChange = {
-                    viewModel.backGestureLeftScale.floatValue = it
+                    state.backGestureLeftScale.floatValue = it
                     preview.show(EdgeSide.LEFT)
                 },
                 onValueChangeFinished = {
                     preview.hide()
                     if (canWriteSecure) {
-                        viewModel.applyBackGestureScale(left = true)
+                        state.applyBackGestureScale(left = true)
                     } else {
-                        viewModel.refreshBackGestureState()
+                        state.refreshBackGestureState()
                         showPermissions = true
                     }
                 },
@@ -138,17 +140,17 @@ fun BackGestureSettingsUI(
             )
             EdgeWidthSlider(
                 left = false,
-                value = viewModel.backGestureRightScale.floatValue,
+                value = state.backGestureRightScale.floatValue,
                 onValueChange = {
-                    viewModel.backGestureRightScale.floatValue = it
+                    state.backGestureRightScale.floatValue = it
                     preview.show(EdgeSide.RIGHT)
                 },
                 onValueChangeFinished = {
                     preview.hide()
                     if (canWriteSecure) {
-                        viewModel.applyBackGestureScale(left = false)
+                        state.applyBackGestureScale(left = false)
                     } else {
-                        viewModel.refreshBackGestureState()
+                        state.refreshBackGestureState()
                         showPermissions = true
                     }
                 },
@@ -157,7 +159,7 @@ fun BackGestureSettingsUI(
             )
         }
 
-        if (viewModel.backGestureLeftScale.floatValue == 0f && viewModel.backGestureRightScale.floatValue == 0f) {
+        if (state.backGestureLeftScale.floatValue == 0f && state.backGestureRightScale.floatValue == 0f) {
             BothEdgesOffNotice(modifier = Modifier.padding(top = 8.dp))
         }
 
@@ -173,7 +175,7 @@ fun BackGestureSettingsUI(
             cornerRadius = 24.dp,
             modifier = Modifier.highlight(highlightSetting == "back_gesture_apps"),
         ) {
-            viewModel.backGestureAppConfigs.value.forEach { config ->
+            state.backGestureAppConfigs.value.forEach { config ->
                 val appIcon =
                     remember(config.packageName) {
                         runCatching {
@@ -202,7 +204,7 @@ fun BackGestureSettingsUI(
                         IconButton(
                             onClick = {
                                 HapticUtil.performVirtualKeyHaptic(view)
-                                viewModel.removeBackGestureAppConfig(config.packageName, context)
+                                state.removeBackGestureAppConfig(config.packageName, context)
                             },
                         ) {
                             Icon(
@@ -238,44 +240,41 @@ fun BackGestureSettingsUI(
     }
 
     if (showAppPicker) {
-        SingleAppSelectionSheet(
-            onDismissRequest = { showAppPicker = false },
-            includeSystemApps = true,
-            onAppSelected = { app ->
-                if (viewModel.backGestureAppConfigs.value.none { it.packageName == app.packageName }) {
-                    viewModel.updateBackGestureAppConfig(
-                        BackGestureAppConfig(
-                            packageName = app.packageName,
-                            leftScale = viewModel.backGestureLeftScale.floatValue,
-                            rightScale = viewModel.backGestureRightScale.floatValue,
-                        ),
-                        context,
-                    )
-                }
-                editingPackage = app.packageName
-            },
-        )
+        appPicker({ showAppPicker = false }) { app ->
+            if (state.backGestureAppConfigs.value.none { it.packageName == app.packageName }) {
+                state.updateBackGestureAppConfig(
+                    BackGestureAppConfig(
+                        packageName = app.packageName,
+                        leftScale = state.backGestureLeftScale.floatValue,
+                        rightScale = state.backGestureRightScale.floatValue,
+                    ),
+                    context,
+                )
+            }
+            editingPackage = app.packageName
+        }
     }
 
     editingPackage?.let { packageName ->
         val config =
-            viewModel.backGestureAppConfigs.value.find { it.packageName == packageName }
+            state.backGestureAppConfigs.value.find { it.packageName == packageName }
                 ?: BackGestureAppConfig(packageName)
         BackGestureAppSheet(
             title = appLabel(packageName),
             config = config,
-            onConfigChange = { viewModel.updateBackGestureAppConfig(it, context) },
+            onConfigChange = { state.updateBackGestureAppConfig(it, context) },
             onDismiss = { editingPackage = null },
         )
     }
 
     EdgeWidthPreview(
         state = preview,
-        leftScale = viewModel.backGestureLeftScale.floatValue,
-        rightScale = viewModel.backGestureRightScale.floatValue,
+        leftScale = state.backGestureLeftScale.floatValue,
+        rightScale = state.backGestureRightScale.floatValue,
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun BackGestureAppSheet(
     title: String,
@@ -506,14 +505,14 @@ private fun EdgeWidthPreview(
 
 @Composable
 private fun BackGesturePermissionsSheet(
-    viewModel: MainViewModel,
+    isShizukuAvailable: Boolean,
+    useUsageAccess: Boolean,
+    onRequestShizukuPermission: () -> Unit,
     isShellGranted: Boolean,
     isAppDetectionGranted: Boolean,
     onDismiss: () -> Unit,
 ) {
     val context = LocalContext.current
-    val isShizukuAvailable = viewModel.isShizukuAvailable.value
-    val useUsageAccess = viewModel.isUseUsageAccess.value
 
     val shellPermission =
         PermissionItem(
@@ -534,7 +533,7 @@ private fun BackGesturePermissionsSheet(
                             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
                     )
                 } else {
-                    viewModel.requestShizukuPermission()
+                    onRequestShizukuPermission()
                 }
             },
             isGranted = isShellGranted,

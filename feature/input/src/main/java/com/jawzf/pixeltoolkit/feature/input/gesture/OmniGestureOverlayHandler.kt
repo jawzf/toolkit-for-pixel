@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.services.handlers
+package com.jawzf.pixeltoolkit.feature.input.gesture
 
 import android.accessibilityservice.AccessibilityService
 import android.content.Context
@@ -16,7 +16,7 @@ import android.view.View
 import android.view.ViewConfiguration
 import android.view.WindowManager
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
-import com.jawzf.pixeltoolkit.utils.OmniTriggerUtil
+import com.jawzf.pixeltoolkit.feature.input.gesture.OmniTriggerUtil
 
 class OmniGestureOverlayHandler(
     private val service: AccessibilityService,

@@ -72,6 +72,8 @@ import com.jawzf.pixeltoolkit.feature.apps.consciousgate.ui.CONSCIOUS_GATE_FEATU
 import com.jawzf.pixeltoolkit.feature.apps.consciousgate.ui.ConsciousGateSettingsUI
 import com.jawzf.pixeltoolkit.feature.apps.freeze.ui.FreezeSettingsUI
 import com.jawzf.pixeltoolkit.feature.connectivity.ui.NetworksSettingsUI
+import com.jawzf.pixeltoolkit.feature.input.gesture.ui.BACK_GESTURE_FEATURE_ID
+import com.jawzf.pixeltoolkit.feature.input.gesture.ui.BackGestureSettingsUI
 import com.jawzf.pixeltoolkit.feature.input.ime.ui.KeyboardSettingsUI
 import com.jawzf.pixeltoolkit.feature.input.links.ui.LinkPickerScreen
 import com.jawzf.pixeltoolkit.feature.power.battery.ui.BatteriesPreviewCard
@@ -110,8 +112,6 @@ import com.jawzf.pixeltoolkit.ui.features.system.ActivityLauncherSearchBar
 import com.jawzf.pixeltoolkit.ui.features.system.ActivityLauncherSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.AlwaysOnDisplaySettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.AutoDismissNotificationsSettingsUI
-import com.jawzf.pixeltoolkit.ui.features.system.BACK_GESTURE_FEATURE_ID
-import com.jawzf.pixeltoolkit.ui.features.system.BackGestureSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.ButtonRemapSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.DynamicNightLightSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.FlashlightPulseSettingsUI
@@ -1355,7 +1355,27 @@ class FeatureSettingsActivity : AppCompatActivity() {
 
                                     BACK_GESTURE_FEATURE_ID -> {
                                         BackGestureSettingsUI(
-                                            viewModel = viewModel,
+                                            state = viewModel.input,
+                                            canWriteSecure =
+                                                viewModel.isWriteSecureSettingsEnabled.value ||
+                                                    (viewModel.isShizukuAvailable.value && viewModel.isShizukuPermissionGranted.value) ||
+                                                    (viewModel.isRootAvailable.value && viewModel.isRootPermissionGranted.value),
+                                            isAppDetectionGranted =
+                                                if (viewModel.isUseUsageAccess.value) {
+                                                    viewModel.isUsageStatsPermissionGranted.value
+                                                } else {
+                                                    viewModel.isAccessibilityEnabled.value
+                                                },
+                                            isShizukuAvailable = viewModel.isShizukuAvailable.value,
+                                            isUseUsageAccess = viewModel.isUseUsageAccess.value,
+                                            onRequestShizukuPermission = { viewModel.requestShizukuPermission() },
+                                            appPicker = { onDismiss, onAppSelected ->
+                                                SingleAppSelectionSheet(
+                                                    onDismissRequest = onDismiss,
+                                                    includeSystemApps = true,
+                                                    onAppSelected = onAppSelected,
+                                                )
+                                            },
                                             modifier = Modifier.padding(top = 16.dp),
                                             highlightSetting = highlightSetting,
                                         )
