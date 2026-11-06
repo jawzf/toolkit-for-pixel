@@ -80,6 +80,7 @@ import com.jawzf.pixeltoolkit.feature.display.aod.ui.AlwaysOnDisplaySettingsUI
 import com.jawzf.pixeltoolkit.feature.display.aod.ui.AodWallpaperPreviewCard
 import com.jawzf.pixeltoolkit.feature.display.aod.ui.AodWallpaperSettingsUI
 import com.jawzf.pixeltoolkit.feature.display.duo.ui.DuoSettingsUI
+import com.jawzf.pixeltoolkit.feature.display.glance.ui.StatusGlanceSettingsUI
 import com.jawzf.pixeltoolkit.feature.display.lockclock.ui.LockScreenClockSettingsUI
 import com.jawzf.pixeltoolkit.feature.display.nightlight.ui.DynamicNightLightSettingsUI
 import com.jawzf.pixeltoolkit.feature.display.ondisplay.ui.ToolkitOnDisplaySettingsUI
@@ -130,7 +131,6 @@ import com.jawzf.pixeltoolkit.ui.features.display.IslandNotificationSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.display.IslandPlacementSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.display.IslandSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.display.IslandVisualsSettingsUI
-import com.jawzf.pixeltoolkit.ui.features.display.StatusGlanceSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.display.actions.GestureActionPickerSheet
 import com.jawzf.pixeltoolkit.ui.features.display.sheets.StatusGlanceCalendarOptionsBottomSheet
 import com.jawzf.pixeltoolkit.ui.features.system.ActivityLauncherSearchBar
