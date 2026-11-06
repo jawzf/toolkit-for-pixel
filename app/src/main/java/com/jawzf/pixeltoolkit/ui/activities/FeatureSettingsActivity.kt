@@ -1468,7 +1468,6 @@ class FeatureSettingsActivity : AppCompatActivity() {
 
                                     "LiveWallpaper" -> {
                                         LiveWallpaperSettingsUI(
-                                            viewModel = viewModel,
                                             modifier = Modifier.padding(top = 16.dp),
                                             highlightSetting = highlightSetting,
                                         )

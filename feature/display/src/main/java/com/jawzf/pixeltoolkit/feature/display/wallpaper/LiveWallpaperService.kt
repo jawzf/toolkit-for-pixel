@@ -16,27 +16,26 @@ import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.DefaultRenderersFactory
 import androidx.media3.exoplayer.ExoPlayer
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 
 class LiveWallpaperService : WallpaperService() {
     override fun onCreateEngine(): Engine = VideoEngine()
 
     inner class VideoEngine : Engine() {
         private var exoPlayer: ExoPlayer? = null
-        private lateinit var repository: SettingsRepository
+        private lateinit var repository: LiveWallpaperSettings
         private val executor = android.os.Handler(android.os.Looper.getMainLooper())
         private val keyguardManager by lazy { getSystemService(KEYGUARD_SERVICE) as KeyguardManager }
 
         private val prefsListener =
             SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
                 when (key) {
-                    SettingsRepository.KEY_LIVE_WALLPAPER_SELECTED_VIDEO -> loadSelectedVideo()
-                    SettingsRepository.KEY_LIVE_WALLPAPER_PLAYBACK_TRIGGER -> {
+                    LiveWallpaperSettings.KEY_LIVE_WALLPAPER_SELECTED_VIDEO -> loadSelectedVideo()
+                    LiveWallpaperSettings.KEY_LIVE_WALLPAPER_PLAYBACK_TRIGGER -> {
                         // Update current playback state if screen is on
                         if (isVisible && !keyguardManager.isKeyguardLocked) {
                             exoPlayer?.play()
                         } else if (isVisible &&
-                            repository.getLiveWallpaperPlaybackTrigger() == SettingsRepository.LIVE_WALLPAPER_TRIGGER_SCREEN_ON
+                            repository.getLiveWallpaperPlaybackTrigger() == LiveWallpaperSettings.LIVE_WALLPAPER_TRIGGER_SCREEN_ON
                         ) {
                             exoPlayer?.play()
                         }
@@ -64,7 +63,7 @@ class LiveWallpaperService : WallpaperService() {
                             val shouldPlay =
                                 isPreview ||
                                     !keyguardManager.isKeyguardLocked ||
-                                    repository.getLiveWallpaperPlaybackTrigger() == SettingsRepository.LIVE_WALLPAPER_TRIGGER_SCREEN_ON
+                                    repository.getLiveWallpaperPlaybackTrigger() == LiveWallpaperSettings.LIVE_WALLPAPER_TRIGGER_SCREEN_ON
 
                             if (shouldPlay) {
                                 executor.removeCallbacksAndMessages(null)
@@ -84,7 +83,7 @@ class LiveWallpaperService : WallpaperService() {
         @OptIn(UnstableApi::class)
         override fun onCreate(surfaceHolder: SurfaceHolder?) {
             super.onCreate(surfaceHolder)
-            repository = SettingsRepository(applicationContext)
+            repository = LiveWallpaperSettings(applicationContext)
 
             val filter =
                 IntentFilter().apply {
@@ -102,7 +101,7 @@ class LiveWallpaperService : WallpaperService() {
                 val shouldPlay =
                     isPreview ||
                         !keyguardManager.isKeyguardLocked ||
-                        repository.getLiveWallpaperPlaybackTrigger() == SettingsRepository.LIVE_WALLPAPER_TRIGGER_SCREEN_ON
+                        repository.getLiveWallpaperPlaybackTrigger() == LiveWallpaperSettings.LIVE_WALLPAPER_TRIGGER_SCREEN_ON
                 if (shouldPlay) exoPlayer?.play()
             } else {
                 exoPlayer?.pause()
@@ -125,7 +124,7 @@ class LiveWallpaperService : WallpaperService() {
                 val shouldPlay =
                     isPreview ||
                         !keyguardManager.isKeyguardLocked ||
-                        repository.getLiveWallpaperPlaybackTrigger() == SettingsRepository.LIVE_WALLPAPER_TRIGGER_SCREEN_ON
+                        repository.getLiveWallpaperPlaybackTrigger() == LiveWallpaperSettings.LIVE_WALLPAPER_TRIGGER_SCREEN_ON
                 playWhenReady = shouldPlay
             }
         }

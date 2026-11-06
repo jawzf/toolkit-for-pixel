@@ -85,9 +85,8 @@ import com.jawzf.pixeltoolkit.core.design.modifiers.BlurDirection
 import com.jawzf.pixeltoolkit.core.design.modifiers.progressiveBlur
 import com.jawzf.pixeltoolkit.core.design.modifiers.scrollMotionBlur
 import com.jawzf.pixeltoolkit.core.design.pickers.SegmentedPicker
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
+import com.jawzf.pixeltoolkit.feature.display.wallpaper.LiveWallpaperSettings
 import com.jawzf.pixeltoolkit.feature.display.wallpaper.LiveWallpaperUtil
-import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -95,13 +94,12 @@ import kotlinx.coroutines.withContext
 @Composable
 fun WallpaperScreen(
     onBack: () -> Unit,
-    viewModel: MainViewModel,
+    isBlurEnabled: Boolean,
+    isMotionBlurEnabled: Boolean,
 ) {
     val context = LocalContext.current
     val view = LocalView.current
-    val repository = remember { SettingsRepository(context) }
-
-    val isBlurEnabled by viewModel.isBlurEnabled
+    val repository = remember { LiveWallpaperSettings(context) }
 
     // Live Wallpaper Settings State
     var availableVideos by remember { mutableStateOf(repository.getLiveWallpaperAvailableVideos()) }
@@ -133,9 +131,9 @@ fun WallpaperScreen(
         )
 
     LaunchedEffect(availableVideos) {
-        if (selectedVideo == SettingsRepository.LIVE_WALLPAPER_DEFAULT_VIDEO && availableVideos.isNotEmpty()) {
+        if (selectedVideo == LiveWallpaperSettings.LIVE_WALLPAPER_DEFAULT_VIDEO && availableVideos.isNotEmpty()) {
             val first =
-                availableVideos.firstOrNull { it != SettingsRepository.LIVE_WALLPAPER_DEFAULT_VIDEO }
+                availableVideos.firstOrNull { it != LiveWallpaperSettings.LIVE_WALLPAPER_DEFAULT_VIDEO }
                     ?: availableVideos.firstOrNull()
             if (first != null) {
                 selectedVideo = first
@@ -161,8 +159,6 @@ fun WallpaperScreen(
                     direction = BlurDirection.TOP,
                 ),
     ) {
-        val isMotionBlurEnabled by viewModel.isMotionBlurEnabled
-
         val gridState = rememberLazyGridState()
         Box(
             modifier =
@@ -308,11 +304,11 @@ fun WallpaperScreen(
 
                             val options =
                                 listOf(
-                                    SettingsRepository.LIVE_WALLPAPER_TRIGGER_UNLOCK to
+                                    LiveWallpaperSettings.LIVE_WALLPAPER_TRIGGER_UNLOCK to
                                         stringResource(
                                             R.string.live_wallpaper_trigger_unlock,
                                         ),
-                                    SettingsRepository.LIVE_WALLPAPER_TRIGGER_SCREEN_ON to
+                                    LiveWallpaperSettings.LIVE_WALLPAPER_TRIGGER_SCREEN_ON to
                                         stringResource(
                                             R.string.live_wallpaper_trigger_screen_on,
                                         ),
@@ -399,7 +395,12 @@ fun WallpaperScreen(
                             Icon(
                                 painter =
                                     painterResource(
-                                        id = if (showSettingsCard) R.drawable.rounded_keyboard_arrow_down_24 else R.drawable.rounded_keyboard_arrow_up_24,
+                                        id =
+                                            if (showSettingsCard) {
+                                                R.drawable.rounded_keyboard_arrow_down_24
+                                            } else {
+                                                R.drawable.rounded_keyboard_arrow_up_24
+                                            },
                                     ),
                                 contentDescription = "Options",
                                 modifier = Modifier.size(24.dp),
@@ -477,7 +478,10 @@ fun WallpaperHelpBottomSheet(
                         style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
                     )
                     Text(
-                        text = "1. Choose one of our high quality default loops or add a custom video from your gallery.\n2. Adjust when the video should play (on Unlock or when Screen On) using the options arrow.\n3. Click Apply to set it via the system picker.",
+                        text =
+                            "1. Choose one of our high quality default loops or add a custom video from your gallery.\n" +
+                                "2. Adjust when the video should play (on Unlock or when Screen On) using the options arrow.\n" +
+                                "3. Click Apply to set it via the system picker.",
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )

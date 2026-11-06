@@ -40,7 +40,8 @@ class WallpaperActivity : ComponentActivity() {
 
                     WallpaperScreen(
                         onBack = { finish() },
-                        viewModel = viewModel,
+                        isBlurEnabled = viewModel.isBlurEnabled.value,
+                        isMotionBlurEnabled = viewModel.isMotionBlurEnabled.value,
                     )
                 }
             }
