@@ -24,20 +24,20 @@ import com.jawzf.pixeltoolkit.core.design.components.ConfigSliderItem
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.modifiers.highlight
-import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
+import com.jawzf.pixeltoolkit.feature.notifications.NotificationState
 
 @Composable
 fun NotificationSnoozingSettingsUI(
-    viewModel: MainViewModel,
+    state: NotificationState,
     modifier: Modifier = Modifier,
     highlightSetting: String? = null,
 ) {
     val context = LocalContext.current
     val view = LocalView.current
 
-    val isSnoozeEnabled = viewModel.isShowNotificationSnoozeEnabled.value
-    val snoozeDefault = viewModel.notificationSnoozeDefault.intValue
-    val snoozeOptions = viewModel.notificationSnoozeOptions.value
+    val isSnoozeEnabled = state.isShowNotificationSnoozeEnabled.value
+    val snoozeDefault = state.notificationSnoozeDefault.intValue
+    val snoozeOptions = state.notificationSnoozeOptions.value
 
     Column(
         modifier =
@@ -52,7 +52,7 @@ fun NotificationSnoozingSettingsUI(
                 description = stringResource(R.string.feat_notification_snoozing_desc),
                 isChecked = isSnoozeEnabled,
                 onCheckedChange = {
-                    viewModel.setShowNotificationSnoozeEnabled(context, it)
+                    state.setShowNotificationSnoozeEnabled(context, it)
                     HapticUtil.performUIHaptic(view)
                 },
                 iconRes = R.drawable.rounded_notifications_paused_24,
@@ -81,7 +81,7 @@ fun NotificationSnoozingSettingsUI(
                         value = snoozeDefault.toFloat(),
                         onValueChange = {
                             val options = snoozeOptions.toMutableList()
-                            viewModel.saveNotificationSnoozeOptions(context, it.toInt(), options)
+                            state.saveNotificationSnoozeOptions(context, it.toInt(), options)
                             HapticUtil.performSliderHaptic(view)
                         },
                         valueRange = 10f..1440f,
@@ -111,7 +111,7 @@ fun NotificationSnoozingSettingsUI(
                                 if (index < options.size) {
                                     options[index] = newVal.toInt()
                                 }
-                                viewModel.saveNotificationSnoozeOptions(
+                                state.saveNotificationSnoozeOptions(
                                     context,
                                     snoozeDefault,
                                     options,
@@ -133,7 +133,7 @@ fun NotificationSnoozingSettingsUI(
 
                 Button(
                     onClick = {
-                        viewModel.resetNotificationSnoozeOptions(context)
+                        state.resetNotificationSnoozeOptions(context)
                         HapticUtil.performUIHaptic(view)
                         Toast
                             .makeText(

@@ -47,6 +47,7 @@ import androidx.core.net.toUri
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.jawzf.pixeltoolkit.core.data.prefs.AppSelection
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.cards.FeatureCard
 import com.jawzf.pixeltoolkit.core.design.components.LottieFeatureAnimation
@@ -1032,7 +1033,7 @@ class FeatureSettingsActivity : AppCompatActivity() {
 
                                     "Snooze system notifications" -> {
                                         SnoozeNotificationsSettingsUI(
-                                            viewModel = viewModel,
+                                            state = viewModel.notifications,
                                             modifier = Modifier.padding(top = 16.dp),
                                             highlightSetting = highlightSetting,
                                         )
@@ -1040,7 +1041,16 @@ class FeatureSettingsActivity : AppCompatActivity() {
 
                                     "Auto-dismiss notifications" -> {
                                         AutoDismissNotificationsSettingsUI(
-                                            viewModel = viewModel,
+                                            state = viewModel.notifications,
+                                            appPicker = { onDismiss ->
+                                                AppSelectionSheet(
+                                                    onDismissRequest = onDismiss,
+                                                    onLoadApps = { _ ->
+                                                        viewModel.notifications.autoDismissConfigs.value.map { AppSelection(it.packageName, true) }
+                                                    },
+                                                    onSaveApps = { ctx, apps -> viewModel.notifications.saveAutoDismissSelectedApps(ctx, apps) },
+                                                )
+                                            },
                                             modifier = Modifier.padding(top = 16.dp),
                                             highlightSetting = highlightSetting,
                                         )
@@ -1048,7 +1058,7 @@ class FeatureSettingsActivity : AppCompatActivity() {
 
                                     "Notification snoozing" -> {
                                         NotificationSnoozingSettingsUI(
-                                            viewModel = viewModel,
+                                            state = viewModel.notifications,
                                             modifier = Modifier.padding(top = 16.dp),
                                             highlightSetting = highlightSetting,
                                         )
