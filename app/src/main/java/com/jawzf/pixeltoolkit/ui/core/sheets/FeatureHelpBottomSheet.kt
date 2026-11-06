@@ -255,7 +255,7 @@ fun FeatureHelpBottomSheet(
                 HoldToContinueButton(
                     waitTimeProgress = 1f,
                     onContinue = {
-                        viewModel.resetLockScreenClock(context)
+                        viewModel.lockClock.resetLockScreenClock(context)
                         Toast.makeText(context, R.string.feature_reset_done, Toast.LENGTH_SHORT).show()
                     },
                     onHoldingChange = {},

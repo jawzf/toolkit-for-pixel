@@ -256,6 +256,97 @@ class DisplaySettings(
     fun setAmbientMusicGlanceRespectNotificationsEnabled(enabled: Boolean) =
         prefs.edit().putBoolean(KEY_AMBIENT_MUSIC_GLANCE_RESPECT_NOTIFICATIONS, enabled).apply()
 
+    /**
+     * Executes the get lock screen clock weight operation.
+     * @return The resulting Int data.
+     */
+    fun getLockScreenClockWeight(): Int = getInt(KEY_LOCK_SCREEN_CLOCK_WEIGHT, 300)
+
+    /**
+     * Executes the set lock screen clock weight operation.
+     *
+     * @param value [Int] Target value.
+     */
+    fun setLockScreenClockWeight(value: Int) = putInt(KEY_LOCK_SCREEN_CLOCK_WEIGHT, value)
+
+    /**
+     * Executes the get lock screen clock width operation.
+     * @return The resulting Int data.
+     */
+    fun getLockScreenClockWidth(): Int = getInt(KEY_LOCK_SCREEN_CLOCK_WIDTH, 116)
+
+    /**
+     * Executes the set lock screen clock width operation.
+     *
+     * @param value [Int] Target value.
+     */
+    fun setLockScreenClockWidth(value: Int) = putInt(KEY_LOCK_SCREEN_CLOCK_WIDTH, value)
+
+    /**
+     * Executes the get lock screen clock grade operation.
+     * @return The resulting Int data.
+     */
+    fun getLockScreenClockGrade(): Int = getInt(KEY_LOCK_SCREEN_CLOCK_GRADE, 0)
+
+    /**
+     * Executes the set lock screen clock grade operation.
+     *
+     * @param value [Int] Target value.
+     */
+    fun setLockScreenClockGrade(value: Int) = putInt(KEY_LOCK_SCREEN_CLOCK_GRADE, value)
+
+    /**
+     * Executes the get lock screen clock roundness operation.
+     * @return The resulting Int data.
+     */
+    fun getLockScreenClockRoundness(): Int = getInt(KEY_LOCK_SCREEN_CLOCK_ROUNDNESS, 100)
+
+    /**
+     * Executes the set lock screen clock roundness operation.
+     *
+     * @param value [Int] Target value.
+     */
+    fun setLockScreenClockRoundness(value: Int) = putInt(KEY_LOCK_SCREEN_CLOCK_ROUNDNESS, value)
+
+    /**
+     * Executes the get lock screen clock color tone operation.
+     * @return The resulting Int data.
+     */
+    fun getLockScreenClockColorTone(): Int = getInt(KEY_LOCK_SCREEN_CLOCK_COLOR_TONE, 75)
+
+    /**
+     * Executes the set lock screen clock color tone operation.
+     *
+     * @param value [Int] Target value.
+     */
+    fun setLockScreenClockColorTone(value: Int) = putInt(KEY_LOCK_SCREEN_CLOCK_COLOR_TONE, value)
+
+    /**
+     * Executes the get lock screen clock selected color id operation.
+     * @return The resulting String data.
+     */
+    fun getLockScreenClockSelectedColorId(): String = getString(KEY_LOCK_SCREEN_CLOCK_SELECTED_COLOR_ID, "DEFAULT") ?: "DEFAULT"
+
+    /**
+     * Executes the set lock screen clock selected color id operation.
+     *
+     * @param value [String] Target value.
+     */
+    fun setLockScreenClockSelectedColorId(value: String) = putString(KEY_LOCK_SCREEN_CLOCK_SELECTED_COLOR_ID, value)
+
+    /**
+     * Executes the get lock screen clock seed color operation.
+     * @return The resulting Int data.
+     */
+    fun getLockScreenClockSeedColor(): Int = getInt(KEY_LOCK_SCREEN_CLOCK_SEED_COLOR, 0)
+
+    /**
+     * Executes the set lock screen clock seed color operation.
+     *
+     * @param value [Int] Target value.
+     */
+    fun setLockScreenClockSeedColor(value: Int) = putInt(KEY_LOCK_SCREEN_CLOCK_SEED_COLOR, value)
+
     companion object {
         const val KEY_SMART_PIXELS_ENABLED = "smart_pixels_enabled"
         const val KEY_SMART_PIXELS_INTENSITY = "smart_pixels_intensity"
@@ -296,5 +387,12 @@ class DisplaySettings(
             "ambient_music_glance_force_fill_while_charging"
         const val KEY_AMBIENT_MUSIC_GLANCE_RESPECT_NOTIFICATIONS =
             "ambient_music_glance_respect_notifications"
+        const val KEY_LOCK_SCREEN_CLOCK_WEIGHT = "lock_screen_clock_weight"
+        const val KEY_LOCK_SCREEN_CLOCK_WIDTH = "lock_screen_clock_width"
+        const val KEY_LOCK_SCREEN_CLOCK_GRADE = "lock_screen_clock_grade"
+        const val KEY_LOCK_SCREEN_CLOCK_ROUNDNESS = "lock_screen_clock_roundness"
+        const val KEY_LOCK_SCREEN_CLOCK_COLOR_TONE = "lock_screen_clock_color_tone"
+        const val KEY_LOCK_SCREEN_CLOCK_SELECTED_COLOR_ID = "lock_screen_clock_selected_color_id"
+        const val KEY_LOCK_SCREEN_CLOCK_SEED_COLOR = "lock_screen_clock_seed_color"
     }
 }

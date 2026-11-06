@@ -1520,7 +1520,7 @@ class FeatureSettingsActivity : AppCompatActivity() {
 
                                     "Lock screen clock" -> {
                                         LockScreenClockSettingsUI(
-                                            viewModel = viewModel,
+                                            state = viewModel.lockClock,
                                             modifier = Modifier.padding(top = 16.dp),
                                             highlightSetting = highlightSetting,
                                         )

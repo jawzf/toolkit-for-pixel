@@ -65,6 +65,7 @@ import com.jawzf.pixeltoolkit.feature.apps.updates.github.GitHubUser
 import com.jawzf.pixeltoolkit.feature.connectivity.ConnectivitySettings
 import com.jawzf.pixeltoolkit.feature.connectivity.ConnectivityState
 import com.jawzf.pixeltoolkit.feature.display.aod.AodState
+import com.jawzf.pixeltoolkit.feature.display.lockclock.LockClockState
 import com.jawzf.pixeltoolkit.feature.display.ondisplay.ToolkitOnDisplayState
 import com.jawzf.pixeltoolkit.feature.display.pixels.SmartPixelsState
 import com.jawzf.pixeltoolkit.feature.display.refresh.RefreshRatePanelState
@@ -379,6 +380,7 @@ class MainViewModel : ViewModel() {
     val refreshRate = RefreshRatePanelState()
     val aod = AodState(viewModelScope)
     val toolkitOnDisplay = ToolkitOnDisplayState()
+    val lockClock = LockClockState()
     val addedQSTiles = mutableStateOf<Set<String>>(emptySet())
     val isHideGestureBarEnabled = mutableStateOf(false)
     val isHideGestureBarOnLauncherEnabled = mutableStateOf(false)
@@ -406,14 +408,6 @@ class MainViewModel : ViewModel() {
     val pixelSearchbarMusicTitle = mutableStateOf("")
     val pixelSearchbarMusicArtist = mutableStateOf("")
     val pixelSearchbarMusicPackage = mutableStateOf("")
-    val lockScreenClockId = mutableStateOf<String?>(null)
-    val lockScreenClockWeight = mutableIntStateOf(300)
-    val lockScreenClockWidth = mutableIntStateOf(116)
-    val lockScreenClockGrade = mutableIntStateOf(0)
-    val lockScreenClockRoundness = mutableIntStateOf(100)
-    val lockScreenClockColorTone = mutableIntStateOf(75)
-    val lockScreenClockSelectedColorId = mutableStateOf("DEFAULT")
-    val lockScreenClockSeedColor = mutableIntStateOf(0)
 
     // Live Wallpaper
     val liveWallpaperSelectedVideo = mutableStateOf(SettingsRepository.LIVE_WALLPAPER_DEFAULT_VIDEO)
@@ -1456,15 +1450,7 @@ class MainViewModel : ViewModel() {
             settingsRepository.getPixelSearchbarMusicArtist()
         pixelSearchbarMusicPackage.value =
             settingsRepository.getPixelSearchbarMusicPackage()
-        lockScreenClockId.value = readCurrentLockScreenClockId(context)
-        lockScreenClockWeight.intValue = settingsRepository.getLockScreenClockWeight()
-        lockScreenClockWidth.intValue = settingsRepository.getLockScreenClockWidth()
-        lockScreenClockGrade.intValue = settingsRepository.getLockScreenClockGrade()
-        lockScreenClockRoundness.intValue = settingsRepository.getLockScreenClockRoundness()
-        lockScreenClockColorTone.intValue = settingsRepository.getLockScreenClockColorTone()
-        lockScreenClockSelectedColorId.value =
-            settingsRepository.getLockScreenClockSelectedColorId()
-        lockScreenClockSeedColor.intValue = settingsRepository.getLockScreenClockSeedColor()
+        lockClock.load(context)
         loadShutUpConfigs()
         recentSearches.value = settingsRepository.getRecentSearches()
 
@@ -3197,238 +3183,6 @@ class MainViewModel : ViewModel() {
             } catch (e: Exception) {
                 e.printStackTrace()
             }
-        }
-    }
-
-    /**
-     * Executes the set lock screen clock id operation.
-     *
-     * @param clockId [String] Target clock id.
-     * @param context [Context] Target context.
-     */
-    fun setLockScreenClockId(
-        clockId: String,
-        context: Context,
-    ) {
-        val timestamp = System.currentTimeMillis()
-        val json =
-            if (lockScreenClockSelectedColorId.value == "DEFAULT") {
-                "{\"clockId\":\"$clockId\",\"metadata\":{\"metadataSelectedColorId\":\"DEFAULT\",\"metadataColorToneProgress\":${lockScreenClockColorTone.intValue},\"appliedTimestamp\":$timestamp},\"axes\":[{\"key\":\"wght\",\"value\":${lockScreenClockWeight.intValue}},{\"key\":\"wdth\",\"value\":${lockScreenClockWidth.intValue}},{\"key\":\"ROND\",\"value\":${lockScreenClockRoundness.intValue}}]}"
-            } else {
-                "{\"clockId\":\"$clockId\",\"seedColor\":${lockScreenClockSeedColor.intValue},\"metadata\":{\"metadataSelectedColorId\":\"${lockScreenClockSelectedColorId.value}\",\"metadataColorToneProgress\":${lockScreenClockColorTone.intValue},\"appliedTimestamp\":$timestamp},\"axes\":[{\"key\":\"wght\",\"value\":${lockScreenClockWeight.intValue}},{\"key\":\"wdth\",\"value\":${lockScreenClockWidth.intValue}},{\"key\":\"ROND\",\"value\":${lockScreenClockRoundness.intValue}}]}"
-            }
-        val command = "settings put secure lock_screen_custom_clock_face '$json'"
-        var success = false
-
-        if (PermissionUtils.canWriteSecureSettings(context)) {
-            try {
-                success =
-                    Settings.Secure.putString(
-                        context.contentResolver,
-                        "lock_screen_custom_clock_face",
-                        json,
-                    )
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
-
-        if (!success) {
-            if (ShizukuUtils.hasPermission()) {
-                ShizukuUtils.runCommand(command)
-                success = true
-            } else if (RootUtils.isRootPermissionGranted()) {
-                RootUtils.runCommand(command)
-                success = true
-            }
-        }
-
-        if (success) {
-            lockScreenClockId.value = clockId
-        }
-    }
-
-    fun resetLockScreenClock(context: Context): Boolean {
-        val key = "lock_screen_custom_clock_face"
-        var success = false
-
-        if (PermissionUtils.canWriteSecureSettings(context)) {
-            try {
-                success = Settings.Secure.putString(context.contentResolver, key, null)
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
-
-        if (!success) {
-            val command = "settings delete secure $key"
-            if (ShizukuUtils.hasPermission()) {
-                ShizukuUtils.runCommand(command)
-                success = true
-            } else if (RootUtils.isRootPermissionGranted()) {
-                RootUtils.runCommand(command)
-                success = true
-            }
-        }
-
-        if (success) {
-            lockScreenClockId.value = null
-        }
-        return success
-    }
-
-    /**
-     * Executes the set lock screen clock weight operation.
-     *
-     * @param value [Int] Target value.
-     * @param context [Context] Target context.
-     */
-    fun setLockScreenClockWeight(
-        value: Int,
-        context: Context,
-    ) {
-        lockScreenClockWeight.intValue = value
-        settingsRepository.setLockScreenClockWeight(value)
-        lockScreenClockId.value?.let { setLockScreenClockId(it, context) }
-    }
-
-    /**
-     * Executes the set lock screen clock width operation.
-     *
-     * @param value [Int] Target value.
-     * @param context [Context] Target context.
-     */
-    fun setLockScreenClockWidth(
-        value: Int,
-        context: Context,
-    ) {
-        lockScreenClockWidth.intValue = value
-        settingsRepository.setLockScreenClockWidth(value)
-        lockScreenClockId.value?.let { setLockScreenClockId(it, context) }
-    }
-
-    /**
-     * Executes the set lock screen clock grade operation.
-     *
-     * @param value [Int] Target value.
-     * @param context [Context] Target context.
-     */
-    fun setLockScreenClockGrade(
-        value: Int,
-        context: Context,
-    ) {
-        lockScreenClockGrade.intValue = value
-        settingsRepository.setLockScreenClockGrade(value)
-        lockScreenClockId.value?.let { setLockScreenClockId(it, context) }
-    }
-
-    /**
-     * Executes the set lock screen clock roundness operation.
-     *
-     * @param value [Int] Target value.
-     * @param context [Context] Target context.
-     */
-    fun setLockScreenClockRoundness(
-        value: Int,
-        context: Context,
-    ) {
-        lockScreenClockRoundness.intValue = value
-        settingsRepository.setLockScreenClockRoundness(value)
-        lockScreenClockId.value?.let { setLockScreenClockId(it, context) }
-    }
-
-    /**
-     * Executes the set lock screen clock color tone operation.
-     *
-     * @param value [Int] Target value.
-     * @param context [Context] Target context.
-     */
-    fun setLockScreenClockColorTone(
-        value: Int,
-        context: Context,
-    ) {
-        lockScreenClockColorTone.intValue = value
-        settingsRepository.setLockScreenClockColorTone(value)
-
-        // Update effective seed color based on new tone
-        if (lockScreenClockSelectedColorId.value != "DEFAULT") {
-            val effectiveSeed =
-                calculateEffectiveSeedColor(lockScreenClockSelectedColorId.value, value)
-            lockScreenClockSeedColor.intValue = effectiveSeed
-            settingsRepository.setLockScreenClockSeedColor(effectiveSeed)
-        }
-
-        lockScreenClockId.value?.let { setLockScreenClockId(it, context) }
-    }
-
-    /**
-     * Executes the set lock screen clock color operation.
-     *
-     * @param id [String] Target id.
-     * @param seed [Int] Target seed.
-     * @param context [Context] Target context.
-     */
-    fun setLockScreenClockColor(
-        id: String,
-        seed: Int,
-        context: Context,
-    ) {
-        lockScreenClockSelectedColorId.value = id
-        val effectiveSeed =
-            if (id == "DEFAULT") {
-                0
-            } else {
-                calculateEffectiveSeedColor(
-                    id,
-                    lockScreenClockColorTone.intValue,
-                )
-            }
-        lockScreenClockSeedColor.intValue = effectiveSeed
-        settingsRepository.setLockScreenClockSelectedColorId(id)
-        settingsRepository.setLockScreenClockSeedColor(effectiveSeed)
-        lockScreenClockId.value?.let { setLockScreenClockId(it, context) }
-    }
-
-    private fun calculateEffectiveSeedColor(
-        colorId: String,
-        tone: Int,
-    ): Int {
-        val baseColor =
-            when (colorId) {
-                "RED" -> android.graphics.Color.parseColor("#E57373")
-                "GREEN" -> android.graphics.Color.parseColor("#81C784")
-                "BLUE" -> android.graphics.Color.parseColor("#64B5F6")
-                "YELLOW" -> android.graphics.Color.parseColor("#FFF176")
-                "ORANGE" -> android.graphics.Color.parseColor("#FFB74D")
-                "PURPLE" -> android.graphics.Color.parseColor("#BA68C8")
-                "PINK" -> android.graphics.Color.parseColor("#F06292")
-                "TEAL" -> android.graphics.Color.parseColor("#4DB6AC")
-                else -> return 0
-            }
-        val hsv = FloatArray(3)
-        android.graphics.Color.colorToHSV(baseColor, hsv)
-
-        // Calibrated HSV mapping to match user examples:
-        // Tone 0  -> Saturation ~0.8, Value ~0.35 (Dark, saturated)
-        // Tone 100 -> Saturation ~0.2, Value ~1.0  (Light, pastel)
-        hsv[1] = (0.8f - (tone / 100f) * 0.6f).coerceIn(0f, 1f)
-        hsv[2] = (0.35f + (tone / 100f) * 0.65f).coerceIn(0f, 1f)
-
-        return android.graphics.Color.HSVToColor(hsv)
-    }
-
-    private fun readCurrentLockScreenClockId(context: Context): String? {
-        return try {
-            val raw =
-                Settings.Secure.getString(
-                    context.contentResolver,
-                    "lock_screen_custom_clock_face",
-                ) ?: return null
-            // Extract clockId from JSON string like {"clockId":"DIGITAL_CLOCK_WEATHER"}
-            val match = Regex(""""clockId":\s*"([^"]+)"""").find(raw)
-            match?.groupValues?.getOrNull(1)
-        } catch (e: Exception) {
-            null
         }
     }
 

@@ -22,5 +22,12 @@ class DisplaySettingsTest {
         assertEquals("ambient_music_glance_enabled", DisplaySettings.KEY_AMBIENT_MUSIC_GLANCE_ENABLED)
         assertEquals("ambient_music_glance_docked_mode", DisplaySettings.KEY_AMBIENT_MUSIC_GLANCE_DOCKED_MODE)
         assertEquals("ambient_music_glance_album_art_mode", DisplaySettings.KEY_AMBIENT_MUSIC_GLANCE_ALBUM_ART_MODE)
+        assertEquals("lock_screen_clock_weight", DisplaySettings.KEY_LOCK_SCREEN_CLOCK_WEIGHT)
+        assertEquals("lock_screen_clock_width", DisplaySettings.KEY_LOCK_SCREEN_CLOCK_WIDTH)
+        assertEquals("lock_screen_clock_grade", DisplaySettings.KEY_LOCK_SCREEN_CLOCK_GRADE)
+        assertEquals("lock_screen_clock_roundness", DisplaySettings.KEY_LOCK_SCREEN_CLOCK_ROUNDNESS)
+        assertEquals("lock_screen_clock_color_tone", DisplaySettings.KEY_LOCK_SCREEN_CLOCK_COLOR_TONE)
+        assertEquals("lock_screen_clock_selected_color_id", DisplaySettings.KEY_LOCK_SCREEN_CLOCK_SELECTED_COLOR_ID)
+        assertEquals("lock_screen_clock_seed_color", DisplaySettings.KEY_LOCK_SCREEN_CLOCK_SEED_COLOR)
     }
 }
