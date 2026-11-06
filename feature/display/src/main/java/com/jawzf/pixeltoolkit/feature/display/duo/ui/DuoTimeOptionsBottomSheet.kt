@@ -17,12 +17,12 @@ import com.jawzf.pixeltoolkit.core.design.components.ConfigSliderItem
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
-import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
+import com.jawzf.pixeltoolkit.feature.display.duo.DuoState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DuoTimeOptionsBottomSheet(
-    viewModel: MainViewModel,
+    state: DuoState,
     onDismissRequest: () -> Unit,
 ) {
     val view = LocalView.current
@@ -51,10 +51,10 @@ fun DuoTimeOptionsBottomSheet(
             ) {
                 ConfigSliderItem(
                     title = stringResource(R.string.island_font_scale_title),
-                    value = viewModel.duo.duoTimeTextScale.floatValue,
+                    value = state.duoTimeTextScale.floatValue,
                     onValueChange = {
                         HapticUtil.performUIHaptic(view)
-                        viewModel.duo.setDuoTimeTextScale(it)
+                        state.setDuoTimeTextScale(it)
                     },
                     valueRange = 0.7f..1.6f,
                     increment = 0.05f,

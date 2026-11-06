@@ -17,12 +17,12 @@ import com.jawzf.pixeltoolkit.core.design.cards.IconToggleItem
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
-import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
+import com.jawzf.pixeltoolkit.feature.display.duo.DuoState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DuoBatteryPercentageOptionsBottomSheet(
-    viewModel: MainViewModel,
+    state: DuoState,
     onDismissRequest: () -> Unit,
 ) {
     val view = LocalView.current
@@ -53,10 +53,10 @@ fun DuoBatteryPercentageOptionsBottomSheet(
                     iconRes = R.drawable.rounded_palette_24,
                     title = stringResource(R.string.duo_battery_percentage_only_colored_title),
                     description = stringResource(R.string.duo_battery_percentage_only_colored_desc),
-                    isChecked = viewModel.duo.isDuoBatteryPercentageOnlyColored.value,
+                    isChecked = state.isDuoBatteryPercentageOnlyColored.value,
                     onCheckedChange = { checked ->
                         HapticUtil.performVirtualKeyHaptic(view)
-                        viewModel.duo.setDuoBatteryPercentageOnlyColored(checked)
+                        state.setDuoBatteryPercentageOnlyColored(checked)
                     },
                 )
             }

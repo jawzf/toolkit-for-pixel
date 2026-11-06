@@ -17,12 +17,12 @@ import com.jawzf.pixeltoolkit.core.design.cards.IconToggleItem
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
-import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
+import com.jawzf.pixeltoolkit.feature.display.duo.DuoState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DuoNetworkOptionsBottomSheet(
-    viewModel: MainViewModel,
+    state: DuoState,
     onDismissRequest: () -> Unit,
 ) {
     val view = LocalView.current
@@ -53,10 +53,10 @@ fun DuoNetworkOptionsBottomSheet(
                     iconRes = R.drawable.rounded_android_wifi_3_bar_24,
                     title = stringResource(R.string.duo_differentiate_wifi_title),
                     description = stringResource(R.string.duo_differentiate_wifi_desc),
-                    isChecked = viewModel.duo.isDuoDifferentiateWifi.value,
+                    isChecked = state.isDuoDifferentiateWifi.value,
                     onCheckedChange = { checked ->
                         HapticUtil.performVirtualKeyHaptic(view)
-                        viewModel.duo.setDuoDifferentiateWifi(checked)
+                        state.setDuoDifferentiateWifi(checked)
                     },
                 )
             }

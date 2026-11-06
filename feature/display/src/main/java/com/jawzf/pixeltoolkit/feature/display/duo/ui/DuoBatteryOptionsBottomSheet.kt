@@ -25,11 +25,15 @@ import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.pickers.ColorSwatchPicker
 import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
-import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
+import com.jawzf.pixeltoolkit.feature.display.duo.DuoState
 
 @Composable
 fun BatteryColorOptions(
-    viewModel: MainViewModel,
+    state: DuoState,
+    isIslandBatteryIdleColorEnabled: Boolean,
+    islandBatteryIdleColor: String,
+    onIslandBatteryIdleColorEnabledChange: (Boolean) -> Unit,
+    onIslandBatteryIdleColorChange: (String) -> Unit,
     showIdleColor: Boolean = false,
     showLevels: Boolean = false,
 ) {
@@ -42,14 +46,14 @@ fun BatteryColorOptions(
             IconToggleItem(
                 iconRes = R.drawable.rounded_battery_alert_24,
                 title = stringResource(R.string.duo_battery_low_color_title),
-                isChecked = viewModel.duo.isDuoBatteryLowColorEnabled.value,
+                isChecked = state.isDuoBatteryLowColorEnabled.value,
                 onCheckedChange = { checked ->
                     HapticUtil.performVirtualKeyHaptic(view)
-                    viewModel.duo.setDuoBatteryLowColorEnabled(checked)
+                    state.setDuoBatteryLowColorEnabled(checked)
                 },
             )
             AnimatedVisibility(
-                visible = viewModel.duo.isDuoBatteryLowColorEnabled.value,
+                visible = state.isDuoBatteryLowColorEnabled.value,
                 enter = expandVertically() + fadeIn(),
                 exit = shrinkVertically() + fadeOut(),
             ) {
@@ -57,15 +61,15 @@ fun BatteryColorOptions(
                     if (showLevels) {
                         LevelSlider(
                             title = stringResource(R.string.duo_battery_low_level_title),
-                            level = viewModel.duo.duoBatteryLowLevel.intValue,
+                            level = state.duoBatteryLowLevel.intValue,
                             range = (DuoBatteryLevels.MIN + 1)..DuoBatteryLevels.MAX,
-                            onLevelChange = viewModel.duo::setDuoBatteryLowLevel,
+                            onLevelChange = state::setDuoBatteryLowLevel,
                         )
                     }
                     ColorSwatchPicker(
-                        selectedColorHex = viewModel.duo.duoBatteryLowColor.value,
+                        selectedColorHex = state.duoBatteryLowColor.value,
                         onColorSelected = { hex ->
-                            viewModel.duo.setDuoBatteryLowColor(hex)
+                            state.setDuoBatteryLowColor(hex)
                         },
                     )
                 }
@@ -79,14 +83,14 @@ fun BatteryColorOptions(
             IconToggleItem(
                 iconRes = R.drawable.rounded_battery_android_frame_alert_24,
                 title = stringResource(R.string.duo_battery_critical_color_title),
-                isChecked = viewModel.duo.isDuoBatteryCriticalColorEnabled.value,
+                isChecked = state.isDuoBatteryCriticalColorEnabled.value,
                 onCheckedChange = { checked ->
                     HapticUtil.performVirtualKeyHaptic(view)
-                    viewModel.duo.setDuoBatteryCriticalColorEnabled(checked)
+                    state.setDuoBatteryCriticalColorEnabled(checked)
                 },
             )
             AnimatedVisibility(
-                visible = viewModel.duo.isDuoBatteryCriticalColorEnabled.value,
+                visible = state.isDuoBatteryCriticalColorEnabled.value,
                 enter = expandVertically() + fadeIn(),
                 exit = shrinkVertically() + fadeOut(),
             ) {
@@ -94,15 +98,15 @@ fun BatteryColorOptions(
                     if (showLevels) {
                         LevelSlider(
                             title = stringResource(R.string.duo_battery_critical_level_title),
-                            level = viewModel.duo.duoBatteryCriticalLevel.intValue,
+                            level = state.duoBatteryCriticalLevel.intValue,
                             range = DuoBatteryLevels.MIN..(DuoBatteryLevels.MAX - 1),
-                            onLevelChange = viewModel.duo::setDuoBatteryCriticalLevel,
+                            onLevelChange = state::setDuoBatteryCriticalLevel,
                         )
                     }
                     ColorSwatchPicker(
-                        selectedColorHex = viewModel.duo.duoBatteryCriticalColor.value,
+                        selectedColorHex = state.duoBatteryCriticalColor.value,
                         onColorSelected = { hex ->
-                            viewModel.duo.setDuoBatteryCriticalColor(hex)
+                            state.setDuoBatteryCriticalColor(hex)
                         },
                     )
                 }
@@ -117,21 +121,21 @@ fun BatteryColorOptions(
             IconToggleItem(
                 iconRes = R.drawable.rounded_battery_android_frame_plus_24,
                 title = stringResource(R.string.duo_battery_power_save_color_title),
-                isChecked = viewModel.duo.isDuoBatteryPowerSaveColorEnabled.value,
+                isChecked = state.isDuoBatteryPowerSaveColorEnabled.value,
                 onCheckedChange = { checked ->
                     HapticUtil.performVirtualKeyHaptic(view)
-                    viewModel.duo.setDuoBatteryPowerSaveColorEnabled(checked)
+                    state.setDuoBatteryPowerSaveColorEnabled(checked)
                 },
             )
             AnimatedVisibility(
-                visible = viewModel.duo.isDuoBatteryPowerSaveColorEnabled.value,
+                visible = state.isDuoBatteryPowerSaveColorEnabled.value,
                 enter = expandVertically() + fadeIn(),
                 exit = shrinkVertically() + fadeOut(),
             ) {
                 ColorSwatchPicker(
-                    selectedColorHex = viewModel.duo.duoBatteryPowerSaveColor.value,
+                    selectedColorHex = state.duoBatteryPowerSaveColor.value,
                     onColorSelected = { hex ->
-                        viewModel.duo.setDuoBatteryPowerSaveColor(hex)
+                        state.setDuoBatteryPowerSaveColor(hex)
                     },
                 )
             }
@@ -145,21 +149,21 @@ fun BatteryColorOptions(
             IconToggleItem(
                 iconRes = R.drawable.rounded_bolt_24,
                 title = stringResource(R.string.duo_battery_charging_color_title),
-                isChecked = viewModel.duo.isDuoBatteryChargingColorEnabled.value,
+                isChecked = state.isDuoBatteryChargingColorEnabled.value,
                 onCheckedChange = { checked ->
                     HapticUtil.performVirtualKeyHaptic(view)
-                    viewModel.duo.setDuoBatteryChargingColorEnabled(checked)
+                    state.setDuoBatteryChargingColorEnabled(checked)
                 },
             )
             AnimatedVisibility(
-                visible = viewModel.duo.isDuoBatteryChargingColorEnabled.value,
+                visible = state.isDuoBatteryChargingColorEnabled.value,
                 enter = expandVertically() + fadeIn(),
                 exit = shrinkVertically() + fadeOut(),
             ) {
                 ColorSwatchPicker(
-                    selectedColorHex = viewModel.duo.duoBatteryChargingColor.value,
+                    selectedColorHex = state.duoBatteryChargingColor.value,
                     onColorSelected = { hex ->
-                        viewModel.duo.setDuoBatteryChargingColor(hex)
+                        state.setDuoBatteryChargingColor(hex)
                     },
                     allowAuto = true,
                 )
@@ -174,21 +178,21 @@ fun BatteryColorOptions(
                 IconToggleItem(
                     iconRes = R.drawable.rounded_battery_android_frame_6_24,
                     title = stringResource(R.string.island_battery_idle_color_title),
-                    isChecked = viewModel.isIslandBatteryIdleColorEnabled.value,
+                    isChecked = isIslandBatteryIdleColorEnabled,
                     onCheckedChange = { checked ->
                         HapticUtil.performVirtualKeyHaptic(view)
-                        viewModel.setIslandBatteryIdleColorEnabled(checked)
+                        onIslandBatteryIdleColorEnabledChange(checked)
                     },
                 )
                 AnimatedVisibility(
-                    visible = viewModel.isIslandBatteryIdleColorEnabled.value,
+                    visible = isIslandBatteryIdleColorEnabled,
                     enter = expandVertically() + fadeIn(),
                     exit = shrinkVertically() + fadeOut(),
                 ) {
                     ColorSwatchPicker(
-                        selectedColorHex = viewModel.islandBatteryIdleColor.value,
+                        selectedColorHex = islandBatteryIdleColor,
                         onColorSelected = { hex ->
-                            viewModel.setIslandBatteryIdleColor(hex)
+                            onIslandBatteryIdleColorChange(hex)
                         },
                     )
                 }
@@ -222,7 +226,11 @@ private fun LevelSlider(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DuoBatteryOptionsBottomSheet(
-    viewModel: MainViewModel,
+    state: DuoState,
+    isIslandBatteryIdleColorEnabled: Boolean,
+    islandBatteryIdleColor: String,
+    onIslandBatteryIdleColorEnabledChange: (Boolean) -> Unit,
+    onIslandBatteryIdleColorChange: (String) -> Unit,
     onDismissRequest: () -> Unit,
 ) {
     ToolkitBottomSheet(
@@ -243,7 +251,14 @@ fun DuoBatteryOptionsBottomSheet(
                 modifier = Modifier.padding(start = 8.dp, bottom = 4.dp),
             )
 
-            BatteryColorOptions(viewModel, showLevels = true)
+            BatteryColorOptions(
+                state = state,
+                isIslandBatteryIdleColorEnabled = isIslandBatteryIdleColorEnabled,
+                islandBatteryIdleColor = islandBatteryIdleColor,
+                onIslandBatteryIdleColorEnabledChange = onIslandBatteryIdleColorEnabledChange,
+                onIslandBatteryIdleColorChange = onIslandBatteryIdleColorChange,
+                showLevels = true,
+            )
         }
     }
 }

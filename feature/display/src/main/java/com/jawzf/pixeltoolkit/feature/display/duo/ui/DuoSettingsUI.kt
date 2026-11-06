@@ -1,6 +1,5 @@
 package com.jawzf.pixeltoolkit.feature.display.duo.ui
 
-import android.os.Build
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
@@ -8,14 +7,8 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
-import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.MaterialTheme
@@ -27,64 +20,53 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.core.data.action.Action
-import com.jawzf.pixeltoolkit.core.data.prefs.AppSelection
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.cards.IconToggleItem
-import com.jawzf.pixeltoolkit.core.design.components.CategoryExpandableSection
 import com.jawzf.pixeltoolkit.core.design.components.ConfigSliderItem
+import com.jawzf.pixeltoolkit.core.design.components.RemapActionItem
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.modifiers.highlight
 import com.jawzf.pixeltoolkit.core.design.pickers.ColorSwatchPicker
+import com.jawzf.pixeltoolkit.core.design.sheets.PermissionItem
 import com.jawzf.pixeltoolkit.core.design.sheets.PermissionsBottomSheet
 import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
-import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
-import com.jawzf.pixeltoolkit.domain.diy.ActionRegistry
-import com.jawzf.pixeltoolkit.domain.diy.displayName
-import com.jawzf.pixeltoolkit.domain.diy.matches
-import com.jawzf.pixeltoolkit.feature.apps.AppsSettings
-import com.jawzf.pixeltoolkit.feature.display.duo.ui.DuoBatteryOptionsBottomSheet
-import com.jawzf.pixeltoolkit.feature.display.duo.ui.DuoBatteryPercentageOptionsBottomSheet
-import com.jawzf.pixeltoolkit.feature.display.duo.ui.DuoNetworkOptionsBottomSheet
-import com.jawzf.pixeltoolkit.feature.display.duo.ui.DuoTimeOptionsBottomSheet
-import com.jawzf.pixeltoolkit.ui.core.sheets.AppSelectionSheet
-import com.jawzf.pixeltoolkit.ui.core.sheets.CustomSettingsSheet
-import com.jawzf.pixeltoolkit.ui.core.sheets.DeviceEffectsSettingsSheet
-import com.jawzf.pixeltoolkit.ui.core.sheets.DimWallpaperSettingsSheet
-import com.jawzf.pixeltoolkit.ui.core.sheets.FreezeTagSettingsSheet
-import com.jawzf.pixeltoolkit.ui.core.sheets.HilightEffectSettingsSheet
-import com.jawzf.pixeltoolkit.ui.core.sheets.OpenActivityPicker
-import com.jawzf.pixeltoolkit.ui.core.sheets.ScreenOffSettingsSheet
-import com.jawzf.pixeltoolkit.ui.core.sheets.SingleAppSelectionSheet
-import com.jawzf.pixeltoolkit.ui.core.sheets.SometimesEssentialsSettingsSheet
-import com.jawzf.pixeltoolkit.ui.core.sheets.SoundModeSettingsSheet
-import com.jawzf.pixeltoolkit.ui.features.apps.sheets.KeyboardSelectionSheet
-import com.jawzf.pixeltoolkit.ui.features.audio.sheets.SetModeSettingsSheet
-import com.jawzf.pixeltoolkit.ui.features.audio.sheets.SetVolumeSettingsSheet
-import com.jawzf.pixeltoolkit.ui.features.system.LikeSongSettingsSheet
-import com.jawzf.pixeltoolkit.ui.features.system.RemapActionItem
-import com.jawzf.pixeltoolkit.utils.PermissionUIHelper
-import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
+import com.jawzf.pixeltoolkit.feature.display.duo.DuoState
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun DuoSettingsUI(
-    viewModel: MainViewModel,
+    state: DuoState,
+    isFoldableCameraDevice: Boolean,
+    isUnsupportedFeaturesEnabled: Boolean,
+    isAccessibilityEnabled: Boolean,
+    isNotificationListenerEnabled: Boolean,
+    isIslandEnabled: Boolean,
+    isIslandBatteryIdleColorEnabled: Boolean,
+    islandBatteryIdleColor: String,
+    onIslandBatteryIdleColorEnabledChange: (Boolean) -> Unit,
+    onIslandBatteryIdleColorChange: (String) -> Unit,
+    permissionItemsFor: (List<String>) -> List<PermissionItem>,
+    onRefreshPermissions: () -> Unit,
+    actionLabel: (Action) -> String,
+    gesturePicker: @Composable (currentAction: Action?, onActionSelected: (Action?) -> Unit, onClosed: () -> Unit) -> Unit,
+    mediaAppSelectionSheet: @Composable (onDismiss: () -> Unit) -> Unit,
     modifier: Modifier = Modifier,
     highlightSetting: String? = null,
 ) {
     val context = LocalContext.current
     val view = LocalView.current
-    val displayConfiguration = androidx.compose.ui.platform.LocalConfiguration.current
+    val displayConfiguration = LocalConfiguration.current
     LaunchedEffect(displayConfiguration.screenWidthDp, displayConfiguration.screenHeightDp,
         displayConfiguration.orientation) {
-        viewModel.duo.refreshDuoCameraPlacement()
+        state.refreshDuoCameraPlacement()
     }
 
     var requestingPermissionsFor by remember { mutableStateOf<Pair<Int, List<String>>?>(null) }
@@ -95,77 +77,32 @@ fun DuoSettingsUI(
     var showMediaAppSelectionSheet by remember { mutableStateOf(false) }
 
     var pickingActionForGesture by remember { mutableStateOf<String?>(null) }
-    var activeConfigGesture by remember { mutableStateOf<String?>(null) }
     var showSlideModeSheet by remember { mutableStateOf(false) }
-
-    var showFlashlightOptions by remember { mutableStateOf(false) }
-    val showLikeSongOptions = remember { mutableStateOf(false) }
-
-    var showDimSettings by remember { mutableStateOf(false) }
-    var showScreenOffSettings by remember { mutableStateOf(false) }
-    var showDeviceEffectsSettings by remember { mutableStateOf(false) }
-    var showSoundModeSettings by remember { mutableStateOf(false) }
-    var showSetModeSettings by remember { mutableStateOf(false) }
-    var showSometimesEssentialsSettings by remember { mutableStateOf(false) }
-    var showFreezeTagSettings by remember { mutableStateOf(false) }
-    var showOpenAppSettings by remember { mutableStateOf(false) }
-    var showOpenActivitySettings by remember { mutableStateOf(false) }
-    var showFreezeAppsSettings by remember { mutableStateOf(false) }
-    var temporarySelectedAppsForAction by remember { mutableStateOf<List<String>>(emptyList()) }
-    var showSetKeyboardSheet by remember { mutableStateOf(false) }
-    var showCustomSettingsSettings by remember { mutableStateOf(false) }
-    var showSetVolumeSettings by remember { mutableStateOf(false) }
-    var showHilightSettings by remember { mutableStateOf(false) }
-    var configAction by remember { mutableStateOf<Action?>(null) }
 
     var showPermissionSheet by remember { mutableStateOf(false) }
     var permissionKeysToShow by remember { mutableStateOf<List<String>>(emptyList()) }
     var permissionFeatureTitle by remember { mutableStateOf<Any>("") }
 
     LaunchedEffect(Unit) {
-        viewModel.check(context)
-    }
-
-    fun getMissingPermissionsHelper(action: Action?): List<String> {
-        if (action == null) return emptyList()
-        val resolvedPermissions = action.permissions.map { permKey ->
-            if (permKey == "SHIZUKU" || permKey == "ROOT") {
-                if (ShellUtils.isRootEnabled(context)) "ROOT" else "SHIZUKU"
-            } else {
-                permKey
-            }
-        }.distinct()
-
-        return resolvedPermissions.filter { permKey ->
-            when (permKey) {
-                "SHIZUKU" -> !viewModel.isShizukuPermissionGranted.value
-                "ROOT" -> !viewModel.isRootPermissionGranted.value
-                "WRITE_SETTINGS" -> !viewModel.isWriteSettingsEnabled.value
-                "NOTIFICATION_POLICY" -> !viewModel.isNotificationPolicyAccessGranted.value
-                "WRITE_SECURE_SETTINGS" -> !viewModel.isWriteSecureSettingsEnabled.value
-                "DRAW_OVERLAYS" -> !viewModel.isOverlayPermissionGranted.value
-                "ACCESSIBILITY" -> !viewModel.isAccessibilityEnabled.value
-                else -> false
-            }
-        }
+        onRefreshPermissions()
     }
 
     fun applyActionForGesture(gesture: String?, action: Action?) {
         when (gesture) {
-            "tap" -> viewModel.duo.setDuoTapAction(action)
-            "double_tap" -> viewModel.duo.setDuoDoubleTapAction(action)
-            "long_press" -> viewModel.duo.setDuoLongPressAction(action)
-            "swipe_down" -> viewModel.duo.setDuoSwipeDownAction(action)
+            "tap" -> state.setDuoTapAction(action)
+            "double_tap" -> state.setDuoDoubleTapAction(action)
+            "long_press" -> state.setDuoLongPressAction(action)
+            "swipe_down" -> state.setDuoSwipeDownAction(action)
         }
     }
 
     if (requestingPermissionsFor != null) {
         val (featureTitle, permKeys) = requestingPermissionsFor!!
-        val permissionItems = PermissionUIHelper.getPermissionItems(permKeys, context, viewModel)
+        val permissionItems = permissionItemsFor(permKeys)
         PermissionsBottomSheet(
             onDismissRequest = {
                 requestingPermissionsFor = null
-                viewModel.check(context)
+                onRefreshPermissions()
             },
             featureTitle = featureTitle,
             permissions = permissionItems,
@@ -186,13 +123,13 @@ fun DuoSettingsUI(
                 iconRes = R.drawable.rounded_motion_play_24,
                 title = stringResource(R.string.duo_enable_title),
                 description = stringResource(R.string.duo_enable_desc),
-                isChecked = viewModel.duo.isDuoEnabled.value,
+                isChecked = state.isDuoEnabled.value,
                 onCheckedChange = { checked ->
                     HapticUtil.performVirtualKeyHaptic(view)
-                    if (checked && !viewModel.isAccessibilityEnabled.value) {
+                    if (checked && !isAccessibilityEnabled) {
                         requestingPermissionsFor = Pair(R.string.duo_title, listOf("ACCESSIBILITY"))
                     } else {
-                        viewModel.duo.setDuoEnabled(checked)
+                        state.setDuoEnabled(checked)
                     }
                 },
                 modifier = Modifier.highlight(highlightSetting == "duo_enabled"),
@@ -210,7 +147,7 @@ fun DuoSettingsUI(
             spacing = 2.dp,
             cornerRadius = 24.dp,
         ) {
-            if (viewModel.isFoldableCameraDevice.value) {
+            if (isFoldableCameraDevice) {
                 Text(
                     text = stringResource(R.string.foldable_camera_profile_hint),
                     style = MaterialTheme.typography.bodySmall,
@@ -220,40 +157,40 @@ fun DuoSettingsUI(
                 IconToggleItem(
                     iconRes = R.drawable.rounded_center_focus_strong_24,
                     title = stringResource(R.string.foldable_orientation_profiles_title),
-                    isChecked = viewModel.duo.isDuoOrientationProfiles.value,
-                    onCheckedChange = { viewModel.duo.setDuoOrientationProfiles(it) },
+                    isChecked = state.isDuoOrientationProfiles.value,
+                    onCheckedChange = { state.setDuoOrientationProfiles(it) },
                 )
                 IconToggleItem(
                     iconRes = R.drawable.rounded_visibility_off_24,
                     title = stringResource(R.string.foldable_hide_current_orientation_title),
-                    isChecked = viewModel.duo.isDuoHiddenInCurrentOrientation.value,
-                    onCheckedChange = { viewModel.duo.setDuoHiddenInCurrentOrientation(it) },
+                    isChecked = state.isDuoHiddenInCurrentOrientation.value,
+                    onCheckedChange = { state.setDuoHiddenInCurrentOrientation(it) },
                 )
             }
             IconToggleItem(
                 iconRes = R.drawable.rounded_center_focus_strong_24,
                 title = stringResource(R.string.duo_auto_detect_title),
                 description = stringResource(R.string.duo_auto_detect_desc),
-                isChecked = viewModel.duo.isDuoAutoDetect.value,
+                isChecked = state.isDuoAutoDetect.value,
                 onCheckedChange = { checked ->
                     HapticUtil.performVirtualKeyHaptic(view)
-                    viewModel.duo.setDuoAutoDetect(checked)
+                    state.setDuoAutoDetect(checked)
                 },
                 modifier = Modifier.highlight(highlightSetting == "duo_use_auto_detect"),
             )
 
             AnimatedVisibility(
-                visible = !viewModel.duo.isDuoAutoDetect.value,
+                visible = !state.isDuoAutoDetect.value,
                 enter = fadeIn() + expandVertically(),
                 exit = fadeOut() + shrinkVertically(),
             ) {
                 Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
                     ConfigSliderItem(
                         title = stringResource(R.string.duo_camera_offset_x_title),
-                        value = viewModel.duo.duoCameraOffsetX.floatValue,
+                        value = state.duoCameraOffsetX.floatValue,
                         onValueChange = {
                             HapticUtil.performUIHaptic(view)
-                            viewModel.duo.setDuoCameraOffsetX(it)
+                            state.setDuoCameraOffsetX(it)
                         },
                         valueRange = 0f..100f,
                         increment = 1f,
@@ -262,10 +199,10 @@ fun DuoSettingsUI(
                     )
                     ConfigSliderItem(
                         title = stringResource(R.string.duo_camera_offset_y_title),
-                        value = viewModel.duo.duoCameraOffsetY.floatValue,
+                        value = state.duoCameraOffsetY.floatValue,
                         onValueChange = {
                             HapticUtil.performUIHaptic(view)
-                            viewModel.duo.setDuoCameraOffsetY(it)
+                            state.setDuoCameraOffsetY(it)
                         },
                         valueRange = 0f..20f,
                         increment = 0.5f,
@@ -276,7 +213,7 @@ fun DuoSettingsUI(
             }
 
             AnimatedVisibility(
-                visible = viewModel.duo.hasMultipleDuoDisplays.value,
+                visible = state.hasMultipleDuoDisplays.value,
                 enter = fadeIn() + expandVertically(),
                 exit = fadeOut() + shrinkVertically(),
             ) {
@@ -290,10 +227,10 @@ fun DuoSettingsUI(
 
             ConfigSliderItem(
                 title = stringResource(R.string.duo_camera_size_title),
-                value = viewModel.duo.duoCameraSize.floatValue,
+                value = state.duoCameraSize.floatValue,
                 onValueChange = {
                     HapticUtil.performUIHaptic(view)
-                    viewModel.duo.setDuoCameraSize(it)
+                    state.setDuoCameraSize(it)
                 },
                 valueRange = 0.05f..2.0f,
                 increment = 0.05f,
@@ -315,10 +252,10 @@ fun DuoSettingsUI(
         ) {
             ConfigSliderItem(
                 title = stringResource(R.string.duo_ring_radius_title),
-                value = viewModel.duo.duoRingRadius.floatValue,
+                value = state.duoRingRadius.floatValue,
                 onValueChange = {
                     HapticUtil.performUIHaptic(view)
-                    viewModel.duo.setDuoRingRadius(it)
+                    state.setDuoRingRadius(it)
                 },
                 valueRange = 0.1f..1.6f,
                 increment = 0.05f,
@@ -327,10 +264,10 @@ fun DuoSettingsUI(
             )
             ConfigSliderItem(
                 title = stringResource(R.string.duo_arc_thickness_title),
-                value = viewModel.duo.duoArcThickness.floatValue,
+                value = state.duoArcThickness.floatValue,
                 onValueChange = {
                     HapticUtil.performUIHaptic(view)
-                    viewModel.duo.setDuoArcThickness(it)
+                    state.setDuoArcThickness(it)
                 },
                 valueRange = 0.5f..10f,
                 increment = 0.5f,
@@ -339,10 +276,10 @@ fun DuoSettingsUI(
             )
             ConfigSliderItem(
                 title = stringResource(R.string.duo_dot_size_title),
-                value = viewModel.duo.duoDotSize.floatValue,
+                value = state.duoDotSize.floatValue,
                 onValueChange = {
                     HapticUtil.performUIHaptic(view)
-                    viewModel.duo.setDuoDotSize(it)
+                    state.setDuoDotSize(it)
                 },
                 valueRange = 0.5f..8f,
                 increment = 0.5f,
@@ -365,10 +302,10 @@ fun DuoSettingsUI(
             IconToggleItem(
                 iconRes = R.drawable.rounded_battery_charging_60_24,
                 title = stringResource(R.string.duo_show_battery_title),
-                isChecked = viewModel.duo.isDuoShowBattery.value,
+                isChecked = state.isDuoShowBattery.value,
                 onCheckedChange = { checked ->
                     HapticUtil.performVirtualKeyHaptic(view)
-                    viewModel.duo.setDuoShowBattery(checked)
+                    state.setDuoShowBattery(checked)
                 },
                 onSettingsClick = {
                     showBatteryOptionsSheet = true
@@ -378,11 +315,11 @@ fun DuoSettingsUI(
             IconToggleItem(
                 iconRes = R.drawable.rounded_battery_android_frame_6_24,
                 title = stringResource(R.string.duo_show_battery_percentage_title),
-                isChecked = viewModel.duo.isDuoShowBatteryPercentage.value,
-                enabled = viewModel.duo.isDuoShowBattery.value,
+                isChecked = state.isDuoShowBatteryPercentage.value,
+                enabled = state.isDuoShowBattery.value,
                 onCheckedChange = { checked ->
                     HapticUtil.performVirtualKeyHaptic(view)
-                    viewModel.duo.setDuoShowBatteryPercentage(checked)
+                    state.setDuoShowBatteryPercentage(checked)
                 },
                 onSettingsClick = {
                     showBatteryPercentageOptionsSheet = true
@@ -392,11 +329,11 @@ fun DuoSettingsUI(
             IconToggleItem(
                 iconRes = R.drawable.rounded_signal_cellular_alt_24,
                 title = stringResource(R.string.duo_show_networks_title),
-                isChecked = viewModel.duo.isDuoShowNetworks.value,
-                enabled = viewModel.duo.isDuoShowBattery.value,
+                isChecked = state.isDuoShowNetworks.value,
+                enabled = state.isDuoShowBattery.value,
                 onCheckedChange = { checked ->
                     HapticUtil.performVirtualKeyHaptic(view)
-                    viewModel.duo.setDuoShowNetworks(checked)
+                    state.setDuoShowNetworks(checked)
                 },
                 onSettingsClick = {
                     showNetworkOptionsSheet = true
@@ -406,11 +343,11 @@ fun DuoSettingsUI(
             IconToggleItem(
                 iconRes = R.drawable.rounded_schedule_24,
                 title = stringResource(R.string.duo_show_time_title),
-                isChecked = viewModel.duo.isDuoShowTime.value,
-                enabled = viewModel.duo.isDuoShowBattery.value,
+                isChecked = state.isDuoShowTime.value,
+                enabled = state.isDuoShowBattery.value,
                 onCheckedChange = { checked ->
                     HapticUtil.performVirtualKeyHaptic(view)
-                    viewModel.duo.setDuoShowTime(checked)
+                    state.setDuoShowTime(checked)
                 },
                 onSettingsClick = {
                     showTimeOptionsSheet = true
@@ -420,13 +357,13 @@ fun DuoSettingsUI(
             IconToggleItem(
                 iconRes = R.drawable.rounded_motion_play_24,
                 title = stringResource(R.string.duo_show_media_title),
-                isChecked = viewModel.duo.isDuoShowMedia.value,
+                isChecked = state.isDuoShowMedia.value,
                 onCheckedChange = { checked ->
                     HapticUtil.performVirtualKeyHaptic(view)
-                    if (checked && !viewModel.isNotificationListenerEnabled.value) {
+                    if (checked && !isNotificationListenerEnabled) {
                         requestingPermissionsFor = Pair(R.string.duo_title, listOf("NOTIFICATION_LISTENER"))
                     } else {
-                        viewModel.duo.setDuoShowMedia(checked)
+                        state.setDuoShowMedia(checked)
                     }
                 },
                 onSettingsClick = {
@@ -435,17 +372,17 @@ fun DuoSettingsUI(
                 modifier = Modifier.highlight(highlightSetting == "duo_show_media"),
             )
             AnimatedVisibility(
-                visible = viewModel.duo.isDuoShowMedia.value,
+                visible = state.isDuoShowMedia.value,
                 enter = expandVertically() + fadeIn(),
                 exit = shrinkVertically() + fadeOut(),
             ) {
                 IconToggleItem(
                     iconRes = R.drawable.rounded_rotate_right_24,
                     title = stringResource(R.string.duo_rotate_album_art_title),
-                    isChecked = viewModel.duo.isDuoRotateAlbumArt.value,
+                    isChecked = state.isDuoRotateAlbumArt.value,
                     onCheckedChange = { checked ->
                         HapticUtil.performVirtualKeyHaptic(view)
-                        viewModel.duo.setDuoRotateAlbumArt(checked)
+                        state.setDuoRotateAlbumArt(checked)
                     },
                     modifier = Modifier.highlight(highlightSetting == "duo_rotate_album_art"),
                 )
@@ -453,13 +390,13 @@ fun DuoSettingsUI(
             IconToggleItem(
                 iconRes = R.drawable.rounded_downloading_24,
                 title = stringResource(R.string.duo_show_progress_title),
-                isChecked = viewModel.duo.isDuoShowProgress.value,
+                isChecked = state.isDuoShowProgress.value,
                 onCheckedChange = { checked ->
                     HapticUtil.performVirtualKeyHaptic(view)
-                    if (checked && !viewModel.isNotificationListenerEnabled.value) {
+                    if (checked && !isNotificationListenerEnabled) {
                         requestingPermissionsFor = Pair(R.string.duo_title, listOf("NOTIFICATION_LISTENER"))
                     } else {
-                        viewModel.duo.setDuoShowProgress(checked)
+                        state.setDuoShowProgress(checked)
                     }
                 },
                 modifier = Modifier.highlight(highlightSetting == "duo_show_progress"),
@@ -467,10 +404,10 @@ fun DuoSettingsUI(
             IconToggleItem(
                 iconRes = R.drawable.rounded_flashlight_on_24,
                 title = stringResource(R.string.duo_show_flashlight_title),
-                isChecked = viewModel.duo.isDuoShowFlashlight.value,
+                isChecked = state.isDuoShowFlashlight.value,
                 onCheckedChange = { checked ->
                     HapticUtil.performVirtualKeyHaptic(view)
-                    viewModel.duo.setDuoShowFlashlight(checked)
+                    state.setDuoShowFlashlight(checked)
                 },
                 modifier = Modifier.highlight(highlightSetting == "duo_show_flashlight"),
             )
@@ -490,97 +427,97 @@ fun DuoSettingsUI(
             IconToggleItem(
                 iconRes = R.drawable.rounded_palette_24,
                 title = stringResource(R.string.duo_material_you_title),
-                isChecked = viewModel.duo.isDuoUseMaterialYou.value,
+                isChecked = state.isDuoUseMaterialYou.value,
                 onCheckedChange = { checked ->
                     HapticUtil.performVirtualKeyHaptic(view)
-                    viewModel.duo.setDuoUseMaterialYou(checked)
+                    state.setDuoUseMaterialYou(checked)
                 },
                 modifier = Modifier.highlight(highlightSetting == "duo_use_material_you"),
             )
             AnimatedVisibility(
-                visible = !viewModel.duo.isDuoUseMaterialYou.value,
+                visible = !state.isDuoUseMaterialYou.value,
                 enter = expandVertically() + fadeIn(),
                 exit = shrinkVertically() + fadeOut(),
             ) {
                 ColorSwatchPicker(
-                    selectedColorHex = viewModel.duo.duoCustomColor.value,
+                    selectedColorHex = state.duoCustomColor.value,
                     onColorSelected = { hex ->
-                        viewModel.duo.setDuoCustomColor(hex)
+                        state.setDuoCustomColor(hex)
                     },
                 )
             }
             IconToggleItem(
                 iconRes = R.drawable.rounded_pinch_24,
                 title = stringResource(R.string.island_hide_on_shade_title),
-                isChecked = viewModel.duo.isDuoHideOnShade.value,
+                isChecked = state.isDuoHideOnShade.value,
                 onCheckedChange = { checked ->
                     HapticUtil.performVirtualKeyHaptic(view)
-                    viewModel.duo.setDuoHideOnShade(checked)
+                    state.setDuoHideOnShade(checked)
                 },
                 modifier = Modifier.highlight(highlightSetting == "duo_hide_on_shade"),
             )
             IconToggleItem(
                 iconRes = R.drawable.rounded_fullscreen_portrait_24,
                 title = stringResource(R.string.keep_in_full_screen_title),
-                isChecked = viewModel.duo.isDuoKeepInFullscreen.value,
+                isChecked = state.isDuoKeepInFullscreen.value,
                 onCheckedChange = { checked ->
                     HapticUtil.performVirtualKeyHaptic(view)
-                    viewModel.duo.setDuoKeepInFullscreen(checked)
+                    state.setDuoKeepInFullscreen(checked)
                 },
                 modifier = Modifier.highlight(highlightSetting == "duo_keep_in_fullscreen"),
             )
             AnimatedVisibility(
-                visible = viewModel.duo.isDuoKeepInFullscreen.value,
+                visible = state.isDuoKeepInFullscreen.value,
                 enter = expandVertically() + fadeIn(),
                 exit = shrinkVertically() + fadeOut(),
             ) {
                 IconToggleItem(
                     iconRes = R.drawable.rounded_do_not_touch_24,
                     title = stringResource(R.string.disable_interactions_in_full_screen_title),
-                    isChecked = viewModel.duo.isDuoDisableInteractionsInFullscreen.value,
+                    isChecked = state.isDuoDisableInteractionsInFullscreen.value,
                     onCheckedChange = { checked ->
                         HapticUtil.performVirtualKeyHaptic(view)
-                        viewModel.duo.setDuoDisableInteractionsInFullscreen(checked)
+                        state.setDuoDisableInteractionsInFullscreen(checked)
                     },
                     modifier = Modifier.highlight(highlightSetting == "duo_disable_interactions_in_fullscreen"),
                 )
             }
-            val areUnsupportedFeaturesEnabled = viewModel.isEnableUnsupportedFeatures.value
+            val areUnsupportedFeaturesEnabled = isUnsupportedFeaturesEnabled
             IconToggleItem(
                 iconRes = R.drawable.rounded_mobile_off_24,
                 title = stringResource(R.string.duo_hide_when_screen_off_title),
-                isChecked = if (areUnsupportedFeaturesEnabled) viewModel.duo.isDuoHideWhenScreenOff.value else true,
+                isChecked = if (areUnsupportedFeaturesEnabled) state.isDuoHideWhenScreenOff.value else true,
                 enabled = areUnsupportedFeaturesEnabled,
                 onCheckedChange = { checked ->
                     HapticUtil.performVirtualKeyHaptic(view)
-                    viewModel.duo.setDuoHideWhenScreenOff(checked)
+                    state.setDuoHideWhenScreenOff(checked)
                 },
                 modifier = Modifier.highlight(highlightSetting == "duo_hide_when_screen_off"),
             )
             IconToggleItem(
                 iconRes = R.drawable.rounded_nightlight_24,
                 title = stringResource(R.string.duo_hide_when_screen_off_only_idle_title),
-                isChecked = if (areUnsupportedFeaturesEnabled) viewModel.duo.isDuoHideWhenScreenOffOnlyIdle.value else false,
-                enabled = areUnsupportedFeaturesEnabled && viewModel.duo.isDuoHideWhenScreenOff.value,
+                isChecked = if (areUnsupportedFeaturesEnabled) state.isDuoHideWhenScreenOffOnlyIdle.value else false,
+                enabled = areUnsupportedFeaturesEnabled && state.isDuoHideWhenScreenOff.value,
                 onCheckedChange = { checked ->
                     HapticUtil.performVirtualKeyHaptic(view)
-                    viewModel.duo.setDuoHideWhenScreenOffOnlyIdle(checked)
+                    state.setDuoHideWhenScreenOffOnlyIdle(checked)
                 },
                 modifier = Modifier.highlight(highlightSetting == "duo_hide_when_screen_off_only_idle"),
             )
             IconToggleItem(
                 iconRes = R.drawable.rounded_mobile_lock_portrait_24,
                 title = stringResource(R.string.duo_hide_when_locked_title),
-                isChecked = viewModel.duo.isDuoHideWhenLocked.value,
+                isChecked = state.isDuoHideWhenLocked.value,
                 onCheckedChange = { checked ->
                     HapticUtil.performVirtualKeyHaptic(view)
-                    viewModel.duo.setDuoHideWhenLocked(checked)
+                    state.setDuoHideWhenLocked(checked)
                 },
                 modifier = Modifier.highlight(highlightSetting == "duo_hide_when_locked"),
             )
         }
 
-        if (!viewModel.isEnableUnsupportedFeatures.value) {
+        if (!isUnsupportedFeaturesEnabled) {
             Text(
                 text = stringResource(R.string.duo_aod_burn_in_protection_desc),
                 style = MaterialTheme.typography.bodySmall,
@@ -600,12 +537,12 @@ fun DuoSettingsUI(
             spacing = 2.dp,
             cornerRadius = 24.dp,
         ) {
-            val tapAction = viewModel.duo.duoTapAction.value
-            val tapForBriefActive = viewModel.duo.isDuoIslandCombined.value && viewModel.duo.isDuoTapForBrief.value
+            val tapAction = state.duoTapAction.value
+            val tapForBriefActive = state.isDuoIslandCombined.value && state.isDuoTapForBrief.value
             IconToggleItem(
                 iconRes = R.drawable.rounded_pan_tool_alt_24,
                 title = stringResource(R.string.duo_action_tap_title),
-                description = tapAction?.displayName(context) ?: stringResource(R.string.duo_action_none),
+                description = tapAction?.let(actionLabel) ?: stringResource(R.string.duo_action_none),
                 showToggle = false,
                 enabled = !tapForBriefActive,
                 onClick = {
@@ -616,27 +553,27 @@ fun DuoSettingsUI(
             )
 
             AnimatedVisibility(
-                visible = viewModel.duo.isDuoIslandCombined.value,
+                visible = state.isDuoIslandCombined.value,
                 enter = expandVertically() + fadeIn(),
                 exit = shrinkVertically() + fadeOut(),
             ) {
                 IconToggleItem(
                     iconRes = R.drawable.rounded_calendar_today_24,
                     title = stringResource(R.string.duo_tap_for_brief_title),
-                    isChecked = viewModel.duo.isDuoTapForBrief.value,
+                    isChecked = state.isDuoTapForBrief.value,
                     onCheckedChange = { checked ->
                         HapticUtil.performVirtualKeyHaptic(view)
-                        viewModel.duo.setDuoTapForBrief(checked)
+                        state.setDuoTapForBrief(checked)
                     },
                     modifier = Modifier.highlight(highlightSetting == "duo_tap_for_brief"),
                 )
             }
 
-            val doubleTapAction = viewModel.duo.duoDoubleTapAction.value
+            val doubleTapAction = state.duoDoubleTapAction.value
             IconToggleItem(
                 iconRes = R.drawable.rounded_touch_app_24,
                 title = stringResource(R.string.duo_action_double_tap_title),
-                description = doubleTapAction?.displayName(context) ?: stringResource(R.string.duo_action_none),
+                description = doubleTapAction?.let(actionLabel) ?: stringResource(R.string.duo_action_none),
                 showToggle = false,
                 onClick = {
                     HapticUtil.performVirtualKeyHaptic(view)
@@ -645,11 +582,11 @@ fun DuoSettingsUI(
                 modifier = Modifier.highlight(highlightSetting == "duo_double_tap_action"),
             )
 
-            val longPressAction = viewModel.duo.duoLongPressAction.value
+            val longPressAction = state.duoLongPressAction.value
             IconToggleItem(
                 iconRes = R.drawable.rounded_front_hand_24,
                 title = stringResource(R.string.duo_action_long_press_title),
-                description = longPressAction?.displayName(context) ?: stringResource(R.string.duo_action_none),
+                description = longPressAction?.let(actionLabel) ?: stringResource(R.string.duo_action_none),
                 showToggle = false,
                 onClick = {
                     HapticUtil.performVirtualKeyHaptic(view)
@@ -658,11 +595,11 @@ fun DuoSettingsUI(
                 modifier = Modifier.highlight(highlightSetting == "duo_long_press_action"),
             )
 
-            val swipeDownAction = viewModel.duo.duoSwipeDownAction.value
+            val swipeDownAction = state.duoSwipeDownAction.value
             IconToggleItem(
                 iconRes = R.drawable.rounded_south_24,
                 title = stringResource(R.string.duo_action_swipe_down_title),
-                description = swipeDownAction?.displayName(context) ?: stringResource(R.string.duo_action_none),
+                description = swipeDownAction?.let(actionLabel) ?: stringResource(R.string.duo_action_none),
                 showToggle = false,
                 onClick = {
                     HapticUtil.performVirtualKeyHaptic(view)
@@ -671,14 +608,14 @@ fun DuoSettingsUI(
                 modifier = Modifier.highlight(highlightSetting == "duo_swipe_down_action"),
             )
 
-            val baseSlideDescription = when (viewModel.duo.duoSlideMode.value) {
+            val baseSlideDescription = when (state.duoSlideMode.value) {
                 "volume" -> stringResource(R.string.duo_action_horizontal_slide_volume)
                 "brightness" -> stringResource(R.string.duo_action_horizontal_slide_brightness)
                 "sound_mode" -> stringResource(R.string.duo_action_horizontal_slide_sound_mode)
                 else -> stringResource(R.string.duo_action_horizontal_slide_none)
             }
-            val slideModeDescription = if (viewModel.duo.isDuoSlideTrack.value) {
-                if (viewModel.duo.duoSlideMode.value != "none") {
+            val slideModeDescription = if (state.isDuoSlideTrack.value) {
+                if (state.duoSlideMode.value != "none") {
                     "$baseSlideDescription • " + stringResource(R.string.duo_action_horizontal_slide_track)
                 } else {
                     stringResource(R.string.duo_action_horizontal_slide_track)
@@ -698,7 +635,7 @@ fun DuoSettingsUI(
                 modifier = Modifier.highlight(highlightSetting == "duo_slide_mode"),
             )
 
-            val isMirrorableMode = viewModel.duo.isDuoSlideTrack.value || viewModel.duo.duoSlideMode.value == "sound_mode"
+            val isMirrorableMode = state.isDuoSlideTrack.value || state.duoSlideMode.value == "sound_mode"
             AnimatedVisibility(
                 visible = isMirrorableMode,
                 enter = expandVertically() + fadeIn(),
@@ -707,10 +644,10 @@ fun DuoSettingsUI(
                 IconToggleItem(
                     iconRes = R.drawable.rounded_compare_arrows_24,
                     title = stringResource(R.string.duo_slide_mirror_direction_title),
-                    isChecked = viewModel.duo.isDuoSlideInvertDirection.value,
+                    isChecked = state.isDuoSlideInvertDirection.value,
                     onCheckedChange = { checked ->
                         HapticUtil.performVirtualKeyHaptic(view)
-                        viewModel.duo.setDuoSlideInvertDirection(checked)
+                        state.setDuoSlideInvertDirection(checked)
                     },
                     modifier = Modifier.highlight(highlightSetting == "duo_slide_invert_direction"),
                 )
@@ -718,7 +655,7 @@ fun DuoSettingsUI(
         }
 
         AnimatedVisibility(
-            visible = viewModel.duo.isDuoEnabled.value && viewModel.isIslandEnabled.value,
+            visible = state.isDuoEnabled.value && isIslandEnabled,
             enter = expandVertically() + fadeIn(),
             exit = shrinkVertically() + fadeOut(),
         ) {
@@ -729,10 +666,10 @@ fun DuoSettingsUI(
                 IconToggleItem(
                     iconRes = R.drawable.rounded_link_24,
                     title = stringResource(R.string.duo_combine_with_island),
-                    isChecked = viewModel.duo.isDuoIslandCombined.value,
+                    isChecked = state.isDuoIslandCombined.value,
                     onCheckedChange = { checked ->
                         HapticUtil.performVirtualKeyHaptic(view)
-                        viewModel.duo.setDuoIslandCombined(checked)
+                        state.setDuoIslandCombined(checked)
                     },
                     modifier = Modifier.highlight(highlightSetting == "duo_island_combined"),
                 )
@@ -769,9 +706,9 @@ fun DuoSettingsUI(
                         RemapActionItem(
                             title = stringResource(titleRes),
                             iconRes = iconRes,
-                            isSelected = viewModel.duo.duoSlideMode.value == modeKey,
+                            isSelected = state.duoSlideMode.value == modeKey,
                             onClick = {
-                                viewModel.duo.setDuoSlideMode(modeKey)
+                                state.setDuoSlideMode(modeKey)
                                 showSlideModeSheet = false
                             },
                         )
@@ -783,10 +720,10 @@ fun DuoSettingsUI(
                         iconRes = R.drawable.rounded_skip_next_24,
                         title = stringResource(R.string.duo_action_horizontal_slide_track),
                         description = stringResource(R.string.duo_action_horizontal_slide_track_desc),
-                        isChecked = viewModel.duo.isDuoSlideTrack.value,
+                        isChecked = state.isDuoSlideTrack.value,
                         onCheckedChange = { checked ->
                             HapticUtil.performVirtualKeyHaptic(view)
-                            viewModel.duo.setDuoSlideTrackEnabled(checked)
+                            state.setDuoSlideTrackEnabled(checked)
                         },
                     )
                 }
@@ -794,391 +731,24 @@ fun DuoSettingsUI(
         }
     }
 
-    if (pickingActionForGesture != null) {
-        val currentGesture = pickingActionForGesture
-        val currentAction = when (currentGesture) {
-            "tap" -> viewModel.duo.duoTapAction.value
-            "double_tap" -> viewModel.duo.duoDoubleTapAction.value
-            "long_press" -> viewModel.duo.duoLongPressAction.value
-            "swipe_down" -> viewModel.duo.duoSwipeDownAction.value
-            else -> null
-        }
-
-        ToolkitBottomSheet(
-            onDismissRequest = { pickingActionForGesture = null },
-        ) {
-            Column(
-                modifier = Modifier
-                    .padding(16.dp)
-                    .fillMaxWidth()
-                    .verticalScroll(rememberScrollState()),
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-            ) {
-                Text(
-                    text = stringResource(R.string.duo_action_pick_title),
-                    style = MaterialTheme.typography.headlineSmall,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onSurface,
-                )
-
-                RoundedCardContainer(spacing = 2.dp) {
-                    RemapActionItem(
-                        title = stringResource(R.string.duo_action_none),
-                        isSelected = currentAction == null,
-                        onClick = {
-                            applyActionForGesture(currentGesture, null)
-                            pickingActionForGesture = null
-                        },
-                        iconRes = R.drawable.rounded_do_not_disturb_on_24,
-                    )
-                }
-
-                val actionCategories = remember {
-                    ActionRegistry.getCategories() + listOfNotNull(ActionRegistry.getMacroCategory())
-                }
-
-                var expandedActionCategory by remember {
-                    mutableStateOf<Int?>(
-                        actionCategories.firstOrNull { category ->
-                            category.actions.any { it.matches(currentAction) }
-                        }?.titleRes ?: actionCategories.firstOrNull()?.titleRes
-                    )
-                }
-
-                actionCategories.forEach { category ->
-                    CategoryExpandableSection(
-                        title = stringResource(category.titleRes),
-                        itemCount = category.actions.size,
-                        isExpanded = expandedActionCategory == category.titleRes,
-                        onToggleExpand = {
-                            expandedActionCategory =
-                                if (expandedActionCategory == category.titleRes) null else category.titleRes
-                        },
-                    ) {
-                        category.actions.forEach { action ->
-                            val resolvedAction =
-                                currentAction?.takeIf { action.matches(it) } ?: action
-                            val isSelected =
-                                action.matches(currentAction)
-                            val missing = getMissingPermissionsHelper(resolvedAction)
-
-                            fun showMissingPermissionSheet() {
-                                permissionKeysToShow = missing
-                                permissionFeatureTitle = resolvedAction.title
-                                showPermissionSheet = true
-                            }
-
-                            RemapActionItem(
-                                title = resolvedAction.displayName(context),
-                                iconRes = resolvedAction.icon,
-                                isSelected = isSelected,
-                                hasSettings = resolvedAction.isConfigurable ||
-                                    resolvedAction is Action.ToggleFlashlight ||
-                                    resolvedAction is Action.LikeCurrentSong,
-                                onClick = {
-                                    applyActionForGesture(currentGesture, resolvedAction)
-                                    pickingActionForGesture = null
-                                    if (missing.isNotEmpty()) {
-                                        showMissingPermissionSheet()
-                                    }
-                                },
-                                onSettingsClick = {
-                                    activeConfigGesture = currentGesture
-                                    if (resolvedAction is Action.ToggleFlashlight) {
-                                        showFlashlightOptions = true
-                                        return@RemapActionItem
-                                    }
-                                    if (resolvedAction is Action.LikeCurrentSong) {
-                                        showLikeSongOptions.value = true
-                                        return@RemapActionItem
-                                    }
-                                    if (missing.isNotEmpty()) {
-                                        showMissingPermissionSheet()
-                                        return@RemapActionItem
-                                    }
-
-                                    configAction = resolvedAction
-                                    when (resolvedAction) {
-                                        is Action.DimWallpaper -> showDimSettings = true
-                                        is Action.ScreenOff -> showScreenOffSettings = true
-                                        is Action.DeviceEffects -> showDeviceEffectsSettings = true
-                                        is Action.SoundMode -> showSoundModeSettings = true
-                                        is Action.SetMode -> showSetModeSettings = true
-                                        is Action.SometimesEssentials -> showSometimesEssentialsSettings = true
-                                        is Action.FreezeTag -> showFreezeTagSettings = true
-                                        is Action.OpenApp -> showOpenAppSettings = true
-                                        is Action.OpenActivity -> showOpenActivitySettings = true
-                                        is Action.FreezeApps -> {
-                                            temporarySelectedAppsForAction = resolvedAction.packageNames
-                                            showFreezeAppsSettings = true
-                                        }
-                                        is Action.UnfreezeApps -> {
-                                            temporarySelectedAppsForAction = resolvedAction.packageNames
-                                            showFreezeAppsSettings = true
-                                        }
-                                        is Action.Keyboard -> showSetKeyboardSheet = true
-                                        is Action.SetVolume -> showSetVolumeSettings = true
-                                        is Action.Hilight -> showHilightSettings = true
-                                        is Action.CustomSettings -> showCustomSettingsSettings = true
-                                        else -> {}
-                                    }
-                                },
-                            )
-                        }
-                    }
-                }
-
-                Spacer(modifier = Modifier.height(32.dp))
+    pickingActionForGesture?.let { gesture ->
+        val currentAction =
+            when (gesture) {
+                "tap" -> state.duoTapAction.value
+                "double_tap" -> state.duoDoubleTapAction.value
+                "long_press" -> state.duoLongPressAction.value
+                "swipe_down" -> state.duoSwipeDownAction.value
+                else -> null
             }
-        }
-    }
-
-    if (showLikeSongOptions.value) {
-        LikeSongSettingsSheet(
-            onDismiss = { showLikeSongOptions.value = false },
-            viewModel = viewModel,
-            context = context,
-        )
-    }
-
-    if (showFlashlightOptions) {
-        ToolkitBottomSheet(
-            onDismissRequest = { showFlashlightOptions = false },
-        ) {
-            Column(
-                modifier = Modifier
-                    .padding(16.dp)
-                    .fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-            ) {
-                Text(
-                    text = stringResource(R.string.flashlight_options_title),
-                    style = MaterialTheme.typography.headlineSmall,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onSurface,
-                )
-
-                RoundedCardContainer(spacing = 2.dp) {
-                    IconToggleItem(
-                        iconRes = R.drawable.rounded_blur_on_24,
-                        title = stringResource(R.string.flashlight_fade_title),
-                        description = stringResource(R.string.flashlight_fade_desc),
-                        isChecked = viewModel.isFlashlightFadeEnabled.value,
-                        onCheckedChange = { viewModel.setFlashlightFadeEnabled(it, context) },
-                    )
-
-                    IconToggleItem(
-                        iconRes = R.drawable.rounded_flashlight_on_24,
-                        title = stringResource(R.string.flashlight_always_off_title),
-                        description = stringResource(R.string.flashlight_always_off_desc),
-                        isChecked = viewModel.isFlashlightAlwaysTurnOffEnabled.value,
-                        onCheckedChange = {
-                            viewModel.setFlashlightAlwaysTurnOffEnabled(it, context)
-                        },
-                    )
-                }
-
-                Button(
-                    onClick = {
-                        HapticUtil.performVirtualKeyHaptic(view)
-                        showFlashlightOptions = false
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    shape = MaterialTheme.shapes.extraLarge,
-                ) {
-                    Text(stringResource(R.string.action_done))
-                }
-            }
-        }
-    }
-
-    if (showDimSettings && configAction is Action.DimWallpaper) {
-        DimWallpaperSettingsSheet(
-            initialAction = configAction as Action.DimWallpaper,
-            onDismiss = { showDimSettings = false },
-            onSave = { newAction ->
-                showDimSettings = false
-                applyActionForGesture(activeConfigGesture, newAction)
-                configAction = null
-            },
-        )
-    }
-
-    if (showScreenOffSettings && configAction is Action.ScreenOff) {
-        ScreenOffSettingsSheet(
-            initialAction = configAction as Action.ScreenOff,
-            onDismiss = { showScreenOffSettings = false },
-            onSave = { newAction ->
-                showScreenOffSettings = false
-                applyActionForGesture(activeConfigGesture, newAction)
-                configAction = null
-            },
-        )
-    }
-
-    if (showDeviceEffectsSettings && configAction is Action.DeviceEffects) {
-        DeviceEffectsSettingsSheet(
-            initialAction = configAction as Action.DeviceEffects,
-            onDismiss = { showDeviceEffectsSettings = false },
-            onSave = { newAction ->
-                showDeviceEffectsSettings = false
-                applyActionForGesture(activeConfigGesture, newAction)
-                configAction = null
-            },
-        )
-    }
-
-    if (showSoundModeSettings && configAction is Action.SoundMode) {
-        SoundModeSettingsSheet(
-            initialAction = configAction as Action.SoundMode,
-            onDismiss = { showSoundModeSettings = false },
-            onSave = { newAction ->
-                showSoundModeSettings = false
-                applyActionForGesture(activeConfigGesture, newAction)
-                configAction = null
-            },
-        )
-    }
-
-    if (showSetModeSettings && configAction is Action.SetMode && Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) {
-        SetModeSettingsSheet(
-            initialAction = configAction as Action.SetMode,
-            onDismiss = { showSetModeSettings = false },
-            onSave = { newAction ->
-                showSetModeSettings = false
-                applyActionForGesture(activeConfigGesture, newAction)
-                configAction = null
-            },
-        )
-    }
-
-    if (showSetVolumeSettings && configAction is Action.SetVolume) {
-        SetVolumeSettingsSheet(
-            initialAction = configAction as Action.SetVolume,
-            onDismiss = { showSetVolumeSettings = false },
-            onSave = { newAction ->
-                showSetVolumeSettings = false
-                applyActionForGesture(activeConfigGesture, newAction)
-                configAction = null
-            },
-        )
-    }
-
-    if (showHilightSettings && configAction is Action.Hilight) {
-        HilightEffectSettingsSheet(
-            initialAction = configAction as Action.Hilight,
-            onDismiss = { showHilightSettings = false },
-            onSave = { newAction ->
-                showHilightSettings = false
-                applyActionForGesture(activeConfigGesture, newAction)
-                configAction = null
-            },
-        )
-    }
-
-    if (showSometimesEssentialsSettings && configAction is Action.SometimesEssentials) {
-        SometimesEssentialsSettingsSheet(
-            initialAction = configAction as Action.SometimesEssentials,
-            onDismiss = { showSometimesEssentialsSettings = false },
-            onSave = { newAction ->
-                showSometimesEssentialsSettings = false
-                applyActionForGesture(activeConfigGesture, newAction)
-                configAction = null
-            },
-        )
-    }
-
-    if (showFreezeTagSettings && configAction is Action.FreezeTag) {
-        val availableTags = remember {
-            AppsSettings(context).getFreezeTags()
-        }
-        FreezeTagSettingsSheet(
-            initialAction = configAction as Action.FreezeTag,
-            availableTags = availableTags,
-            onDismiss = { showFreezeTagSettings = false },
-            onSave = { newAction ->
-                showFreezeTagSettings = false
-                applyActionForGesture(activeConfigGesture, newAction)
-                configAction = null
-            },
-        )
-    }
-
-    if (showOpenAppSettings) {
-        SingleAppSelectionSheet(
-            includeSelf = true,
-            onDismissRequest = { showOpenAppSettings = false },
-            onAppSelected = { app ->
-                val newAction = Action.OpenApp(packageName = app.packageName)
-                applyActionForGesture(activeConfigGesture, newAction)
-                configAction = null
-            },
-        )
-    }
-
-    if (showOpenActivitySettings) {
-        OpenActivityPicker(
-            onDismiss = { showOpenActivitySettings = false },
-            onActivitySelected = { newAction ->
-                applyActionForGesture(activeConfigGesture, newAction)
-                configAction = null
-            },
-        )
-    }
-
-    if (showFreezeAppsSettings && (configAction is Action.FreezeApps || configAction is Action.UnfreezeApps)) {
-        AppSelectionSheet(
-            onDismissRequest = {
-                val finalAction = when (val action = configAction) {
-                    is Action.FreezeApps -> action.copy(packageNames = temporarySelectedAppsForAction)
-                    is Action.UnfreezeApps -> action.copy(packageNames = temporarySelectedAppsForAction)
-                    else -> configAction
-                }
-                if (finalAction != null) {
-                    applyActionForGesture(activeConfigGesture, finalAction)
-                }
-                showFreezeAppsSettings = false
-                configAction = null
-            },
-            onLoadApps = {
-                temporarySelectedAppsForAction.map { AppSelection(it, true) }
-            },
-            onSaveApps = { _, selections ->
-                temporarySelectedAppsForAction = selections.filter { it.isEnabled }.map { it.packageName }
-            },
-        )
-    }
-
-    if (showSetKeyboardSheet && configAction is Action.Keyboard) {
-        KeyboardSelectionSheet(
-            onDismissRequest = { newIme ->
-                showSetKeyboardSheet = false
-                applyActionForGesture(activeConfigGesture, Action.Keyboard(newIme))
-                configAction = null
-            },
-            selectedIme = (configAction as? Action.Keyboard)?.inputMethodId,
-        )
-    }
-
-    if (showCustomSettingsSettings && configAction is Action.CustomSettings) {
-        CustomSettingsSheet(
-            initialAction = configAction as Action.CustomSettings,
-            onDismiss = { showCustomSettingsSettings = false },
-            onSave = { newAction ->
-                showCustomSettingsSettings = false
-                applyActionForGesture(activeConfigGesture, newAction)
-                configAction = null
-            },
+        gesturePicker(
+            currentAction,
+            { action -> applyActionForGesture(gesture, action) },
+            { pickingActionForGesture = null },
         )
     }
 
     if (showPermissionSheet) {
-        val permissionItems = PermissionUIHelper.getPermissionItems(
-            permissionKeysToShow,
-            context,
-            viewModel,
-        )
+        val permissionItems = permissionItemsFor(permissionKeysToShow)
         if (permissionItems.isNotEmpty()) {
             PermissionsBottomSheet(
                 onDismissRequest = {
@@ -1193,42 +763,37 @@ fun DuoSettingsUI(
 
     if (showBatteryOptionsSheet) {
         DuoBatteryOptionsBottomSheet(
-            viewModel = viewModel,
+            state = state,
+            isIslandBatteryIdleColorEnabled = isIslandBatteryIdleColorEnabled,
+            islandBatteryIdleColor = islandBatteryIdleColor,
+            onIslandBatteryIdleColorEnabledChange = onIslandBatteryIdleColorEnabledChange,
+            onIslandBatteryIdleColorChange = onIslandBatteryIdleColorChange,
             onDismissRequest = { showBatteryOptionsSheet = false },
         )
     }
 
     if (showTimeOptionsSheet) {
         DuoTimeOptionsBottomSheet(
-            viewModel = viewModel,
+            state = state,
             onDismissRequest = { showTimeOptionsSheet = false },
         )
     }
 
     if (showBatteryPercentageOptionsSheet) {
         DuoBatteryPercentageOptionsBottomSheet(
-            viewModel = viewModel,
+            state = state,
             onDismissRequest = { showBatteryPercentageOptionsSheet = false },
         )
     }
 
     if (showNetworkOptionsSheet) {
         DuoNetworkOptionsBottomSheet(
-            viewModel = viewModel,
+            state = state,
             onDismissRequest = { showNetworkOptionsSheet = false },
         )
     }
 
     if (showMediaAppSelectionSheet) {
-        AppSelectionSheet(
-            title = stringResource(R.string.duo_media_skip_apps_title),
-            onDismissRequest = { showMediaAppSelectionSheet = false },
-            onLoadApps = { viewModel.aod.loadAodWallpaperMediaApps() },
-            onSaveApps = { _, apps -> viewModel.aod.saveAodWallpaperMediaApps(apps) },
-            onAppToggle = { _, pkg, enabled ->
-                viewModel.aod.updateAodWallpaperMediaAppEnabled(pkg, enabled)
-            },
-            context = context,
-        )
+        mediaAppSelectionSheet { showMediaAppSelectionSheet = false }
     }
 }

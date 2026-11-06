@@ -38,6 +38,7 @@ import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.cards.IconToggleItem
 import com.jawzf.pixeltoolkit.core.design.components.CategoryExpandableSection
 import com.jawzf.pixeltoolkit.core.design.components.ConfigSliderItem
+import com.jawzf.pixeltoolkit.core.design.components.RemapActionItem
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.modifiers.highlight
@@ -66,7 +67,6 @@ import com.jawzf.pixeltoolkit.ui.features.audio.sheets.SetVolumeSettingsSheet
 import com.jawzf.pixeltoolkit.ui.features.display.sheets.StatusGlanceBatteryOptionsBottomSheet
 import com.jawzf.pixeltoolkit.ui.features.display.sheets.StatusGlanceCalendarOptionsBottomSheet
 import com.jawzf.pixeltoolkit.ui.features.system.LikeSongSettingsSheet
-import com.jawzf.pixeltoolkit.ui.features.system.RemapActionItem
 import com.jawzf.pixeltoolkit.utils.PermissionUIHelper
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 
