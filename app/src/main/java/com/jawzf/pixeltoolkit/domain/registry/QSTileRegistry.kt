@@ -12,6 +12,7 @@ import com.jawzf.pixeltoolkit.feature.connectivity.dns.PrivateDnsTileService
 import com.jawzf.pixeltoolkit.feature.connectivity.nfc.NfcTileService
 import com.jawzf.pixeltoolkit.feature.connectivity.sim.DataSimTileService
 import com.jawzf.pixeltoolkit.feature.input.links.UrlShortenerTileService
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingTileService
 import com.jawzf.pixeltoolkit.feature.power.caffeinate.CaffeinateTileService
 import com.jawzf.pixeltoolkit.feature.power.charging.ChargeQuickTileService
 import com.jawzf.pixeltoolkit.feature.power.maps.MapsPowerSavingTileService
@@ -32,7 +33,6 @@ import com.jawzf.pixeltoolkit.services.tiles.HapticsTileService
 import com.jawzf.pixeltoolkit.services.tiles.HeadsUpNotificationsTileService
 import com.jawzf.pixeltoolkit.services.tiles.IslandTileService
 import com.jawzf.pixeltoolkit.services.tiles.LockdownTileService
-import com.jawzf.pixeltoolkit.services.tiles.NotificationLightingTileService
 import com.jawzf.pixeltoolkit.services.tiles.PrivateNotificationsTileService
 import com.jawzf.pixeltoolkit.services.tiles.RefreshRateTileService
 import com.jawzf.pixeltoolkit.services.tiles.RestartSystemUiTileService

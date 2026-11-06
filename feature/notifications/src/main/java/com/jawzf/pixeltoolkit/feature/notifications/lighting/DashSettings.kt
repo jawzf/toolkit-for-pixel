@@ -1,12 +1,13 @@
-package com.jawzf.pixeltoolkit.viewmodels.state
+package com.jawzf.pixeltoolkit.feature.notifications.lighting
 
 import androidx.compose.runtime.MutableFloatState
 import androidx.compose.runtime.mutableFloatStateOf
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.domain.model.DashConfig
+import com.jawzf.pixeltoolkit.core.data.prefs.PrefsStore
+import com.jawzf.pixeltoolkit.feature.notifications.NotificationSettings
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.DashConfig
 
 class DashSettings(
-    private val repository: () -> SettingsRepository,
+    private val repository: () -> PrefsStore,
 ) {
     val thickness = mutableFloatStateOf(DashConfig.DEFAULT_THICKNESS)
     val length = mutableFloatStateOf(DashConfig.DEFAULT_LENGTH_PERCENT)
@@ -53,10 +54,10 @@ class DashSettings(
     }
 
     private companion object {
-        const val KEY_THICKNESS = SettingsRepository.KEY_EDGE_LIGHTING_DASH_THICKNESS
-        const val KEY_LENGTH = SettingsRepository.KEY_EDGE_LIGHTING_DASH_LENGTH
-        const val KEY_GLOW = SettingsRepository.KEY_EDGE_LIGHTING_DASH_GLOW
-        const val KEY_GLOW_LENGTH = SettingsRepository.KEY_EDGE_LIGHTING_DASH_GLOW_LENGTH
-        const val KEY_OVERLAP = SettingsRepository.KEY_EDGE_LIGHTING_DASH_OVERLAP
+        const val KEY_THICKNESS = NotificationSettings.KEY_EDGE_LIGHTING_DASH_THICKNESS
+        const val KEY_LENGTH = NotificationSettings.KEY_EDGE_LIGHTING_DASH_LENGTH
+        const val KEY_GLOW = NotificationSettings.KEY_EDGE_LIGHTING_DASH_GLOW
+        const val KEY_GLOW_LENGTH = NotificationSettings.KEY_EDGE_LIGHTING_DASH_GLOW_LENGTH
+        const val KEY_OVERLAP = NotificationSettings.KEY_EDGE_LIGHTING_DASH_OVERLAP
     }
 }

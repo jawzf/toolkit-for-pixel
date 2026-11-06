@@ -13,6 +13,7 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.gson)
+    implementation(libs.androidx.graphics.shapes)
     implementation(libs.shizuku.api)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(platform(libs.androidx.compose.bom))

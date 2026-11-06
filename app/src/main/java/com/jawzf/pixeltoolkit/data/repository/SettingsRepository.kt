@@ -15,10 +15,6 @@ import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuUtils
 import com.jawzf.pixeltoolkit.domain.diy.Action
 import com.jawzf.pixeltoolkit.domain.diy.ActionGsonAdapter
 import com.jawzf.pixeltoolkit.domain.model.AppIcon
-import com.jawzf.pixeltoolkit.domain.model.NotificationLightingColorMode
-import com.jawzf.pixeltoolkit.domain.model.NotificationLightingSide
-import com.jawzf.pixeltoolkit.domain.model.NotificationLightingStyle
-import com.jawzf.pixeltoolkit.domain.model.NotificationLightingSweepPosition
 import com.jawzf.pixeltoolkit.domain.model.PowerChoice
 import com.jawzf.pixeltoolkit.domain.model.RemapSlot
 import com.jawzf.pixeltoolkit.domain.model.ScaleAnimationsProfile
@@ -168,45 +164,6 @@ class SettingsRepository(
         const val KEY_SMART_PIXELS_DISABLE_ON_CAST = "smart_pixels_disable_on_cast"
         const val KEY_WIDGET_ENABLED = "widget_enabled"
         const val KEY_STATUS_BAR_ICON_CONTROL_ENABLED = "status_bar_icon_control_enabled"
-        const val KEY_EDGE_LIGHTING_ENABLED = "edge_lighting_enabled"
-        const val KEY_EDGE_LIGHTING_ONLY_SCREEN_OFF = "edge_lighting_only_screen_off"
-        const val KEY_EDGE_LIGHTING_AMBIENT_DISPLAY = "edge_lighting_ambient_display"
-        const val KEY_EDGE_LIGHTING_AMBIENT_SHOW_LOCK_SCREEN =
-            "edge_lighting_ambient_show_lock_screen"
-        const val KEY_EDGE_LIGHTING_SKIP_SILENT = "edge_lighting_skip_silent"
-        const val KEY_EDGE_LIGHTING_SKIP_PERSISTENT = "edge_lighting_skip_persistent"
-        const val KEY_EDGE_LIGHTING_STYLE = "edge_lighting_style"
-        const val KEY_EDGE_LIGHTING_COLOR_MODE = "edge_lighting_color_mode"
-        const val KEY_EDGE_LIGHTING_CUSTOM_COLOR = "edge_lighting_custom_color"
-        const val KEY_EDGE_LIGHTING_PULSE_COUNT = "edge_lighting_pulse_count"
-        const val KEY_EDGE_LIGHTING_PULSE_DURATION = "edge_lighting_pulse_duration"
-        const val KEY_EDGE_LIGHTING_INDICATOR_X = "edge_lighting_indicator_x"
-        const val KEY_EDGE_LIGHTING_INDICATOR_Y = "edge_lighting_indicator_y"
-        const val KEY_EDGE_LIGHTING_INDICATOR_SCALE = "edge_lighting_indicator_scale"
-        const val KEY_EDGE_LIGHTING_GLOW_SIDES = "edge_lighting_glow_sides"
-        const val KEY_EDGE_LIGHTING_CORNER_RADIUS = "edge_lighting_corner_radius"
-        const val KEY_EDGE_LIGHTING_STROKE_THICKNESS = "edge_lighting_stroke_thickness"
-        const val KEY_EDGE_LIGHTING_SELECTED_APPS = "edge_lighting_selected_apps"
-        const val KEY_EDGE_LIGHTING_SWEEP_POSITION = "edge_lighting_sweep_position"
-        const val KEY_EDGE_LIGHTING_SWEEP_THICKNESS = "edge_lighting_sweep_thickness"
-        const val KEY_EDGE_LIGHTING_SWEEP_RANDOM_SHAPES = "edge_lighting_sweep_random_shapes"
-        const val KEY_EDGE_LIGHTING_SYSTEM_MODE = "edge_lighting_system_mode"
-        const val KEY_EDGE_LIGHTING_RIPPLE_SPEED = "edge_lighting_ripple_speed"
-        const val KEY_EDGE_LIGHTING_RIPPLE_SPARKLE_COUNT = "edge_lighting_ripple_sparkle_count"
-        const val KEY_EDGE_LIGHTING_RIPPLE_SPARKLE_SIZE = "edge_lighting_ripple_sparkle_size"
-        const val KEY_EDGE_LIGHTING_RIPPLE_WAVE_SIZE = "edge_lighting_ripple_wave_size"
-        const val KEY_EDGE_LIGHTING_RIPPLE_REPEAT_COUNT = "edge_lighting_ripple_repeat_count"
-        const val KEY_EDGE_LIGHTING_RIPPLE_SPARKLES_ENABLED = "edge_lighting_ripple_sparkles_enabled"
-        const val KEY_EDGE_LIGHTING_RIPPLE_OPACITY = "edge_lighting_ripple_opacity"
-        const val KEY_EDGE_LIGHTING_RIPPLE_POSITION = "edge_lighting_ripple_position"
-        const val KEY_EDGE_LIGHTING_RIPPLE_POSITION_X = "edge_lighting_ripple_position_x"
-        const val KEY_EDGE_LIGHTING_RIPPLE_POSITION_Y = "edge_lighting_ripple_position_y"
-        const val KEY_EDGE_LIGHTING_DASH_THICKNESS = "edge_lighting_dash_thickness"
-        const val KEY_EDGE_LIGHTING_DASH_LENGTH = "edge_lighting_dash_length"
-        const val KEY_EDGE_LIGHTING_DASH_GLOW = "edge_lighting_dash_glow"
-        const val KEY_EDGE_LIGHTING_DASH_GLOW_LENGTH = "edge_lighting_dash_glow_length"
-        const val KEY_EDGE_LIGHTING_DASH_OVERLAP = "edge_lighting_dash_overlap"
-        const val KEY_EDGE_LIGHTING_RIPPLE_OVERLAP = "edge_lighting_ripple_overlap"
         const val KEY_LOCK_SCREEN_WALLPAPER_SOURCE = "lock_screen_wallpaper_source"
 
         const val KEY_LAST_CALL_STATE = "last_call_state"
@@ -337,7 +294,6 @@ class SettingsRepository(
         const val KEY_PIXEL_SEARCH_ENGINE = "pixel_search_engine"
         const val KEY_AUTO_ACCESSIBILITY_ENABLED = "auto_accessibility_enabled"
         const val KEY_USE_BLUR = "use_blur"
-        const val KEY_USE_RIPPLE = "use_ripple"
         const val KEY_MOTION_BLUR = "motion_blur"
         const val KEY_MOTION_BLUR_SCALE = "motion_blur_scale"
         const val KEY_SHAKE_FOR_HELP = "shake_for_help"
@@ -654,7 +610,6 @@ class SettingsRepository(
         const val KEY_SHUT_UP_RESTORE_MODE = "shut_up_restore_mode"
         const val KEY_SHUT_UP_KEYBOARD = "shut_up_keyboard"
         const val KEY_SHIZUKU_AUTH_TOKEN = "shizuku_auth_token"
-        const val KEY_EDGE_LIGHTING_SWEEP_SELECTED_SHAPES = "edge_lighting_sweep_selected_shapes"
         const val KEY_DISABLE_ROTATION_SUGGESTION = "disable_rotation_suggestion"
         const val KEY_ALLOW_OVERLAYS_IN_SETTINGS = "allow_overlays_in_settings"
         const val KEY_PREFER_GPU_COMPOSING = "prefer_gpu_composing"
@@ -733,100 +688,6 @@ class SettingsRepository(
 
     // Specific Getters with logic from ViewModel
 
-    fun getNotificationLightingStyle(): NotificationLightingStyle {
-        val styleName =
-            prefs.getString(KEY_EDGE_LIGHTING_STYLE, NotificationLightingStyle.STROKE.name)
-        return try {
-            NotificationLightingStyle.valueOf(styleName ?: NotificationLightingStyle.STROKE.name)
-        } catch (e: Exception) {
-            NotificationLightingStyle.STROKE
-        }
-    }
-
-    /**
-     * Executes the get notification lighting color mode operation.
-     * @return The resulting NotificationLightingColorMode data.
-     */
-    fun getNotificationLightingColorMode(): NotificationLightingColorMode {
-        val colorModeName =
-            prefs.getString(KEY_EDGE_LIGHTING_COLOR_MODE, NotificationLightingColorMode.SYSTEM.name)
-        return try {
-            NotificationLightingColorMode.valueOf(
-                colorModeName ?: NotificationLightingColorMode.SYSTEM.name,
-            )
-        } catch (e: Exception) {
-            NotificationLightingColorMode.SYSTEM
-        }
-    }
-
-    /**
-     * Executes the get notification lighting glow sides operation.
-     * @return The resulting Set<NotificationLightingSide> data.
-     */
-    fun getNotificationLightingGlowSides(): Set<NotificationLightingSide> {
-        val json = prefs.getString(KEY_EDGE_LIGHTING_GLOW_SIDES, null)
-        return if (json != null) {
-            try {
-                gson.fromJson(json, Array<NotificationLightingSide>::class.java).toSet()
-            } catch (e: Exception) {
-                setOf(NotificationLightingSide.LEFT, NotificationLightingSide.RIGHT)
-            }
-        } else {
-            setOf(NotificationLightingSide.LEFT, NotificationLightingSide.RIGHT)
-        }
-    }
-
-    /**
-     * Executes the save notification lighting glow sides operation.
-     *
-     * @param sides [Set<NotificationLightingSide>] Target sides.
-     */
-    fun saveNotificationLightingGlowSides(sides: Set<NotificationLightingSide>) {
-        val json = gson.toJson(sides)
-        putString(KEY_EDGE_LIGHTING_GLOW_SIDES, json)
-    }
-
-    /**
-     * Executes the get notification lighting sweep position operation.
-     * @return The resulting NotificationLightingSweepPosition data.
-     */
-    fun getNotificationLightingSweepPosition(): NotificationLightingSweepPosition {
-        val posName =
-            prefs.getString(
-                KEY_EDGE_LIGHTING_SWEEP_POSITION,
-                NotificationLightingSweepPosition.CENTER.name,
-            )
-        return try {
-            NotificationLightingSweepPosition.valueOf(
-                posName ?: NotificationLightingSweepPosition.CENTER.name,
-            )
-        } catch (e: Exception) {
-            NotificationLightingSweepPosition.CENTER
-        }
-    }
-
-    /**
-     * Executes the save notification lighting sweep position operation.
-     *
-     * @param position [NotificationLightingSweepPosition] Target position.
-     */
-    fun saveNotificationLightingSweepPosition(position: NotificationLightingSweepPosition) {
-        putString(KEY_EDGE_LIGHTING_SWEEP_POSITION, position.name)
-    }
-
-    /**
-     * Executes the get notification lighting system mode operation.
-     * @return The resulting Int data.
-     */
-    fun getNotificationLightingSystemMode(): Int = getInt(KEY_EDGE_LIGHTING_SYSTEM_MODE, 0)
-
-    /**
-     * Executes the save notification lighting system mode operation.
-     *
-     * @param mode [Int] Target mode.
-     */
-    fun saveNotificationLightingSystemMode(mode: Int) = putInt(KEY_EDGE_LIGHTING_SYSTEM_MODE, mode)
-
     /**
      * Executes the get haptic feedback type operation.
      * @return The resulting HapticFeedbackType data.
@@ -878,26 +739,6 @@ class SettingsRepository(
     }
 
     // Feature specific App selections
-
-    fun loadNotificationLightingSelectedApps() = loadAppSelection(KEY_EDGE_LIGHTING_SELECTED_APPS)
-
-    /**
-     * Executes the save notification lighting selected apps operation.
-     *
-     * @param apps [List<AppSelection>] Target apps.
-     */
-    fun saveNotificationLightingSelectedApps(apps: List<AppSelection>) = saveAppSelection(KEY_EDGE_LIGHTING_SELECTED_APPS, apps)
-
-    /**
-     * Executes the update notification lighting app selection operation.
-     *
-     * @param packageName [String] Target package name.
-     * @param enabled [Boolean] Target enabled.
-     */
-    fun updateNotificationLightingAppSelection(
-        packageName: String,
-        enabled: Boolean,
-    ) = updateAppSelection(KEY_EDGE_LIGHTING_SELECTED_APPS, packageName, enabled)
 
     /**
      * Executes the load dynamic night light selected apps operation.
@@ -1420,37 +1261,6 @@ class SettingsRepository(
      * @param value [String] Target value.
      */
     fun setPixelSearchbarMusicPackage(value: String) = putString(KEY_PIXEL_SEARCHBAR_MUSIC_PACKAGE, value)
-
-    /**
-     * Executes the get edge lighting sweep selected shapes operation.
-     * @return The resulting Set<String> data.
-     */
-    fun getEdgeLightingSweepSelectedShapes(): Set<String> {
-        val defaultShapes =
-            com.jawzf.pixeltoolkit.utils.AmbientMusicShapeHelper.allShapesWithNames
-                .map { it.first }
-                .toSet()
-        val json = prefs.getString(KEY_EDGE_LIGHTING_SWEEP_SELECTED_SHAPES, null)
-        return if (json != null) {
-            try {
-                gson.fromJson(json, Array<String>::class.java).toSet()
-            } catch (e: Exception) {
-                defaultShapes
-            }
-        } else {
-            defaultShapes
-        }
-    }
-
-    /**
-     * Executes the save edge lighting sweep selected shapes operation.
-     *
-     * @param shapes [Set<String>] Target shapes.
-     */
-    fun saveEdgeLightingSweepSelectedShapes(shapes: Set<String>) {
-        val json = gson.toJson(shapes)
-        putString(KEY_EDGE_LIGHTING_SWEEP_SELECTED_SHAPES, json)
-    }
 
     // observe token changes
     val gitHubToken: Flow<String?> =

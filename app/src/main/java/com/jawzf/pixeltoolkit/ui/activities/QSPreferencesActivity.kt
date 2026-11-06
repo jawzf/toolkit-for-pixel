@@ -16,6 +16,7 @@ import com.jawzf.pixeltoolkit.feature.connectivity.dns.PrivateDnsTileService
 import com.jawzf.pixeltoolkit.feature.connectivity.nfc.NfcTileService
 import com.jawzf.pixeltoolkit.feature.connectivity.sim.DataSimTileService
 import com.jawzf.pixeltoolkit.feature.input.links.UrlShortenerTileService
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingTileService
 import com.jawzf.pixeltoolkit.feature.power.battery.BatteryDetailsActivity
 import com.jawzf.pixeltoolkit.feature.power.battery.BatteryNotificationTileService
 import com.jawzf.pixeltoolkit.feature.power.caffeinate.CaffeinateTileService
@@ -164,7 +165,7 @@ class QSPreferencesActivity : ComponentActivity() {
             val feature =
                 when (componentName.className) {
                     CaffeinateTileService::class.java.name -> "Caffeinate"
-                    "com.jawzf.pixeltoolkit.services.tiles.NotificationLightingTileService" -> "Notification lighting"
+                    NotificationLightingTileService::class.java.name -> "Notification lighting"
                     "com.jawzf.pixeltoolkit.services.tiles.DynamicNightLightTileService" -> "Dynamic night light"
                     AppLockTileService::class.java.name -> "App lock"
                     ScreenLockedSecurityTileService::class.java.name -> "Screen locked security"

@@ -1,9 +1,9 @@
-package com.jawzf.pixeltoolkit.utils.overlay
+package com.jawzf.pixeltoolkit.feature.notifications.lighting.overlay
 
 import android.content.Intent
 import android.content.SharedPreferences
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.domain.model.DashConfig
+import com.jawzf.pixeltoolkit.feature.notifications.NotificationSettings
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.DashConfig
 
 private const val EXTRA_THICKNESS = "dash_thickness"
 private const val EXTRA_LENGTH = "dash_length"
@@ -31,18 +31,18 @@ fun DashConfig.Companion.fromIntent(intent: Intent): DashConfig =
 fun DashConfig.Companion.fromPrefs(prefs: SharedPreferences): DashConfig =
     DashConfig(
         thickness =
-            prefs.dashFloat(SettingsRepository.KEY_EDGE_LIGHTING_DASH_THICKNESS, DEFAULT_THICKNESS),
+            prefs.dashFloat(NotificationSettings.KEY_EDGE_LIGHTING_DASH_THICKNESS, DEFAULT_THICKNESS),
         lengthPercent =
-            prefs.dashFloat(SettingsRepository.KEY_EDGE_LIGHTING_DASH_LENGTH, DEFAULT_LENGTH_PERCENT),
-        glow = prefs.dashFloat(SettingsRepository.KEY_EDGE_LIGHTING_DASH_GLOW, DEFAULT_GLOW),
+            prefs.dashFloat(NotificationSettings.KEY_EDGE_LIGHTING_DASH_LENGTH, DEFAULT_LENGTH_PERCENT),
+        glow = prefs.dashFloat(NotificationSettings.KEY_EDGE_LIGHTING_DASH_GLOW, DEFAULT_GLOW),
         glowLengthRatio =
             prefs.dashFloat(
-                SettingsRepository.KEY_EDGE_LIGHTING_DASH_GLOW_LENGTH,
+                NotificationSettings.KEY_EDGE_LIGHTING_DASH_GLOW_LENGTH,
                 DEFAULT_GLOW_LENGTH_RATIO,
             ),
         overlapPercent =
             prefs.dashFloat(
-                SettingsRepository.KEY_EDGE_LIGHTING_DASH_OVERLAP,
+                NotificationSettings.KEY_EDGE_LIGHTING_DASH_OVERLAP,
                 DEFAULT_OVERLAP_PERCENT,
             ),
     )

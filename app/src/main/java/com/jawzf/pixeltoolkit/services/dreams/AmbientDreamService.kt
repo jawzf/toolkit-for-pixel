@@ -25,6 +25,7 @@ import android.widget.LinearLayout
 import android.widget.TextClock
 import android.widget.TextView
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.design.overlay.AmbientMusicShapeHelper
 import com.jawzf.pixeltoolkit.services.NotificationListener
 import com.jawzf.pixeltoolkit.utils.CarConnectionMonitor
 import java.io.File
@@ -351,10 +352,10 @@ class AmbientDreamService : DreamService() {
         val size = dpToPx(320f)
 
         currentPolygon =
-            com.jawzf.pixeltoolkit.utils.AmbientMusicShapeHelper
+            AmbientMusicShapeHelper
                 .getRandomPolygon()
         currentShapePath =
-            com.jawzf.pixeltoolkit.utils.AmbientMusicShapeHelper
+            AmbientMusicShapeHelper
                 .getRandomShapePath(size.toFloat())
 
         // Container for clipping
@@ -1025,7 +1026,7 @@ class AmbientDreamService : DreamService() {
         val isFill = mode == "fill"
 
         val newPolygon =
-            com.jawzf.pixeltoolkit.utils.AmbientMusicShapeHelper.getPolygon(
+            AmbientMusicShapeHelper.getPolygon(
                 "${trackTitle}_$artistName",
                 randomEnabled,
             )
@@ -1040,7 +1041,7 @@ class AmbientDreamService : DreamService() {
                     addUpdateListener { animator ->
                         val progress = animator.animatedValue as Float
                         currentShapePath?.let { path ->
-                            com.jawzf.pixeltoolkit.utils.AmbientMusicShapeHelper.updatePathFromMorph(
+                            AmbientMusicShapeHelper.updatePathFromMorph(
                                 morph,
                                 progress,
                                 size,
@@ -1076,7 +1077,7 @@ class AmbientDreamService : DreamService() {
                 }
         } else {
             currentShapePath =
-                com.jawzf.pixeltoolkit.utils.AmbientMusicShapeHelper.getShapePath(
+                AmbientMusicShapeHelper.getShapePath(
                     "${trackTitle}_$artistName",
                     size,
                     randomEnabled,

@@ -1,15 +1,16 @@
-package com.jawzf.pixeltoolkit.viewmodels.state
+package com.jawzf.pixeltoolkit.feature.notifications.lighting
 
 import androidx.compose.runtime.MutableFloatState
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.domain.model.NotificationLightingRipplePosition
-import com.jawzf.pixeltoolkit.domain.model.RippleConfig
-import com.jawzf.pixeltoolkit.utils.overlay.parseRipplePosition
+import com.jawzf.pixeltoolkit.core.data.prefs.PrefsStore
+import com.jawzf.pixeltoolkit.feature.notifications.NotificationSettings
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingRipplePosition
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.RippleConfig
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.overlay.parseRipplePosition
 
 class RippleSettings(
-    private val repository: () -> SettingsRepository,
+    private val repository: () -> PrefsStore,
 ) {
     val speed = mutableFloatStateOf(RippleConfig.DEFAULT_SPEED)
     val repeatCount = mutableFloatStateOf(RippleConfig.DEFAULT_REPEAT_COUNT.toFloat())
@@ -104,16 +105,16 @@ class RippleSettings(
     }
 
     private companion object {
-        const val KEY_SPEED = SettingsRepository.KEY_EDGE_LIGHTING_RIPPLE_SPEED
-        const val KEY_REPEAT_COUNT = SettingsRepository.KEY_EDGE_LIGHTING_RIPPLE_REPEAT_COUNT
-        const val KEY_WAVE_SIZE = SettingsRepository.KEY_EDGE_LIGHTING_RIPPLE_WAVE_SIZE
-        const val KEY_OPACITY = SettingsRepository.KEY_EDGE_LIGHTING_RIPPLE_OPACITY
-        const val KEY_SPARKLES_ENABLED = SettingsRepository.KEY_EDGE_LIGHTING_RIPPLE_SPARKLES_ENABLED
-        const val KEY_SPARKLE_COUNT = SettingsRepository.KEY_EDGE_LIGHTING_RIPPLE_SPARKLE_COUNT
-        const val KEY_SPARKLE_SIZE = SettingsRepository.KEY_EDGE_LIGHTING_RIPPLE_SPARKLE_SIZE
-        const val KEY_POSITION = SettingsRepository.KEY_EDGE_LIGHTING_RIPPLE_POSITION
-        const val KEY_POSITION_X = SettingsRepository.KEY_EDGE_LIGHTING_RIPPLE_POSITION_X
-        const val KEY_POSITION_Y = SettingsRepository.KEY_EDGE_LIGHTING_RIPPLE_POSITION_Y
-        const val KEY_OVERLAP = SettingsRepository.KEY_EDGE_LIGHTING_RIPPLE_OVERLAP
+        const val KEY_SPEED = NotificationSettings.KEY_EDGE_LIGHTING_RIPPLE_SPEED
+        const val KEY_REPEAT_COUNT = NotificationSettings.KEY_EDGE_LIGHTING_RIPPLE_REPEAT_COUNT
+        const val KEY_WAVE_SIZE = NotificationSettings.KEY_EDGE_LIGHTING_RIPPLE_WAVE_SIZE
+        const val KEY_OPACITY = NotificationSettings.KEY_EDGE_LIGHTING_RIPPLE_OPACITY
+        const val KEY_SPARKLES_ENABLED = NotificationSettings.KEY_EDGE_LIGHTING_RIPPLE_SPARKLES_ENABLED
+        const val KEY_SPARKLE_COUNT = NotificationSettings.KEY_EDGE_LIGHTING_RIPPLE_SPARKLE_COUNT
+        const val KEY_SPARKLE_SIZE = NotificationSettings.KEY_EDGE_LIGHTING_RIPPLE_SPARKLE_SIZE
+        const val KEY_POSITION = NotificationSettings.KEY_EDGE_LIGHTING_RIPPLE_POSITION
+        const val KEY_POSITION_X = NotificationSettings.KEY_EDGE_LIGHTING_RIPPLE_POSITION_X
+        const val KEY_POSITION_Y = NotificationSettings.KEY_EDGE_LIGHTING_RIPPLE_POSITION_Y
+        const val KEY_OVERLAP = NotificationSettings.KEY_EDGE_LIGHTING_RIPPLE_OVERLAP
     }
 }

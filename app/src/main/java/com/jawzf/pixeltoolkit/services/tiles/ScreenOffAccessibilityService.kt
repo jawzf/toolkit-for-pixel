@@ -28,6 +28,7 @@ import com.jawzf.pixeltoolkit.core.design.haptics.performHapticFeedback
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.feature.apps.freeze.FreezeManager
 import com.jawzf.pixeltoolkit.feature.input.gesture.OmniGestureOverlayHandler
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingHandler
 import com.jawzf.pixeltoolkit.feature.security.faceunlock.FaceUnlockBrightnessHandler
 import com.jawzf.pixeltoolkit.feature.security.screenshots.ScreenshotAutoCleanHandler
 import com.jawzf.pixeltoolkit.feature.security.screenshots.ScreenshotShareCleanupHandler
@@ -48,7 +49,6 @@ import com.jawzf.pixeltoolkit.services.handlers.ButtonRemapHandler
 import com.jawzf.pixeltoolkit.services.handlers.DuoOverlayHandler
 import com.jawzf.pixeltoolkit.services.handlers.FlashlightHandler
 import com.jawzf.pixeltoolkit.services.handlers.LockscreenShortcutsHandler
-import com.jawzf.pixeltoolkit.services.handlers.NotificationLightingHandler
 import com.jawzf.pixeltoolkit.services.handlers.StatusBarIconHandler
 import com.jawzf.pixeltoolkit.services.handlers.StatusGlanceHandler
 import com.jawzf.pixeltoolkit.services.receivers.FlashlightActionReceiver

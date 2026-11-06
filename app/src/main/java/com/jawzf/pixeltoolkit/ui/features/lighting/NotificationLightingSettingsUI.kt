@@ -55,10 +55,10 @@ import com.jawzf.pixeltoolkit.core.design.modifiers.highlight
 import com.jawzf.pixeltoolkit.core.design.sheets.PermissionItem
 import com.jawzf.pixeltoolkit.core.design.sheets.PermissionsBottomSheet
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
-import com.jawzf.pixeltoolkit.domain.model.NotificationLightingColorMode
-import com.jawzf.pixeltoolkit.domain.model.NotificationLightingRipplePosition
-import com.jawzf.pixeltoolkit.domain.model.NotificationLightingStyle
-import com.jawzf.pixeltoolkit.domain.model.NotificationLightingSweepPosition
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingColorMode
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingRipplePosition
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingStyle
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingSweepPosition
 import com.jawzf.pixeltoolkit.ui.activities.RipplePositionPickerActivity
 import com.jawzf.pixeltoolkit.ui.core.pickers.GlowSidesPicker
 import com.jawzf.pixeltoolkit.ui.core.pickers.NotificationLightingColorModePicker

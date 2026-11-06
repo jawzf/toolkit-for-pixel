@@ -1,11 +1,13 @@
-package com.jawzf.pixeltoolkit.utils
+package com.jawzf.pixeltoolkit.core.design.overlay
 
 import android.graphics.Path
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.MaterialShapes
 import androidx.graphics.shapes.RoundedPolygon
 import androidx.graphics.shapes.toPath
 import java.util.Random
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 object AmbientMusicShapeHelper {
     val allShapesWithNames =
         listOf(

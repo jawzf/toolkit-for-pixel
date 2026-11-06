@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.utils.overlay
+package com.jawzf.pixeltoolkit.feature.notifications.lighting.overlay
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
@@ -9,7 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.LinearInterpolator
 import android.widget.FrameLayout
-import com.jawzf.pixeltoolkit.domain.model.RippleConfig
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.RippleConfig
 
 object RippleOverlay {
     private const val VIEW_TAG = "ripple_view"
