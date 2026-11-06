@@ -16,6 +16,7 @@ import com.jawzf.pixeltoolkit.feature.connectivity.dns.PrivateDnsTileService
 import com.jawzf.pixeltoolkit.feature.connectivity.nfc.NfcTileService
 import com.jawzf.pixeltoolkit.feature.connectivity.sim.DataSimTileService
 import com.jawzf.pixeltoolkit.feature.display.aod.AlwaysOnDisplayTileService
+import com.jawzf.pixeltoolkit.feature.display.nightlight.DynamicNightLightTileService
 import com.jawzf.pixeltoolkit.feature.display.ondisplay.ToolkitOnDisplayTileService
 import com.jawzf.pixeltoolkit.feature.display.pixels.SmartPixelsTileService
 import com.jawzf.pixeltoolkit.feature.display.refresh.RefreshRateTileService
@@ -171,7 +172,7 @@ class QSPreferencesActivity : ComponentActivity() {
                 when (componentName.className) {
                     CaffeinateTileService::class.java.name -> "Caffeinate"
                     NotificationLightingTileService::class.java.name -> "Notification lighting"
-                    "com.jawzf.pixeltoolkit.services.tiles.DynamicNightLightTileService" -> "Dynamic night light"
+                    DynamicNightLightTileService::class.java.name -> "Dynamic night light"
                     AppLockTileService::class.java.name -> "App lock"
                     ScreenLockedSecurityTileService::class.java.name -> "Screen locked security"
                     AppFreezingTileService::class.java.name -> "Freeze"

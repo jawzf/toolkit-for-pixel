@@ -196,9 +196,6 @@ class SettingsRepository(
         const val KEY_LOCKSCREEN_SHORTCUT_RIGHT_ACTIONS = "lockscreen_shortcut_right_actions"
         const val KEY_LOCKSCREEN_SYSTEM_SHORTCUTS_STATE = "lockscreen_system_shortcuts_state"
 
-        const val KEY_DYNAMIC_NIGHT_LIGHT_ENABLED = "dynamic_night_light_enabled"
-        const val KEY_DYNAMIC_NIGHT_LIGHT_SELECTED_APPS = "dynamic_night_light_selected_apps"
-
         const val KEY_FLASHLIGHT_ALWAYS_TURN_OFF_ENABLED = "flashlight_always_turn_off_enabled"
         const val KEY_FLASHLIGHT_FADE_ENABLED = "flashlight_fade_enabled"
         const val KEY_FLASHLIGHT_ADJUST_INTENSITY_ENABLED = "flashlight_adjust_intensity_enabled"
@@ -675,29 +672,6 @@ class SettingsRepository(
     }
 
     // Feature specific App selections
-
-    /**
-     * Executes the load dynamic night light selected apps operation.
-     */
-    fun loadDynamicNightLightSelectedApps() = loadAppSelection(KEY_DYNAMIC_NIGHT_LIGHT_SELECTED_APPS)
-
-    /**
-     * Executes the save dynamic night light selected apps operation.
-     *
-     * @param apps [List<AppSelection>] Target apps.
-     */
-    fun saveDynamicNightLightSelectedApps(apps: List<AppSelection>) = saveAppSelection(KEY_DYNAMIC_NIGHT_LIGHT_SELECTED_APPS, apps)
-
-    /**
-     * Executes the update dynamic night light app selection operation.
-     *
-     * @param packageName [String] Target package name.
-     * @param enabled [Boolean] Target enabled.
-     */
-    fun updateDynamicNightLightAppSelection(
-        packageName: String,
-        enabled: Boolean,
-    ) = updateAppSelection(KEY_DYNAMIC_NIGHT_LIGHT_SELECTED_APPS, packageName, enabled)
 
     /**
      * Executes the load shut up configs operation.

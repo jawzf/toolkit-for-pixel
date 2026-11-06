@@ -79,6 +79,7 @@ import com.jawzf.pixeltoolkit.feature.display.aod.ui.AlwaysOnDisplaySettingsUI
 import com.jawzf.pixeltoolkit.feature.display.aod.ui.AodWallpaperPreviewCard
 import com.jawzf.pixeltoolkit.feature.display.aod.ui.AodWallpaperSettingsUI
 import com.jawzf.pixeltoolkit.feature.display.lockclock.ui.LockScreenClockSettingsUI
+import com.jawzf.pixeltoolkit.feature.display.nightlight.ui.DynamicNightLightSettingsUI
 import com.jawzf.pixeltoolkit.feature.display.ondisplay.ui.ToolkitOnDisplaySettingsUI
 import com.jawzf.pixeltoolkit.feature.display.pixels.ui.SmartPixelsSettingsUI
 import com.jawzf.pixeltoolkit.feature.display.refresh.ui.RefreshRateSettingsUI
@@ -131,7 +132,6 @@ import com.jawzf.pixeltoolkit.ui.features.display.StatusGlanceSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.ActivityLauncherSearchBar
 import com.jawzf.pixeltoolkit.ui.features.system.ActivityLauncherSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.ButtonRemapSettingsUI
-import com.jawzf.pixeltoolkit.ui.features.system.DynamicNightLightSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.FlashlightSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.LockscreenShortcutsSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.NavigationSettingsUI
@@ -1046,7 +1046,22 @@ class FeatureSettingsActivity : AppCompatActivity() {
 
                                     "Dynamic night light" -> {
                                         DynamicNightLightSettingsUI(
-                                            viewModel = viewModel,
+                                            state = viewModel.nightLight,
+                                            appSelectionSheet = { onDismiss ->
+                                                AppSelectionSheet(
+                                                    onDismissRequest = onDismiss,
+                                                    onLoadApps = {
+                                                        viewModel.nightLight.loadDynamicNightLightSelectedApps()
+                                                    },
+                                                    onSaveApps = { _, apps ->
+                                                        viewModel.nightLight.saveDynamicNightLightSelectedApps(apps)
+                                                    },
+                                                    onAppToggle = { _, pkg, enabled ->
+                                                        viewModel.nightLight.updateDynamicNightLightAppEnabled(pkg, enabled)
+                                                    },
+                                                    context = context,
+                                                )
+                                            },
                                             modifier = Modifier.padding(top = 16.dp),
                                             highlightSetting = highlightSetting,
                                         )
