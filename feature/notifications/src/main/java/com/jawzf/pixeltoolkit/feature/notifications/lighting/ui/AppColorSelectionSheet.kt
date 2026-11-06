@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.core.sheets
+package com.jawzf.pixeltoolkit.feature.notifications.lighting.ui
 
 import android.content.Context
 import androidx.compose.animation.AnimatedVisibility
