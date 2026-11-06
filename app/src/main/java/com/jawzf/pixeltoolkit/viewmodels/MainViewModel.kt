@@ -6522,8 +6522,7 @@ class MainViewModel : ViewModel() {
      * @param context [Context] Target context.
      * @return The resulting List<AppSelection> data.
      */
-    fun loadNotificationLightingSelectedApps(context: Context): List<AppSelection> =
-        lightingSettings.loadNotificationLightingSelectedApps()
+    fun loadNotificationLightingSelectedApps(context: Context): List<AppSelection> = lightingSettings.loadNotificationLightingSelectedApps()
 
     fun updateNotificationLightingAppEnabled(
         context: Context,
