@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.features.system
+package com.jawzf.pixeltoolkit.feature.input.ime.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -337,7 +337,7 @@ fun KeyboardSettingsUI(
         Spacer(Modifier.height(32.dp))
 
         if (viewModel.isUserDictionarySheetVisible.value) {
-            com.jawzf.pixeltoolkit.ui.features.apps.sheets.UserDictionaryBottomSheet(
+            UserDictionaryBottomSheet(
                 viewModel = viewModel,
                 onDismissRequest = { viewModel.isUserDictionarySheetVisible.value = false },
             )
