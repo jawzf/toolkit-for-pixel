@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.ime
+package com.jawzf.pixeltoolkit.feature.input.ime.ui
 
 import android.content.Context
 import android.util.Log

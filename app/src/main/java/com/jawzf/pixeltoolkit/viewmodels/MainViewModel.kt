@@ -74,6 +74,7 @@ import com.jawzf.pixeltoolkit.feature.apps.freeze.FreezeState
 import com.jawzf.pixeltoolkit.feature.apps.updates.github.GitHubUser
 import com.jawzf.pixeltoolkit.feature.connectivity.ConnectivitySettings
 import com.jawzf.pixeltoolkit.feature.connectivity.ConnectivityState
+import com.jawzf.pixeltoolkit.feature.input.ime.ToolkitInputMethodService
 import com.jawzf.pixeltoolkit.feature.power.BatteryState
 import com.jawzf.pixeltoolkit.feature.power.PowerSettings
 import com.jawzf.pixeltoolkit.feature.power.PowerState
@@ -2918,7 +2919,7 @@ class MainViewModel : ViewModel() {
      * @param context [Context] Target context.
      */
     fun loadUserDictionaryWords(context: Context) {
-        context.applicationContext as? com.jawzf.pixeltoolkit.ime.ToolkitInputMethodService
+        context.applicationContext as? ToolkitInputMethodService
 
         viewModelScope.launch(Dispatchers.IO) {
             val file = java.io.File(context.filesDir, "user_dict.txt")

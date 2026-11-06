@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.ime.touch
+package com.jawzf.pixeltoolkit.feature.input.ime.ui.touch
 
 internal enum class PointerMode {
     IDLE,

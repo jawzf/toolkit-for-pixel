@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.ime
+package com.jawzf.pixeltoolkit.feature.input.ime.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.basicMarquee

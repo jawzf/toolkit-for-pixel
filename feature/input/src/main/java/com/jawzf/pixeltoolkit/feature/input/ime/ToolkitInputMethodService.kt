@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ime
+package com.jawzf.pixeltoolkit.feature.input.ime
 
 import android.content.ClipboardManager
 import android.inputmethodservice.InputMethodService
@@ -31,7 +31,7 @@ import androidx.savedstate.SavedStateRegistryOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 import com.jawzf.pixeltoolkit.core.design.theme.ToolkitTheme
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.ui.ime.KeyboardInputView
+import com.jawzf.pixeltoolkit.feature.input.ime.ui.KeyboardInputView
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
