@@ -11,6 +11,7 @@ dependencies {
     implementation(project(":core:platform"))
     implementation(project(":core:data"))
     implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.gson)
     implementation(libs.androidx.media3.exoplayer)
     implementation(libs.androidx.media3.common)

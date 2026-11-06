@@ -33,8 +33,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.jawzf.pixeltoolkit.core.data.prefs.StatusBarPrefs
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
+import com.jawzf.pixeltoolkit.core.platform.statusbar.StatusBarManager
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.island.gestures.CompactGestureController
 import com.jawzf.pixeltoolkit.island.gestures.CompactGestures
@@ -88,7 +90,6 @@ import com.jawzf.pixeltoolkit.island.ui.IslandStackBubble
 import com.jawzf.pixeltoolkit.island.ui.IslandStackOverlap
 import com.jawzf.pixeltoolkit.island.ui.QueueStyle
 import com.jawzf.pixeltoolkit.island.ui.components.IslandIcon
-import com.jawzf.pixeltoolkit.utils.StatusBarManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -104,6 +105,7 @@ class IslandCoordinator(
 ) : SharedPreferences.OnSharedPreferenceChangeListener {
 
     private val settings by lazy { SettingsRepository(service) }
+    private val statusBarPrefs by lazy { StatusBarPrefs(service) }
     private val mainHandler = Handler(Looper.getMainLooper())
     private val wm by lazy { service.getSystemService(Context.WINDOW_SERVICE) as WindowManager }
     private val keyguardManager by lazy { service.getSystemService(Context.KEYGUARD_SERVICE) as? KeyguardManager }
@@ -769,11 +771,11 @@ class IslandCoordinator(
             flags += StatusBarManager.FLAG_CLOCK
         }
         if (selective && state.stage != IslandStage.Hidden) {
-            settings.getIslandHideIcons().forEach {
+            statusBarPrefs.getIslandHideIcons().forEach {
                 when (it) {
-                    SettingsRepository.ISLAND_HIDE_ICON_SYSTEM -> flags += StatusBarManager.FLAG_SYSTEM_ICONS
-                    SettingsRepository.ISLAND_HIDE_ICON_NOTIFICATIONS -> flags += StatusBarManager.FLAG_NOTIFICATION_ICONS
-                    SettingsRepository.ISLAND_HIDE_ICON_CLOCK -> flags += StatusBarManager.FLAG_CLOCK
+                    StatusBarPrefs.ISLAND_HIDE_ICON_SYSTEM -> flags += StatusBarManager.FLAG_SYSTEM_ICONS
+                    StatusBarPrefs.ISLAND_HIDE_ICON_NOTIFICATIONS -> flags += StatusBarManager.FLAG_NOTIFICATION_ICONS
+                    StatusBarPrefs.ISLAND_HIDE_ICON_CLOCK -> flags += StatusBarManager.FLAG_CLOCK
                 }
             }
         }
@@ -791,7 +793,8 @@ class IslandCoordinator(
             SettingsRepository.KEY_ISLAND_ALWAYS_GESTURES -> syncGestureHitbox()
             SettingsRepository.KEY_ISLAND_PRIORITY_ORDER, SettingsRepository.KEY_ISLAND_PROVIDERS -> if (running) reloadPriorities()
             SettingsRepository.KEY_ISLAND_DYNAMIC_HIDE_STATUS_BAR, SettingsRepository.KEY_ISLAND_COMPACT_HIDE_STATUS_BAR,
-            SettingsRepository.KEY_ISLAND_HIDE_ICONS_ENABLED, SettingsRepository.KEY_ISLAND_HIDE_ICONS -> syncStatusBar()
+            SettingsRepository.KEY_ISLAND_HIDE_ICONS_ENABLED, StatusBarPrefs.KEY_ISLAND_HIDE_ICONS,
+            -> syncStatusBar()
             SettingsRepository.KEY_ISLAND_HIDE_WHEN_SCREEN_OFF, SettingsRepository.KEY_ISLAND_SHOW_WHEN -> applySuppression()
             SettingsRepository.KEY_ISLAND_HIDE_IN_OWNER_APP -> applyOwnerAppHiding()
             in LAUNCHER_ONLY_KEYS.values, SettingsRepository.KEY_ISLAND_PROVIDERS_LAUNCHER_ONLY -> applyLauncherOnly()

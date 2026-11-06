@@ -7,11 +7,11 @@ import android.content.Intent
 import android.os.Handler
 import android.os.Looper
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
+import com.jawzf.pixeltoolkit.core.platform.statusbar.StatusBarManager
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.feature.power.maps.MapsState
 import com.jawzf.pixeltoolkit.feature.security.SecuritySettings
 import com.jawzf.pixeltoolkit.feature.security.SecurityState
-import com.jawzf.pixeltoolkit.utils.StatusBarManager
 
 class SecurityReceiver : BroadcastReceiver() {
     companion object {

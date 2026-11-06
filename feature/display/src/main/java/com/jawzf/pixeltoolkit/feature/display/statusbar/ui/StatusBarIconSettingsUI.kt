@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.features.system
+package com.jawzf.pixeltoolkit.feature.display.statusbar.ui
 
 import android.Manifest
 import android.content.Context
@@ -39,31 +39,34 @@ import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.edit
+import com.jawzf.pixeltoolkit.core.data.prefs.StatusBarPrefs
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.cards.IconToggleItem
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.modifiers.highlight
+import com.jawzf.pixeltoolkit.core.design.pickers.NetworkTypePicker
 import com.jawzf.pixeltoolkit.core.design.pickers.SegmentedPicker
+import com.jawzf.pixeltoolkit.core.design.sheets.HideStatusBarInfoBottomSheet
 import com.jawzf.pixeltoolkit.core.design.sheets.PermissionItem
 import com.jawzf.pixeltoolkit.core.design.sheets.PermissionsBottomSheet
 import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
-import com.jawzf.pixeltoolkit.domain.StatusBarIconRegistry
-import com.jawzf.pixeltoolkit.ui.core.pickers.NetworkTypePicker
-import com.jawzf.pixeltoolkit.ui.core.sheets.HideStatusBarInfoBottomSheet
-import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
-import com.jawzf.pixeltoolkit.viewmodels.StatusBarIconViewModel
+import com.jawzf.pixeltoolkit.feature.display.statusbar.StatusBarControlState
+import com.jawzf.pixeltoolkit.feature.display.statusbar.StatusBarIconRegistry
+import com.jawzf.pixeltoolkit.feature.display.statusbar.StatusBarIconViewModel
 
 @Composable
 fun StatusBarIconSettingsUI(
     viewModel: StatusBarIconViewModel,
-    mainViewModel: MainViewModel,
+    controlState: StatusBarControlState,
+    isIslandHideStatusBarInsets: Boolean,
+    onIslandHideStatusBarInsetsChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
     highlightSetting: String? = null,
 ) {
     val context = LocalContext.current
     val view = LocalView.current
-    val isMasterEnabled = mainViewModel.isStatusBarIconControlEnabled.value
+    val isMasterEnabled = controlState.isStatusBarIconControlEnabled.value
     val isPermissionGranted =
         viewModel.isWriteSecureSettingsEnabled.value || viewModel.isShellPermissionGranted.value
     val hasWriteSettings = viewModel.isWriteSettingsEnabled.value
@@ -162,7 +165,7 @@ fun StatusBarIconSettingsUI(
                 isChecked = isMasterEnabled,
                 onCheckedChange = { checked ->
                     HapticUtil.performVirtualKeyHaptic(view)
-                    mainViewModel.setStatusBarIconControlEnabled(checked, context)
+                    controlState.setStatusBarIconControlEnabled(checked)
                 },
             )
         }
@@ -551,7 +554,7 @@ fun StatusBarIconSettingsUI(
                 title = stringResource(R.string.hide_all_system_icons_title),
                 description = stringResource(R.string.hide_all_system_icons_desc),
                 isChecked = viewModel.isHideSystemIconsEnabled.value ||
-                    com.jawzf.pixeltoolkit.data.repository.SettingsRepository.ISLAND_HIDE_ICON_SYSTEM in viewModel.islandHiddenIcons.value,
+                    StatusBarPrefs.ISLAND_HIDE_ICON_SYSTEM in viewModel.islandHiddenIcons.value,
                 onCheckedChange = { checked ->
                     if (!isAdvancedEnabled) {
                         showAdvancedPermissionSheet = true
@@ -602,7 +605,7 @@ fun StatusBarIconSettingsUI(
                 title = stringResource(R.string.hide_clock_title),
                 description = stringResource(R.string.hide_clock_desc),
                 isChecked = viewModel.isHideClockEnabled.value ||
-                    com.jawzf.pixeltoolkit.data.repository.SettingsRepository.ISLAND_HIDE_ICON_CLOCK in viewModel.islandHiddenIcons.value,
+                    StatusBarPrefs.ISLAND_HIDE_ICON_CLOCK in viewModel.islandHiddenIcons.value,
                 onCheckedChange = { checked ->
                     if (!isAdvancedEnabled) {
                         showAdvancedPermissionSheet = true
@@ -628,7 +631,7 @@ fun StatusBarIconSettingsUI(
                 title = stringResource(R.string.hide_notification_icons_title),
                 description = stringResource(R.string.hide_notification_icons_desc),
                 isChecked = viewModel.isHideNotificationIconsEnabled.value ||
-                    com.jawzf.pixeltoolkit.data.repository.SettingsRepository.ISLAND_HIDE_ICON_NOTIFICATIONS in viewModel.islandHiddenIcons.value,
+                    StatusBarPrefs.ISLAND_HIDE_ICON_NOTIFICATIONS in viewModel.islandHiddenIcons.value,
                 onCheckedChange = { checked ->
                     if (!isAdvancedEnabled) {
                         showAdvancedPermissionSheet = true
@@ -666,13 +669,13 @@ fun StatusBarIconSettingsUI(
                 iconRes = R.drawable.rounded_visibility_off_24,
                 title = stringResource(R.string.island_hide_status_bar_title),
                 onInfoClick = { showHideStatusBarInfo = true },
-                isChecked = mainViewModel.isIslandHideStatusBarInsets.value && isAdvancedEnabled,
+                isChecked = isIslandHideStatusBarInsets && isAdvancedEnabled,
                 onCheckedChange = { checked ->
                     HapticUtil.performVirtualKeyHaptic(view)
                     if (checked && !isAdvancedEnabled) {
                         showAdvancedPermissionSheet = true
                     } else {
-                        mainViewModel.setIslandHideStatusBarInsets(checked, context)
+                        onIslandHideStatusBarInsetsChange(checked)
                     }
                 },
                 modifier = Modifier.highlight(highlightSetting == "island_hide_status_bar_insets"),

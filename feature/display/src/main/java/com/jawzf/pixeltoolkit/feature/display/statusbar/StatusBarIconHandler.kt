@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.services.handlers
+package com.jawzf.pixeltoolkit.feature.display.statusbar
 
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -10,11 +10,11 @@ import android.net.NetworkCapabilities
 import android.os.BatteryManager
 import android.provider.Settings
 import android.telephony.TelephonyManager
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.domain.StatusBarIconRegistry
-import com.jawzf.pixeltoolkit.ui.core.pickers.NetworkType
-import com.jawzf.pixeltoolkit.utils.updateIconBlacklistSetting
-import com.jawzf.pixeltoolkit.viewmodels.StatusBarIconViewModel
+import com.jawzf.pixeltoolkit.core.design.pickers.NetworkType
+import com.jawzf.pixeltoolkit.core.platform.PlatformPrefs
+import com.jawzf.pixeltoolkit.feature.display.statusbar.StatusBarIconRegistry
+import com.jawzf.pixeltoolkit.feature.display.statusbar.StatusBarIconViewModel
+import com.jawzf.pixeltoolkit.feature.display.statusbar.updateIconBlacklistSetting
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -96,8 +96,8 @@ class StatusBarIconHandler(
 
     fun updateAll() {
         scope.launch {
-            val prefs = context.getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE)
-            if (!prefs.getBoolean(SettingsRepository.KEY_STATUS_BAR_ICON_CONTROL_ENABLED, false)) return@launch
+            val prefs = context.getSharedPreferences(PlatformPrefs.PREFS_NAME, Context.MODE_PRIVATE)
+            if (!prefs.getBoolean(PlatformPrefs.KEY_STATUS_BAR_ICON_CONTROL_ENABLED, false)) return@launch
             val isSmartWiFiEnabled =
                 prefs.getBoolean(StatusBarIconViewModel.PREF_SMART_WIFI_ENABLED, false)
             val isSmartDataEnabled =
@@ -112,7 +112,7 @@ class StatusBarIconHandler(
         isSmartWiFiEnabled: Boolean,
         isSmartDataEnabled: Boolean,
     ) {
-        val prefs = context.getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE)
+        val prefs = context.getSharedPreferences(PlatformPrefs.PREFS_NAME, Context.MODE_PRIVATE)
 
         // 1. Get current states
         val isWifiConnected = isWifiConnected()
@@ -163,7 +163,7 @@ class StatusBarIconHandler(
     }
 
     private fun updateBatteryPercentage() {
-        val prefs = context.getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE)
+        val prefs = context.getSharedPreferences(PlatformPrefs.PREFS_NAME, Context.MODE_PRIVATE)
         val mode = prefs.getInt(StatusBarIconViewModel.PREF_BATTERY_PERCENT_MODE, 0)
 
         if (mode != 2) return // Only handle "Charging Only" mode here

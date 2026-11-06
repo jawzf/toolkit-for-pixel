@@ -47,6 +47,8 @@ import com.jawzf.pixeltoolkit.core.platform.shell.PrivilegedMode
 import com.jawzf.pixeltoolkit.core.platform.shell.RootUtils
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuUtils
+import com.jawzf.pixeltoolkit.core.platform.statusbar.StatusBarInsetsUtils
+import com.jawzf.pixeltoolkit.core.platform.statusbar.StatusBarManager
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.domain.diy.Action
 import com.jawzf.pixeltoolkit.domain.model.AppIcon
@@ -69,6 +71,7 @@ import com.jawzf.pixeltoolkit.feature.display.lockclock.LockClockState
 import com.jawzf.pixeltoolkit.feature.display.ondisplay.ToolkitOnDisplayState
 import com.jawzf.pixeltoolkit.feature.display.pixels.SmartPixelsState
 import com.jawzf.pixeltoolkit.feature.display.refresh.RefreshRatePanelState
+import com.jawzf.pixeltoolkit.feature.display.statusbar.StatusBarControlState
 import com.jawzf.pixeltoolkit.feature.input.InputState
 import com.jawzf.pixeltoolkit.feature.notifications.NotificationSettings
 import com.jawzf.pixeltoolkit.feature.notifications.NotificationState
@@ -94,8 +97,6 @@ import com.jawzf.pixeltoolkit.utils.AppIconUtil
 import com.jawzf.pixeltoolkit.utils.DuoBatteryLevels
 import com.jawzf.pixeltoolkit.utils.PowerButtonGestures
 import com.jawzf.pixeltoolkit.utils.SplitScreenUtil
-import com.jawzf.pixeltoolkit.utils.StatusBarInsetsUtils
-import com.jawzf.pixeltoolkit.utils.StatusBarManager
 import com.jawzf.pixeltoolkit.utils.SurfaceFlingerControl
 import com.jawzf.pixeltoolkit.utils.TestNotificationUtil
 import kotlinx.coroutines.Dispatchers
@@ -111,7 +112,6 @@ import java.time.LocalDateTime
 class MainViewModel : ViewModel() {
     val isAccessibilityEnabled = mutableStateOf(false)
     val isWidgetEnabled = mutableStateOf(false)
-    val isStatusBarIconControlEnabled = mutableStateOf(false)
     val isWriteSecureSettingsEnabled = mutableStateOf(false)
     val isReadPhoneStateEnabled = mutableStateOf(false)
     val isPostNotificationsEnabled = mutableStateOf(false)
@@ -381,6 +381,7 @@ class MainViewModel : ViewModel() {
     val aod = AodState(viewModelScope)
     val toolkitOnDisplay = ToolkitOnDisplayState()
     val lockClock = LockClockState()
+    val statusBarControl = StatusBarControlState()
     val addedQSTiles = mutableStateOf<Set<String>>(emptySet())
     val isHideGestureBarEnabled = mutableStateOf(false)
     val isHideGestureBarOnLauncherEnabled = mutableStateOf(false)
@@ -910,10 +911,6 @@ class MainViewModel : ViewModel() {
 
                     PowerSettings.KEY_MAPS_POWER_SAVING_ENABLED -> power.onPreferenceChanged(key)
 
-                    SettingsRepository.KEY_STATUS_BAR_ICON_CONTROL_ENABLED ->
-                        isStatusBarIconControlEnabled.value =
-                            settingsRepository.getBoolean(key)
-
                     SettingsRepository.KEY_BUTTON_REMAP_ENABLED ->
                         isButtonRemapEnabled.value =
                             settingsRepository.getBoolean(key)
@@ -965,6 +962,7 @@ class MainViewModel : ViewModel() {
                     in RefreshRatePanelState.PREFERENCE_KEYS -> refreshRate.onPreferenceChanged(key)
                     in AodState.PREFERENCE_KEYS -> aod.onPreferenceChanged(key)
                     in ToolkitOnDisplayState.PREFERENCE_KEYS -> toolkitOnDisplay.onPreferenceChanged(key)
+                    in StatusBarControlState.PREFERENCE_KEYS -> statusBarControl.onPreferenceChanged(key)
 
                     PowerSettings.KEY_MAPS_DISCOVERED_CHANNELS, PowerSettings.KEY_MAPS_DETECTION_CHANNELS -> power.onPreferenceChanged(key)
 
@@ -1430,6 +1428,7 @@ class MainViewModel : ViewModel() {
         pixelSearchbarMusicPackage.value =
             settingsRepository.getPixelSearchbarMusicPackage()
         lockClock.load(context)
+        statusBarControl.load(context)
         loadShutUpConfigs()
         recentSearches.value = settingsRepository.getRecentSearches()
 
@@ -1671,8 +1670,6 @@ class MainViewModel : ViewModel() {
         }
 
         isWidgetEnabled.value = settingsRepository.getBoolean(SettingsRepository.KEY_WIDGET_ENABLED)
-        isStatusBarIconControlEnabled.value =
-            settingsRepository.getBoolean(SettingsRepository.KEY_STATUS_BAR_ICON_CONTROL_ENABLED)
 
         fontScale.floatValue = settingsRepository.getFontScale()
         fontWeight.intValue = settingsRepository.getFontWeight()
@@ -2425,23 +2422,6 @@ class MainViewModel : ViewModel() {
     }
 
     /**
-     * Executes the set status bar icon control enabled operation.
-     *
-     * @param enabled [Boolean] Target enabled.
-     * @param context [Context] Target context.
-     */
-    fun setStatusBarIconControlEnabled(
-        enabled: Boolean,
-        context: Context,
-    ) {
-        isStatusBarIconControlEnabled.value = enabled
-        settingsRepository.putBoolean(
-            SettingsRepository.KEY_STATUS_BAR_ICON_CONTROL_ENABLED,
-            enabled,
-        )
-    }
-
-    /**
      * Executes the set hide gesture bar enabled operation.
      *
      * @param enabled [Boolean] Target enabled.
@@ -2523,7 +2503,7 @@ class MainViewModel : ViewModel() {
         )
 
         if (!enabled) {
-            com.jawzf.pixeltoolkit.utils.StatusBarManager.requestRestore(
+            StatusBarManager.requestRestore(
                 context,
                 "GestureBarAutomation",
             )
@@ -3164,13 +3144,13 @@ class MainViewModel : ViewModel() {
         enabled: Boolean,
     ) {
         if (enabled) {
-            com.jawzf.pixeltoolkit.utils.StatusBarManager.requestDisable(
+            StatusBarManager.requestDisable(
                 context,
                 "HideGestureBar",
-                setOf(com.jawzf.pixeltoolkit.utils.StatusBarManager.FLAG_HOME),
+                setOf(StatusBarManager.FLAG_HOME),
             )
         } else {
-            com.jawzf.pixeltoolkit.utils.StatusBarManager.requestRestore(
+            StatusBarManager.requestRestore(
                 context,
                 "HideGestureBar",
             )

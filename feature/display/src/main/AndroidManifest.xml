@@ -70,6 +70,16 @@
                 android:name="android.service.wallpaper"
                 android:resource="@xml/live_wallpaper_info" />
         </service>
+
+        <receiver
+            android:name="com.jawzf.pixeltoolkit.feature.display.statusbar.StatusBarAutomationReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
+                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

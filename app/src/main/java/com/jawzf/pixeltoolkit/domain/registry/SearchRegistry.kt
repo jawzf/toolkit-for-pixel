@@ -3,8 +3,8 @@ package com.jawzf.pixeltoolkit.domain.registry
 import android.content.Context
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.domain.StatusBarIconRegistry
 import com.jawzf.pixeltoolkit.domain.model.SearchableItem
+import com.jawzf.pixeltoolkit.feature.display.statusbar.StatusBarIconRegistry
 
 object SearchRegistry {
     fun search(

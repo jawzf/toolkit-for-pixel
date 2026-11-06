@@ -9,6 +9,8 @@ import com.google.gson.reflect.TypeToken
 import com.jawzf.pixeltoolkit.core.data.prefs.AppSelection
 import com.jawzf.pixeltoolkit.core.data.prefs.PrefsStore
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticFeedbackType
+import com.jawzf.pixeltoolkit.core.design.pickers.NetworkType
+import com.jawzf.pixeltoolkit.core.platform.PlatformPrefs
 import com.jawzf.pixeltoolkit.core.platform.shell.RootUtils
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuUtils
@@ -24,7 +26,6 @@ import com.jawzf.pixeltoolkit.feature.display.DisplaySettings
 import com.jawzf.pixeltoolkit.feature.display.refresh.RefreshRateUtils
 import com.jawzf.pixeltoolkit.feature.notifications.NotificationSettings
 import com.jawzf.pixeltoolkit.feature.power.PowerSettings
-import com.jawzf.pixeltoolkit.ui.core.pickers.NetworkType
 import com.jawzf.pixeltoolkit.utils.DuoBatteryLevels
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -162,7 +163,7 @@ class SettingsRepository(
         // Keys
         const val KEY_DEBUGGING_TILE_TAP_ACTION = "debugging_tile_tap_action"
         const val KEY_WIDGET_ENABLED = "widget_enabled"
-        const val KEY_STATUS_BAR_ICON_CONTROL_ENABLED = "status_bar_icon_control_enabled"
+        const val KEY_STATUS_BAR_ICON_CONTROL_ENABLED = PlatformPrefs.KEY_STATUS_BAR_ICON_CONTROL_ENABLED
         const val KEY_LOCK_SCREEN_WALLPAPER_SOURCE = "lock_screen_wallpaper_source"
 
         const val KEY_LAST_CALL_STATE = "last_call_state"
@@ -208,11 +209,11 @@ class SettingsRepository(
         const val KEY_FLASHLIGHT_OVERHEAT_PREVENTION_ENABLED =
             "flashlight_overheat_prevention_enabled"
 
-        const val KEY_HIDE_SYSTEM_ICONS = "hide_system_icons"
-        const val KEY_HIDE_SYSTEM_ICONS_LOCKED_ONLY = "hide_system_icons_locked_only"
-        const val KEY_HIDE_CLOCK = "hide_clock"
-        const val KEY_HIDE_NOTIFICATION_ICONS = "hide_notification_icons"
-        const val KEY_HIDE_GESTURE_BAR_ENABLED = "hide_gesture_bar_enabled"
+        const val KEY_HIDE_SYSTEM_ICONS = PlatformPrefs.KEY_HIDE_SYSTEM_ICONS
+        const val KEY_HIDE_SYSTEM_ICONS_LOCKED_ONLY = PlatformPrefs.KEY_HIDE_SYSTEM_ICONS_LOCKED_ONLY
+        const val KEY_HIDE_CLOCK = PlatformPrefs.KEY_HIDE_CLOCK
+        const val KEY_HIDE_NOTIFICATION_ICONS = PlatformPrefs.KEY_HIDE_NOTIFICATION_ICONS
+        const val KEY_HIDE_GESTURE_BAR_ENABLED = PlatformPrefs.KEY_HIDE_GESTURE_BAR_ENABLED
         const val KEY_HIDE_GESTURE_BAR_ON_LAUNCHER_ENABLED = "hide_gesture_bar_on_launcher_enabled"
         const val KEY_CIRCLE_TO_SEARCH_GESTURE_ENABLED = "circle_to_search_gesture_enabled"
         const val KEY_CIRCLE_TO_SEARCH_GESTURE_HEIGHT = "circle_to_search_gesture_height"
@@ -330,10 +331,6 @@ class SettingsRepository(
         const val KEY_ISLAND_DYNAMIC_HIDE_STATUS_BAR = "island_dynamic_hide_status_bar"
         const val KEY_ISLAND_COMPACT_HIDE_STATUS_BAR = "island_compact_hide_status_bar"
         const val KEY_ISLAND_HIDE_ICONS_ENABLED = "island_hide_icons_enabled"
-        const val KEY_ISLAND_HIDE_ICONS = "island_hide_icons"
-        const val ISLAND_HIDE_ICON_SYSTEM = "system"
-        const val ISLAND_HIDE_ICON_NOTIFICATIONS = "notifications"
-        const val ISLAND_HIDE_ICON_CLOCK = "clock"
         const val KEY_ISLAND_HIDE_WHEN_SCREEN_OFF = "island_hide_when_screen_off"
         const val KEY_ISLAND_SHOW_WHEN = "island_show_when"
         const val ISLAND_SHOW_WHEN_UNLOCKED = "unlocked"
@@ -1174,11 +1171,6 @@ class SettingsRepository(
     fun setEnableUnsupportedFeatures(enabled: Boolean) {
         putBoolean(KEY_ENABLE_UNSUPPORTED_FEATURES, enabled)
     }
-
-    fun getIslandHideIcons(): Set<String> =
-        getString(KEY_ISLAND_HIDE_ICONS, "")?.split(",")?.filter { it.isNotBlank() }?.toSet().orEmpty()
-
-    fun setIslandHideIcons(icons: Set<String>) = putString(KEY_ISLAND_HIDE_ICONS, icons.joinToString(","))
 
     fun isShowLegacyFeatures(): Boolean = getBoolean(KEY_SHOW_LEGACY_FEATURES, true)
 

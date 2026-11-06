@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.domain
+package com.jawzf.pixeltoolkit.feature.display.statusbar
 
 import com.jawzf.pixeltoolkit.core.design.R
 

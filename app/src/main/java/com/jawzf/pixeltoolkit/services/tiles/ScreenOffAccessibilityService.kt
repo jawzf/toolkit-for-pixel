@@ -33,6 +33,7 @@ import com.jawzf.pixeltoolkit.feature.display.aod.AodForceTurnOffHandler
 import com.jawzf.pixeltoolkit.feature.display.aod.AodWallpaperOverlayHandler
 import com.jawzf.pixeltoolkit.feature.display.ondisplay.AmbientGlanceHandler
 import com.jawzf.pixeltoolkit.feature.display.pixels.SmartPixelsHandler
+import com.jawzf.pixeltoolkit.feature.display.statusbar.StatusBarIconHandler
 import com.jawzf.pixeltoolkit.feature.input.gesture.OmniGestureOverlayHandler
 import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingHandler
 import com.jawzf.pixeltoolkit.feature.security.faceunlock.FaceUnlockBrightnessHandler
@@ -52,7 +53,6 @@ import com.jawzf.pixeltoolkit.services.handlers.ButtonRemapHandler
 import com.jawzf.pixeltoolkit.services.handlers.DuoOverlayHandler
 import com.jawzf.pixeltoolkit.services.handlers.FlashlightHandler
 import com.jawzf.pixeltoolkit.services.handlers.LockscreenShortcutsHandler
-import com.jawzf.pixeltoolkit.services.handlers.StatusBarIconHandler
 import com.jawzf.pixeltoolkit.services.handlers.StatusGlanceHandler
 import com.jawzf.pixeltoolkit.services.receivers.FlashlightActionReceiver
 import com.jawzf.pixeltoolkit.utils.CameraSession

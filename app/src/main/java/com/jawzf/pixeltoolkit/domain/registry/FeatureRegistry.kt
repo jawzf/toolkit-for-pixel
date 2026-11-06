@@ -705,7 +705,7 @@ object FeatureRegistry {
                 parentFeatureId = "Display",
                 animationRes = R.raw.status_animation,
             ) {
-                override fun isEnabled(viewModel: MainViewModel) = viewModel.isStatusBarIconControlEnabled.value
+                override fun isEnabled(viewModel: MainViewModel) = viewModel.statusBarControl.isStatusBarIconControlEnabled.value
 
                 override fun isToggleEnabled(
                     viewModel: MainViewModel,
@@ -716,7 +716,7 @@ object FeatureRegistry {
                     viewModel: MainViewModel,
                     context: Context,
                     enabled: Boolean,
-                ) = viewModel.setStatusBarIconControlEnabled(enabled, context)
+                ) = viewModel.statusBarControl.setStatusBarIconControlEnabled(enabled)
             },
             object : Feature(
                 id = "Status glance",
