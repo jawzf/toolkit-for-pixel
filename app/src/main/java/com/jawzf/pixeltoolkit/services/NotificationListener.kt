@@ -34,6 +34,7 @@ import com.jawzf.pixeltoolkit.core.platform.device.CarConnectionMonitor
 import com.jawzf.pixeltoolkit.core.platform.device.DeviceUtils
 import com.jawzf.pixeltoolkit.core.platform.device.PriorityModeUtil
 import com.jawzf.pixeltoolkit.core.platform.device.ProgressNotificationData
+import com.jawzf.pixeltoolkit.core.platform.device.ProgressNotificationHub
 import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.domain.model.ActiveNotificationAlert
@@ -68,10 +69,6 @@ import java.io.FileOutputStream
 import java.util.concurrent.ConcurrentHashMap
 
 class NotificationListener : NotificationListenerService() {
-    interface ProgressNotificationListener {
-        fun onProgressNotificationUpdated(data: ProgressNotificationData?)
-    }
-
     interface NavigationNotificationListener {
         fun onNavigationNotificationUpdated(data: NavigationNotificationData?)
     }
@@ -106,7 +103,6 @@ class NotificationListener : NotificationListenerService() {
 
         var instance: NotificationListener? = null
 
-        private val progressListeners = mutableListOf<ProgressNotificationListener>()
         private val alertListeners = mutableListOf<NotificationAlertListener>()
         private val navigationListeners = mutableListOf<NavigationNotificationListener>()
 
@@ -158,23 +154,8 @@ class NotificationListener : NotificationListenerService() {
             } catch (_: Exception) {}
         }
 
-        fun addProgressNotificationListener(listener: ProgressNotificationListener) {
-            synchronized(progressListeners) {
-                if (!progressListeners.contains(listener)) {
-                    progressListeners.add(listener)
-                }
-            }
-        }
-
-        fun removeProgressNotificationListener(listener: ProgressNotificationListener) {
-            synchronized(progressListeners) {
-                progressListeners.remove(listener)
-            }
-        }
-
         fun notifyProgressListeners(data: ProgressNotificationData?) {
-            val listenersCopy = synchronized(progressListeners) { progressListeners.toList() }
-            listenersCopy.forEach { it.onProgressNotificationUpdated(data) }
+            ProgressNotificationHub.notifyListeners(data)
         }
 
         fun getLatestProgressNotification(): ProgressNotificationData? =

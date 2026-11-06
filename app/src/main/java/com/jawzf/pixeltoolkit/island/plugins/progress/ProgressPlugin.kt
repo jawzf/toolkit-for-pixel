@@ -31,6 +31,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.core.platform.device.ProgressNotificationData
+import com.jawzf.pixeltoolkit.core.platform.device.ProgressNotificationHub
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.island.model.CompactCell
 import com.jawzf.pixeltoolkit.island.model.CompactPlacement
@@ -54,18 +55,16 @@ class ProgressPlugin : BaseIslandPlugin() {
     private var data: ProgressNotificationData? = null
     private var icon: ImageBitmap? = null
 
-    private val listener = object : NotificationListener.ProgressNotificationListener {
-        override fun onProgressNotificationUpdated(data: ProgressNotificationData?) {
-            ctx?.mainHandler?.post { update(data) }
-        }
+    private val listener = ProgressNotificationHub.Listener { data ->
+        ctx?.mainHandler?.post { update(data) }
     }
 
     override fun onStart() {
-        NotificationListener.addProgressNotificationListener(listener)
+        ProgressNotificationHub.add(listener)
     }
 
     override fun onStop() {
-        NotificationListener.removeProgressNotificationListener(listener)
+        ProgressNotificationHub.remove(listener)
         data = null
         icon = null
     }

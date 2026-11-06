@@ -11,6 +11,7 @@ import com.jawzf.pixeltoolkit.feature.connectivity.nfc.NfcTileService
 import com.jawzf.pixeltoolkit.feature.connectivity.sim.DataSimController
 import com.jawzf.pixeltoolkit.feature.connectivity.sim.DataSimTileService
 import com.jawzf.pixeltoolkit.feature.display.aod.AlwaysOnDisplayTileService
+import com.jawzf.pixeltoolkit.feature.display.duo.DuoTileService
 import com.jawzf.pixeltoolkit.feature.display.nightlight.DynamicNightLightTileService
 import com.jawzf.pixeltoolkit.feature.display.ondisplay.ToolkitOnDisplayTileService
 import com.jawzf.pixeltoolkit.feature.display.pixels.SmartPixelsTileService

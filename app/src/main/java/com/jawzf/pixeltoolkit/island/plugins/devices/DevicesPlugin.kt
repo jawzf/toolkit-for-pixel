@@ -15,6 +15,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.jawzf.pixeltoolkit.core.data.duo.DuoSettings
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.feature.power.bluetooth.BluetoothDeviceIcons
@@ -43,14 +44,14 @@ class DevicesPlugin : BaseIslandPlugin() {
         SettingsRepository.KEY_ISLAND_BATTERY_PERCENTAGE,
         SettingsRepository.KEY_ISLAND_BATTERY_PERCENTAGE_CONDITIONAL,
         SettingsRepository.KEY_ISLAND_DEVICES_BATTERY_ONLY_LOW,
-        SettingsRepository.KEY_DUO_BATTERY_LOW_COLOR_ENABLED,
+        DuoSettings.KEY_DUO_BATTERY_LOW_COLOR_ENABLED,
         SettingsRepository.KEY_ISLAND_BATTERY_IDLE_COLOR_ENABLED,
         SettingsRepository.KEY_ISLAND_BATTERY_IDLE_COLOR,
-        SettingsRepository.KEY_DUO_BATTERY_LOW_COLOR,
-        SettingsRepository.KEY_DUO_BATTERY_CRITICAL_COLOR_ENABLED,
-        SettingsRepository.KEY_DUO_BATTERY_CRITICAL_COLOR,
-        SettingsRepository.KEY_DUO_BATTERY_LOW_LEVEL,
-        SettingsRepository.KEY_DUO_BATTERY_CRITICAL_LEVEL,
+        DuoSettings.KEY_DUO_BATTERY_LOW_COLOR,
+        DuoSettings.KEY_DUO_BATTERY_CRITICAL_COLOR_ENABLED,
+        DuoSettings.KEY_DUO_BATTERY_CRITICAL_COLOR,
+        DuoSettings.KEY_DUO_BATTERY_LOW_LEVEL,
+        DuoSettings.KEY_DUO_BATTERY_CRITICAL_LEVEL,
     )
 
     private class BatteryDevice(val name: String, val iconRes: Int, val level: Int)
@@ -186,7 +187,7 @@ class DevicesPlugin : BaseIslandPlugin() {
             order.firstNotNullOfOrNull { address ->
                 val device = bonded[address] ?: return@firstNotNullOfOrNull null
                 val level = batteryOf(device).takeIf { it >= 0 } ?: return@firstNotNullOfOrNull null
-                if (onlyLow && level > settings.getDuoBatteryLowLevel()) return@firstNotNullOfOrNull null
+                if (onlyLow && level > DuoSettings(context).getDuoBatteryLowLevel()) return@firstNotNullOfOrNull null
                 val name = nameOf(device)
                 BatteryDevice(name, iconFor(device, name), level)
             }
@@ -333,11 +334,12 @@ class DevicesPlugin : BaseIslandPlugin() {
         } catch (_: Exception) {
             fallback
         }
+        val duo = DuoSettings(context)
         val raw = when {
-            level in 0..settings.getDuoBatteryCriticalLevel() && settings.isDuoBatteryCriticalColorEnabled() ->
-                parse(settings.getDuoBatteryCriticalColor(), android.graphics.Color.rgb(244, 67, 54))
-            level in 0..settings.getDuoBatteryLowLevel() && settings.isDuoBatteryLowColorEnabled() ->
-                parse(settings.getDuoBatteryLowColor(), android.graphics.Color.rgb(255, 235, 59))
+            level in 0..duo.getDuoBatteryCriticalLevel() && duo.isDuoBatteryCriticalColorEnabled() ->
+                parse(duo.getDuoBatteryCriticalColor(), android.graphics.Color.rgb(244, 67, 54))
+            level in 0..duo.getDuoBatteryLowLevel() && duo.isDuoBatteryLowColorEnabled() ->
+                parse(duo.getDuoBatteryLowColor(), android.graphics.Color.rgb(255, 235, 59))
             else -> return null
         }
         return Color(soften(raw))

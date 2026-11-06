@@ -12,6 +12,7 @@ import com.jawzf.pixeltoolkit.feature.connectivity.dns.PrivateDnsTileService
 import com.jawzf.pixeltoolkit.feature.connectivity.nfc.NfcTileService
 import com.jawzf.pixeltoolkit.feature.connectivity.sim.DataSimTileService
 import com.jawzf.pixeltoolkit.feature.display.aod.AlwaysOnDisplayTileService
+import com.jawzf.pixeltoolkit.feature.display.duo.DuoTileService
 import com.jawzf.pixeltoolkit.feature.display.nightlight.DynamicNightLightTileService
 import com.jawzf.pixeltoolkit.feature.display.ondisplay.ToolkitOnDisplayTileService
 import com.jawzf.pixeltoolkit.feature.display.pixels.SmartPixelsTileService
@@ -38,7 +39,6 @@ import com.jawzf.pixeltoolkit.feature.tiles.TapToWakeTileService
 import com.jawzf.pixeltoolkit.feature.tiles.UiBlurTileService
 import com.jawzf.pixeltoolkit.feature.tiles.UsbDebuggingTileService
 import com.jawzf.pixeltoolkit.services.tiles.DefaultLauncherTileService
-import com.jawzf.pixeltoolkit.services.tiles.DuoTileService
 import com.jawzf.pixeltoolkit.services.tiles.FlashlightTileService
 import com.jawzf.pixeltoolkit.services.tiles.IslandTileService
 import com.jawzf.pixeltoolkit.services.tiles.LockdownTileService

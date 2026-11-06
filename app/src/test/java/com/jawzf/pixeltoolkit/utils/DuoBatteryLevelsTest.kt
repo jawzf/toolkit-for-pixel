@@ -1,5 +1,6 @@
 package com.jawzf.pixeltoolkit.utils
 
+import com.jawzf.pixeltoolkit.core.data.duo.DuoBatteryLevels
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

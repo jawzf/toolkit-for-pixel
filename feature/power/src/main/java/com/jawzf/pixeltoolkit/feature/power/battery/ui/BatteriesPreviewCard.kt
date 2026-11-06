@@ -31,11 +31,11 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import com.google.gson.Gson
+import com.jawzf.pixeltoolkit.core.data.power.ChargeLimitUtil
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.feature.power.BatteryState
 import com.jawzf.pixeltoolkit.feature.power.PowerSettings
 import com.jawzf.pixeltoolkit.feature.power.battery.BatteryRingDrawer
-import com.jawzf.pixeltoolkit.feature.power.battery.ChargeLimitUtil
 import com.jawzf.pixeltoolkit.feature.power.bluetooth.BluetoothBatteryUtils
 import com.jawzf.pixeltoolkit.feature.power.bluetooth.BluetoothDeviceIcons
 import com.jawzf.pixeltoolkit.feature.power.bluetooth.BluetoothDeviceOrder

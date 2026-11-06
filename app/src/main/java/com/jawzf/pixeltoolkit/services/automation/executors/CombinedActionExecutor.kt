@@ -27,6 +27,8 @@ import androidx.annotation.RequiresApi
 import com.jawzf.pixeltoolkit.core.data.action.Action
 import com.jawzf.pixeltoolkit.core.data.action.ActionExecutor
 import com.jawzf.pixeltoolkit.core.data.action.NotificationLightingStyle
+import com.jawzf.pixeltoolkit.core.data.duo.DuoSettings
+import com.jawzf.pixeltoolkit.core.data.power.ChargingModeUtil
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticFeedbackType
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
@@ -52,7 +54,6 @@ import com.jawzf.pixeltoolkit.feature.notifications.lighting.overlay.fromPrefs
 import com.jawzf.pixeltoolkit.feature.notifications.lighting.overlay.writeTo
 import com.jawzf.pixeltoolkit.feature.power.PowerSettings
 import com.jawzf.pixeltoolkit.feature.power.caffeinate.CaffeinateController
-import com.jawzf.pixeltoolkit.feature.power.charging.ChargingModeUtil
 import com.jawzf.pixeltoolkit.feature.sound.mode.SoundModeHandler
 import com.jawzf.pixeltoolkit.services.NotificationListener
 import com.jawzf.pixeltoolkit.services.tiles.ScreenOffAccessibilityService
@@ -630,6 +631,7 @@ object CombinedActionExecutor : ActionExecutor {
 
                 is Action.OverlayControl -> {
                     val settings = SettingsRepository(context)
+                    val duo = DuoSettings(context)
                     fun resolve(mode: Action.OverlayMode, current: Boolean): Boolean? =
                         when (mode) {
                             Action.OverlayMode.SKIP -> null
@@ -637,15 +639,15 @@ object CombinedActionExecutor : ActionExecutor {
                             Action.OverlayMode.ON -> true
                             Action.OverlayMode.TOGGLE -> !current
                         }
-                    resolve(action.duo, settings.isDuoEnabled())?.let(settings::setDuoEnabled)
+                    resolve(action.duo, duo.isDuoEnabled())?.let(duo::setDuoEnabled)
                     resolve(action.island, settings.isIslandEnabled())?.let(settings::setIslandEnabled)
                     resolve(action.statusGlance, settings.isStatusGlanceEnabled())?.let(settings::setStatusGlanceEnabled)
                 }
                 is Action.TurnOffBackGesture -> withContext(Dispatchers.IO) { InputSettings(context).backGesture.turnOff() }
                 is Action.TurnOnBackGesture -> withContext(Dispatchers.IO) { InputSettings(context).backGesture.turnOn() }
-                is Action.TurnOnDuo -> SettingsRepository(context).setDuoEnabled(true)
-                is Action.TurnOffDuo -> SettingsRepository(context).setDuoEnabled(false)
-                is Action.ToggleDuo -> SettingsRepository(context).let { it.setDuoEnabled(!it.isDuoEnabled()) }
+                is Action.TurnOnDuo -> DuoSettings(context).setDuoEnabled(true)
+                is Action.TurnOffDuo -> DuoSettings(context).setDuoEnabled(false)
+                is Action.ToggleDuo -> DuoSettings(context).let { it.setDuoEnabled(!it.isDuoEnabled()) }
                 is Action.TurnOnIsland -> SettingsRepository(context).setIslandEnabled(true)
                 is Action.TurnOffIsland -> SettingsRepository(context).setIslandEnabled(false)
                 is Action.ToggleIsland -> SettingsRepository(context).let { it.setIslandEnabled(!it.isIslandEnabled()) }

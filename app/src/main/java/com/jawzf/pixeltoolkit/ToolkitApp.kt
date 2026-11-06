@@ -10,6 +10,7 @@ import com.jawzf.pixeltoolkit.core.data.log.LogManager
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.platform.AppGlobals
 import com.jawzf.pixeltoolkit.core.platform.device.CarConnectionMonitor
+import com.jawzf.pixeltoolkit.core.platform.device.ProgressNotificationHub
 import com.jawzf.pixeltoolkit.core.platform.media.MediaArtBridge
 import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuUtils
 import com.jawzf.pixeltoolkit.core.platform.statusbar.StatusBarManager
@@ -36,6 +37,7 @@ class ToolkitApp : Application() {
         AppGlobals.init(this)
         ActionRunner.init(CombinedActionExecutor)
         MediaArtBridge.init(NotificationListener::getCachedBitmap, NotificationListener::getLatestArtBitmap)
+        ProgressNotificationHub.init(NotificationListener::getLatestProgressNotification)
         HapticUtil.initialize(this)
 
         try {

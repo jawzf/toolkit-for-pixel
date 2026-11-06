@@ -1,16 +1,16 @@
-package com.jawzf.pixeltoolkit.utils.media
+package com.jawzf.pixeltoolkit.core.platform.media
 
 import android.content.ComponentName
 import android.content.Context
 import android.media.session.MediaController
 import android.media.session.MediaSessionManager
 import android.media.session.PlaybackState
-import com.jawzf.pixeltoolkit.services.NotificationListener
+import com.jawzf.pixeltoolkit.core.platform.AppComponents
 
 object MusicSessionUtil {
     fun playingMusicSession(context: Context, excluded: Set<String> = emptySet()): MediaController? = try {
         val manager = context.getSystemService(Context.MEDIA_SESSION_SERVICE) as? MediaSessionManager
-        val component = ComponentName(context, NotificationListener::class.java)
+        val component = ComponentName(context, AppComponents.NOTIFICATION_LISTENER)
         manager?.getActiveSessions(component)?.firstOrNull { controller ->
             val state = controller.playbackState
             state?.state == PlaybackState.STATE_PLAYING &&

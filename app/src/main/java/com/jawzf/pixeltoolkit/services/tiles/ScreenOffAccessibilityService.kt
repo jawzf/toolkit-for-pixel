@@ -23,6 +23,7 @@ import android.os.Vibrator
 import android.view.KeyEvent
 import android.view.accessibility.AccessibilityEvent
 import androidx.core.content.ContextCompat
+import com.jawzf.pixeltoolkit.core.data.duo.DuoSettings
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticFeedbackType
 import com.jawzf.pixeltoolkit.core.design.haptics.performHapticFeedback
 import com.jawzf.pixeltoolkit.core.platform.device.CarConnectionMonitor
@@ -31,6 +32,7 @@ import com.jawzf.pixeltoolkit.feature.apps.freeze.FreezeManager
 import com.jawzf.pixeltoolkit.feature.display.DisplaySettings
 import com.jawzf.pixeltoolkit.feature.display.aod.AodForceTurnOffHandler
 import com.jawzf.pixeltoolkit.feature.display.aod.AodWallpaperOverlayHandler
+import com.jawzf.pixeltoolkit.feature.display.duo.DuoOverlayHandler
 import com.jawzf.pixeltoolkit.feature.display.ondisplay.AmbientGlanceHandler
 import com.jawzf.pixeltoolkit.feature.display.pixels.SmartPixelsHandler
 import com.jawzf.pixeltoolkit.feature.display.statusbar.StatusBarIconHandler
@@ -50,7 +52,6 @@ import com.jawzf.pixeltoolkit.services.LiveUpdateSnoozer
 import com.jawzf.pixeltoolkit.services.NotificationListener
 import com.jawzf.pixeltoolkit.services.handlers.AppFlowHandler
 import com.jawzf.pixeltoolkit.services.handlers.ButtonRemapHandler
-import com.jawzf.pixeltoolkit.services.handlers.DuoOverlayHandler
 import com.jawzf.pixeltoolkit.services.handlers.FlashlightHandler
 import com.jawzf.pixeltoolkit.services.handlers.LockscreenShortcutsHandler
 import com.jawzf.pixeltoolkit.services.handlers.StatusGlanceHandler
@@ -264,7 +265,7 @@ class ScreenOffAccessibilityService :
                     statusGlanceHandler.updateState()
                 }
             } else if (key?.startsWith("duo_") == true ||
-                key == SettingsRepository.KEY_DUO_ENABLED ||
+                key == DuoSettings.KEY_DUO_ENABLED ||
                 key == SettingsRepository.KEY_ENABLE_UNSUPPORTED_FEATURES
             ) {
                 duoOverlayHandler.updateState()

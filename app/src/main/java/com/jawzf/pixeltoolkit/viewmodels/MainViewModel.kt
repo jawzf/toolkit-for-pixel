@@ -37,6 +37,8 @@ import com.jawzf.pixeltoolkit.ToolkitApp
 import com.jawzf.pixeltoolkit.core.data.action.Action
 import com.jawzf.pixeltoolkit.core.data.apps.AppUtil
 import com.jawzf.pixeltoolkit.core.data.backup.ConfigBackup
+import com.jawzf.pixeltoolkit.core.data.duo.DuoBatteryLevels
+import com.jawzf.pixeltoolkit.core.data.duo.DuoSettings
 import com.jawzf.pixeltoolkit.core.data.log.LogManager
 import com.jawzf.pixeltoolkit.core.data.prefs.AppSelection
 import com.jawzf.pixeltoolkit.core.design.R
@@ -95,7 +97,6 @@ import com.jawzf.pixeltoolkit.services.receivers.SecurityDeviceAdminReceiver
 import com.jawzf.pixeltoolkit.services.receivers.SecurityReceiver
 import com.jawzf.pixeltoolkit.services.tiles.ScreenOffAccessibilityService
 import com.jawzf.pixeltoolkit.utils.AppIconUtil
-import com.jawzf.pixeltoolkit.utils.DuoBatteryLevels
 import com.jawzf.pixeltoolkit.utils.PowerButtonGestures
 import com.jawzf.pixeltoolkit.utils.SplitScreenUtil
 import com.jawzf.pixeltoolkit.utils.SurfaceFlingerControl
@@ -485,6 +486,7 @@ class MainViewModel : ViewModel() {
     val hasShizukuPermission = mutableStateOf(false)
 
     lateinit var settingsRepository: SettingsRepository
+    private lateinit var duoSettings: DuoSettings
     private var appContext: Context? = null
 
     val gitHubToken = mutableStateOf<String?>(null)
@@ -572,59 +574,59 @@ class MainViewModel : ViewModel() {
                 if (key == null) return
 
                 when (key) {
-                    SettingsRepository.KEY_DUO_ENABLED ->
-                        isDuoEnabled.value = settingsRepository.isDuoEnabled()
+                    DuoSettings.KEY_DUO_ENABLED ->
+                        isDuoEnabled.value = duoSettings.isDuoEnabled()
 
-                    SettingsRepository.KEY_DUO_USE_AUTO_DETECT ->
-                        isDuoAutoDetect.value = settingsRepository.isDuoAutoDetectEnabled()
+                    DuoSettings.KEY_DUO_USE_AUTO_DETECT ->
+                        isDuoAutoDetect.value = duoSettings.isDuoAutoDetectEnabled()
 
-                    SettingsRepository.KEY_DUO_CAMERA_OFFSET_X ->
-                        duoCameraOffsetX.floatValue = settingsRepository.getDuoCameraOffsetX()
+                    DuoSettings.KEY_DUO_CAMERA_OFFSET_X ->
+                        duoCameraOffsetX.floatValue = duoSettings.getDuoCameraOffsetX()
 
-                    SettingsRepository.KEY_DUO_CAMERA_OFFSET_Y ->
-                        duoCameraOffsetY.floatValue = settingsRepository.getDuoCameraOffsetY()
+                    DuoSettings.KEY_DUO_CAMERA_OFFSET_Y ->
+                        duoCameraOffsetY.floatValue = duoSettings.getDuoCameraOffsetY()
 
-                    SettingsRepository.KEY_DUO_CAMERA_SIZE ->
-                        duoCameraSize.floatValue = settingsRepository.getDuoCameraSize()
+                    DuoSettings.KEY_DUO_CAMERA_SIZE ->
+                        duoCameraSize.floatValue = duoSettings.getDuoCameraSize()
 
-                    SettingsRepository.KEY_DUO_ARC_THICKNESS ->
-                        duoArcThickness.floatValue = settingsRepository.getDuoArcThickness()
+                    DuoSettings.KEY_DUO_ARC_THICKNESS ->
+                        duoArcThickness.floatValue = duoSettings.getDuoArcThickness()
 
-                    SettingsRepository.KEY_DUO_DOT_SIZE ->
-                        duoDotSize.floatValue = settingsRepository.getDuoDotSize()
+                    DuoSettings.KEY_DUO_DOT_SIZE ->
+                        duoDotSize.floatValue = duoSettings.getDuoDotSize()
 
-                    SettingsRepository.KEY_DUO_RING_RADIUS ->
-                        duoRingRadius.floatValue = settingsRepository.getDuoRingRadius()
+                    DuoSettings.KEY_DUO_RING_RADIUS ->
+                        duoRingRadius.floatValue = duoSettings.getDuoRingRadius()
 
-                    SettingsRepository.KEY_DUO_TIME_TEXT_SCALE ->
-                        duoTimeTextScale.floatValue = settingsRepository.getDuoTimeTextScale()
+                    DuoSettings.KEY_DUO_TIME_TEXT_SCALE ->
+                        duoTimeTextScale.floatValue = duoSettings.getDuoTimeTextScale()
 
-                    SettingsRepository.KEY_DUO_SHOW_BATTERY ->
-                        isDuoShowBattery.value = settingsRepository.isDuoShowBatteryEnabled()
+                    DuoSettings.KEY_DUO_SHOW_BATTERY ->
+                        isDuoShowBattery.value = duoSettings.isDuoShowBatteryEnabled()
 
-                    SettingsRepository.KEY_DUO_SHOW_BATTERY_PERCENTAGE ->
-                        isDuoShowBatteryPercentage.value = settingsRepository.isDuoShowBatteryPercentageEnabled()
+                    DuoSettings.KEY_DUO_SHOW_BATTERY_PERCENTAGE ->
+                        isDuoShowBatteryPercentage.value = duoSettings.isDuoShowBatteryPercentageEnabled()
 
-                    SettingsRepository.KEY_DUO_BATTERY_PERCENTAGE_ONLY_COLORED ->
-                        isDuoBatteryPercentageOnlyColored.value = settingsRepository.isDuoBatteryPercentageOnlyColoredEnabled()
+                    DuoSettings.KEY_DUO_BATTERY_PERCENTAGE_ONLY_COLORED ->
+                        isDuoBatteryPercentageOnlyColored.value = duoSettings.isDuoBatteryPercentageOnlyColoredEnabled()
 
-                    SettingsRepository.KEY_DUO_BATTERY_CHARGING_COLOR_ENABLED ->
-                        isDuoBatteryChargingColorEnabled.value = settingsRepository.isDuoBatteryChargingColorEnabled()
+                    DuoSettings.KEY_DUO_BATTERY_CHARGING_COLOR_ENABLED ->
+                        isDuoBatteryChargingColorEnabled.value = duoSettings.isDuoBatteryChargingColorEnabled()
 
-                    SettingsRepository.KEY_DUO_BATTERY_CHARGING_COLOR ->
-                        duoBatteryChargingColor.value = settingsRepository.getDuoBatteryChargingColor()
+                    DuoSettings.KEY_DUO_BATTERY_CHARGING_COLOR ->
+                        duoBatteryChargingColor.value = duoSettings.getDuoBatteryChargingColor()
 
-                    SettingsRepository.KEY_DUO_BATTERY_POWER_SAVE_COLOR_ENABLED ->
-                        isDuoBatteryPowerSaveColorEnabled.value = settingsRepository.isDuoBatteryPowerSaveColorEnabled()
+                    DuoSettings.KEY_DUO_BATTERY_POWER_SAVE_COLOR_ENABLED ->
+                        isDuoBatteryPowerSaveColorEnabled.value = duoSettings.isDuoBatteryPowerSaveColorEnabled()
 
-                    SettingsRepository.KEY_DUO_BATTERY_POWER_SAVE_COLOR ->
-                        duoBatteryPowerSaveColor.value = settingsRepository.getDuoBatteryPowerSaveColor()
+                    DuoSettings.KEY_DUO_BATTERY_POWER_SAVE_COLOR ->
+                        duoBatteryPowerSaveColor.value = duoSettings.getDuoBatteryPowerSaveColor()
 
-                    SettingsRepository.KEY_DUO_BATTERY_LOW_COLOR_ENABLED ->
-                        isDuoBatteryLowColorEnabled.value = settingsRepository.isDuoBatteryLowColorEnabled()
+                    DuoSettings.KEY_DUO_BATTERY_LOW_COLOR_ENABLED ->
+                        isDuoBatteryLowColorEnabled.value = duoSettings.isDuoBatteryLowColorEnabled()
 
-                    SettingsRepository.KEY_DUO_BATTERY_LOW_COLOR ->
-                        duoBatteryLowColor.value = settingsRepository.getDuoBatteryLowColor()
+                    DuoSettings.KEY_DUO_BATTERY_LOW_COLOR ->
+                        duoBatteryLowColor.value = duoSettings.getDuoBatteryLowColor()
 
                     SettingsRepository.KEY_ISLAND_BATTERY_IDLE_COLOR_ENABLED ->
                         isIslandBatteryIdleColorEnabled.value = settingsRepository.isIslandBatteryIdleColorEnabled()
@@ -632,71 +634,71 @@ class MainViewModel : ViewModel() {
                     SettingsRepository.KEY_ISLAND_BATTERY_IDLE_COLOR ->
                         islandBatteryIdleColor.value = settingsRepository.getIslandBatteryIdleColor()
 
-                    SettingsRepository.KEY_DUO_BATTERY_CRITICAL_COLOR_ENABLED ->
-                        isDuoBatteryCriticalColorEnabled.value = settingsRepository.isDuoBatteryCriticalColorEnabled()
+                    DuoSettings.KEY_DUO_BATTERY_CRITICAL_COLOR_ENABLED ->
+                        isDuoBatteryCriticalColorEnabled.value = duoSettings.isDuoBatteryCriticalColorEnabled()
 
-                    SettingsRepository.KEY_DUO_BATTERY_CRITICAL_COLOR ->
-                        duoBatteryCriticalColor.value = settingsRepository.getDuoBatteryCriticalColor()
+                    DuoSettings.KEY_DUO_BATTERY_CRITICAL_COLOR ->
+                        duoBatteryCriticalColor.value = duoSettings.getDuoBatteryCriticalColor()
 
-                    SettingsRepository.KEY_DUO_BATTERY_LOW_LEVEL ->
-                        duoBatteryLowLevel.intValue = settingsRepository.getDuoBatteryLowLevel()
+                    DuoSettings.KEY_DUO_BATTERY_LOW_LEVEL ->
+                        duoBatteryLowLevel.intValue = duoSettings.getDuoBatteryLowLevel()
 
-                    SettingsRepository.KEY_DUO_BATTERY_CRITICAL_LEVEL ->
-                        duoBatteryCriticalLevel.intValue = settingsRepository.getDuoBatteryCriticalLevel()
+                    DuoSettings.KEY_DUO_BATTERY_CRITICAL_LEVEL ->
+                        duoBatteryCriticalLevel.intValue = duoSettings.getDuoBatteryCriticalLevel()
 
-                    SettingsRepository.KEY_DUO_SHOW_NETWORKS ->
-                        isDuoShowNetworks.value = settingsRepository.isDuoShowNetworksEnabled()
+                    DuoSettings.KEY_DUO_SHOW_NETWORKS ->
+                        isDuoShowNetworks.value = duoSettings.isDuoShowNetworksEnabled()
 
-                    SettingsRepository.KEY_DUO_DIFFERENTIATE_WIFI ->
-                        isDuoDifferentiateWifi.value = settingsRepository.isDuoDifferentiateWifiEnabled()
+                    DuoSettings.KEY_DUO_DIFFERENTIATE_WIFI ->
+                        isDuoDifferentiateWifi.value = duoSettings.isDuoDifferentiateWifiEnabled()
 
-                    SettingsRepository.KEY_DUO_SHOW_TIME ->
-                        isDuoShowTime.value = settingsRepository.isDuoShowTimeEnabled()
+                    DuoSettings.KEY_DUO_SHOW_TIME ->
+                        isDuoShowTime.value = duoSettings.isDuoShowTimeEnabled()
 
-                    SettingsRepository.KEY_DUO_SHOW_MEDIA ->
-                        isDuoShowMedia.value = settingsRepository.isDuoShowMediaEnabled()
+                    DuoSettings.KEY_DUO_SHOW_MEDIA ->
+                        isDuoShowMedia.value = duoSettings.isDuoShowMediaEnabled()
 
-                    SettingsRepository.KEY_DUO_ROTATE_ALBUM_ART ->
-                        isDuoRotateAlbumArt.value = settingsRepository.isDuoRotateAlbumArtEnabled()
+                    DuoSettings.KEY_DUO_ROTATE_ALBUM_ART ->
+                        isDuoRotateAlbumArt.value = duoSettings.isDuoRotateAlbumArtEnabled()
 
-                    SettingsRepository.KEY_DUO_SHOW_PROGRESS ->
-                        isDuoShowProgress.value = settingsRepository.isDuoShowProgressEnabled()
+                    DuoSettings.KEY_DUO_SHOW_PROGRESS ->
+                        isDuoShowProgress.value = duoSettings.isDuoShowProgressEnabled()
 
-                    SettingsRepository.KEY_DUO_SHOW_FLASHLIGHT ->
-                        isDuoShowFlashlight.value = settingsRepository.isDuoShowFlashlightEnabled()
+                    DuoSettings.KEY_DUO_SHOW_FLASHLIGHT ->
+                        isDuoShowFlashlight.value = duoSettings.isDuoShowFlashlightEnabled()
 
-                    SettingsRepository.KEY_DUO_HIDE_WHEN_SCREEN_OFF ->
-                        isDuoHideWhenScreenOff.value = settingsRepository.isDuoHideWhenScreenOffEnabled()
+                    DuoSettings.KEY_DUO_HIDE_WHEN_SCREEN_OFF ->
+                        isDuoHideWhenScreenOff.value = duoSettings.isDuoHideWhenScreenOffEnabled()
 
-                    SettingsRepository.KEY_DUO_HIDE_WHEN_SCREEN_OFF_ONLY_IDLE ->
-                        isDuoHideWhenScreenOffOnlyIdle.value = settingsRepository.isDuoHideWhenScreenOffOnlyIdleEnabled()
+                    DuoSettings.KEY_DUO_HIDE_WHEN_SCREEN_OFF_ONLY_IDLE ->
+                        isDuoHideWhenScreenOffOnlyIdle.value = duoSettings.isDuoHideWhenScreenOffOnlyIdleEnabled()
 
-                    SettingsRepository.KEY_DUO_USE_MATERIAL_YOU ->
-                        isDuoUseMaterialYou.value = settingsRepository.isDuoUseMaterialYouEnabled()
+                    DuoSettings.KEY_DUO_USE_MATERIAL_YOU ->
+                        isDuoUseMaterialYou.value = duoSettings.isDuoUseMaterialYouEnabled()
 
-                    SettingsRepository.KEY_DUO_CUSTOM_COLOR ->
-                        duoCustomColor.value = settingsRepository.getDuoCustomColor()
+                    DuoSettings.KEY_DUO_CUSTOM_COLOR ->
+                        duoCustomColor.value = duoSettings.getDuoCustomColor()
 
-                    SettingsRepository.KEY_DUO_TAP_ACTION ->
-                        duoTapAction.value = settingsRepository.getDuoTapAction()
+                    DuoSettings.KEY_DUO_TAP_ACTION ->
+                        duoTapAction.value = duoSettings.getDuoTapAction()
 
-                    SettingsRepository.KEY_DUO_DOUBLE_TAP_ACTION ->
-                        duoDoubleTapAction.value = settingsRepository.getDuoDoubleTapAction()
+                    DuoSettings.KEY_DUO_DOUBLE_TAP_ACTION ->
+                        duoDoubleTapAction.value = duoSettings.getDuoDoubleTapAction()
 
-                    SettingsRepository.KEY_DUO_LONG_PRESS_ACTION ->
-                        duoLongPressAction.value = settingsRepository.getDuoLongPressAction()
+                    DuoSettings.KEY_DUO_LONG_PRESS_ACTION ->
+                        duoLongPressAction.value = duoSettings.getDuoLongPressAction()
 
-                    SettingsRepository.KEY_DUO_SWIPE_DOWN_ACTION ->
-                        duoSwipeDownAction.value = settingsRepository.getDuoSwipeDownAction()
+                    DuoSettings.KEY_DUO_SWIPE_DOWN_ACTION ->
+                        duoSwipeDownAction.value = duoSettings.getDuoSwipeDownAction()
 
-                    SettingsRepository.KEY_DUO_SLIDE_MODE ->
-                        duoSlideMode.value = settingsRepository.getDuoSlideMode()
+                    DuoSettings.KEY_DUO_SLIDE_MODE ->
+                        duoSlideMode.value = duoSettings.getDuoSlideMode()
 
-                    SettingsRepository.KEY_DUO_SLIDE_TRACK ->
-                        isDuoSlideTrack.value = settingsRepository.isDuoSlideTrackEnabled()
+                    DuoSettings.KEY_DUO_SLIDE_TRACK ->
+                        isDuoSlideTrack.value = duoSettings.isDuoSlideTrackEnabled()
 
-                    SettingsRepository.KEY_DUO_SLIDE_INVERT_DIRECTION ->
-                        isDuoSlideInvertDirection.value = settingsRepository.isDuoSlideInvertDirectionEnabled()
+                    DuoSettings.KEY_DUO_SLIDE_INVERT_DIRECTION ->
+                        isDuoSlideInvertDirection.value = duoSettings.isDuoSlideInvertDirectionEnabled()
 
                     SettingsRepository.KEY_ISLAND_ENABLED ->
                         isIslandEnabled.value = settingsRepository.isIslandEnabled()
@@ -1325,6 +1327,7 @@ class MainViewModel : ViewModel() {
     fun check(context: Context) {
         appContext = context.applicationContext
         settingsRepository = SettingsRepository(context)
+        duoSettings = DuoSettings(context)
         NotificationAutoDismisser.isSnoozedByUs = { LiveUpdateSnoozer.isSnoozedByUs(it) }
         notifications.load(context)
         lighting.load(context)
@@ -1771,49 +1774,49 @@ class MainViewModel : ViewModel() {
             }
 
         smartPixels.load(context)
-        isDuoEnabled.value = settingsRepository.isDuoEnabled()
-        isDuoAutoDetect.value = settingsRepository.isDuoAutoDetectEnabled()
-        duoCameraOffsetX.floatValue = settingsRepository.getDuoCameraOffsetX()
-        duoCameraOffsetY.floatValue = settingsRepository.getDuoCameraOffsetY()
-        duoCameraSize.floatValue = settingsRepository.getDuoCameraSize()
-        duoArcThickness.floatValue = settingsRepository.getDuoArcThickness()
-        duoDotSize.floatValue = settingsRepository.getDuoDotSize()
-        duoRingRadius.floatValue = settingsRepository.getDuoRingRadius()
-        duoTimeTextScale.floatValue = settingsRepository.getDuoTimeTextScale()
-        isDuoShowBattery.value = settingsRepository.isDuoShowBatteryEnabled()
-        isDuoShowBatteryPercentage.value = settingsRepository.isDuoShowBatteryPercentageEnabled()
-        isDuoBatteryPercentageOnlyColored.value = settingsRepository.isDuoBatteryPercentageOnlyColoredEnabled()
-        isDuoBatteryChargingColorEnabled.value = settingsRepository.isDuoBatteryChargingColorEnabled()
-        duoBatteryChargingColor.value = settingsRepository.getDuoBatteryChargingColor()
-        isDuoBatteryPowerSaveColorEnabled.value = settingsRepository.isDuoBatteryPowerSaveColorEnabled()
-        duoBatteryPowerSaveColor.value = settingsRepository.getDuoBatteryPowerSaveColor()
-        isDuoBatteryLowColorEnabled.value = settingsRepository.isDuoBatteryLowColorEnabled()
-        duoBatteryLowColor.value = settingsRepository.getDuoBatteryLowColor()
+        isDuoEnabled.value = duoSettings.isDuoEnabled()
+        isDuoAutoDetect.value = duoSettings.isDuoAutoDetectEnabled()
+        duoCameraOffsetX.floatValue = duoSettings.getDuoCameraOffsetX()
+        duoCameraOffsetY.floatValue = duoSettings.getDuoCameraOffsetY()
+        duoCameraSize.floatValue = duoSettings.getDuoCameraSize()
+        duoArcThickness.floatValue = duoSettings.getDuoArcThickness()
+        duoDotSize.floatValue = duoSettings.getDuoDotSize()
+        duoRingRadius.floatValue = duoSettings.getDuoRingRadius()
+        duoTimeTextScale.floatValue = duoSettings.getDuoTimeTextScale()
+        isDuoShowBattery.value = duoSettings.isDuoShowBatteryEnabled()
+        isDuoShowBatteryPercentage.value = duoSettings.isDuoShowBatteryPercentageEnabled()
+        isDuoBatteryPercentageOnlyColored.value = duoSettings.isDuoBatteryPercentageOnlyColoredEnabled()
+        isDuoBatteryChargingColorEnabled.value = duoSettings.isDuoBatteryChargingColorEnabled()
+        duoBatteryChargingColor.value = duoSettings.getDuoBatteryChargingColor()
+        isDuoBatteryPowerSaveColorEnabled.value = duoSettings.isDuoBatteryPowerSaveColorEnabled()
+        duoBatteryPowerSaveColor.value = duoSettings.getDuoBatteryPowerSaveColor()
+        isDuoBatteryLowColorEnabled.value = duoSettings.isDuoBatteryLowColorEnabled()
+        duoBatteryLowColor.value = duoSettings.getDuoBatteryLowColor()
         isIslandBatteryIdleColorEnabled.value = settingsRepository.isIslandBatteryIdleColorEnabled()
         islandBatteryIdleColor.value = settingsRepository.getIslandBatteryIdleColor()
-        isDuoBatteryCriticalColorEnabled.value = settingsRepository.isDuoBatteryCriticalColorEnabled()
-        duoBatteryCriticalColor.value = settingsRepository.getDuoBatteryCriticalColor()
-        duoBatteryLowLevel.intValue = settingsRepository.getDuoBatteryLowLevel()
-        duoBatteryCriticalLevel.intValue = settingsRepository.getDuoBatteryCriticalLevel()
-        isDuoShowNetworks.value = settingsRepository.isDuoShowNetworksEnabled()
-        isDuoDifferentiateWifi.value = settingsRepository.isDuoDifferentiateWifiEnabled()
-        isDuoShowTime.value = settingsRepository.isDuoShowTimeEnabled()
-        isDuoShowMedia.value = settingsRepository.isDuoShowMediaEnabled()
-        isDuoRotateAlbumArt.value = settingsRepository.isDuoRotateAlbumArtEnabled()
-        isDuoShowProgress.value = settingsRepository.isDuoShowProgressEnabled()
-        isDuoShowFlashlight.value = settingsRepository.isDuoShowFlashlightEnabled()
-        isDuoHideWhenScreenOff.value = settingsRepository.isDuoHideWhenScreenOffEnabled()
-        isDuoHideWhenScreenOffOnlyIdle.value = settingsRepository.isDuoHideWhenScreenOffOnlyIdleEnabled()
-        isDuoHideWhenLocked.value = settingsRepository.isDuoHideWhenLockedEnabled()
-        isDuoUseMaterialYou.value = settingsRepository.isDuoUseMaterialYouEnabled()
-        duoCustomColor.value = settingsRepository.getDuoCustomColor()
-        duoTapAction.value = settingsRepository.getDuoTapAction()
-        duoDoubleTapAction.value = settingsRepository.getDuoDoubleTapAction()
-        duoLongPressAction.value = settingsRepository.getDuoLongPressAction()
-        duoSwipeDownAction.value = settingsRepository.getDuoSwipeDownAction()
-        duoSlideMode.value = settingsRepository.getDuoSlideMode()
-        isDuoSlideTrack.value = settingsRepository.isDuoSlideTrackEnabled()
-        isDuoSlideInvertDirection.value = settingsRepository.isDuoSlideInvertDirectionEnabled()
+        isDuoBatteryCriticalColorEnabled.value = duoSettings.isDuoBatteryCriticalColorEnabled()
+        duoBatteryCriticalColor.value = duoSettings.getDuoBatteryCriticalColor()
+        duoBatteryLowLevel.intValue = duoSettings.getDuoBatteryLowLevel()
+        duoBatteryCriticalLevel.intValue = duoSettings.getDuoBatteryCriticalLevel()
+        isDuoShowNetworks.value = duoSettings.isDuoShowNetworksEnabled()
+        isDuoDifferentiateWifi.value = duoSettings.isDuoDifferentiateWifiEnabled()
+        isDuoShowTime.value = duoSettings.isDuoShowTimeEnabled()
+        isDuoShowMedia.value = duoSettings.isDuoShowMediaEnabled()
+        isDuoRotateAlbumArt.value = duoSettings.isDuoRotateAlbumArtEnabled()
+        isDuoShowProgress.value = duoSettings.isDuoShowProgressEnabled()
+        isDuoShowFlashlight.value = duoSettings.isDuoShowFlashlightEnabled()
+        isDuoHideWhenScreenOff.value = duoSettings.isDuoHideWhenScreenOffEnabled()
+        isDuoHideWhenScreenOffOnlyIdle.value = duoSettings.isDuoHideWhenScreenOffOnlyIdleEnabled()
+        isDuoHideWhenLocked.value = duoSettings.isDuoHideWhenLockedEnabled()
+        isDuoUseMaterialYou.value = duoSettings.isDuoUseMaterialYouEnabled()
+        duoCustomColor.value = duoSettings.getDuoCustomColor()
+        duoTapAction.value = duoSettings.getDuoTapAction()
+        duoDoubleTapAction.value = duoSettings.getDuoDoubleTapAction()
+        duoLongPressAction.value = duoSettings.getDuoLongPressAction()
+        duoSwipeDownAction.value = duoSettings.getDuoSwipeDownAction()
+        duoSlideMode.value = duoSettings.getDuoSlideMode()
+        isDuoSlideTrack.value = duoSettings.isDuoSlideTrackEnabled()
+        isDuoSlideInvertDirection.value = duoSettings.isDuoSlideInvertDirectionEnabled()
         isIslandEnabled.value = settingsRepository.isIslandEnabled()
         isIslandAutoDetect.value = settingsRepository.isIslandAutoDetectEnabled()
         islandCameraOffsetX.floatValue = settingsRepository.getIslandCameraOffsetX()
@@ -1850,11 +1853,11 @@ class MainViewModel : ViewModel() {
         isIslandSoundModeKeepIcon.value = settingsRepository.isIslandSoundModeKeepIconEnabled()
         isIslandShowAlarm.value = settingsRepository.isIslandShowAlarmEnabled()
         islandAlarmWindowHours.intValue = settingsRepository.getIslandAlarmWindowHours()
-        isDuoIslandCombined.value = settingsRepository.isDuoIslandCombinedSetting()
-        isDuoTapForBrief.value = settingsRepository.isDuoTapForBriefEnabled()
-        isDuoHideOnShade.value = settingsRepository.isDuoHideOnShadeEnabled()
-        isDuoKeepInFullscreen.value = settingsRepository.isDuoKeepInFullscreenEnabled()
-        isDuoDisableInteractionsInFullscreen.value = settingsRepository.isDuoDisableInteractionsInFullscreenEnabled()
+        isDuoIslandCombined.value = duoSettings.isDuoIslandCombinedSetting()
+        isDuoTapForBrief.value = duoSettings.isDuoTapForBriefEnabled()
+        isDuoHideOnShade.value = duoSettings.isDuoHideOnShadeEnabled()
+        isDuoKeepInFullscreen.value = duoSettings.isDuoKeepInFullscreenEnabled()
+        isDuoDisableInteractionsInFullscreen.value = duoSettings.isDuoDisableInteractionsInFullscreenEnabled()
         isIslandShowCaffeinate.value = settingsRepository.isIslandShowCaffeinateEnabled()
         isIslandShowNavigation.value = settingsRepository.isIslandShowNavigationEnabled()
         islandNavigationOnNew.value = settingsRepository.getIslandNavigationOnNew()
@@ -3258,52 +3261,52 @@ class MainViewModel : ViewModel() {
 
     fun setDuoEnabled(enabled: Boolean) {
         isDuoEnabled.value = enabled
-        settingsRepository.setDuoEnabled(enabled)
+        duoSettings.setDuoEnabled(enabled)
     }
 
     fun setDuoAutoDetect(enabled: Boolean) {
         isDuoAutoDetect.value = enabled
-        settingsRepository.setDuoAutoDetectEnabled(enabled)
+        duoSettings.setDuoAutoDetectEnabled(enabled)
     }
 
     fun setDuoCameraOffsetX(value: Float) {
         duoCameraOffsetX.floatValue = value
-        settingsRepository.setDuoCameraOffsetX(value)
+        duoSettings.setDuoCameraOffsetX(value)
     }
 
     fun setDuoCameraOffsetY(value: Float) {
         duoCameraOffsetY.floatValue = value
-        settingsRepository.setDuoCameraOffsetY(value)
+        duoSettings.setDuoCameraOffsetY(value)
     }
 
     fun setDuoCameraSize(value: Float) {
         duoCameraSize.floatValue = value
-        settingsRepository.setDuoCameraSize(value)
+        duoSettings.setDuoCameraSize(value)
     }
 
     fun refreshDuoCameraPlacement() {
-        settingsRepository.markDisplayProfileSeen()
-        isFoldableCameraDevice.value = settingsRepository.isFoldableDevice()
-        isDuoOrientationProfiles.value = settingsRepository.isDuoOrientationProfilesEnabled()
-        isDuoHiddenInCurrentOrientation.value = settingsRepository.isDuoHiddenInCurrentOrientation()
-        duoCameraOffsetX.floatValue = settingsRepository.getDuoCameraOffsetX()
-        duoCameraOffsetY.floatValue = settingsRepository.getDuoCameraOffsetY()
-        duoCameraSize.floatValue = settingsRepository.getDuoCameraSize()
-        hasMultipleDuoDisplays.value = settingsRepository.isFoldableDevice()
+        duoSettings.markDisplayProfileSeen()
+        isFoldableCameraDevice.value = duoSettings.isFoldableDevice()
+        isDuoOrientationProfiles.value = duoSettings.isDuoOrientationProfilesEnabled()
+        isDuoHiddenInCurrentOrientation.value = duoSettings.isDuoHiddenInCurrentOrientation()
+        duoCameraOffsetX.floatValue = duoSettings.getDuoCameraOffsetX()
+        duoCameraOffsetY.floatValue = duoSettings.getDuoCameraOffsetY()
+        duoCameraSize.floatValue = duoSettings.getDuoCameraSize()
+        hasMultipleDuoDisplays.value = duoSettings.isFoldableDevice()
     }
 
     fun setDuoOrientationProfiles(enabled: Boolean) {
-        settingsRepository.setDuoOrientationProfilesEnabled(enabled)
+        duoSettings.setDuoOrientationProfilesEnabled(enabled)
         refreshDuoCameraPlacement()
     }
 
     fun setDuoHiddenInCurrentOrientation(hidden: Boolean) {
-        settingsRepository.setDuoHiddenInCurrentOrientation(hidden)
+        duoSettings.setDuoHiddenInCurrentOrientation(hidden)
         isDuoHiddenInCurrentOrientation.value = hidden
     }
 
     fun refreshIslandCameraPlacement() {
-        isFoldableCameraDevice.value = settingsRepository.isFoldableDevice()
+        isFoldableCameraDevice.value = duoSettings.isFoldableDevice()
         isIslandOrientationProfiles.value = settingsRepository.isIslandOrientationProfilesEnabled()
         isIslandHiddenInCurrentOrientation.value = settingsRepository.isIslandHiddenInCurrentOrientation()
         islandCameraOffsetX.floatValue = settingsRepository.getIslandCameraOffsetX()
@@ -3324,75 +3327,75 @@ class MainViewModel : ViewModel() {
 
     fun setDuoArcThickness(value: Float) {
         duoArcThickness.floatValue = value
-        settingsRepository.setDuoArcThickness(value)
+        duoSettings.setDuoArcThickness(value)
     }
 
     fun setDuoDotSize(value: Float) {
         duoDotSize.floatValue = value
-        settingsRepository.setDuoDotSize(value)
+        duoSettings.setDuoDotSize(value)
     }
 
     fun setDuoRingRadius(value: Float) {
         duoRingRadius.floatValue = value
-        settingsRepository.setDuoRingRadius(value)
+        duoSettings.setDuoRingRadius(value)
     }
 
     fun setDuoTimeTextScale(value: Float) {
         duoTimeTextScale.floatValue = value
-        settingsRepository.setDuoTimeTextScale(value)
+        duoSettings.setDuoTimeTextScale(value)
     }
 
     fun setDuoShowBattery(enabled: Boolean) {
         isDuoShowBattery.value = enabled
-        settingsRepository.setDuoShowBatteryEnabled(enabled)
+        duoSettings.setDuoShowBatteryEnabled(enabled)
         if (!enabled) {
             isDuoShowBatteryPercentage.value = false
-            settingsRepository.setDuoShowBatteryPercentageEnabled(false)
+            duoSettings.setDuoShowBatteryPercentageEnabled(false)
             isDuoShowNetworks.value = false
-            settingsRepository.setDuoShowNetworksEnabled(false)
+            duoSettings.setDuoShowNetworksEnabled(false)
             isDuoShowTime.value = false
-            settingsRepository.setDuoShowTimeEnabled(false)
+            duoSettings.setDuoShowTimeEnabled(false)
         }
     }
 
     fun setDuoShowBatteryPercentage(enabled: Boolean) {
         isDuoShowBatteryPercentage.value = enabled
-        settingsRepository.setDuoShowBatteryPercentageEnabled(enabled)
+        duoSettings.setDuoShowBatteryPercentageEnabled(enabled)
     }
 
     fun setDuoBatteryPercentageOnlyColored(enabled: Boolean) {
         isDuoBatteryPercentageOnlyColored.value = enabled
-        settingsRepository.setDuoBatteryPercentageOnlyColoredEnabled(enabled)
+        duoSettings.setDuoBatteryPercentageOnlyColoredEnabled(enabled)
     }
 
     fun setDuoBatteryChargingColorEnabled(enabled: Boolean) {
         isDuoBatteryChargingColorEnabled.value = enabled
-        settingsRepository.setDuoBatteryChargingColorEnabled(enabled)
+        duoSettings.setDuoBatteryChargingColorEnabled(enabled)
     }
 
     fun setDuoBatteryChargingColor(colorHex: String) {
         duoBatteryChargingColor.value = colorHex
-        settingsRepository.setDuoBatteryChargingColor(colorHex)
+        duoSettings.setDuoBatteryChargingColor(colorHex)
     }
 
     fun setDuoBatteryPowerSaveColorEnabled(enabled: Boolean) {
         isDuoBatteryPowerSaveColorEnabled.value = enabled
-        settingsRepository.setDuoBatteryPowerSaveColorEnabled(enabled)
+        duoSettings.setDuoBatteryPowerSaveColorEnabled(enabled)
     }
 
     fun setDuoBatteryPowerSaveColor(colorHex: String) {
         duoBatteryPowerSaveColor.value = colorHex
-        settingsRepository.setDuoBatteryPowerSaveColor(colorHex)
+        duoSettings.setDuoBatteryPowerSaveColor(colorHex)
     }
 
     fun setDuoBatteryLowColorEnabled(enabled: Boolean) {
         isDuoBatteryLowColorEnabled.value = enabled
-        settingsRepository.setDuoBatteryLowColorEnabled(enabled)
+        duoSettings.setDuoBatteryLowColorEnabled(enabled)
     }
 
     fun setDuoBatteryLowColor(colorHex: String) {
         duoBatteryLowColor.value = colorHex
-        settingsRepository.setDuoBatteryLowColor(colorHex)
+        duoSettings.setDuoBatteryLowColor(colorHex)
     }
 
     fun setIslandBatteryIdleColorEnabled(enabled: Boolean) {
@@ -3407,12 +3410,12 @@ class MainViewModel : ViewModel() {
 
     fun setDuoBatteryCriticalColorEnabled(enabled: Boolean) {
         isDuoBatteryCriticalColorEnabled.value = enabled
-        settingsRepository.setDuoBatteryCriticalColorEnabled(enabled)
+        duoSettings.setDuoBatteryCriticalColorEnabled(enabled)
     }
 
     fun setDuoBatteryCriticalColor(colorHex: String) {
         duoBatteryCriticalColor.value = colorHex
-        settingsRepository.setDuoBatteryCriticalColor(colorHex)
+        duoSettings.setDuoBatteryCriticalColor(colorHex)
     }
 
     fun setDuoBatteryLowLevel(level: Int) {
@@ -3428,26 +3431,26 @@ class MainViewModel : ViewModel() {
     private fun applyDuoBatteryLevels(low: Int, critical: Int) {
         duoBatteryLowLevel.intValue = low
         duoBatteryCriticalLevel.intValue = critical
-        settingsRepository.setDuoBatteryLevels(low, critical)
+        duoSettings.setDuoBatteryLevels(low, critical)
     }
 
     fun setDuoShowNetworks(enabled: Boolean) {
         isDuoShowNetworks.value = enabled
-        settingsRepository.setDuoShowNetworksEnabled(enabled)
+        duoSettings.setDuoShowNetworksEnabled(enabled)
         if (enabled) {
             isDuoShowTime.value = false
-            settingsRepository.setDuoShowTimeEnabled(false)
+            duoSettings.setDuoShowTimeEnabled(false)
         }
     }
 
     fun setDuoDifferentiateWifi(enabled: Boolean) {
         isDuoDifferentiateWifi.value = enabled
-        settingsRepository.setDuoDifferentiateWifiEnabled(enabled)
+        duoSettings.setDuoDifferentiateWifiEnabled(enabled)
     }
 
     fun setDuoShowTime(enabled: Boolean) {
         isDuoShowTime.value = enabled
-        settingsRepository.setDuoShowTimeEnabled(enabled)
+        duoSettings.setDuoShowTimeEnabled(enabled)
         if (enabled && combinedActive()) {
             isIslandShowTimeBattery.value = false
             settingsRepository.setIslandShowTimeBatteryEnabled(false)
@@ -3455,13 +3458,13 @@ class MainViewModel : ViewModel() {
         }
         if (enabled) {
             isDuoShowNetworks.value = false
-            settingsRepository.setDuoShowNetworksEnabled(false)
+            duoSettings.setDuoShowNetworksEnabled(false)
         }
     }
 
     fun setDuoShowMedia(enabled: Boolean) {
         isDuoShowMedia.value = enabled
-        settingsRepository.setDuoShowMediaEnabled(enabled)
+        duoSettings.setDuoShowMediaEnabled(enabled)
         if (enabled && combinedActive()) {
             isIslandShowMedia.value = false
             settingsRepository.setIslandShowMediaEnabled(false)
@@ -3470,12 +3473,12 @@ class MainViewModel : ViewModel() {
 
     fun setDuoRotateAlbumArt(enabled: Boolean) {
         isDuoRotateAlbumArt.value = enabled
-        settingsRepository.setDuoRotateAlbumArtEnabled(enabled)
+        duoSettings.setDuoRotateAlbumArtEnabled(enabled)
     }
 
     fun setDuoShowProgress(enabled: Boolean) {
         isDuoShowProgress.value = enabled
-        settingsRepository.setDuoShowProgressEnabled(enabled)
+        duoSettings.setDuoShowProgressEnabled(enabled)
         if (enabled && combinedActive()) {
             isIslandNotifKeepProgress.value = false
             settingsRepository.setIslandNotifKeepProgressEnabled(false)
@@ -3484,38 +3487,38 @@ class MainViewModel : ViewModel() {
 
     fun setDuoShowFlashlight(enabled: Boolean) {
         isDuoShowFlashlight.value = enabled
-        settingsRepository.setDuoShowFlashlightEnabled(enabled)
+        duoSettings.setDuoShowFlashlightEnabled(enabled)
         if (enabled && combinedActive()) {
             isIslandShowFlashlight.value = false
             settingsRepository.setIslandShowFlashlightEnabled(false)
         }
     }
 
-    private fun combinedActive(): Boolean = settingsRepository.isDuoIslandCombined()
+    private fun combinedActive(): Boolean = duoSettings.isDuoIslandCombined()
 
     fun setDuoKeepInFullscreen(enabled: Boolean) {
         isDuoKeepInFullscreen.value = enabled
-        settingsRepository.setDuoKeepInFullscreenEnabled(enabled)
+        duoSettings.setDuoKeepInFullscreenEnabled(enabled)
     }
 
     fun setDuoDisableInteractionsInFullscreen(enabled: Boolean) {
         isDuoDisableInteractionsInFullscreen.value = enabled
-        settingsRepository.setDuoDisableInteractionsInFullscreenEnabled(enabled)
+        duoSettings.setDuoDisableInteractionsInFullscreenEnabled(enabled)
     }
 
     fun setDuoHideOnShade(enabled: Boolean) {
         isDuoHideOnShade.value = enabled
-        settingsRepository.setDuoHideOnShadeEnabled(enabled)
+        duoSettings.setDuoHideOnShadeEnabled(enabled)
     }
 
     fun setDuoTapForBrief(enabled: Boolean) {
         isDuoTapForBrief.value = enabled
-        settingsRepository.setDuoTapForBriefEnabled(enabled)
+        duoSettings.setDuoTapForBriefEnabled(enabled)
     }
 
     fun setDuoIslandCombined(enabled: Boolean) {
         isDuoIslandCombined.value = enabled
-        settingsRepository.setDuoIslandCombined(enabled)
+        duoSettings.setDuoIslandCombined(enabled)
         if (!enabled) return
         // Duo owns the idle state, Island owns everything with more info
         setDuoShowBattery(true)
@@ -3523,11 +3526,11 @@ class MainViewModel : ViewModel() {
         setIslandShowTimeBattery(false)
         setIslandShowBattery(false)
         isDuoShowMedia.value = false
-        settingsRepository.setDuoShowMediaEnabled(false)
+        duoSettings.setDuoShowMediaEnabled(false)
         isDuoShowFlashlight.value = false
-        settingsRepository.setDuoShowFlashlightEnabled(false)
+        duoSettings.setDuoShowFlashlightEnabled(false)
         isDuoShowProgress.value = false
-        settingsRepository.setDuoShowProgressEnabled(false)
+        duoSettings.setDuoShowProgressEnabled(false)
         setIslandShowMedia(true)
         setIslandShowFlashlight(true)
         setIslandNotifKeepProgress(true)
@@ -3980,7 +3983,7 @@ class MainViewModel : ViewModel() {
         settingsRepository.setIslandNotifKeepProgressEnabled(enabled)
         if (enabled && combinedActive()) {
             isDuoShowProgress.value = false
-            settingsRepository.setDuoShowProgressEnabled(false)
+            duoSettings.setDuoShowProgressEnabled(false)
         }
     }
 
@@ -4069,7 +4072,7 @@ class MainViewModel : ViewModel() {
         settingsRepository.setIslandShowMediaEnabled(enabled)
         if (enabled && combinedActive()) {
             isDuoShowMedia.value = false
-            settingsRepository.setDuoShowMediaEnabled(false)
+            duoSettings.setDuoShowMediaEnabled(false)
         }
     }
 
@@ -4088,7 +4091,7 @@ class MainViewModel : ViewModel() {
         settingsRepository.setIslandShowFlashlightEnabled(enabled)
         if (enabled && combinedActive()) {
             isDuoShowFlashlight.value = false
-            settingsRepository.setDuoShowFlashlightEnabled(false)
+            duoSettings.setDuoShowFlashlightEnabled(false)
         }
     }
 
@@ -4097,7 +4100,7 @@ class MainViewModel : ViewModel() {
         settingsRepository.setIslandShowTimeBatteryEnabled(enabled)
         if (enabled && combinedActive()) {
             isDuoShowTime.value = false
-            settingsRepository.setDuoShowTimeEnabled(false)
+            duoSettings.setDuoShowTimeEnabled(false)
         }
     }
 
@@ -4188,62 +4191,62 @@ class MainViewModel : ViewModel() {
 
     fun setDuoHideWhenScreenOff(enabled: Boolean) {
         isDuoHideWhenScreenOff.value = enabled
-        settingsRepository.setDuoHideWhenScreenOffEnabled(enabled)
+        duoSettings.setDuoHideWhenScreenOffEnabled(enabled)
     }
 
     fun setDuoHideWhenScreenOffOnlyIdle(enabled: Boolean) {
         isDuoHideWhenScreenOffOnlyIdle.value = enabled
-        settingsRepository.setDuoHideWhenScreenOffOnlyIdleEnabled(enabled)
+        duoSettings.setDuoHideWhenScreenOffOnlyIdleEnabled(enabled)
     }
 
     fun setDuoHideWhenLocked(enabled: Boolean) {
         isDuoHideWhenLocked.value = enabled
-        settingsRepository.setDuoHideWhenLockedEnabled(enabled)
+        duoSettings.setDuoHideWhenLockedEnabled(enabled)
     }
 
     fun setDuoUseMaterialYou(enabled: Boolean) {
         isDuoUseMaterialYou.value = enabled
-        settingsRepository.setDuoUseMaterialYouEnabled(enabled)
+        duoSettings.setDuoUseMaterialYouEnabled(enabled)
     }
 
     fun setDuoCustomColor(colorHex: String) {
         duoCustomColor.value = colorHex
-        settingsRepository.setDuoCustomColor(colorHex)
+        duoSettings.setDuoCustomColor(colorHex)
     }
 
     fun setDuoTapAction(action: Action?) {
         duoTapAction.value = action
-        settingsRepository.setDuoTapAction(action)
+        duoSettings.setDuoTapAction(action)
     }
 
     fun setDuoDoubleTapAction(action: Action?) {
         duoDoubleTapAction.value = action
-        settingsRepository.setDuoDoubleTapAction(action)
+        duoSettings.setDuoDoubleTapAction(action)
     }
 
     fun setDuoLongPressAction(action: Action?) {
         duoLongPressAction.value = action
-        settingsRepository.setDuoLongPressAction(action)
+        duoSettings.setDuoLongPressAction(action)
     }
 
     fun setDuoSwipeDownAction(action: Action?) {
         duoSwipeDownAction.value = action
-        settingsRepository.setDuoSwipeDownAction(action)
+        duoSettings.setDuoSwipeDownAction(action)
     }
 
     fun setDuoSlideMode(mode: String) {
         duoSlideMode.value = mode
-        settingsRepository.setDuoSlideMode(mode)
+        duoSettings.setDuoSlideMode(mode)
     }
 
     fun setDuoSlideTrackEnabled(enabled: Boolean) {
         isDuoSlideTrack.value = enabled
-        settingsRepository.setDuoSlideTrackEnabled(enabled)
+        duoSettings.setDuoSlideTrackEnabled(enabled)
     }
 
     fun setDuoSlideInvertDirection(enabled: Boolean) {
         isDuoSlideInvertDirection.value = enabled
-        settingsRepository.setDuoSlideInvertDirection(enabled)
+        duoSettings.setDuoSlideInvertDirection(enabled)
     }
 
     fun setStatusGlanceEnabled(enabled: Boolean) {
@@ -4257,7 +4260,7 @@ class MainViewModel : ViewModel() {
     }
 
     fun refreshStatusGlanceCameraPlacement() {
-        isFoldableCameraDevice.value = settingsRepository.isFoldableDevice()
+        isFoldableCameraDevice.value = duoSettings.isFoldableDevice()
         isStatusGlanceOrientationProfiles.value = settingsRepository.isStatusGlanceOrientationProfilesEnabled()
         isStatusGlanceHiddenInCurrentOrientation.value = settingsRepository.isStatusGlanceHiddenInCurrentOrientation()
         statusGlanceOffsetX.floatValue = settingsRepository.getStatusGlanceOffsetX()

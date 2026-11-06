@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.services.handlers
+package com.jawzf.pixeltoolkit.feature.display.duo
 
 import android.accessibilityservice.AccessibilityService
 import android.content.Context
@@ -13,12 +13,13 @@ import android.util.Log
 import android.view.KeyEvent
 import android.view.MotionEvent
 import com.jawzf.pixeltoolkit.core.data.action.Action
+import com.jawzf.pixeltoolkit.core.data.action.ActionRunner
+import com.jawzf.pixeltoolkit.core.data.duo.DuoSettings
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticFeedbackType
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.services.automation.executors.CombinedActionExecutor
-import com.jawzf.pixeltoolkit.utils.DuoOverlayView
-import com.jawzf.pixeltoolkit.utils.media.MusicSessionUtil
+import com.jawzf.pixeltoolkit.core.platform.device.LinearBrightness
+import com.jawzf.pixeltoolkit.core.platform.media.MusicSessionUtil
+import com.jawzf.pixeltoolkit.feature.display.duo.DuoOverlayView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -29,7 +30,7 @@ import kotlin.math.hypot
 class DuoTouchHandler(
     private val service: AccessibilityService,
 ) {
-    private val settingsRepository by lazy { SettingsRepository(service) }
+    private val settings by lazy { DuoSettings(service) }
     private val audioManager by lazy { service.getSystemService(Context.AUDIO_SERVICE) as AudioManager }
     private val handler = Handler(Looper.getMainLooper())
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
@@ -45,7 +46,7 @@ class DuoTouchHandler(
     private var downY: Float = 0f
     private var downTime: Long = 0L
     private var lastSlideX: Float = 0f
-    private val brightnessSlide = com.jawzf.pixeltoolkit.utils.LinearBrightness(service)
+    private val brightnessSlide = LinearBrightness(service)
     private var lastBrightnessPercent: Int = 0
 
     private var lastTapTime: Long = 0L
@@ -86,7 +87,7 @@ class DuoTouchHandler(
 
     private val longPressRunnable = Runnable {
         isLongPressTriggered = true
-        val action = settingsRepository.getDuoLongPressAction()
+        val action = settings.getDuoLongPressAction()
         if (action != null) {
             HapticUtil.performHapticForService(service, HapticFeedbackType.CLICK)
             executeAction(action)
@@ -124,7 +125,7 @@ class DuoTouchHandler(
 
                 overlayView?.triggerTapAnimation()
 
-                val doubleTapAction = settingsRepository.getDuoDoubleTapAction()
+                val doubleTapAction = settings.getDuoDoubleTapAction()
                 val isSecondTapInWindow = (downTime - lastTapTime) < doubleTapTimeoutMs &&
                     hypot(x - lastTapX, y - lastTapY) < touchSlopPx * 1.5f
 
@@ -143,7 +144,7 @@ class DuoTouchHandler(
                     }
                 }
 
-                if (settingsRepository.getDuoLongPressAction() != null) {
+                if (settings.getDuoLongPressAction() != null) {
                     handler.postDelayed(longPressRunnable, longPressTimeoutMs)
                 }
                 return true
@@ -164,7 +165,7 @@ class DuoTouchHandler(
                 if (isLongPressTriggered) return true
 
                 val slideMode = getEffectiveSlideMode()
-                val swipeDownAction = settingsRepository.getDuoSwipeDownAction()
+                val swipeDownAction = settings.getDuoSwipeDownAction()
 
                 val isHorizontalDominant = abs(dx) > abs(dy) * 1.1f
                 val isVerticalDominant = dy > 0f && dy > abs(dx) * 1.1f
@@ -204,7 +205,7 @@ class DuoTouchHandler(
                 val slideMode = getEffectiveSlideMode()
                 if (slideMode == "track" && isTrackThresholdReached) {
                     isTrackTriggered = true
-                    val isInverted = settingsRepository.isDuoSlideInvertDirectionEnabled()
+                    val isInverted = settings.isDuoSlideInvertDirectionEnabled()
                     HapticUtil.performHapticForService(service, HapticFeedbackType.DOUBLE)
                     val key = if (dx > 0) {
                         if (isInverted) KeyEvent.KEYCODE_MEDIA_PREVIOUS else KeyEvent.KEYCODE_MEDIA_NEXT
@@ -221,9 +222,9 @@ class DuoTouchHandler(
                     isVolumeOrBrightnessAdjusted
 
                 if (!didPerformAnyGesture && totalDist < touchSlopPx && elapsed < 350L) {
-                    val doubleTapAction = settingsRepository.getDuoDoubleTapAction()
-                    val tapAction = if (settingsRepository.isDuoTapForBriefActive() && openBrief != null) null else settingsRepository.getDuoTapAction()
-                    val briefTap = openBrief?.takeIf { settingsRepository.isDuoTapForBriefActive() }
+                    val doubleTapAction = settings.getDuoDoubleTapAction()
+                    val tapAction = if (settings.isDuoTapForBriefActive() && openBrief != null) null else settings.getDuoTapAction()
+                    val briefTap = openBrief?.takeIf { settings.isDuoTapForBriefActive() }
 
                     if (isDoubleTapPending && doubleTapAction != null) {
                         isDoubleTapPending = false
@@ -304,7 +305,7 @@ class DuoTouchHandler(
             }
 
             "track" -> {
-                val isInverted = settingsRepository.isDuoSlideInvertDirectionEnabled()
+                val isInverted = settings.isDuoSlideInvertDirectionEnabled()
                 val effectiveRadius = ((cameraRadiusPx + 14f * density) * ringRadiusScale).coerceAtLeast(1f)
                 val baseAngleDeg = (totalDx / effectiveRadius) * (180f / Math.PI.toFloat())
                 val angleDeg = if (isInverted) baseAngleDeg else -baseAngleDeg
@@ -319,7 +320,7 @@ class DuoTouchHandler(
             }
 
             "sound_mode" -> {
-                val isInverted = settingsRepository.isDuoSlideInvertDirectionEnabled()
+                val isInverted = settings.isDuoSlideInvertDirectionEnabled()
                 if (!isSoundModeTriggered) {
                     if (abs(totalDx) >= horizontalTriggerPx) {
                         isSoundModeTriggered = true
@@ -365,19 +366,19 @@ class DuoTouchHandler(
     private fun executeAction(action: Action) {
         scope.launch {
             try {
-                CombinedActionExecutor.execute(service, action)
+                ActionRunner.execute(service, action)
             } catch (_: Exception) {
             }
         }
     }
 
     private fun getEffectiveSlideMode(): String {
-        if (settingsRepository.isDuoSlideTrackEnabled() &&
+        if (settings.isDuoSlideTrackEnabled() &&
             overlayView?.isMediaPlaying == true &&
             MusicSessionUtil.isPlayingMusic(service)
         ) {
             return "track"
         }
-        return settingsRepository.getDuoSlideMode()
+        return settings.getDuoSlideMode()
     }
 }
