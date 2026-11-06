@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.features.display
+package com.jawzf.pixeltoolkit.feature.display.duo.ui
 
 import android.os.Build
 import androidx.compose.animation.AnimatedVisibility
@@ -49,6 +49,10 @@ import com.jawzf.pixeltoolkit.domain.diy.ActionRegistry
 import com.jawzf.pixeltoolkit.domain.diy.displayName
 import com.jawzf.pixeltoolkit.domain.diy.matches
 import com.jawzf.pixeltoolkit.feature.apps.AppsSettings
+import com.jawzf.pixeltoolkit.feature.display.duo.ui.DuoBatteryOptionsBottomSheet
+import com.jawzf.pixeltoolkit.feature.display.duo.ui.DuoBatteryPercentageOptionsBottomSheet
+import com.jawzf.pixeltoolkit.feature.display.duo.ui.DuoNetworkOptionsBottomSheet
+import com.jawzf.pixeltoolkit.feature.display.duo.ui.DuoTimeOptionsBottomSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.AppSelectionSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.CustomSettingsSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.DeviceEffectsSettingsSheet
@@ -63,10 +67,6 @@ import com.jawzf.pixeltoolkit.ui.core.sheets.SoundModeSettingsSheet
 import com.jawzf.pixeltoolkit.ui.features.apps.sheets.KeyboardSelectionSheet
 import com.jawzf.pixeltoolkit.ui.features.audio.sheets.SetModeSettingsSheet
 import com.jawzf.pixeltoolkit.ui.features.audio.sheets.SetVolumeSettingsSheet
-import com.jawzf.pixeltoolkit.ui.features.display.sheets.DuoBatteryOptionsBottomSheet
-import com.jawzf.pixeltoolkit.ui.features.display.sheets.DuoBatteryPercentageOptionsBottomSheet
-import com.jawzf.pixeltoolkit.ui.features.display.sheets.DuoNetworkOptionsBottomSheet
-import com.jawzf.pixeltoolkit.ui.features.display.sheets.DuoTimeOptionsBottomSheet
 import com.jawzf.pixeltoolkit.ui.features.system.LikeSongSettingsSheet
 import com.jawzf.pixeltoolkit.ui.features.system.RemapActionItem
 import com.jawzf.pixeltoolkit.utils.PermissionUIHelper
