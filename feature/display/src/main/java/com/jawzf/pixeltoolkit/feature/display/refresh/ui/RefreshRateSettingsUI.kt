@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.features.system
+package com.jawzf.pixeltoolkit.feature.display.refresh.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -25,7 +25,7 @@ import com.jawzf.pixeltoolkit.core.design.components.ConfigSliderItem
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.pickers.SegmentedPicker
-import com.jawzf.pixeltoolkit.utils.RefreshRateUtils
+import com.jawzf.pixeltoolkit.feature.display.refresh.RefreshRateUtils
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 import kotlin.math.roundToInt
 

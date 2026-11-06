@@ -10,6 +10,8 @@ import com.jawzf.pixeltoolkit.feature.connectivity.dns.PrivateDnsTileService
 import com.jawzf.pixeltoolkit.feature.connectivity.nfc.NfcTileService
 import com.jawzf.pixeltoolkit.feature.connectivity.sim.DataSimController
 import com.jawzf.pixeltoolkit.feature.connectivity.sim.DataSimTileService
+import com.jawzf.pixeltoolkit.feature.display.pixels.SmartPixelsTileService
+import com.jawzf.pixeltoolkit.feature.display.refresh.RefreshRateTileService
 import com.jawzf.pixeltoolkit.feature.input.links.UrlShortenerTileService
 import com.jawzf.pixeltoolkit.feature.notifications.flashlight.FlashlightPulseTileService
 import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingTileService

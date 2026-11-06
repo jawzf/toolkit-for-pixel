@@ -27,6 +27,7 @@ import com.jawzf.pixeltoolkit.core.design.haptics.HapticFeedbackType
 import com.jawzf.pixeltoolkit.core.design.haptics.performHapticFeedback
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.feature.apps.freeze.FreezeManager
+import com.jawzf.pixeltoolkit.feature.display.pixels.SmartPixelsHandler
 import com.jawzf.pixeltoolkit.feature.input.gesture.OmniGestureOverlayHandler
 import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingHandler
 import com.jawzf.pixeltoolkit.feature.security.faceunlock.FaceUnlockBrightnessHandler
@@ -83,7 +84,7 @@ class ScreenOffAccessibilityService :
     private lateinit var omniGestureOverlayHandler: OmniGestureOverlayHandler
     private lateinit var statusBarIconHandler: StatusBarIconHandler
     private lateinit var faceUnlockBrightnessHandler: FaceUnlockBrightnessHandler
-    private lateinit var smartPixelsHandler: com.jawzf.pixeltoolkit.services.handlers.SmartPixelsHandler
+    private lateinit var smartPixelsHandler: SmartPixelsHandler
     private lateinit var duoOverlayHandler: DuoOverlayHandler
     lateinit var islandOverlayHandler: IslandCoordinator
     private lateinit var statusGlanceHandler: StatusGlanceHandler
@@ -328,8 +329,7 @@ class ScreenOffAccessibilityService :
         statusBarIconHandler = StatusBarIconHandler(this)
         faceUnlockBrightnessHandler = FaceUnlockBrightnessHandler(this)
         smartPixelsHandler =
-            com.jawzf.pixeltoolkit.services.handlers
-                .SmartPixelsHandler(this)
+            SmartPixelsHandler(this)
         duoOverlayHandler = DuoOverlayHandler(this)
         islandOverlayHandler = IslandCoordinator(this)
         islandOverlayHandler.onVisibilityChanged = {

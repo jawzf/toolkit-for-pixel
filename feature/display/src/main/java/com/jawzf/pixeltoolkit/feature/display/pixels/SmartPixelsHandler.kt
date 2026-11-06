@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.services.handlers
+package com.jawzf.pixeltoolkit.feature.display.pixels
 
 import android.accessibilityservice.AccessibilityService
 import android.animation.ObjectAnimator

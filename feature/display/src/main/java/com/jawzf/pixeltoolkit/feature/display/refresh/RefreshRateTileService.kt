@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.services.tiles
+package com.jawzf.pixeltoolkit.feature.display.refresh
 
 import android.content.Intent
 import android.graphics.drawable.Icon
@@ -10,7 +10,7 @@ import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.core.platform.tiles.BaseTileService
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.utils.RefreshRateUtils
+import com.jawzf.pixeltoolkit.feature.display.refresh.RefreshRateUtils
 
 @RequiresApi(Build.VERSION_CODES.N)
 class RefreshRateTileService : BaseTileService() {

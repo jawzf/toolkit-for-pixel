@@ -64,6 +64,7 @@ import com.jawzf.pixeltoolkit.feature.apps.freeze.FreezeState
 import com.jawzf.pixeltoolkit.feature.apps.updates.github.GitHubUser
 import com.jawzf.pixeltoolkit.feature.connectivity.ConnectivitySettings
 import com.jawzf.pixeltoolkit.feature.connectivity.ConnectivityState
+import com.jawzf.pixeltoolkit.feature.display.refresh.RefreshRateUtils
 import com.jawzf.pixeltoolkit.feature.input.InputState
 import com.jawzf.pixeltoolkit.feature.notifications.NotificationSettings
 import com.jawzf.pixeltoolkit.feature.notifications.NotificationState
@@ -88,7 +89,6 @@ import com.jawzf.pixeltoolkit.services.tiles.ScreenOffAccessibilityService
 import com.jawzf.pixeltoolkit.utils.AppIconUtil
 import com.jawzf.pixeltoolkit.utils.DuoBatteryLevels
 import com.jawzf.pixeltoolkit.utils.PowerButtonGestures
-import com.jawzf.pixeltoolkit.utils.RefreshRateUtils
 import com.jawzf.pixeltoolkit.utils.SplitScreenUtil
 import com.jawzf.pixeltoolkit.utils.StatusBarInsetsUtils
 import com.jawzf.pixeltoolkit.utils.StatusBarManager

@@ -20,6 +20,7 @@ import com.jawzf.pixeltoolkit.domain.model.RemapSlot
 import com.jawzf.pixeltoolkit.domain.model.ScaleAnimationsProfile
 import com.jawzf.pixeltoolkit.domain.model.SystemShortcutsState
 import com.jawzf.pixeltoolkit.feature.apps.AppsSettings
+import com.jawzf.pixeltoolkit.feature.display.refresh.RefreshRateUtils
 import com.jawzf.pixeltoolkit.feature.notifications.NotificationSettings
 import com.jawzf.pixeltoolkit.feature.power.PowerSettings
 import com.jawzf.pixeltoolkit.ui.core.pickers.NetworkType
@@ -1617,18 +1618,18 @@ class SettingsRepository(
                 val peak = getFloat(KEY_REFRESH_RATE_PEAK, 0f)
 
                 if (fixed <= 0f && min <= 0f && peak <= 0f) {
-                    com.jawzf.pixeltoolkit.utils.RefreshRateUtils.resetRefreshRate(
+                    RefreshRateUtils.resetRefreshRate(
                         context,
                         shouldRestoreInfinityPeakOnRefreshRateReset(),
                     )
-                } else if (mode == com.jawzf.pixeltoolkit.utils.RefreshRateUtils.MODE_RANGE && min > 0f && peak > 0f) {
-                    com.jawzf.pixeltoolkit.utils.RefreshRateUtils.applyRangeRefreshRate(
+                } else if (mode == RefreshRateUtils.MODE_RANGE && min > 0f && peak > 0f) {
+                    RefreshRateUtils.applyRangeRefreshRate(
                         context,
                         min,
                         peak,
                     )
                 } else if (fixed > 0f || peak > 0f) {
-                    com.jawzf.pixeltoolkit.utils.RefreshRateUtils.applyFixedRefreshRate(
+                    RefreshRateUtils.applyFixedRefreshRate(
                         context,
                         if (fixed > 0f) fixed else peak,
                     )
@@ -1784,8 +1785,8 @@ class SettingsRepository(
      * @return The resulting String data.
      */
     fun getRefreshRateMode(): String =
-        getString(KEY_REFRESH_RATE_MODE, com.jawzf.pixeltoolkit.utils.RefreshRateUtils.MODE_FIXED)
-            ?: com.jawzf.pixeltoolkit.utils.RefreshRateUtils.MODE_FIXED
+        getString(KEY_REFRESH_RATE_MODE, RefreshRateUtils.MODE_FIXED)
+            ?: RefreshRateUtils.MODE_FIXED
 
     /**
      * Executes the set refresh rate mode operation.

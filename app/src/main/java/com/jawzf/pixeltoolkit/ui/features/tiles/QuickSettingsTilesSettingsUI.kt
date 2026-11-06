@@ -66,6 +66,8 @@ import com.jawzf.pixeltoolkit.feature.apps.applock.AppLockTileService
 import com.jawzf.pixeltoolkit.feature.apps.freeze.AppFreezingTileService
 import com.jawzf.pixeltoolkit.feature.connectivity.dns.PrivateDnsTileService
 import com.jawzf.pixeltoolkit.feature.connectivity.nfc.NfcTileService
+import com.jawzf.pixeltoolkit.feature.display.pixels.SmartPixelsTileService
+import com.jawzf.pixeltoolkit.feature.display.refresh.RefreshRateTileService
 import com.jawzf.pixeltoolkit.feature.input.links.UrlShortenerTileService
 import com.jawzf.pixeltoolkit.feature.notifications.flashlight.FlashlightPulseTileService
 import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingTileService
@@ -83,10 +85,8 @@ import com.jawzf.pixeltoolkit.services.tiles.DynamicNightLightTileService
 import com.jawzf.pixeltoolkit.services.tiles.FlashlightTileService
 import com.jawzf.pixeltoolkit.services.tiles.LockdownTileService
 import com.jawzf.pixeltoolkit.services.tiles.PrivateNotificationsTileService
-import com.jawzf.pixeltoolkit.services.tiles.RefreshRateTileService
 import com.jawzf.pixeltoolkit.services.tiles.RestartSystemUiTileService
 import com.jawzf.pixeltoolkit.services.tiles.ScaleAnimationsTileService
-import com.jawzf.pixeltoolkit.services.tiles.SmartPixelsTileService
 import com.jawzf.pixeltoolkit.services.tiles.StayAwakeTileService
 import com.jawzf.pixeltoolkit.services.tiles.TapToWakeTileService
 import com.jawzf.pixeltoolkit.services.tiles.ToolkitOnDisplayTileService
