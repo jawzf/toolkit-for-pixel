@@ -1,5 +1,7 @@
 package com.jawzf.pixeltoolkit
 
+import com.jawzf.pixeltoolkit.core.data.prefs.StatusBarPrefs
+import com.jawzf.pixeltoolkit.core.platform.PlatformPrefs
 import com.jawzf.pixeltoolkit.feature.display.DisplaySettings
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -29,5 +31,8 @@ class DisplaySettingsTest {
         assertEquals("lock_screen_clock_color_tone", DisplaySettings.KEY_LOCK_SCREEN_CLOCK_COLOR_TONE)
         assertEquals("lock_screen_clock_selected_color_id", DisplaySettings.KEY_LOCK_SCREEN_CLOCK_SELECTED_COLOR_ID)
         assertEquals("lock_screen_clock_seed_color", DisplaySettings.KEY_LOCK_SCREEN_CLOCK_SEED_COLOR)
+        assertEquals("status_bar_icon_control_enabled", PlatformPrefs.KEY_STATUS_BAR_ICON_CONTROL_ENABLED)
+        assertEquals("hide_clock", PlatformPrefs.KEY_HIDE_CLOCK)
+        assertEquals("island_hide_icons", StatusBarPrefs.KEY_ISLAND_HIDE_ICONS)
     }
 }

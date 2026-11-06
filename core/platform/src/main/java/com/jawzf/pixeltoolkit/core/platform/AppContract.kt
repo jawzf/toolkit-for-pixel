@@ -37,4 +37,10 @@ object PlatformPrefs {
     const val KEY_SECURE_SENSITIVE_TILES = "secure_sensitive_tiles"
     const val KEY_ENABLE_UNSUPPORTED_FEATURES = "enable_unsupported_features"
     const val KEY_PITCH_BLACK_THEME_ENABLED = "pitch_black_theme_enabled"
+    const val KEY_HIDE_SYSTEM_ICONS = "hide_system_icons"
+    const val KEY_HIDE_SYSTEM_ICONS_LOCKED_ONLY = "hide_system_icons_locked_only"
+    const val KEY_HIDE_CLOCK = "hide_clock"
+    const val KEY_HIDE_NOTIFICATION_ICONS = "hide_notification_icons"
+    const val KEY_HIDE_GESTURE_BAR_ENABLED = "hide_gesture_bar_enabled"
+    const val KEY_STATUS_BAR_ICON_CONTROL_ENABLED = "status_bar_icon_control_enabled"
 }

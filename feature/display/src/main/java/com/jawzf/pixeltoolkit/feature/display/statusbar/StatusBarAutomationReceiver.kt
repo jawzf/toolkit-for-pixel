@@ -4,9 +4,9 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.provider.Settings
+import com.jawzf.pixeltoolkit.core.platform.PlatformPrefs
 import com.jawzf.pixeltoolkit.core.platform.shell.RootUtils
 import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuUtils
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.feature.display.statusbar.StatusBarIconViewModel
 
 class StatusBarAutomationReceiver : BroadcastReceiver() {
@@ -27,8 +27,8 @@ class StatusBarAutomationReceiver : BroadcastReceiver() {
         context: Context,
         action: String,
     ) {
-        val prefs = context.getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE)
-        if (!prefs.getBoolean(SettingsRepository.KEY_STATUS_BAR_ICON_CONTROL_ENABLED, false)) return
+        val prefs = context.getSharedPreferences(PlatformPrefs.PREFS_NAME, Context.MODE_PRIVATE)
+        if (!prefs.getBoolean(PlatformPrefs.KEY_STATUS_BAR_ICON_CONTROL_ENABLED, false)) return
         if (!prefs.contains(StatusBarIconViewModel.PREF_BATTERY_PERCENT_MODE)) return
         val mode = prefs.getInt(StatusBarIconViewModel.PREF_BATTERY_PERCENT_MODE, 0)
         val isCharging = action == Intent.ACTION_POWER_CONNECTED

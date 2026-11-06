@@ -913,7 +913,9 @@ class FeatureSettingsActivity : AppCompatActivity() {
                                     "Statusbar icons" -> {
                                         StatusBarIconSettingsUI(
                                             viewModel = statusBarViewModel,
-                                            mainViewModel = viewModel,
+                                            controlState = viewModel.statusBarControl,
+                                            isIslandHideStatusBarInsets = viewModel.isIslandHideStatusBarInsets.value,
+                                            onIslandHideStatusBarInsetsChange = { viewModel.setIslandHideStatusBarInsets(it, context) },
                                             modifier = Modifier.padding(top = 16.dp),
                                             highlightSetting = highlightSetting,
                                         )

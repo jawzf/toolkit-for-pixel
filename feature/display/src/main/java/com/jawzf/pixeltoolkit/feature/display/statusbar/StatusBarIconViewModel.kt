@@ -1,5 +1,6 @@
 package com.jawzf.pixeltoolkit.feature.display.statusbar
 
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
@@ -7,10 +8,13 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.BatteryManager
 import android.provider.Settings
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.core.content.edit
 import androidx.lifecycle.ViewModel
+import com.jawzf.pixeltoolkit.core.data.prefs.StatusBarPrefs
 import com.jawzf.pixeltoolkit.core.design.pickers.NetworkType
+import com.jawzf.pixeltoolkit.core.platform.PlatformPrefs
 import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.core.platform.shell.RootUtils
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
@@ -44,14 +48,14 @@ class StatusBarIconViewModel : ViewModel() {
 
     // Dynamic icon visibility states based on registry
     private val iconVisibilities =
-        mutableMapOf<String, androidx.compose.runtime.MutableState<Boolean>>()
+        mutableMapOf<String, MutableState<Boolean>>()
 
     private var updateJob: Job? = null
     private var smartWifiJob: Job? = null
     private var smartDataJob: Job? = null
     private val scope = CoroutineScope(Dispatchers.Main)
 
-    private var batteryReceiver: android.content.BroadcastReceiver? = null
+    private var batteryReceiver: BroadcastReceiver? = null
 
     companion object {
         const val ICON_BLACKLIST_SETTING = "icon_blacklist"
@@ -77,7 +81,7 @@ class StatusBarIconViewModel : ViewModel() {
     /**
      * Get visibility state for a specific icon by ID
      */
-    fun getIconVisibility(iconId: String): androidx.compose.runtime.MutableState<Boolean>? = iconVisibilities[iconId]
+    fun getIconVisibility(iconId: String): MutableState<Boolean>? = iconVisibilities[iconId]
 
     /**
      * Get all visibility states as a map
@@ -146,7 +150,7 @@ class StatusBarIconViewModel : ViewModel() {
         iconState.value = visible
 
         // Save to preferences
-        context.getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE).edit {
+        context.getSharedPreferences(PlatformPrefs.PREFS_NAME, Context.MODE_PRIVATE).edit {
             putBoolean(
                 StatusBarIconRegistry.getIconById(iconId)?.preferencesKey
                     ?: "icon_${iconId}_visible",
@@ -332,7 +336,7 @@ class StatusBarIconViewModel : ViewModel() {
         context: Context,
     ) {
         isSmartWiFiEnabled.value = enabled
-        context.getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE).edit {
+        context.getSharedPreferences(PlatformPrefs.PREFS_NAME, Context.MODE_PRIVATE).edit {
             putBoolean(PREF_SMART_WIFI_ENABLED, enabled)
         }
         updateIconBlacklist(context)
@@ -349,7 +353,7 @@ class StatusBarIconViewModel : ViewModel() {
         context: Context,
     ) {
         isSmartDataEnabled.value = enabled
-        context.getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE).edit {
+        context.getSharedPreferences(PlatformPrefs.PREFS_NAME, Context.MODE_PRIVATE).edit {
             putBoolean(PREF_SMART_DATA_ENABLED, enabled)
         }
         updateIconBlacklist(context)
@@ -366,7 +370,7 @@ class StatusBarIconViewModel : ViewModel() {
         context: Context,
         enabled: Boolean,
     ) {
-        val prefs = context.getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE)
+        val prefs = context.getSharedPreferences(PlatformPrefs.PREFS_NAME, Context.MODE_PRIVATE)
         val currentTypes =
             prefs
                 .getStringSet(
@@ -384,7 +388,7 @@ class StatusBarIconViewModel : ViewModel() {
 
         selectedNetworkTypes.value = currentTypes.map { NetworkType.valueOf(it) }.toSet()
 
-        context.getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE).edit {
+        context.getSharedPreferences(PlatformPrefs.PREFS_NAME, Context.MODE_PRIVATE).edit {
             putStringSet(PREF_SELECTED_NETWORK_TYPES, currentTypes)
         }
     }
@@ -432,7 +436,7 @@ class StatusBarIconViewModel : ViewModel() {
     }
 
     private fun loadIconVisibilityState(context: Context) {
-        val prefs = context.getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE)
+        val prefs = context.getSharedPreferences(PlatformPrefs.PREFS_NAME, Context.MODE_PRIVATE)
         for (icon in StatusBarIconRegistry.ALL_ICONS) {
             val visibility = prefs.getBoolean(icon.preferencesKey, icon.defaultVisible)
             iconVisibilities[icon.id]?.value = visibility
@@ -440,17 +444,17 @@ class StatusBarIconViewModel : ViewModel() {
     }
 
     private fun loadSmartWiFiPref(context: Context) {
-        val prefs = context.getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE)
+        val prefs = context.getSharedPreferences(PlatformPrefs.PREFS_NAME, Context.MODE_PRIVATE)
         isSmartWiFiEnabled.value = prefs.getBoolean(PREF_SMART_WIFI_ENABLED, false)
     }
 
     private fun loadSmartDataPref(context: Context) {
-        val prefs = context.getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE)
+        val prefs = context.getSharedPreferences(PlatformPrefs.PREFS_NAME, Context.MODE_PRIVATE)
         isSmartDataEnabled.value = prefs.getBoolean(PREF_SMART_DATA_ENABLED, false)
     }
 
     private fun loadSelectedNetworkTypes(context: Context) {
-        val prefs = context.getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE)
+        val prefs = context.getSharedPreferences(PlatformPrefs.PREFS_NAME, Context.MODE_PRIVATE)
         val currentTypes =
             prefs.getStringSet(
                 PREF_SELECTED_NETWORK_TYPES,
@@ -500,7 +504,7 @@ class StatusBarIconViewModel : ViewModel() {
         setAdvancedFlagEnabled(context, PREF_HIDE_CLOCK, false)
         setAdvancedFlagEnabled(context, PREF_HIDE_NOTIFICATION_ICONS, false)
         batteryPercentageMode.value = 0
-        context.getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE).edit {
+        context.getSharedPreferences(PlatformPrefs.PREFS_NAME, Context.MODE_PRIVATE).edit {
             remove(PREF_BATTERY_PERCENT_MODE)
         }
         setClockPosition(0, context)
@@ -514,7 +518,7 @@ class StatusBarIconViewModel : ViewModel() {
     }
 
     private fun loadStatusBarSettings(context: Context) {
-        val prefs = context.getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE)
+        val prefs = context.getSharedPreferences(PlatformPrefs.PREFS_NAME, Context.MODE_PRIVATE)
         batteryPercentageMode.value = prefs.getInt(PREF_BATTERY_PERCENT_MODE, 0)
         clockPosition.value = prefs.getInt(PREF_CLOCK_POSITION, 0)
 
@@ -548,7 +552,7 @@ class StatusBarIconViewModel : ViewModel() {
         context: Context,
     ) {
         clockPosition.value = position
-        context.getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE).edit {
+        context.getSharedPreferences(PlatformPrefs.PREFS_NAME, Context.MODE_PRIVATE).edit {
             putInt(PREF_CLOCK_POSITION, position)
         }
         updateIconBlacklist(context)
@@ -593,7 +597,7 @@ class StatusBarIconViewModel : ViewModel() {
         context: Context,
     ) {
         batteryPercentageMode.value = mode
-        context.getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE).edit {
+        context.getSharedPreferences(PlatformPrefs.PREFS_NAME, Context.MODE_PRIVATE).edit {
             putInt(PREF_BATTERY_PERCENT_MODE, mode)
         }
 
@@ -653,14 +657,14 @@ class StatusBarIconViewModel : ViewModel() {
     }
 
     private fun loadAdvancedFlags(context: Context) {
-        val prefs = context.getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE)
+        val prefs = context.getSharedPreferences(PlatformPrefs.PREFS_NAME, Context.MODE_PRIVATE)
         isHideSystemIconsEnabled.value = prefs.getBoolean(PREF_HIDE_SYSTEM_ICONS, false)
         isHideSystemIconsLockedOnlyEnabled.value =
             prefs.getBoolean(PREF_HIDE_SYSTEM_ICONS_LOCKED_ONLY, false)
         isHideClockEnabled.value = prefs.getBoolean(PREF_HIDE_CLOCK, false)
         isHideNotificationIconsEnabled.value = prefs.getBoolean(PREF_HIDE_NOTIFICATION_ICONS, false)
         islandHiddenIcons.value =
-            com.jawzf.pixeltoolkit.data.repository.SettingsRepository(context).getIslandHideIcons()
+            StatusBarPrefs(context).getIslandHideIcons()
         applyAdvancedFlags(context)
     }
 
@@ -676,7 +680,7 @@ class StatusBarIconViewModel : ViewModel() {
         flagKey: String,
         enabled: Boolean,
     ) {
-        val prefs = context.getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE)
+        val prefs = context.getSharedPreferences(PlatformPrefs.PREFS_NAME, Context.MODE_PRIVATE)
         when (flagKey) {
             PREF_HIDE_SYSTEM_ICONS -> isHideSystemIconsEnabled.value = enabled
             PREF_HIDE_SYSTEM_ICONS_LOCKED_ONLY -> isHideSystemIconsLockedOnlyEnabled.value = enabled
@@ -687,14 +691,14 @@ class StatusBarIconViewModel : ViewModel() {
         if (!enabled) {
             val islandId =
                 when (flagKey) {
-                    PREF_HIDE_SYSTEM_ICONS -> com.jawzf.pixeltoolkit.data.repository.SettingsRepository.ISLAND_HIDE_ICON_SYSTEM
-                    PREF_HIDE_CLOCK -> com.jawzf.pixeltoolkit.data.repository.SettingsRepository.ISLAND_HIDE_ICON_CLOCK
-                    PREF_HIDE_NOTIFICATION_ICONS -> com.jawzf.pixeltoolkit.data.repository.SettingsRepository.ISLAND_HIDE_ICON_NOTIFICATIONS
+                    PREF_HIDE_SYSTEM_ICONS -> StatusBarPrefs.ISLAND_HIDE_ICON_SYSTEM
+                    PREF_HIDE_CLOCK -> StatusBarPrefs.ISLAND_HIDE_ICON_CLOCK
+                    PREF_HIDE_NOTIFICATION_ICONS -> StatusBarPrefs.ISLAND_HIDE_ICON_NOTIFICATIONS
                     else -> null
                 }
             if (islandId != null && islandId in islandHiddenIcons.value) {
                 islandHiddenIcons.value = islandHiddenIcons.value - islandId
-                com.jawzf.pixeltoolkit.data.repository.SettingsRepository(context).setIslandHideIcons(islandHiddenIcons.value)
+                StatusBarPrefs(context).setIslandHideIcons(islandHiddenIcons.value)
             }
         }
         applyAdvancedFlags(context)

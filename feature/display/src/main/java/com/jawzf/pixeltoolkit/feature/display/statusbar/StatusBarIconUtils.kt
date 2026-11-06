@@ -3,6 +3,8 @@ package com.jawzf.pixeltoolkit.feature.display.statusbar
 import android.content.Context
 import android.provider.Settings
 import androidx.core.content.edit
+import com.jawzf.pixeltoolkit.core.data.prefs.PrefsStore
+import com.jawzf.pixeltoolkit.core.platform.PlatformPrefs
 import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 
@@ -43,12 +45,9 @@ fun updateIconBlacklistSetting(
     context: Context,
     blacklistNames: Set<String>,
 ) {
-    val repository =
-        com.jawzf.pixeltoolkit.data.repository
-            .SettingsRepository(context)
     val isEnabled =
-        repository.getBoolean(
-            com.jawzf.pixeltoolkit.data.repository.SettingsRepository.KEY_STATUS_BAR_ICON_CONTROL_ENABLED,
+        PrefsStore(context).getBoolean(
+            PlatformPrefs.KEY_STATUS_BAR_ICON_CONTROL_ENABLED,
             false,
         )
     if (!isEnabled) return
@@ -67,7 +66,7 @@ fun saveIconVisibilities(
     context: Context,
     visibilities: Map<String, Boolean>,
 ) {
-    val prefs = context.getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE)
+    val prefs = context.getSharedPreferences(PlatformPrefs.PREFS_NAME, Context.MODE_PRIVATE)
     prefs.edit {
         for ((iconId, isVisible) in visibilities) {
             putBoolean("icon_${iconId}_visible", isVisible)
@@ -82,7 +81,7 @@ fun loadIconVisibilities(
     context: Context,
     defaultVisibilities: Map<String, Boolean>,
 ): Map<String, Boolean> {
-    val prefs = context.getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE)
+    val prefs = context.getSharedPreferences(PlatformPrefs.PREFS_NAME, Context.MODE_PRIVATE)
     return defaultVisibilities.mapValues { (iconId, default) ->
         prefs.getBoolean("icon_${iconId}_visible", default)
     }
@@ -95,7 +94,7 @@ fun resetAllIconVisibilities(
     context: Context,
     defaultVisibilities: Map<String, Boolean>,
 ) {
-    val prefs = context.getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE)
+    val prefs = context.getSharedPreferences(PlatformPrefs.PREFS_NAME, Context.MODE_PRIVATE)
     prefs.edit {
         for ((iconId, default) in defaultVisibilities) {
             putBoolean("icon_${iconId}_visible", default)

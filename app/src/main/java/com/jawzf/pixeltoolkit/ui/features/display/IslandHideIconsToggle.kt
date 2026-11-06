@@ -20,6 +20,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.jawzf.pixeltoolkit.core.data.prefs.StatusBarPrefs
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.cards.IconToggleItem
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
@@ -38,8 +39,9 @@ fun IslandHideIconsToggle(
     val context = LocalContext.current
     val view = LocalView.current
     val settings = remember { SettingsRepository(context) }
+    val statusBarPrefs = remember { StatusBarPrefs(context) }
     var enabled by remember { mutableStateOf(settings.getBoolean(SettingsRepository.KEY_ISLAND_HIDE_ICONS_ENABLED, false)) }
-    var selected by remember { mutableStateOf(settings.getIslandHideIcons()) }
+    var selected by remember { mutableStateOf(statusBarPrefs.getIslandHideIcons()) }
 
     IconToggleItem(
         iconRes = R.drawable.rounded_visibility_off_24,
@@ -59,9 +61,9 @@ fun IslandHideIconsToggle(
     if (enabled && hasShellPermission) {
         val options =
             listOf(
-                SettingsRepository.ISLAND_HIDE_ICON_SYSTEM to R.string.island_hide_icon_system,
-                SettingsRepository.ISLAND_HIDE_ICON_NOTIFICATIONS to R.string.island_hide_icon_notifications,
-                SettingsRepository.ISLAND_HIDE_ICON_CLOCK to R.string.island_hide_icon_clock,
+                StatusBarPrefs.ISLAND_HIDE_ICON_SYSTEM to R.string.island_hide_icon_system,
+                StatusBarPrefs.ISLAND_HIDE_ICON_NOTIFICATIONS to R.string.island_hide_icon_notifications,
+                StatusBarPrefs.ISLAND_HIDE_ICON_CLOCK to R.string.island_hide_icon_clock,
             )
         Column(
             modifier =
@@ -80,7 +82,7 @@ fun IslandHideIconsToggle(
                         onClick = {
                             HapticUtil.performVirtualKeyHaptic(view)
                             selected = if (id in selected) selected - id else selected + id
-                            settings.setIslandHideIcons(selected)
+                            statusBarPrefs.setIslandHideIcons(selected)
                         },
                         label = { Text(stringResource(label)) },
                     )

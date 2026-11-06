@@ -2,8 +2,8 @@ package com.jawzf.pixeltoolkit.core.platform.statusbar
 
 import android.content.Context
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.platform.PlatformPrefs
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -57,13 +57,13 @@ object StatusBarManager {
 
     private fun persistentFlags(context: Context, includeSystemIcons: Boolean): MutableSet<String> {
         val flags = mutableSetOf<String>()
-        val prefs = context.getSharedPreferences(SettingsRepository.PREFS_NAME, Context.MODE_PRIVATE)
-        val isHideSystemIcons = prefs.getBoolean(SettingsRepository.KEY_HIDE_SYSTEM_ICONS, false)
-        val isHideSystemIconsLockedOnly = prefs.getBoolean(SettingsRepository.KEY_HIDE_SYSTEM_ICONS_LOCKED_ONLY, false)
+        val prefs = context.getSharedPreferences(PlatformPrefs.PREFS_NAME, Context.MODE_PRIVATE)
+        val isHideSystemIcons = prefs.getBoolean(PlatformPrefs.KEY_HIDE_SYSTEM_ICONS, false)
+        val isHideSystemIconsLockedOnly = prefs.getBoolean(PlatformPrefs.KEY_HIDE_SYSTEM_ICONS_LOCKED_ONLY, false)
         if (includeSystemIcons && isHideSystemIcons && !isHideSystemIconsLockedOnly) flags.add(FLAG_SYSTEM_ICONS)
-        if (prefs.getBoolean(SettingsRepository.KEY_HIDE_CLOCK, false)) flags.add(FLAG_CLOCK)
-        if (prefs.getBoolean(SettingsRepository.KEY_HIDE_NOTIFICATION_ICONS, false)) flags.add(FLAG_NOTIFICATION_ICONS)
-        if (prefs.getBoolean(SettingsRepository.KEY_HIDE_GESTURE_BAR_ENABLED, false)) flags.add(FLAG_HOME)
+        if (prefs.getBoolean(PlatformPrefs.KEY_HIDE_CLOCK, false)) flags.add(FLAG_CLOCK)
+        if (prefs.getBoolean(PlatformPrefs.KEY_HIDE_NOTIFICATION_ICONS, false)) flags.add(FLAG_NOTIFICATION_ICONS)
+        if (prefs.getBoolean(PlatformPrefs.KEY_HIDE_GESTURE_BAR_ENABLED, false)) flags.add(FLAG_HOME)
         return flags
     }
 
