@@ -97,10 +97,10 @@ fun StatusGlanceBatteryOptionsBottomSheet(
                 ) {
                     modes.forEachIndexed { index, mode ->
                         ToggleButton(
-                            checked = viewModel.statusGlanceBatteryDisplayMode.value == mode,
+                            checked = viewModel.statusGlance.statusGlanceBatteryDisplayMode.value == mode,
                             onCheckedChange = {
                                 HapticUtil.performVirtualKeyHaptic(view)
-                                viewModel.setStatusGlanceBatteryDisplayMode(mode)
+                                viewModel.statusGlance.setStatusGlanceBatteryDisplayMode(mode)
                             },
                             modifier = Modifier
                                 .weight(1f)
@@ -134,7 +134,7 @@ fun StatusGlanceBatteryOptionsBottomSheet(
             }
 
             AnimatedVisibility(
-                visible = viewModel.statusGlanceBatteryDisplayMode.value != "percentage",
+                visible = viewModel.statusGlance.statusGlanceBatteryDisplayMode.value != "percentage",
                 enter = fadeIn() + expandVertically(),
                 exit = fadeOut() + shrinkVertically(),
             ) {
@@ -144,8 +144,8 @@ fun StatusGlanceBatteryOptionsBottomSheet(
                 ) {
                     ConfigSliderItem(
                         title = stringResource(R.string.status_glance_battery_icon_size_title),
-                        value = viewModel.statusGlanceBatteryIconSize.floatValue,
-                        onValueChange = { viewModel.setStatusGlanceBatteryIconSize(it) },
+                        value = viewModel.statusGlance.statusGlanceBatteryIconSize.floatValue,
+                        onValueChange = { viewModel.statusGlance.setStatusGlanceBatteryIconSize(it) },
                         valueRange = 10f..24f,
                         increment = 1f,
                         iconRes = R.drawable.battery_android_frame_full_24px,
@@ -168,40 +168,40 @@ fun StatusGlanceBatteryOptionsBottomSheet(
                 IconToggleItem(
                     iconRes = R.drawable.battery_android_frame_alert_24px,
                     title = stringResource(R.string.status_glance_battery_show_low_title),
-                    isChecked = viewModel.isStatusGlanceBatteryShowLow.value,
+                    isChecked = viewModel.statusGlance.isStatusGlanceBatteryShowLow.value,
                     onCheckedChange = { checked ->
                         HapticUtil.performVirtualKeyHaptic(view)
-                        viewModel.setStatusGlanceBatteryShowLow(checked)
+                        viewModel.statusGlance.setStatusGlanceBatteryShowLow(checked)
                     },
                 )
 
                 IconToggleItem(
                     iconRes = R.drawable.battery_android_frame_bolt_24px,
                     title = stringResource(R.string.status_glance_battery_show_charging_title),
-                    isChecked = viewModel.isStatusGlanceBatteryShowCharging.value,
+                    isChecked = viewModel.statusGlance.isStatusGlanceBatteryShowCharging.value,
                     onCheckedChange = { checked ->
                         HapticUtil.performVirtualKeyHaptic(view)
-                        viewModel.setStatusGlanceBatteryShowCharging(checked)
+                        viewModel.statusGlance.setStatusGlanceBatteryShowCharging(checked)
                     },
                 )
 
                 IconToggleItem(
                     iconRes = R.drawable.battery_android_frame_full_24px,
                     title = stringResource(R.string.status_glance_battery_show_full_title),
-                    isChecked = viewModel.isStatusGlanceBatteryShowFull.value,
+                    isChecked = viewModel.statusGlance.isStatusGlanceBatteryShowFull.value,
                     onCheckedChange = { checked ->
                         HapticUtil.performVirtualKeyHaptic(view)
-                        viewModel.setStatusGlanceBatteryShowFull(checked)
+                        viewModel.statusGlance.setStatusGlanceBatteryShowFull(checked)
                     },
                 )
 
                 IconToggleItem(
                     iconRes = R.drawable.battery_android_frame_4_24px,
                     title = stringResource(R.string.status_glance_battery_show_otherwise_title),
-                    isChecked = viewModel.isStatusGlanceBatteryShowOtherwise.value,
+                    isChecked = viewModel.statusGlance.isStatusGlanceBatteryShowOtherwise.value,
                     onCheckedChange = { checked ->
                         HapticUtil.performVirtualKeyHaptic(view)
-                        viewModel.setStatusGlanceBatteryShowOtherwise(checked)
+                        viewModel.statusGlance.setStatusGlanceBatteryShowOtherwise(checked)
                     },
                 )
             }

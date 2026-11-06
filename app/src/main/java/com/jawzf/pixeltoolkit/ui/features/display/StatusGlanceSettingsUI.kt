@@ -82,7 +82,7 @@ fun StatusGlanceSettingsUI(
     val displayConfiguration = androidx.compose.ui.platform.LocalConfiguration.current
     LaunchedEffect(displayConfiguration.screenWidthDp, displayConfiguration.screenHeightDp,
         displayConfiguration.orientation) {
-        viewModel.refreshStatusGlanceCameraPlacement()
+        viewModel.statusGlance.refreshStatusGlanceCameraPlacement()
     }
 
     var requestingPermissionsFor by remember { mutableStateOf<Pair<Int, List<String>>?>(null) }
@@ -147,9 +147,9 @@ fun StatusGlanceSettingsUI(
 
     fun applyActionForGesture(gesture: String?, action: Action?) {
         when (gesture) {
-            "tap" -> viewModel.setStatusGlanceTapAction(action)
-            "double_tap" -> viewModel.setStatusGlanceDoubleTapAction(action)
-            "long_press" -> viewModel.setStatusGlanceLongPressAction(action)
+            "tap" -> viewModel.statusGlance.setStatusGlanceTapAction(action)
+            "double_tap" -> viewModel.statusGlance.setStatusGlanceDoubleTapAction(action)
+            "long_press" -> viewModel.statusGlance.setStatusGlanceLongPressAction(action)
         }
     }
 
@@ -180,7 +180,7 @@ fun StatusGlanceSettingsUI(
                 title = stringResource(R.string.status_glance_enable_title),
                 description = stringResource(R.string.status_glance_enable_desc),
                 iconRes = R.drawable.rounded_ad_units_24,
-                isChecked = viewModel.isStatusGlanceEnabled.value,
+                isChecked = viewModel.statusGlance.isStatusGlanceEnabled.value,
                 onCheckedChange = { isChecked ->
                     HapticUtil.performUIHaptic(view)
                     if (isChecked && !viewModel.isAccessibilityEnabled.value) {
@@ -189,7 +189,7 @@ fun StatusGlanceSettingsUI(
                             listOf(AppPermission.ACCESSIBILITY.key)
                         )
                     } else {
-                        viewModel.setStatusGlanceEnabled(isChecked)
+                        viewModel.statusGlance.setStatusGlanceEnabled(isChecked)
                     }
                 },
                 modifier = Modifier.highlight(highlightSetting == "status_glance_enabled"),
@@ -197,7 +197,7 @@ fun StatusGlanceSettingsUI(
         }
 
         AnimatedVisibility(
-            visible = viewModel.isStatusGlanceEnabled.value,
+            visible = viewModel.statusGlance.isStatusGlanceEnabled.value,
             enter = fadeIn() + expandVertically(),
             exit = fadeOut() + shrinkVertically(),
         ) {
@@ -225,14 +225,14 @@ fun StatusGlanceSettingsUI(
                         IconToggleItem(
                             title = stringResource(R.string.foldable_orientation_profiles_title),
                             iconRes = R.drawable.rounded_center_focus_strong_24,
-                            isChecked = viewModel.isStatusGlanceOrientationProfiles.value,
-                            onCheckedChange = { viewModel.setStatusGlanceOrientationProfiles(it) },
+                            isChecked = viewModel.statusGlance.isStatusGlanceOrientationProfiles.value,
+                            onCheckedChange = { viewModel.statusGlance.setStatusGlanceOrientationProfiles(it) },
                         )
                         IconToggleItem(
                             title = stringResource(R.string.foldable_hide_current_orientation_title),
                             iconRes = R.drawable.rounded_visibility_off_24,
-                            isChecked = viewModel.isStatusGlanceHiddenInCurrentOrientation.value,
-                            onCheckedChange = { viewModel.setStatusGlanceHiddenInCurrentOrientation(it) },
+                            isChecked = viewModel.statusGlance.isStatusGlanceHiddenInCurrentOrientation.value,
+                            onCheckedChange = { viewModel.statusGlance.setStatusGlanceHiddenInCurrentOrientation(it) },
                         )
                     }
                     IconToggleItem(
@@ -242,17 +242,17 @@ fun StatusGlanceSettingsUI(
                         showToggle = false,
                         onClick = {
                             HapticUtil.performUIHaptic(view)
-                            viewModel.autoDetectStatusGlancePosition(context)
+                            viewModel.statusGlance.autoDetectStatusGlancePosition(context)
                         },
                         modifier = Modifier.highlight(highlightSetting == "status_glance_auto_detect"),
                     )
 
                     ConfigSliderItem(
                         title = stringResource(R.string.status_glance_offset_x_title),
-                        value = viewModel.statusGlanceOffsetX.floatValue,
+                        value = viewModel.statusGlance.statusGlanceOffsetX.floatValue,
                         onValueChange = {
                             HapticUtil.performUIHaptic(view)
-                            viewModel.setStatusGlanceOffsetX(it)
+                            viewModel.statusGlance.setStatusGlanceOffsetX(it)
                         },
                         valueRange = 0f..100f,
                         increment = 1f,
@@ -262,10 +262,10 @@ fun StatusGlanceSettingsUI(
 
                     ConfigSliderItem(
                         title = stringResource(R.string.status_glance_offset_y_title),
-                        value = viewModel.statusGlanceOffsetY.floatValue,
+                        value = viewModel.statusGlance.statusGlanceOffsetY.floatValue,
                         onValueChange = {
                             HapticUtil.performUIHaptic(view)
-                            viewModel.setStatusGlanceOffsetY(it)
+                            viewModel.statusGlance.setStatusGlanceOffsetY(it)
                         },
                         valueRange = 0f..20f,
                         increment = 0.5f,
@@ -275,10 +275,10 @@ fun StatusGlanceSettingsUI(
 
                     ConfigSliderItem(
                         title = stringResource(R.string.status_glance_max_width_title),
-                        value = viewModel.statusGlanceMaxWidth.floatValue,
+                        value = viewModel.statusGlance.statusGlanceMaxWidth.floatValue,
                         onValueChange = {
                             HapticUtil.performUIHaptic(view)
-                            viewModel.setStatusGlanceMaxWidth(it)
+                            viewModel.statusGlance.setStatusGlanceMaxWidth(it)
                         },
                         valueRange = 80f..350f,
                         increment = 10f,
@@ -288,10 +288,10 @@ fun StatusGlanceSettingsUI(
 
                     ConfigSliderItem(
                         title = stringResource(R.string.status_glance_font_size_title),
-                        value = viewModel.statusGlanceFontSize.floatValue,
+                        value = viewModel.statusGlance.statusGlanceFontSize.floatValue,
                         onValueChange = {
                             HapticUtil.performUIHaptic(view)
-                            viewModel.setStatusGlanceFontSize(it)
+                            viewModel.statusGlance.setStatusGlanceFontSize(it)
                         },
                         valueRange = 9f..22f,
                         increment = 1f,
@@ -314,10 +314,10 @@ fun StatusGlanceSettingsUI(
                     IconToggleItem(
                         title = stringResource(R.string.status_glance_show_flashlight_title),
                         iconRes = R.drawable.rounded_flashlight_on_24,
-                        isChecked = viewModel.isStatusGlanceShowFlashlight.value,
+                        isChecked = viewModel.statusGlance.isStatusGlanceShowFlashlight.value,
                         onCheckedChange = {
                             HapticUtil.performUIHaptic(view)
-                            viewModel.setStatusGlanceShowFlashlight(it)
+                            viewModel.statusGlance.setStatusGlanceShowFlashlight(it)
                         },
                         modifier = Modifier.highlight(highlightSetting == "status_glance_show_flashlight"),
                     )
@@ -325,7 +325,7 @@ fun StatusGlanceSettingsUI(
                     IconToggleItem(
                         title = stringResource(R.string.status_glance_show_calendar_title),
                         iconRes = R.drawable.rounded_calendar_today_24,
-                        isChecked = viewModel.isStatusGlanceShowCalendar.value,
+                        isChecked = viewModel.statusGlance.isStatusGlanceShowCalendar.value,
                         onCheckedChange = { isChecked ->
                             HapticUtil.performUIHaptic(view)
                             if (isChecked && !viewModel.isCalendarPermissionGranted.value) {
@@ -334,7 +334,7 @@ fun StatusGlanceSettingsUI(
                                     listOf(AppPermission.READ_CALENDAR.key)
                                 )
                             }
-                            viewModel.setStatusGlanceShowCalendar(isChecked)
+                            viewModel.statusGlance.setStatusGlanceShowCalendar(isChecked)
                         },
                         onSettingsClick = {
                             showCalendarOptionsSheet = true
@@ -345,7 +345,7 @@ fun StatusGlanceSettingsUI(
                     IconToggleItem(
                         title = stringResource(R.string.status_glance_show_media_title),
                         iconRes = R.drawable.rounded_motion_play_24,
-                        isChecked = viewModel.isStatusGlanceShowMedia.value,
+                        isChecked = viewModel.statusGlance.isStatusGlanceShowMedia.value,
                         onCheckedChange = { isChecked ->
                             HapticUtil.performUIHaptic(view)
                             if (isChecked && !viewModel.isNotificationListenerEnabled.value) {
@@ -354,7 +354,7 @@ fun StatusGlanceSettingsUI(
                                     listOf(AppPermission.NOTIFICATION_LISTENER.key)
                                 )
                             }
-                            viewModel.setStatusGlanceShowMedia(isChecked)
+                            viewModel.statusGlance.setStatusGlanceShowMedia(isChecked)
                         },
                         onSettingsClick = {
                             showMediaAppSelectionSheet = true
@@ -365,10 +365,10 @@ fun StatusGlanceSettingsUI(
                     IconToggleItem(
                         title = stringResource(R.string.status_glance_show_time_title),
                         iconRes = R.drawable.rounded_schedule_24,
-                        isChecked = viewModel.isStatusGlanceShowTime.value,
+                        isChecked = viewModel.statusGlance.isStatusGlanceShowTime.value,
                         onCheckedChange = {
                             HapticUtil.performUIHaptic(view)
-                            viewModel.setStatusGlanceShowTime(it)
+                            viewModel.statusGlance.setStatusGlanceShowTime(it)
                         },
                         modifier = Modifier.highlight(highlightSetting == "status_glance_show_time"),
                     )
@@ -376,10 +376,10 @@ fun StatusGlanceSettingsUI(
                     IconToggleItem(
                         title = stringResource(R.string.status_glance_show_battery_title),
                         iconRes = R.drawable.battery_android_frame_full_24px,
-                        isChecked = viewModel.isStatusGlanceShowBattery.value,
+                        isChecked = viewModel.statusGlance.isStatusGlanceShowBattery.value,
                         onCheckedChange = {
                             HapticUtil.performUIHaptic(view)
-                            viewModel.setStatusGlanceShowBattery(it)
+                            viewModel.statusGlance.setStatusGlanceShowBattery(it)
                         },
                         onSettingsClick = {
                             showBatteryOptionsSheet = true
@@ -399,7 +399,7 @@ fun StatusGlanceSettingsUI(
                     spacing = 2.dp,
                     cornerRadius = 24.dp,
                 ) {
-                    val tapAction = viewModel.statusGlanceTapAction.value
+                    val tapAction = viewModel.statusGlance.statusGlanceTapAction.value
                     val tapDescription = if (tapAction != null) {
                         "${stringResource(R.string.status_glance_action_tap_media_desc)} • ${tapAction.displayName(context)}"
                     } else {
@@ -417,7 +417,7 @@ fun StatusGlanceSettingsUI(
                         modifier = Modifier.highlight(highlightSetting == "status_glance_tap_action"),
                     )
 
-                    val doubleTapAction = viewModel.statusGlanceDoubleTapAction.value
+                    val doubleTapAction = viewModel.statusGlance.statusGlanceDoubleTapAction.value
                     IconToggleItem(
                         iconRes = R.drawable.rounded_touch_app_24,
                         title = stringResource(R.string.status_glance_action_double_tap_title),
@@ -430,7 +430,7 @@ fun StatusGlanceSettingsUI(
                         modifier = Modifier.highlight(highlightSetting == "status_glance_double_tap_action"),
                     )
 
-                    val longPressAction = viewModel.statusGlanceLongPressAction.value
+                    val longPressAction = viewModel.statusGlance.statusGlanceLongPressAction.value
                     IconToggleItem(
                         iconRes = R.drawable.rounded_front_hand_24,
                         title = stringResource(R.string.status_glance_action_long_press_title),
@@ -466,10 +466,10 @@ fun StatusGlanceSettingsUI(
                         title = stringResource(R.string.status_glance_bold_text_title),
                         description = stringResource(R.string.status_glance_bold_text_desc),
                         iconRes = R.drawable.rounded_mobile_text_24,
-                        isChecked = viewModel.isStatusGlanceBoldText.value,
+                        isChecked = viewModel.statusGlance.isStatusGlanceBoldText.value,
                         onCheckedChange = {
                             HapticUtil.performUIHaptic(view)
-                            viewModel.setStatusGlanceBoldText(it)
+                            viewModel.statusGlance.setStatusGlanceBoldText(it)
                         },
                         modifier = Modifier.highlight(highlightSetting == "status_glance_bold_text"),
                     )
@@ -478,10 +478,10 @@ fun StatusGlanceSettingsUI(
                         title = stringResource(R.string.status_glance_background_pill_title),
                         description = stringResource(R.string.status_glance_background_pill_desc),
                         iconRes = R.drawable.rounded_circle_24,
-                        isChecked = viewModel.isStatusGlanceBackgroundPill.value,
+                        isChecked = viewModel.statusGlance.isStatusGlanceBackgroundPill.value,
                         onCheckedChange = {
                             HapticUtil.performUIHaptic(view)
-                            viewModel.setStatusGlanceBackgroundPill(it)
+                            viewModel.statusGlance.setStatusGlanceBackgroundPill(it)
                         },
                         modifier = Modifier.highlight(highlightSetting == "status_glance_background_pill"),
                     )
@@ -490,10 +490,10 @@ fun StatusGlanceSettingsUI(
                         title = stringResource(R.string.status_glance_album_art_colors_title),
                         description = stringResource(R.string.status_glance_album_art_colors_desc),
                         iconRes = R.drawable.rounded_palette_24,
-                        isChecked = viewModel.isStatusGlanceAlbumArtColors.value,
+                        isChecked = viewModel.statusGlance.isStatusGlanceAlbumArtColors.value,
                         onCheckedChange = {
                             HapticUtil.performUIHaptic(view)
-                            viewModel.setStatusGlanceAlbumArtColors(it)
+                            viewModel.statusGlance.setStatusGlanceAlbumArtColors(it)
                         },
                         modifier = Modifier.highlight(highlightSetting == "status_glance_album_art_colors"),
                     )
@@ -501,10 +501,10 @@ fun StatusGlanceSettingsUI(
                     IconToggleItem(
                         title = stringResource(R.string.status_glance_hide_in_quick_settings_title),
                         iconRes = R.drawable.rounded_pinch_24,
-                        isChecked = viewModel.isStatusGlanceHideInQuickSettings.value,
+                        isChecked = viewModel.statusGlance.isStatusGlanceHideInQuickSettings.value,
                         onCheckedChange = {
                             HapticUtil.performUIHaptic(view)
-                            viewModel.setStatusGlanceHideInQuickSettings(it)
+                            viewModel.statusGlance.setStatusGlanceHideInQuickSettings(it)
                         },
                         modifier = Modifier.highlight(highlightSetting == "status_glance_hide_in_quick_settings"),
                     )
@@ -513,10 +513,10 @@ fun StatusGlanceSettingsUI(
                         title = stringResource(R.string.status_glance_hide_when_locked_title),
                         description = stringResource(R.string.status_glance_hide_when_locked_desc),
                         iconRes = R.drawable.rounded_lock_24,
-                        isChecked = viewModel.isStatusGlanceHideWhenLocked.value,
+                        isChecked = viewModel.statusGlance.isStatusGlanceHideWhenLocked.value,
                         onCheckedChange = {
                             HapticUtil.performUIHaptic(view)
-                            viewModel.setStatusGlanceHideWhenLocked(it)
+                            viewModel.statusGlance.setStatusGlanceHideWhenLocked(it)
                         },
                         modifier = Modifier.highlight(highlightSetting == "status_glance_hide_when_locked"),
                     )
@@ -557,9 +557,9 @@ fun StatusGlanceSettingsUI(
     if (pickingActionForGesture != null) {
         val currentGesture = pickingActionForGesture
         val currentAction = when (currentGesture) {
-            "tap" -> viewModel.statusGlanceTapAction.value
-            "double_tap" -> viewModel.statusGlanceDoubleTapAction.value
-            "long_press" -> viewModel.statusGlanceLongPressAction.value
+            "tap" -> viewModel.statusGlance.statusGlanceTapAction.value
+            "double_tap" -> viewModel.statusGlance.statusGlanceDoubleTapAction.value
+            "long_press" -> viewModel.statusGlance.statusGlanceLongPressAction.value
             else -> null
         }
 
