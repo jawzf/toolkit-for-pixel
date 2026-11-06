@@ -35,6 +35,7 @@ import android.view.WindowManager
 import androidx.core.content.ContextCompat
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.jawzf.pixeltoolkit.core.data.duo.DuoSettings
 import com.jawzf.pixeltoolkit.core.data.prefs.AppSelection
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
@@ -175,7 +176,7 @@ class StatusGlanceHandler(
     }
 
     private fun isPlacementHidden(): Boolean =
-        if (settingsRepository.isFoldableDevice()) settingsRepository.isStatusGlanceHiddenInCurrentOrientation()
+        if (DuoSettings(service).isFoldableDevice()) settingsRepository.isStatusGlanceHiddenInCurrentOrientation()
         else isLandscape
 
     private fun applyOrientationVisibility() {

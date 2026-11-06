@@ -23,7 +23,6 @@ import androidx.palette.graphics.Palette
 import com.jawzf.pixeltoolkit.core.data.apps.AppUtil
 import com.jawzf.pixeltoolkit.core.data.duo.DuoBatteryLevels
 import com.jawzf.pixeltoolkit.core.design.R
-import com.jawzf.pixeltoolkit.services.dreams.AmbientDreamService
 import kotlin.math.cos
 import kotlin.math.sin
 
@@ -1485,7 +1484,7 @@ class DuoOverlayView(context: Context) : View(context) {
         tracerPaint.strokeWidth = arcThicknessPx + 0.4f * density
         contrastTracerPaint.strokeWidth = arcThicknessPx + 1.2f * density
 
-        val flexFont = AmbientDreamService.getFontFlex(context)
+        val flexFont: Typeface? = Typeface.DEFAULT
         if (flexFont != null) {
             timePaint.typeface = flexFont
             contrastTimePaint.typeface = flexFont

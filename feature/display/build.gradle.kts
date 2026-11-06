@@ -23,4 +23,5 @@ dependencies {
     implementation(libs.androidx.compose.foundation)
     implementation(libs.androidx.compose.material3.v150alpha24)
     implementation(libs.androidx.graphics.shapes)
+    implementation(libs.androidx.palette)
 }

@@ -44,17 +44,19 @@ import androidx.core.content.ContextCompat
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.jawzf.pixeltoolkit.core.data.apps.AppUtil
+import com.jawzf.pixeltoolkit.core.data.duo.DuoSettings
 import com.jawzf.pixeltoolkit.core.data.prefs.AppSelection
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.overlay.OverlayWindows
+import com.jawzf.pixeltoolkit.core.platform.AppComponents
+import com.jawzf.pixeltoolkit.core.platform.PlatformPrefs
 import com.jawzf.pixeltoolkit.core.platform.device.FlashlightUtil
 import com.jawzf.pixeltoolkit.core.platform.device.ProgressNotificationData
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.domain.model.ActiveNotificationAlert
+import com.jawzf.pixeltoolkit.core.platform.device.ProgressNotificationHub
+import com.jawzf.pixeltoolkit.core.platform.media.MediaArtBridge
 import com.jawzf.pixeltoolkit.feature.display.DisplaySettings
 import com.jawzf.pixeltoolkit.feature.display.duo.DuoOverlayView
 import com.jawzf.pixeltoolkit.feature.power.battery.ChargeLimitUtil
-import com.jawzf.pixeltoolkit.services.NotificationListener
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -80,7 +82,7 @@ class DuoOverlayHandler(
     private var currentCenterY = 0f
     private var currentCameraRadiusPx = 36f
 
-    private val settingsRepository by lazy { SettingsRepository(service) }
+    private val settings by lazy { DuoSettings(service) }
     private val telephonyManager by lazy { service.getSystemService(Context.TELEPHONY_SERVICE) as? TelephonyManager }
     private val connectivityManager by lazy { service.getSystemService(Context.CONNECTIVITY_SERVICE) as? ConnectivityManager }
     private val wifiManager by lazy { service.applicationContext.getSystemService(Context.WIFI_SERVICE) as? WifiManager }
@@ -144,13 +146,12 @@ class DuoOverlayHandler(
         mainHandler.postDelayed(mediaUpdateRunnable, MEDIA_UPDATE_DEBOUNCE_MS)
     }
 
-    private val progressNotificationListener = object : NotificationListener.ProgressNotificationListener {
-        override fun onProgressNotificationUpdated(data: ProgressNotificationData?) {
+    private val progressNotificationListener =
+        ProgressNotificationHub.Listener { data ->
             mainHandler.post {
                 checkAndApplyProgressNotificationState(data)
             }
         }
-    }
 
     private val activeSessionsListener =
         MediaSessionManager.OnActiveSessionsChangedListener { controllers ->
@@ -341,29 +342,29 @@ class DuoOverlayHandler(
         }
     }
 
-    private fun shouldHideForShade(): Boolean = isShadeExpanded && settingsRepository.isDuoHideOnShadeEnabled()
+    private fun shouldHideForShade(): Boolean = isShadeExpanded && settings.isDuoHideOnShadeEnabled()
 
     fun setIslandVisible(visible: Boolean) {
         isIslandVisible = visible
         mainHandler.post { overlayView?.isYieldingToIsland = shouldYieldToIsland() }
     }
 
-    private fun shouldYieldToIsland(): Boolean = isIslandVisible && settingsRepository.isDuoIslandCombined()
+    private fun shouldYieldToIsland(): Boolean = isIslandVisible && settings.isDuoIslandCombined()
 
     fun setFullscreen(fullscreen: Boolean) {
         if (isFullscreen != fullscreen) {
             isFullscreen = fullscreen
             overlayView?.isFullscreen = shouldHideForFullscreen()
-            if (settingsRepository.isDuoKeepInFullscreenEnabled()) updateState()
+            if (settings.isDuoKeepInFullscreenEnabled()) updateState()
         }
     }
 
-    private fun shouldHideForFullscreen(): Boolean = isFullscreen && !settingsRepository.isDuoKeepInFullscreenEnabled()
+    private fun shouldHideForFullscreen(): Boolean = isFullscreen && !settings.isDuoKeepInFullscreenEnabled()
 
     private fun shouldBlockTouchForFullscreen(): Boolean =
         isFullscreen &&
-            settingsRepository.isDuoKeepInFullscreenEnabled() &&
-            settingsRepository.isDuoDisableInteractionsInFullscreenEnabled()
+            settings.isDuoKeepInFullscreenEnabled() &&
+            settings.isDuoDisableInteractionsInFullscreenEnabled()
 
     var openBrief: (() -> Unit)? = null
 
@@ -383,7 +384,7 @@ class DuoOverlayHandler(
     }
 
     private fun shouldHideForLock(): Boolean =
-        settingsRepository.isDuoHideWhenLockedEnabled() &&
+        settings.isDuoHideWhenLockedEnabled() &&
             (service.getSystemService(android.content.Context.KEYGUARD_SERVICE) as? android.app.KeyguardManager)?.isKeyguardLocked == true
 
     fun onScreenOff() {
@@ -419,7 +420,7 @@ class DuoOverlayHandler(
                 syncScreenOffFromDisplay()
                 @Suppress("DEPRECATION")
                 val rotation = windowManager?.defaultDisplay?.rotation ?: return
-                val profile = settingsRepository.getDisplayProfileId()
+                val profile = settings.getDisplayProfileId()
                 val profileChanged = profile != lastKnownDisplayProfile
                 if (rotation != lastKnownRotation || profileChanged) {
                     lastKnownRotation = rotation
@@ -458,7 +459,7 @@ class DuoOverlayHandler(
     }
 
     fun updateState() {
-        if (!settingsRepository.isDuoEnabled()) {
+        if (!settings.isDuoEnabled()) {
             removeOverlay()
             return
         }
@@ -522,7 +523,7 @@ class DuoOverlayHandler(
     }
 
     private fun getExcludedPackages(): Set<String> {
-        val excludedAppsJson = settingsRepository.getString(DisplaySettings.KEY_AOD_WALLPAPER_MEDIA_EXCLUDED_APPS, null)
+        val excludedAppsJson = settings.getString(DisplaySettings.KEY_AOD_WALLPAPER_MEDIA_EXCLUDED_APPS, null)
         return if (!excludedAppsJson.isNullOrBlank()) {
             try {
                 val listType = object : TypeToken<List<AppSelection>>() {}.type
@@ -622,7 +623,7 @@ class DuoOverlayHandler(
 
     private fun checkAndApplyMediaState() {
         mainHandler.post {
-            val showMedia = settingsRepository.isDuoShowMediaEnabled()
+            val showMedia = settings.isDuoShowMediaEnabled()
             val controller = activeMediaController
             val excludedPackages = getExcludedPackages()
 
@@ -679,7 +680,7 @@ class DuoOverlayHandler(
             val artist = metadata?.getString(MediaMetadata.METADATA_KEY_ARTIST)
             if (!title.isNullOrBlank()) {
                 val hashToUse = kotlin.math.abs("${title}_$artist".hashCode().toLong())
-                bitmap = NotificationListener.getCachedBitmap(hashToUse)
+                bitmap = MediaArtBridge.getCachedBitmap(hashToUse)
                 if (bitmap == null) {
                     val artFile = File(service.cacheDir, "art_$hashToUse.png")
                     if (artFile.exists()) {
@@ -692,7 +693,7 @@ class DuoOverlayHandler(
         }
 
         if (bitmap == null) {
-            bitmap = NotificationListener.getLatestArtBitmap()
+            bitmap = MediaArtBridge.getLatestArtBitmap()
         }
         if (bitmap == null) {
             val tempArtFile = File(service.cacheDir, "temp_album_art.png")
@@ -760,7 +761,7 @@ class DuoOverlayHandler(
                 val msm = service.getSystemService(Context.MEDIA_SESSION_SERVICE) as? MediaSessionManager
                 mediaSessionManager = msm
                 if (msm != null) {
-                    val componentName = ComponentName(service, NotificationListener::class.java)
+                    val componentName = ComponentName(service, AppComponents.NOTIFICATION_LISTENER)
                     msm.addOnActiveSessionsChangedListener(activeSessionsListener, componentName)
                     isMediaListenerRegistered = true
                     val initialSessions = msm.getActiveSessions(componentName)
@@ -801,8 +802,9 @@ class DuoOverlayHandler(
     private fun showOrUpdateOverlay() {
         mainHandler.post {
             val wm = windowManager ?: return@post
-            val hideForOrientation = settingsRepository.isFoldableDevice() &&
-                settingsRepository.isDuoHiddenInCurrentOrientation()
+            val hideForOrientation =
+                settings.isFoldableDevice() &&
+                    settings.isDuoHiddenInCurrentOrientation()
 
             val displayMetrics = DisplayMetrics()
             @Suppress("DEPRECATION")
@@ -811,17 +813,17 @@ class DuoOverlayHandler(
             val screenHeight = displayMetrics.heightPixels.toFloat()
             val density = displayMetrics.density
 
-            var centerX = screenWidth * (settingsRepository.getDuoCameraOffsetX() / 100f)
-            var centerY = screenHeight * (settingsRepository.getDuoCameraOffsetY() / 100f)
-            var cameraRadiusPx = 18f * density * settingsRepository.getDuoCameraSize()
+            var centerX = screenWidth * (settings.getDuoCameraOffsetX() / 100f)
+            var centerY = screenHeight * (settings.getDuoCameraOffsetY() / 100f)
+            var cameraRadiusPx = 18f * density * settings.getDuoCameraSize()
 
             @Suppress("DEPRECATION")
             val rotation = wm.defaultDisplay.rotation
             lastKnownRotation = rotation
-            lastKnownDisplayProfile = settingsRepository.getDisplayProfileId()
-            settingsRepository.markDisplayProfileSeen()
+            lastKnownDisplayProfile = settings.getDisplayProfileId()
+            settings.markDisplayProfileSeen()
 
-            if (settingsRepository.isDuoAutoDetectEnabled() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            if (settings.isDuoAutoDetectEnabled() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 @Suppress("DEPRECATION")
                 val cutout = wm.defaultDisplay.cutout
                 if (cutout != null && cutout.boundingRects.isNotEmpty()) {
@@ -841,15 +843,15 @@ class DuoOverlayHandler(
                     if (targetRect != null) {
                         centerX = targetRect.centerX().toFloat()
                         centerY = targetRect.centerY().toFloat()
-                        val computedRadius = (targetRect.width().coerceAtLeast(targetRect.height()) / 2f) * settingsRepository.getDuoCameraSize()
+                        val computedRadius = (targetRect.width().coerceAtLeast(targetRect.height()) / 2f) * settings.getDuoCameraSize()
                         if (computedRadius > 0) {
                             cameraRadiusPx = computedRadius
                         }
                     }
                 }
-            } else if (!settingsRepository.isDuoAutoDetectEnabled()) {
-                val rawXRatio = settingsRepository.getDuoCameraOffsetX() / 100f
-                val rawYRatio = settingsRepository.getDuoCameraOffsetY() / 100f
+            } else if (!settings.isDuoAutoDetectEnabled()) {
+                val rawXRatio = settings.getDuoCameraOffsetX() / 100f
+                val rawYRatio = settings.getDuoCameraOffsetY() / 100f
 
                 when (rotation) {
                     android.view.Surface.ROTATION_90 -> {
@@ -885,25 +887,26 @@ class DuoOverlayHandler(
                 this.cameraCenterX = centerX
                 this.cameraCenterY = centerY
                 this.cameraRadiusPx = cameraRadiusPx
-                this.ringRadiusScale = settingsRepository.getDuoRingRadius()
-                this.timeTextScale = settingsRepository.getDuoTimeTextScale()
-                this.arcThicknessPx = settingsRepository.getDuoArcThickness() * density
-                this.dotRadiusPx = settingsRepository.getDuoDotSize() * density
+                this.ringRadiusScale = settings.getDuoRingRadius()
+                this.timeTextScale = settings.getDuoTimeTextScale()
+                this.arcThicknessPx = settings.getDuoArcThickness() * density
+                this.dotRadiusPx = settings.getDuoDotSize() * density
                 this.isDarkTheme = isNightMode
                 this.isScreenOff = this@DuoOverlayHandler.isScreenOff
                 this.isFullscreen = shouldHideForFullscreen()
                 this.isYieldingToIsland = shouldYieldToIsland()
                 this.isShadeHidden = shouldHideForShade()
                 this.isLockedHidden = shouldHideForLock()
-                val areUnsupportedFeaturesEnabled = settingsRepository.isEnableUnsupportedFeatures()
-                this.hideWhenScreenOff = if (areUnsupportedFeaturesEnabled) settingsRepository.isDuoHideWhenScreenOffEnabled() else true
-                this.hideWhenScreenOffOnlyIdle = if (areUnsupportedFeaturesEnabled) settingsRepository.isDuoHideWhenScreenOffOnlyIdleEnabled() else false
-                this.useMaterialYouColors = settingsRepository.isDuoUseMaterialYouEnabled()
+                val areUnsupportedFeaturesEnabled = settings.getBoolean(PlatformPrefs.KEY_ENABLE_UNSUPPORTED_FEATURES, false)
+                this.hideWhenScreenOff = if (areUnsupportedFeaturesEnabled) settings.isDuoHideWhenScreenOffEnabled() else true
+                this.hideWhenScreenOffOnlyIdle =
+                    if (areUnsupportedFeaturesEnabled) settings.isDuoHideWhenScreenOffOnlyIdleEnabled() else false
+                this.useMaterialYouColors = settings.isDuoUseMaterialYouEnabled()
                 try {
-                    this.customColor = Color.parseColor(settingsRepository.getDuoCustomColor())
+                    this.customColor = Color.parseColor(settings.getDuoCustomColor())
                 } catch (_: Exception) {}
-                this.isBatteryChargingColorEnabled = settingsRepository.isDuoBatteryChargingColorEnabled()
-                val chargingColorStr = settingsRepository.getDuoBatteryChargingColor()
+                this.isBatteryChargingColorEnabled = settings.isDuoBatteryChargingColorEnabled()
+                val chargingColorStr = settings.getDuoBatteryChargingColor()
                 if (chargingColorStr.equals("auto", ignoreCase = true)) {
                     this.isChargingColorAuto = true
                 } else {
@@ -912,31 +915,31 @@ class DuoOverlayHandler(
                         this.batteryChargingColor = Color.parseColor(chargingColorStr)
                     } catch (_: Exception) {}
                 }
-                this.isBatteryPowerSaveColorEnabled = settingsRepository.isDuoBatteryPowerSaveColorEnabled()
+                this.isBatteryPowerSaveColorEnabled = settings.isDuoBatteryPowerSaveColorEnabled()
                 try {
-                    this.batteryPowerSaveColor = Color.parseColor(settingsRepository.getDuoBatteryPowerSaveColor())
+                    this.batteryPowerSaveColor = Color.parseColor(settings.getDuoBatteryPowerSaveColor())
                 } catch (_: Exception) {}
-                this.batteryLowLevel = settingsRepository.getDuoBatteryLowLevel()
-                this.batteryCriticalLevel = settingsRepository.getDuoBatteryCriticalLevel()
-                this.isBatteryLowColorEnabled = settingsRepository.isDuoBatteryLowColorEnabled()
+                this.batteryLowLevel = settings.getDuoBatteryLowLevel()
+                this.batteryCriticalLevel = settings.getDuoBatteryCriticalLevel()
+                this.isBatteryLowColorEnabled = settings.isDuoBatteryLowColorEnabled()
                 try {
-                    this.batteryLowColor = Color.parseColor(settingsRepository.getDuoBatteryLowColor())
+                    this.batteryLowColor = Color.parseColor(settings.getDuoBatteryLowColor())
                 } catch (_: Exception) {}
-                this.isBatteryCriticalColorEnabled = settingsRepository.isDuoBatteryCriticalColorEnabled()
+                this.isBatteryCriticalColorEnabled = settings.isDuoBatteryCriticalColorEnabled()
                 try {
-                    this.batteryCriticalColor = Color.parseColor(settingsRepository.getDuoBatteryCriticalColor())
+                    this.batteryCriticalColor = Color.parseColor(settings.getDuoBatteryCriticalColor())
                 } catch (_: Exception) {}
                 this.isPowerSaveMode = powerManager?.isPowerSaveMode ?: false
-                this.showBattery = settingsRepository.isDuoShowBatteryEnabled()
-                this.showBatteryPercentage = settingsRepository.isDuoShowBatteryPercentageEnabled()
-                this.isBatteryPercentageOnlyColored = settingsRepository.isDuoBatteryPercentageOnlyColoredEnabled()
-                this.showNetworks = settingsRepository.isDuoShowNetworksEnabled()
-                this.isDifferentiateWifi = settingsRepository.isDuoDifferentiateWifiEnabled()
-                this.showTime = settingsRepository.isDuoShowTimeEnabled()
-                this.showMedia = settingsRepository.isDuoShowMediaEnabled()
-                this.isRotateAlbumArt = settingsRepository.isDuoRotateAlbumArtEnabled()
-                this.showProgress = settingsRepository.isDuoShowProgressEnabled()
-                this.showFlashlight = settingsRepository.isDuoShowFlashlightEnabled()
+                this.showBattery = settings.isDuoShowBatteryEnabled()
+                this.showBatteryPercentage = settings.isDuoShowBatteryPercentageEnabled()
+                this.isBatteryPercentageOnlyColored = settings.isDuoBatteryPercentageOnlyColoredEnabled()
+                this.showNetworks = settings.isDuoShowNetworksEnabled()
+                this.isDifferentiateWifi = settings.isDuoDifferentiateWifiEnabled()
+                this.showTime = settings.isDuoShowTimeEnabled()
+                this.showMedia = settings.isDuoShowMediaEnabled()
+                this.isRotateAlbumArt = settings.isDuoRotateAlbumArtEnabled()
+                this.showProgress = settings.isDuoShowProgressEnabled()
+                this.showFlashlight = settings.isDuoShowFlashlightEnabled()
                 this.setCharging(this@DuoOverlayHandler.isChargingState, this@DuoOverlayHandler.isFastChargingState)
             }
 
@@ -963,20 +966,23 @@ class DuoOverlayHandler(
             }
             overlayView?.visibility = if (hideForOrientation) View.GONE else View.VISIBLE
 
-            if (settingsRepository.isDuoShowTimeEnabled()) {
+            if (settings.isDuoShowTimeEnabled()) {
                 registerTimeReceiver()
                 updateCurrentTime()
             } else {
                 unregisterTimeReceiver()
             }
 
-            val isTouchEnabled = !hideForOrientation && !shouldBlockTouchForFullscreen() && (settingsRepository.getDuoTapAction() != null ||
-                settingsRepository.isDuoTapForBriefActive() ||
-                settingsRepository.getDuoDoubleTapAction() != null ||
-                settingsRepository.getDuoLongPressAction() != null ||
-                settingsRepository.getDuoSwipeDownAction() != null ||
-                settingsRepository.getDuoSlideMode() != "none" ||
-                settingsRepository.isDuoSlideTrackEnabled())
+            val isTouchEnabled =
+                !hideForOrientation && !shouldBlockTouchForFullscreen() && (
+                    settings.getDuoTapAction() != null ||
+                        settings.isDuoTapForBriefActive() ||
+                        settings.getDuoDoubleTapAction() != null ||
+                        settings.getDuoLongPressAction() != null ||
+                        settings.getDuoSwipeDownAction() != null ||
+                        settings.getDuoSlideMode() != "none" ||
+                        settings.isDuoSlideTrackEnabled()
+                )
 
             if (isTouchEnabled) {
                 if (duoTouchHandler == null) {
@@ -987,7 +993,7 @@ class DuoOverlayHandler(
                     this.cameraCenterX = centerX
                     this.cameraCenterY = centerY
                     this.cameraRadiusPx = cameraRadiusPx
-                    this.ringRadiusScale = settingsRepository.getDuoRingRadius()
+                    this.ringRadiusScale = settings.getDuoRingRadius()
                     this.openBrief = this@DuoOverlayHandler.openBrief
                 }
 
@@ -999,7 +1005,11 @@ class DuoOverlayHandler(
                     }
                 }
 
-                val diameter = (((cameraRadiusPx + 20f * density) * 2 * settingsRepository.getDuoRingRadius()).toInt()).coerceAtLeast((44f * density).toInt())
+                val diameter =
+                    (((cameraRadiusPx + 20f * density) * 2 * settings.getDuoRingRadius()).toInt()).coerceAtLeast(
+                        (44f * density).toInt(),
+                    )
+
                 @Suppress("DEPRECATION")
                 val touchParams = WindowManager.LayoutParams(
                     diameter,
@@ -1045,19 +1055,19 @@ class DuoOverlayHandler(
             registerSignalListeners()
             updateCurrentSignal()
 
-            if (settingsRepository.isDuoShowMediaEnabled()) {
+            if (settings.isDuoShowMediaEnabled()) {
                 registerMediaSessionListener()
             } else {
                 unregisterMediaSessionListener()
             }
 
-            if (settingsRepository.isDuoShowProgressEnabled()) {
+            if (settings.isDuoShowProgressEnabled()) {
                 registerProgressNotificationListener()
             } else {
                 unregisterProgressNotificationListener()
             }
 
-            if (settingsRepository.isDuoShowFlashlightEnabled()) {
+            if (settings.isDuoShowFlashlightEnabled()) {
                 registerTorchCallback()
             } else {
                 unregisterTorchCallback()
@@ -1102,7 +1112,7 @@ class DuoOverlayHandler(
 
     private fun checkAndApplyFlashlightState() {
         mainHandler.post {
-            val showFlashlight = settingsRepository.isDuoShowFlashlightEnabled()
+            val showFlashlight = settings.isDuoShowFlashlightEnabled()
             val isOn = isFlashlightOn && showFlashlight
             if (isOn) {
                 if (primaryCameraId == null) {
@@ -1153,8 +1163,8 @@ class DuoOverlayHandler(
 
     private fun checkAndApplyProgressNotificationState(incomingData: ProgressNotificationData? = null) {
         mainHandler.post {
-            val showProgress = settingsRepository.isDuoShowProgressEnabled()
-            val data = incomingData ?: if (showProgress) NotificationListener.getLatestProgressNotification() else null
+            val showProgress = settings.isDuoShowProgressEnabled()
+            val data = incomingData ?: if (showProgress) ProgressNotificationHub.getLatest() else null
             val isActive = showProgress && data != null && !isMediaPlaying
 
             if (data != null && isActive) {
@@ -1175,7 +1185,7 @@ class DuoOverlayHandler(
 
     private fun registerProgressNotificationListener() {
         if (!isProgressListenerRegistered) {
-            NotificationListener.addProgressNotificationListener(progressNotificationListener)
+            ProgressNotificationHub.add(progressNotificationListener)
             isProgressListenerRegistered = true
             checkAndApplyProgressNotificationState()
         }
@@ -1183,7 +1193,7 @@ class DuoOverlayHandler(
 
     private fun unregisterProgressNotificationListener() {
         if (isProgressListenerRegistered) {
-            NotificationListener.removeProgressNotificationListener(progressNotificationListener)
+            ProgressNotificationHub.remove(progressNotificationListener)
             isProgressListenerRegistered = false
             checkAndApplyProgressNotificationState(null)
         }
@@ -1196,13 +1206,14 @@ class DuoOverlayHandler(
         val anchor = touchAnchorView ?: return
         if (!isTouchAnchorAdded) return
 
-        val gesturesEnabled = settingsRepository.getDuoTapAction() != null ||
-                settingsRepository.isDuoTapForBriefActive() ||
-            settingsRepository.getDuoDoubleTapAction() != null ||
-            settingsRepository.getDuoLongPressAction() != null ||
-            settingsRepository.getDuoSwipeDownAction() != null ||
-            settingsRepository.getDuoSlideMode() != "none" ||
-            settingsRepository.isDuoSlideTrackEnabled()
+        val gesturesEnabled =
+            settings.getDuoTapAction() != null ||
+                settings.isDuoTapForBriefActive() ||
+                settings.getDuoDoubleTapAction() != null ||
+                settings.getDuoLongPressAction() != null ||
+                settings.getDuoSwipeDownAction() != null ||
+                settings.getDuoSlideMode() != "none" ||
+                settings.isDuoSlideTrackEnabled()
 
         if (!gesturesEnabled) {
             try {
@@ -1213,7 +1224,7 @@ class DuoOverlayHandler(
         }
 
         val density = service.resources.displayMetrics.density
-        val diameter = (((currentCameraRadiusPx + 20f * density) * 2 * settingsRepository.getDuoRingRadius()).toInt()).coerceAtLeast((44f * density).toInt())
+        val diameter = (((currentCameraRadiusPx + 20f * density) * 2 * settings.getDuoRingRadius()).toInt()).coerceAtLeast((44f * density).toInt())
         val touchParams = WindowManager.LayoutParams(
             diameter,
             diameter,

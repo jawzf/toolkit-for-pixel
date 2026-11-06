@@ -23,6 +23,7 @@ import android.os.Vibrator
 import android.view.KeyEvent
 import android.view.accessibility.AccessibilityEvent
 import androidx.core.content.ContextCompat
+import com.jawzf.pixeltoolkit.core.data.duo.DuoSettings
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticFeedbackType
 import com.jawzf.pixeltoolkit.core.design.haptics.performHapticFeedback
 import com.jawzf.pixeltoolkit.core.platform.device.CarConnectionMonitor
@@ -264,7 +265,7 @@ class ScreenOffAccessibilityService :
                     statusGlanceHandler.updateState()
                 }
             } else if (key?.startsWith("duo_") == true ||
-                key == SettingsRepository.KEY_DUO_ENABLED ||
+                key == DuoSettings.KEY_DUO_ENABLED ||
                 key == SettingsRepository.KEY_ENABLE_UNSUPPORTED_FEATURES
             ) {
                 duoOverlayHandler.updateState()

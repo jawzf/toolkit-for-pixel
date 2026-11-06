@@ -11,6 +11,7 @@ import android.text.format.DateFormat
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.jawzf.pixeltoolkit.core.data.duo.DuoSettings
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.feature.power.battery.ChargeLimitUtil
@@ -49,18 +50,18 @@ class TimeBatteryPlugin : BaseIslandPlugin() {
         SettingsRepository.KEY_ISLAND_BATTERY_ONLY_LOW,
         SettingsRepository.KEY_ISLAND_BATTERY_ICON_CONDITIONAL,
         SettingsRepository.KEY_ISLAND_BATTERY_PEEK_ALERTS,
-        SettingsRepository.KEY_DUO_BATTERY_LOW_LEVEL,
-        SettingsRepository.KEY_DUO_BATTERY_CRITICAL_LEVEL,
-        SettingsRepository.KEY_DUO_BATTERY_CHARGING_COLOR_ENABLED,
-        SettingsRepository.KEY_DUO_BATTERY_CHARGING_COLOR,
-        SettingsRepository.KEY_DUO_BATTERY_POWER_SAVE_COLOR_ENABLED,
-        SettingsRepository.KEY_DUO_BATTERY_POWER_SAVE_COLOR,
-        SettingsRepository.KEY_DUO_BATTERY_LOW_COLOR_ENABLED,
+        DuoSettings.KEY_DUO_BATTERY_LOW_LEVEL,
+        DuoSettings.KEY_DUO_BATTERY_CRITICAL_LEVEL,
+        DuoSettings.KEY_DUO_BATTERY_CHARGING_COLOR_ENABLED,
+        DuoSettings.KEY_DUO_BATTERY_CHARGING_COLOR,
+        DuoSettings.KEY_DUO_BATTERY_POWER_SAVE_COLOR_ENABLED,
+        DuoSettings.KEY_DUO_BATTERY_POWER_SAVE_COLOR,
+        DuoSettings.KEY_DUO_BATTERY_LOW_COLOR_ENABLED,
         SettingsRepository.KEY_ISLAND_BATTERY_IDLE_COLOR_ENABLED,
         SettingsRepository.KEY_ISLAND_BATTERY_IDLE_COLOR,
-        SettingsRepository.KEY_DUO_BATTERY_LOW_COLOR,
-        SettingsRepository.KEY_DUO_BATTERY_CRITICAL_COLOR_ENABLED,
-        SettingsRepository.KEY_DUO_BATTERY_CRITICAL_COLOR,
+        DuoSettings.KEY_DUO_BATTERY_LOW_COLOR,
+        DuoSettings.KEY_DUO_BATTERY_CRITICAL_COLOR_ENABLED,
+        DuoSettings.KEY_DUO_BATTERY_CRITICAL_COLOR,
     )
 
     private var time = ""
@@ -209,11 +210,14 @@ class TimeBatteryPlugin : BaseIslandPlugin() {
         powerSave = (context.getSystemService(Context.POWER_SERVICE) as? PowerManager)?.isPowerSaveMode ?: false
     }
 
-    private fun severity(): Int = when {
-        level < 0 -> 0
-        level <= settings.getDuoBatteryCriticalLevel() -> 2
-        level <= settings.getDuoBatteryLowLevel() -> 1
-        else -> 0
+    private fun severity(): Int {
+        val duo = DuoSettings(context)
+        return when {
+            level < 0 -> 0
+            level <= duo.getDuoBatteryCriticalLevel() -> 2
+            level <= duo.getDuoBatteryLowLevel() -> 1
+            else -> 0
+        }
     }
 
     private fun peek(reason: PeekReason) {
@@ -305,7 +309,7 @@ class TimeBatteryPlugin : BaseIslandPlugin() {
         )
         val showBattery = showBatteryItem && batteryLevel >= 0 && (
             !settings.isIslandBatteryOnlyLowEnabled() ||
-                batteryLevel <= settings.getDuoBatteryLowLevel() ||
+                batteryLevel <= DuoSettings(context).getDuoBatteryLowLevel() ||
                 System.currentTimeMillis() < peekUntil
             )
         publish(listOfNotNull(timeItem.takeIf { showTime }, batteryItem.takeIf { showBattery }))
@@ -327,16 +331,17 @@ class TimeBatteryPlugin : BaseIslandPlugin() {
         } catch (_: Exception) {
             fallback
         }
-        val charge = settings.getDuoBatteryChargingColor()
+        val duo = DuoSettings(context)
+        val charge = duo.getDuoBatteryChargingColor()
         val raw = when {
-            charging && settings.isDuoBatteryChargingColorEnabled() ->
+            charging && duo.isDuoBatteryChargingColorEnabled() ->
                 if (charge.equals("auto", ignoreCase = true)) AUTO_CHARGING else parse(charge, AUTO_CHARGING)
-            powerSave && settings.isDuoBatteryPowerSaveColorEnabled() ->
-                parse(settings.getDuoBatteryPowerSaveColor(), AndroidColor.rgb(255, 152, 0))
-            level in 0..settings.getDuoBatteryCriticalLevel() && settings.isDuoBatteryCriticalColorEnabled() ->
-                parse(settings.getDuoBatteryCriticalColor(), AndroidColor.rgb(244, 67, 54))
-            level in 0..settings.getDuoBatteryLowLevel() && settings.isDuoBatteryLowColorEnabled() ->
-                parse(settings.getDuoBatteryLowColor(), AndroidColor.rgb(255, 235, 59))
+            powerSave && duo.isDuoBatteryPowerSaveColorEnabled() ->
+                parse(duo.getDuoBatteryPowerSaveColor(), AndroidColor.rgb(255, 152, 0))
+            level in 0..duo.getDuoBatteryCriticalLevel() && duo.isDuoBatteryCriticalColorEnabled() ->
+                parse(duo.getDuoBatteryCriticalColor(), AndroidColor.rgb(244, 67, 54))
+            level in 0..duo.getDuoBatteryLowLevel() && duo.isDuoBatteryLowColorEnabled() ->
+                parse(duo.getDuoBatteryLowColor(), AndroidColor.rgb(255, 235, 59))
             else -> return null
         }
         return Color(soften(raw))

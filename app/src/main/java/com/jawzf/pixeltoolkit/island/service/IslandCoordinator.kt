@@ -33,6 +33,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.jawzf.pixeltoolkit.core.data.duo.DuoSettings
 import com.jawzf.pixeltoolkit.core.data.prefs.StatusBarPrefs
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
@@ -174,7 +175,7 @@ class IslandCoordinator(
     private var textInputActive = false
 
     private val isWindowSuppressed get() = (isFullscreenApp && !settings.isIslandKeepInFullscreenEnabled()) ||
-        if (settings.isFoldableDevice()) {
+        if (DuoSettings(service).isFoldableDevice()) {
             settings.isIslandHiddenInCurrentOrientation()
         } else {
             isLandscape && !settings.isIslandKeepOnLandscapeEnabled()
