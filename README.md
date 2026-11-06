@@ -2,11 +2,11 @@
 
 Tools, tweaks and automations for Google Pixel phones. Pixel only: other phones are not supported.
 
-Toolkit for Pixel started as a fork of [Essentials](https://github.com/sameerasw/essentials) (MIT); see [LICENSE](LICENSE). It is being reworked with its own design and a modular structure.
+Toolkit for Pixel is based on [Essentials](https://github.com/sameerasw/essentials) by [sameerasw](https://github.com/sameerasw), but it is being rebuilt from the ground up specifically for Pixels, with its own design and a modular structure. Essentials is MIT-licensed; its copyright notice is kept in [LICENSE](LICENSE).
 
 ## Status
 
-Private, in development. Phase 0 (fresh start: own package, Pixel-only code, upstream branding and services removed) is under way. No releases yet.
+In development. The app is being split into feature modules, and the new design comes after that. No releases yet.
 
 ## Building
 
