@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.utils
+package com.jawzf.pixeltoolkit.feature.input.links
 
 import android.app.NotificationChannel
 import android.app.NotificationManager

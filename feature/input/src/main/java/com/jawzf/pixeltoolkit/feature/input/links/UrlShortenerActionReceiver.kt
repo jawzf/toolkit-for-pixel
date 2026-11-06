@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.receivers
+package com.jawzf.pixeltoolkit.feature.input.links
 
 import android.app.NotificationManager
 import android.content.BroadcastReceiver
@@ -11,7 +11,7 @@ import android.os.Looper
 import android.util.Log
 import android.widget.Toast
 import com.jawzf.pixeltoolkit.core.design.R
-import com.jawzf.pixeltoolkit.utils.UrlShortener
+import com.jawzf.pixeltoolkit.feature.input.links.UrlShortener
 
 class UrlShortenerActionReceiver : BroadcastReceiver() {
 

@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.components.linkActions
+package com.jawzf.pixeltoolkit.feature.input.links.ui
 
 import android.content.ClipData
 import android.content.ClipboardManager
@@ -91,9 +91,9 @@ import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.pickers.SegmentedPicker
 import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
 import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
-import com.jawzf.pixeltoolkit.utils.QrCodeGenerator
-import com.jawzf.pixeltoolkit.utils.UrlShortener
-import com.jawzf.pixeltoolkit.utils.WindowingUtils
+import com.jawzf.pixeltoolkit.feature.input.links.QrCodeGenerator
+import com.jawzf.pixeltoolkit.feature.input.links.UrlShortener
+import com.jawzf.pixeltoolkit.feature.input.links.WindowingUtils
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)

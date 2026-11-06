@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.utils
+package com.jawzf.pixeltoolkit.feature.input.links
 
 import android.content.Context
 import android.graphics.Bitmap
