@@ -27,6 +27,7 @@ import com.jawzf.pixeltoolkit.core.design.haptics.HapticFeedbackType
 import com.jawzf.pixeltoolkit.core.design.haptics.performHapticFeedback
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.feature.apps.freeze.FreezeManager
+import com.jawzf.pixeltoolkit.feature.display.DisplaySettings
 import com.jawzf.pixeltoolkit.feature.display.pixels.SmartPixelsHandler
 import com.jawzf.pixeltoolkit.feature.input.gesture.OmniGestureOverlayHandler
 import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingHandler
@@ -233,9 +234,9 @@ class ScreenOffAccessibilityService :
                 ) == true
             ) {
                 statusBarIconHandler.updateAll()
-            } else if (key == SettingsRepository.KEY_SMART_PIXELS_ENABLED ||
-                key == SettingsRepository.KEY_SMART_PIXELS_INTENSITY ||
-                key == SettingsRepository.KEY_SMART_PIXELS_DISABLE_ON_CAST
+            } else if (key == DisplaySettings.KEY_SMART_PIXELS_ENABLED ||
+                key == DisplaySettings.KEY_SMART_PIXELS_INTENSITY ||
+                key == DisplaySettings.KEY_SMART_PIXELS_DISABLE_ON_CAST
             ) {
                 smartPixelsHandler.updateState()
             } else if (key == SettingsRepository.KEY_AOD_WALLPAPER_ENABLED ||
@@ -329,7 +330,7 @@ class ScreenOffAccessibilityService :
         statusBarIconHandler = StatusBarIconHandler(this)
         faceUnlockBrightnessHandler = FaceUnlockBrightnessHandler(this)
         smartPixelsHandler =
-            SmartPixelsHandler(this)
+            SmartPixelsHandler(this) { NotificationListener.isScreenCaptureActive() }
         duoOverlayHandler = DuoOverlayHandler(this)
         islandOverlayHandler = IslandCoordinator(this)
         islandOverlayHandler.onVisibilityChanged = {

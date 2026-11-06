@@ -25,22 +25,24 @@ import com.jawzf.pixeltoolkit.core.design.components.ConfigSliderItem
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.pickers.SegmentedPicker
+import com.jawzf.pixeltoolkit.feature.display.refresh.RefreshRatePanelState
 import com.jawzf.pixeltoolkit.feature.display.refresh.RefreshRateUtils
-import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 import kotlin.math.roundToInt
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun RefreshRateSettingsUI(
-    viewModel: MainViewModel,
+    state: RefreshRatePanelState,
+    isRootEnabled: Boolean,
+    isPermissionGranted: Boolean,
+    onRequestPermission: () -> Unit,
     modifier: Modifier = Modifier,
     highlightSetting: String? = null,
 ) {
     val context = LocalContext.current
     val view = LocalView.current
-    val isEnabled =
-        if (viewModel.isRootEnabled.value) viewModel.isRootPermissionGranted.value else viewModel.isShizukuPermissionGranted.value
-    val isFixedMode = viewModel.refreshRateMode.value == RefreshRateUtils.MODE_FIXED
+    val isEnabled = isPermissionGranted
+    val isFixedMode = state.refreshRateMode.value == RefreshRateUtils.MODE_FIXED
     val systemLabel = stringResource(R.string.refresh_rate_system_default)
 
     Column(
@@ -60,8 +62,8 @@ fun RefreshRateSettingsUI(
         RoundedCardContainer(spacing = 2.dp) {
             SegmentedPicker(
                 items = listOf(RefreshRateUtils.MODE_FIXED, RefreshRateUtils.MODE_RANGE),
-                selectedItem = viewModel.refreshRateMode.value,
-                onItemSelected = { viewModel.setRefreshRateMode(it) },
+                selectedItem = state.refreshRateMode.value,
+                onItemSelected = { state.setRefreshRateMode(it) },
                 labelProvider = {
                     when (it) {
                         RefreshRateUtils.MODE_RANGE -> context.getString(R.string.refresh_rate_mode_range)
@@ -84,13 +86,13 @@ fun RefreshRateSettingsUI(
                 ConfigSliderItem(
                     title = stringResource(R.string.refresh_rate_fixed_title),
                     description = stringResource(R.string.refresh_rate_fixed_desc),
-                    value = viewModel.fixedRefreshRate.floatValue,
+                    value = state.fixedRefreshRate.floatValue,
                     onValueChange = {
-                        viewModel.updateFixedRefreshRate(it.roundToInt().toFloat())
+                        state.updateFixedRefreshRate(it.roundToInt().toFloat())
                         HapticUtil.performSliderHaptic(view)
                     },
                     onValueChangeFinished = {
-                        viewModel.applyFixedRefreshRate(context)
+                        state.applyFixedRefreshRate(context)
                     },
                     valueRange = 0f..120f,
                     steps = 11,
@@ -103,13 +105,13 @@ fun RefreshRateSettingsUI(
                 ConfigSliderItem(
                     title = stringResource(R.string.refresh_rate_min_title),
                     description = stringResource(R.string.refresh_rate_min_desc),
-                    value = viewModel.minRefreshRate.floatValue,
+                    value = state.minRefreshRate.floatValue,
                     onValueChange = {
-                        viewModel.updateMinRefreshRate(it.roundToInt().toFloat())
+                        state.updateMinRefreshRate(it.roundToInt().toFloat())
                         HapticUtil.performSliderHaptic(view)
                     },
                     onValueChangeFinished = {
-                        viewModel.applyRefreshRateRange(context)
+                        state.applyRefreshRateRange(context)
                     },
                     valueRange = 0f..120f,
                     steps = 11,
@@ -122,13 +124,13 @@ fun RefreshRateSettingsUI(
                 ConfigSliderItem(
                     title = stringResource(R.string.refresh_rate_peak_title),
                     description = stringResource(R.string.refresh_rate_peak_desc),
-                    value = viewModel.peakRefreshRate.floatValue,
+                    value = state.peakRefreshRate.floatValue,
                     onValueChange = {
-                        viewModel.updatePeakRefreshRate(it.roundToInt().toFloat())
+                        state.updatePeakRefreshRate(it.roundToInt().toFloat())
                         HapticUtil.performSliderHaptic(view)
                     },
                     onValueChangeFinished = {
-                        viewModel.applyRefreshRateRange(context)
+                        state.applyRefreshRateRange(context)
                     },
                     valueRange = 0f..120f,
                     steps = 11,
@@ -162,7 +164,7 @@ fun RefreshRateSettingsUI(
                     )
                     Button(
                         onClick = {
-                            viewModel.resetRefreshRate(context)
+                            state.resetRefreshRate(context)
                             HapticUtil.performSliderHaptic(view)
                         },
                         colors = ButtonDefaults.filledTonalButtonColors(),
@@ -177,7 +179,7 @@ fun RefreshRateSettingsUI(
                     Text(
                         text =
                             stringResource(
-                                if (viewModel.isRootEnabled.value) {
+                                if (isRootEnabled) {
                                     R.string.msg_refresh_rate_root_permission_required
                                 } else {
                                     R.string.msg_refresh_rate_permission_required
@@ -192,11 +194,7 @@ fun RefreshRateSettingsUI(
                     )
                     Button(
                         onClick = {
-                            if (viewModel.isRootEnabled.value) {
-                                viewModel.check(context)
-                            } else {
-                                viewModel.requestShizukuPermission()
-                            }
+                            onRequestPermission()
                             HapticUtil.performSliderHaptic(view)
                         },
                         colors = ButtonDefaults.filledTonalButtonColors(),

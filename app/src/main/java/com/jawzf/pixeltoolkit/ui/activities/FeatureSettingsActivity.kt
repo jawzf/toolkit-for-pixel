@@ -1051,7 +1051,15 @@ class FeatureSettingsActivity : AppCompatActivity() {
 
                                     "Smart pixels" -> {
                                         SmartPixelsSettingsUI(
-                                            viewModel = viewModel,
+                                            state = viewModel.smartPixels,
+                                            isAccessibilityEnabled = viewModel.isAccessibilityEnabled.value,
+                                            permissionItems =
+                                                PermissionUIHelper.getPermissionItems(
+                                                    listOf("ACCESSIBILITY"),
+                                                    context,
+                                                    viewModel,
+                                                ),
+                                            onRefreshPermissions = { viewModel.check(context) },
                                             modifier = Modifier.padding(top = 16.dp),
                                             highlightSetting = highlightSetting,
                                         )
@@ -1382,7 +1390,21 @@ class FeatureSettingsActivity : AppCompatActivity() {
 
                                     "Screen refresh rate" -> {
                                         RefreshRateSettingsUI(
-                                            viewModel = viewModel,
+                                            state = viewModel.refreshRate,
+                                            isRootEnabled = viewModel.isRootEnabled.value,
+                                            isPermissionGranted =
+                                                if (viewModel.isRootEnabled.value) {
+                                                    viewModel.isRootPermissionGranted.value
+                                                } else {
+                                                    viewModel.isShizukuPermissionGranted.value
+                                                },
+                                            onRequestPermission = {
+                                                if (viewModel.isRootEnabled.value) {
+                                                    viewModel.check(context)
+                                                } else {
+                                                    viewModel.requestShizukuPermission()
+                                                }
+                                            },
                                             modifier = Modifier.padding(top = 16.dp),
                                             highlightSetting = highlightSetting,
                                         )

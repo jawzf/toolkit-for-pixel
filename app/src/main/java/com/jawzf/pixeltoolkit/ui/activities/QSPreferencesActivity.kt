@@ -15,6 +15,8 @@ import com.jawzf.pixeltoolkit.feature.connectivity.dns.PrivateDnsSettingsActivit
 import com.jawzf.pixeltoolkit.feature.connectivity.dns.PrivateDnsTileService
 import com.jawzf.pixeltoolkit.feature.connectivity.nfc.NfcTileService
 import com.jawzf.pixeltoolkit.feature.connectivity.sim.DataSimTileService
+import com.jawzf.pixeltoolkit.feature.display.pixels.SmartPixelsTileService
+import com.jawzf.pixeltoolkit.feature.display.refresh.RefreshRateTileService
 import com.jawzf.pixeltoolkit.feature.input.links.UrlShortenerTileService
 import com.jawzf.pixeltoolkit.feature.notifications.flashlight.FlashlightPulseTileService
 import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingTileService
@@ -68,7 +70,7 @@ class QSPreferencesActivity : ComponentActivity() {
                 return
             }
 
-            if (componentName.className == "com.jawzf.pixeltoolkit.services.tiles.SmartPixelsTileService") {
+            if (componentName.className == SmartPixelsTileService::class.java.name) {
                 val intent =
                     Intent(this, SmartPixelsIntensityActivity::class.java).apply {
                         flags = Intent.FLAG_ACTIVITY_NEW_TASK
@@ -175,7 +177,7 @@ class QSPreferencesActivity : ComponentActivity() {
                     "com.jawzf.pixeltoolkit.services.tiles.StayAwakeTileService" -> "Quick settings tiles"
                     NfcTileService::class.java.name -> "NFC"
                     "com.jawzf.pixeltoolkit.services.tiles.AdaptiveBrightnessTileService" -> "Quick settings tiles"
-                    "com.jawzf.pixeltoolkit.services.tiles.RefreshRateTileService" -> "Screen refresh rate"
+                    RefreshRateTileService::class.java.name -> "Screen refresh rate"
                     MapsPowerSavingTileService::class.java.name -> "Maps power saving mode"
                     "com.jawzf.pixeltoolkit.services.tiles.UsbDebuggingTileService" -> "Quick settings tiles"
                     BatteryNotificationTileService::class.java.name -> "Batteries"

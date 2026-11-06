@@ -5,19 +5,18 @@ import android.graphics.drawable.Icon
 import android.os.Build
 import android.service.quicksettings.Tile
 import androidx.annotation.RequiresApi
-import com.jawzf.pixeltoolkit.FeatureSettingsActivity
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.platform.AppComponents
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.core.platform.tiles.BaseTileService
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.feature.display.refresh.RefreshRateUtils
+import com.jawzf.pixeltoolkit.feature.display.DisplaySettings
 
 @RequiresApi(Build.VERSION_CODES.N)
 class RefreshRateTileService : BaseTileService() {
     override fun onClick() {
         if (!hasFeaturePermission()) {
             val intent =
-                Intent(this, FeatureSettingsActivity::class.java).apply {
+                Intent().setClassName(this, AppComponents.FEATURE_SETTINGS_ACTIVITY).apply {
                     flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
                     putExtra("feature", "Quick settings tiles")
                 }
@@ -42,7 +41,7 @@ class RefreshRateTileService : BaseTileService() {
     override fun onTileClick() {
         val nextPreset = RefreshRateUtils.getNextPreset(this)
         if (nextPreset <= 0) {
-            val settingsRepository = SettingsRepository(this)
+            val settingsRepository = DisplaySettings(this)
             RefreshRateUtils.resetRefreshRate(
                 this,
                 settingsRepository.shouldRestoreInfinityPeakOnRefreshRateReset(),
