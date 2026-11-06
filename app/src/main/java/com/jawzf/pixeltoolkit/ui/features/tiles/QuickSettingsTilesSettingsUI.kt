@@ -80,18 +80,18 @@ import com.jawzf.pixeltoolkit.feature.power.maps.MapsPowerSavingTileService
 import com.jawzf.pixeltoolkit.feature.security.lockscreen.ScreenLockedSecurityTileService
 import com.jawzf.pixeltoolkit.feature.sound.mode.SoundModeTileService
 import com.jawzf.pixeltoolkit.feature.sound.mono.MonoAudioTileService
-import com.jawzf.pixeltoolkit.services.tiles.AdaptiveBrightnessTileService
-import com.jawzf.pixeltoolkit.services.tiles.BubblesTileService
-import com.jawzf.pixeltoolkit.services.tiles.DeveloperOptionsTileService
+import com.jawzf.pixeltoolkit.feature.tiles.AdaptiveBrightnessTileService
+import com.jawzf.pixeltoolkit.feature.tiles.BubblesTileService
+import com.jawzf.pixeltoolkit.feature.tiles.DeveloperOptionsTileService
+import com.jawzf.pixeltoolkit.feature.tiles.PrivateNotificationsTileService
+import com.jawzf.pixeltoolkit.feature.tiles.RestartSystemUiTileService
+import com.jawzf.pixeltoolkit.feature.tiles.StayAwakeTileService
+import com.jawzf.pixeltoolkit.feature.tiles.TapToWakeTileService
+import com.jawzf.pixeltoolkit.feature.tiles.UiBlurTileService
+import com.jawzf.pixeltoolkit.feature.tiles.UsbDebuggingTileService
 import com.jawzf.pixeltoolkit.services.tiles.FlashlightTileService
 import com.jawzf.pixeltoolkit.services.tiles.LockdownTileService
-import com.jawzf.pixeltoolkit.services.tiles.PrivateNotificationsTileService
-import com.jawzf.pixeltoolkit.services.tiles.RestartSystemUiTileService
 import com.jawzf.pixeltoolkit.services.tiles.ScaleAnimationsTileService
-import com.jawzf.pixeltoolkit.services.tiles.StayAwakeTileService
-import com.jawzf.pixeltoolkit.services.tiles.TapToWakeTileService
-import com.jawzf.pixeltoolkit.services.tiles.UiBlurTileService
-import com.jawzf.pixeltoolkit.services.tiles.UsbDebuggingTileService
 import com.jawzf.pixeltoolkit.utils.PermissionUIHelper
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 

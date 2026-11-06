@@ -91,6 +91,7 @@ dependencies {
     implementation(project(":feature:notifications"))
     implementation(project(":feature:display"))
     implementation(project(":feature:widgets"))
+    implementation(project(":feature:tiles"))
     compileOnly(project(":stub"))
     implementation(libs.aboutlibraries.core)
     implementation(libs.aboutlibraries.compose.m3)

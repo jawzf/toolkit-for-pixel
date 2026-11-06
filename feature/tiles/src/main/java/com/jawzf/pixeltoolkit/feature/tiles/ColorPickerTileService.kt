@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.services.tiles
+package com.jawzf.pixeltoolkit.feature.tiles
 
 import android.app.PendingIntent
 import android.content.Intent
@@ -10,6 +10,7 @@ import android.service.quicksettings.Tile
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.platform.AppComponents
 import com.jawzf.pixeltoolkit.core.platform.tiles.BaseTileService
 
 @RequiresApi(Build.VERSION_CODES.N)
@@ -26,12 +27,11 @@ class ColorPickerTileService : BaseTileService() {
 
     override fun onTileClick() {
         val intent =
-            Intent(
-                this,
-                com.jawzf.pixeltoolkit.ui.activities.ColorPickerActivity::class.java,
-            ).apply {
-                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
-            }
+            Intent()
+                .setClassName(this, AppComponents.COLOR_PICKER_ACTIVITY)
+                .apply {
+                    flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+                }
 
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {

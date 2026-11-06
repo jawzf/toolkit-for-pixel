@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.services.tiles
+package com.jawzf.pixeltoolkit.feature.tiles
 
 import android.content.Intent
 import android.graphics.drawable.Icon
@@ -6,8 +6,8 @@ import android.os.Build
 import android.provider.Settings
 import android.service.quicksettings.Tile
 import androidx.annotation.RequiresApi
-import com.jawzf.pixeltoolkit.FeatureSettingsActivity
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.platform.AppComponents
 import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.core.platform.tiles.BaseTileService
 
@@ -16,7 +16,7 @@ class AdaptiveBrightnessTileService : BaseTileService() {
     override fun onClick() {
         if (!hasFeaturePermission()) {
             val intent =
-                Intent(this, FeatureSettingsActivity::class.java).apply {
+                Intent().setClassName(this, AppComponents.FEATURE_SETTINGS_ACTIVITY).apply {
                     flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
                     putExtra("feature", "Quick settings tiles")
                 }

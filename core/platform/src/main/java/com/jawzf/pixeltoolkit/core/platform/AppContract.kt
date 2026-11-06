@@ -22,6 +22,7 @@ object AppComponents {
     const val BUBBLE_EXTRA_PRIVATE_MODE = "extra_bubble_private_mode"
     const val RIPPLE_POSITION_PICKER_ACTIVITY = "com.jawzf.pixeltoolkit.ui.activities.RipplePositionPickerActivity"
     const val WIDGET_STACK_CONFIGURE_ACTIVITY = "com.jawzf.pixeltoolkit.ui.activities.WidgetStackConfigureActivity"
+    const val COLOR_PICKER_ACTIVITY = "com.jawzf.pixeltoolkit.ui.activities.ColorPickerActivity"
 
     /** The app's launch intent, or MainActivity when the launcher alias is disabled. */
     fun mainIntent(context: Context): Intent =
@@ -44,4 +45,5 @@ object PlatformPrefs {
     const val KEY_HIDE_NOTIFICATION_ICONS = "hide_notification_icons"
     const val KEY_HIDE_GESTURE_BAR_ENABLED = "hide_gesture_bar_enabled"
     const val KEY_STATUS_BAR_ICON_CONTROL_ENABLED = "status_bar_icon_control_enabled"
+    const val KEY_HIDDEN_DEBUGGING_SUPPORT = "hidden_debugging_support"
 }

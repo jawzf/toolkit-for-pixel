@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.services.tiles
+package com.jawzf.pixeltoolkit.feature.tiles
 
 import android.database.ContentObserver
 import android.graphics.drawable.Icon
@@ -61,7 +61,7 @@ class HapticsTileService : BaseTileService() {
     }
 }
 
-internal object HapticsSettings {
+object HapticsSettings {
     const val VIBRATE_ON = "vibrate_on"
 
     fun isEnabled(context: android.content.Context): Boolean {

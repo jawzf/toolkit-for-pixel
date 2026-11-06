@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <application>
+        <service
+            android:name="com.jawzf.pixeltoolkit.feature.tiles.UiBlurTileService"
+            android:exported="true"
+            android:icon="@drawable/rounded_blur_on_24"
+            android:label="UI Blur"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.TILE_CATEGORY"
+                android:value="android.service.quicksettings.CATEGORY_DISPLAY" />
+        </service>
+
+        <service
+            android:name="com.jawzf.pixeltoolkit.feature.tiles.BubblesTileService"
+            android:exported="true"
+            android:icon="@drawable/rounded_bubble_24"
+            android:label="Bubbles"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.TILE_CATEGORY"
+                android:value="android.service.quicksettings.CATEGORY_UTILITIES" />
+        </service>
+
+        <service
+            android:name="com.jawzf.pixeltoolkit.feature.tiles.PrivateNotificationsTileService"
+            android:exported="true"
+            android:icon="@drawable/rounded_notifications_off_24"
+            android:label="Sensitive Content"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.TILE_CATEGORY"
+                android:value="android.service.quicksettings.CATEGORY_PRIVACY" />
+        </service>
+
+        <service
+            android:name="com.jawzf.pixeltoolkit.feature.tiles.HeadsUpNotificationsTileService"
+            android:exported="true"
+            android:icon="@drawable/rounded_ad_units_24"
+            android:label="@string/tile_heads_up_notifications"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.TILE_CATEGORY"
+                android:value="android.service.quicksettings.CATEGORY_UTILITIES" />
+        </service>
+
+        <service
+            android:name="com.jawzf.pixeltoolkit.feature.tiles.TapToWakeTileService"
+            android:exported="true"
+            android:icon="@drawable/rounded_touch_app_24"
+            android:label="Tap to Wake"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.TILE_CATEGORY"
+                android:value="android.service.quicksettings.CATEGORY_DISPLAY" />
+        </service>
+
+        <service
+            android:name="com.jawzf.pixeltoolkit.feature.tiles.StayAwakeTileService"
+            android:exported="true"
+            android:icon="@drawable/rounded_battery_charging_60_24"
+            android:label="@string/tile_stay_awake"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.TILE_CATEGORY"
+                android:value="android.service.quicksettings.CATEGORY_DISPLAY" />
+        </service>
+
+        <service
+            android:name="com.jawzf.pixeltoolkit.feature.tiles.AdaptiveBrightnessTileService"
+            android:exported="true"
+            android:icon="@drawable/rounded_brightness_auto_24"
+            android:label="@string/tile_adaptive_brightness"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.TILE_CATEGORY"
+                android:value="android.service.quicksettings.CATEGORY_DISPLAY" />
+        </service>
+
+        <service
+            android:name="com.jawzf.pixeltoolkit.feature.tiles.HapticsTileService"
+            android:exported="true"
+            android:icon="@drawable/rounded_mobile_vibrate_24"
+            android:label="@string/tile_haptics"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.TOGGLEABLE_TILE"
+                android:value="true" />
+            <meta-data
+                android:name="android.service.quicksettings.TILE_CATEGORY"
+                android:value="android.service.quicksettings.CATEGORY_UTILITIES" />
+        </service>
+
+        <service
+            android:name="com.jawzf.pixeltoolkit.feature.tiles.UsbDebuggingTileService"
+            android:exported="true"
+            android:icon="@drawable/rounded_adb_24"
+            android:label="@string/tile_usb_debugging"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+                <action android:name="android.service.quicksettings.action.QS_TILE_PREFERENCES" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.TILE_CATEGORY"
+                android:value="android.service.quicksettings.CATEGORY_UTILITIES" />
+        </service>
+
+        <service
+            android:name="com.jawzf.pixeltoolkit.feature.tiles.ColorPickerTileService"
+            android:exported="true"
+            android:icon="@drawable/rounded_colorize_24"
+            android:label="@string/tile_color_picker"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.TILE_CATEGORY"
+                android:value="android.service.quicksettings.CATEGORY_DISPLAY" />
+        </service>
+
+        <service
+            android:name="com.jawzf.pixeltoolkit.feature.tiles.DeveloperOptionsTileService"
+            android:exported="true"
+            android:icon="@drawable/rounded_mobile_code_24"
+            android:label="@string/tile_developer_options"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.TILE_CATEGORY"
+                android:value="android.service.quicksettings.CATEGORY_UTILITIES" />
+        </service>
+
+        <service
+            android:name="com.jawzf.pixeltoolkit.feature.tiles.RestartSystemUiTileService"
+            android:exported="true"
+            android:icon="@drawable/reopen_window_24px"
+            android:label="@string/tile_restart_systemui"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.TILE_CATEGORY"
+                android:value="android.service.quicksettings.CATEGORY_UTILITIES" />
+        </service>
+    </application>
+
+</manifest>
