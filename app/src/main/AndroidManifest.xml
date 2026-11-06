@@ -970,19 +970,6 @@
             android:foregroundServiceType="specialUse" />
 
         <service
-            android:name=".ime.ToolkitInputMethodService"
-            android:exported="true"
-            android:label="@string/input_method_label"
-            android:permission="android.permission.BIND_INPUT_METHOD">
-            <intent-filter>
-                <action android:name="android.view.InputMethod" />
-            </intent-filter>
-            <meta-data
-                android:name="android.view.im"
-                android:resource="@xml/method" />
-        </service>
-
-        <service
             android:name=".services.automation.AutomationService"
             android:enabled="true"
             android:exported="false"

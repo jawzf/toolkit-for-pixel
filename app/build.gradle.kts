@@ -87,6 +87,7 @@ dependencies {
     implementation(project(":feature:power"))
     implementation(project(":feature:security"))
     implementation(project(":feature:apps"))
+    implementation(project(":feature:input"))
     compileOnly(project(":stub"))
     implementation(libs.aboutlibraries.core)
     implementation(libs.aboutlibraries.compose.m3)

@@ -7649,7 +7649,7 @@
     <issue
         id="UseKtx"
         message="Use the KTX extension function `SharedPreferences.edit` instead?"
-        errorLine1="                    prefs.edit().putFloat(SettingsRepository.KEY_KEYBOARD_HEIGHT, 280f).apply()"
+        errorLine1="                    prefs.edit().putFloat(InputSettings.KEY_KEYBOARD_HEIGHT, 280f).apply()"
         errorLine2="                    ~~~~~~~~~~~~">
         <location
             file="src/main/java/com/jawzf/pixeltoolkit/ime/ToolkitInputMethodService.kt"
