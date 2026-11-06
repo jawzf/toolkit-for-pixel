@@ -1355,7 +1355,27 @@ class FeatureSettingsActivity : AppCompatActivity() {
 
                                     BACK_GESTURE_FEATURE_ID -> {
                                         BackGestureSettingsUI(
-                                            viewModel = viewModel,
+                                            state = viewModel.input,
+                                            canWriteSecure =
+                                                viewModel.isWriteSecureSettingsEnabled.value ||
+                                                    (viewModel.isShizukuAvailable.value && viewModel.isShizukuPermissionGranted.value) ||
+                                                    (viewModel.isRootAvailable.value && viewModel.isRootPermissionGranted.value),
+                                            isAppDetectionGranted =
+                                                if (viewModel.isUseUsageAccess.value) {
+                                                    viewModel.isUsageStatsPermissionGranted.value
+                                                } else {
+                                                    viewModel.isAccessibilityEnabled.value
+                                                },
+                                            isShizukuAvailable = viewModel.isShizukuAvailable.value,
+                                            isUseUsageAccess = viewModel.isUseUsageAccess.value,
+                                            onRequestShizukuPermission = { viewModel.requestShizukuPermission() },
+                                            appPicker = { onDismiss, onAppSelected ->
+                                                SingleAppSelectionSheet(
+                                                    onDismissRequest = onDismiss,
+                                                    includeSystemApps = true,
+                                                    onAppSelected = onAppSelected,
+                                                )
+                                            },
                                             modifier = Modifier.padding(top = 16.dp),
                                             highlightSetting = highlightSetting,
                                         )

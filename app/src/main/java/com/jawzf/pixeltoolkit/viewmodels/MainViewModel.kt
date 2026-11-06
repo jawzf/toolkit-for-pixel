@@ -74,7 +74,6 @@ import com.jawzf.pixeltoolkit.feature.apps.updates.github.GitHubUser
 import com.jawzf.pixeltoolkit.feature.connectivity.ConnectivitySettings
 import com.jawzf.pixeltoolkit.feature.connectivity.ConnectivityState
 import com.jawzf.pixeltoolkit.feature.input.InputState
-import com.jawzf.pixeltoolkit.feature.input.gesture.BackGestureAppConfig
 import com.jawzf.pixeltoolkit.feature.power.BatteryState
 import com.jawzf.pixeltoolkit.feature.power.PowerSettings
 import com.jawzf.pixeltoolkit.feature.power.PowerState
@@ -416,16 +415,13 @@ class MainViewModel : ViewModel() {
     val freeze = FreezeState(viewModelScope)
     val appLock = AppLockState { context -> updateAppDetectionService(context) }
     val consciousGate = ConsciousGateState { context -> updateAppDetectionService(context) }
-    val input = InputState(viewModelScope)
+    val input = InputState(viewModelScope) { context -> updateAppDetectionService(context) }
     val addedQSTiles = mutableStateOf<Set<String>>(emptySet())
     val isHideGestureBarEnabled = mutableStateOf(false)
     val isHideGestureBarOnLauncherEnabled = mutableStateOf(false)
     val isCircleToSearchGestureEnabled = mutableStateOf(false)
     val circleToSearchGestureHeight = mutableFloatStateOf(48f)
     val circleToSearchGestureWidth = mutableFloatStateOf(240f)
-    val backGestureLeftScale = mutableFloatStateOf(1f)
-    val backGestureRightScale = mutableFloatStateOf(1f)
-    val backGestureAppConfigs = mutableStateOf<List<BackGestureAppConfig>>(emptyList())
     val isCircleToSearchPreviewEnabled = mutableStateOf(false)
     val isDisableRotationSuggestionEnabled = mutableStateOf(false)
     val isAllowOverlaysInSettingsEnabled = mutableStateOf(false)
@@ -3060,48 +3056,6 @@ class MainViewModel : ViewModel() {
     fun setCircleToSearchGestureHeight(height: Float) {
         circleToSearchGestureHeight.floatValue = height
         settingsRepository.putFloat(SettingsRepository.KEY_CIRCLE_TO_SEARCH_GESTURE_HEIGHT, height)
-    }
-
-    fun refreshBackGestureState() {
-        backGestureLeftScale.floatValue = settingsRepository.backGesture.defaultScale(left = true)
-        backGestureRightScale.floatValue = settingsRepository.backGesture.defaultScale(left = false)
-        backGestureAppConfigs.value = settingsRepository.loadBackGestureAppConfigs()
-    }
-
-    fun applyBackGestureScale(left: Boolean) {
-        val scale = if (left) backGestureLeftScale.floatValue else backGestureRightScale.floatValue
-        viewModelScope.launch(Dispatchers.IO) {
-            settingsRepository.backGesture.setDefaultScale(left, scale)
-        }
-    }
-
-    fun updateBackGestureAppConfig(
-        config: BackGestureAppConfig,
-        context: Context,
-    ) {
-        val current = backGestureAppConfigs.value
-        val configs =
-            if (current.any { it.packageName == config.packageName }) {
-                current.map { if (it.packageName == config.packageName) config else it }
-            } else {
-                current + config
-            }
-        backGestureAppConfigs.value = configs
-        settingsRepository.saveBackGestureAppConfigs(configs)
-        updateAppDetectionService(context)
-    }
-
-    fun removeBackGestureAppConfig(
-        packageName: String,
-        context: Context,
-    ) {
-        val configs = backGestureAppConfigs.value.filterNot { it.packageName == packageName }
-        backGestureAppConfigs.value = configs
-        settingsRepository.saveBackGestureAppConfigs(configs)
-        updateAppDetectionService(context)
-        viewModelScope.launch(Dispatchers.IO) {
-            settingsRepository.backGesture.onAppRemoved(packageName)
-        }
     }
 
     /**
