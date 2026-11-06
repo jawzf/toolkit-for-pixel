@@ -48,6 +48,7 @@ import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.pickers.SegmentedPicker
 import com.jawzf.pixeltoolkit.core.design.theme.ToolkitTheme
+import com.jawzf.pixeltoolkit.core.platform.device.HiddenDebuggingUtils
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 
@@ -76,7 +77,7 @@ fun DebuggingSettingsOverlay(onDismiss: () -> Unit) {
     val view = LocalView.current
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
-    fun isUsbDebuggingEnabled(): Boolean = com.jawzf.pixeltoolkit.utils.HiddenDebuggingUtils.isUsbDebuggingEnabled(context)
+    fun isUsbDebuggingEnabled(): Boolean = HiddenDebuggingUtils.isUsbDebuggingEnabled(context)
 
     fun isWifiDebuggingEnabled(): Boolean =
         try {

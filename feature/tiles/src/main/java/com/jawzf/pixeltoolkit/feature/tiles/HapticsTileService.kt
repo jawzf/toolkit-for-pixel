@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.services.tiles
+package com.jawzf.pixeltoolkit.feature.tiles
 
 import android.database.ContentObserver
 import android.graphics.drawable.Icon

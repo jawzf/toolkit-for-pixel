@@ -30,6 +30,7 @@ import com.jawzf.pixeltoolkit.feature.power.charging.ChargeQuickTileService
 import com.jawzf.pixeltoolkit.feature.power.maps.MapsPowerSavingTileService
 import com.jawzf.pixeltoolkit.feature.security.lockscreen.ScreenLockedSecurityTileService
 import com.jawzf.pixeltoolkit.feature.sound.mode.SoundModeTileService
+import com.jawzf.pixeltoolkit.feature.tiles.HapticsTileService
 import com.jawzf.pixeltoolkit.utils.DeviceLockUtils
 
 class QSPreferencesActivity : ComponentActivity() {
@@ -114,7 +115,7 @@ class QSPreferencesActivity : ComponentActivity() {
                 return
             }
 
-            if (componentName.className == com.jawzf.pixeltoolkit.services.tiles.HapticsTileService::class.java.name) {
+            if (componentName.className == HapticsTileService::class.java.name) {
                 openHapticsSettings()
                 finish()
                 return

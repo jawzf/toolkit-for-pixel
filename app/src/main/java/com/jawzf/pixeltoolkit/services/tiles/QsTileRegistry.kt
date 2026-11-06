@@ -25,6 +25,19 @@ import com.jawzf.pixeltoolkit.feature.power.maps.MapsPowerSavingTileService
 import com.jawzf.pixeltoolkit.feature.security.lockscreen.ScreenLockedSecurityTileService
 import com.jawzf.pixeltoolkit.feature.sound.mode.SoundModeTileService
 import com.jawzf.pixeltoolkit.feature.sound.mono.MonoAudioTileService
+import com.jawzf.pixeltoolkit.feature.tiles.AdaptiveBrightnessTileService
+import com.jawzf.pixeltoolkit.feature.tiles.BubblesTileService
+import com.jawzf.pixeltoolkit.feature.tiles.ColorPickerTileService
+import com.jawzf.pixeltoolkit.feature.tiles.DeveloperOptionsTileService
+import com.jawzf.pixeltoolkit.feature.tiles.HapticsSettings
+import com.jawzf.pixeltoolkit.feature.tiles.HapticsTileService
+import com.jawzf.pixeltoolkit.feature.tiles.HeadsUpNotificationsTileService
+import com.jawzf.pixeltoolkit.feature.tiles.PrivateNotificationsTileService
+import com.jawzf.pixeltoolkit.feature.tiles.RestartSystemUiTileService
+import com.jawzf.pixeltoolkit.feature.tiles.StayAwakeTileService
+import com.jawzf.pixeltoolkit.feature.tiles.TapToWakeTileService
+import com.jawzf.pixeltoolkit.feature.tiles.UiBlurTileService
+import com.jawzf.pixeltoolkit.feature.tiles.UsbDebuggingTileService
 
 object QsTileRegistry {
     data class QsTileEntry(

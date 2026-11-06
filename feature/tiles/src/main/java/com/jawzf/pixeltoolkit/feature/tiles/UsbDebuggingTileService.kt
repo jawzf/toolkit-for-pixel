@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.services.tiles
+package com.jawzf.pixeltoolkit.feature.tiles
 
 import android.content.Intent
 import android.graphics.drawable.Icon
@@ -6,6 +6,7 @@ import android.provider.Settings
 import android.service.quicksettings.Tile
 import com.jawzf.pixeltoolkit.FeatureSettingsActivity
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.platform.device.HiddenDebuggingUtils
 import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuUtils.toggleShizuku
 import com.jawzf.pixeltoolkit.core.platform.tiles.BaseTileService
@@ -101,7 +102,7 @@ class UsbDebuggingTileService : BaseTileService() {
         return prefs.getString("debugging_tile_tap_action", "both") ?: "both"
     }
 
-    private fun isUsbDebuggingEnabled(): Boolean = com.jawzf.pixeltoolkit.utils.HiddenDebuggingUtils.isUsbDebuggingEnabled(this)
+    private fun isUsbDebuggingEnabled(): Boolean = HiddenDebuggingUtils.isUsbDebuggingEnabled(this)
 
     private fun setUsbDebuggingEnabled(enabled: Boolean) {
         try {
