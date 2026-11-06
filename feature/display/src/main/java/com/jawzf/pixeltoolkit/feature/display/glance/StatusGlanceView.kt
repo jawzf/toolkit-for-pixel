@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.utils
+package com.jawzf.pixeltoolkit.feature.display.glance
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter

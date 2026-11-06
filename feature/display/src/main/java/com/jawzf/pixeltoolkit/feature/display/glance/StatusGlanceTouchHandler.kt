@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.services.handlers
+package com.jawzf.pixeltoolkit.feature.display.glance
 
 import android.accessibilityservice.AccessibilityService
 import android.content.Context
@@ -14,8 +14,8 @@ import com.jawzf.pixeltoolkit.core.data.action.Action
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticFeedbackType
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
+import com.jawzf.pixeltoolkit.feature.display.glance.StatusGlanceView
 import com.jawzf.pixeltoolkit.services.automation.executors.CombinedActionExecutor
-import com.jawzf.pixeltoolkit.utils.StatusGlanceView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
