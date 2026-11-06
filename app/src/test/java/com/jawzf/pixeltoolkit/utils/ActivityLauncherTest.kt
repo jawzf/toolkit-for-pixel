@@ -1,8 +1,8 @@
 package com.jawzf.pixeltoolkit.utils
 
-import com.jawzf.pixeltoolkit.domain.diy.Action
-import com.jawzf.pixeltoolkit.domain.diy.ActionGsonAdapter
-import com.jawzf.pixeltoolkit.domain.model.ActivityIconSource
+import com.jawzf.pixeltoolkit.core.data.action.Action
+import com.jawzf.pixeltoolkit.core.data.action.ActionGsonAdapter
+import com.jawzf.pixeltoolkit.core.data.action.ActivityIconSource
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test

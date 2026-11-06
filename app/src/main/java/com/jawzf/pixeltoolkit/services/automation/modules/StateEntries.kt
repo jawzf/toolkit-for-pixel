@@ -1,6 +1,6 @@
 package com.jawzf.pixeltoolkit.services.automation.modules
 
-import com.jawzf.pixeltoolkit.domain.diy.Action
+import com.jawzf.pixeltoolkit.core.data.action.Action
 import com.jawzf.pixeltoolkit.domain.diy.Automation
 
 // Tracks which state automations have run their entry actions, so every entry gets exactly one exit

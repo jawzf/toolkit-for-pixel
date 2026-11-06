@@ -2,11 +2,8 @@ package com.jawzf.pixeltoolkit.feature.power.charging
 
 import android.content.Context
 import android.provider.Settings
-import androidx.annotation.Keep
+import com.jawzf.pixeltoolkit.core.data.action.ChargingMode
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
-
-@Keep
-enum class ChargingMode { OFF, ADAPTIVE, LIMITED }
 
 object ChargingModeUtil {
     private const val ADAPTIVE_CHARGING_SETTING = "adaptive_charging_enabled"

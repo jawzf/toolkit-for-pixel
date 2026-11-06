@@ -3,7 +3,7 @@ package com.jawzf.pixeltoolkit.utils
 import android.content.Context
 import android.net.Uri
 import android.provider.Settings
-import com.jawzf.pixeltoolkit.domain.diy.Action
+import com.jawzf.pixeltoolkit.core.data.action.Action
 
 object SettingsRecorder {
     // Sensitive keys that might cause unexpected system disruptions

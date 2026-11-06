@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.domain.model
+package com.jawzf.pixeltoolkit.core.data.action
 
 import androidx.annotation.StringRes
 import com.google.gson.annotations.SerializedName

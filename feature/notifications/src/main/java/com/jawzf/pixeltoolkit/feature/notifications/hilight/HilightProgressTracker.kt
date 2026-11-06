@@ -2,13 +2,13 @@ package com.jawzf.pixeltoolkit.feature.notifications.hilight
 
 import android.content.Context
 import android.os.PowerManager
+import com.jawzf.pixeltoolkit.core.data.action.HilightProgressColorMode
+import com.jawzf.pixeltoolkit.core.data.action.HilightProgressFrames
 import com.jawzf.pixeltoolkit.core.platform.device.DeviceUtils
 import com.jawzf.pixeltoolkit.core.platform.device.PriorityModeUtil
 import com.jawzf.pixeltoolkit.core.platform.device.ProgressNotificationData
 import com.jawzf.pixeltoolkit.feature.notifications.NotificationSettings
 import com.jawzf.pixeltoolkit.feature.notifications.hilight.HilightLights
-import com.jawzf.pixeltoolkit.feature.notifications.hilight.HilightProgressColorMode
-import com.jawzf.pixeltoolkit.feature.notifications.hilight.HilightProgressFrames
 
 object HilightProgressTracker {
     // LEDs lit at the last showing per notification key; INDETERMINATE marks a sweep

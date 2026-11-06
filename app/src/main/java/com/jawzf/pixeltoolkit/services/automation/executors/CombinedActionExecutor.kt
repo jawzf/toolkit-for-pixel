@@ -24,6 +24,9 @@ import android.util.Log
 import android.view.KeyEvent
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import com.jawzf.pixeltoolkit.core.data.action.Action
+import com.jawzf.pixeltoolkit.core.data.action.ActionExecutor
+import com.jawzf.pixeltoolkit.core.data.action.NotificationLightingStyle
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticFeedbackType
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
@@ -33,7 +36,6 @@ import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuUtils
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.domain.controller.ZenModeController
-import com.jawzf.pixeltoolkit.domain.diy.Action
 import com.jawzf.pixeltoolkit.domain.diy.DIYRepository
 import com.jawzf.pixeltoolkit.feature.apps.AppsSettings
 import com.jawzf.pixeltoolkit.feature.apps.freeze.FreezeManager
@@ -45,7 +47,6 @@ import com.jawzf.pixeltoolkit.feature.notifications.NotificationSettings
 import com.jawzf.pixeltoolkit.feature.notifications.hilight.HilightController
 import com.jawzf.pixeltoolkit.feature.notifications.lighting.DashConfig
 import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingService
-import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingStyle
 import com.jawzf.pixeltoolkit.feature.notifications.lighting.RippleConfig
 import com.jawzf.pixeltoolkit.feature.notifications.lighting.overlay.fromPrefs
 import com.jawzf.pixeltoolkit.feature.notifications.lighting.overlay.writeTo
@@ -67,7 +68,7 @@ import kotlinx.coroutines.withContext
 import rikka.shizuku.ShizukuBinderWrapper
 import rikka.shizuku.SystemServiceHelper
 
-object CombinedActionExecutor {
+object CombinedActionExecutor : ActionExecutor {
     private suspend fun vibrateModeHaptic(context: Context) {
         kotlinx.coroutines.delay(350)
         HapticUtil.performStrongDoubleHaptic(context)
@@ -140,7 +141,7 @@ object CombinedActionExecutor {
     }
 
     // Runs actions in order with a short gap, as Button remap does, so each can take effect
-    suspend fun executeAll(
+    override suspend fun executeAll(
         context: Context,
         actions: List<Action>,
     ) {
@@ -163,10 +164,10 @@ object CombinedActionExecutor {
 
     const val ACTION_SEQUENCE_GAP_MS = 150L
 
-    suspend fun execute(
+    override suspend fun execute(
         context: Context,
         action: Action,
-        fromAutomation: Boolean = false,
+        fromAutomation: Boolean,
     ) {
         kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Main) {
             when (action) {

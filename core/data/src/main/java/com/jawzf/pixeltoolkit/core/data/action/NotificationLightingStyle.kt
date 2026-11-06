@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.feature.notifications.lighting
+package com.jawzf.pixeltoolkit.core.data.action
 
 import androidx.annotation.Keep
 
