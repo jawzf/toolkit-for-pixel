@@ -1391,7 +1391,7 @@ class NotificationListener : NotificationListenerService() {
             }
 
             // Also trigger flashlight pulse if enabled
-            if (prefs.getBoolean(SettingsRepository.KEY_FLASHLIGHT_PULSE_ENABLED, false)) {
+            if (prefs.getBoolean(NotificationSettings.KEY_FLASHLIGHT_PULSE_ENABLED, false)) {
                 if (isAppSelectedForFlashlightPulse(sbn.packageName)) {
                     val pulseIntent =
                         Intent(applicationContext, FlashlightActionReceiver::class.java).apply {
@@ -1763,12 +1763,12 @@ class NotificationListener : NotificationListenerService() {
 
             // If "same as lighting" toggle is ON, use notification lighting's app selection
             val sameAsLighting =
-                prefs.getBoolean(SettingsRepository.KEY_FLASHLIGHT_PULSE_SAME_AS_LIGHTING, true)
+                prefs.getBoolean(NotificationSettings.KEY_FLASHLIGHT_PULSE_SAME_AS_LIGHTING, true)
             if (sameAsLighting) {
                 return isAppSelectedForNotificationLighting(packageName)
             }
 
-            val json = prefs.getString(SettingsRepository.KEY_FLASHLIGHT_PULSE_SELECTED_APPS, null)
+            val json = prefs.getString(NotificationSettings.KEY_FLASHLIGHT_PULSE_SELECTED_APPS, null)
             if (json == null) {
                 return true
             }

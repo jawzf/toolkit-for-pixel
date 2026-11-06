@@ -68,6 +68,7 @@ import com.jawzf.pixeltoolkit.feature.input.InputState
 import com.jawzf.pixeltoolkit.feature.notifications.NotificationSettings
 import com.jawzf.pixeltoolkit.feature.notifications.NotificationState
 import com.jawzf.pixeltoolkit.feature.notifications.autodismiss.NotificationAutoDismisser
+import com.jawzf.pixeltoolkit.feature.notifications.flashlight.FlashlightPulseState
 import com.jawzf.pixeltoolkit.feature.notifications.hilight.HilightState
 import com.jawzf.pixeltoolkit.feature.notifications.lighting.LightingState
 import com.jawzf.pixeltoolkit.feature.power.BatteryState
@@ -342,11 +343,6 @@ class MainViewModel : ViewModel() {
     val isFlashlightGlobalEnabled = mutableStateOf(false)
     val isFlashlightLiveUpdateEnabled = mutableStateOf(true)
     val flashlightLastIntensity = mutableStateOf(1)
-    val isFlashlightPulseEnabled = mutableStateOf(false)
-    val isFlashlightPulseFacedownOnly = mutableStateOf(true)
-    val isFlashlightPulseUseLightingApps = mutableStateOf(true)
-    val flashlightPulseMaxIntensity = mutableFloatStateOf(0.5f)
-    val isFlashlightPulseDisableOnDnd = mutableStateOf(true)
     val isFlashlightPocketTurnOffEnabled = mutableStateOf(false)
     val isFlashlightOverheatEnabled = mutableStateOf(true)
     val isLocationPermissionGranted = mutableStateOf(false)
@@ -396,6 +392,7 @@ class MainViewModel : ViewModel() {
         }
     val hilight = HilightState()
     val lighting = LightingState()
+    val flashlightPulse = FlashlightPulseState()
     val input = InputState(viewModelScope) { context -> updateAppDetectionService(context) }
     val addedQSTiles = mutableStateOf<Set<String>>(emptySet())
     val isHideGestureBarEnabled = mutableStateOf(false)
@@ -1015,6 +1012,7 @@ class MainViewModel : ViewModel() {
 
                     in NotificationState.PREFERENCE_KEYS -> notifications.onPreferenceChanged(key)
                     in LightingState.PREFERENCE_KEYS -> lighting.onPreferenceChanged(key)
+                    in FlashlightPulseState.PREFERENCE_KEYS -> flashlightPulse.onPreferenceChanged(key)
 
                     PowerSettings.KEY_MAPS_DISCOVERED_CHANNELS, PowerSettings.KEY_MAPS_DETECTION_CHANNELS -> power.onPreferenceChanged(key)
 
@@ -1187,11 +1185,6 @@ class MainViewModel : ViewModel() {
                     ConnectivitySettings.KEY_MOBILE_DATA_ALWAYS_ON,
                     ConnectivitySettings.KEY_WIRELESS_DISPLAY_CERTIFICATION,
                     -> connectivity.onPreferenceChanged(key, appContext)
-
-                    SettingsRepository.KEY_FLASHLIGHT_PULSE_MAX_INTENSITY -> {
-                        flashlightPulseMaxIntensity.floatValue =
-                            settingsRepository.getFloat(key, 0.5f)
-                    }
 
                     SettingsRepository.KEY_FLASHLIGHT_POCKET_TURN_OFF_ENABLED -> {
                         isFlashlightPocketTurnOffEnabled.value = settingsRepository.getBoolean(key)
@@ -1486,6 +1479,7 @@ class MainViewModel : ViewModel() {
         NotificationAutoDismisser.isSnoozedByUs = { LiveUpdateSnoozer.isSnoozedByUs(it) }
         notifications.load(context)
         lighting.load(context)
+        flashlightPulse.load(context)
         gitHubUser.value = AppsSettings(context).getGitHubUser()
 
         // Sync with system per-app language settings
@@ -2159,28 +2153,6 @@ class MainViewModel : ViewModel() {
             )
         flashlightLastIntensity.value =
             settingsRepository.getInt(SettingsRepository.KEY_FLASHLIGHT_LAST_INTENSITY, 1)
-        isFlashlightPulseEnabled.value =
-            settingsRepository.getBoolean(SettingsRepository.KEY_FLASHLIGHT_PULSE_ENABLED)
-        isFlashlightPulseFacedownOnly.value =
-            settingsRepository.getBoolean(
-                SettingsRepository.KEY_FLASHLIGHT_PULSE_FACEDOWN_ONLY,
-                true,
-            )
-        isFlashlightPulseUseLightingApps.value =
-            settingsRepository.getBoolean(
-                SettingsRepository.KEY_FLASHLIGHT_PULSE_SAME_AS_LIGHTING,
-                true,
-            )
-        flashlightPulseMaxIntensity.floatValue =
-            settingsRepository.getFloat(
-                SettingsRepository.KEY_FLASHLIGHT_PULSE_MAX_INTENSITY,
-                0.5f,
-            )
-        isFlashlightPulseDisableOnDnd.value =
-            settingsRepository.getBoolean(
-                SettingsRepository.KEY_FLASHLIGHT_PULSE_DISABLE_ON_DND,
-                true,
-            )
         isFlashlightPocketTurnOffEnabled.value =
             settingsRepository.getBoolean(SettingsRepository.KEY_FLASHLIGHT_POCKET_TURN_OFF_ENABLED)
         isFlashlightOverheatEnabled.value =
@@ -5681,84 +5653,6 @@ class MainViewModel : ViewModel() {
     }
 
     /**
-     * Executes the set flashlight pulse enabled operation.
-     *
-     * @param enabled [Boolean] Target enabled.
-     * @param context [Context] Target context.
-     */
-    fun setFlashlightPulseEnabled(
-        enabled: Boolean,
-        context: Context,
-    ) {
-        isFlashlightPulseEnabled.value = enabled
-        settingsRepository.putBoolean(SettingsRepository.KEY_FLASHLIGHT_PULSE_ENABLED, enabled)
-    }
-
-    /**
-     * Executes the set flashlight pulse facedown only operation.
-     *
-     * @param enabled [Boolean] Target enabled.
-     * @param context [Context] Target context.
-     */
-    fun setFlashlightPulseFacedownOnly(
-        enabled: Boolean,
-        context: Context,
-    ) {
-        isFlashlightPulseFacedownOnly.value = enabled
-        settingsRepository.putBoolean(
-            SettingsRepository.KEY_FLASHLIGHT_PULSE_FACEDOWN_ONLY,
-            enabled,
-        )
-    }
-
-    /**
-     * Executes the set flashlight pulse use lighting apps operation.
-     *
-     * @param enabled [Boolean] Target enabled.
-     * @param context [Context] Target context.
-     */
-    fun setFlashlightPulseUseLightingApps(
-        enabled: Boolean,
-        context: Context,
-    ) {
-        isFlashlightPulseUseLightingApps.value = enabled
-        settingsRepository.putBoolean(
-            SettingsRepository.KEY_FLASHLIGHT_PULSE_SAME_AS_LIGHTING,
-            enabled,
-        )
-    }
-
-    /**
-     * Executes the set flashlight pulse max intensity operation.
-     *
-     * @param intensity [Float] Target intensity.
-     */
-    fun setFlashlightPulseMaxIntensity(intensity: Float) {
-        flashlightPulseMaxIntensity.floatValue = intensity
-        settingsRepository.putFloat(
-            SettingsRepository.KEY_FLASHLIGHT_PULSE_MAX_INTENSITY,
-            intensity,
-        )
-    }
-
-    /**
-     * Executes the set flashlight pulse disable on dnd operation.
-     *
-     * @param enabled [Boolean] Target enabled.
-     * @param context [Context] Target context.
-     */
-    fun setFlashlightPulseDisableOnDnd(
-        enabled: Boolean,
-        context: Context,
-    ) {
-        isFlashlightPulseDisableOnDnd.value = enabled
-        settingsRepository.putBoolean(
-            SettingsRepository.KEY_FLASHLIGHT_PULSE_DISABLE_ON_DND,
-            enabled,
-        )
-    }
-
-    /**
      * Executes the preview flashlight pulse operation.
      *
      * @param context [Context] Target context.
@@ -6011,42 +5905,6 @@ class MainViewModel : ViewModel() {
         PermissionUtils.isNotificationLightingAccessibilityServiceEnabled(context)
 
     private fun isDefaultBrowser(context: Context): Boolean = PermissionUtils.isDefaultBrowser(context)
-
-    /**
-     * Executes the load flashlight pulse selected apps operation.
-     *
-     * @param context [Context] Target context.
-     * @return The resulting List<AppSelection> data.
-     */
-    fun loadFlashlightPulseSelectedApps(context: Context): List<AppSelection> = settingsRepository.loadFlashlightPulseSelectedApps()
-
-    /**
-     * Executes the save flashlight pulse selected apps operation.
-     *
-     * @param context [Context] Target context.
-     * @param apps [List<AppSelection>] Target apps.
-     */
-    fun saveFlashlightPulseSelectedApps(
-        context: Context,
-        apps: List<AppSelection>,
-    ) {
-        settingsRepository.saveFlashlightPulseSelectedApps(apps)
-    }
-
-    /**
-     * Executes the update flashlight pulse app enabled operation.
-     *
-     * @param context [Context] Target context.
-     * @param packageName [String] Target package name.
-     * @param enabled [Boolean] Target enabled.
-     */
-    fun updateFlashlightPulseAppEnabled(
-        context: Context,
-        packageName: String,
-        enabled: Boolean,
-    ) {
-        settingsRepository.updateFlashlightPulseAppSelection(packageName, enabled)
-    }
 
     // Dynamic Night Light App Selection Methods
     fun saveDynamicNightLightSelectedApps(

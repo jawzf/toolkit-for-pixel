@@ -26,5 +26,11 @@ class NotificationSettingsTest {
         assertEquals("hilight_skip_dnd", NotificationSettings.KEY_HILIGHT_SKIP_DND)
         assertEquals("edge_lighting_enabled", NotificationSettings.KEY_EDGE_LIGHTING_ENABLED)
         assertEquals("use_ripple", NotificationSettings.KEY_USE_RIPPLE)
+        assertEquals("flashlight_pulse_enabled", NotificationSettings.KEY_FLASHLIGHT_PULSE_ENABLED)
+        assertEquals("flashlight_pulse_facedown_only", NotificationSettings.KEY_FLASHLIGHT_PULSE_FACEDOWN_ONLY)
+        assertEquals("flashlight_pulse_max_intensity", NotificationSettings.KEY_FLASHLIGHT_PULSE_MAX_INTENSITY)
+        assertEquals("flashlight_pulse_disable_on_dnd", NotificationSettings.KEY_FLASHLIGHT_PULSE_DISABLE_ON_DND)
+        assertEquals("flashlight_pulse_selected_apps", NotificationSettings.KEY_FLASHLIGHT_PULSE_SELECTED_APPS)
+        assertEquals("flashlight_pulse_same_as_lighting", NotificationSettings.KEY_FLASHLIGHT_PULSE_SAME_AS_LIGHTING)
     }
 }

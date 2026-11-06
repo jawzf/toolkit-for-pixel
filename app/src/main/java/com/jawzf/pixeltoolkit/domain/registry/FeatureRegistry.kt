@@ -1345,7 +1345,7 @@ object FeatureRegistry {
                 parentFeatureId = "Notifications",
                 animationRes = R.raw.flash_animation,
             ) {
-                override fun isEnabled(viewModel: MainViewModel) = viewModel.isFlashlightPulseEnabled.value
+                override fun isEnabled(viewModel: MainViewModel) = viewModel.flashlightPulse.isFlashlightPulseEnabled.value
 
                 override fun isToggleEnabled(
                     viewModel: MainViewModel,
@@ -1356,7 +1356,7 @@ object FeatureRegistry {
                     viewModel: MainViewModel,
                     context: Context,
                     enabled: Boolean,
-                ) = viewModel.setFlashlightPulseEnabled(enabled, context)
+                ) = viewModel.flashlightPulse.setFlashlightPulseEnabled(enabled)
             },
             object : Feature(
                 id = "Activity launcher",
