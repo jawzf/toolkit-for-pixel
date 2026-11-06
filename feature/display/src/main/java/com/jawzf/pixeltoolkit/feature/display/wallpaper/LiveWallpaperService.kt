@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.services
+package com.jawzf.pixeltoolkit.feature.display.wallpaper
 
 import android.app.KeyguardManager
 import android.content.BroadcastReceiver

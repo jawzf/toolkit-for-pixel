@@ -13,7 +13,7 @@ import androidx.core.view.WindowCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.jawzf.pixeltoolkit.core.design.theme.ToolkitTheme
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.ui.composables.wallpaper.WallpaperScreen
+import com.jawzf.pixeltoolkit.feature.display.wallpaper.picker.WallpaperScreen
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 
 class WallpaperActivity : ComponentActivity() {

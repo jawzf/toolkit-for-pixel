@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.composables.wallpaper
+package com.jawzf.pixeltoolkit.feature.display.wallpaper.picker
 
 import android.content.Intent
 import android.graphics.Bitmap
@@ -86,7 +86,7 @@ import com.jawzf.pixeltoolkit.core.design.modifiers.progressiveBlur
 import com.jawzf.pixeltoolkit.core.design.modifiers.scrollMotionBlur
 import com.jawzf.pixeltoolkit.core.design.pickers.SegmentedPicker
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.utils.LiveWallpaperUtil
+import com.jawzf.pixeltoolkit.feature.display.wallpaper.LiveWallpaperUtil
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

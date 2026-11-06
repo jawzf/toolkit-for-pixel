@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.features.system
+package com.jawzf.pixeltoolkit.feature.display.wallpaper.ui
 
 import android.content.Intent
 import android.graphics.Bitmap
@@ -56,6 +56,7 @@ import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.pickers.SegmentedPicker
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
+import com.jawzf.pixeltoolkit.feature.display.wallpaper.LiveWallpaperUtil
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -118,7 +119,7 @@ fun LiveWallpaperSettingsUI(
         Button(
             onClick = {
                 HapticUtil.performCustomHaptic(view, 0.8f)
-                com.jawzf.pixeltoolkit.utils.LiveWallpaperUtil.openLiveWallpaperPicker(context)
+                LiveWallpaperUtil.openLiveWallpaperPicker(context)
             },
             modifier =
                 Modifier

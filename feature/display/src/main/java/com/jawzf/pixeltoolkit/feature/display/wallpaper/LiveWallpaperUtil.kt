@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.utils
+package com.jawzf.pixeltoolkit.feature.display.wallpaper
 
 import android.app.WallpaperManager
 import android.content.ActivityNotFoundException
@@ -7,7 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.widget.Toast
 import com.jawzf.pixeltoolkit.core.design.R
-import com.jawzf.pixeltoolkit.services.LiveWallpaperService
+import com.jawzf.pixeltoolkit.feature.display.wallpaper.LiveWallpaperService
 
 object LiveWallpaperUtil {
     fun openLiveWallpaperPicker(context: Context) {
