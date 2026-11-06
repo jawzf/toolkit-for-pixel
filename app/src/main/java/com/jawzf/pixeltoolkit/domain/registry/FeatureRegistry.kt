@@ -1496,7 +1496,7 @@ object FeatureRegistry {
                 searchableSettings = emptyList(),
                 parentFeatureId = "Notifications",
             ) {
-                override fun isEnabled(viewModel: MainViewModel) = viewModel.isSnoozeHeadsUpEnabled.value
+                override fun isEnabled(viewModel: MainViewModel) = viewModel.notifications.isSnoozeHeadsUpEnabled.value
 
                 override fun isToggleEnabled(
                     viewModel: MainViewModel,
@@ -1507,7 +1507,7 @@ object FeatureRegistry {
                     viewModel: MainViewModel,
                     context: Context,
                     enabled: Boolean,
-                ) = viewModel.setSnoozeHeadsUpEnabled(
+                ) = viewModel.notifications.setSnoozeHeadsUpEnabled(
                     enabled,
                     context = context,
                 )
@@ -1525,7 +1525,7 @@ object FeatureRegistry {
                 searchableSettings = emptyList(),
                 parentFeatureId = "Notifications",
             ) {
-                override fun isEnabled(viewModel: MainViewModel) = viewModel.isAutoDismissEnabled.value
+                override fun isEnabled(viewModel: MainViewModel) = viewModel.notifications.isAutoDismissEnabled.value
 
                 override fun isToggleEnabled(
                     viewModel: MainViewModel,
@@ -1536,7 +1536,7 @@ object FeatureRegistry {
                     viewModel: MainViewModel,
                     context: Context,
                     enabled: Boolean,
-                ) = viewModel.setAutoDismissEnabled(
+                ) = viewModel.notifications.setAutoDismissEnabled(
                     enabled,
                     context = context,
                 )
@@ -1568,7 +1568,7 @@ object FeatureRegistry {
                 parentFeatureId = "Notifications",
                 animationRes = R.raw.snooze_motion,
             ) {
-                override fun isEnabled(viewModel: MainViewModel) = viewModel.isShowNotificationSnoozeEnabled.value
+                override fun isEnabled(viewModel: MainViewModel) = viewModel.notifications.isShowNotificationSnoozeEnabled.value
 
                 override fun isToggleEnabled(
                     viewModel: MainViewModel,
@@ -1579,7 +1579,7 @@ object FeatureRegistry {
                     viewModel: MainViewModel,
                     context: Context,
                     enabled: Boolean,
-                ) = viewModel.setShowNotificationSnoozeEnabled(context, enabled)
+                ) = viewModel.notifications.setShowNotificationSnoozeEnabled(context, enabled)
 
                 override fun onClick(
                     context: Context,

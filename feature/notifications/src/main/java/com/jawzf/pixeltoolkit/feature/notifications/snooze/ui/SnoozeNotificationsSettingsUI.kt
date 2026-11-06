@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.features.system
+package com.jawzf.pixeltoolkit.feature.notifications.snooze.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -18,17 +18,17 @@ import com.jawzf.pixeltoolkit.core.design.cards.IconToggleItem
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.modifiers.highlight
-import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
+import com.jawzf.pixeltoolkit.feature.notifications.NotificationState
 
 @Composable
 fun SnoozeNotificationsSettingsUI(
-    viewModel: MainViewModel,
+    state: NotificationState,
     modifier: Modifier = Modifier,
     highlightSetting: String? = null,
 ) {
     val context = LocalContext.current
     val view = LocalView.current
-    val isMasterEnabled by viewModel.isSnoozeHeadsUpEnabled
+    val isMasterEnabled by state.isSnoozeHeadsUpEnabled
 
     Column(
         modifier =
@@ -44,7 +44,7 @@ fun SnoozeNotificationsSettingsUI(
                 isChecked = isMasterEnabled,
                 onCheckedChange = { checked ->
                     HapticUtil.performVirtualKeyHaptic(view)
-                    viewModel.setSnoozeHeadsUpEnabled(checked, context)
+                    state.setSnoozeHeadsUpEnabled(checked, context)
                 },
             )
         }
@@ -56,7 +56,7 @@ fun SnoozeNotificationsSettingsUI(
             spacing = 2.dp,
             cornerRadius = 24.dp,
         ) {
-            viewModel.snoozeChannels.value.forEach { channel ->
+            state.snoozeChannels.value.forEach { channel ->
                 IconToggleItem(
                     iconRes =
                         when (channel.id) {
@@ -69,14 +69,14 @@ fun SnoozeNotificationsSettingsUI(
                     isChecked = channel.isBlocked,
                     onCheckedChange = { checked ->
                         HapticUtil.performVirtualKeyHaptic(view)
-                        viewModel.setSnoozeChannelBlocked(channel.id, checked, context)
+                        state.setSnoozeChannelBlocked(channel.id, checked, context)
                     },
                     enabled = isMasterEnabled,
                     modifier = Modifier.highlight(highlightSetting == channel.id),
                 )
             }
 
-            if (viewModel.snoozeChannels.value.isEmpty()) {
+            if (state.snoozeChannels.value.isEmpty()) {
                 androidx.compose.material3.Text(
                     text = stringResource(R.string.snooze_no_channels_discovered),
                     modifier = Modifier.padding(16.dp),

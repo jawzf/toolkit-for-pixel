@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.features.system
+package com.jawzf.pixeltoolkit.feature.notifications.autodismiss.ui
 
 import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
@@ -29,24 +29,23 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.core.data.apps.AppUtil
-import com.jawzf.pixeltoolkit.core.data.prefs.AppSelection
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.cards.FeatureCard
 import com.jawzf.pixeltoolkit.core.design.cards.IconToggleItem
 import com.jawzf.pixeltoolkit.core.design.components.ConfigSliderItem
 import com.jawzf.pixeltoolkit.core.design.components.SegmentedDropdownMenuItem
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
-import com.jawzf.pixeltoolkit.domain.model.AutoDismissAppConfig
-import com.jawzf.pixeltoolkit.services.AUTO_DISMISS_MINUTES
-import com.jawzf.pixeltoolkit.ui.core.sheets.AppSelectionSheet
-import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
+import com.jawzf.pixeltoolkit.feature.notifications.NotificationState
+import com.jawzf.pixeltoolkit.feature.notifications.autodismiss.AUTO_DISMISS_MINUTES
+import com.jawzf.pixeltoolkit.feature.notifications.autodismiss.AutoDismissAppConfig
 import java.text.DateFormat
 import java.util.Date
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun AutoDismissNotificationsSettingsUI(
-    viewModel: MainViewModel,
+    state: NotificationState,
+    appPicker: @Composable (onDismiss: () -> Unit) -> Unit,
     modifier: Modifier = Modifier,
     highlightSetting: String? = null,
 ) {
@@ -54,9 +53,9 @@ fun AutoDismissNotificationsSettingsUI(
     var isAppSelectionSheetOpen by remember { mutableStateOf(false) }
     var selectedAppForEditing by remember { mutableStateOf<AutoDismissAppConfig?>(null) }
 
-    val configs by viewModel.autoDismissConfigs
-    val channels by viewModel.autoDismissChannels
-    val stats by viewModel.autoDismissStats
+    val configs by state.autoDismissConfigs
+    val channels by state.autoDismissChannels
+    val stats by state.autoDismissStats
 
     Column(
         modifier =
@@ -155,7 +154,7 @@ fun AutoDismissNotificationsSettingsUI(
                                 if (selectedAppForEditing?.packageName == config.packageName) {
                                     selectedAppForEditing = null
                                 }
-                                viewModel.removeAutoDismissApp(config.packageName)
+                                state.removeAutoDismissApp(config.packageName)
                             },
                         ) {
                             Icon(
@@ -170,7 +169,7 @@ fun AutoDismissNotificationsSettingsUI(
                             text = { Text(stringResource(R.string.action_remove)) },
                             onClick = {
                                 onDismiss()
-                                viewModel.removeAutoDismissApp(config.packageName)
+                                state.removeAutoDismissApp(config.packageName)
                             },
                             leadingIcon = {
                                 Icon(
@@ -192,13 +191,7 @@ fun AutoDismissNotificationsSettingsUI(
         )
 
         if (isAppSelectionSheetOpen) {
-            AppSelectionSheet(
-                onDismissRequest = { isAppSelectionSheetOpen = false },
-                onLoadApps = { _ ->
-                    viewModel.autoDismissConfigs.value.map { AppSelection(it.packageName, true) }
-                },
-                onSaveApps = { ctx, apps -> viewModel.saveAutoDismissSelectedApps(ctx, apps) },
-            )
+            appPicker { isAppSelectionSheetOpen = false }
         }
 
         val editing = selectedAppForEditing
@@ -242,7 +235,7 @@ fun AutoDismissNotificationsSettingsUI(
                         onValueChangeFinished = {
                             val idx = sliderIndex.toInt().coerceIn(0, AUTO_DISMISS_MINUTES.size - 1)
                             val minutes = AUTO_DISMISS_MINUTES[idx]
-                            viewModel.setAutoDismissMinutes(targetPkg, minutes)
+                            state.setAutoDismissMinutes(targetPkg, minutes)
                         },
                         iconRes = R.drawable.rounded_timer_24,
                     )
@@ -287,7 +280,7 @@ fun AutoDismissNotificationsSettingsUI(
                                     title = channel.name,
                                     isChecked = channel.id !in excludedChannels,
                                     onCheckedChange = { isChecked ->
-                                        viewModel.setAutoDismissChannelIncluded(
+                                        state.setAutoDismissChannelIncluded(
                                             targetPkg,
                                             channel.id,
                                             isChecked,

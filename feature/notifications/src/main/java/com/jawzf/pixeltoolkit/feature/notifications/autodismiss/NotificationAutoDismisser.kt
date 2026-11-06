@@ -1,32 +1,35 @@
-package com.jawzf.pixeltoolkit.services
+package com.jawzf.pixeltoolkit.feature.notifications.autodismiss
 
 import android.app.Notification
 import android.os.Handler
 import android.os.Looper
 import android.os.SystemClock
+import android.service.notification.NotificationListenerService
 import android.service.notification.NotificationListenerService.Ranking
 import android.service.notification.StatusBarNotification
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.domain.model.AutoDismissAppConfig
-import com.jawzf.pixeltoolkit.domain.model.AutoDismissChannel
+import com.jawzf.pixeltoolkit.feature.notifications.NotificationSettings
+import com.jawzf.pixeltoolkit.feature.notifications.autodismiss.AutoDismissAppConfig
+import com.jawzf.pixeltoolkit.feature.notifications.autodismiss.AutoDismissChannel
 
 object NotificationAutoDismisser {
     private val handler = Handler(Looper.getMainLooper())
     private val pending = HashMap<String, Runnable>()
     private var knownChannels: HashSet<String>? = null
 
+    var isSnoozedByUs: (String) -> Boolean = { false }
+
     fun onPosted(
-        listener: NotificationListener,
+        listener: NotificationListenerService,
         sbn: StatusBarNotification,
         isRepost: Boolean,
     ) {
-        val repo = SettingsRepository(listener)
+        val repo = NotificationSettings(listener)
         val configs = repo.loadAutoDismissConfigs()
         learnChannel(listener, sbn, configs, repo)
 
         if (!repo.isAutoDismissEnabled()) return
         val key = sbn.key
-        if (LiveUpdateSnoozer.isSnoozedByUs(key)) return
+        if (isSnoozedByUs(key)) return
         if (isRepost && key in pending) return
 
         remove(key)
@@ -41,9 +44,9 @@ object NotificationAutoDismisser {
         remove(key)
     }
 
-    fun resync(listener: NotificationListener) {
+    fun resync(listener: NotificationListenerService) {
         clear()
-        val repo = SettingsRepository(listener)
+        val repo = NotificationSettings(listener)
         if (!repo.isAutoDismissEnabled()) return
 
         val configs = repo.loadAutoDismissConfigs()
@@ -56,7 +59,7 @@ object NotificationAutoDismisser {
         val now = System.currentTimeMillis()
         val overdue = mutableListOf<StatusBarNotification>()
         for (sbn in active) {
-            if (LiveUpdateSnoozer.isSnoozedByUs(sbn.key)) continue
+            if (isSnoozedByUs(sbn.key)) continue
             val deadline = deadlineOf(listener, sbn, configs, sbn.postTime) ?: continue
 
             if (deadline <= now) {
@@ -82,7 +85,7 @@ object NotificationAutoDismisser {
     }
 
     private fun schedule(
-        listener: NotificationListener,
+        listener: NotificationListenerService,
         key: String,
         deadline: Long,
     ) {
@@ -103,12 +106,12 @@ object NotificationAutoDismisser {
     }
 
     private fun dismiss(
-        listener: NotificationListener,
+        listener: NotificationListenerService,
         key: String,
         sbn: StatusBarNotification? = null,
         dismissedKeys: Set<String> = emptySet(),
     ) {
-        if (LiveUpdateSnoozer.isSnoozedByUs(key)) return
+        if (isSnoozedByUs(key)) return
         val active =
             try {
                 listener.activeNotifications.orEmpty()
@@ -119,7 +122,7 @@ object NotificationAutoDismisser {
 
         try {
             listener.cancelNotification(key)
-            SettingsRepository(listener).incrementAutoDismissCount(target.packageName)
+            NotificationSettings(listener).incrementAutoDismissCount(target.packageName)
         } catch (_: Exception) {
         }
 
@@ -149,17 +152,17 @@ object NotificationAutoDismisser {
         }
     }
 
-    private fun ensureKnownChannels(repo: SettingsRepository): HashSet<String> {
+    private fun ensureKnownChannels(repo: NotificationSettings): HashSet<String> {
         val set = knownChannels ?: repo.loadAutoDismissChannels().mapTo(HashSet()) { "${it.packageName}/${it.id}" }
         knownChannels = set
         return set
     }
 
     private fun learnChannel(
-        listener: NotificationListener,
+        listener: NotificationListenerService,
         sbn: StatusBarNotification,
         configs: List<AutoDismissAppConfig>,
-        repo: SettingsRepository,
+        repo: NotificationSettings,
     ) {
         val pkg = sbn.packageName
         if (configs.none { it.packageName == pkg }) return
@@ -196,7 +199,7 @@ object NotificationAutoDismisser {
     }
 
     private fun deadlineOf(
-        listener: NotificationListener,
+        listener: NotificationListenerService,
         sbn: StatusBarNotification,
         configs: List<AutoDismissAppConfig>,
         postTime: Long,

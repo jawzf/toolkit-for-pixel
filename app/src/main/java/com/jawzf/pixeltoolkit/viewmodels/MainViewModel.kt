@@ -50,9 +50,6 @@ import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuUtils
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.domain.diy.Action
 import com.jawzf.pixeltoolkit.domain.model.AppIcon
-import com.jawzf.pixeltoolkit.domain.model.AutoDismissAppConfig
-import com.jawzf.pixeltoolkit.domain.model.AutoDismissChannel
-import com.jawzf.pixeltoolkit.domain.model.AutoDismissStat
 import com.jawzf.pixeltoolkit.domain.model.HilightEffect
 import com.jawzf.pixeltoolkit.domain.model.HilightProgressColorMode
 import com.jawzf.pixeltoolkit.domain.model.LockscreenShortcutSide
@@ -74,6 +71,8 @@ import com.jawzf.pixeltoolkit.feature.apps.updates.github.GitHubUser
 import com.jawzf.pixeltoolkit.feature.connectivity.ConnectivitySettings
 import com.jawzf.pixeltoolkit.feature.connectivity.ConnectivityState
 import com.jawzf.pixeltoolkit.feature.input.InputState
+import com.jawzf.pixeltoolkit.feature.notifications.NotificationState
+import com.jawzf.pixeltoolkit.feature.notifications.autodismiss.NotificationAutoDismisser
 import com.jawzf.pixeltoolkit.feature.power.BatteryState
 import com.jawzf.pixeltoolkit.feature.power.PowerSettings
 import com.jawzf.pixeltoolkit.feature.power.PowerState
@@ -82,7 +81,7 @@ import com.jawzf.pixeltoolkit.feature.security.SecurityState
 import com.jawzf.pixeltoolkit.feature.sound.SoundSettings
 import com.jawzf.pixeltoolkit.feature.sound.SoundState
 import com.jawzf.pixeltoolkit.island.service.IslandStatusBarHider
-import com.jawzf.pixeltoolkit.services.NotificationAutoDismisser
+import com.jawzf.pixeltoolkit.services.LiveUpdateSnoozer
 import com.jawzf.pixeltoolkit.services.NotificationLightingService
 import com.jawzf.pixeltoolkit.services.NotificationListener
 import com.jawzf.pixeltoolkit.services.receivers.FlashlightActionReceiver
@@ -357,10 +356,6 @@ class MainViewModel : ViewModel() {
     val statusGlanceDoubleTapAction = mutableStateOf<Action?>(null)
     val statusGlanceLongPressAction = mutableStateOf<Action?>(null)
 
-    val snoozeChannels =
-        mutableStateOf<List<com.jawzf.pixeltoolkit.domain.model.SnoozeChannel>>(emptyList())
-    val isSnoozeHeadsUpEnabled = mutableStateOf(false)
-    val isAutoDismissEnabled = mutableStateOf(false)
     val isFlashlightAlwaysTurnOffEnabled = mutableStateOf(false)
     val isFlashlightFadeEnabled = mutableStateOf(false)
     val isFlashlightAdjustEnabled = mutableStateOf(false)
@@ -415,6 +410,10 @@ class MainViewModel : ViewModel() {
     val freeze = FreezeState(viewModelScope)
     val appLock = AppLockState { context -> updateAppDetectionService(context) }
     val consciousGate = ConsciousGateState { context -> updateAppDetectionService(context) }
+    val notifications =
+        NotificationState {
+            NotificationListener.instance?.let { NotificationAutoDismisser.resync(it) }
+        }
     val input = InputState(viewModelScope) { context -> updateAppDetectionService(context) }
     val addedQSTiles = mutableStateOf<Set<String>>(emptySet())
     val isHideGestureBarEnabled = mutableStateOf(false)
@@ -460,12 +459,6 @@ class MainViewModel : ViewModel() {
 
     val shutUpConfigs =
         mutableStateOf<List<com.jawzf.pixeltoolkit.domain.model.ShutUpAppConfig>>(emptyList())
-    val autoDismissConfigs =
-        mutableStateOf<List<AutoDismissAppConfig>>(emptyList())
-    val autoDismissChannels =
-        mutableStateOf<List<AutoDismissChannel>>(emptyList())
-    val autoDismissStats =
-        mutableStateOf<Map<String, AutoDismissStat>>(emptyMap())
     val isShutUpLoading = mutableStateOf(false)
     val isShutUpAttemptShizukuRestart = mutableStateOf(true)
     val shutUpRestoreDelay = mutableIntStateOf(10)
@@ -569,11 +562,6 @@ class MainViewModel : ViewModel() {
     val smallestWidth = mutableIntStateOf(360)
     val hasShizukuPermission = mutableStateOf(false)
 
-    // Notification Snooze
-    val isShowNotificationSnoozeEnabled = mutableStateOf(false)
-    val notificationSnoozeDefault = mutableIntStateOf(60)
-    val notificationSnoozeOptions = mutableStateOf<List<Int>>(listOf(15, 30, 60, 120))
-
     lateinit var settingsRepository: SettingsRepository
     private var appContext: Context? = null
 
@@ -642,11 +630,11 @@ class MainViewModel : ViewModel() {
                         }
 
                         Settings.Secure.getUriFor("show_notification_snooze") -> {
-                            appContext?.let { syncShowNotificationSnooze(it) }
+                            appContext?.let { notifications.syncShowNotificationSnooze(it) }
                         }
 
                         Settings.Global.getUriFor("notification_snooze_options") -> {
-                            appContext?.let { loadNotificationSnoozeOptions(it) }
+                            appContext?.let { notifications.loadNotificationSnoozeOptions(it) }
                         }
                     }
                 }
@@ -1066,31 +1054,9 @@ class MainViewModel : ViewModel() {
 
                     PowerSettings.KEY_BATTERY_WIDGET_MAX_DEVICES -> battery.onPreferenceChanged(key)
 
-                    SettingsRepository.KEY_SNOOZE_DISCOVERED_CHANNELS, SettingsRepository.KEY_SNOOZE_BLOCKED_CHANNELS -> {
-                        appContext?.let { loadSnoozeChannels(it) }
-                    }
+                    in NotificationState.PREFERENCE_KEYS -> notifications.onPreferenceChanged(key)
 
                     PowerSettings.KEY_MAPS_DISCOVERED_CHANNELS, PowerSettings.KEY_MAPS_DETECTION_CHANNELS -> power.onPreferenceChanged(key)
-
-                    SettingsRepository.KEY_SNOOZE_HEADS_UP_ENABLED -> {
-                        isSnoozeHeadsUpEnabled.value = settingsRepository.getBoolean(key)
-                    }
-
-                    SettingsRepository.KEY_AUTO_DISMISS_ENABLED -> {
-                        isAutoDismissEnabled.value = settingsRepository.isAutoDismissEnabled()
-                    }
-
-                    SettingsRepository.KEY_AUTO_DISMISS_APPS -> {
-                        loadAutoDismissConfigs()
-                    }
-
-                    SettingsRepository.KEY_AUTO_DISMISS_CHANNELS -> {
-                        loadAutoDismissChannels()
-                    }
-
-                    SettingsRepository.KEY_AUTO_DISMISS_STATS -> {
-                        loadAutoDismissStats()
-                    }
 
                     SettingsRepository.KEY_PINNED_FEATURES -> {
                         pinnedFeatureKeys.value = settingsRepository.getPinnedFeatures()
@@ -1506,115 +1472,6 @@ class MainViewModel : ViewModel() {
         loadShutUpConfigs()
     }
 
-    fun loadAutoDismissConfigs() {
-        autoDismissConfigs.value = settingsRepository.loadAutoDismissConfigs()
-        loadAutoDismissChannels()
-        loadAutoDismissStats()
-    }
-
-    fun loadAutoDismissChannels() {
-        autoDismissChannels.value = settingsRepository.loadAutoDismissChannels()
-    }
-
-    fun loadAutoDismissStats() {
-        autoDismissStats.value = settingsRepository.loadAutoDismissStats()
-    }
-
-    private fun resyncAutoDismiss() = NotificationListener.instance?.let { NotificationAutoDismisser.resync(it) }
-
-    fun setAutoDismissEnabled(
-        enabled: Boolean,
-        context: Context,
-    ) {
-        isAutoDismissEnabled.value = enabled
-        settingsRepository.setAutoDismissEnabled(enabled)
-        resyncAutoDismiss()
-    }
-
-    fun saveAutoDismissSelectedApps(
-        context: Context,
-        apps: List<AppSelection>,
-    ) {
-        val currentConfigs = settingsRepository.loadAutoDismissConfigs().associateBy { it.packageName }
-        val lastMinutes = settingsRepository.getAutoDismissLastMinutes()
-        val enabledApps = apps.filter { it.isEnabled }
-        val newConfigs =
-            enabledApps.map {
-                currentConfigs[it.packageName] ?: AutoDismissAppConfig(
-                    packageName = it.packageName,
-                    minutes = lastMinutes,
-                )
-            }
-        settingsRepository.saveAutoDismissConfigs(newConfigs)
-
-        val newPackageNames = newConfigs.map { it.packageName }.toSet()
-        val currentStats = settingsRepository.loadAutoDismissStats().toMutableMap()
-        for (pkg in newPackageNames) {
-            if (pkg !in currentConfigs) {
-                currentStats[pkg] = AutoDismissStat(0, System.currentTimeMillis())
-            }
-        }
-        currentStats.keys.retainAll(newPackageNames)
-        settingsRepository.saveAutoDismissStats(currentStats)
-
-        loadAutoDismissConfigs()
-        resyncAutoDismiss()
-    }
-
-    fun setAutoDismissMinutes(
-        packageName: String,
-        minutes: Int,
-    ) {
-        settingsRepository.setAutoDismissLastMinutes(minutes)
-        val current = autoDismissConfigs.value.toMutableList()
-        val index = current.indexOfFirst { it.packageName == packageName }
-        if (index >= 0) {
-            current[index] = current[index].copy(minutes = minutes)
-        } else {
-            current.add(AutoDismissAppConfig(packageName, minutes))
-        }
-        settingsRepository.saveAutoDismissConfigs(current)
-        loadAutoDismissConfigs()
-        resyncAutoDismiss()
-    }
-
-    fun removeAutoDismissApp(packageName: String) {
-        val current = autoDismissConfigs.value.toMutableList()
-        current.removeAll { it.packageName == packageName }
-        settingsRepository.saveAutoDismissConfigs(current)
-
-        val currentStats = settingsRepository.loadAutoDismissStats().toMutableMap()
-        currentStats.remove(packageName)
-        settingsRepository.saveAutoDismissStats(currentStats)
-
-        loadAutoDismissConfigs()
-        resyncAutoDismiss()
-    }
-
-    fun setAutoDismissChannelIncluded(
-        packageName: String,
-        channelId: String,
-        included: Boolean,
-    ) {
-        val current = autoDismissConfigs.value.toMutableList()
-        val index = current.indexOfFirst { it.packageName == packageName }
-        if (index >= 0) {
-            val config = current[index]
-            val excluded = config.excludedChannels.orEmpty().toMutableList()
-            if (included) {
-                excluded.remove(channelId)
-            } else {
-                if (channelId !in excluded) {
-                    excluded.add(channelId)
-                }
-            }
-            current[index] = config.copy(excludedChannels = excluded)
-            settingsRepository.saveAutoDismissConfigs(current)
-            loadAutoDismissConfigs()
-            resyncAutoDismiss()
-        }
-    }
-
     fun createShutUpShortcut(
         context: Context,
         config: com.jawzf.pixeltoolkit.domain.model.ShutUpAppConfig,
@@ -1671,6 +1528,8 @@ class MainViewModel : ViewModel() {
     fun check(context: Context) {
         appContext = context.applicationContext
         settingsRepository = SettingsRepository(context)
+        NotificationAutoDismisser.isSnoozedByUs = { LiveUpdateSnoozer.isSnoozedByUs(it) }
+        notifications.load(context)
         gitHubUser.value = AppsSettings(context).getGitHubUser()
 
         // Sync with system per-app language settings
@@ -1781,9 +1640,6 @@ class MainViewModel : ViewModel() {
             settingsRepository.getLockScreenClockSelectedColorId()
         lockScreenClockSeedColor.intValue = settingsRepository.getLockScreenClockSeedColor()
         loadShutUpConfigs()
-        loadAutoDismissConfigs()
-        loadAutoDismissChannels()
-        loadAutoDismissStats()
         recentSearches.value = settingsRepository.getRecentSearches()
 
         if (isHideGestureBarEnabled.value) {
@@ -1985,8 +1841,6 @@ class MainViewModel : ViewModel() {
 
         power.loadBatterySaverConstants(context)
         power.syncLowPowerTriggerLevel(context)
-        syncShowNotificationSnooze(context)
-        loadNotificationSnoozeOptions(context)
 
         isPowerSaveModeEnabled.value = DeviceUtils.isPowerSaveMode(context)
         updateBlurState(context)
@@ -2393,11 +2247,6 @@ class MainViewModel : ViewModel() {
         statusGlanceTapAction.value = settingsRepository.getStatusGlanceTapAction()
         statusGlanceDoubleTapAction.value = settingsRepository.getStatusGlanceDoubleTapAction()
         statusGlanceLongPressAction.value = settingsRepository.getStatusGlanceLongPressAction()
-        loadSnoozeChannels(context)
-        isSnoozeHeadsUpEnabled.value =
-            settingsRepository.getBoolean(SettingsRepository.KEY_SNOOZE_HEADS_UP_ENABLED)
-        isAutoDismissEnabled.value =
-            settingsRepository.isAutoDismissEnabled()
         isFlashlightAlwaysTurnOffEnabled.value =
             settingsRepository.getBoolean(SettingsRepository.KEY_FLASHLIGHT_ALWAYS_TURN_OFF_ENABLED)
         isFlashlightFadeEnabled.value =
@@ -6860,59 +6709,6 @@ class MainViewModel : ViewModel() {
     }
 
     /**
-     * Executes the load snooze channels operation.
-     *
-     * @param context [Context] Target context.
-     */
-    fun loadSnoozeChannels(context: Context) {
-        val discovered = settingsRepository.loadSnoozeDiscoveredChannels()
-        val blocked = settingsRepository.loadSnoozeBlockedChannels()
-
-        val channels =
-            discovered.map { channel ->
-                channel.copy(isBlocked = blocked.contains(channel.id))
-            }
-
-        snoozeChannels.value = channels.distinctBy { it.id }.sortedBy { it.name }
-    }
-
-    /**
-     * Executes the set snooze channel blocked operation.
-     *
-     * @param channelId [String] Target channel id.
-     * @param blocked [Boolean] Target blocked.
-     * @param context [Context] Target context.
-     */
-    fun setSnoozeChannelBlocked(
-        channelId: String,
-        blocked: Boolean,
-        context: Context,
-    ) {
-        val currentBlocked = settingsRepository.loadSnoozeBlockedChannels().toMutableSet()
-        if (blocked) {
-            currentBlocked.add(channelId)
-        } else {
-            currentBlocked.remove(channelId)
-        }
-        settingsRepository.saveSnoozeBlockedChannels(currentBlocked)
-        loadSnoozeChannels(context)
-    }
-
-    /**
-     * Executes the set snooze heads up enabled operation.
-     *
-     * @param enabled [Boolean] Target enabled.
-     * @param context [Context] Target context.
-     */
-    fun setSnoozeHeadsUpEnabled(
-        enabled: Boolean,
-        context: Context,
-    ) {
-        isSnoozeHeadsUpEnabled.value = enabled
-        settingsRepository.putBoolean(SettingsRepository.KEY_SNOOZE_HEADS_UP_ENABLED, enabled)
-    }
-
-    /**
      * Executes the set flashlight always turn off enabled operation.
      *
      * @param enabled [Boolean] Target enabled.
@@ -7521,109 +7317,6 @@ class MainViewModel : ViewModel() {
                 .toSet()
 
         addedQSTiles.value = fromSecureSettings + fromPrefs
-    }
-
-    /**
-     * Executes the sync show notification snooze operation.
-     *
-     * @param context [Context] Target context.
-     */
-    fun syncShowNotificationSnooze(context: Context) {
-        val enabled =
-            Settings.Secure.getInt(context.contentResolver, "show_notification_snooze", 0) == 1
-        isShowNotificationSnoozeEnabled.value = enabled
-    }
-
-    /**
-     * Executes the set show notification snooze enabled operation.
-     *
-     * @param context [Context] Target context.
-     * @param enabled [Boolean] Target enabled.
-     */
-    fun setShowNotificationSnoozeEnabled(
-        context: Context,
-        enabled: Boolean,
-    ) {
-        try {
-            Settings.Secure.putInt(
-                context.contentResolver,
-                "show_notification_snooze",
-                if (enabled) 1 else 0,
-            )
-            isShowNotificationSnoozeEnabled.value = enabled
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
-
-    /**
-     * Executes the load notification snooze options operation.
-     *
-     * @param context [Context] Target context.
-     */
-    fun loadNotificationSnoozeOptions(context: Context) {
-        val raw =
-            Settings.Global.getString(context.contentResolver, "notification_snooze_options") ?: ""
-        var def = 60
-        var opts = listOf(15, 30, 60, 120)
-        if (raw.isNotEmpty()) {
-            // Format: default=60,options_array=15:30:60:120
-            raw.split(",").forEach { pair ->
-                val parts = pair.split("=", limit = 2)
-                if (parts.size == 2) {
-                    val key = parts[0].trim()
-                    val value = parts[1].trim()
-                    if (key == "default") {
-                        def = value.toIntOrNull() ?: 60
-                    } else if (key == "options_array") {
-                        opts = value.split(":").mapNotNull { it.trim().toIntOrNull() }
-                    }
-                }
-            }
-        }
-        notificationSnoozeDefault.intValue = def
-        notificationSnoozeOptions.value = opts
-    }
-
-    /**
-     * Executes the save notification snooze options operation.
-     *
-     * @param context [Context] Target context.
-     * @param def [Int] Target def.
-     * @param opts [List<Int>] Target opts.
-     */
-    fun saveNotificationSnoozeOptions(
-        context: Context,
-        def: Int,
-        opts: List<Int>,
-    ) {
-        val serialized = "default=$def,options_array=${opts.joinToString(":")}"
-        try {
-            Settings.Global.putString(
-                context.contentResolver,
-                "notification_snooze_options",
-                serialized,
-            )
-            notificationSnoozeDefault.intValue = def
-            notificationSnoozeOptions.value = opts
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
-
-    /**
-     * Executes the reset notification snooze options operation.
-     *
-     * @param context [Context] Target context.
-     */
-    fun resetNotificationSnoozeOptions(context: Context) {
-        try {
-            Settings.Global.putString(context.contentResolver, "notification_snooze_options", null)
-            notificationSnoozeDefault.intValue = 60
-            notificationSnoozeOptions.value = listOf(15, 30, 60, 120)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
     }
 
     val isLockdownModeEnabled = mutableStateOf(false)

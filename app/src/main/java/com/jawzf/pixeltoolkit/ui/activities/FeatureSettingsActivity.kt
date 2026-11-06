@@ -47,6 +47,7 @@ import androidx.core.net.toUri
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.jawzf.pixeltoolkit.core.data.prefs.AppSelection
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.cards.FeatureCard
 import com.jawzf.pixeltoolkit.core.design.components.LottieFeatureAnimation
@@ -76,6 +77,9 @@ import com.jawzf.pixeltoolkit.feature.input.gesture.ui.BACK_GESTURE_FEATURE_ID
 import com.jawzf.pixeltoolkit.feature.input.gesture.ui.BackGestureSettingsUI
 import com.jawzf.pixeltoolkit.feature.input.ime.ui.KeyboardSettingsUI
 import com.jawzf.pixeltoolkit.feature.input.links.ui.LinkPickerScreen
+import com.jawzf.pixeltoolkit.feature.notifications.autodismiss.ui.AutoDismissNotificationsSettingsUI
+import com.jawzf.pixeltoolkit.feature.notifications.snooze.ui.NotificationSnoozingSettingsUI
+import com.jawzf.pixeltoolkit.feature.notifications.snooze.ui.SnoozeNotificationsSettingsUI
 import com.jawzf.pixeltoolkit.feature.power.battery.ui.BatteriesPreviewCard
 import com.jawzf.pixeltoolkit.feature.power.battery.ui.BatteriesSettingsUI
 import com.jawzf.pixeltoolkit.feature.power.caffeinate.CaffeinateViewModel
@@ -111,7 +115,6 @@ import com.jawzf.pixeltoolkit.ui.features.display.StatusGlanceSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.ActivityLauncherSearchBar
 import com.jawzf.pixeltoolkit.ui.features.system.ActivityLauncherSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.AlwaysOnDisplaySettingsUI
-import com.jawzf.pixeltoolkit.ui.features.system.AutoDismissNotificationsSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.ButtonRemapSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.DynamicNightLightSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.FlashlightPulseSettingsUI
@@ -125,13 +128,11 @@ import com.jawzf.pixeltoolkit.ui.features.system.LockScreenClockSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.LockscreenShortcutsSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.NavigationSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.NotificationLightingSettingsUI
-import com.jawzf.pixeltoolkit.ui.features.system.NotificationSnoozingSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.OtherCustomizationsSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.QuickSettingsTilesSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.RefreshRateSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.ScreenOffWidgetSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.ShutUpSettingsUI
-import com.jawzf.pixeltoolkit.ui.features.system.SnoozeNotificationsSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.StatusBarIconSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.TextAnimationsSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.ToolkitOnDisplaySettingsUI
@@ -1032,7 +1033,7 @@ class FeatureSettingsActivity : AppCompatActivity() {
 
                                     "Snooze system notifications" -> {
                                         SnoozeNotificationsSettingsUI(
-                                            viewModel = viewModel,
+                                            state = viewModel.notifications,
                                             modifier = Modifier.padding(top = 16.dp),
                                             highlightSetting = highlightSetting,
                                         )
@@ -1040,7 +1041,20 @@ class FeatureSettingsActivity : AppCompatActivity() {
 
                                     "Auto-dismiss notifications" -> {
                                         AutoDismissNotificationsSettingsUI(
-                                            viewModel = viewModel,
+                                            state = viewModel.notifications,
+                                            appPicker = { onDismiss ->
+                                                AppSelectionSheet(
+                                                    onDismissRequest = onDismiss,
+                                                    onLoadApps = { _ ->
+                                                        viewModel.notifications.autoDismissConfigs.value.map {
+                                                            AppSelection(it.packageName, true)
+                                                        }
+                                                    },
+                                                    onSaveApps = { ctx, apps ->
+                                                        viewModel.notifications.saveAutoDismissSelectedApps(ctx, apps)
+                                                    },
+                                                )
+                                            },
                                             modifier = Modifier.padding(top = 16.dp),
                                             highlightSetting = highlightSetting,
                                         )
@@ -1048,7 +1062,7 @@ class FeatureSettingsActivity : AppCompatActivity() {
 
                                     "Notification snoozing" -> {
                                         NotificationSnoozingSettingsUI(
-                                            viewModel = viewModel,
+                                            state = viewModel.notifications,
                                             modifier = Modifier.padding(top = 16.dp),
                                             highlightSetting = highlightSetting,
                                         )
