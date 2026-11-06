@@ -1159,19 +1159,6 @@
             </intent-filter>
         </service>
 
-        <service
-            android:name=".services.LiveWallpaperService"
-            android:exported="true"
-            android:label="@string/live_wallpaper_label"
-            android:permission="android.permission.BIND_WALLPAPER">
-            <intent-filter>
-                <action android:name="android.service.wallpaper.WallpaperService" />
-            </intent-filter>
-            <meta-data
-                android:name="android.service.wallpaper"
-                android:resource="@xml/live_wallpaper_info" />
-        </service>
-
         <activity
             android:name=".ui.activities.WallpaperActivity"
             android:exported="false"

@@ -409,12 +409,6 @@ class MainViewModel : ViewModel() {
     val pixelSearchbarMusicArtist = mutableStateOf("")
     val pixelSearchbarMusicPackage = mutableStateOf("")
 
-    // Live Wallpaper
-    val liveWallpaperSelectedVideo = mutableStateOf(SettingsRepository.LIVE_WALLPAPER_DEFAULT_VIDEO)
-    val liveWallpaperPlaybackTrigger =
-        mutableStateOf(SettingsRepository.LIVE_WALLPAPER_TRIGGER_UNLOCK)
-    val liveWallpaperCustomVideos = mutableStateListOf<String>()
-
     val shutUpConfigs =
         mutableStateOf<List<com.jawzf.pixeltoolkit.domain.model.ShutUpAppConfig>>(emptyList())
     val isShutUpLoading = mutableStateOf(false)
@@ -1091,21 +1085,6 @@ class MainViewModel : ViewModel() {
                         appContext?.let { updateAppDetectionService(it) }
                     }
 
-                    SettingsRepository.KEY_LIVE_WALLPAPER_SELECTED_VIDEO -> {
-                        liveWallpaperSelectedVideo.value =
-                            settingsRepository.getLiveWallpaperSelectedVideo()
-                    }
-
-                    SettingsRepository.KEY_LIVE_WALLPAPER_PLAYBACK_TRIGGER -> {
-                        liveWallpaperPlaybackTrigger.value =
-                            settingsRepository.getLiveWallpaperPlaybackTrigger()
-                    }
-
-                    SettingsRepository.KEY_LIVE_WALLPAPER_CUSTOM_VIDEOS -> {
-                        liveWallpaperCustomVideos.clear()
-                        liveWallpaperCustomVideos.addAll(settingsRepository.getLiveWallpaperCustomVideos())
-                    }
-
                     SettingsRepository.KEY_SHUT_UP_ATTEMPT_SHIZUKU_RESTART -> {
                         isShutUpAttemptShizukuRestart.value =
                             settingsRepository.isShutUpAttemptShizukuRestartEnabled()
@@ -1733,12 +1712,6 @@ class MainViewModel : ViewModel() {
         isSwipeTabsEnabled.value =
             settingsRepository.getBoolean(SettingsRepository.KEY_SWIPE_TABS, true)
         isShakeForHelpEnabled.value = settingsRepository.isShakeForHelpEnabled()
-
-        // Live Wallpaper initialization
-        liveWallpaperSelectedVideo.value = settingsRepository.getLiveWallpaperSelectedVideo()
-        liveWallpaperPlaybackTrigger.value = settingsRepository.getLiveWallpaperPlaybackTrigger()
-        liveWallpaperCustomVideos.clear()
-        liveWallpaperCustomVideos.addAll(settingsRepository.getLiveWallpaperCustomVideos())
 
         power.load(context)
 

@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.features.system
+package com.jawzf.pixeltoolkit.feature.display.wallpaper.ui
 
 import android.content.Intent
 import android.graphics.Bitmap
@@ -55,21 +55,20 @@ import com.jawzf.pixeltoolkit.core.design.components.SegmentedDropdownMenuItem
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.pickers.SegmentedPicker
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
+import com.jawzf.pixeltoolkit.feature.display.wallpaper.LiveWallpaperSettings
+import com.jawzf.pixeltoolkit.feature.display.wallpaper.LiveWallpaperUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LiveWallpaperSettingsUI(
-    viewModel: MainViewModel,
     modifier: Modifier = Modifier,
     highlightSetting: String? = null,
 ) {
     val context = LocalContext.current
     val view = LocalView.current
-    val repository = remember { SettingsRepository(context) }
+    val repository = remember { LiveWallpaperSettings(context) }
     var availableVideos by remember { mutableStateOf(repository.getLiveWallpaperAvailableVideos()) }
     var selectedVideo by remember { mutableStateOf(repository.getLiveWallpaperSelectedVideo()) }
     var playbackTrigger by remember { mutableStateOf(repository.getLiveWallpaperPlaybackTrigger()) }
@@ -96,9 +95,9 @@ fun LiveWallpaperSettingsUI(
         )
 
     LaunchedEffect(availableVideos) {
-        if (selectedVideo == SettingsRepository.LIVE_WALLPAPER_DEFAULT_VIDEO && availableVideos.isNotEmpty()) {
+        if (selectedVideo == LiveWallpaperSettings.LIVE_WALLPAPER_DEFAULT_VIDEO && availableVideos.isNotEmpty()) {
             val first =
-                availableVideos.firstOrNull { it != SettingsRepository.LIVE_WALLPAPER_DEFAULT_VIDEO }
+                availableVideos.firstOrNull { it != LiveWallpaperSettings.LIVE_WALLPAPER_DEFAULT_VIDEO }
                     ?: availableVideos.firstOrNull()
 
             if (first != null) {
@@ -118,7 +117,7 @@ fun LiveWallpaperSettingsUI(
         Button(
             onClick = {
                 HapticUtil.performCustomHaptic(view, 0.8f)
-                com.jawzf.pixeltoolkit.utils.LiveWallpaperUtil.openLiveWallpaperPicker(context)
+                LiveWallpaperUtil.openLiveWallpaperPicker(context)
             },
             modifier =
                 Modifier
@@ -150,8 +149,8 @@ fun LiveWallpaperSettingsUI(
         RoundedCardContainer {
             val options =
                 listOf(
-                    SettingsRepository.LIVE_WALLPAPER_TRIGGER_UNLOCK to stringResource(R.string.live_wallpaper_trigger_unlock),
-                    SettingsRepository.LIVE_WALLPAPER_TRIGGER_SCREEN_ON to stringResource(R.string.live_wallpaper_trigger_screen_on),
+                    LiveWallpaperSettings.LIVE_WALLPAPER_TRIGGER_UNLOCK to stringResource(R.string.live_wallpaper_trigger_unlock),
+                    LiveWallpaperSettings.LIVE_WALLPAPER_TRIGGER_SCREEN_ON to stringResource(R.string.live_wallpaper_trigger_screen_on),
                 )
 
             SegmentedPicker(

@@ -82,6 +82,7 @@ import com.jawzf.pixeltoolkit.feature.display.lockclock.ui.LockScreenClockSettin
 import com.jawzf.pixeltoolkit.feature.display.ondisplay.ui.ToolkitOnDisplaySettingsUI
 import com.jawzf.pixeltoolkit.feature.display.pixels.ui.SmartPixelsSettingsUI
 import com.jawzf.pixeltoolkit.feature.display.refresh.ui.RefreshRateSettingsUI
+import com.jawzf.pixeltoolkit.feature.display.wallpaper.ui.LiveWallpaperSettingsUI
 import com.jawzf.pixeltoolkit.feature.input.gesture.ui.BACK_GESTURE_FEATURE_ID
 import com.jawzf.pixeltoolkit.feature.input.gesture.ui.BackGestureSettingsUI
 import com.jawzf.pixeltoolkit.feature.input.ime.ui.KeyboardSettingsUI
@@ -130,7 +131,6 @@ import com.jawzf.pixeltoolkit.ui.features.system.ActivityLauncherSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.ButtonRemapSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.DynamicNightLightSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.FlashlightSettingsUI
-import com.jawzf.pixeltoolkit.ui.features.system.LiveWallpaperSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.LockscreenShortcutsSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.NavigationSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.OtherCustomizationsSettingsUI
@@ -1468,7 +1468,6 @@ class FeatureSettingsActivity : AppCompatActivity() {
 
                                     "LiveWallpaper" -> {
                                         LiveWallpaperSettingsUI(
-                                            viewModel = viewModel,
                                             modifier = Modifier.padding(top = 16.dp),
                                             highlightSetting = highlightSetting,
                                         )
