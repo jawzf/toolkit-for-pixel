@@ -294,13 +294,6 @@ class SettingsRepository(
         const val KEY_CIRCLE_TO_SEARCH_GESTURE_WIDTH = "circle_to_search_gesture_width"
         const val KEY_CIRCLE_TO_SEARCH_PREVIEW_ENABLED = "circle_to_search_preview_enabled"
 
-        const val KEY_CONSCIOUS_GATE_ENABLED = "conscious_gate_enabled"
-        const val KEY_CONSCIOUS_GATE_SELECTED_APPS = "conscious_gate_selected_apps"
-        const val KEY_CONSCIOUS_GATE_DELAY_SECONDS = "conscious_gate_delay_seconds"
-        const val KEY_CONSCIOUS_GATE_REAPPEAR_MINUTES = "conscious_gate_reappear_minutes"
-        const val KEY_CONSCIOUS_GATE_FEEL_EVERY_SECOND = "conscious_gate_feel_every_second"
-        const val KEY_CONSCIOUS_GATE_TITLE = "conscious_gate_title"
-        const val KEY_CONSCIOUS_GATE_MESSAGE = "conscious_gate_message"
         const val KEY_HIDDEN_DEBUGGING_SUPPORT = "hidden_debugging_support"
         const val KEY_USE_USAGE_ACCESS = "use_usage_access"
 
@@ -1037,53 +1030,6 @@ class SettingsRepository(
         packageName: String,
         enabled: Boolean,
     ) = updateAppSelection(KEY_DYNAMIC_NIGHT_LIGHT_SELECTED_APPS, packageName, enabled)
-
-    /**
-     * Executes the load conscious gate selected apps operation.
-     */
-    fun loadConsciousGateSelectedApps() = loadAppSelection(KEY_CONSCIOUS_GATE_SELECTED_APPS)
-
-    /**
-     * Executes the save conscious gate selected apps operation.
-     *
-     * @param apps [List<AppSelection>] Target apps.
-     */
-    fun saveConsciousGateSelectedApps(apps: List<AppSelection>) = saveAppSelection(KEY_CONSCIOUS_GATE_SELECTED_APPS, apps)
-
-    /**
-     * Executes the update conscious gate app selection operation.
-     *
-     * @param packageName [String] Target package name.
-     * @param enabled [Boolean] Target enabled.
-     */
-    fun updateConsciousGateAppSelection(
-        packageName: String,
-        enabled: Boolean,
-    ) = updateAppSelection(KEY_CONSCIOUS_GATE_SELECTED_APPS, packageName, enabled)
-
-    fun getConsciousGateDelaySeconds(): Int = prefs.getInt(KEY_CONSCIOUS_GATE_DELAY_SECONDS, 5)
-
-    fun setConsciousGateDelaySeconds(seconds: Int) = putInt(KEY_CONSCIOUS_GATE_DELAY_SECONDS, seconds)
-
-    fun getConsciousGateReappearMinutes(): Int = prefs.getInt(KEY_CONSCIOUS_GATE_REAPPEAR_MINUTES, 0)
-
-    fun setConsciousGateReappearMinutes(minutes: Int) = putInt(KEY_CONSCIOUS_GATE_REAPPEAR_MINUTES, minutes)
-
-    fun getConsciousGateFeelEverySecond(): Boolean = prefs.getBoolean(KEY_CONSCIOUS_GATE_FEEL_EVERY_SECOND, false)
-
-    fun setConsciousGateFeelEverySecond(enabled: Boolean) = putBoolean(KEY_CONSCIOUS_GATE_FEEL_EVERY_SECOND, enabled)
-
-    fun getConsciousGateTitle(context: Context = this.context): String =
-        prefs.getString(KEY_CONSCIOUS_GATE_TITLE, null)
-            ?: context.getString(com.jawzf.pixeltoolkit.core.design.R.string.conscious_gate_default_title)
-
-    fun setConsciousGateTitle(title: String) = putString(KEY_CONSCIOUS_GATE_TITLE, title)
-
-    fun getConsciousGateMessage(context: Context = this.context): String =
-        prefs.getString(KEY_CONSCIOUS_GATE_MESSAGE, null)
-            ?: context.getString(com.jawzf.pixeltoolkit.core.design.R.string.conscious_gate_default_message)
-
-    fun setConsciousGateMessage(message: String) = putString(KEY_CONSCIOUS_GATE_MESSAGE, message)
 
     /**
      * Executes the load flashlight pulse selected apps operation.

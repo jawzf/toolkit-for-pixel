@@ -102,18 +102,27 @@ class AppsSettings(
     /** Only enabled apps are stored. */
     fun saveFreezeSelectedApps(apps: List<AppSelection>) = saveAppSelection(KEY_FREEZE_SELECTED_APPS, apps.filter { it.isEnabled })
 
+    /** The list with [packageName] set to [enabled], added if it isn't there yet. */
+    private fun withSelection(
+        current: List<AppSelection>,
+        packageName: String,
+        enabled: Boolean,
+    ): List<AppSelection> {
+        val updated = current.toMutableList()
+        val index = updated.indexOfFirst { it.packageName == packageName }
+        if (index != -1) {
+            updated[index] = updated[index].copy(isEnabled = enabled)
+        } else {
+            updated.add(AppSelection(packageName, enabled))
+        }
+        return updated
+    }
+
     fun updateFreezeAppSelection(
         packageName: String,
         enabled: Boolean,
     ) {
-        val current = loadFreezeSelectedApps().toMutableList()
-        val index = current.indexOfFirst { it.packageName == packageName }
-        if (index != -1) {
-            current[index] = current[index].copy(isEnabled = enabled)
-        } else {
-            current.add(AppSelection(packageName, enabled))
-        }
-        saveFreezeSelectedApps(current)
+        saveFreezeSelectedApps(withSelection(loadFreezeSelectedApps(), packageName, enabled))
     }
 
     fun loadAppLockSelectedApps(): List<AppSelection> = loadAppSelection(KEY_APP_LOCK_SELECTED_APPS)
@@ -124,15 +133,57 @@ class AppsSettings(
         packageName: String,
         enabled: Boolean,
     ) {
-        val current = loadAppLockSelectedApps().toMutableList()
-        val index = current.indexOfFirst { it.packageName == packageName }
-        if (index != -1) {
-            current[index] = current[index].copy(isEnabled = enabled)
-        } else {
-            current.add(AppSelection(packageName, enabled))
-        }
-        saveAppLockSelectedApps(current)
+        saveAppLockSelectedApps(withSelection(loadAppLockSelectedApps(), packageName, enabled))
     }
+
+    /**
+     * Executes the load conscious gate selected apps operation.
+     */
+    fun loadConsciousGateSelectedApps() = loadAppSelection(KEY_CONSCIOUS_GATE_SELECTED_APPS)
+
+    /**
+     * Executes the save conscious gate selected apps operation.
+     *
+     * @param apps [List<AppSelection>] Target apps.
+     */
+    fun saveConsciousGateSelectedApps(apps: List<AppSelection>) = saveAppSelection(KEY_CONSCIOUS_GATE_SELECTED_APPS, apps)
+
+    /**
+     * Executes the update conscious gate app selection operation.
+     *
+     * @param packageName [String] Target package name.
+     * @param enabled [Boolean] Target enabled.
+     */
+    fun updateConsciousGateAppSelection(
+        packageName: String,
+        enabled: Boolean,
+    ) {
+        saveConsciousGateSelectedApps(withSelection(loadConsciousGateSelectedApps(), packageName, enabled))
+    }
+
+    fun getConsciousGateDelaySeconds(): Int = prefs.getInt(KEY_CONSCIOUS_GATE_DELAY_SECONDS, 5)
+
+    fun setConsciousGateDelaySeconds(seconds: Int) = putInt(KEY_CONSCIOUS_GATE_DELAY_SECONDS, seconds)
+
+    fun getConsciousGateReappearMinutes(): Int = prefs.getInt(KEY_CONSCIOUS_GATE_REAPPEAR_MINUTES, 0)
+
+    fun setConsciousGateReappearMinutes(minutes: Int) = putInt(KEY_CONSCIOUS_GATE_REAPPEAR_MINUTES, minutes)
+
+    fun getConsciousGateFeelEverySecond(): Boolean = prefs.getBoolean(KEY_CONSCIOUS_GATE_FEEL_EVERY_SECOND, false)
+
+    fun setConsciousGateFeelEverySecond(enabled: Boolean) = putBoolean(KEY_CONSCIOUS_GATE_FEEL_EVERY_SECOND, enabled)
+
+    fun getConsciousGateTitle(context: Context = this.context): String =
+        prefs.getString(KEY_CONSCIOUS_GATE_TITLE, null)
+            ?: context.getString(com.jawzf.pixeltoolkit.core.design.R.string.conscious_gate_default_title)
+
+    fun setConsciousGateTitle(title: String) = putString(KEY_CONSCIOUS_GATE_TITLE, title)
+
+    fun getConsciousGateMessage(context: Context = this.context): String =
+        prefs.getString(KEY_CONSCIOUS_GATE_MESSAGE, null)
+            ?: context.getString(com.jawzf.pixeltoolkit.core.design.R.string.conscious_gate_default_message)
+
+    fun setConsciousGateMessage(message: String) = putString(KEY_CONSCIOUS_GATE_MESSAGE, message)
 
     /**
      * Executes the get tracked repos operation.
@@ -245,5 +296,13 @@ class AppsSettings(
         const val KEY_FREEZE_TAGS = "freeze_tags"
         const val KEY_FREEZE_APP_TAG_MAP = "freeze_app_tag_map"
         const val KEY_FREEZE_TAG_COLOR_CODED_ENABLED = "freeze_tag_color_coded_enabled"
+
+        const val KEY_CONSCIOUS_GATE_ENABLED = "conscious_gate_enabled"
+        const val KEY_CONSCIOUS_GATE_SELECTED_APPS = "conscious_gate_selected_apps"
+        const val KEY_CONSCIOUS_GATE_DELAY_SECONDS = "conscious_gate_delay_seconds"
+        const val KEY_CONSCIOUS_GATE_REAPPEAR_MINUTES = "conscious_gate_reappear_minutes"
+        const val KEY_CONSCIOUS_GATE_FEEL_EVERY_SECOND = "conscious_gate_feel_every_second"
+        const val KEY_CONSCIOUS_GATE_TITLE = "conscious_gate_title"
+        const val KEY_CONSCIOUS_GATE_MESSAGE = "conscious_gate_message"
     }
 }

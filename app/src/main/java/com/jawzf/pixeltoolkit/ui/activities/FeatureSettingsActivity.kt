@@ -68,6 +68,8 @@ import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.domain.registry.FeatureRegistry
 import com.jawzf.pixeltoolkit.feature.apps.applock.ui.AppLockSettingsUI
+import com.jawzf.pixeltoolkit.feature.apps.consciousgate.ui.CONSCIOUS_GATE_FEATURE_ID
+import com.jawzf.pixeltoolkit.feature.apps.consciousgate.ui.ConsciousGateSettingsUI
 import com.jawzf.pixeltoolkit.feature.apps.freeze.ui.FreezeSettingsUI
 import com.jawzf.pixeltoolkit.feature.connectivity.ui.NetworksSettingsUI
 import com.jawzf.pixeltoolkit.feature.power.battery.ui.BatteriesPreviewCard
@@ -87,7 +89,6 @@ import com.jawzf.pixeltoolkit.ui.components.linkActions.LinkPickerScreen
 import com.jawzf.pixeltoolkit.ui.core.sheets.AppSelectionSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.ShakeForHelp
 import com.jawzf.pixeltoolkit.ui.core.sheets.SingleAppSelectionSheet
-import com.jawzf.pixeltoolkit.ui.features.consciousgate.CONSCIOUS_GATE_FEATURE_ID
 import com.jawzf.pixeltoolkit.ui.features.display.AodWallpaperPreviewCard
 import com.jawzf.pixeltoolkit.ui.features.display.AodWallpaperSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.display.DuoSettingsUI
@@ -1116,8 +1117,27 @@ class FeatureSettingsActivity : AppCompatActivity() {
                                     }
 
                                     CONSCIOUS_GATE_FEATURE_ID -> {
-                                        com.jawzf.pixeltoolkit.ui.features.consciousgate.ConsciousGateSettingsUI(
-                                            viewModel = viewModel,
+                                        ConsciousGateSettingsUI(
+                                            state = viewModel.consciousGate,
+                                            isUseUsageAccess = viewModel.isUseUsageAccess.value,
+                                            isAccessibilityEnabled = viewModel.isAccessibilityEnabled.value,
+                                            isUsageStatsPermissionGranted = viewModel.isUsageStatsPermissionGranted.value,
+                                            permissionItems = { keys ->
+                                                PermissionUIHelper.getPermissionItems(keys, context, viewModel)
+                                            },
+                                            onPermissionsDismissed = { viewModel.check(context) },
+                                            appPicker = { onDismiss ->
+                                                AppSelectionSheet(
+                                                    onDismissRequest = onDismiss,
+                                                    onLoadApps = { viewModel.consciousGate.loadConsciousGateSelectedApps(it) },
+                                                    onSaveApps = { ctx, apps ->
+                                                        viewModel.consciousGate.saveConsciousGateSelectedApps(ctx, apps)
+                                                    },
+                                                    onAppToggle = { ctx, pkg, enabled ->
+                                                        viewModel.consciousGate.updateConsciousGateAppEnabled(ctx, pkg, enabled)
+                                                    },
+                                                )
+                                            },
                                             highlightKey = highlightSetting,
                                         )
                                     }

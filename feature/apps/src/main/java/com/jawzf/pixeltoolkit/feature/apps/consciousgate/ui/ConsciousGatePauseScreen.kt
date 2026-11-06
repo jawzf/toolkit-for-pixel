@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.features.consciousgate
+package com.jawzf.pixeltoolkit.feature.apps.consciousgate.ui
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.Animatable
@@ -222,7 +222,7 @@ fun ConsciousGatePauseScreen(
 }
 
 @Composable
-internal fun HoldToContinueButton(
+fun HoldToContinueButton(
     waitTimeProgress: Float,
     onContinue: () -> Unit,
     onHoldingChange: (Boolean) -> Unit,

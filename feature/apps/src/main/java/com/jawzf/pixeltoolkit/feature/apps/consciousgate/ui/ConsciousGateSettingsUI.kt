@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.features.consciousgate
+package com.jawzf.pixeltoolkit.feature.apps.consciousgate.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -34,10 +34,9 @@ import com.jawzf.pixeltoolkit.core.design.components.SegmentedDropdownMenuItem
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.modifiers.highlight
+import com.jawzf.pixeltoolkit.core.design.sheets.PermissionItem
 import com.jawzf.pixeltoolkit.core.design.sheets.PermissionsBottomSheet
-import com.jawzf.pixeltoolkit.ui.core.sheets.AppSelectionSheet
-import com.jawzf.pixeltoolkit.utils.PermissionUIHelper
-import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
+import com.jawzf.pixeltoolkit.feature.apps.consciousgate.ConsciousGateState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -46,7 +45,13 @@ const val CONSCIOUS_GATE_FEATURE_ID = "Conscious gate"
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ConsciousGateSettingsUI(
-    viewModel: MainViewModel,
+    state: ConsciousGateState,
+    isUseUsageAccess: Boolean,
+    isAccessibilityEnabled: Boolean,
+    isUsageStatsPermissionGranted: Boolean,
+    permissionItems: (keys: List<String>) -> List<PermissionItem>,
+    onPermissionsDismissed: () -> Unit,
+    appPicker: @Composable (onDismiss: () -> Unit) -> Unit,
     modifier: Modifier = Modifier,
     highlightKey: String? = null,
 ) {
@@ -59,22 +64,19 @@ fun ConsciousGateSettingsUI(
     var isPreviewOpen by remember { mutableStateOf(false) }
     var showPermissionSheet by remember { mutableStateOf(false) }
 
-    val isConsciousGateEnabled by viewModel.isConsciousGateEnabled
-    val isUseUsageAccess by viewModel.isUseUsageAccess
-    val isAccessibilityEnabled by viewModel.isAccessibilityEnabled
-    val isUsageStatsPermissionGranted by viewModel.isUsageStatsPermissionGranted
+    val isConsciousGateEnabled by state.isConsciousGateEnabled
     val canEnableConsciousGate =
         if (isUseUsageAccess) isUsageStatsPermissionGranted else isAccessibilityEnabled
-    val delaySeconds by viewModel.consciousGateDelaySeconds
-    val reappearMinutes by viewModel.consciousGateReappearMinutes
-    val isConsciousGateFeelEverySecondEnabled by viewModel.isConsciousGateFeelEverySecondEnabled
-    val title by viewModel.consciousGateTitle
-    val message by viewModel.consciousGateMessage
+    val delaySeconds by state.consciousGateDelaySeconds
+    val reappearMinutes by state.consciousGateReappearMinutes
+    val isConsciousGateFeelEverySecondEnabled by state.isConsciousGateFeelEverySecondEnabled
+    val title by state.consciousGateTitle
+    val message by state.consciousGateMessage
 
     LaunchedEffect(appsReloadTrigger) {
         withContext(Dispatchers.IO) {
             val apps =
-                viewModel
+                state
                     .loadConsciousGateSelectedApps(context)
                     .filter { it.isEnabled }
             val labels = apps.map { AppUtil.getAppLabel(context, it.packageName) }
@@ -151,7 +153,7 @@ fun ConsciousGateSettingsUI(
                 isChecked = isConsciousGateEnabled,
                 onCheckedChange = { enabled ->
                     if (canEnableConsciousGate) {
-                        viewModel.setConsciousGateEnabled(enabled, context)
+                        state.setConsciousGateEnabled(enabled, context)
                     } else {
                         showPermissionSheet = true
                     }
@@ -187,7 +189,7 @@ fun ConsciousGateSettingsUI(
                         onClick = {
                             HapticUtil.performVirtualKeyHaptic(view)
                             isDelayCustom = false
-                            viewModel.setConsciousGateDelaySeconds(seconds)
+                            state.setConsciousGateDelaySeconds(seconds)
                         },
                     )
                 }
@@ -207,7 +209,7 @@ fun ConsciousGateSettingsUI(
                         val filtered = newValue.filter { it.isDigit() }.take(3)
                         customDelayText = filtered
                         filtered.toIntOrNull()?.let { seconds ->
-                            if (seconds in 1..999) viewModel.setConsciousGateDelaySeconds(seconds)
+                            if (seconds in 1..999) state.setConsciousGateDelaySeconds(seconds)
                         }
                     },
                     label = stringResource(R.string.conscious_gate_delay_custom_label),
@@ -231,7 +233,7 @@ fun ConsciousGateSettingsUI(
                         onClick = {
                             HapticUtil.performVirtualKeyHaptic(view)
                             isReappearCustom = false
-                            viewModel.setConsciousGateReappearMinutes(minutes)
+                            state.setConsciousGateReappearMinutes(minutes)
                         },
                     )
                 }
@@ -251,7 +253,7 @@ fun ConsciousGateSettingsUI(
                         val filtered = newValue.filter { it.isDigit() }.take(4)
                         customReappearText = filtered
                         filtered.toIntOrNull()?.let { minutes ->
-                            if (minutes in 0..1440) viewModel.setConsciousGateReappearMinutes(minutes)
+                            if (minutes in 0..1440) state.setConsciousGateReappearMinutes(minutes)
                         }
                     },
                     label = stringResource(R.string.conscious_gate_reappear_custom_label),
@@ -266,7 +268,7 @@ fun ConsciousGateSettingsUI(
                 title = stringResource(R.string.conscious_gate_feel_every_second_title),
                 isChecked = isConsciousGateFeelEverySecondEnabled,
                 onCheckedChange = { enabled ->
-                    viewModel.setConsciousGateFeelEverySecondEnabled(enabled)
+                    state.setConsciousGateFeelEverySecondEnabled(enabled)
                 },
                 enabled = isConsciousGateEnabled,
                 modifier = Modifier.highlight(highlightKey == "conscious_gate_feel_every_second"),
@@ -283,7 +285,7 @@ fun ConsciousGateSettingsUI(
         RoundedCardContainer(modifier = Modifier) {
             ConsciousGateTextFieldRow(
                 value = title,
-                onValueChange = { viewModel.setConsciousGateTitle(it) },
+                onValueChange = { state.setConsciousGateTitle(it) },
                 label = stringResource(R.string.conscious_gate_title_label),
                 placeholder = stringResource(R.string.conscious_gate_default_title),
                 singleLine = true,
@@ -291,7 +293,7 @@ fun ConsciousGateSettingsUI(
 
             ConsciousGateTextFieldRow(
                 value = message,
-                onValueChange = { viewModel.setConsciousGateMessage(it) },
+                onValueChange = { state.setConsciousGateMessage(it) },
                 label = stringResource(R.string.conscious_gate_message_label),
                 placeholder = stringResource(R.string.conscious_gate_default_message),
             )
@@ -336,17 +338,10 @@ fun ConsciousGateSettingsUI(
         }
 
         if (isAppSelectionSheetOpen) {
-            AppSelectionSheet(
-                onDismissRequest = {
-                    isAppSelectionSheetOpen = false
-                    appsReloadTrigger++
-                },
-                onLoadApps = { viewModel.loadConsciousGateSelectedApps(it) },
-                onSaveApps = { ctx, apps -> viewModel.saveConsciousGateSelectedApps(ctx, apps) },
-                onAppToggle = { ctx, pkg, enabled ->
-                    viewModel.updateConsciousGateAppEnabled(ctx, pkg, enabled)
-                },
-            )
+            appPicker {
+                isAppSelectionSheetOpen = false
+                appsReloadTrigger++
+            }
         }
 
         if (showPermissionSheet) {
@@ -359,10 +354,10 @@ fun ConsciousGateSettingsUI(
             PermissionsBottomSheet(
                 onDismissRequest = {
                     showPermissionSheet = false
-                    viewModel.check(context)
+                    onPermissionsDismissed()
                 },
                 featureTitle = R.string.feat_conscious_gate_title,
-                permissions = PermissionUIHelper.getPermissionItems(permissionKeys, context, viewModel),
+                permissions = permissionItems(permissionKeys),
             )
         }
     }

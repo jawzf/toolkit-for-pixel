@@ -87,7 +87,7 @@ object ServiceUtils {
         val isAppLockEnabled =
             settingsRepository.getBoolean(AppsSettings.KEY_APP_LOCK_ENABLED)
         val isConsciousGateEnabled =
-            settingsRepository.getBoolean(SettingsRepository.KEY_CONSCIOUS_GATE_ENABLED)
+            settingsRepository.getBoolean(AppsSettings.KEY_CONSCIOUS_GATE_ENABLED)
         val isDynamicNightLightEnabled =
             settingsRepository.getBoolean(SettingsRepository.KEY_DYNAMIC_NIGHT_LIGHT_ENABLED)
         val isHideGestureBarOnLauncherEnabled =

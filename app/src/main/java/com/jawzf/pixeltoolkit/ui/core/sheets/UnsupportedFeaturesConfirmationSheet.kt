@@ -23,8 +23,8 @@ import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
-import com.jawzf.pixeltoolkit.ui.features.consciousgate.HoldToContinueButton
-import com.jawzf.pixeltoolkit.ui.features.consciousgate.UnscaledMotion
+import com.jawzf.pixeltoolkit.feature.apps.consciousgate.ui.HoldToContinueButton
+import com.jawzf.pixeltoolkit.feature.apps.consciousgate.ui.UnscaledMotion
 import kotlinx.coroutines.withContext
 
 @Composable

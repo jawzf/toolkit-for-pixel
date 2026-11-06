@@ -26,6 +26,7 @@ import com.jawzf.pixeltoolkit.domain.diy.Automation
 import com.jawzf.pixeltoolkit.domain.diy.DIYRepository
 import com.jawzf.pixeltoolkit.domain.model.BackGestureAppConfig
 import com.jawzf.pixeltoolkit.feature.apps.applock.AppLockActivity
+import com.jawzf.pixeltoolkit.feature.apps.consciousgate.ConsciousGateActivity
 import com.jawzf.pixeltoolkit.feature.apps.freeze.FreezeManager
 import com.jawzf.pixeltoolkit.services.automation.executors.CombinedActionExecutor
 import com.jawzf.pixeltoolkit.services.tiles.ScreenOffAccessibilityService
@@ -385,7 +386,7 @@ class AppFlowHandler(
         Log.d("ConsciousGate", "App $packageName is gated and not confirmed. Showing pause screen.")
         val intent =
             Intent().apply {
-                component = ComponentName(context, "com.jawzf.pixeltoolkit.ui.activities.ConsciousGateActivity")
+                component = ComponentName(context, ConsciousGateActivity::class.java.name)
                 putExtra("package_to_gate", packageName)
                 putExtra("delay_seconds", delaySeconds)
                 title?.let { putExtra("title", it) }
