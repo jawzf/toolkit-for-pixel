@@ -1,8 +1,8 @@
 # Toolkit for Pixel
 
-Tools, tweaks and automations for Google Pixel phones and AOSP-based ROMs.
+Tools, tweaks and automations for Google Pixel phones. Pixel only: other phones are not supported.
 
-Toolkit for Pixel is based on [Essentials](https://github.com/sameerasw/essentials) by [sameerasw](https://github.com/sameerasw), but it is being rebuilt from the ground up specifically for Pixels and AOSP-based ROMs, with its own design and a modular structure. Essentials is MIT-licensed; its copyright notice is kept in [LICENSE](LICENSE).
+Toolkit for Pixel is based on [Essentials](https://github.com/sameerasw/essentials) by [sameerasw](https://github.com/sameerasw), but it is being rebuilt from the ground up specifically for Pixels, with its own design and a modular structure. Essentials is MIT-licensed; its copyright notice is kept in [LICENSE](LICENSE).
 
 ## Status
 
