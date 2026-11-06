@@ -27,6 +27,7 @@ import android.widget.LinearLayout
 import android.widget.TextClock
 import android.widget.TextView
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.design.overlay.AmbientMusicShapeHelper
 import com.jawzf.pixeltoolkit.services.NotificationListener
 import com.jawzf.pixeltoolkit.utils.CarConnectionMonitor
 import java.io.File
@@ -462,7 +463,7 @@ class AmbientGlanceHandler(
         val isFill = mode == "fill"
 
         val newPolygon =
-            com.jawzf.pixeltoolkit.utils.AmbientMusicShapeHelper.getPolygon(
+            AmbientMusicShapeHelper.getPolygon(
                 "${trackTitle}_$artistName",
                 randomEnabled,
             )
@@ -477,7 +478,7 @@ class AmbientGlanceHandler(
                     addUpdateListener { animator ->
                         val progress = animator.animatedValue as Float
                         currentShapePath?.let { path ->
-                            com.jawzf.pixeltoolkit.utils.AmbientMusicShapeHelper.updatePathFromMorph(
+                            AmbientMusicShapeHelper.updatePathFromMorph(
                                 morph,
                                 progress,
                                 size,
@@ -513,7 +514,7 @@ class AmbientGlanceHandler(
                 }
         } else {
             currentShapePath =
-                com.jawzf.pixeltoolkit.utils.AmbientMusicShapeHelper.getShapePath(
+                AmbientMusicShapeHelper.getShapePath(
                     "${trackTitle}_$artistName",
                     size,
                     randomEnabled,
@@ -866,10 +867,10 @@ class AmbientGlanceHandler(
 
         val randomEnabled = isRandomShapesEnabled()
         currentPolygon =
-            com.jawzf.pixeltoolkit.utils.AmbientMusicShapeHelper
+            AmbientMusicShapeHelper
                 .getRandomPolygon(randomEnabled)
         currentShapePath =
-            com.jawzf.pixeltoolkit.utils.AmbientMusicShapeHelper.getRandomShapePath(
+            AmbientMusicShapeHelper.getRandomShapePath(
                 size.toFloat(),
                 randomEnabled,
             )

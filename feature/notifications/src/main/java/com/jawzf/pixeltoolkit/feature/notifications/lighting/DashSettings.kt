@@ -1,9 +1,9 @@
-package com.jawzf.pixeltoolkit.viewmodels.state
+package com.jawzf.pixeltoolkit.feature.notifications.lighting
 
 import androidx.compose.runtime.MutableFloatState
 import androidx.compose.runtime.mutableFloatStateOf
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.domain.model.DashConfig
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.DashConfig
 
 class DashSettings(
     private val repository: () -> SettingsRepository,

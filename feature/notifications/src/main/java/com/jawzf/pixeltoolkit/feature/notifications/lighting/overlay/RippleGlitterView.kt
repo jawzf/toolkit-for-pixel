@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.utils.overlay
+package com.jawzf.pixeltoolkit.feature.notifications.lighting.overlay
 
 import android.content.Context
 import android.graphics.Canvas
@@ -11,8 +11,8 @@ import android.graphics.Shader
 import android.os.Build
 import android.view.View
 import android.view.WindowInsets
-import com.jawzf.pixeltoolkit.domain.model.NotificationLightingRipplePosition
-import com.jawzf.pixeltoolkit.domain.model.RippleConfig
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingRipplePosition
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.RippleConfig
 import kotlin.math.abs
 import kotlin.math.cos
 import kotlin.math.hypot

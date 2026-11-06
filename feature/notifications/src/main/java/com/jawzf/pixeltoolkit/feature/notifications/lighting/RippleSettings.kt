@@ -1,12 +1,12 @@
-package com.jawzf.pixeltoolkit.viewmodels.state
+package com.jawzf.pixeltoolkit.feature.notifications.lighting
 
 import androidx.compose.runtime.MutableFloatState
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.domain.model.NotificationLightingRipplePosition
-import com.jawzf.pixeltoolkit.domain.model.RippleConfig
-import com.jawzf.pixeltoolkit.utils.overlay.parseRipplePosition
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingRipplePosition
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.RippleConfig
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.overlay.parseRipplePosition
 
 class RippleSettings(
     private val repository: () -> SettingsRepository,

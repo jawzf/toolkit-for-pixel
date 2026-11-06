@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.utils
+package com.jawzf.pixeltoolkit.core.design.overlay
 
 import android.graphics.Path
 import androidx.compose.material3.MaterialShapes

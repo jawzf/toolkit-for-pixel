@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.services
+package com.jawzf.pixeltoolkit.feature.notifications.lighting
 
 import android.app.Notification
 import android.app.NotificationChannel
@@ -18,15 +18,15 @@ import android.view.View
 import android.view.WindowManager
 import androidx.core.app.NotificationCompat
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
-import com.jawzf.pixeltoolkit.domain.model.DashConfig
-import com.jawzf.pixeltoolkit.domain.model.NotificationLightingColorMode
-import com.jawzf.pixeltoolkit.domain.model.NotificationLightingSide
-import com.jawzf.pixeltoolkit.domain.model.NotificationLightingStyle
-import com.jawzf.pixeltoolkit.domain.model.RippleConfig
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.DashConfig
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingColorMode
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingSide
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingStyle
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.OverlayHelper
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.RippleConfig
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.overlay.fromIntent
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.overlay.writeTo
 import com.jawzf.pixeltoolkit.services.tiles.ScreenOffAccessibilityService
-import com.jawzf.pixeltoolkit.utils.OverlayHelper
-import com.jawzf.pixeltoolkit.utils.overlay.fromIntent
-import com.jawzf.pixeltoolkit.utils.overlay.writeTo
 
 /**
  * Overlay service that shows a light pulse for notifications.

@@ -35,8 +35,8 @@ import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
 import com.jawzf.pixeltoolkit.domain.diy.Action
-import com.jawzf.pixeltoolkit.domain.model.NotificationLightingColorMode
-import com.jawzf.pixeltoolkit.domain.model.NotificationLightingStyle
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingColorMode
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingStyle
 import com.jawzf.pixeltoolkit.services.automation.executors.CombinedActionExecutor
 import com.jawzf.pixeltoolkit.ui.core.pickers.GlowSidesPicker
 import com.jawzf.pixeltoolkit.ui.core.pickers.NotificationLightingColorModePicker

@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.utils
+package com.jawzf.pixeltoolkit.feature.notifications.lighting
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
@@ -23,14 +23,15 @@ import androidx.graphics.shapes.toPath
 import androidx.lifecycle.setViewTreeLifecycleOwner
 import androidx.lifecycle.setViewTreeViewModelStoreOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
+import com.jawzf.pixeltoolkit.core.design.overlay.AmbientMusicShapeHelper
 import com.jawzf.pixeltoolkit.core.design.overlay.OverlayLifecycleOwner
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.domain.model.DashConfig
-import com.jawzf.pixeltoolkit.domain.model.NotificationLightingSide
-import com.jawzf.pixeltoolkit.domain.model.NotificationLightingStyle
-import com.jawzf.pixeltoolkit.domain.model.RippleConfig
-import com.jawzf.pixeltoolkit.utils.overlay.DashOverlay
-import com.jawzf.pixeltoolkit.utils.overlay.RippleOverlay
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.DashConfig
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingSide
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingStyle
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.RippleConfig
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.overlay.DashOverlay
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.overlay.RippleOverlay
 import androidx.compose.ui.graphics.Color as ComposeColor
 
 /**

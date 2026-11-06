@@ -9,22 +9,23 @@ import com.google.gson.reflect.TypeToken
 import com.jawzf.pixeltoolkit.core.data.prefs.AppSelection
 import com.jawzf.pixeltoolkit.core.data.prefs.PrefsStore
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticFeedbackType
+import com.jawzf.pixeltoolkit.core.design.overlay.AmbientMusicShapeHelper
 import com.jawzf.pixeltoolkit.core.platform.shell.RootUtils
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuUtils
 import com.jawzf.pixeltoolkit.domain.diy.Action
 import com.jawzf.pixeltoolkit.domain.diy.ActionGsonAdapter
 import com.jawzf.pixeltoolkit.domain.model.AppIcon
-import com.jawzf.pixeltoolkit.domain.model.NotificationLightingColorMode
-import com.jawzf.pixeltoolkit.domain.model.NotificationLightingSide
-import com.jawzf.pixeltoolkit.domain.model.NotificationLightingStyle
-import com.jawzf.pixeltoolkit.domain.model.NotificationLightingSweepPosition
 import com.jawzf.pixeltoolkit.domain.model.PowerChoice
 import com.jawzf.pixeltoolkit.domain.model.RemapSlot
 import com.jawzf.pixeltoolkit.domain.model.ScaleAnimationsProfile
 import com.jawzf.pixeltoolkit.domain.model.SystemShortcutsState
 import com.jawzf.pixeltoolkit.feature.apps.AppsSettings
 import com.jawzf.pixeltoolkit.feature.notifications.NotificationSettings
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingColorMode
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingSide
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingStyle
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingSweepPosition
 import com.jawzf.pixeltoolkit.feature.power.PowerSettings
 import com.jawzf.pixeltoolkit.ui.core.pickers.NetworkType
 import com.jawzf.pixeltoolkit.utils.DuoBatteryLevels
@@ -1427,7 +1428,7 @@ class SettingsRepository(
      */
     fun getEdgeLightingSweepSelectedShapes(): Set<String> {
         val defaultShapes =
-            com.jawzf.pixeltoolkit.utils.AmbientMusicShapeHelper.allShapesWithNames
+            AmbientMusicShapeHelper.allShapesWithNames
                 .map { it.first }
                 .toSet()
         val json = prefs.getString(KEY_EDGE_LIGHTING_SWEEP_SELECTED_SHAPES, null)

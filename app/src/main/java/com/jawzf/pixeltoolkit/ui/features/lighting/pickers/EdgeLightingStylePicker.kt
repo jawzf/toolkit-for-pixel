@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
-import com.jawzf.pixeltoolkit.domain.model.NotificationLightingStyle
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingStyle
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable

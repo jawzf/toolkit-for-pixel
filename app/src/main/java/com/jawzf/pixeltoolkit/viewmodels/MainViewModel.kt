@@ -51,10 +51,6 @@ import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.domain.diy.Action
 import com.jawzf.pixeltoolkit.domain.model.AppIcon
 import com.jawzf.pixeltoolkit.domain.model.LockscreenShortcutSide
-import com.jawzf.pixeltoolkit.domain.model.NotificationLightingColorMode
-import com.jawzf.pixeltoolkit.domain.model.NotificationLightingSide
-import com.jawzf.pixeltoolkit.domain.model.NotificationLightingStyle
-import com.jawzf.pixeltoolkit.domain.model.NotificationLightingSweepPosition
 import com.jawzf.pixeltoolkit.domain.model.PowerChoice
 import com.jawzf.pixeltoolkit.domain.model.RemapSlot
 import com.jawzf.pixeltoolkit.domain.model.ScaleAnimationsProfile
@@ -72,6 +68,14 @@ import com.jawzf.pixeltoolkit.feature.input.InputState
 import com.jawzf.pixeltoolkit.feature.notifications.NotificationState
 import com.jawzf.pixeltoolkit.feature.notifications.autodismiss.NotificationAutoDismisser
 import com.jawzf.pixeltoolkit.feature.notifications.hilight.HilightState
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.DashSettings
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingColorMode
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingService
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingSide
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingStyle
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingSweepPosition
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.RippleSettings
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.overlay.writeTo
 import com.jawzf.pixeltoolkit.feature.power.BatteryState
 import com.jawzf.pixeltoolkit.feature.power.PowerSettings
 import com.jawzf.pixeltoolkit.feature.power.PowerState
@@ -81,7 +85,6 @@ import com.jawzf.pixeltoolkit.feature.sound.SoundSettings
 import com.jawzf.pixeltoolkit.feature.sound.SoundState
 import com.jawzf.pixeltoolkit.island.service.IslandStatusBarHider
 import com.jawzf.pixeltoolkit.services.LiveUpdateSnoozer
-import com.jawzf.pixeltoolkit.services.NotificationLightingService
 import com.jawzf.pixeltoolkit.services.NotificationListener
 import com.jawzf.pixeltoolkit.services.receivers.FlashlightActionReceiver
 import com.jawzf.pixeltoolkit.services.receivers.SecurityDeviceAdminReceiver
@@ -96,9 +99,6 @@ import com.jawzf.pixeltoolkit.utils.StatusBarInsetsUtils
 import com.jawzf.pixeltoolkit.utils.StatusBarManager
 import com.jawzf.pixeltoolkit.utils.SurfaceFlingerControl
 import com.jawzf.pixeltoolkit.utils.TestNotificationUtil
-import com.jawzf.pixeltoolkit.utils.overlay.writeTo
-import com.jawzf.pixeltoolkit.viewmodels.state.DashSettings
-import com.jawzf.pixeltoolkit.viewmodels.state.RippleSettings
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay

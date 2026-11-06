@@ -33,17 +33,21 @@ import com.jawzf.pixeltoolkit.core.platform.device.ProgressNotificationData
 import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.domain.model.ActiveNotificationAlert
-import com.jawzf.pixeltoolkit.domain.model.DashConfig
 import com.jawzf.pixeltoolkit.domain.model.NavigationNotificationData
 import com.jawzf.pixeltoolkit.domain.model.NavigationParser
 import com.jawzf.pixeltoolkit.domain.model.NotificationActionItem
-import com.jawzf.pixeltoolkit.domain.model.NotificationLightingColorMode
-import com.jawzf.pixeltoolkit.domain.model.NotificationLightingSide
-import com.jawzf.pixeltoolkit.domain.model.RippleConfig
 import com.jawzf.pixeltoolkit.feature.notifications.NotificationSettings
 import com.jawzf.pixeltoolkit.feature.notifications.autodismiss.NotificationAutoDismisser
 import com.jawzf.pixeltoolkit.feature.notifications.hilight.HilightController
 import com.jawzf.pixeltoolkit.feature.notifications.hilight.HilightProgressTracker
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.DashConfig
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingColorMode
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingService
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingSide
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingStyle
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.RippleConfig
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.overlay.fromPrefs
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.overlay.writeTo
 import com.jawzf.pixeltoolkit.feature.notifications.snooze.SnoozeChannel
 import com.jawzf.pixeltoolkit.feature.power.maps.MapsChannel
 import com.jawzf.pixeltoolkit.feature.power.maps.MapsState
@@ -57,8 +61,6 @@ import com.jawzf.pixeltoolkit.utils.call.CallNotificationParser
 import com.jawzf.pixeltoolkit.utils.call.CallStateRepository
 import com.jawzf.pixeltoolkit.utils.chronometer.ChronometerRepository
 import com.jawzf.pixeltoolkit.utils.notification.NotificationRepostFilter
-import com.jawzf.pixeltoolkit.utils.overlay.fromPrefs
-import com.jawzf.pixeltoolkit.utils.overlay.writeTo
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
@@ -1267,7 +1269,7 @@ class NotificationListener : NotificationListenerService() {
                         val styleName =
                             prefs.getString(
                                 "edge_lighting_style",
-                                com.jawzf.pixeltoolkit.domain.model.NotificationLightingStyle.STROKE.name,
+                                NotificationLightingStyle.STROKE.name,
                             )
 
                         val gson = com.google.gson.Gson()

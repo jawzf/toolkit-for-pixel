@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.services.handlers
+package com.jawzf.pixeltoolkit.feature.notifications.lighting
 
 import android.accessibilityservice.AccessibilityService
 import android.content.Context
@@ -11,13 +11,13 @@ import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
-import com.jawzf.pixeltoolkit.domain.model.DashConfig
-import com.jawzf.pixeltoolkit.domain.model.NotificationLightingColorMode
-import com.jawzf.pixeltoolkit.domain.model.NotificationLightingSide
-import com.jawzf.pixeltoolkit.domain.model.NotificationLightingStyle
-import com.jawzf.pixeltoolkit.domain.model.RippleConfig
-import com.jawzf.pixeltoolkit.utils.OverlayHelper
-import com.jawzf.pixeltoolkit.utils.overlay.fromIntent
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.DashConfig
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingColorMode
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingSide
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingStyle
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.OverlayHelper
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.RippleConfig
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.overlay.fromIntent
 
 class NotificationLightingHandler(
     private val service: AccessibilityService,

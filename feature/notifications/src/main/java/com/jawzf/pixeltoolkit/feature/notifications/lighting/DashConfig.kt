@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.domain.model
+package com.jawzf.pixeltoolkit.feature.notifications.lighting
 
 data class DashConfig(
     val thickness: Float = DEFAULT_THICKNESS,

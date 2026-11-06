@@ -18,7 +18,7 @@ import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.core.design.R
-import com.jawzf.pixeltoolkit.domain.model.NotificationLightingColorMode
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingColorMode
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable

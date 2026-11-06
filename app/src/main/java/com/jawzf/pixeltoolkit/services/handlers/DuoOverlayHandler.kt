@@ -49,11 +49,11 @@ import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.platform.device.ProgressNotificationData
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.domain.model.ActiveNotificationAlert
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.OverlayHelper
 import com.jawzf.pixeltoolkit.feature.power.battery.ChargeLimitUtil
 import com.jawzf.pixeltoolkit.services.NotificationListener
 import com.jawzf.pixeltoolkit.utils.DuoOverlayView
 import com.jawzf.pixeltoolkit.utils.FlashlightUtil
-import com.jawzf.pixeltoolkit.utils.OverlayHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job

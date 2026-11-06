@@ -1,9 +1,9 @@
-package com.jawzf.pixeltoolkit.utils.overlay
+package com.jawzf.pixeltoolkit.feature.notifications.lighting.overlay
 
 import android.content.Intent
 import android.content.SharedPreferences
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.domain.model.DashConfig
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.DashConfig
 
 private const val EXTRA_THICKNESS = "dash_thickness"
 private const val EXTRA_LENGTH = "dash_length"

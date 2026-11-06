@@ -1,10 +1,10 @@
-package com.jawzf.pixeltoolkit.utils.overlay
+package com.jawzf.pixeltoolkit.feature.notifications.lighting.overlay
 
 import android.content.Intent
 import android.content.SharedPreferences
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.domain.model.NotificationLightingRipplePosition
-import com.jawzf.pixeltoolkit.domain.model.RippleConfig
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingRipplePosition
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.RippleConfig
 
 private const val EXTRA_SPEED = "ripple_speed"
 private const val EXTRA_REPEAT_COUNT = "ripple_repeat_count"
