@@ -32,7 +32,6 @@ import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuUtils
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.domain.controller.HilightController
 import com.jawzf.pixeltoolkit.domain.controller.ZenModeController
 import com.jawzf.pixeltoolkit.domain.diy.Action
 import com.jawzf.pixeltoolkit.domain.diy.DIYRepository
@@ -44,6 +43,7 @@ import com.jawzf.pixeltoolkit.feature.apps.freeze.FreezeManager
 import com.jawzf.pixeltoolkit.feature.connectivity.hotspot.HotspotController
 import com.jawzf.pixeltoolkit.feature.input.InputSettings
 import com.jawzf.pixeltoolkit.feature.input.gesture.OmniTriggerUtil
+import com.jawzf.pixeltoolkit.feature.notifications.hilight.HilightController
 import com.jawzf.pixeltoolkit.feature.power.PowerSettings
 import com.jawzf.pixeltoolkit.feature.power.caffeinate.CaffeinateController
 import com.jawzf.pixeltoolkit.feature.power.charging.ChargingModeUtil

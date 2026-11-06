@@ -14,6 +14,7 @@ import com.jawzf.pixeltoolkit.domain.model.SearchSetting
 import com.jawzf.pixeltoolkit.domain.model.SystemShortcutsState
 import com.jawzf.pixeltoolkit.feature.apps.consciousgate.ui.CONSCIOUS_GATE_FEATURE_ID
 import com.jawzf.pixeltoolkit.feature.input.gesture.ui.BACK_GESTURE_FEATURE_ID
+import com.jawzf.pixeltoolkit.feature.notifications.hilight.HilightLights
 import com.jawzf.pixeltoolkit.feature.power.caffeinate.CaffeinateController
 import com.jawzf.pixeltoolkit.ui.activities.PixelSearchbarSettingsActivity
 import com.jawzf.pixeltoolkit.ui.features.display.ISLAND_BEHAVIOR_FEATURE_ID
@@ -21,7 +22,6 @@ import com.jawzf.pixeltoolkit.ui.features.display.ISLAND_DURATION_FEATURE_ID
 import com.jawzf.pixeltoolkit.ui.features.display.ISLAND_NOTIFICATIONS_FEATURE_ID
 import com.jawzf.pixeltoolkit.ui.features.display.ISLAND_PLACEMENT_FEATURE_ID
 import com.jawzf.pixeltoolkit.ui.features.display.ISLAND_VISUALS_FEATURE_ID
-import com.jawzf.pixeltoolkit.utils.hardware.HilightLights
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 
 object FeatureRegistry {
@@ -1263,7 +1263,7 @@ object FeatureRegistry {
                     ),
                 parentFeatureId = "Hilight",
             ) {
-                override fun isEnabled(viewModel: MainViewModel) = viewModel.isHilightNotificationsEnabled.value
+                override fun isEnabled(viewModel: MainViewModel) = viewModel.hilight.isHilightNotificationsEnabled.value
 
                 override fun isDeviceSupported(context: Context) = DeviceUtils.isHilightDevice()
 
@@ -1279,7 +1279,7 @@ object FeatureRegistry {
                     viewModel: MainViewModel,
                     context: Context,
                     enabled: Boolean,
-                ) = viewModel.setHilightNotificationsEnabled(enabled)
+                ) = viewModel.hilight.setHilightNotificationsEnabled(enabled)
             },
             object : Feature(
                 id = "Hilight live progress",
@@ -1300,7 +1300,7 @@ object FeatureRegistry {
                     ),
                 parentFeatureId = "Hilight",
             ) {
-                override fun isEnabled(viewModel: MainViewModel) = viewModel.isHilightProgressEnabled.value
+                override fun isEnabled(viewModel: MainViewModel) = viewModel.hilight.isHilightProgressEnabled.value
 
                 override fun isDeviceSupported(context: Context) = DeviceUtils.isHilightDevice()
 
@@ -1316,7 +1316,7 @@ object FeatureRegistry {
                     viewModel: MainViewModel,
                     context: Context,
                     enabled: Boolean,
-                ) = viewModel.setHilightProgressEnabled(enabled)
+                ) = viewModel.hilight.setHilightProgressEnabled(enabled)
             },
             object : Feature(
                 id = "Flashlight pulse",

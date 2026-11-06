@@ -1,8 +1,8 @@
 package com.jawzf.pixeltoolkit.domain
 
-import com.jawzf.pixeltoolkit.domain.model.HilightFrames
-import com.jawzf.pixeltoolkit.domain.model.HilightProgressColorMode
-import com.jawzf.pixeltoolkit.domain.model.HilightProgressFrames
+import com.jawzf.pixeltoolkit.feature.notifications.hilight.HilightFrames
+import com.jawzf.pixeltoolkit.feature.notifications.hilight.HilightProgressColorMode
+import com.jawzf.pixeltoolkit.feature.notifications.hilight.HilightProgressFrames
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test

@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.core.sheets
+package com.jawzf.pixeltoolkit.feature.notifications.hilight.ui
 
 import android.graphics.Color
 import android.widget.Toast
@@ -14,6 +14,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -38,11 +39,10 @@ import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.pickers.ColorSwatchPicker
 import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
-import com.jawzf.pixeltoolkit.domain.controller.HilightController
-import com.jawzf.pixeltoolkit.domain.diy.Action
-import com.jawzf.pixeltoolkit.domain.model.HilightEffect
-import com.jawzf.pixeltoolkit.domain.model.HilightFrames
-import com.jawzf.pixeltoolkit.domain.model.HilightPattern
+import com.jawzf.pixeltoolkit.feature.notifications.hilight.HilightController
+import com.jawzf.pixeltoolkit.feature.notifications.hilight.HilightEffect
+import com.jawzf.pixeltoolkit.feature.notifications.hilight.HilightFrames
+import com.jawzf.pixeltoolkit.feature.notifications.hilight.HilightPattern
 
 @Composable
 fun HilightEffectEditor(
@@ -161,20 +161,7 @@ fun HilightEffectEditor(
     }
 }
 
-@Composable
-fun HilightEffectSettingsSheet(
-    initialAction: Action.Hilight,
-    onDismiss: () -> Unit,
-    onSave: (Action.Hilight) -> Unit,
-) {
-    HilightEffectSheet(
-        title = stringResource(R.string.diy_action_hilight),
-        initialEffect = initialAction.toEffect(),
-        onDismiss = onDismiss,
-        onSave = { onSave(Action.Hilight(it.pattern, it.color, it.durationMs, it.brightness, it.repeats)) },
-    )
-}
-
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HilightEffectSheet(
     title: String,

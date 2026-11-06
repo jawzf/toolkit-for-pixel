@@ -22,15 +22,16 @@ import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import android.util.Log
 import androidx.annotation.RequiresApi
+import com.jawzf.pixeltoolkit.core.data.apps.AppColorUtil
 import com.jawzf.pixeltoolkit.core.data.apps.AppUtil
 import com.jawzf.pixeltoolkit.core.data.prefs.AppSelection
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticFeedbackType
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.platform.device.DeviceUtils
+import com.jawzf.pixeltoolkit.core.platform.device.PriorityModeUtil
+import com.jawzf.pixeltoolkit.core.platform.device.ProgressNotificationData
 import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.domain.controller.HilightController
-import com.jawzf.pixeltoolkit.domain.controller.HilightProgressTracker
 import com.jawzf.pixeltoolkit.domain.model.ActiveNotificationAlert
 import com.jawzf.pixeltoolkit.domain.model.DashConfig
 import com.jawzf.pixeltoolkit.domain.model.NavigationNotificationData
@@ -38,9 +39,11 @@ import com.jawzf.pixeltoolkit.domain.model.NavigationParser
 import com.jawzf.pixeltoolkit.domain.model.NotificationActionItem
 import com.jawzf.pixeltoolkit.domain.model.NotificationLightingColorMode
 import com.jawzf.pixeltoolkit.domain.model.NotificationLightingSide
-import com.jawzf.pixeltoolkit.domain.model.ProgressNotificationData
 import com.jawzf.pixeltoolkit.domain.model.RippleConfig
+import com.jawzf.pixeltoolkit.feature.notifications.NotificationSettings
 import com.jawzf.pixeltoolkit.feature.notifications.autodismiss.NotificationAutoDismisser
+import com.jawzf.pixeltoolkit.feature.notifications.hilight.HilightController
+import com.jawzf.pixeltoolkit.feature.notifications.hilight.HilightProgressTracker
 import com.jawzf.pixeltoolkit.feature.notifications.snooze.SnoozeChannel
 import com.jawzf.pixeltoolkit.feature.power.maps.MapsChannel
 import com.jawzf.pixeltoolkit.feature.power.maps.MapsState
@@ -49,9 +52,7 @@ import com.jawzf.pixeltoolkit.island.plugins.notifications.OtpExtractor
 import com.jawzf.pixeltoolkit.services.receivers.FlashlightActionReceiver
 import com.jawzf.pixeltoolkit.services.tiles.ScreenOffAccessibilityService
 import com.jawzf.pixeltoolkit.services.widgets.PixelSearchbarWidget
-import com.jawzf.pixeltoolkit.utils.AppColorUtil
 import com.jawzf.pixeltoolkit.utils.CarConnectionMonitor
-import com.jawzf.pixeltoolkit.utils.PriorityModeUtil
 import com.jawzf.pixeltoolkit.utils.call.CallNotificationParser
 import com.jawzf.pixeltoolkit.utils.call.CallStateRepository
 import com.jawzf.pixeltoolkit.utils.chronometer.ChronometerRepository
@@ -1408,7 +1409,7 @@ class NotificationListener : NotificationListenerService() {
 
     private fun handleHilight(sbn: StatusBarNotification) {
         if (!DeviceUtils.isHilightDevice()) return
-        val settings = SettingsRepository(applicationContext)
+        val settings = NotificationSettings(applicationContext)
         if (!settings.isHilightNotificationsEnabled()) return
         val flags = sbn.notification.flags
         val skipFlags = Notification.FLAG_ONGOING_EVENT or Notification.FLAG_FOREGROUND_SERVICE or Notification.FLAG_GROUP_SUMMARY

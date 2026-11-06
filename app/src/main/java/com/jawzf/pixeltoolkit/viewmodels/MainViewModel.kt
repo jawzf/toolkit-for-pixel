@@ -50,8 +50,6 @@ import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuUtils
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.domain.diy.Action
 import com.jawzf.pixeltoolkit.domain.model.AppIcon
-import com.jawzf.pixeltoolkit.domain.model.HilightEffect
-import com.jawzf.pixeltoolkit.domain.model.HilightProgressColorMode
 import com.jawzf.pixeltoolkit.domain.model.LockscreenShortcutSide
 import com.jawzf.pixeltoolkit.domain.model.NotificationLightingColorMode
 import com.jawzf.pixeltoolkit.domain.model.NotificationLightingSide
@@ -73,6 +71,7 @@ import com.jawzf.pixeltoolkit.feature.connectivity.ConnectivityState
 import com.jawzf.pixeltoolkit.feature.input.InputState
 import com.jawzf.pixeltoolkit.feature.notifications.NotificationState
 import com.jawzf.pixeltoolkit.feature.notifications.autodismiss.NotificationAutoDismisser
+import com.jawzf.pixeltoolkit.feature.notifications.hilight.HilightState
 import com.jawzf.pixeltoolkit.feature.power.BatteryState
 import com.jawzf.pixeltoolkit.feature.power.PowerSettings
 import com.jawzf.pixeltoolkit.feature.power.PowerState
@@ -139,15 +138,6 @@ class MainViewModel : ViewModel() {
     val remapActions = mutableStateMapOf<RemapSlot, List<Action>>()
     val powerChoices = mutableStateMapOf<RemapSlot, PowerChoice>()
     val isPowerCameraFlipEnabled = mutableStateOf(false)
-    val isHilightNotificationsEnabled = mutableStateOf(false)
-    val isHilightOnlyWhenScreenOff = mutableStateOf(true)
-    val isHilightSkipDnd = mutableStateOf(true)
-    val hilightCooldownSeconds = mutableIntStateOf(60)
-    val isHilightProgressEnabled = mutableStateOf(false)
-    val hilightProgressColorMode = mutableStateOf(HilightProgressColorMode.VIBGYOR)
-    val hilightProgressColor = mutableIntStateOf(HilightEffect.DEFAULT_COLOR)
-    val hilightProgressDurationMs = mutableLongStateOf(HilightEffect.DEFAULT_DURATION_MS)
-    val hilightAppEffects = mutableStateMapOf<String, HilightEffect>()
     val isLockscreenShortcutsEnabled = mutableStateOf(false)
     val lockscreenShortcutActions = mutableStateMapOf<LockscreenShortcutSide, List<Action>>()
     val lockscreenSystemShortcutsState = mutableStateOf(SystemShortcutsState.UNKNOWN)
@@ -414,6 +404,7 @@ class MainViewModel : ViewModel() {
         NotificationState {
             NotificationListener.instance?.let { NotificationAutoDismisser.resync(it) }
         }
+    val hilight = HilightState()
     val input = InputState(viewModelScope) { context -> updateAppDetectionService(context) }
     val addedQSTiles = mutableStateOf<Set<String>>(emptySet())
     val isHideGestureBarEnabled = mutableStateOf(false)
@@ -2011,16 +2002,7 @@ class MainViewModel : ViewModel() {
         isPowerCameraFlipEnabled.value =
             settingsRepository.getBoolean(SettingsRepository.KEY_BUTTON_REMAP_POWER_CAMERA_FLIP, false)
 
-        isHilightNotificationsEnabled.value = settingsRepository.isHilightNotificationsEnabled()
-        isHilightOnlyWhenScreenOff.value = settingsRepository.isHilightOnlyWhenScreenOff()
-        isHilightSkipDnd.value = settingsRepository.isHilightSkipDnd()
-        hilightCooldownSeconds.intValue = settingsRepository.getHilightCooldownSeconds()
-        isHilightProgressEnabled.value = settingsRepository.isHilightProgressEnabled()
-        hilightProgressColorMode.value = settingsRepository.getHilightProgressColorMode()
-        hilightProgressColor.intValue = settingsRepository.getHilightProgressColor()
-        hilightProgressDurationMs.longValue = settingsRepository.getHilightProgressDurationMs()
-        hilightAppEffects.clear()
-        hilightAppEffects.putAll(settingsRepository.getHilightAppEffects())
+        hilight.load(context)
         isLockscreenShortcutsEnabled.value = settingsRepository.isLockscreenShortcutsEnabled()
         sound.load(context)
         LockscreenShortcutSide.entries.forEach { side ->
@@ -6546,59 +6528,6 @@ class MainViewModel : ViewModel() {
         enabled: Boolean,
     ) {
         settingsRepository.updateNotificationLightingAppSelection(packageName, enabled)
-    }
-
-    fun setHilightNotificationsEnabled(enabled: Boolean) {
-        isHilightNotificationsEnabled.value = enabled
-        settingsRepository.setHilightNotificationsEnabled(enabled)
-    }
-
-    fun setHilightSkipDnd(enabled: Boolean) {
-        isHilightSkipDnd.value = enabled
-        settingsRepository.setHilightSkipDnd(enabled)
-    }
-
-    fun setHilightOnlyWhenScreenOff(enabled: Boolean) {
-        isHilightOnlyWhenScreenOff.value = enabled
-        settingsRepository.setHilightOnlyWhenScreenOff(enabled)
-    }
-
-    fun setHilightCooldownSeconds(seconds: Int) {
-        hilightCooldownSeconds.intValue = seconds
-        settingsRepository.setHilightCooldownSeconds(seconds)
-    }
-
-    fun setHilightProgressEnabled(enabled: Boolean) {
-        isHilightProgressEnabled.value = enabled
-        settingsRepository.setHilightProgressEnabled(enabled)
-    }
-
-    fun setHilightProgressColorMode(mode: HilightProgressColorMode) {
-        hilightProgressColorMode.value = mode
-        settingsRepository.setHilightProgressColorMode(mode)
-    }
-
-    fun setHilightProgressColor(color: Int) {
-        hilightProgressColor.intValue = color
-        settingsRepository.setHilightProgressColor(color)
-    }
-
-    fun setHilightProgressDurationMs(durationMs: Long) {
-        hilightProgressDurationMs.longValue = durationMs
-        settingsRepository.setHilightProgressDurationMs(durationMs)
-    }
-
-    fun setHilightAppEffect(
-        packageName: String,
-        effect: HilightEffect,
-    ) {
-        hilightAppEffects[packageName] = effect
-        settingsRepository.setHilightAppEffect(packageName, effect)
-    }
-
-    fun removeHilightApp(packageName: String) {
-        hilightAppEffects.remove(packageName)
-        settingsRepository.setHilightAppEffect(packageName, null)
     }
 
     /**

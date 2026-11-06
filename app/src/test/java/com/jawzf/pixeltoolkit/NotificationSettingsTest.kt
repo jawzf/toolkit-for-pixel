@@ -15,5 +15,14 @@ class NotificationSettingsTest {
         assertEquals("auto_dismiss_notifications_last_minutes", NotificationSettings.KEY_AUTO_DISMISS_LAST_MINUTES)
         assertEquals("auto_dismiss_notifications_channels", NotificationSettings.KEY_AUTO_DISMISS_CHANNELS)
         assertEquals("auto_dismiss_notifications_stats", NotificationSettings.KEY_AUTO_DISMISS_STATS)
+        assertEquals("hilight_notifications_enabled", NotificationSettings.KEY_HILIGHT_NOTIFICATIONS_ENABLED)
+        assertEquals("hilight_app_effects", NotificationSettings.KEY_HILIGHT_APP_EFFECTS)
+        assertEquals("hilight_only_screen_off", NotificationSettings.KEY_HILIGHT_ONLY_SCREEN_OFF)
+        assertEquals("hilight_cooldown_seconds", NotificationSettings.KEY_HILIGHT_COOLDOWN_SECONDS)
+        assertEquals("hilight_progress_enabled", NotificationSettings.KEY_HILIGHT_PROGRESS_ENABLED)
+        assertEquals("hilight_progress_color_mode", NotificationSettings.KEY_HILIGHT_PROGRESS_COLOR_MODE)
+        assertEquals("hilight_progress_color", NotificationSettings.KEY_HILIGHT_PROGRESS_COLOR)
+        assertEquals("hilight_progress_duration_ms", NotificationSettings.KEY_HILIGHT_PROGRESS_DURATION_MS)
+        assertEquals("hilight_skip_dnd", NotificationSettings.KEY_HILIGHT_SKIP_DND)
     }
 }

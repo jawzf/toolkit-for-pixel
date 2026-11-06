@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.domain.model
+package com.jawzf.pixeltoolkit.feature.notifications.hilight
 
 import androidx.annotation.Keep
 import androidx.annotation.StringRes

@@ -3,9 +3,9 @@ package com.jawzf.pixeltoolkit.domain
 import com.google.gson.Gson
 import com.jawzf.pixeltoolkit.domain.diy.Action
 import com.jawzf.pixeltoolkit.domain.diy.ActionGsonAdapter
-import com.jawzf.pixeltoolkit.domain.model.HilightEffect
-import com.jawzf.pixeltoolkit.domain.model.HilightFrames
-import com.jawzf.pixeltoolkit.domain.model.HilightPattern
+import com.jawzf.pixeltoolkit.feature.notifications.hilight.HilightEffect
+import com.jawzf.pixeltoolkit.feature.notifications.hilight.HilightFrames
+import com.jawzf.pixeltoolkit.feature.notifications.hilight.HilightPattern
 import org.junit.Assert.assertArrayEquals
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue

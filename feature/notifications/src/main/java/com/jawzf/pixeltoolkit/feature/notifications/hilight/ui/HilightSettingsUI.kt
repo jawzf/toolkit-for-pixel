@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.features.system
+package com.jawzf.pixeltoolkit.feature.notifications.hilight.ui
 
 import android.content.Context
 import android.widget.Toast
@@ -45,6 +45,8 @@ import androidx.compose.ui.unit.dp
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.graphics.toColorInt
 import androidx.lifecycle.compose.LifecycleResumeEffect
+import com.jawzf.pixeltoolkit.core.data.apps.AppColorUtil
+import com.jawzf.pixeltoolkit.core.data.apps.NotificationApp
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.cards.IconToggleItem
 import com.jawzf.pixeltoolkit.core.design.components.ConfigSliderItem
@@ -54,17 +56,15 @@ import com.jawzf.pixeltoolkit.core.design.modifiers.highlight
 import com.jawzf.pixeltoolkit.core.design.pickers.ColorSwatchPicker
 import com.jawzf.pixeltoolkit.core.design.pickers.SegmentedPicker
 import com.jawzf.pixeltoolkit.core.platform.device.DeviceUtils
-import com.jawzf.pixeltoolkit.domain.controller.HilightController
-import com.jawzf.pixeltoolkit.domain.model.HilightEffect
-import com.jawzf.pixeltoolkit.domain.model.HilightFrames
-import com.jawzf.pixeltoolkit.domain.model.HilightPattern
-import com.jawzf.pixeltoolkit.domain.model.HilightProgressColorMode
-import com.jawzf.pixeltoolkit.domain.model.HilightProgressFrames
-import com.jawzf.pixeltoolkit.ui.core.sheets.HilightEffectSheet
-import com.jawzf.pixeltoolkit.ui.core.sheets.SingleAppSelectionSheet
-import com.jawzf.pixeltoolkit.utils.AppColorUtil
-import com.jawzf.pixeltoolkit.utils.hardware.HilightLights
-import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
+import com.jawzf.pixeltoolkit.feature.notifications.hilight.HilightController
+import com.jawzf.pixeltoolkit.feature.notifications.hilight.HilightEffect
+import com.jawzf.pixeltoolkit.feature.notifications.hilight.HilightFrames
+import com.jawzf.pixeltoolkit.feature.notifications.hilight.HilightLights
+import com.jawzf.pixeltoolkit.feature.notifications.hilight.HilightPattern
+import com.jawzf.pixeltoolkit.feature.notifications.hilight.HilightProgressColorMode
+import com.jawzf.pixeltoolkit.feature.notifications.hilight.HilightProgressFrames
+import com.jawzf.pixeltoolkit.feature.notifications.hilight.HilightState
+import com.jawzf.pixeltoolkit.feature.notifications.hilight.ui.HilightEffectSheet
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import rikka.shizuku.Shizuku
@@ -72,7 +72,7 @@ import rikka.shizuku.Shizuku
 // Shown below the hub's two entries: the conditions both of them follow
 @Composable
 fun HilightSettingsUI(
-    viewModel: MainViewModel,
+    state: HilightState,
     modifier: Modifier = Modifier,
     highlightSetting: String? = null,
 ) {
@@ -87,14 +87,14 @@ fun HilightSettingsUI(
             IconToggleItem(
                 iconRes = R.drawable.rounded_mobile_lock_portrait_24,
                 title = stringResource(R.string.hilight_only_screen_off_title),
-                isChecked = viewModel.isHilightOnlyWhenScreenOff.value,
-                onCheckedChange = { viewModel.setHilightOnlyWhenScreenOff(it) },
+                isChecked = state.isHilightOnlyWhenScreenOff.value,
+                onCheckedChange = { state.setHilightOnlyWhenScreenOff(it) },
             )
             IconToggleItem(
                 iconRes = R.drawable.rounded_do_not_disturb_on_24,
                 title = stringResource(R.string.flashlight_pulse_disable_on_dnd_title),
-                isChecked = viewModel.isHilightSkipDnd.value,
-                onCheckedChange = { viewModel.setHilightSkipDnd(it) },
+                isChecked = state.isHilightSkipDnd.value,
+                onCheckedChange = { state.setHilightSkipDnd(it) },
                 modifier = Modifier.highlight(highlightSetting == "hilight_skip_dnd"),
             )
         }
@@ -112,7 +112,8 @@ fun HilightSettingsUI(
 
 @Composable
 fun HilightNotificationsSettingsUI(
-    viewModel: MainViewModel,
+    state: HilightState,
+    appPicker: @Composable (onDismiss: () -> Unit, onAppSelected: (NotificationApp) -> Unit) -> Unit,
     modifier: Modifier = Modifier,
     highlightSetting: String? = null,
 ) {
@@ -134,8 +135,8 @@ fun HilightNotificationsSettingsUI(
                 iconRes = R.drawable.rounded_notifications_unread_24,
                 title = stringResource(R.string.hilight_notifications_title),
                 description = stringResource(R.string.hilight_notifications_desc),
-                isChecked = viewModel.isHilightNotificationsEnabled.value,
-                onCheckedChange = { viewModel.setHilightNotificationsEnabled(it) },
+                isChecked = state.isHilightNotificationsEnabled.value,
+                onCheckedChange = { state.setHilightNotificationsEnabled(it) },
                 enabled = isHilightDevice,
                 onDisabledClick = {
                     Toast.makeText(context, R.string.hilight_not_supported_toast, Toast.LENGTH_SHORT).show()
@@ -145,8 +146,8 @@ fun HilightNotificationsSettingsUI(
             ConfigSliderItem(
                 title = stringResource(R.string.hilight_cooldown_title),
                 description = stringResource(R.string.hilight_cooldown_desc),
-                value = viewModel.hilightCooldownSeconds.intValue.toFloat(),
-                onValueChange = { viewModel.setHilightCooldownSeconds(it.toInt()) },
+                value = state.hilightCooldownSeconds.intValue.toFloat(),
+                onValueChange = { state.setHilightCooldownSeconds(it.toInt()) },
                 valueRange = 0f..300f,
                 steps = 19,
                 increment = 15f,
@@ -163,7 +164,7 @@ fun HilightNotificationsSettingsUI(
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
         RoundedCardContainer(spacing = 2.dp) {
-            val apps = viewModel.hilightAppEffects.entries.sortedBy { it.key }
+            val apps = state.hilightAppEffects.entries.sortedBy { it.key }
             if (apps.isEmpty()) {
                 Text(
                     text = stringResource(R.string.hilight_no_apps),
@@ -183,7 +184,7 @@ fun HilightNotificationsSettingsUI(
                     packageName = packageName,
                     effect = effect,
                     onClick = { editingPackage = packageName },
-                    onRemove = { viewModel.removeHilightApp(packageName) },
+                    onRemove = { state.removeHilightApp(packageName) },
                 )
             }
             HilightAddAppItem(onClick = { showAppPicker = true })
@@ -191,19 +192,16 @@ fun HilightNotificationsSettingsUI(
     }
 
     if (showAppPicker) {
-        SingleAppSelectionSheet(
-            onDismissRequest = { showAppPicker = false },
-            onAppSelected = { app -> editingPackage = app.packageName },
-        )
+        appPicker({ showAppPicker = false }) { app -> editingPackage = app.packageName }
     }
 
     editingPackage?.let { packageName ->
         HilightEffectSheet(
             title = appLabel(packageName),
-            initialEffect = viewModel.hilightAppEffects[packageName] ?: HilightEffect(),
+            initialEffect = state.hilightAppEffects[packageName] ?: HilightEffect(),
             onDismiss = { editingPackage = null },
             onSave = { effect ->
-                viewModel.setHilightAppEffect(packageName, effect)
+                state.setHilightAppEffect(packageName, effect)
                 editingPackage = null
             },
             canTry = isHilightDevice,
@@ -215,7 +213,7 @@ fun HilightNotificationsSettingsUI(
 
 @Composable
 fun HilightProgressSettingsUI(
-    viewModel: MainViewModel,
+    state: HilightState,
     modifier: Modifier = Modifier,
     highlightSetting: String? = null,
 ) {
@@ -227,7 +225,7 @@ fun HilightProgressSettingsUI(
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         HilightProgressSection(
-            viewModel = viewModel,
+            state = state,
             isHilightDevice = remember { DeviceUtils.isHilightDevice() },
             highlightSetting = highlightSetting,
         )
@@ -289,22 +287,22 @@ private fun formatCooldown(
 
 @Composable
 private fun HilightProgressSection(
-    viewModel: MainViewModel,
+    state: HilightState,
     isHilightDevice: Boolean,
     highlightSetting: String?,
 ) {
     val context = LocalContext.current
     val view = LocalView.current
-    val mode = viewModel.hilightProgressColorMode.value
-    val color = viewModel.hilightProgressColor.intValue
+    val mode = state.hilightProgressColorMode.value
+    val color = state.hilightProgressColor.intValue
 
     RoundedCardContainer(spacing = 2.dp) {
         IconToggleItem(
             iconRes = R.drawable.rounded_downloading_24,
             title = stringResource(R.string.hilight_progress_toggle_title),
             description = stringResource(R.string.hilight_progress_toggle_desc),
-            isChecked = viewModel.isHilightProgressEnabled.value,
-            onCheckedChange = { viewModel.setHilightProgressEnabled(it) },
+            isChecked = state.isHilightProgressEnabled.value,
+            onCheckedChange = { state.setHilightProgressEnabled(it) },
             enabled = isHilightDevice,
             onDisabledClick = {
                 Toast.makeText(context, R.string.hilight_not_supported_toast, Toast.LENGTH_SHORT).show()
@@ -316,15 +314,15 @@ private fun HilightProgressSection(
             selectedItem = mode,
             onItemSelected = {
                 HapticUtil.performUIHaptic(view)
-                viewModel.setHilightProgressColorMode(it)
+                state.setHilightProgressColorMode(it)
             },
             labelProvider = { context.getString(it.title) },
         )
         HilightProgressPreview(mode = mode, color = color)
         ConfigSliderItem(
             title = stringResource(R.string.hilight_duration_title),
-            value = viewModel.hilightProgressDurationMs.longValue / 1000f,
-            onValueChange = { viewModel.setHilightProgressDurationMs((it * 1000).toLong()) },
+            value = state.hilightProgressDurationMs.longValue / 1000f,
+            onValueChange = { state.setHilightProgressDurationMs((it * 1000).toLong()) },
             valueRange = HilightEffect.MIN_DURATION_MS / 1000f..HilightEffect.MAX_DURATION_MS / 1000f,
             increment = 1f,
             steps = ((HilightEffect.MAX_DURATION_MS - HilightEffect.MIN_DURATION_MS) / 1000 - 1).toInt(),
@@ -337,7 +335,7 @@ private fun HilightProgressSection(
     if (mode != HilightProgressColorMode.VIBGYOR) {
         ColorSwatchPicker(
             selectedColorHex = String.format("#%06X", color and 0xFFFFFF),
-            onColorSelected = { hex -> viewModel.setHilightProgressColor(hex.toColorInt()) },
+            onColorSelected = { hex -> state.setHilightProgressColor(hex.toColorInt()) },
         )
     }
 

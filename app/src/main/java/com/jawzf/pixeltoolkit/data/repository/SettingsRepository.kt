@@ -15,8 +15,6 @@ import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuUtils
 import com.jawzf.pixeltoolkit.domain.diy.Action
 import com.jawzf.pixeltoolkit.domain.diy.ActionGsonAdapter
 import com.jawzf.pixeltoolkit.domain.model.AppIcon
-import com.jawzf.pixeltoolkit.domain.model.HilightEffect
-import com.jawzf.pixeltoolkit.domain.model.HilightProgressColorMode
 import com.jawzf.pixeltoolkit.domain.model.NotificationLightingColorMode
 import com.jawzf.pixeltoolkit.domain.model.NotificationLightingSide
 import com.jawzf.pixeltoolkit.domain.model.NotificationLightingStyle
@@ -171,15 +169,6 @@ class SettingsRepository(
         const val KEY_WIDGET_ENABLED = "widget_enabled"
         const val KEY_STATUS_BAR_ICON_CONTROL_ENABLED = "status_bar_icon_control_enabled"
         const val KEY_EDGE_LIGHTING_ENABLED = "edge_lighting_enabled"
-        const val KEY_HILIGHT_NOTIFICATIONS_ENABLED = "hilight_notifications_enabled"
-        const val KEY_HILIGHT_APP_EFFECTS = "hilight_app_effects"
-        const val KEY_HILIGHT_ONLY_SCREEN_OFF = "hilight_only_screen_off"
-        const val KEY_HILIGHT_COOLDOWN_SECONDS = "hilight_cooldown_seconds"
-        const val KEY_HILIGHT_PROGRESS_ENABLED = "hilight_progress_enabled"
-        const val KEY_HILIGHT_PROGRESS_COLOR_MODE = "hilight_progress_color_mode"
-        const val KEY_HILIGHT_PROGRESS_COLOR = "hilight_progress_color"
-        const val KEY_HILIGHT_PROGRESS_DURATION_MS = "hilight_progress_duration_ms"
-        const val KEY_HILIGHT_SKIP_DND = "hilight_skip_dnd"
         const val KEY_EDGE_LIGHTING_ONLY_SCREEN_OFF = "edge_lighting_only_screen_off"
         const val KEY_EDGE_LIGHTING_AMBIENT_DISPLAY = "edge_lighting_ambient_display"
         const val KEY_EDGE_LIGHTING_AMBIENT_SHOW_LOCK_SCREEN =
@@ -218,7 +207,6 @@ class SettingsRepository(
         const val KEY_EDGE_LIGHTING_DASH_GLOW_LENGTH = "edge_lighting_dash_glow_length"
         const val KEY_EDGE_LIGHTING_DASH_OVERLAP = "edge_lighting_dash_overlap"
         const val KEY_EDGE_LIGHTING_RIPPLE_OVERLAP = "edge_lighting_ripple_overlap"
-        const val KEY_APP_CUSTOM_COLORS = "app_custom_colors"
         const val KEY_LOCK_SCREEN_WALLPAPER_SOURCE = "lock_screen_wallpaper_source"
 
         const val KEY_LAST_CALL_STATE = "last_call_state"
@@ -892,63 +880,6 @@ class SettingsRepository(
     // Feature specific App selections
 
     fun loadNotificationLightingSelectedApps() = loadAppSelection(KEY_EDGE_LIGHTING_SELECTED_APPS)
-
-    // Each app the user adds gets its own effect; apps not in the map never light up
-    fun getHilightAppEffects(): Map<String, HilightEffect> =
-        getString(KEY_HILIGHT_APP_EFFECTS)?.let {
-            try {
-                gson
-                    .fromJson<Map<String, HilightEffect>>(it, object : TypeToken<Map<String, HilightEffect>>() {}.type)
-                    ?.mapValues { (_, effect) -> effect.withValidPattern() }
-            } catch (_: Exception) {
-                null
-            }
-        } ?: emptyMap()
-
-    fun getHilightEffectForApp(packageName: String): HilightEffect? = getHilightAppEffects()[packageName]
-
-    fun setHilightAppEffect(
-        packageName: String,
-        effect: HilightEffect?,
-    ) {
-        val effects = getHilightAppEffects().toMutableMap()
-        if (effect == null) effects.remove(packageName) else effects[packageName] = effect
-        putString(KEY_HILIGHT_APP_EFFECTS, gson.toJson(effects))
-    }
-
-    fun isHilightNotificationsEnabled(): Boolean = getBoolean(KEY_HILIGHT_NOTIFICATIONS_ENABLED, false)
-
-    fun setHilightNotificationsEnabled(enabled: Boolean) = putBoolean(KEY_HILIGHT_NOTIFICATIONS_ENABLED, enabled)
-
-    fun isHilightOnlyWhenScreenOff(): Boolean = getBoolean(KEY_HILIGHT_ONLY_SCREEN_OFF, true)
-
-    fun setHilightOnlyWhenScreenOff(enabled: Boolean) = putBoolean(KEY_HILIGHT_ONLY_SCREEN_OFF, enabled)
-
-    fun isHilightSkipDnd(): Boolean = getBoolean(KEY_HILIGHT_SKIP_DND, true)
-
-    fun setHilightSkipDnd(enabled: Boolean) = putBoolean(KEY_HILIGHT_SKIP_DND, enabled)
-
-    fun getHilightCooldownSeconds(): Int = getInt(KEY_HILIGHT_COOLDOWN_SECONDS, 60)
-
-    fun setHilightCooldownSeconds(seconds: Int) = putInt(KEY_HILIGHT_COOLDOWN_SECONDS, seconds)
-
-    fun isHilightProgressEnabled(): Boolean = getBoolean(KEY_HILIGHT_PROGRESS_ENABLED, false)
-
-    fun setHilightProgressEnabled(enabled: Boolean) = putBoolean(KEY_HILIGHT_PROGRESS_ENABLED, enabled)
-
-    fun getHilightProgressColorMode(): HilightProgressColorMode =
-        HilightProgressColorMode.entries.find { it.name == getString(KEY_HILIGHT_PROGRESS_COLOR_MODE) }
-            ?: HilightProgressColorMode.VIBGYOR
-
-    fun setHilightProgressColorMode(mode: HilightProgressColorMode) = putString(KEY_HILIGHT_PROGRESS_COLOR_MODE, mode.name)
-
-    fun getHilightProgressColor(): Int = getInt(KEY_HILIGHT_PROGRESS_COLOR, HilightEffect.DEFAULT_COLOR)
-
-    fun setHilightProgressColor(color: Int) = putInt(KEY_HILIGHT_PROGRESS_COLOR, color)
-
-    fun getHilightProgressDurationMs(): Long = getLong(KEY_HILIGHT_PROGRESS_DURATION_MS, HilightEffect.DEFAULT_DURATION_MS)
-
-    fun setHilightProgressDurationMs(durationMs: Long) = putLong(KEY_HILIGHT_PROGRESS_DURATION_MS, durationMs)
 
     /**
      * Executes the save notification lighting selected apps operation.

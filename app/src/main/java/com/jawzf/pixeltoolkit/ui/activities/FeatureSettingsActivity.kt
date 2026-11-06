@@ -78,6 +78,10 @@ import com.jawzf.pixeltoolkit.feature.input.gesture.ui.BackGestureSettingsUI
 import com.jawzf.pixeltoolkit.feature.input.ime.ui.KeyboardSettingsUI
 import com.jawzf.pixeltoolkit.feature.input.links.ui.LinkPickerScreen
 import com.jawzf.pixeltoolkit.feature.notifications.autodismiss.ui.AutoDismissNotificationsSettingsUI
+import com.jawzf.pixeltoolkit.feature.notifications.hilight.ui.HilightNotificationsSettingsUI
+import com.jawzf.pixeltoolkit.feature.notifications.hilight.ui.HilightProgressSettingsUI
+import com.jawzf.pixeltoolkit.feature.notifications.hilight.ui.HilightSettingsUI
+import com.jawzf.pixeltoolkit.feature.notifications.hilight.ui.HilightStatus
 import com.jawzf.pixeltoolkit.feature.notifications.snooze.ui.NotificationSnoozingSettingsUI
 import com.jawzf.pixeltoolkit.feature.notifications.snooze.ui.SnoozeNotificationsSettingsUI
 import com.jawzf.pixeltoolkit.feature.power.battery.ui.BatteriesPreviewCard
@@ -119,10 +123,6 @@ import com.jawzf.pixeltoolkit.ui.features.system.ButtonRemapSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.DynamicNightLightSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.FlashlightPulseSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.FlashlightSettingsUI
-import com.jawzf.pixeltoolkit.ui.features.system.HilightNotificationsSettingsUI
-import com.jawzf.pixeltoolkit.ui.features.system.HilightProgressSettingsUI
-import com.jawzf.pixeltoolkit.ui.features.system.HilightSettingsUI
-import com.jawzf.pixeltoolkit.ui.features.system.HilightStatus
 import com.jawzf.pixeltoolkit.ui.features.system.LiveWallpaperSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.LockScreenClockSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.LockscreenShortcutsSettingsUI
@@ -884,7 +884,7 @@ class FeatureSettingsActivity : AppCompatActivity() {
 
                                 if (featureId == "Hilight") {
                                     HilightSettingsUI(
-                                        viewModel = viewModel,
+                                        state = viewModel.hilight,
                                         highlightSetting = highlightSetting,
                                     )
                                 }
@@ -926,7 +926,13 @@ class FeatureSettingsActivity : AppCompatActivity() {
 
                                     "Hilight notifications" -> {
                                         HilightNotificationsSettingsUI(
-                                            viewModel = viewModel,
+                                            state = viewModel.hilight,
+                                            appPicker = { onDismiss, onAppSelected ->
+                                                SingleAppSelectionSheet(
+                                                    onDismissRequest = onDismiss,
+                                                    onAppSelected = onAppSelected,
+                                                )
+                                            },
                                             modifier = Modifier.padding(top = 16.dp),
                                             highlightSetting = highlightSetting,
                                         )
@@ -934,7 +940,7 @@ class FeatureSettingsActivity : AppCompatActivity() {
 
                                     "Hilight live progress" -> {
                                         HilightProgressSettingsUI(
-                                            viewModel = viewModel,
+                                            state = viewModel.hilight,
                                             modifier = Modifier.padding(top = 16.dp),
                                             highlightSetting = highlightSetting,
                                         )

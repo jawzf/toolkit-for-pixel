@@ -1,11 +1,11 @@
-package com.jawzf.pixeltoolkit.utils.hardware
+package com.jawzf.pixeltoolkit.feature.notifications.hilight
 
 import android.content.Context
 import android.hardware.lights.Light
 import android.hardware.lights.LightState
 import android.os.Binder
 import android.os.IBinder
-import com.jawzf.pixeltoolkit.ToolkitApp
+import com.jawzf.pixeltoolkit.core.platform.AppGlobals
 import com.jawzf.pixeltoolkit.core.platform.shell.PrivilegedMode
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuUtils
@@ -43,7 +43,7 @@ object HilightLights {
 
     fun isAccessGranted(): Boolean =
         try {
-            isModeSupported(ToolkitApp.context) && ShizukuUtils.isShizukuAvailable() && ShizukuUtils.hasPermission()
+            isModeSupported(AppGlobals.context) && ShizukuUtils.isShizukuAvailable() && ShizukuUtils.hasPermission()
         } catch (_: Exception) {
             false
         }
