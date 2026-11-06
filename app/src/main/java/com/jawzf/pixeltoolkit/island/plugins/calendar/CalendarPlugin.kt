@@ -7,6 +7,7 @@ import android.content.Intent
 import android.provider.CalendarContract
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.unit.dp
+import com.jawzf.pixeltoolkit.core.data.glance.StatusGlanceSettings
 import com.jawzf.pixeltoolkit.core.platform.device.CalendarEventUtil
 import com.jawzf.pixeltoolkit.core.platform.device.UpcomingCalendarEvent
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
@@ -52,12 +53,13 @@ class CalendarPlugin : BaseIslandPlugin() {
         }
         c.scope.launch {
             val next = withContext(Dispatchers.IO) {
-                val ids = c.settings.getStatusGlanceCalendarSelectedCalendars().mapNotNull { it.toLongOrNull() }.toSet()
+                val glanceSettings = StatusGlanceSettings(c.service)
+                val ids = glanceSettings.getStatusGlanceCalendarSelectedCalendars().mapNotNull { it.toLongOrNull() }.toSet()
                 CalendarEventUtil.queryNextUpcomingEvent(
                     c.service,
-                    c.settings.getStatusGlanceCalendarTimeframe(),
+                    glanceSettings.getStatusGlanceCalendarTimeframe(),
                     ids,
-                    c.settings.isStatusGlanceCalendarShowAllDayEnabled(),
+                    glanceSettings.isStatusGlanceCalendarShowAllDayEnabled(),
                 )
             }
             if (ctx == null) return@launch

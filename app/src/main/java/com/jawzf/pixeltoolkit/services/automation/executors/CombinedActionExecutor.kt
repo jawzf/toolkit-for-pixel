@@ -28,6 +28,7 @@ import com.jawzf.pixeltoolkit.core.data.action.Action
 import com.jawzf.pixeltoolkit.core.data.action.ActionExecutor
 import com.jawzf.pixeltoolkit.core.data.action.NotificationLightingStyle
 import com.jawzf.pixeltoolkit.core.data.duo.DuoSettings
+import com.jawzf.pixeltoolkit.core.data.glance.StatusGlanceSettings
 import com.jawzf.pixeltoolkit.core.data.power.ChargingModeUtil
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticFeedbackType
@@ -632,6 +633,7 @@ object CombinedActionExecutor : ActionExecutor {
                 is Action.OverlayControl -> {
                     val settings = SettingsRepository(context)
                     val duo = DuoSettings(context)
+                    val glance = StatusGlanceSettings(context)
                     fun resolve(mode: Action.OverlayMode, current: Boolean): Boolean? =
                         when (mode) {
                             Action.OverlayMode.SKIP -> null
@@ -641,7 +643,7 @@ object CombinedActionExecutor : ActionExecutor {
                         }
                     resolve(action.duo, duo.isDuoEnabled())?.let(duo::setDuoEnabled)
                     resolve(action.island, settings.isIslandEnabled())?.let(settings::setIslandEnabled)
-                    resolve(action.statusGlance, settings.isStatusGlanceEnabled())?.let(settings::setStatusGlanceEnabled)
+                    resolve(action.statusGlance, glance.isStatusGlanceEnabled())?.let(glance::setStatusGlanceEnabled)
                 }
                 is Action.TurnOffBackGesture -> withContext(Dispatchers.IO) { InputSettings(context).backGesture.turnOff() }
                 is Action.TurnOnBackGesture -> withContext(Dispatchers.IO) { InputSettings(context).backGesture.turnOn() }
@@ -651,9 +653,9 @@ object CombinedActionExecutor : ActionExecutor {
                 is Action.TurnOnIsland -> SettingsRepository(context).setIslandEnabled(true)
                 is Action.TurnOffIsland -> SettingsRepository(context).setIslandEnabled(false)
                 is Action.ToggleIsland -> SettingsRepository(context).let { it.setIslandEnabled(!it.isIslandEnabled()) }
-                is Action.TurnOnStatusGlance -> SettingsRepository(context).setStatusGlanceEnabled(true)
-                is Action.TurnOffStatusGlance -> SettingsRepository(context).setStatusGlanceEnabled(false)
-                is Action.ToggleStatusGlance -> SettingsRepository(context).let { it.setStatusGlanceEnabled(!it.isStatusGlanceEnabled()) }
+                is Action.TurnOnStatusGlance -> StatusGlanceSettings(context).setStatusGlanceEnabled(true)
+                is Action.TurnOffStatusGlance -> StatusGlanceSettings(context).setStatusGlanceEnabled(false)
+                is Action.ToggleStatusGlance -> StatusGlanceSettings(context).let { it.setStatusGlanceEnabled(!it.isStatusGlanceEnabled()) }
 
                 is Action.SometimesEssentials -> {
                     val repository =

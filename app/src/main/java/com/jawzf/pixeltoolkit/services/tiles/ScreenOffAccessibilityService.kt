@@ -24,6 +24,7 @@ import android.view.KeyEvent
 import android.view.accessibility.AccessibilityEvent
 import androidx.core.content.ContextCompat
 import com.jawzf.pixeltoolkit.core.data.duo.DuoSettings
+import com.jawzf.pixeltoolkit.core.data.glance.StatusGlanceSettings
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticFeedbackType
 import com.jawzf.pixeltoolkit.core.design.haptics.performHapticFeedback
 import com.jawzf.pixeltoolkit.core.platform.device.CarConnectionMonitor
@@ -33,6 +34,7 @@ import com.jawzf.pixeltoolkit.feature.display.DisplaySettings
 import com.jawzf.pixeltoolkit.feature.display.aod.AodForceTurnOffHandler
 import com.jawzf.pixeltoolkit.feature.display.aod.AodWallpaperOverlayHandler
 import com.jawzf.pixeltoolkit.feature.display.duo.DuoOverlayHandler
+import com.jawzf.pixeltoolkit.feature.display.glance.StatusGlanceHandler
 import com.jawzf.pixeltoolkit.feature.display.ondisplay.AmbientGlanceHandler
 import com.jawzf.pixeltoolkit.feature.display.pixels.SmartPixelsHandler
 import com.jawzf.pixeltoolkit.feature.display.statusbar.StatusBarIconHandler
@@ -54,7 +56,6 @@ import com.jawzf.pixeltoolkit.services.handlers.AppFlowHandler
 import com.jawzf.pixeltoolkit.services.handlers.ButtonRemapHandler
 import com.jawzf.pixeltoolkit.services.handlers.FlashlightHandler
 import com.jawzf.pixeltoolkit.services.handlers.LockscreenShortcutsHandler
-import com.jawzf.pixeltoolkit.services.handlers.StatusGlanceHandler
 import com.jawzf.pixeltoolkit.services.receivers.FlashlightActionReceiver
 import com.jawzf.pixeltoolkit.utils.CameraSession
 import com.jawzf.pixeltoolkit.utils.DeviceLockUtils
@@ -272,21 +273,21 @@ class ScreenOffAccessibilityService :
             } else if (key == SettingsRepository.KEY_ISLAND_SUPPRESS_SYSTEM_HEADS_UP) {
                 SettingsRepository(this).applyHeadsUpSuppression()
             } else if (key?.startsWith("status_glance_") == true ||
-                key == SettingsRepository.KEY_STATUS_GLANCE_ENABLED ||
-                key == SettingsRepository.KEY_STATUS_GLANCE_USE_AUTO_DETECT ||
-                key == SettingsRepository.KEY_STATUS_GLANCE_OFFSET_X ||
-                key == SettingsRepository.KEY_STATUS_GLANCE_OFFSET_Y ||
-                key == SettingsRepository.KEY_STATUS_GLANCE_MAX_WIDTH ||
-                key == SettingsRepository.KEY_STATUS_GLANCE_FONT_SIZE ||
-                key == SettingsRepository.KEY_STATUS_GLANCE_SHOW_FLASHLIGHT ||
-                key == SettingsRepository.KEY_STATUS_GLANCE_SHOW_CALENDAR ||
-                key == SettingsRepository.KEY_STATUS_GLANCE_SHOW_MEDIA ||
-                key == SettingsRepository.KEY_STATUS_GLANCE_SHOW_TIME ||
-                key == SettingsRepository.KEY_STATUS_GLANCE_BACKGROUND_PILL ||
-                key == SettingsRepository.KEY_STATUS_GLANCE_ALBUM_ART_COLORS ||
-                key == SettingsRepository.KEY_STATUS_GLANCE_HIDE_WHEN_FULLSCREEN ||
-                key == SettingsRepository.KEY_STATUS_GLANCE_HIDE_IN_QUICK_SETTINGS ||
-                key == SettingsRepository.KEY_STATUS_GLANCE_HIDE_WHEN_LOCKED
+                key == StatusGlanceSettings.KEY_STATUS_GLANCE_ENABLED ||
+                key == StatusGlanceSettings.KEY_STATUS_GLANCE_USE_AUTO_DETECT ||
+                key == StatusGlanceSettings.KEY_STATUS_GLANCE_OFFSET_X ||
+                key == StatusGlanceSettings.KEY_STATUS_GLANCE_OFFSET_Y ||
+                key == StatusGlanceSettings.KEY_STATUS_GLANCE_MAX_WIDTH ||
+                key == StatusGlanceSettings.KEY_STATUS_GLANCE_FONT_SIZE ||
+                key == StatusGlanceSettings.KEY_STATUS_GLANCE_SHOW_FLASHLIGHT ||
+                key == StatusGlanceSettings.KEY_STATUS_GLANCE_SHOW_CALENDAR ||
+                key == StatusGlanceSettings.KEY_STATUS_GLANCE_SHOW_MEDIA ||
+                key == StatusGlanceSettings.KEY_STATUS_GLANCE_SHOW_TIME ||
+                key == StatusGlanceSettings.KEY_STATUS_GLANCE_BACKGROUND_PILL ||
+                key == StatusGlanceSettings.KEY_STATUS_GLANCE_ALBUM_ART_COLORS ||
+                key == StatusGlanceSettings.KEY_STATUS_GLANCE_HIDE_WHEN_FULLSCREEN ||
+                key == StatusGlanceSettings.KEY_STATUS_GLANCE_HIDE_IN_QUICK_SETTINGS ||
+                key == StatusGlanceSettings.KEY_STATUS_GLANCE_HIDE_WHEN_LOCKED
             ) {
                 statusGlanceHandler.updateState()
             } else if (key == SettingsRepository.KEY_LOCKSCREEN_SHORTCUTS_ENABLED ||
