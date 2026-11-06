@@ -202,6 +202,9 @@ class AppUpdatesActivity : AppCompatActivity() {
                                 onAppSelected = onAppSelected,
                             )
                         },
+                        onDownloadAndInstall = { apkUrl, apkName, onProgressUpdate ->
+                            AutoUpdateManagerHelper(context).downloadAndInstallApk(apkUrl, apkName, onProgressUpdate)
+                        },
                     )
                 }
 

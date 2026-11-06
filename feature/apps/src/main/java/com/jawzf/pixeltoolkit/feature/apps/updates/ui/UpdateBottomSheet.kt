@@ -62,7 +62,7 @@ fun UpdateBottomSheet(
     updateInfo: UpdateInfo?,
     isChecking: Boolean,
     onDismissRequest: () -> Unit,
-    onDownloadAndInstall: suspend (apkUrl: String, apkName: String, onProgressUpdate: (Int) -> Unit) -> Unit = { _, _, _ -> },
+    onDownloadAndInstall: suspend (apkUrl: String, apkName: String, onProgressUpdate: (Int) -> Unit) -> Unit,
 ) {
     val sheetState = rememberModalBottomSheetState()
     val context = LocalContext.current

@@ -63,6 +63,7 @@ fun AddRepoBottomSheet(
     onDismissRequest: () -> Unit,
     onTrackClick: () -> Unit,
     appPicker: @Composable (onDismiss: () -> Unit, onAppSelected: (NotificationApp) -> Unit) -> Unit,
+    onDownloadAndInstall: suspend (apkUrl: String, apkName: String, onProgressUpdate: (Int) -> Unit) -> Unit,
 ) {
     val context = LocalContext.current
     val view = LocalView.current
@@ -123,6 +124,7 @@ fun AddRepoBottomSheet(
             updateInfo = updateInfo,
             isChecking = false,
             onDismissRequest = { showReleaseNotes = false },
+            onDownloadAndInstall = onDownloadAndInstall,
         )
     }
 
