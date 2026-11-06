@@ -36,13 +36,13 @@ import androidx.core.content.ContextCompat
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.jawzf.pixeltoolkit.core.data.duo.DuoSettings
+import com.jawzf.pixeltoolkit.core.data.glance.StatusGlanceSettings
 import com.jawzf.pixeltoolkit.core.data.power.ChargeLimitUtil
 import com.jawzf.pixeltoolkit.core.data.prefs.AppSelection
 import com.jawzf.pixeltoolkit.core.design.R
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
+import com.jawzf.pixeltoolkit.core.platform.AppComponents
+import com.jawzf.pixeltoolkit.core.platform.media.MediaArtBridge
 import com.jawzf.pixeltoolkit.feature.display.DisplaySettings
-import com.jawzf.pixeltoolkit.feature.display.glance.StatusGlanceView
-import com.jawzf.pixeltoolkit.services.NotificationListener
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -65,7 +65,7 @@ class StatusGlanceHandler(
     private var touchHandler: StatusGlanceTouchHandler? = null
     private val mainHandler = Handler(Looper.getMainLooper())
 
-    private val settingsRepository by lazy { SettingsRepository(service) }
+    private val settingsRepository by lazy { StatusGlanceSettings(service) }
     private val keyguardManager by lazy { service.getSystemService(Context.KEYGUARD_SERVICE) as? KeyguardManager }
     private val cameraManager by lazy { service.getSystemService(Context.CAMERA_SERVICE) as CameraManager }
     private val mediaSessionManager by lazy { service.getSystemService(Context.MEDIA_SESSION_SERVICE) as? MediaSessionManager }
@@ -714,7 +714,7 @@ class StatusGlanceHandler(
     }
 
     private fun getExcludedPackages(): Set<String> {
-        val excludedAppsJson = settingsRepository.getString(DisplaySettings.KEY_AOD_WALLPAPER_MEDIA_EXCLUDED_APPS, null)
+        val excludedAppsJson = DisplaySettings(service).getString(DisplaySettings.KEY_AOD_WALLPAPER_MEDIA_EXCLUDED_APPS, null)
         return if (!excludedAppsJson.isNullOrBlank()) {
             try {
                 val listType = object : TypeToken<List<AppSelection>>() {}.type
@@ -733,7 +733,7 @@ class StatusGlanceHandler(
     private fun registerMediaListener() {
         if (!isMediaSessionRegistered && mediaSessionManager != null) {
             try {
-                val componentName = ComponentName(service, NotificationListener::class.java)
+                val componentName = ComponentName(service, AppComponents.NOTIFICATION_LISTENER)
                 val listener = MediaSessionManager.OnActiveSessionsChangedListener { controllers ->
                     updateActiveMediaSessions(controllers)
                 }
@@ -926,7 +926,7 @@ class StatusGlanceHandler(
             val artist = metadata?.getString(MediaMetadata.METADATA_KEY_ARTIST)
             if (!title.isNullOrBlank()) {
                 val hashToUse = kotlin.math.abs("${title}_$artist".hashCode().toLong())
-                bitmap = NotificationListener.getCachedBitmap(hashToUse)
+                bitmap = MediaArtBridge.getCachedBitmap(hashToUse)
                 if (bitmap == null) {
                     val artFile = File(service.cacheDir, "art_$hashToUse.png")
                     if (artFile.exists()) {
@@ -939,7 +939,7 @@ class StatusGlanceHandler(
         }
 
         if (bitmap == null) {
-            bitmap = NotificationListener.getLatestArtBitmap()
+            bitmap = MediaArtBridge.getLatestArtBitmap()
         }
 
         return bitmap

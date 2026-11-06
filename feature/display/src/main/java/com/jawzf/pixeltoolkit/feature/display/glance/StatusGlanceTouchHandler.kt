@@ -11,11 +11,10 @@ import android.os.SystemClock
 import android.view.KeyEvent
 import android.view.MotionEvent
 import com.jawzf.pixeltoolkit.core.data.action.Action
+import com.jawzf.pixeltoolkit.core.data.action.ActionRunner
+import com.jawzf.pixeltoolkit.core.data.glance.StatusGlanceSettings
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticFeedbackType
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.feature.display.glance.StatusGlanceView
-import com.jawzf.pixeltoolkit.services.automation.executors.CombinedActionExecutor
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -26,7 +25,7 @@ import kotlin.math.hypot
 class StatusGlanceTouchHandler(
     private val service: AccessibilityService,
 ) {
-    private val settingsRepository by lazy { SettingsRepository(service) }
+    private val settingsRepository by lazy { StatusGlanceSettings(service) }
     private val audioManager by lazy { service.getSystemService(Context.AUDIO_SERVICE) as AudioManager }
     private val handler = Handler(Looper.getMainLooper())
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
@@ -260,7 +259,7 @@ class StatusGlanceTouchHandler(
     private fun executeAction(action: Action) {
         scope.launch {
             try {
-                CombinedActionExecutor.execute(service, action)
+                ActionRunner.execute(service, action)
             } catch (_: Exception) {
             }
         }

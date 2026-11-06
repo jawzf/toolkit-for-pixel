@@ -38,6 +38,7 @@ import com.jawzf.pixeltoolkit.core.data.action.Action
 import com.jawzf.pixeltoolkit.core.data.apps.AppUtil
 import com.jawzf.pixeltoolkit.core.data.backup.ConfigBackup
 import com.jawzf.pixeltoolkit.core.data.duo.DuoSettings
+import com.jawzf.pixeltoolkit.core.data.glance.StatusGlanceSettings
 import com.jawzf.pixeltoolkit.core.data.log.LogManager
 import com.jawzf.pixeltoolkit.core.data.prefs.AppSelection
 import com.jawzf.pixeltoolkit.core.design.R
@@ -475,6 +476,7 @@ class MainViewModel : ViewModel() {
 
     lateinit var settingsRepository: SettingsRepository
     private lateinit var duoSettings: DuoSettings
+    private lateinit var glanceSettings: StatusGlanceSettings
     private var appContext: Context? = null
 
     val gitHubToken = mutableStateOf<String?>(null)
@@ -685,92 +687,92 @@ class MainViewModel : ViewModel() {
                     SettingsRepository.KEY_ISLAND_OTP_TIMEOUT_MS ->
                         islandOtpTimeoutMs.longValue = settingsRepository.getIslandOtpTimeoutMs()
 
-                    SettingsRepository.KEY_STATUS_GLANCE_ENABLED ->
-                        isStatusGlanceEnabled.value = settingsRepository.isStatusGlanceEnabled()
+                    StatusGlanceSettings.KEY_STATUS_GLANCE_ENABLED ->
+                        isStatusGlanceEnabled.value = glanceSettings.isStatusGlanceEnabled()
 
-                    SettingsRepository.KEY_STATUS_GLANCE_USE_AUTO_DETECT ->
-                        isStatusGlanceAutoDetect.value = settingsRepository.isStatusGlanceAutoDetectEnabled()
+                    StatusGlanceSettings.KEY_STATUS_GLANCE_USE_AUTO_DETECT ->
+                        isStatusGlanceAutoDetect.value = glanceSettings.isStatusGlanceAutoDetectEnabled()
 
-                    SettingsRepository.KEY_STATUS_GLANCE_OFFSET_X ->
-                        statusGlanceOffsetX.floatValue = settingsRepository.getStatusGlanceOffsetX()
+                    StatusGlanceSettings.KEY_STATUS_GLANCE_OFFSET_X ->
+                        statusGlanceOffsetX.floatValue = glanceSettings.getStatusGlanceOffsetX()
 
-                    SettingsRepository.KEY_STATUS_GLANCE_OFFSET_Y ->
-                        statusGlanceOffsetY.floatValue = settingsRepository.getStatusGlanceOffsetY()
+                    StatusGlanceSettings.KEY_STATUS_GLANCE_OFFSET_Y ->
+                        statusGlanceOffsetY.floatValue = glanceSettings.getStatusGlanceOffsetY()
 
-                    SettingsRepository.KEY_STATUS_GLANCE_MAX_WIDTH ->
-                        statusGlanceMaxWidth.floatValue = settingsRepository.getStatusGlanceMaxWidth()
+                    StatusGlanceSettings.KEY_STATUS_GLANCE_MAX_WIDTH ->
+                        statusGlanceMaxWidth.floatValue = glanceSettings.getStatusGlanceMaxWidth()
 
-                    SettingsRepository.KEY_STATUS_GLANCE_FONT_SIZE ->
-                        statusGlanceFontSize.floatValue = settingsRepository.getStatusGlanceFontSize()
+                    StatusGlanceSettings.KEY_STATUS_GLANCE_FONT_SIZE ->
+                        statusGlanceFontSize.floatValue = glanceSettings.getStatusGlanceFontSize()
 
-                    SettingsRepository.KEY_STATUS_GLANCE_SHOW_FLASHLIGHT ->
-                        isStatusGlanceShowFlashlight.value = settingsRepository.isStatusGlanceShowFlashlightEnabled()
+                    StatusGlanceSettings.KEY_STATUS_GLANCE_SHOW_FLASHLIGHT ->
+                        isStatusGlanceShowFlashlight.value = glanceSettings.isStatusGlanceShowFlashlightEnabled()
 
-                    SettingsRepository.KEY_STATUS_GLANCE_SHOW_CALENDAR ->
-                        isStatusGlanceShowCalendar.value = settingsRepository.isStatusGlanceShowCalendarEnabled()
+                    StatusGlanceSettings.KEY_STATUS_GLANCE_SHOW_CALENDAR ->
+                        isStatusGlanceShowCalendar.value = glanceSettings.isStatusGlanceShowCalendarEnabled()
 
-                    SettingsRepository.KEY_STATUS_GLANCE_CALENDAR_TIMEFRAME ->
-                        statusGlanceCalendarTimeframe.value = settingsRepository.getStatusGlanceCalendarTimeframe()
+                    StatusGlanceSettings.KEY_STATUS_GLANCE_CALENDAR_TIMEFRAME ->
+                        statusGlanceCalendarTimeframe.value = glanceSettings.getStatusGlanceCalendarTimeframe()
 
-                    SettingsRepository.KEY_STATUS_GLANCE_CALENDAR_SHOW_ALL_DAY ->
-                        statusGlanceCalendarShowAllDay.value = settingsRepository.isStatusGlanceCalendarShowAllDayEnabled()
+                    StatusGlanceSettings.KEY_STATUS_GLANCE_CALENDAR_SHOW_ALL_DAY ->
+                        statusGlanceCalendarShowAllDay.value = glanceSettings.isStatusGlanceCalendarShowAllDayEnabled()
 
-                    SettingsRepository.KEY_STATUS_GLANCE_CALENDAR_SELECTED_CALENDARS ->
-                        statusGlanceSelectedCalendarIds.value = settingsRepository.getStatusGlanceCalendarSelectedCalendars()
+                    StatusGlanceSettings.KEY_STATUS_GLANCE_CALENDAR_SELECTED_CALENDARS ->
+                        statusGlanceSelectedCalendarIds.value = glanceSettings.getStatusGlanceCalendarSelectedCalendars()
 
-                    SettingsRepository.KEY_STATUS_GLANCE_SHOW_MEDIA ->
-                        isStatusGlanceShowMedia.value = settingsRepository.isStatusGlanceShowMediaEnabled()
+                    StatusGlanceSettings.KEY_STATUS_GLANCE_SHOW_MEDIA ->
+                        isStatusGlanceShowMedia.value = glanceSettings.isStatusGlanceShowMediaEnabled()
 
-                    SettingsRepository.KEY_STATUS_GLANCE_SHOW_TIME ->
-                        isStatusGlanceShowTime.value = settingsRepository.isStatusGlanceShowTimeEnabled()
+                    StatusGlanceSettings.KEY_STATUS_GLANCE_SHOW_TIME ->
+                        isStatusGlanceShowTime.value = glanceSettings.isStatusGlanceShowTimeEnabled()
 
-                    SettingsRepository.KEY_STATUS_GLANCE_BACKGROUND_PILL ->
-                        isStatusGlanceBackgroundPill.value = settingsRepository.isStatusGlanceBackgroundPillEnabled()
+                    StatusGlanceSettings.KEY_STATUS_GLANCE_BACKGROUND_PILL ->
+                        isStatusGlanceBackgroundPill.value = glanceSettings.isStatusGlanceBackgroundPillEnabled()
 
-                    SettingsRepository.KEY_STATUS_GLANCE_ALBUM_ART_COLORS ->
-                        isStatusGlanceAlbumArtColors.value = settingsRepository.isStatusGlanceAlbumArtColorsEnabled()
+                    StatusGlanceSettings.KEY_STATUS_GLANCE_ALBUM_ART_COLORS ->
+                        isStatusGlanceAlbumArtColors.value = glanceSettings.isStatusGlanceAlbumArtColorsEnabled()
 
-                    SettingsRepository.KEY_STATUS_GLANCE_HIDE_WHEN_FULLSCREEN ->
-                        isStatusGlanceHideWhenFullscreen.value = settingsRepository.isStatusGlanceHideWhenFullscreenEnabled()
+                    StatusGlanceSettings.KEY_STATUS_GLANCE_HIDE_WHEN_FULLSCREEN ->
+                        isStatusGlanceHideWhenFullscreen.value = glanceSettings.isStatusGlanceHideWhenFullscreenEnabled()
 
-                    SettingsRepository.KEY_STATUS_GLANCE_HIDE_IN_QUICK_SETTINGS ->
-                        isStatusGlanceHideInQuickSettings.value = settingsRepository.isStatusGlanceHideInQuickSettingsEnabled()
+                    StatusGlanceSettings.KEY_STATUS_GLANCE_HIDE_IN_QUICK_SETTINGS ->
+                        isStatusGlanceHideInQuickSettings.value = glanceSettings.isStatusGlanceHideInQuickSettingsEnabled()
 
-                    SettingsRepository.KEY_STATUS_GLANCE_HIDE_WHEN_LOCKED ->
-                        isStatusGlanceHideWhenLocked.value = settingsRepository.isStatusGlanceHideWhenLockedEnabled()
+                    StatusGlanceSettings.KEY_STATUS_GLANCE_HIDE_WHEN_LOCKED ->
+                        isStatusGlanceHideWhenLocked.value = glanceSettings.isStatusGlanceHideWhenLockedEnabled()
 
-                    SettingsRepository.KEY_STATUS_GLANCE_BOLD_TEXT ->
-                        isStatusGlanceBoldText.value = settingsRepository.isStatusGlanceBoldTextEnabled()
+                    StatusGlanceSettings.KEY_STATUS_GLANCE_BOLD_TEXT ->
+                        isStatusGlanceBoldText.value = glanceSettings.isStatusGlanceBoldTextEnabled()
 
-                    SettingsRepository.KEY_STATUS_GLANCE_SHOW_BATTERY ->
-                        isStatusGlanceShowBattery.value = settingsRepository.isStatusGlanceShowBatteryEnabled()
+                    StatusGlanceSettings.KEY_STATUS_GLANCE_SHOW_BATTERY ->
+                        isStatusGlanceShowBattery.value = glanceSettings.isStatusGlanceShowBatteryEnabled()
 
-                    SettingsRepository.KEY_STATUS_GLANCE_BATTERY_DISPLAY_MODE ->
-                        statusGlanceBatteryDisplayMode.value = settingsRepository.getStatusGlanceBatteryDisplayMode()
+                    StatusGlanceSettings.KEY_STATUS_GLANCE_BATTERY_DISPLAY_MODE ->
+                        statusGlanceBatteryDisplayMode.value = glanceSettings.getStatusGlanceBatteryDisplayMode()
 
-                    SettingsRepository.KEY_STATUS_GLANCE_BATTERY_SHOW_LOW ->
-                        isStatusGlanceBatteryShowLow.value = settingsRepository.isStatusGlanceBatteryShowLowEnabled()
+                    StatusGlanceSettings.KEY_STATUS_GLANCE_BATTERY_SHOW_LOW ->
+                        isStatusGlanceBatteryShowLow.value = glanceSettings.isStatusGlanceBatteryShowLowEnabled()
 
-                    SettingsRepository.KEY_STATUS_GLANCE_BATTERY_SHOW_CHARGING ->
-                        isStatusGlanceBatteryShowCharging.value = settingsRepository.isStatusGlanceBatteryShowChargingEnabled()
+                    StatusGlanceSettings.KEY_STATUS_GLANCE_BATTERY_SHOW_CHARGING ->
+                        isStatusGlanceBatteryShowCharging.value = glanceSettings.isStatusGlanceBatteryShowChargingEnabled()
 
-                    SettingsRepository.KEY_STATUS_GLANCE_BATTERY_SHOW_FULL ->
-                        isStatusGlanceBatteryShowFull.value = settingsRepository.isStatusGlanceBatteryShowFullEnabled()
+                    StatusGlanceSettings.KEY_STATUS_GLANCE_BATTERY_SHOW_FULL ->
+                        isStatusGlanceBatteryShowFull.value = glanceSettings.isStatusGlanceBatteryShowFullEnabled()
 
-                    SettingsRepository.KEY_STATUS_GLANCE_BATTERY_SHOW_OTHERWISE ->
-                        isStatusGlanceBatteryShowOtherwise.value = settingsRepository.isStatusGlanceBatteryShowOtherwiseEnabled()
+                    StatusGlanceSettings.KEY_STATUS_GLANCE_BATTERY_SHOW_OTHERWISE ->
+                        isStatusGlanceBatteryShowOtherwise.value = glanceSettings.isStatusGlanceBatteryShowOtherwiseEnabled()
 
-                    SettingsRepository.KEY_STATUS_GLANCE_BATTERY_ICON_SIZE ->
-                        statusGlanceBatteryIconSize.floatValue = settingsRepository.getStatusGlanceBatteryIconSize()
+                    StatusGlanceSettings.KEY_STATUS_GLANCE_BATTERY_ICON_SIZE ->
+                        statusGlanceBatteryIconSize.floatValue = glanceSettings.getStatusGlanceBatteryIconSize()
 
-                    SettingsRepository.KEY_STATUS_GLANCE_TAP_ACTION ->
-                        statusGlanceTapAction.value = settingsRepository.getStatusGlanceTapAction()
+                    StatusGlanceSettings.KEY_STATUS_GLANCE_TAP_ACTION ->
+                        statusGlanceTapAction.value = glanceSettings.getStatusGlanceTapAction()
 
-                    SettingsRepository.KEY_STATUS_GLANCE_DOUBLE_TAP_ACTION ->
-                        statusGlanceDoubleTapAction.value = settingsRepository.getStatusGlanceDoubleTapAction()
+                    StatusGlanceSettings.KEY_STATUS_GLANCE_DOUBLE_TAP_ACTION ->
+                        statusGlanceDoubleTapAction.value = glanceSettings.getStatusGlanceDoubleTapAction()
 
-                    SettingsRepository.KEY_STATUS_GLANCE_LONG_PRESS_ACTION ->
-                        statusGlanceLongPressAction.value = settingsRepository.getStatusGlanceLongPressAction()
+                    StatusGlanceSettings.KEY_STATUS_GLANCE_LONG_PRESS_ACTION ->
+                        statusGlanceLongPressAction.value = glanceSettings.getStatusGlanceLongPressAction()
 
                     SecuritySettings.KEY_SCREEN_LOCKED_SECURITY_ENABLED,
                     SecuritySettings.KEY_SCREEN_LOCKED_DISABLE_ON_EXTENDED_UNLOCK,
@@ -1196,6 +1198,7 @@ class MainViewModel : ViewModel() {
     fun check(context: Context) {
         appContext = context.applicationContext
         settingsRepository = SettingsRepository(context)
+        glanceSettings = StatusGlanceSettings(context)
         duoSettings = DuoSettings(context)
         NotificationAutoDismisser.isSnoozedByUs = { LiveUpdateSnoozer.isSnoozedByUs(it) }
         notifications.load(context)
@@ -1763,35 +1766,35 @@ class MainViewModel : ViewModel() {
         isIslandSlideTrack.value = settingsRepository.isIslandSlideTrackEnabled()
         isIslandLikeWhilePlaying.value = settingsRepository.isIslandLikeWhilePlayingEnabled()
         isIslandSlideInvertDirection.value = settingsRepository.isIslandSlideInvertDirectionEnabled()
-        isStatusGlanceEnabled.value = settingsRepository.isStatusGlanceEnabled()
-        isStatusGlanceAutoDetect.value = settingsRepository.isStatusGlanceAutoDetectEnabled()
-        statusGlanceOffsetX.floatValue = settingsRepository.getStatusGlanceOffsetX()
-        statusGlanceOffsetY.floatValue = settingsRepository.getStatusGlanceOffsetY()
-        statusGlanceMaxWidth.floatValue = settingsRepository.getStatusGlanceMaxWidth()
-        statusGlanceFontSize.floatValue = settingsRepository.getStatusGlanceFontSize()
-        isStatusGlanceShowFlashlight.value = settingsRepository.isStatusGlanceShowFlashlightEnabled()
-        isStatusGlanceShowCalendar.value = settingsRepository.isStatusGlanceShowCalendarEnabled()
-        statusGlanceCalendarTimeframe.value = settingsRepository.getStatusGlanceCalendarTimeframe()
-        statusGlanceCalendarShowAllDay.value = settingsRepository.isStatusGlanceCalendarShowAllDayEnabled()
-        statusGlanceSelectedCalendarIds.value = settingsRepository.getStatusGlanceCalendarSelectedCalendars()
-        isStatusGlanceShowMedia.value = settingsRepository.isStatusGlanceShowMediaEnabled()
-        isStatusGlanceShowTime.value = settingsRepository.isStatusGlanceShowTimeEnabled()
-        isStatusGlanceBackgroundPill.value = settingsRepository.isStatusGlanceBackgroundPillEnabled()
-        isStatusGlanceAlbumArtColors.value = settingsRepository.isStatusGlanceAlbumArtColorsEnabled()
-        isStatusGlanceHideWhenFullscreen.value = settingsRepository.isStatusGlanceHideWhenFullscreenEnabled()
-        isStatusGlanceHideInQuickSettings.value = settingsRepository.isStatusGlanceHideInQuickSettingsEnabled()
-        isStatusGlanceHideWhenLocked.value = settingsRepository.isStatusGlanceHideWhenLockedEnabled()
-        isStatusGlanceBoldText.value = settingsRepository.isStatusGlanceBoldTextEnabled()
-        isStatusGlanceShowBattery.value = settingsRepository.isStatusGlanceShowBatteryEnabled()
-        statusGlanceBatteryDisplayMode.value = settingsRepository.getStatusGlanceBatteryDisplayMode()
-        isStatusGlanceBatteryShowLow.value = settingsRepository.isStatusGlanceBatteryShowLowEnabled()
-        isStatusGlanceBatteryShowCharging.value = settingsRepository.isStatusGlanceBatteryShowChargingEnabled()
-        isStatusGlanceBatteryShowFull.value = settingsRepository.isStatusGlanceBatteryShowFullEnabled()
-        isStatusGlanceBatteryShowOtherwise.value = settingsRepository.isStatusGlanceBatteryShowOtherwiseEnabled()
-        statusGlanceBatteryIconSize.floatValue = settingsRepository.getStatusGlanceBatteryIconSize()
-        statusGlanceTapAction.value = settingsRepository.getStatusGlanceTapAction()
-        statusGlanceDoubleTapAction.value = settingsRepository.getStatusGlanceDoubleTapAction()
-        statusGlanceLongPressAction.value = settingsRepository.getStatusGlanceLongPressAction()
+        isStatusGlanceEnabled.value = glanceSettings.isStatusGlanceEnabled()
+        isStatusGlanceAutoDetect.value = glanceSettings.isStatusGlanceAutoDetectEnabled()
+        statusGlanceOffsetX.floatValue = glanceSettings.getStatusGlanceOffsetX()
+        statusGlanceOffsetY.floatValue = glanceSettings.getStatusGlanceOffsetY()
+        statusGlanceMaxWidth.floatValue = glanceSettings.getStatusGlanceMaxWidth()
+        statusGlanceFontSize.floatValue = glanceSettings.getStatusGlanceFontSize()
+        isStatusGlanceShowFlashlight.value = glanceSettings.isStatusGlanceShowFlashlightEnabled()
+        isStatusGlanceShowCalendar.value = glanceSettings.isStatusGlanceShowCalendarEnabled()
+        statusGlanceCalendarTimeframe.value = glanceSettings.getStatusGlanceCalendarTimeframe()
+        statusGlanceCalendarShowAllDay.value = glanceSettings.isStatusGlanceCalendarShowAllDayEnabled()
+        statusGlanceSelectedCalendarIds.value = glanceSettings.getStatusGlanceCalendarSelectedCalendars()
+        isStatusGlanceShowMedia.value = glanceSettings.isStatusGlanceShowMediaEnabled()
+        isStatusGlanceShowTime.value = glanceSettings.isStatusGlanceShowTimeEnabled()
+        isStatusGlanceBackgroundPill.value = glanceSettings.isStatusGlanceBackgroundPillEnabled()
+        isStatusGlanceAlbumArtColors.value = glanceSettings.isStatusGlanceAlbumArtColorsEnabled()
+        isStatusGlanceHideWhenFullscreen.value = glanceSettings.isStatusGlanceHideWhenFullscreenEnabled()
+        isStatusGlanceHideInQuickSettings.value = glanceSettings.isStatusGlanceHideInQuickSettingsEnabled()
+        isStatusGlanceHideWhenLocked.value = glanceSettings.isStatusGlanceHideWhenLockedEnabled()
+        isStatusGlanceBoldText.value = glanceSettings.isStatusGlanceBoldTextEnabled()
+        isStatusGlanceShowBattery.value = glanceSettings.isStatusGlanceShowBatteryEnabled()
+        statusGlanceBatteryDisplayMode.value = glanceSettings.getStatusGlanceBatteryDisplayMode()
+        isStatusGlanceBatteryShowLow.value = glanceSettings.isStatusGlanceBatteryShowLowEnabled()
+        isStatusGlanceBatteryShowCharging.value = glanceSettings.isStatusGlanceBatteryShowChargingEnabled()
+        isStatusGlanceBatteryShowFull.value = glanceSettings.isStatusGlanceBatteryShowFullEnabled()
+        isStatusGlanceBatteryShowOtherwise.value = glanceSettings.isStatusGlanceBatteryShowOtherwiseEnabled()
+        statusGlanceBatteryIconSize.floatValue = glanceSettings.getStatusGlanceBatteryIconSize()
+        statusGlanceTapAction.value = glanceSettings.getStatusGlanceTapAction()
+        statusGlanceDoubleTapAction.value = glanceSettings.getStatusGlanceDoubleTapAction()
+        statusGlanceLongPressAction.value = glanceSettings.getStatusGlanceLongPressAction()
         isFlashlightAlwaysTurnOffEnabled.value =
             settingsRepository.getBoolean(SettingsRepository.KEY_FLASHLIGHT_ALWAYS_TURN_OFF_ENABLED)
         isFlashlightFadeEnabled.value =
@@ -3770,60 +3773,60 @@ class MainViewModel : ViewModel() {
 
     fun setStatusGlanceEnabled(enabled: Boolean) {
         isStatusGlanceEnabled.value = enabled
-        settingsRepository.setStatusGlanceEnabled(enabled)
+        glanceSettings.setStatusGlanceEnabled(enabled)
     }
 
     fun setStatusGlanceAutoDetect(enabled: Boolean) {
         isStatusGlanceAutoDetect.value = enabled
-        settingsRepository.setStatusGlanceAutoDetectEnabled(enabled)
+        glanceSettings.setStatusGlanceAutoDetectEnabled(enabled)
     }
 
     fun refreshStatusGlanceCameraPlacement() {
         isFoldableCameraDevice.value = duoSettings.isFoldableDevice()
-        isStatusGlanceOrientationProfiles.value = settingsRepository.isStatusGlanceOrientationProfilesEnabled()
-        isStatusGlanceHiddenInCurrentOrientation.value = settingsRepository.isStatusGlanceHiddenInCurrentOrientation()
-        statusGlanceOffsetX.floatValue = settingsRepository.getStatusGlanceOffsetX()
-        statusGlanceOffsetY.floatValue = settingsRepository.getStatusGlanceOffsetY()
+        isStatusGlanceOrientationProfiles.value = glanceSettings.isStatusGlanceOrientationProfilesEnabled()
+        isStatusGlanceHiddenInCurrentOrientation.value = glanceSettings.isStatusGlanceHiddenInCurrentOrientation()
+        statusGlanceOffsetX.floatValue = glanceSettings.getStatusGlanceOffsetX()
+        statusGlanceOffsetY.floatValue = glanceSettings.getStatusGlanceOffsetY()
     }
 
     fun setStatusGlanceOrientationProfiles(enabled: Boolean) {
-        settingsRepository.setStatusGlanceOrientationProfilesEnabled(enabled)
+        glanceSettings.setStatusGlanceOrientationProfilesEnabled(enabled)
         refreshStatusGlanceCameraPlacement()
     }
 
     fun setStatusGlanceHiddenInCurrentOrientation(hidden: Boolean) {
-        settingsRepository.setStatusGlanceHiddenInCurrentOrientation(hidden)
+        glanceSettings.setStatusGlanceHiddenInCurrentOrientation(hidden)
         isStatusGlanceHiddenInCurrentOrientation.value = hidden
     }
 
     fun setStatusGlanceOffsetX(value: Float) {
         statusGlanceOffsetX.floatValue = value
-        settingsRepository.setStatusGlanceOffsetX(value)
+        glanceSettings.setStatusGlanceOffsetX(value)
     }
 
     fun setStatusGlanceOffsetY(value: Float) {
         statusGlanceOffsetY.floatValue = value
-        settingsRepository.setStatusGlanceOffsetY(value)
+        glanceSettings.setStatusGlanceOffsetY(value)
     }
 
     fun setStatusGlanceShowFlashlight(enabled: Boolean) {
         isStatusGlanceShowFlashlight.value = enabled
-        settingsRepository.setStatusGlanceShowFlashlightEnabled(enabled)
+        glanceSettings.setStatusGlanceShowFlashlightEnabled(enabled)
     }
 
     fun setStatusGlanceShowCalendar(enabled: Boolean) {
         isStatusGlanceShowCalendar.value = enabled
-        settingsRepository.setStatusGlanceShowCalendarEnabled(enabled)
+        glanceSettings.setStatusGlanceShowCalendarEnabled(enabled)
     }
 
     fun setStatusGlanceCalendarTimeframe(timeframe: String) {
         statusGlanceCalendarTimeframe.value = timeframe
-        settingsRepository.setStatusGlanceCalendarTimeframe(timeframe)
+        glanceSettings.setStatusGlanceCalendarTimeframe(timeframe)
     }
 
     fun setStatusGlanceCalendarShowAllDay(enabled: Boolean) {
         statusGlanceCalendarShowAllDay.value = enabled
-        settingsRepository.setStatusGlanceCalendarShowAllDayEnabled(enabled)
+        glanceSettings.setStatusGlanceCalendarShowAllDayEnabled(enabled)
     }
 
     fun fetchStatusGlanceCalendars(context: Context) {
@@ -3836,7 +3839,7 @@ class MainViewModel : ViewModel() {
         }
 
         viewModelScope.launch(Dispatchers.IO) {
-            val savedSelected = settingsRepository.getStatusGlanceCalendarSelectedCalendars()
+            val savedSelected = glanceSettings.getStatusGlanceCalendarSelectedCalendars()
             withContext(Dispatchers.Main) {
                 statusGlanceSelectedCalendarIds.value = savedSelected
             }
@@ -3894,7 +3897,7 @@ class MainViewModel : ViewModel() {
             currentIds.add(idString)
         }
         statusGlanceSelectedCalendarIds.value = currentIds
-        settingsRepository.saveStatusGlanceCalendarSelectedCalendars(currentIds)
+        glanceSettings.saveStatusGlanceCalendarSelectedCalendars(currentIds)
 
         val index = statusGlanceAvailableCalendars.indexOfFirst { it.id == calendarId }
         if (index != -1) {
@@ -3905,102 +3908,102 @@ class MainViewModel : ViewModel() {
 
     fun setStatusGlanceShowMedia(enabled: Boolean) {
         isStatusGlanceShowMedia.value = enabled
-        settingsRepository.setStatusGlanceShowMediaEnabled(enabled)
+        glanceSettings.setStatusGlanceShowMediaEnabled(enabled)
     }
 
     fun setStatusGlanceShowTime(enabled: Boolean) {
         isStatusGlanceShowTime.value = enabled
-        settingsRepository.setStatusGlanceShowTimeEnabled(enabled)
+        glanceSettings.setStatusGlanceShowTimeEnabled(enabled)
     }
 
     fun setStatusGlanceBackgroundPill(enabled: Boolean) {
         isStatusGlanceBackgroundPill.value = enabled
-        settingsRepository.setStatusGlanceBackgroundPillEnabled(enabled)
+        glanceSettings.setStatusGlanceBackgroundPillEnabled(enabled)
     }
 
     fun setStatusGlanceAlbumArtColors(enabled: Boolean) {
         isStatusGlanceAlbumArtColors.value = enabled
-        settingsRepository.setStatusGlanceAlbumArtColorsEnabled(enabled)
+        glanceSettings.setStatusGlanceAlbumArtColorsEnabled(enabled)
     }
 
     fun setStatusGlanceHideWhenFullscreen(enabled: Boolean) {
         isStatusGlanceHideWhenFullscreen.value = enabled
-        settingsRepository.setStatusGlanceHideWhenFullscreenEnabled(enabled)
+        glanceSettings.setStatusGlanceHideWhenFullscreenEnabled(enabled)
     }
 
     fun setStatusGlanceHideInQuickSettings(enabled: Boolean) {
         isStatusGlanceHideInQuickSettings.value = enabled
-        settingsRepository.setStatusGlanceHideInQuickSettingsEnabled(enabled)
+        glanceSettings.setStatusGlanceHideInQuickSettingsEnabled(enabled)
     }
 
     fun setStatusGlanceHideWhenLocked(enabled: Boolean) {
         isStatusGlanceHideWhenLocked.value = enabled
-        settingsRepository.setStatusGlanceHideWhenLockedEnabled(enabled)
+        glanceSettings.setStatusGlanceHideWhenLockedEnabled(enabled)
     }
 
     fun setStatusGlanceBoldText(enabled: Boolean) {
         isStatusGlanceBoldText.value = enabled
-        settingsRepository.setStatusGlanceBoldTextEnabled(enabled)
+        glanceSettings.setStatusGlanceBoldTextEnabled(enabled)
     }
 
     fun setStatusGlanceShowBattery(enabled: Boolean) {
         isStatusGlanceShowBattery.value = enabled
-        settingsRepository.setStatusGlanceShowBatteryEnabled(enabled)
+        glanceSettings.setStatusGlanceShowBatteryEnabled(enabled)
     }
 
     fun setStatusGlanceBatteryDisplayMode(mode: String) {
         statusGlanceBatteryDisplayMode.value = mode
-        settingsRepository.setStatusGlanceBatteryDisplayMode(mode)
+        glanceSettings.setStatusGlanceBatteryDisplayMode(mode)
     }
 
     fun setStatusGlanceBatteryShowLow(enabled: Boolean) {
         isStatusGlanceBatteryShowLow.value = enabled
-        settingsRepository.setStatusGlanceBatteryShowLowEnabled(enabled)
+        glanceSettings.setStatusGlanceBatteryShowLowEnabled(enabled)
     }
 
     fun setStatusGlanceBatteryShowCharging(enabled: Boolean) {
         isStatusGlanceBatteryShowCharging.value = enabled
-        settingsRepository.setStatusGlanceBatteryShowChargingEnabled(enabled)
+        glanceSettings.setStatusGlanceBatteryShowChargingEnabled(enabled)
     }
 
     fun setStatusGlanceBatteryShowFull(enabled: Boolean) {
         isStatusGlanceBatteryShowFull.value = enabled
-        settingsRepository.setStatusGlanceBatteryShowFullEnabled(enabled)
+        glanceSettings.setStatusGlanceBatteryShowFullEnabled(enabled)
     }
 
     fun setStatusGlanceBatteryShowOtherwise(enabled: Boolean) {
         isStatusGlanceBatteryShowOtherwise.value = enabled
-        settingsRepository.setStatusGlanceBatteryShowOtherwiseEnabled(enabled)
+        glanceSettings.setStatusGlanceBatteryShowOtherwiseEnabled(enabled)
     }
 
     fun setStatusGlanceBatteryIconSize(size: Float) {
         statusGlanceBatteryIconSize.floatValue = size
-        settingsRepository.setStatusGlanceBatteryIconSize(size)
+        glanceSettings.setStatusGlanceBatteryIconSize(size)
     }
 
     fun setStatusGlanceTapAction(action: Action?) {
         statusGlanceTapAction.value = action
-        settingsRepository.setStatusGlanceTapAction(action)
+        glanceSettings.setStatusGlanceTapAction(action)
     }
 
     fun setStatusGlanceDoubleTapAction(action: Action?) {
         statusGlanceDoubleTapAction.value = action
-        settingsRepository.setStatusGlanceDoubleTapAction(action)
+        glanceSettings.setStatusGlanceDoubleTapAction(action)
     }
 
     fun setStatusGlanceLongPressAction(action: Action?) {
         statusGlanceLongPressAction.value = action
-        settingsRepository.setStatusGlanceLongPressAction(action)
+        glanceSettings.setStatusGlanceLongPressAction(action)
     }
 
     fun setStatusGlanceMaxWidth(value: Float) {
         statusGlanceMaxWidth.floatValue = value
-        settingsRepository.setStatusGlanceMaxWidth(value)
+        glanceSettings.setStatusGlanceMaxWidth(value)
     }
 
     fun setStatusGlanceFontSize(value: Float) {
         statusGlanceFontSize.floatValue = value
-        settingsRepository.setStatusGlanceFontSize(value)
+        glanceSettings.setStatusGlanceFontSize(value)
     }
 
     fun autoDetectStatusGlancePosition(context: Context) {
