@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ime
+package com.jawzf.pixeltoolkit.feature.input.ime
 
 import android.view.inputmethod.InputConnection
 import java.util.Stack

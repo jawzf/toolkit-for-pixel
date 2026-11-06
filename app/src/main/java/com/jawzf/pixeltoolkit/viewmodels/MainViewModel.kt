@@ -74,6 +74,8 @@ import com.jawzf.pixeltoolkit.feature.apps.freeze.FreezeState
 import com.jawzf.pixeltoolkit.feature.apps.updates.github.GitHubUser
 import com.jawzf.pixeltoolkit.feature.connectivity.ConnectivitySettings
 import com.jawzf.pixeltoolkit.feature.connectivity.ConnectivityState
+import com.jawzf.pixeltoolkit.feature.input.InputSettings
+import com.jawzf.pixeltoolkit.feature.input.ime.ToolkitInputMethodService
 import com.jawzf.pixeltoolkit.feature.power.BatteryState
 import com.jawzf.pixeltoolkit.feature.power.PowerSettings
 import com.jawzf.pixeltoolkit.feature.power.PowerState
@@ -1081,55 +1083,55 @@ class MainViewModel : ViewModel() {
                             settingsRepository.isSecureSensitiveTilesEnabled()
                     }
 
-                    SettingsRepository.KEY_KEYBOARD_HEIGHT ->
+                    InputSettings.KEY_KEYBOARD_HEIGHT ->
                         keyboardHeight.floatValue =
                             settingsRepository.getFloat(key, 54f)
 
-                    SettingsRepository.KEY_KEYBOARD_BOTTOM_PADDING ->
+                    InputSettings.KEY_KEYBOARD_BOTTOM_PADDING ->
                         keyboardBottomPadding.floatValue =
                             settingsRepository.getFloat(key, 0f)
 
-                    SettingsRepository.KEY_KEYBOARD_ROUNDNESS ->
+                    InputSettings.KEY_KEYBOARD_ROUNDNESS ->
                         keyboardRoundness.floatValue =
                             settingsRepository.getFloat(key, 24f)
 
-                    SettingsRepository.KEY_KEYBOARD_HAPTICS_ENABLED ->
+                    InputSettings.KEY_KEYBOARD_HAPTICS_ENABLED ->
                         isKeyboardHapticsEnabled.value =
                             settingsRepository.getBoolean(key)
 
-                    SettingsRepository.KEY_KEYBOARD_FUNCTIONS_BOTTOM ->
+                    InputSettings.KEY_KEYBOARD_FUNCTIONS_BOTTOM ->
                         isKeyboardFunctionsBottom.value =
                             settingsRepository.getBoolean(key)
 
-                    SettingsRepository.KEY_KEYBOARD_FUNCTIONS_PADDING ->
+                    InputSettings.KEY_KEYBOARD_FUNCTIONS_PADDING ->
                         keyboardFunctionsPadding.floatValue =
                             settingsRepository.getFloat(key, 0f)
 
-                    SettingsRepository.KEY_KEYBOARD_HAPTIC_STRENGTH ->
+                    InputSettings.KEY_KEYBOARD_HAPTIC_STRENGTH ->
                         keyboardHapticStrength.floatValue =
                             settingsRepository.getFloat(key, 0.5f)
 
-                    SettingsRepository.KEY_KEYBOARD_SHAPE ->
+                    InputSettings.KEY_KEYBOARD_SHAPE ->
                         keyboardShape.intValue =
                             settingsRepository.getInt(key, 0)
 
-                    SettingsRepository.KEY_KEYBOARD_ALWAYS_DARK ->
+                    InputSettings.KEY_KEYBOARD_ALWAYS_DARK ->
                         isKeyboardAlwaysDark.value =
                             settingsRepository.getBoolean(key, false)
 
-                    SettingsRepository.KEY_KEYBOARD_PITCH_BLACK ->
+                    InputSettings.KEY_KEYBOARD_PITCH_BLACK ->
                         isKeyboardPitchBlack.value =
                             settingsRepository.getBoolean(key, false)
 
-                    SettingsRepository.KEY_KEYBOARD_CLIPBOARD_ENABLED ->
+                    InputSettings.KEY_KEYBOARD_CLIPBOARD_ENABLED ->
                         isKeyboardClipboardEnabled.value =
                             settingsRepository.getBoolean(key, true)
 
-                    SettingsRepository.KEY_KEYBOARD_LONG_PRESS_SYMBOLS ->
+                    InputSettings.KEY_KEYBOARD_LONG_PRESS_SYMBOLS ->
                         isLongPressSymbolsEnabled.value =
                             settingsRepository.getBoolean(key, false)
 
-                    SettingsRepository.KEY_KEYBOARD_ACCENTED_CHARACTERS ->
+                    InputSettings.KEY_KEYBOARD_ACCENTED_CHARACTERS ->
                         isAccentedCharactersEnabled.value =
                             settingsRepository.getBoolean(key, false)
 
@@ -2518,33 +2520,33 @@ class MainViewModel : ViewModel() {
         isSecureSensitiveTilesEnabled.value = settingsRepository.isSecureSensitiveTilesEnabled()
 
         keyboardHeight.floatValue =
-            settingsRepository.getFloat(SettingsRepository.KEY_KEYBOARD_HEIGHT, 54f)
+            settingsRepository.getFloat(InputSettings.KEY_KEYBOARD_HEIGHT, 54f)
         keyboardBottomPadding.floatValue =
-            settingsRepository.getFloat(SettingsRepository.KEY_KEYBOARD_BOTTOM_PADDING, 0f)
+            settingsRepository.getFloat(InputSettings.KEY_KEYBOARD_BOTTOM_PADDING, 0f)
         keyboardRoundness.floatValue =
-            settingsRepository.getFloat(SettingsRepository.KEY_KEYBOARD_ROUNDNESS, 24f)
+            settingsRepository.getFloat(InputSettings.KEY_KEYBOARD_ROUNDNESS, 24f)
         isKeyboardHapticsEnabled.value =
-            settingsRepository.getBoolean(SettingsRepository.KEY_KEYBOARD_HAPTICS_ENABLED, true)
+            settingsRepository.getBoolean(InputSettings.KEY_KEYBOARD_HAPTICS_ENABLED, true)
         isKeyboardFunctionsBottom.value =
-            settingsRepository.getBoolean(SettingsRepository.KEY_KEYBOARD_FUNCTIONS_BOTTOM, false)
+            settingsRepository.getBoolean(InputSettings.KEY_KEYBOARD_FUNCTIONS_BOTTOM, false)
         keyboardFunctionsPadding.floatValue =
-            settingsRepository.getFloat(SettingsRepository.KEY_KEYBOARD_FUNCTIONS_PADDING, 0f)
+            settingsRepository.getFloat(InputSettings.KEY_KEYBOARD_FUNCTIONS_PADDING, 0f)
         keyboardHapticStrength.floatValue =
-            settingsRepository.getFloat(SettingsRepository.KEY_KEYBOARD_HAPTIC_STRENGTH, 0.5f)
-        keyboardShape.intValue = settingsRepository.getInt(SettingsRepository.KEY_KEYBOARD_SHAPE, 0)
+            settingsRepository.getFloat(InputSettings.KEY_KEYBOARD_HAPTIC_STRENGTH, 0.5f)
+        keyboardShape.intValue = settingsRepository.getInt(InputSettings.KEY_KEYBOARD_SHAPE, 0)
         isKeyboardAlwaysDark.value =
-            settingsRepository.getBoolean(SettingsRepository.KEY_KEYBOARD_ALWAYS_DARK, false)
+            settingsRepository.getBoolean(InputSettings.KEY_KEYBOARD_ALWAYS_DARK, false)
         isKeyboardPitchBlack.value =
-            settingsRepository.getBoolean(SettingsRepository.KEY_KEYBOARD_PITCH_BLACK, false)
+            settingsRepository.getBoolean(InputSettings.KEY_KEYBOARD_PITCH_BLACK, false)
         isKeyboardClipboardEnabled.value =
-            settingsRepository.getBoolean(SettingsRepository.KEY_KEYBOARD_CLIPBOARD_ENABLED, true)
+            settingsRepository.getBoolean(InputSettings.KEY_KEYBOARD_CLIPBOARD_ENABLED, true)
         isUserDictionaryEnabled.value =
-            settingsRepository.getBoolean(SettingsRepository.KEY_USER_DICTIONARY_ENABLED, false)
+            settingsRepository.getBoolean(InputSettings.KEY_USER_DICTIONARY_ENABLED, false)
         isLongPressSymbolsEnabled.value =
-            settingsRepository.getBoolean(SettingsRepository.KEY_KEYBOARD_LONG_PRESS_SYMBOLS, false)
+            settingsRepository.getBoolean(InputSettings.KEY_KEYBOARD_LONG_PRESS_SYMBOLS, false)
         isAccentedCharactersEnabled.value =
             settingsRepository.getBoolean(
-                SettingsRepository.KEY_KEYBOARD_ACCENTED_CHARACTERS,
+                InputSettings.KEY_KEYBOARD_ACCENTED_CHARACTERS,
                 false,
             )
 
@@ -2881,7 +2883,7 @@ class MainViewModel : ViewModel() {
         context: Context,
     ) {
         isUserDictionaryEnabled.value = enabled
-        settingsRepository.setUserDictionaryEnabled(enabled)
+        InputSettings(context).setUserDictionaryEnabled(enabled)
     }
 
     /**
@@ -2895,7 +2897,7 @@ class MainViewModel : ViewModel() {
         context: Context,
     ) {
         isLongPressSymbolsEnabled.value = enabled
-        settingsRepository.putBoolean(SettingsRepository.KEY_KEYBOARD_LONG_PRESS_SYMBOLS, enabled)
+        settingsRepository.putBoolean(InputSettings.KEY_KEYBOARD_LONG_PRESS_SYMBOLS, enabled)
     }
 
     /**
@@ -2909,7 +2911,7 @@ class MainViewModel : ViewModel() {
         context: Context,
     ) {
         isAccentedCharactersEnabled.value = enabled
-        settingsRepository.setAccentedCharactersEnabled(enabled)
+        InputSettings(context).setAccentedCharactersEnabled(enabled)
     }
 
     /**
@@ -2918,7 +2920,7 @@ class MainViewModel : ViewModel() {
      * @param context [Context] Target context.
      */
     fun loadUserDictionaryWords(context: Context) {
-        context.applicationContext as? com.jawzf.pixeltoolkit.ime.ToolkitInputMethodService
+        context.applicationContext as? ToolkitInputMethodService
 
         viewModelScope.launch(Dispatchers.IO) {
             val file = java.io.File(context.filesDir, "user_dict.txt")
@@ -2959,7 +2961,7 @@ class MainViewModel : ViewModel() {
                 file.writeText(lines.joinToString("\n"))
                 loadUserDictionaryWords(context)
                 settingsRepository.putLong(
-                    SettingsRepository.KEY_USER_DICT_LAST_UPDATE,
+                    InputSettings.KEY_USER_DICT_LAST_UPDATE,
                     System.currentTimeMillis(),
                 )
             }
@@ -2980,7 +2982,7 @@ class MainViewModel : ViewModel() {
                     userDictionaryWords.value = emptyMap()
                 }
                 settingsRepository.putLong(
-                    SettingsRepository.KEY_USER_DICT_LAST_UPDATE,
+                    InputSettings.KEY_USER_DICT_LAST_UPDATE,
                     System.currentTimeMillis(),
                 )
             }
@@ -6792,7 +6794,7 @@ class MainViewModel : ViewModel() {
         context: Context,
     ) {
         keyboardHeight.floatValue = height
-        settingsRepository.putFloat(SettingsRepository.KEY_KEYBOARD_HEIGHT, height)
+        settingsRepository.putFloat(InputSettings.KEY_KEYBOARD_HEIGHT, height)
     }
 
     /**
@@ -6806,7 +6808,7 @@ class MainViewModel : ViewModel() {
         context: Context,
     ) {
         keyboardBottomPadding.floatValue = padding
-        settingsRepository.putFloat(SettingsRepository.KEY_KEYBOARD_BOTTOM_PADDING, padding)
+        settingsRepository.putFloat(InputSettings.KEY_KEYBOARD_BOTTOM_PADDING, padding)
     }
 
     /**
@@ -6820,7 +6822,7 @@ class MainViewModel : ViewModel() {
         context: Context,
     ) {
         keyboardRoundness.floatValue = roundness
-        settingsRepository.putFloat(SettingsRepository.KEY_KEYBOARD_ROUNDNESS, roundness)
+        settingsRepository.putFloat(InputSettings.KEY_KEYBOARD_ROUNDNESS, roundness)
     }
 
     /**
@@ -6834,7 +6836,7 @@ class MainViewModel : ViewModel() {
         context: Context,
     ) {
         isKeyboardHapticsEnabled.value = enabled
-        settingsRepository.putBoolean(SettingsRepository.KEY_KEYBOARD_HAPTICS_ENABLED, enabled)
+        settingsRepository.putBoolean(InputSettings.KEY_KEYBOARD_HAPTICS_ENABLED, enabled)
     }
 
     /**
@@ -6848,7 +6850,7 @@ class MainViewModel : ViewModel() {
         context: Context,
     ) {
         isKeyboardFunctionsBottom.value = isBottom
-        settingsRepository.putBoolean(SettingsRepository.KEY_KEYBOARD_FUNCTIONS_BOTTOM, isBottom)
+        settingsRepository.putBoolean(InputSettings.KEY_KEYBOARD_FUNCTIONS_BOTTOM, isBottom)
     }
 
     /**
@@ -6862,7 +6864,7 @@ class MainViewModel : ViewModel() {
         context: Context,
     ) {
         keyboardFunctionsPadding.floatValue = padding
-        settingsRepository.putFloat(SettingsRepository.KEY_KEYBOARD_FUNCTIONS_PADDING, padding)
+        settingsRepository.putFloat(InputSettings.KEY_KEYBOARD_FUNCTIONS_PADDING, padding)
     }
 
     /**
@@ -6876,7 +6878,7 @@ class MainViewModel : ViewModel() {
         context: Context,
     ) {
         keyboardHapticStrength.floatValue = strength
-        settingsRepository.putFloat(SettingsRepository.KEY_KEYBOARD_HAPTIC_STRENGTH, strength)
+        settingsRepository.putFloat(InputSettings.KEY_KEYBOARD_HAPTIC_STRENGTH, strength)
     }
 
     /**
@@ -6890,7 +6892,7 @@ class MainViewModel : ViewModel() {
         context: Context,
     ) {
         keyboardShape.intValue = shape
-        settingsRepository.putInt(SettingsRepository.KEY_KEYBOARD_SHAPE, shape)
+        settingsRepository.putInt(InputSettings.KEY_KEYBOARD_SHAPE, shape)
     }
 
     /**
@@ -6904,7 +6906,7 @@ class MainViewModel : ViewModel() {
         context: Context,
     ) {
         isKeyboardAlwaysDark.value = enabled
-        settingsRepository.putBoolean(SettingsRepository.KEY_KEYBOARD_ALWAYS_DARK, enabled)
+        settingsRepository.putBoolean(InputSettings.KEY_KEYBOARD_ALWAYS_DARK, enabled)
     }
 
     /**
@@ -6918,7 +6920,7 @@ class MainViewModel : ViewModel() {
         context: Context,
     ) {
         isKeyboardPitchBlack.value = enabled
-        settingsRepository.putBoolean(SettingsRepository.KEY_KEYBOARD_PITCH_BLACK, enabled)
+        settingsRepository.putBoolean(InputSettings.KEY_KEYBOARD_PITCH_BLACK, enabled)
     }
 
     /**
@@ -6932,7 +6934,7 @@ class MainViewModel : ViewModel() {
         context: Context,
     ) {
         isKeyboardClipboardEnabled.value = enabled
-        settingsRepository.putBoolean(SettingsRepository.KEY_KEYBOARD_CLIPBOARD_ENABLED, enabled)
+        settingsRepository.putBoolean(InputSettings.KEY_KEYBOARD_CLIPBOARD_ENABLED, enabled)
     }
 
     private fun isAccessibilityServiceEnabled(context: Context): Boolean = PermissionUtils.isAccessibilityServiceEnabled(context)

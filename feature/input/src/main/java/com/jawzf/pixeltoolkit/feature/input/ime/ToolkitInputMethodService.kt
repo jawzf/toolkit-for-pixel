@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ime
+package com.jawzf.pixeltoolkit.feature.input.ime
 
 import android.content.ClipboardManager
 import android.inputmethodservice.InputMethodService
@@ -30,8 +30,8 @@ import androidx.savedstate.SavedStateRegistryController
 import androidx.savedstate.SavedStateRegistryOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 import com.jawzf.pixeltoolkit.core.design.theme.ToolkitTheme
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.ui.ime.KeyboardInputView
+import com.jawzf.pixeltoolkit.feature.input.InputSettings
+import com.jawzf.pixeltoolkit.feature.input.ime.ui.KeyboardInputView
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -80,7 +80,7 @@ class ToolkitInputMethodService :
         try {
             clipboardManager = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
             val prefs = getSharedPreferences("toolkit_prefs", MODE_PRIVATE)
-            if (prefs.getBoolean(SettingsRepository.KEY_KEYBOARD_CLIPBOARD_ENABLED, true)) {
+            if (prefs.getBoolean(InputSettings.KEY_KEYBOARD_CLIPBOARD_ENABLED, true)) {
                 clipboardManager.addPrimaryClipChangedListener(this)
                 updateClipboardHistory()
                 Log.d("ToolkitIME", "Clipboard listener registered")
@@ -148,7 +148,7 @@ class ToolkitInputMethodService :
                 var rawKeyboardHeight by remember {
                     mutableFloatStateOf(
                         prefs.getFloat(
-                            SettingsRepository.KEY_KEYBOARD_HEIGHT,
+                            InputSettings.KEY_KEYBOARD_HEIGHT,
                             400f,
                         ),
                     )
@@ -156,13 +156,13 @@ class ToolkitInputMethodService :
                 // Migration check
                 if (rawKeyboardHeight < 100f) {
                     rawKeyboardHeight = 400f
-                    prefs.edit().putFloat(SettingsRepository.KEY_KEYBOARD_HEIGHT, 280f).apply()
+                    prefs.edit().putFloat(InputSettings.KEY_KEYBOARD_HEIGHT, 280f).apply()
                 }
                 var keyboardHeight by remember { mutableFloatStateOf(rawKeyboardHeight) }
                 var bottomPadding by remember {
                     mutableFloatStateOf(
                         prefs.getFloat(
-                            SettingsRepository.KEY_KEYBOARD_BOTTOM_PADDING,
+                            InputSettings.KEY_KEYBOARD_BOTTOM_PADDING,
                             0f,
                         ),
                     )
@@ -170,7 +170,7 @@ class ToolkitInputMethodService :
                 var keyboardRoundness by remember {
                     mutableFloatStateOf(
                         prefs.getFloat(
-                            SettingsRepository.KEY_KEYBOARD_ROUNDNESS,
+                            InputSettings.KEY_KEYBOARD_ROUNDNESS,
                             24f,
                         ),
                     )
@@ -178,7 +178,7 @@ class ToolkitInputMethodService :
                 var keyboardShape by remember {
                     mutableIntStateOf(
                         prefs.getInt(
-                            SettingsRepository.KEY_KEYBOARD_SHAPE,
+                            InputSettings.KEY_KEYBOARD_SHAPE,
                             0,
                         ),
                     )
@@ -197,7 +197,7 @@ class ToolkitInputMethodService :
                 var isFunctionsBottom by remember {
                     mutableStateOf(
                         prefs.getBoolean(
-                            SettingsRepository.KEY_KEYBOARD_FUNCTIONS_BOTTOM,
+                            InputSettings.KEY_KEYBOARD_FUNCTIONS_BOTTOM,
                             false,
                         ),
                     )
@@ -205,7 +205,7 @@ class ToolkitInputMethodService :
                 var functionsPadding by remember {
                     mutableFloatStateOf(
                         prefs.getFloat(
-                            SettingsRepository.KEY_KEYBOARD_FUNCTIONS_PADDING,
+                            InputSettings.KEY_KEYBOARD_FUNCTIONS_PADDING,
                             0f,
                         ),
                     )
@@ -213,7 +213,7 @@ class ToolkitInputMethodService :
                 var isHapticsEnabled by remember {
                     mutableStateOf(
                         prefs.getBoolean(
-                            SettingsRepository.KEY_KEYBOARD_HAPTICS_ENABLED,
+                            InputSettings.KEY_KEYBOARD_HAPTICS_ENABLED,
                             true,
                         ),
                     )
@@ -221,7 +221,7 @@ class ToolkitInputMethodService :
                 var hapticStrength by remember {
                     mutableFloatStateOf(
                         prefs.getFloat(
-                            SettingsRepository.KEY_KEYBOARD_HAPTIC_STRENGTH,
+                            InputSettings.KEY_KEYBOARD_HAPTIC_STRENGTH,
                             0.5f,
                         ),
                     )
@@ -229,7 +229,7 @@ class ToolkitInputMethodService :
                 var isAlwaysDark by remember {
                     mutableStateOf(
                         prefs.getBoolean(
-                            SettingsRepository.KEY_KEYBOARD_ALWAYS_DARK,
+                            InputSettings.KEY_KEYBOARD_ALWAYS_DARK,
                             false,
                         ),
                     )
@@ -237,7 +237,7 @@ class ToolkitInputMethodService :
                 var isPitchBlack by remember {
                     mutableStateOf(
                         prefs.getBoolean(
-                            SettingsRepository.KEY_KEYBOARD_PITCH_BLACK,
+                            InputSettings.KEY_KEYBOARD_PITCH_BLACK,
                             false,
                         ),
                     )
@@ -246,7 +246,7 @@ class ToolkitInputMethodService :
                 var isKeyboardClipboardEnabled by remember {
                     mutableStateOf(
                         prefs.getBoolean(
-                            SettingsRepository.KEY_KEYBOARD_CLIPBOARD_ENABLED,
+                            InputSettings.KEY_KEYBOARD_CLIPBOARD_ENABLED,
                             true,
                         ),
                     )
@@ -255,7 +255,7 @@ class ToolkitInputMethodService :
                 var isUserDictionaryEnabled by remember {
                     mutableStateOf(
                         prefs.getBoolean(
-                            SettingsRepository.KEY_USER_DICTIONARY_ENABLED,
+                            InputSettings.KEY_USER_DICTIONARY_ENABLED,
                             false,
                         ),
                     )
@@ -264,7 +264,7 @@ class ToolkitInputMethodService :
                 var isLongPressSymbolsEnabled by remember {
                     mutableStateOf(
                         prefs.getBoolean(
-                            SettingsRepository.KEY_KEYBOARD_LONG_PRESS_SYMBOLS,
+                            InputSettings.KEY_KEYBOARD_LONG_PRESS_SYMBOLS,
                             false,
                         ),
                     )
@@ -273,7 +273,7 @@ class ToolkitInputMethodService :
                 var isAccentedCharactersEnabled by remember {
                     mutableStateOf(
                         prefs.getBoolean(
-                            SettingsRepository.KEY_KEYBOARD_ACCENTED_CHARACTERS,
+                            InputSettings.KEY_KEYBOARD_ACCENTED_CHARACTERS,
                             false,
                         ),
                     )
@@ -284,91 +284,91 @@ class ToolkitInputMethodService :
                     val listener =
                         android.content.SharedPreferences.OnSharedPreferenceChangeListener { sharedPreferences, key ->
                             when (key) {
-                                SettingsRepository.KEY_KEYBOARD_HEIGHT -> {
+                                InputSettings.KEY_KEYBOARD_HEIGHT -> {
                                     val height =
                                         sharedPreferences.getFloat(
-                                            SettingsRepository.KEY_KEYBOARD_HEIGHT,
+                                            InputSettings.KEY_KEYBOARD_HEIGHT,
                                             280f,
                                         )
                                     keyboardHeight = if (height < 100f) 280f else height
                                 }
 
-                                SettingsRepository.KEY_KEYBOARD_BOTTOM_PADDING -> {
+                                InputSettings.KEY_KEYBOARD_BOTTOM_PADDING -> {
                                     bottomPadding =
                                         sharedPreferences.getFloat(
-                                            SettingsRepository.KEY_KEYBOARD_BOTTOM_PADDING,
+                                            InputSettings.KEY_KEYBOARD_BOTTOM_PADDING,
                                             0f,
                                         )
                                 }
 
-                                SettingsRepository.KEY_KEYBOARD_ROUNDNESS -> {
+                                InputSettings.KEY_KEYBOARD_ROUNDNESS -> {
                                     keyboardRoundness =
                                         sharedPreferences.getFloat(
-                                            SettingsRepository.KEY_KEYBOARD_ROUNDNESS,
+                                            InputSettings.KEY_KEYBOARD_ROUNDNESS,
                                             24f,
                                         )
                                 }
 
-                                SettingsRepository.KEY_KEYBOARD_SHAPE -> {
+                                InputSettings.KEY_KEYBOARD_SHAPE -> {
                                     keyboardShape =
                                         sharedPreferences.getInt(
-                                            SettingsRepository.KEY_KEYBOARD_SHAPE,
+                                            InputSettings.KEY_KEYBOARD_SHAPE,
                                             0,
                                         )
                                 }
 
-                                SettingsRepository.KEY_KEYBOARD_FUNCTIONS_BOTTOM -> {
+                                InputSettings.KEY_KEYBOARD_FUNCTIONS_BOTTOM -> {
                                     isFunctionsBottom =
                                         sharedPreferences.getBoolean(
-                                            SettingsRepository.KEY_KEYBOARD_FUNCTIONS_BOTTOM,
+                                            InputSettings.KEY_KEYBOARD_FUNCTIONS_BOTTOM,
                                             false,
                                         )
                                 }
 
-                                SettingsRepository.KEY_KEYBOARD_FUNCTIONS_PADDING -> {
+                                InputSettings.KEY_KEYBOARD_FUNCTIONS_PADDING -> {
                                     functionsPadding =
                                         sharedPreferences.getFloat(
-                                            SettingsRepository.KEY_KEYBOARD_FUNCTIONS_PADDING,
+                                            InputSettings.KEY_KEYBOARD_FUNCTIONS_PADDING,
                                             0f,
                                         )
                                 }
 
-                                SettingsRepository.KEY_KEYBOARD_HAPTICS_ENABLED -> {
+                                InputSettings.KEY_KEYBOARD_HAPTICS_ENABLED -> {
                                     isHapticsEnabled =
                                         sharedPreferences.getBoolean(
-                                            SettingsRepository.KEY_KEYBOARD_HAPTICS_ENABLED,
+                                            InputSettings.KEY_KEYBOARD_HAPTICS_ENABLED,
                                             true,
                                         )
                                 }
 
-                                SettingsRepository.KEY_KEYBOARD_HAPTIC_STRENGTH -> {
+                                InputSettings.KEY_KEYBOARD_HAPTIC_STRENGTH -> {
                                     hapticStrength =
                                         sharedPreferences.getFloat(
-                                            SettingsRepository.KEY_KEYBOARD_HAPTIC_STRENGTH,
+                                            InputSettings.KEY_KEYBOARD_HAPTIC_STRENGTH,
                                             0.5f,
                                         )
                                 }
 
-                                SettingsRepository.KEY_KEYBOARD_ALWAYS_DARK -> {
+                                InputSettings.KEY_KEYBOARD_ALWAYS_DARK -> {
                                     isAlwaysDark =
                                         sharedPreferences.getBoolean(
-                                            SettingsRepository.KEY_KEYBOARD_ALWAYS_DARK,
+                                            InputSettings.KEY_KEYBOARD_ALWAYS_DARK,
                                             false,
                                         )
                                 }
 
-                                SettingsRepository.KEY_KEYBOARD_PITCH_BLACK -> {
+                                InputSettings.KEY_KEYBOARD_PITCH_BLACK -> {
                                     isPitchBlack =
                                         sharedPreferences.getBoolean(
-                                            SettingsRepository.KEY_KEYBOARD_PITCH_BLACK,
+                                            InputSettings.KEY_KEYBOARD_PITCH_BLACK,
                                             false,
                                         )
                                 }
 
-                                SettingsRepository.KEY_KEYBOARD_CLIPBOARD_ENABLED -> {
+                                InputSettings.KEY_KEYBOARD_CLIPBOARD_ENABLED -> {
                                     isKeyboardClipboardEnabled =
                                         sharedPreferences.getBoolean(
-                                            SettingsRepository.KEY_KEYBOARD_CLIPBOARD_ENABLED,
+                                            InputSettings.KEY_KEYBOARD_CLIPBOARD_ENABLED,
                                             true,
                                         )
                                     if (isKeyboardClipboardEnabled) {
@@ -383,32 +383,32 @@ class ToolkitInputMethodService :
                                     }
                                 }
 
-                                SettingsRepository.KEY_USER_DICTIONARY_ENABLED -> {
+                                InputSettings.KEY_USER_DICTIONARY_ENABLED -> {
                                     isUserDictionaryEnabled =
                                         sharedPreferences.getBoolean(
-                                            SettingsRepository.KEY_USER_DICTIONARY_ENABLED,
+                                            InputSettings.KEY_USER_DICTIONARY_ENABLED,
                                             false,
                                         )
                                 }
 
-                                SettingsRepository.KEY_USER_DICT_LAST_UPDATE -> {
+                                InputSettings.KEY_USER_DICT_LAST_UPDATE -> {
                                     lifecycleScope.launch(kotlinx.coroutines.Dispatchers.IO) {
                                         suggestionEngine.loadUserDictionary()
                                     }
                                 }
 
-                                SettingsRepository.KEY_KEYBOARD_LONG_PRESS_SYMBOLS -> {
+                                InputSettings.KEY_KEYBOARD_LONG_PRESS_SYMBOLS -> {
                                     isLongPressSymbolsEnabled =
                                         sharedPreferences.getBoolean(
-                                            SettingsRepository.KEY_KEYBOARD_LONG_PRESS_SYMBOLS,
+                                            InputSettings.KEY_KEYBOARD_LONG_PRESS_SYMBOLS,
                                             false,
                                         )
                                 }
 
-                                SettingsRepository.KEY_KEYBOARD_ACCENTED_CHARACTERS -> {
+                                InputSettings.KEY_KEYBOARD_ACCENTED_CHARACTERS -> {
                                     isAccentedCharactersEnabled =
                                         sharedPreferences.getBoolean(
-                                            SettingsRepository.KEY_KEYBOARD_ACCENTED_CHARACTERS,
+                                            InputSettings.KEY_KEYBOARD_ACCENTED_CHARACTERS,
                                             false,
                                         )
                                 }

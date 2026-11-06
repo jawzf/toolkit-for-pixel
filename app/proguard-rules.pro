@@ -32,10 +32,8 @@
 -keep class com.jawzf.pixeltoolkit.domain.registry.** { *; }
 
 # Keep IME related models and suggestion logic
--keep class com.jawzf.pixeltoolkit.ime.** { *; }
--keep class com.jawzf.pixeltoolkit.ui.ime.** { *; }
--keepclassmembers class com.jawzf.pixeltoolkit.ime.** { *; }
--keepclassmembers class com.jawzf.pixeltoolkit.ui.ime.** { *; }
+-keep class com.jawzf.pixeltoolkit.feature.input.ime.** { *; }
+-keepclassmembers class com.jawzf.pixeltoolkit.feature.input.ime.** { *; }
 
 # Data models for Gson
 -keep class com.jawzf.pixeltoolkit.data.model.** { *; }
