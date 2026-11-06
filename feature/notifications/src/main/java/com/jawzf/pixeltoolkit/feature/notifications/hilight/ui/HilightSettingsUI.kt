@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.features.system
+package com.jawzf.pixeltoolkit.feature.notifications.hilight.ui
 
 import android.content.Context
 import android.widget.Toast
@@ -45,6 +45,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.graphics.toColorInt
 import androidx.lifecycle.compose.LifecycleResumeEffect
+import com.jawzf.pixeltoolkit.core.data.apps.AppColorUtil
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.cards.IconToggleItem
 import com.jawzf.pixeltoolkit.core.design.components.ConfigSliderItem
@@ -54,16 +55,15 @@ import com.jawzf.pixeltoolkit.core.design.modifiers.highlight
 import com.jawzf.pixeltoolkit.core.design.pickers.ColorSwatchPicker
 import com.jawzf.pixeltoolkit.core.design.pickers.SegmentedPicker
 import com.jawzf.pixeltoolkit.core.platform.device.DeviceUtils
-import com.jawzf.pixeltoolkit.domain.controller.HilightController
-import com.jawzf.pixeltoolkit.domain.model.HilightEffect
-import com.jawzf.pixeltoolkit.domain.model.HilightFrames
-import com.jawzf.pixeltoolkit.domain.model.HilightPattern
-import com.jawzf.pixeltoolkit.domain.model.HilightProgressColorMode
-import com.jawzf.pixeltoolkit.domain.model.HilightProgressFrames
-import com.jawzf.pixeltoolkit.ui.core.sheets.HilightEffectSheet
+import com.jawzf.pixeltoolkit.feature.notifications.hilight.HilightController
+import com.jawzf.pixeltoolkit.feature.notifications.hilight.HilightEffect
+import com.jawzf.pixeltoolkit.feature.notifications.hilight.HilightFrames
+import com.jawzf.pixeltoolkit.feature.notifications.hilight.HilightLights
+import com.jawzf.pixeltoolkit.feature.notifications.hilight.HilightPattern
+import com.jawzf.pixeltoolkit.feature.notifications.hilight.HilightProgressColorMode
+import com.jawzf.pixeltoolkit.feature.notifications.hilight.HilightProgressFrames
+import com.jawzf.pixeltoolkit.feature.notifications.hilight.ui.HilightEffectSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.SingleAppSelectionSheet
-import com.jawzf.pixeltoolkit.utils.AppColorUtil
-import com.jawzf.pixeltoolkit.utils.hardware.HilightLights
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.utils.hardware
+package com.jawzf.pixeltoolkit.feature.notifications.hilight
 
 import android.content.Context
 import android.hardware.lights.Light

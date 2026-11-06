@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.utils
+package com.jawzf.pixeltoolkit.core.data.apps
 
 import android.content.Context
 import com.google.gson.Gson

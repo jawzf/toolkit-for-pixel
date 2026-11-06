@@ -9,11 +9,11 @@ import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticFeedbackType
 import com.jawzf.pixeltoolkit.domain.ScreenOffMethod
 import com.jawzf.pixeltoolkit.domain.model.ActivityIconSource
-import com.jawzf.pixeltoolkit.domain.model.HilightEffect
-import com.jawzf.pixeltoolkit.domain.model.HilightPattern
 import com.jawzf.pixeltoolkit.domain.model.NotificationLightingColorMode
 import com.jawzf.pixeltoolkit.domain.model.NotificationLightingSide
 import com.jawzf.pixeltoolkit.domain.model.NotificationLightingStyle
+import com.jawzf.pixeltoolkit.feature.notifications.hilight.HilightEffect
+import com.jawzf.pixeltoolkit.feature.notifications.hilight.HilightPattern
 import com.jawzf.pixeltoolkit.feature.power.charging.ChargingMode
 
 @Keep

@@ -49,12 +49,12 @@ import com.jawzf.pixeltoolkit.domain.diy.ActionRegistry
 import com.jawzf.pixeltoolkit.domain.diy.displayName
 import com.jawzf.pixeltoolkit.domain.diy.matches
 import com.jawzf.pixeltoolkit.feature.apps.AppsSettings
+import com.jawzf.pixeltoolkit.feature.notifications.hilight.ui.HilightEffectSettingsSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.AppSelectionSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.CustomSettingsSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.DeviceEffectsSettingsSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.DimWallpaperSettingsSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.FreezeTagSettingsSheet
-import com.jawzf.pixeltoolkit.ui.core.sheets.HilightEffectSettingsSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.OpenActivityPicker
 import com.jawzf.pixeltoolkit.ui.core.sheets.ScreenOffSettingsSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.SingleAppSelectionSheet
