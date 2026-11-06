@@ -222,7 +222,7 @@ fun ConsciousGatePauseScreen(
 }
 
 @Composable
-internal fun HoldToContinueButton(
+fun HoldToContinueButton(
     waitTimeProgress: Float,
     onContinue: () -> Unit,
     onHoldingChange: (Boolean) -> Unit,

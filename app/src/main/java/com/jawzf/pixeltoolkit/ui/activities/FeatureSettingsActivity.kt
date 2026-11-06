@@ -1118,7 +1118,26 @@ class FeatureSettingsActivity : AppCompatActivity() {
 
                                     CONSCIOUS_GATE_FEATURE_ID -> {
                                         ConsciousGateSettingsUI(
-                                            viewModel = viewModel,
+                                            state = viewModel.consciousGate,
+                                            isUseUsageAccess = viewModel.isUseUsageAccess.value,
+                                            isAccessibilityEnabled = viewModel.isAccessibilityEnabled.value,
+                                            isUsageStatsPermissionGranted = viewModel.isUsageStatsPermissionGranted.value,
+                                            permissionItems = { keys ->
+                                                PermissionUIHelper.getPermissionItems(keys, context, viewModel)
+                                            },
+                                            onPermissionsDismissed = { viewModel.check(context) },
+                                            appPicker = { onDismiss ->
+                                                AppSelectionSheet(
+                                                    onDismissRequest = onDismiss,
+                                                    onLoadApps = { viewModel.consciousGate.loadConsciousGateSelectedApps(it) },
+                                                    onSaveApps = { ctx, apps ->
+                                                        viewModel.consciousGate.saveConsciousGateSelectedApps(ctx, apps)
+                                                    },
+                                                    onAppToggle = { ctx, pkg, enabled ->
+                                                        viewModel.consciousGate.updateConsciousGateAppEnabled(ctx, pkg, enabled)
+                                                    },
+                                                )
+                                            },
                                             highlightKey = highlightSetting,
                                         )
                                     }

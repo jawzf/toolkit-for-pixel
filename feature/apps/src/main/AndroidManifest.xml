@@ -24,6 +24,14 @@
             android:taskAffinity=""
             android:theme="@style/Theme.Toolkit.Translucent" />
 
+        <activity
+            android:name="com.jawzf.pixeltoolkit.feature.apps.consciousgate.ConsciousGateActivity"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:noHistory="true"
+            android:taskAffinity=""
+            android:theme="@style/Theme.Toolkit.Translucent" />
+
         <service
             android:name="com.jawzf.pixeltoolkit.feature.apps.applock.AppLockTileService"
             android:exported="true"

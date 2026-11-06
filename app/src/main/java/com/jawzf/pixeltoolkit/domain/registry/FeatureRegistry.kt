@@ -2233,7 +2233,7 @@ object FeatureRegistry {
                             listOf("ACCESSIBILITY")
                         }
 
-                override fun isEnabled(viewModel: MainViewModel) = viewModel.isConsciousGateEnabled.value
+                override fun isEnabled(viewModel: MainViewModel) = viewModel.consciousGate.isConsciousGateEnabled.value
 
                 override fun isToggleEnabled(
                     viewModel: MainViewModel,
@@ -2250,7 +2250,7 @@ object FeatureRegistry {
                     viewModel: MainViewModel,
                     context: Context,
                     enabled: Boolean,
-                ) = viewModel.setConsciousGateEnabled(enabled, context)
+                ) = viewModel.consciousGate.setConsciousGateEnabled(enabled, context)
             },
             object : Feature(
                 id = "Shut-Up!",

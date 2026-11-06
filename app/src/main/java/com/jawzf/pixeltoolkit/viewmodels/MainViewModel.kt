@@ -69,6 +69,7 @@ import com.jawzf.pixeltoolkit.domain.model.SystemShortcutsState
 import com.jawzf.pixeltoolkit.domain.registry.SearchRegistry
 import com.jawzf.pixeltoolkit.feature.apps.AppsSettings
 import com.jawzf.pixeltoolkit.feature.apps.applock.AppLockState
+import com.jawzf.pixeltoolkit.feature.apps.consciousgate.ConsciousGateState
 import com.jawzf.pixeltoolkit.feature.apps.freeze.FreezeState
 import com.jawzf.pixeltoolkit.feature.apps.updates.github.GitHubUser
 import com.jawzf.pixeltoolkit.feature.connectivity.ConnectivitySettings
@@ -413,6 +414,7 @@ class MainViewModel : ViewModel() {
         }
     val freeze = FreezeState(viewModelScope)
     val appLock = AppLockState { context -> updateAppDetectionService(context) }
+    val consciousGate = ConsciousGateState { context -> updateAppDetectionService(context) }
     val addedQSTiles = mutableStateOf<Set<String>>(emptySet())
     val isHideGestureBarEnabled = mutableStateOf(false)
     val isHideGestureBarOnLauncherEnabled = mutableStateOf(false)
@@ -502,12 +504,6 @@ class MainViewModel : ViewModel() {
     val ripple = RippleSettings { settingsRepository }
     val dash = DashSettings { settingsRepository }
     val skipPersistentNotifications = mutableStateOf(false)
-    val isConsciousGateEnabled = mutableStateOf(false)
-    val consciousGateDelaySeconds = mutableIntStateOf(5)
-    val consciousGateReappearMinutes = mutableIntStateOf(0)
-    val isConsciousGateFeelEverySecondEnabled = mutableStateOf(false)
-    val consciousGateTitle = mutableStateOf("")
-    val consciousGateMessage = mutableStateOf("")
     val isUseUsageAccess = mutableStateOf(false)
     val isHiddenDebuggingSupport = mutableStateOf(false)
 
@@ -2556,13 +2552,7 @@ class MainViewModel : ViewModel() {
 
         isDeviceAdminEnabled.value = isDeviceAdminActive(context)
 
-        isConsciousGateEnabled.value =
-            settingsRepository.getBoolean(SettingsRepository.KEY_CONSCIOUS_GATE_ENABLED)
-        consciousGateDelaySeconds.intValue = settingsRepository.getConsciousGateDelaySeconds()
-        consciousGateReappearMinutes.intValue = settingsRepository.getConsciousGateReappearMinutes()
-        isConsciousGateFeelEverySecondEnabled.value = settingsRepository.getConsciousGateFeelEverySecond()
-        consciousGateTitle.value = settingsRepository.getConsciousGateTitle(context)
-        consciousGateMessage.value = settingsRepository.getConsciousGateMessage(context)
+        consciousGate.load(context)
         freeze.load(context)
         appLock.load(context)
 
@@ -5755,46 +5745,6 @@ class MainViewModel : ViewModel() {
     }
 
     /**
-     * Executes the set conscious gate enabled operation.
-     *
-     * @param enabled [Boolean] Target enabled.
-     * @param context [Context] Target context.
-     */
-    fun setConsciousGateEnabled(
-        enabled: Boolean,
-        context: Context,
-    ) {
-        isConsciousGateEnabled.value = enabled
-        settingsRepository.putBoolean(SettingsRepository.KEY_CONSCIOUS_GATE_ENABLED, enabled)
-        updateAppDetectionService(context)
-    }
-
-    fun setConsciousGateDelaySeconds(seconds: Int) {
-        consciousGateDelaySeconds.intValue = seconds
-        settingsRepository.setConsciousGateDelaySeconds(seconds)
-    }
-
-    fun setConsciousGateReappearMinutes(minutes: Int) {
-        consciousGateReappearMinutes.intValue = minutes
-        settingsRepository.setConsciousGateReappearMinutes(minutes)
-    }
-
-    fun setConsciousGateFeelEverySecondEnabled(enabled: Boolean) {
-        isConsciousGateFeelEverySecondEnabled.value = enabled
-        settingsRepository.setConsciousGateFeelEverySecond(enabled)
-    }
-
-    fun setConsciousGateTitle(title: String) {
-        consciousGateTitle.value = title
-        settingsRepository.setConsciousGateTitle(title)
-    }
-
-    fun setConsciousGateMessage(message: String) {
-        consciousGateMessage.value = message
-        settingsRepository.setConsciousGateMessage(message)
-    }
-
-    /**
      * Executes the set use usage access operation.
      *
      * @param enabled [Boolean] Target enabled.
@@ -7339,24 +7289,6 @@ class MainViewModel : ViewModel() {
         enabled: Boolean,
     ) {
         settingsRepository.updateDynamicNightLightAppSelection(packageName, enabled)
-    }
-
-    // Conscious Gate App Selection Methods
-    fun saveConsciousGateSelectedApps(
-        context: Context,
-        apps: List<AppSelection>,
-    ) {
-        settingsRepository.saveConsciousGateSelectedApps(apps)
-    }
-
-    fun loadConsciousGateSelectedApps(context: Context): List<AppSelection> = settingsRepository.loadConsciousGateSelectedApps()
-
-    fun updateConsciousGateAppEnabled(
-        context: Context,
-        packageName: String,
-        enabled: Boolean,
-    ) {
-        settingsRepository.updateConsciousGateAppSelection(packageName, enabled)
     }
 
     /**

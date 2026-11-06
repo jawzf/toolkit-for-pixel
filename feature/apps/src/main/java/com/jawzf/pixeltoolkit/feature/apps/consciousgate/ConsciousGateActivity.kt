@@ -17,9 +17,9 @@ import androidx.compose.ui.res.stringResource
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.theme.ToolkitTheme
+import com.jawzf.pixeltoolkit.core.platform.AppComponents
 import com.jawzf.pixeltoolkit.feature.apps.consciousgate.ui.ConsciousGatePauseScreen
 import com.jawzf.pixeltoolkit.feature.apps.consciousgate.ui.UnscaledMotion
-import com.jawzf.pixeltoolkit.services.tiles.ScreenOffAccessibilityService
 import kotlinx.coroutines.withContext
 
 class ConsciousGateActivity : AppCompatActivity() {
@@ -118,7 +118,7 @@ class ConsciousGateActivity : AppCompatActivity() {
         sendBroadcast(intent)
 
         val accessibilityIntent =
-            Intent(this, ScreenOffAccessibilityService::class.java).apply {
+            Intent().setClassName(this, AppComponents.SCREEN_OFF_ACCESSIBILITY_SERVICE).apply {
                 action = "CONSCIOUS_GATE_CONFIRMED"
                 putExtra("package_name", packageToGate)
             }
@@ -139,7 +139,7 @@ class ConsciousGateActivity : AppCompatActivity() {
         sendBroadcast(intent)
 
         val serviceIntent =
-            Intent(this, ScreenOffAccessibilityService::class.java).apply {
+            Intent().setClassName(this, AppComponents.SCREEN_OFF_ACCESSIBILITY_SERVICE).apply {
                 action = "CONSCIOUS_GATE_CLOSED"
                 putExtra("package_name", packageToGate)
             }

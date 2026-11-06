@@ -23,5 +23,12 @@ class AppsSettingsTest {
         assertEquals("tracked_repos", AppsSettings.KEY_TRACKED_REPOS)
         assertEquals("github_access_token", AppsSettings.KEY_GITHUB_ACCESS_TOKEN)
         assertEquals("github_user_profile", AppsSettings.KEY_GITHUB_USER_PROFILE)
+        assertEquals("conscious_gate_enabled", AppsSettings.KEY_CONSCIOUS_GATE_ENABLED)
+        assertEquals("conscious_gate_selected_apps", AppsSettings.KEY_CONSCIOUS_GATE_SELECTED_APPS)
+        assertEquals("conscious_gate_delay_seconds", AppsSettings.KEY_CONSCIOUS_GATE_DELAY_SECONDS)
+        assertEquals("conscious_gate_reappear_minutes", AppsSettings.KEY_CONSCIOUS_GATE_REAPPEAR_MINUTES)
+        assertEquals("conscious_gate_feel_every_second", AppsSettings.KEY_CONSCIOUS_GATE_FEEL_EVERY_SECOND)
+        assertEquals("conscious_gate_title", AppsSettings.KEY_CONSCIOUS_GATE_TITLE)
+        assertEquals("conscious_gate_message", AppsSettings.KEY_CONSCIOUS_GATE_MESSAGE)
     }
 }
