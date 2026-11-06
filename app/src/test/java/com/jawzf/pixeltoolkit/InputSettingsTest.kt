@@ -22,5 +22,7 @@ class InputSettingsTest {
         assertEquals("keyboard_accented_characters", InputSettings.KEY_KEYBOARD_ACCENTED_CHARACTERS)
         assertEquals("user_dictionary_enabled", InputSettings.KEY_USER_DICTIONARY_ENABLED)
         assertEquals("user_dict_last_update", InputSettings.KEY_USER_DICT_LAST_UPDATE)
+        assertEquals("link_preview_enabled", InputSettings.KEY_LINK_PREVIEW_ENABLED)
+        assertEquals("link_preview_images_enabled", InputSettings.KEY_LINK_PREVIEW_IMAGES_ENABLED)
     }
 }

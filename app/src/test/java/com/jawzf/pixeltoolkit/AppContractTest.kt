@@ -11,6 +11,7 @@ import com.jawzf.pixeltoolkit.services.SplitScreenShortcutService
 import com.jawzf.pixeltoolkit.services.receivers.SecurityDeviceAdminReceiver
 import com.jawzf.pixeltoolkit.services.receivers.ShizukuActionReceiver
 import com.jawzf.pixeltoolkit.services.tiles.ScreenOffAccessibilityService
+import com.jawzf.pixeltoolkit.ui.activities.BubbleWebActivity
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
@@ -26,6 +27,9 @@ class AppContractTest {
         assertEquals(AccessibilityShortcutService3::class.java.name, AppComponents.ACCESSIBILITY_SHORTCUT_SERVICE_3)
         assertEquals(SplitScreenShortcutService::class.java.name, AppComponents.SPLIT_SCREEN_SHORTCUT_SERVICE)
         assertEquals(FeatureSettingsActivity::class.java.name, AppComponents.FEATURE_SETTINGS_ACTIVITY)
+        assertEquals(BubbleWebActivity::class.java.name, AppComponents.BUBBLE_WEB_ACTIVITY)
+        assertEquals(BubbleWebActivity.EXTRA_URL, AppComponents.BUBBLE_EXTRA_URL)
+        assertEquals(BubbleWebActivity.EXTRA_PRIVATE_MODE, AppComponents.BUBBLE_EXTRA_PRIVATE_MODE)
     }
 
     @Test

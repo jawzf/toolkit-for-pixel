@@ -17,6 +17,9 @@ object AppComponents {
     const val TILE_AUTH_ACTIVITY = "com.jawzf.pixeltoolkit.ui.activities.TileAuthActivity"
     const val MAIN_ACTIVITY = "com.jawzf.pixeltoolkit.MainActivity"
     const val APP_FREEZING_ACTIVITY = "com.jawzf.pixeltoolkit.ui.activities.AppFreezingActivity"
+    const val BUBBLE_WEB_ACTIVITY = "com.jawzf.pixeltoolkit.ui.activities.BubbleWebActivity"
+    const val BUBBLE_EXTRA_URL = "extra_bubble_url"
+    const val BUBBLE_EXTRA_PRIVATE_MODE = "extra_bubble_private_mode"
 
     /** The app's launch intent, or MainActivity when the launcher alias is disabled. */
     fun mainIntent(context: Context): Intent =

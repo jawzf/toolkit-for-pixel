@@ -14,6 +14,28 @@
                 android:name="android.view.im"
                 android:resource="@xml/method" />
         </service>
+
+        <service
+            android:name="com.jawzf.pixeltoolkit.feature.input.links.UrlShortenerTileService"
+            android:exported="true"
+            android:icon="@drawable/rounded_link_24"
+            android:label="@string/tile_url_shortener"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.service.quicksettings.ACTION_QS_TILE_PREFERENCES"
+                android:value="com.jawzf.pixeltoolkit.ui.activities.QSPreferencesActivity" />
+            <meta-data
+                android:name="android.service.quicksettings.TILE_CATEGORY"
+                android:value="android.service.quicksettings.CATEGORY_UTILITIES" />
+        </service>
+
+        <receiver
+            android:name="com.jawzf.pixeltoolkit.feature.input.links.UrlShortenerActionReceiver"
+            android:exported="false" />
     </application>
 
 </manifest>

@@ -14,6 +14,8 @@ dependencies {
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.gson)
     implementation(libs.symspellkt)
+    implementation(libs.coil.compose)
+    implementation(libs.zxing.core)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.foundation)

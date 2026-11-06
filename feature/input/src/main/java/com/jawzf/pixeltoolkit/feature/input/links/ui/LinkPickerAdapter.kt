@@ -119,7 +119,7 @@ import com.jawzf.pixeltoolkit.core.design.modifiers.scrollMotionBlur
 import com.jawzf.pixeltoolkit.core.design.pickers.SegmentedPicker
 import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
 import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
+import com.jawzf.pixeltoolkit.feature.input.InputSettings
 import com.jawzf.pixeltoolkit.feature.input.links.WindowingUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -216,11 +216,11 @@ fun LinkPickerScreen(
     var selectedTab by remember { mutableIntStateOf(if (initialOpenShorten) 2 else initialTab) }
     var autoOpenShortenInTools by remember { mutableStateOf(initialOpenShorten) }
 
-    val settingsRepository = remember { SettingsRepository(context) }
+    val settings = remember { InputSettings(context) }
 
     // Preview data state
-    var isLinkPreviewEnabled by remember { mutableStateOf(settingsRepository.isLinkPreviewEnabled()) }
-    var isLinkPreviewImagesEnabled by remember { mutableStateOf(settingsRepository.isLinkPreviewImagesEnabled()) }
+    var isLinkPreviewEnabled by remember { mutableStateOf(settings.isLinkPreviewEnabled()) }
+    var isLinkPreviewImagesEnabled by remember { mutableStateOf(settings.isLinkPreviewImagesEnabled()) }
     var showSettingsMenu by remember { mutableStateOf(false) }
 
     var linkPreviewData by remember { mutableStateOf<LinkPreviewData?>(null) }
@@ -293,17 +293,17 @@ fun LinkPickerScreen(
     DisposableEffect(Unit) {
         val listener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
             when (key) {
-                SettingsRepository.KEY_LINK_PREVIEW_ENABLED -> {
-                    isLinkPreviewEnabled = settingsRepository.isLinkPreviewEnabled()
+                InputSettings.KEY_LINK_PREVIEW_ENABLED -> {
+                    isLinkPreviewEnabled = settings.isLinkPreviewEnabled()
                 }
-                SettingsRepository.KEY_LINK_PREVIEW_IMAGES_ENABLED -> {
-                    isLinkPreviewImagesEnabled = settingsRepository.isLinkPreviewImagesEnabled()
+                InputSettings.KEY_LINK_PREVIEW_IMAGES_ENABLED -> {
+                    isLinkPreviewImagesEnabled = settings.isLinkPreviewImagesEnabled()
                 }
             }
         }
-        settingsRepository.registerOnSharedPreferenceChangeListener(listener)
+        settings.registerOnSharedPreferenceChangeListener(listener)
         onDispose {
-            settingsRepository.unregisterOnSharedPreferenceChangeListener(listener)
+            settings.unregisterOnSharedPreferenceChangeListener(listener)
         }
     }
 
@@ -643,7 +643,7 @@ fun LinkPickerScreen(
                                             onClick = {
                                                 val next = !isLinkPreviewEnabled
                                                 isLinkPreviewEnabled = next
-                                                settingsRepository.setLinkPreviewEnabled(next)
+                                                settings.setLinkPreviewEnabled(next)
                                             },
                                             trailingIcon = {
                                                 Switch(
@@ -651,7 +651,7 @@ fun LinkPickerScreen(
                                                     onCheckedChange = { checked ->
                                                         HapticUtil.performVirtualKeyHaptic(view)
                                                         isLinkPreviewEnabled = checked
-                                                        settingsRepository.setLinkPreviewEnabled(checked)
+                                                        settings.setLinkPreviewEnabled(checked)
                                                     },
                                                 )
                                             },
@@ -662,7 +662,7 @@ fun LinkPickerScreen(
                                                 if (isLinkPreviewEnabled) {
                                                     val next = !isLinkPreviewImagesEnabled
                                                     isLinkPreviewImagesEnabled = next
-                                                    settingsRepository.setLinkPreviewImagesEnabled(next)
+                                                    settings.setLinkPreviewImagesEnabled(next)
                                                 }
                                             },
                                             enabled = isLinkPreviewEnabled,
@@ -673,7 +673,7 @@ fun LinkPickerScreen(
                                                     onCheckedChange = { checked ->
                                                         HapticUtil.performVirtualKeyHaptic(view)
                                                         isLinkPreviewImagesEnabled = checked
-                                                        settingsRepository.setLinkPreviewImagesEnabled(checked)
+                                                        settings.setLinkPreviewImagesEnabled(checked)
                                                     },
                                                 )
                                             },
