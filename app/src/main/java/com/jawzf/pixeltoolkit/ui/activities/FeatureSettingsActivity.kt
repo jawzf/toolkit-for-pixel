@@ -78,6 +78,7 @@ import com.jawzf.pixeltoolkit.feature.input.gesture.ui.BackGestureSettingsUI
 import com.jawzf.pixeltoolkit.feature.input.ime.ui.KeyboardSettingsUI
 import com.jawzf.pixeltoolkit.feature.input.links.ui.LinkPickerScreen
 import com.jawzf.pixeltoolkit.feature.notifications.autodismiss.ui.AutoDismissNotificationsSettingsUI
+import com.jawzf.pixeltoolkit.feature.notifications.flashlight.ui.FlashlightPulseSettingsUI
 import com.jawzf.pixeltoolkit.feature.notifications.hilight.ui.HilightNotificationsSettingsUI
 import com.jawzf.pixeltoolkit.feature.notifications.hilight.ui.HilightProgressSettingsUI
 import com.jawzf.pixeltoolkit.feature.notifications.hilight.ui.HilightSettingsUI
@@ -122,7 +123,6 @@ import com.jawzf.pixeltoolkit.ui.features.system.ActivityLauncherSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.AlwaysOnDisplaySettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.ButtonRemapSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.DynamicNightLightSettingsUI
-import com.jawzf.pixeltoolkit.ui.features.system.FlashlightPulseSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.FlashlightSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.LiveWallpaperSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.LockScreenClockSettingsUI
