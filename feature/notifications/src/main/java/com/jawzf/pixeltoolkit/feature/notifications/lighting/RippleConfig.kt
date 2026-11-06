@@ -1,5 +1,8 @@
 package com.jawzf.pixeltoolkit.feature.notifications.lighting
 
+import androidx.annotation.Keep
+
+@Keep
 data class RippleConfig(
     val speed: Float = DEFAULT_SPEED,
     val repeatCount: Int = DEFAULT_REPEAT_COUNT,

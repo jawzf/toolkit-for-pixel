@@ -24,5 +24,7 @@ class NotificationSettingsTest {
         assertEquals("hilight_progress_color", NotificationSettings.KEY_HILIGHT_PROGRESS_COLOR)
         assertEquals("hilight_progress_duration_ms", NotificationSettings.KEY_HILIGHT_PROGRESS_DURATION_MS)
         assertEquals("hilight_skip_dnd", NotificationSettings.KEY_HILIGHT_SKIP_DND)
+        assertEquals("edge_lighting_enabled", NotificationSettings.KEY_EDGE_LIGHTING_ENABLED)
+        assertEquals("use_ripple", NotificationSettings.KEY_USE_RIPPLE)
     }
 }

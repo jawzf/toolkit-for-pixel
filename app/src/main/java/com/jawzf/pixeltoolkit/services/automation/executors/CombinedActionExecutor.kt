@@ -40,6 +40,7 @@ import com.jawzf.pixeltoolkit.feature.apps.freeze.FreezeManager
 import com.jawzf.pixeltoolkit.feature.connectivity.hotspot.HotspotController
 import com.jawzf.pixeltoolkit.feature.input.InputSettings
 import com.jawzf.pixeltoolkit.feature.input.gesture.OmniTriggerUtil
+import com.jawzf.pixeltoolkit.feature.notifications.NotificationSettings
 import com.jawzf.pixeltoolkit.feature.notifications.hilight.HilightController
 import com.jawzf.pixeltoolkit.feature.notifications.lighting.DashConfig
 import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingService
@@ -657,7 +658,7 @@ object CombinedActionExecutor {
 
                     if (action.changeNotificationLighting) {
                         repository.putBoolean(
-                            com.jawzf.pixeltoolkit.data.repository.SettingsRepository.KEY_EDGE_LIGHTING_ENABLED,
+                            NotificationSettings.KEY_EDGE_LIGHTING_ENABLED,
                             action.notificationLightingEnabled,
                         )
                     }

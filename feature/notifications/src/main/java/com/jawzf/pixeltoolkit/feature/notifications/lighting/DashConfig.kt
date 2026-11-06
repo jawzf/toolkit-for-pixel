@@ -1,5 +1,8 @@
 package com.jawzf.pixeltoolkit.feature.notifications.lighting
 
+import androidx.annotation.Keep
+
+@Keep
 data class DashConfig(
     val thickness: Float = DEFAULT_THICKNESS,
     val lengthPercent: Float = DEFAULT_LENGTH_PERCENT,

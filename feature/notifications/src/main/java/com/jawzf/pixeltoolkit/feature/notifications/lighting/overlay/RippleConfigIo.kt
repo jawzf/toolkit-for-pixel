@@ -2,7 +2,7 @@ package com.jawzf.pixeltoolkit.feature.notifications.lighting.overlay
 
 import android.content.Intent
 import android.content.SharedPreferences
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
+import com.jawzf.pixeltoolkit.feature.notifications.NotificationSettings
 import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingRipplePosition
 import com.jawzf.pixeltoolkit.feature.notifications.lighting.RippleConfig
 
@@ -49,45 +49,45 @@ fun RippleConfig.Companion.fromIntent(intent: Intent): RippleConfig =
 
 fun RippleConfig.Companion.fromPrefs(prefs: SharedPreferences): RippleConfig =
     RippleConfig(
-        speed = prefs.float(SettingsRepository.KEY_EDGE_LIGHTING_RIPPLE_SPEED, DEFAULT_SPEED),
+        speed = prefs.float(NotificationSettings.KEY_EDGE_LIGHTING_RIPPLE_SPEED, DEFAULT_SPEED),
         repeatCount =
             prefs
                 .float(
-                    SettingsRepository.KEY_EDGE_LIGHTING_RIPPLE_REPEAT_COUNT,
+                    NotificationSettings.KEY_EDGE_LIGHTING_RIPPLE_REPEAT_COUNT,
                     DEFAULT_REPEAT_COUNT.toFloat(),
                 ).toInt(),
-        waveSize = prefs.float(SettingsRepository.KEY_EDGE_LIGHTING_RIPPLE_WAVE_SIZE, DEFAULT_WAVE_SIZE),
-        opacity = prefs.float(SettingsRepository.KEY_EDGE_LIGHTING_RIPPLE_OPACITY, DEFAULT_OPACITY),
+        waveSize = prefs.float(NotificationSettings.KEY_EDGE_LIGHTING_RIPPLE_WAVE_SIZE, DEFAULT_WAVE_SIZE),
+        opacity = prefs.float(NotificationSettings.KEY_EDGE_LIGHTING_RIPPLE_OPACITY, DEFAULT_OPACITY),
         sparklesEnabled =
-            prefs.getBoolean(SettingsRepository.KEY_EDGE_LIGHTING_RIPPLE_SPARKLES_ENABLED, true),
+            prefs.getBoolean(NotificationSettings.KEY_EDGE_LIGHTING_RIPPLE_SPARKLES_ENABLED, true),
         sparkleCount =
             prefs
                 .float(
-                    SettingsRepository.KEY_EDGE_LIGHTING_RIPPLE_SPARKLE_COUNT,
+                    NotificationSettings.KEY_EDGE_LIGHTING_RIPPLE_SPARKLE_COUNT,
                     DEFAULT_SPARKLE_COUNT.toFloat(),
                 ).toInt(),
         sparkleSize =
-            prefs.float(SettingsRepository.KEY_EDGE_LIGHTING_RIPPLE_SPARKLE_SIZE, DEFAULT_SPARKLE_SIZE),
+            prefs.float(NotificationSettings.KEY_EDGE_LIGHTING_RIPPLE_SPARKLE_SIZE, DEFAULT_SPARKLE_SIZE),
         position =
             parsePosition(
                 prefs.getString(
-                    SettingsRepository.KEY_EDGE_LIGHTING_RIPPLE_POSITION,
+                    NotificationSettings.KEY_EDGE_LIGHTING_RIPPLE_POSITION,
                     NotificationLightingRipplePosition.AUTO.name,
                 ),
             ),
         positionX =
             prefs.float(
-                SettingsRepository.KEY_EDGE_LIGHTING_RIPPLE_POSITION_X,
+                NotificationSettings.KEY_EDGE_LIGHTING_RIPPLE_POSITION_X,
                 DEFAULT_POSITION_PERCENT,
             ),
         positionY =
             prefs.float(
-                SettingsRepository.KEY_EDGE_LIGHTING_RIPPLE_POSITION_Y,
+                NotificationSettings.KEY_EDGE_LIGHTING_RIPPLE_POSITION_Y,
                 DEFAULT_POSITION_PERCENT,
             ),
         overlapPercent =
             prefs.float(
-                SettingsRepository.KEY_EDGE_LIGHTING_RIPPLE_OVERLAP,
+                NotificationSettings.KEY_EDGE_LIGHTING_RIPPLE_OVERLAP,
                 DEFAULT_OVERLAP_PERCENT,
             ),
     )

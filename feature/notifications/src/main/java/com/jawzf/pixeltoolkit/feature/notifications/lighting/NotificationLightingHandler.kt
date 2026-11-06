@@ -10,6 +10,7 @@ import android.os.PowerManager
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
+import com.jawzf.pixeltoolkit.core.design.overlay.OverlayWindows
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.feature.notifications.lighting.DashConfig
 import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingColorMode
@@ -238,7 +239,7 @@ class NotificationLightingHandler(
                     rippleConfig = rippleConfig,
                     dashConfig = dashConfig,
                 )
-            val params = OverlayHelper.createOverlayLayoutParams(overlayType)
+            val params = OverlayWindows.createOverlayLayoutParams(overlayType)
 
             val isScreenOn = powerManager.isInteractive
             val showBackground =
@@ -261,7 +262,7 @@ class NotificationLightingHandler(
                             dashConfig = dashConfig,
                         )
                     val ambientParams =
-                        OverlayHelper.createOverlayLayoutParams(overlayType, isTouchable = true)
+                        OverlayWindows.createOverlayLayoutParams(overlayType, isTouchable = true)
 
                     ambientOverlay.setOnTouchListener { _, _ ->
                         isInterrupted = true

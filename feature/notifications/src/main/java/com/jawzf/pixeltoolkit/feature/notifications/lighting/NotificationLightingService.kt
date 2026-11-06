@@ -17,6 +17,8 @@ import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import androidx.core.app.NotificationCompat
+import com.jawzf.pixeltoolkit.core.design.overlay.OverlayWindows
+import com.jawzf.pixeltoolkit.core.platform.AppComponents
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.feature.notifications.lighting.DashConfig
 import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingColorMode
@@ -26,7 +28,6 @@ import com.jawzf.pixeltoolkit.feature.notifications.lighting.OverlayHelper
 import com.jawzf.pixeltoolkit.feature.notifications.lighting.RippleConfig
 import com.jawzf.pixeltoolkit.feature.notifications.lighting.overlay.fromIntent
 import com.jawzf.pixeltoolkit.feature.notifications.lighting.overlay.writeTo
-import com.jawzf.pixeltoolkit.services.tiles.ScreenOffAccessibilityService
 
 /**
  * Overlay service that shows a light pulse for notifications.
@@ -194,10 +195,7 @@ class NotificationLightingService : Service() {
             if (isAccessibilityServiceEnabled()) {
                 try {
                     val ai =
-                        Intent(
-                            applicationContext,
-                            ScreenOffAccessibilityService::class.java,
-                        ).apply {
+                        Intent().setClassName(applicationContext, AppComponents.SCREEN_OFF_ACCESSIBILITY_SERVICE).apply {
                             action = "SHOW_NOTIFICATION_LIGHTING"
                             putExtra("remove_preview", true)
                         }
@@ -216,7 +214,7 @@ class NotificationLightingService : Service() {
         if (isAccessibilityServiceEnabled()) {
             try {
                 val ai =
-                    Intent(applicationContext, ScreenOffAccessibilityService::class.java).apply {
+                    Intent().setClassName(applicationContext, AppComponents.SCREEN_OFF_ACCESSIBILITY_SERVICE).apply {
                         action = "SHOW_NOTIFICATION_LIGHTING"
                         putExtra("corner_radius_dp", cornerRadiusDp)
                         putExtra("stroke_thickness_dp", strokeThicknessDp)
@@ -364,7 +362,7 @@ class NotificationLightingService : Service() {
                     rippleConfig = rippleConfig,
                     dashConfig = dashConfig,
                 )
-            val params = OverlayHelper.createOverlayLayoutParams(getOverlayType())
+            val params = OverlayWindows.createOverlayLayoutParams(getOverlayType())
 
             if (OverlayHelper.addOverlayView(windowManager, overlay, params)) {
                 overlayViews.add(overlay)
@@ -443,7 +441,7 @@ class NotificationLightingService : Service() {
                     contentResolver,
                     Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES,
                 )
-            val serviceName = "$packageName/${ScreenOffAccessibilityService::class.java.name}"
+            val serviceName = "$packageName/${AppComponents.SCREEN_OFF_ACCESSIBILITY_SERVICE}"
             enabledServices?.contains(serviceName) == true
         } catch (_: Exception) {
             false

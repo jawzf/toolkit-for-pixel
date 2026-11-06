@@ -65,6 +65,7 @@ import com.jawzf.pixeltoolkit.feature.apps.updates.github.GitHubUser
 import com.jawzf.pixeltoolkit.feature.connectivity.ConnectivitySettings
 import com.jawzf.pixeltoolkit.feature.connectivity.ConnectivityState
 import com.jawzf.pixeltoolkit.feature.input.InputState
+import com.jawzf.pixeltoolkit.feature.notifications.NotificationSettings
 import com.jawzf.pixeltoolkit.feature.notifications.NotificationState
 import com.jawzf.pixeltoolkit.feature.notifications.autodismiss.NotificationAutoDismisser
 import com.jawzf.pixeltoolkit.feature.notifications.hilight.HilightState
@@ -554,6 +555,7 @@ class MainViewModel : ViewModel() {
     val hasShizukuPermission = mutableStateOf(false)
 
     lateinit var settingsRepository: SettingsRepository
+    private lateinit var lightingSettings: NotificationSettings
     private var appContext: Context? = null
 
     val gitHubToken = mutableStateOf<String?>(null)
@@ -641,7 +643,7 @@ class MainViewModel : ViewModel() {
                 if (key == null) return
 
                 when (key) {
-                    SettingsRepository.KEY_EDGE_LIGHTING_ENABLED ->
+                    NotificationSettings.KEY_EDGE_LIGHTING_ENABLED ->
                         isNotificationLightingEnabled.value =
                             settingsRepository.getBoolean(key)
 
@@ -1201,7 +1203,7 @@ class MainViewModel : ViewModel() {
                         appContext?.let { updateBlurState(it) }
                     }
 
-                    SettingsRepository.KEY_USE_RIPPLE -> {
+                    NotificationSettings.KEY_USE_RIPPLE -> {
                         appContext?.let { updateRippleState(it) }
                     }
 
@@ -1294,9 +1296,9 @@ class MainViewModel : ViewModel() {
                             settingsRepository.getShizukuAuthToken()
                     }
 
-                    SettingsRepository.KEY_EDGE_LIGHTING_SWEEP_SELECTED_SHAPES -> {
+                    NotificationSettings.KEY_EDGE_LIGHTING_SWEEP_SELECTED_SHAPES -> {
                         edgeLightingSweepSelectedShapes.value =
-                            settingsRepository.getEdgeLightingSweepSelectedShapes()
+                            lightingSettings.getEdgeLightingSweepSelectedShapes()
                     }
 
                     SettingsRepository.KEY_DISABLE_ROTATION_SUGGESTION -> {
@@ -1519,6 +1521,7 @@ class MainViewModel : ViewModel() {
     fun check(context: Context) {
         appContext = context.applicationContext
         settingsRepository = SettingsRepository(context)
+        lightingSettings = NotificationSettings(context)
         NotificationAutoDismisser.isSnoozedByUs = { LiveUpdateSnoozer.isSnoozedByUs(it) }
         notifications.load(context)
         gitHubUser.value = AppsSettings(context).getGitHubUser()
@@ -1570,7 +1573,7 @@ class MainViewModel : ViewModel() {
                 false,
             )
         notificationLightingSystemMode.intValue =
-            settingsRepository.getNotificationLightingSystemMode()
+            lightingSettings.getNotificationLightingSystemMode()
 
         isShutUpAttemptShizukuRestart.value =
             settingsRepository.isShutUpAttemptShizukuRestartEnabled()
@@ -1582,7 +1585,7 @@ class MainViewModel : ViewModel() {
         shizukuAuthToken.value =
             settingsRepository.getShizukuAuthToken()
         edgeLightingSweepSelectedShapes.value =
-            settingsRepository.getEdgeLightingSweepSelectedShapes()
+            lightingSettings.getEdgeLightingSweepSelectedShapes()
         isDisableRotationSuggestionEnabled.value =
             settingsRepository.getBoolean(SettingsRepository.KEY_DISABLE_ROTATION_SUGGESTION, false)
         isAllowOverlaysInSettingsEnabled.value =
@@ -1888,23 +1891,23 @@ class MainViewModel : ViewModel() {
         hasShizukuPermission.value = ShizukuUtils.hasPermission() || RootUtils.isRootAvailable()
 
         isNotificationLightingEnabled.value =
-            settingsRepository.getBoolean(SettingsRepository.KEY_EDGE_LIGHTING_ENABLED)
+            settingsRepository.getBoolean(NotificationSettings.KEY_EDGE_LIGHTING_ENABLED)
         onlyShowWhenScreenOff.value =
             settingsRepository.getBoolean(
-                SettingsRepository.KEY_EDGE_LIGHTING_ONLY_SCREEN_OFF,
+                NotificationSettings.KEY_EDGE_LIGHTING_ONLY_SCREEN_OFF,
                 true,
             )
         isAmbientDisplayEnabled.value =
-            settingsRepository.getBoolean(SettingsRepository.KEY_EDGE_LIGHTING_AMBIENT_DISPLAY)
+            settingsRepository.getBoolean(NotificationSettings.KEY_EDGE_LIGHTING_AMBIENT_DISPLAY)
         isAmbientShowLockScreenEnabled.value =
-            settingsRepository.getBoolean(SettingsRepository.KEY_EDGE_LIGHTING_AMBIENT_SHOW_LOCK_SCREEN)
+            settingsRepository.getBoolean(NotificationSettings.KEY_EDGE_LIGHTING_AMBIENT_SHOW_LOCK_SCREEN)
         skipSilentNotifications.value =
-            settingsRepository.getBoolean(SettingsRepository.KEY_EDGE_LIGHTING_SKIP_SILENT, true)
+            settingsRepository.getBoolean(NotificationSettings.KEY_EDGE_LIGHTING_SKIP_SILENT, true)
         skipPersistentNotifications.value =
-            settingsRepository.getBoolean(SettingsRepository.KEY_EDGE_LIGHTING_SKIP_PERSISTENT)
+            settingsRepository.getBoolean(NotificationSettings.KEY_EDGE_LIGHTING_SKIP_PERSISTENT)
 
-        notificationLightingStyle.value = settingsRepository.getNotificationLightingStyle()
-        notificationLightingColorMode.value = settingsRepository.getNotificationLightingColorMode()
+        notificationLightingStyle.value = lightingSettings.getNotificationLightingStyle()
+        notificationLightingColorMode.value = lightingSettings.getNotificationLightingColorMode()
         isUseUsageAccess.value =
             settingsRepository.getBoolean(SettingsRepository.KEY_USE_USAGE_ACCESS)
         isHiddenDebuggingSupport.value =
@@ -1914,17 +1917,17 @@ class MainViewModel : ViewModel() {
 
         notificationLightingCustomColor.intValue =
             settingsRepository.getInt(
-                SettingsRepository.KEY_EDGE_LIGHTING_CUSTOM_COLOR,
+                NotificationSettings.KEY_EDGE_LIGHTING_CUSTOM_COLOR,
                 0xFF6200EE.toInt(),
             )
         notificationLightingPulseCount.value =
-            settingsRepository.getFloat(SettingsRepository.KEY_EDGE_LIGHTING_PULSE_COUNT, 1f)
+            settingsRepository.getFloat(NotificationSettings.KEY_EDGE_LIGHTING_PULSE_COUNT, 1f)
         notificationLightingPulseDuration.value =
-            settingsRepository.getFloat(SettingsRepository.KEY_EDGE_LIGHTING_PULSE_DURATION, 3000f)
+            settingsRepository.getFloat(NotificationSettings.KEY_EDGE_LIGHTING_PULSE_DURATION, 3000f)
         notificationLightingIndicatorX.value =
-            settingsRepository.getFloat(SettingsRepository.KEY_EDGE_LIGHTING_INDICATOR_X, 50f)
+            settingsRepository.getFloat(NotificationSettings.KEY_EDGE_LIGHTING_INDICATOR_X, 50f)
         notificationLightingIndicatorY.value =
-            settingsRepository.getFloat(SettingsRepository.KEY_EDGE_LIGHTING_INDICATOR_Y, 2f)
+            settingsRepository.getFloat(NotificationSettings.KEY_EDGE_LIGHTING_INDICATOR_Y, 2f)
         isAodEnabled.value = settingsRepository.isAodEnabled()
 
         refreshPrivilegedMode()
@@ -1939,15 +1942,15 @@ class MainViewModel : ViewModel() {
         }
 
         notificationLightingIndicatorScale.value =
-            settingsRepository.getFloat(SettingsRepository.KEY_EDGE_LIGHTING_INDICATOR_SCALE, 1.0f)
-        notificationLightingGlowSides.value = settingsRepository.getNotificationLightingGlowSides()
+            settingsRepository.getFloat(NotificationSettings.KEY_EDGE_LIGHTING_INDICATOR_SCALE, 1.0f)
+        notificationLightingGlowSides.value = lightingSettings.getNotificationLightingGlowSides()
         notificationLightingSweepPosition.value =
-            settingsRepository.getNotificationLightingSweepPosition()
+            lightingSettings.getNotificationLightingSweepPosition()
         notificationLightingSweepThickness.floatValue =
-            settingsRepository.getFloat(SettingsRepository.KEY_EDGE_LIGHTING_SWEEP_THICKNESS, 8f)
+            settingsRepository.getFloat(NotificationSettings.KEY_EDGE_LIGHTING_SWEEP_THICKNESS, 8f)
         notificationLightingSweepRandomShapes.value =
             settingsRepository.getBoolean(
-                SettingsRepository.KEY_EDGE_LIGHTING_SWEEP_RANDOM_SHAPES,
+                NotificationSettings.KEY_EDGE_LIGHTING_SWEEP_RANDOM_SHAPES,
                 true,
             )
         ripple.load()
@@ -2641,7 +2644,7 @@ class MainViewModel : ViewModel() {
         enabled: Boolean,
         context: Context,
     ) {
-        settingsRepository.putBoolean(SettingsRepository.KEY_USE_RIPPLE, enabled)
+        settingsRepository.putBoolean(NotificationSettings.KEY_USE_RIPPLE, enabled)
         updateRippleState(context)
     }
 
@@ -2688,7 +2691,7 @@ class MainViewModel : ViewModel() {
     }
 
     private fun updateRippleState(context: Context) {
-        val useRippleSetting = settingsRepository.getBoolean(SettingsRepository.KEY_USE_RIPPLE, true)
+        val useRippleSetting = settingsRepository.getBoolean(NotificationSettings.KEY_USE_RIPPLE, true)
         val isPowerSave = DeviceUtils.isPowerSaveMode(context)
 
         isRippleSettingEnabled.value = useRippleSetting
@@ -2799,7 +2802,7 @@ class MainViewModel : ViewModel() {
         context: Context,
     ) {
         isNotificationLightingEnabled.value = enabled
-        settingsRepository.putBoolean(SettingsRepository.KEY_EDGE_LIGHTING_ENABLED, enabled)
+        settingsRepository.putBoolean(NotificationSettings.KEY_EDGE_LIGHTING_ENABLED, enabled)
     }
 
     /**
@@ -2813,7 +2816,7 @@ class MainViewModel : ViewModel() {
         context: Context,
     ) {
         onlyShowWhenScreenOff.value = enabled
-        settingsRepository.putBoolean(SettingsRepository.KEY_EDGE_LIGHTING_ONLY_SCREEN_OFF, enabled)
+        settingsRepository.putBoolean(NotificationSettings.KEY_EDGE_LIGHTING_ONLY_SCREEN_OFF, enabled)
     }
 
     /**
@@ -2827,7 +2830,7 @@ class MainViewModel : ViewModel() {
         context: Context,
     ) {
         isAmbientDisplayEnabled.value = enabled
-        settingsRepository.putBoolean(SettingsRepository.KEY_EDGE_LIGHTING_AMBIENT_DISPLAY, enabled)
+        settingsRepository.putBoolean(NotificationSettings.KEY_EDGE_LIGHTING_AMBIENT_DISPLAY, enabled)
     }
 
     /**
@@ -2842,7 +2845,7 @@ class MainViewModel : ViewModel() {
     ) {
         isAmbientShowLockScreenEnabled.value = enabled
         settingsRepository.putBoolean(
-            SettingsRepository.KEY_EDGE_LIGHTING_AMBIENT_SHOW_LOCK_SCREEN,
+            NotificationSettings.KEY_EDGE_LIGHTING_AMBIENT_SHOW_LOCK_SCREEN,
             enabled,
         )
     }
@@ -3826,7 +3829,7 @@ class MainViewModel : ViewModel() {
         context: Context,
     ) {
         skipSilentNotifications.value = enabled
-        settingsRepository.putBoolean(SettingsRepository.KEY_EDGE_LIGHTING_SKIP_SILENT, enabled)
+        settingsRepository.putBoolean(NotificationSettings.KEY_EDGE_LIGHTING_SKIP_SILENT, enabled)
     }
 
     /**
@@ -3840,7 +3843,7 @@ class MainViewModel : ViewModel() {
         context: Context,
     ) {
         skipPersistentNotifications.value = enabled
-        settingsRepository.putBoolean(SettingsRepository.KEY_EDGE_LIGHTING_SKIP_PERSISTENT, enabled)
+        settingsRepository.putBoolean(NotificationSettings.KEY_EDGE_LIGHTING_SKIP_PERSISTENT, enabled)
     }
 
     /**
@@ -3858,7 +3861,7 @@ class MainViewModel : ViewModel() {
             return
         }
         notificationLightingStyle.value = style
-        settingsRepository.putString(SettingsRepository.KEY_EDGE_LIGHTING_STYLE, style.name)
+        settingsRepository.putString(NotificationSettings.KEY_EDGE_LIGHTING_STYLE, style.name)
     }
 
     /**
@@ -3872,7 +3875,7 @@ class MainViewModel : ViewModel() {
         context: Context,
     ) {
         notificationLightingSystemMode.intValue = mode
-        settingsRepository.saveNotificationLightingSystemMode(mode)
+        lightingSettings.saveNotificationLightingSystemMode(mode)
     }
 
     /**
@@ -3886,7 +3889,7 @@ class MainViewModel : ViewModel() {
         context: Context,
     ) {
         notificationLightingColorMode.value = mode
-        settingsRepository.putString(SettingsRepository.KEY_EDGE_LIGHTING_COLOR_MODE, mode.name)
+        settingsRepository.putString(NotificationSettings.KEY_EDGE_LIGHTING_COLOR_MODE, mode.name)
     }
 
     /**
@@ -3900,7 +3903,7 @@ class MainViewModel : ViewModel() {
         context: Context,
     ) {
         notificationLightingCustomColor.intValue = color
-        settingsRepository.putInt(SettingsRepository.KEY_EDGE_LIGHTING_CUSTOM_COLOR, color)
+        settingsRepository.putInt(NotificationSettings.KEY_EDGE_LIGHTING_CUSTOM_COLOR, color)
     }
 
     /**
@@ -5923,7 +5926,7 @@ class MainViewModel : ViewModel() {
         count: Float,
     ) {
         notificationLightingPulseCount.value = count
-        settingsRepository.putFloat(SettingsRepository.KEY_EDGE_LIGHTING_PULSE_COUNT, count)
+        settingsRepository.putFloat(NotificationSettings.KEY_EDGE_LIGHTING_PULSE_COUNT, count)
     }
 
     /**
@@ -5937,7 +5940,7 @@ class MainViewModel : ViewModel() {
         duration: Float,
     ) {
         notificationLightingPulseDuration.value = duration
-        settingsRepository.putFloat(SettingsRepository.KEY_EDGE_LIGHTING_PULSE_DURATION, duration)
+        settingsRepository.putFloat(NotificationSettings.KEY_EDGE_LIGHTING_PULSE_DURATION, duration)
     }
 
     /**
@@ -6040,11 +6043,11 @@ class MainViewModel : ViewModel() {
     ) {
         val radius =
             cornerRadiusDp
-                ?: settingsRepository.getFloat(SettingsRepository.KEY_EDGE_LIGHTING_CORNER_RADIUS, 20f)
+                ?: settingsRepository.getFloat(NotificationSettings.KEY_EDGE_LIGHTING_CORNER_RADIUS, 20f)
         val thickness =
             strokeThicknessDp
                 ?: settingsRepository.getFloat(
-                    SettingsRepository.KEY_EDGE_LIGHTING_STROKE_THICKNESS,
+                    NotificationSettings.KEY_EDGE_LIGHTING_STROKE_THICKNESS,
                     8f,
                 )
 
@@ -6510,7 +6513,7 @@ class MainViewModel : ViewModel() {
         context: Context,
         apps: List<AppSelection>,
     ) {
-        settingsRepository.saveNotificationLightingSelectedApps(apps)
+        lightingSettings.saveNotificationLightingSelectedApps(apps)
     }
 
     /**
@@ -6520,14 +6523,14 @@ class MainViewModel : ViewModel() {
      * @return The resulting List<AppSelection> data.
      */
     fun loadNotificationLightingSelectedApps(context: Context): List<AppSelection> =
-        settingsRepository.loadNotificationLightingSelectedApps()
+        lightingSettings.loadNotificationLightingSelectedApps()
 
     fun updateNotificationLightingAppEnabled(
         context: Context,
         packageName: String,
         enabled: Boolean,
     ) {
-        settingsRepository.updateNotificationLightingAppSelection(packageName, enabled)
+        lightingSettings.updateNotificationLightingAppSelection(packageName, enabled)
     }
 
     /**
@@ -6571,7 +6574,7 @@ class MainViewModel : ViewModel() {
         context: Context,
         radiusDp: Float,
     ) {
-        settingsRepository.putFloat(SettingsRepository.KEY_EDGE_LIGHTING_CORNER_RADIUS, radiusDp)
+        settingsRepository.putFloat(NotificationSettings.KEY_EDGE_LIGHTING_CORNER_RADIUS, radiusDp)
     }
 
     /**
@@ -6581,7 +6584,7 @@ class MainViewModel : ViewModel() {
      * @return The resulting Float data.
      */
     fun loadNotificationLightingCornerRadius(context: Context): Float =
-        settingsRepository.getFloat(SettingsRepository.KEY_EDGE_LIGHTING_CORNER_RADIUS, 20f)
+        settingsRepository.getFloat(NotificationSettings.KEY_EDGE_LIGHTING_CORNER_RADIUS, 20f)
 
     // Notification Lighting Stroke Thickness Methods
     fun saveNotificationLightingStrokeThickness(
@@ -6589,7 +6592,7 @@ class MainViewModel : ViewModel() {
         thicknessDp: Float,
     ) {
         settingsRepository.putFloat(
-            SettingsRepository.KEY_EDGE_LIGHTING_STROKE_THICKNESS,
+            NotificationSettings.KEY_EDGE_LIGHTING_STROKE_THICKNESS,
             thicknessDp,
         )
     }
@@ -6602,7 +6605,7 @@ class MainViewModel : ViewModel() {
      */
     fun loadNotificationLightingStrokeThickness(context: Context): Float =
         settingsRepository.getFloat(
-            SettingsRepository.KEY_EDGE_LIGHTING_STROKE_THICKNESS,
+            NotificationSettings.KEY_EDGE_LIGHTING_STROKE_THICKNESS,
             8f,
         )
 
@@ -6775,7 +6778,7 @@ class MainViewModel : ViewModel() {
         context: Context,
     ) {
         notificationLightingGlowSides.value = sides
-        settingsRepository.saveNotificationLightingGlowSides(sides)
+        lightingSettings.saveNotificationLightingGlowSides(sides)
     }
 
     /**
@@ -6789,7 +6792,7 @@ class MainViewModel : ViewModel() {
         x: Float,
     ) {
         notificationLightingIndicatorX.value = x
-        settingsRepository.putFloat(SettingsRepository.KEY_EDGE_LIGHTING_INDICATOR_X, x)
+        settingsRepository.putFloat(NotificationSettings.KEY_EDGE_LIGHTING_INDICATOR_X, x)
     }
 
     /**
@@ -6803,7 +6806,7 @@ class MainViewModel : ViewModel() {
         y: Float,
     ) {
         notificationLightingIndicatorY.value = y
-        settingsRepository.putFloat(SettingsRepository.KEY_EDGE_LIGHTING_INDICATOR_Y, y)
+        settingsRepository.putFloat(NotificationSettings.KEY_EDGE_LIGHTING_INDICATOR_Y, y)
     }
 
     /**
@@ -6817,7 +6820,7 @@ class MainViewModel : ViewModel() {
         scale: Float,
     ) {
         notificationLightingIndicatorScale.value = scale
-        settingsRepository.putFloat(SettingsRepository.KEY_EDGE_LIGHTING_INDICATOR_SCALE, scale)
+        settingsRepository.putFloat(NotificationSettings.KEY_EDGE_LIGHTING_INDICATOR_SCALE, scale)
     }
 
     fun setNotificationLightingSweepPosition(
@@ -6825,7 +6828,7 @@ class MainViewModel : ViewModel() {
         context: Context,
     ) {
         notificationLightingSweepPosition.value = position
-        settingsRepository.saveNotificationLightingSweepPosition(position)
+        lightingSettings.saveNotificationLightingSweepPosition(position)
     }
 
     /**
@@ -6839,7 +6842,7 @@ class MainViewModel : ViewModel() {
         thickness: Float,
     ) {
         notificationLightingSweepThickness.floatValue = thickness
-        settingsRepository.putFloat(SettingsRepository.KEY_EDGE_LIGHTING_SWEEP_THICKNESS, thickness)
+        settingsRepository.putFloat(NotificationSettings.KEY_EDGE_LIGHTING_SWEEP_THICKNESS, thickness)
     }
 
     /**
@@ -6854,7 +6857,7 @@ class MainViewModel : ViewModel() {
     ) {
         notificationLightingSweepRandomShapes.value = enabled
         settingsRepository.putBoolean(
-            SettingsRepository.KEY_EDGE_LIGHTING_SWEEP_RANDOM_SHAPES,
+            NotificationSettings.KEY_EDGE_LIGHTING_SWEEP_RANDOM_SHAPES,
             enabled,
         )
     }
@@ -6866,7 +6869,7 @@ class MainViewModel : ViewModel() {
      */
     fun saveEdgeLightingSweepSelectedShapes(shapes: Set<String>) {
         edgeLightingSweepSelectedShapes.value = shapes
-        settingsRepository.saveEdgeLightingSweepSelectedShapes(shapes)
+        lightingSettings.saveEdgeLightingSweepSelectedShapes(shapes)
     }
 
     /**

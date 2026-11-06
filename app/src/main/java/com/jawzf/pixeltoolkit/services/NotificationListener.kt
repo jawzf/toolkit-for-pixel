@@ -1848,7 +1848,7 @@ class NotificationListener : NotificationListenerService() {
             if (!isDocked) return
 
             // Criteria: Non-silent or Lighting logic
-            val isLightingOn = prefs.getBoolean(SettingsRepository.KEY_EDGE_LIGHTING_ENABLED, false)
+            val isLightingOn = prefs.getBoolean(NotificationSettings.KEY_EDGE_LIGHTING_ENABLED, false)
             val shouldHide =
                 if (isLightingOn) {
                     isAppSelectedForNotificationLighting(sbn.packageName)
