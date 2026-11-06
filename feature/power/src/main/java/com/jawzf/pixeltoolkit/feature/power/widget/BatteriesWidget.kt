@@ -45,11 +45,11 @@ import androidx.glance.text.FontWeight
 import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
 import com.google.gson.Gson
+import com.jawzf.pixeltoolkit.core.data.power.ChargeLimitUtil
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.feature.power.PowerSettings
 import com.jawzf.pixeltoolkit.feature.power.battery.BatteryDetailsActivity
 import com.jawzf.pixeltoolkit.feature.power.battery.BatteryRingDrawer
-import com.jawzf.pixeltoolkit.feature.power.battery.ChargeLimitUtil
 import com.jawzf.pixeltoolkit.feature.power.bluetooth.BluetoothBatteryUtils
 import com.jawzf.pixeltoolkit.feature.power.bluetooth.BluetoothDeviceIcons
 import com.jawzf.pixeltoolkit.feature.power.bluetooth.BluetoothDeviceOrder

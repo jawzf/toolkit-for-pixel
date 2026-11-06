@@ -46,6 +46,7 @@ import androidx.compose.ui.text.font.FontVariation
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.core.data.action.ChargingMode
+import com.jawzf.pixeltoolkit.core.data.power.ChargingModeUtil
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.pickers.SegmentedPicker
@@ -55,7 +56,6 @@ import com.jawzf.pixeltoolkit.feature.power.battery.BatteryDetails
 import com.jawzf.pixeltoolkit.feature.power.battery.BatteryInfoUtil
 import com.jawzf.pixeltoolkit.feature.power.battery.BatteryStatsUtil
 import com.jawzf.pixeltoolkit.feature.power.battery.BatteryUsageApp
-import com.jawzf.pixeltoolkit.feature.power.charging.ChargingModeUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
