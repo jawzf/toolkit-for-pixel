@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.core.pickers
+package com.jawzf.pixeltoolkit.feature.display.ondisplay.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

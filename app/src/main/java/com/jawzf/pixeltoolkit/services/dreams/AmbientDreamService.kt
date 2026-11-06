@@ -26,8 +26,9 @@ import android.widget.TextClock
 import android.widget.TextView
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.overlay.AmbientMusicShapeHelper
+import com.jawzf.pixeltoolkit.core.platform.device.CarConnectionMonitor
+import com.jawzf.pixeltoolkit.feature.display.DisplaySettings
 import com.jawzf.pixeltoolkit.services.NotificationListener
-import com.jawzf.pixeltoolkit.utils.CarConnectionMonitor
 import java.io.File
 import java.util.Random
 
@@ -1344,13 +1345,13 @@ class AmbientDreamService : DreamService() {
             )
         val selectedMode =
             prefs.getString(
-                com.jawzf.pixeltoolkit.data.repository.SettingsRepository.KEY_AMBIENT_MUSIC_GLANCE_ALBUM_ART_MODE,
+                DisplaySettings.KEY_AMBIENT_MUSIC_GLANCE_ALBUM_ART_MODE,
                 "default",
             ) ?: "default"
 
         val forceFillWhileCharging =
             prefs.getBoolean(
-                com.jawzf.pixeltoolkit.data.repository.SettingsRepository.KEY_AMBIENT_MUSIC_GLANCE_FORCE_FILL_WHILE_CHARGING,
+                DisplaySettings.KEY_AMBIENT_MUSIC_GLANCE_FORCE_FILL_WHILE_CHARGING,
                 false,
             )
         if (forceFillWhileCharging) {
@@ -1373,7 +1374,7 @@ class AmbientDreamService : DreamService() {
                 MODE_PRIVATE,
             )
         return prefs.getBoolean(
-            com.jawzf.pixeltoolkit.data.repository.SettingsRepository.KEY_AMBIENT_MUSIC_GLANCE_RANDOM_SHAPES,
+            DisplaySettings.KEY_AMBIENT_MUSIC_GLANCE_RANDOM_SHAPES,
             false,
         )
     }
@@ -1391,7 +1392,7 @@ class AmbientDreamService : DreamService() {
         if (isFill) {
             val size =
                 prefs.getInt(
-                    com.jawzf.pixeltoolkit.data.repository.SettingsRepository.KEY_AMBIENT_MUSIC_GLANCE_CLOCK_SIZE,
+                    DisplaySettings.KEY_AMBIENT_MUSIC_GLANCE_CLOCK_SIZE,
                     80,
                 )
             clock.textSize = size.toFloat()
@@ -1399,17 +1400,17 @@ class AmbientDreamService : DreamService() {
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                 val weight =
                     prefs.getInt(
-                        com.jawzf.pixeltoolkit.data.repository.SettingsRepository.KEY_AMBIENT_MUSIC_GLANCE_CLOCK_WEIGHT,
+                        DisplaySettings.KEY_AMBIENT_MUSIC_GLANCE_CLOCK_WEIGHT,
                         400,
                     )
                 val width =
                     prefs.getInt(
-                        com.jawzf.pixeltoolkit.data.repository.SettingsRepository.KEY_AMBIENT_MUSIC_GLANCE_CLOCK_WIDTH,
+                        DisplaySettings.KEY_AMBIENT_MUSIC_GLANCE_CLOCK_WIDTH,
                         100,
                     )
                 val roundness =
                     prefs.getInt(
-                        com.jawzf.pixeltoolkit.data.repository.SettingsRepository.KEY_AMBIENT_MUSIC_GLANCE_CLOCK_ROUNDNESS,
+                        DisplaySettings.KEY_AMBIENT_MUSIC_GLANCE_CLOCK_ROUNDNESS,
                         50,
                     )
                 clock.fontVariationSettings = "'wght' $weight, 'wdth' $width, 'ROND' $roundness"

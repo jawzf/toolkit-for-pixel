@@ -78,6 +78,7 @@ import com.jawzf.pixeltoolkit.feature.connectivity.ui.NetworksSettingsUI
 import com.jawzf.pixeltoolkit.feature.display.aod.ui.AlwaysOnDisplaySettingsUI
 import com.jawzf.pixeltoolkit.feature.display.aod.ui.AodWallpaperPreviewCard
 import com.jawzf.pixeltoolkit.feature.display.aod.ui.AodWallpaperSettingsUI
+import com.jawzf.pixeltoolkit.feature.display.ondisplay.ui.ToolkitOnDisplaySettingsUI
 import com.jawzf.pixeltoolkit.feature.display.pixels.ui.SmartPixelsSettingsUI
 import com.jawzf.pixeltoolkit.feature.display.refresh.ui.RefreshRateSettingsUI
 import com.jawzf.pixeltoolkit.feature.input.gesture.ui.BACK_GESTURE_FEATURE_ID
@@ -138,7 +139,6 @@ import com.jawzf.pixeltoolkit.ui.features.system.ScreenOffWidgetSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.ShutUpSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.StatusBarIconSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.TextAnimationsSettingsUI
-import com.jawzf.pixeltoolkit.ui.features.system.ToolkitOnDisplaySettingsUI
 import com.jawzf.pixeltoolkit.ui.features.widgets.WidgetStackSettingsUI
 import com.jawzf.pixeltoolkit.utils.BiometricSecurityHelper
 import com.jawzf.pixeltoolkit.utils.PermissionUIHelper
@@ -1268,7 +1268,10 @@ class FeatureSettingsActivity : AppCompatActivity() {
 
                                     "Toolkit On Display" -> {
                                         ToolkitOnDisplaySettingsUI(
-                                            viewModel = viewModel,
+                                            state = viewModel.toolkitOnDisplay,
+                                            isAccessibilityEnabled = viewModel.isAccessibilityEnabled.value,
+                                            isNotificationListenerEnabled = viewModel.isNotificationListenerEnabled.value,
+                                            onRequestNotificationListener = { viewModel.requestNotificationListenerPermission(context) },
                                             modifier = Modifier.padding(top = 16.dp),
                                             highlightSetting = highlightSetting,
                                         )

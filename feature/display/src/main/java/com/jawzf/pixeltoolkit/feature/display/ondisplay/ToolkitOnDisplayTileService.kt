@@ -1,13 +1,14 @@
-package com.jawzf.pixeltoolkit.services.tiles
+package com.jawzf.pixeltoolkit.feature.display.ondisplay
 
 import android.graphics.drawable.Icon
 import android.os.Build
 import android.service.quicksettings.Tile
 import androidx.annotation.RequiresApi
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.platform.PlatformPrefs
 import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.core.platform.tiles.BaseTileService
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
+import com.jawzf.pixeltoolkit.feature.display.DisplaySettings
 
 @RequiresApi(Build.VERSION_CODES.N)
 class ToolkitOnDisplayTileService : BaseTileService() {
@@ -63,23 +64,23 @@ class ToolkitOnDisplayTileService : BaseTileService() {
     }
 
     private fun isGlanceEnabled(): Boolean =
-        getSharedPreferences(SettingsRepository.PREFS_NAME, MODE_PRIVATE)
-            .getBoolean(SettingsRepository.KEY_AMBIENT_MUSIC_GLANCE_ENABLED, false)
+        getSharedPreferences(PlatformPrefs.PREFS_NAME, MODE_PRIVATE)
+            .getBoolean(DisplaySettings.KEY_AMBIENT_MUSIC_GLANCE_ENABLED, false)
 
     private fun setGlanceEnabled(enabled: Boolean) {
-        getSharedPreferences(SettingsRepository.PREFS_NAME, MODE_PRIVATE).edit().apply {
-            putBoolean(SettingsRepository.KEY_AMBIENT_MUSIC_GLANCE_ENABLED, enabled)
+        getSharedPreferences(PlatformPrefs.PREFS_NAME, MODE_PRIVATE).edit().apply {
+            putBoolean(DisplaySettings.KEY_AMBIENT_MUSIC_GLANCE_ENABLED, enabled)
             apply()
         }
     }
 
     private fun isDockedModeEnabled(): Boolean =
-        getSharedPreferences(SettingsRepository.PREFS_NAME, MODE_PRIVATE)
-            .getBoolean(SettingsRepository.KEY_AMBIENT_MUSIC_GLANCE_DOCKED_MODE, false)
+        getSharedPreferences(PlatformPrefs.PREFS_NAME, MODE_PRIVATE)
+            .getBoolean(DisplaySettings.KEY_AMBIENT_MUSIC_GLANCE_DOCKED_MODE, false)
 
     private fun setDockedModeEnabled(enabled: Boolean) {
-        getSharedPreferences(SettingsRepository.PREFS_NAME, MODE_PRIVATE).edit().apply {
-            putBoolean(SettingsRepository.KEY_AMBIENT_MUSIC_GLANCE_DOCKED_MODE, enabled)
+        getSharedPreferences(PlatformPrefs.PREFS_NAME, MODE_PRIVATE).edit().apply {
+            putBoolean(DisplaySettings.KEY_AMBIENT_MUSIC_GLANCE_DOCKED_MODE, enabled)
             apply()
         }
     }

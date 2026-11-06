@@ -27,6 +27,7 @@ import com.jawzf.pixeltoolkit.core.data.apps.AppUtil
 import com.jawzf.pixeltoolkit.core.data.prefs.AppSelection
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticFeedbackType
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
+import com.jawzf.pixeltoolkit.core.platform.device.CarConnectionMonitor
 import com.jawzf.pixeltoolkit.core.platform.device.DeviceUtils
 import com.jawzf.pixeltoolkit.core.platform.device.PriorityModeUtil
 import com.jawzf.pixeltoolkit.core.platform.device.ProgressNotificationData
@@ -57,7 +58,6 @@ import com.jawzf.pixeltoolkit.island.plugins.notifications.OtpExtractor
 import com.jawzf.pixeltoolkit.services.receivers.FlashlightActionReceiver
 import com.jawzf.pixeltoolkit.services.tiles.ScreenOffAccessibilityService
 import com.jawzf.pixeltoolkit.services.widgets.PixelSearchbarWidget
-import com.jawzf.pixeltoolkit.utils.CarConnectionMonitor
 import com.jawzf.pixeltoolkit.utils.call.CallNotificationParser
 import com.jawzf.pixeltoolkit.utils.call.CallStateRepository
 import com.jawzf.pixeltoolkit.utils.chronometer.ChronometerRepository
@@ -817,7 +817,7 @@ class NotificationListener : NotificationListenerService() {
             )
         val isEnabled =
             prefs.getBoolean(
-                SettingsRepository.KEY_AMBIENT_MUSIC_GLANCE_ENABLED,
+                DisplaySettings.KEY_AMBIENT_MUSIC_GLANCE_ENABLED,
                 false,
             )
 
@@ -837,7 +837,7 @@ class NotificationListener : NotificationListenerService() {
             val isAlreadyLiked = isAlreadyLikedOverride ?: isLikedState(activeSession)
             val isDockedMode =
                 prefs.getBoolean(
-                    SettingsRepository.KEY_AMBIENT_MUSIC_GLANCE_DOCKED_MODE,
+                    DisplaySettings.KEY_AMBIENT_MUSIC_GLANCE_DOCKED_MODE,
                     false,
                 )
 
@@ -1839,13 +1839,13 @@ class NotificationListener : NotificationListenerService() {
             val prefs = getSharedPreferences(SettingsRepository.PREFS_NAME, MODE_PRIVATE)
             val respectEnabled =
                 prefs.getBoolean(
-                    SettingsRepository.KEY_AMBIENT_MUSIC_GLANCE_RESPECT_NOTIFICATIONS,
+                    DisplaySettings.KEY_AMBIENT_MUSIC_GLANCE_RESPECT_NOTIFICATIONS,
                     false,
                 )
             if (!respectEnabled) return
 
             val isDocked =
-                prefs.getBoolean(SettingsRepository.KEY_AMBIENT_MUSIC_GLANCE_DOCKED_MODE, false)
+                prefs.getBoolean(DisplaySettings.KEY_AMBIENT_MUSIC_GLANCE_DOCKED_MODE, false)
             if (!isDocked) return
 
             // Criteria: Non-silent or Lighting logic

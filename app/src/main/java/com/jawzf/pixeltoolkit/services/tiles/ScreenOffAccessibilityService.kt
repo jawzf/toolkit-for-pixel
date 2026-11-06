@@ -25,11 +25,13 @@ import android.view.accessibility.AccessibilityEvent
 import androidx.core.content.ContextCompat
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticFeedbackType
 import com.jawzf.pixeltoolkit.core.design.haptics.performHapticFeedback
+import com.jawzf.pixeltoolkit.core.platform.device.CarConnectionMonitor
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.feature.apps.freeze.FreezeManager
 import com.jawzf.pixeltoolkit.feature.display.DisplaySettings
 import com.jawzf.pixeltoolkit.feature.display.aod.AodForceTurnOffHandler
 import com.jawzf.pixeltoolkit.feature.display.aod.AodWallpaperOverlayHandler
+import com.jawzf.pixeltoolkit.feature.display.ondisplay.AmbientGlanceHandler
 import com.jawzf.pixeltoolkit.feature.display.pixels.SmartPixelsHandler
 import com.jawzf.pixeltoolkit.feature.input.gesture.OmniGestureOverlayHandler
 import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingHandler
@@ -45,7 +47,6 @@ import com.jawzf.pixeltoolkit.island.service.IslandCoordinator
 import com.jawzf.pixeltoolkit.services.InputEventListenerService
 import com.jawzf.pixeltoolkit.services.LiveUpdateSnoozer
 import com.jawzf.pixeltoolkit.services.NotificationListener
-import com.jawzf.pixeltoolkit.services.handlers.AmbientGlanceHandler
 import com.jawzf.pixeltoolkit.services.handlers.AppFlowHandler
 import com.jawzf.pixeltoolkit.services.handlers.ButtonRemapHandler
 import com.jawzf.pixeltoolkit.services.handlers.DuoOverlayHandler
@@ -55,7 +56,6 @@ import com.jawzf.pixeltoolkit.services.handlers.StatusBarIconHandler
 import com.jawzf.pixeltoolkit.services.handlers.StatusGlanceHandler
 import com.jawzf.pixeltoolkit.services.receivers.FlashlightActionReceiver
 import com.jawzf.pixeltoolkit.utils.CameraSession
-import com.jawzf.pixeltoolkit.utils.CarConnectionMonitor
 import com.jawzf.pixeltoolkit.utils.DeviceLockUtils
 import com.jawzf.pixeltoolkit.utils.PowerButtonGestures
 import kotlinx.coroutines.CoroutineScope
@@ -324,7 +324,8 @@ class ScreenOffAccessibilityService :
                 cameraSessions = { cameraSessions },
             )
         appFlowHandler = AppFlowHandler(this, this)
-        ambientGlanceHandler = AmbientGlanceHandler(this)
+        ambientGlanceHandler =
+            AmbientGlanceHandler(this, NotificationListener::getCachedBitmap, NotificationListener::clearUnreadNotifications)
         aodForceTurnOffHandler = AodForceTurnOffHandler(this) { DeviceLockUtils.performAccessibilityLock(this) }
         aodWallpaperOverlayHandler =
             AodWallpaperOverlayHandler(this, NotificationListener::getCachedBitmap, NotificationListener::getLatestArtBitmap)
@@ -807,7 +808,7 @@ class ScreenOffAccessibilityService :
 
     private fun triggerAmbientGlanceVolume(keyCode: Int) {
         val prefs = getSharedPreferences(SettingsRepository.PREFS_NAME, MODE_PRIVATE)
-        if (prefs.getBoolean(SettingsRepository.KEY_AMBIENT_MUSIC_GLANCE_ENABLED, false)) {
+        if (prefs.getBoolean(DisplaySettings.KEY_AMBIENT_MUSIC_GLANCE_ENABLED, false)) {
             // Skip if Android Auto is running
             if (CarConnectionMonitor
                     .isAndroidAutoRunning(this)
@@ -841,7 +842,7 @@ class ScreenOffAccessibilityService :
             val percentage = (currentVolume.toFloat() / maxVolume.toFloat() * 100).toInt()
 
             val isDockedMode =
-                prefs.getBoolean(SettingsRepository.KEY_AMBIENT_MUSIC_GLANCE_DOCKED_MODE, false)
+                prefs.getBoolean(DisplaySettings.KEY_AMBIENT_MUSIC_GLANCE_DOCKED_MODE, false)
 
             val intent =
                 Intent("SHOW_AMBIENT_GLANCE").apply {

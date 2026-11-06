@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.features.system
+package com.jawzf.pixeltoolkit.feature.display.ondisplay.ui
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -24,21 +24,21 @@ import com.jawzf.pixeltoolkit.core.design.modifiers.highlight
 import com.jawzf.pixeltoolkit.core.design.sheets.PermissionItem
 import com.jawzf.pixeltoolkit.core.design.sheets.PermissionsBottomSheet
 import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
-import com.jawzf.pixeltoolkit.ui.core.pickers.AlbumArtModePicker
-import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
+import com.jawzf.pixeltoolkit.feature.display.ondisplay.ToolkitOnDisplayState
+import com.jawzf.pixeltoolkit.feature.display.ondisplay.ui.AlbumArtModePicker
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ToolkitOnDisplaySettingsUI(
-    viewModel: MainViewModel,
+    state: ToolkitOnDisplayState,
+    isAccessibilityEnabled: Boolean,
+    isNotificationListenerEnabled: Boolean,
+    onRequestNotificationListener: () -> Unit,
     modifier: Modifier = Modifier,
     highlightSetting: String? = null,
 ) {
     val context = LocalContext.current
     var showPermissionSheet by remember { androidx.compose.runtime.mutableStateOf(false) }
-
-    val isAccessibilityEnabled by viewModel.isAccessibilityEnabled
-    val isNotificationListenerEnabled by viewModel.isNotificationListenerEnabled
 
     val isPermissionGranted = isAccessibilityEnabled && isNotificationListenerEnabled
 
@@ -65,7 +65,7 @@ fun ToolkitOnDisplaySettingsUI(
                         description = R.string.perm_notif_listener_desc_lighting,
                         dependentFeatures = listOf(R.string.feat_toolkit_on_display_title),
                         actionLabel = R.string.perm_action_grant,
-                        action = { viewModel.requestNotificationListenerPermission(context) },
+                        action = { onRequestNotificationListener() },
                         isGranted = isNotificationListenerEnabled,
                     ),
                 ),
@@ -83,8 +83,8 @@ fun ToolkitOnDisplaySettingsUI(
                 iconRes = R.drawable.rounded_blur_on_24,
                 title = stringResource(R.string.feat_toolkit_on_display_title),
                 description = stringResource(R.string.feat_toolkit_on_display_desc),
-                isChecked = viewModel.isAmbientMusicGlanceEnabled.value,
-                onCheckedChange = { viewModel.setAmbientMusicGlanceEnabled(it) },
+                isChecked = state.isAmbientMusicGlanceEnabled.value,
+                onCheckedChange = { state.setAmbientMusicGlanceEnabled(it) },
                 enabled = isPermissionGranted,
                 onDisabledClick = { showPermissionSheet = true },
                 modifier = Modifier.highlight(highlightSetting == "enable_toolkit_on_display"),
@@ -94,15 +94,15 @@ fun ToolkitOnDisplaySettingsUI(
                 iconRes = R.drawable.rounded_mobile_charge_24,
                 title = stringResource(R.string.toolkit_on_display_docked_mode_title),
                 description = stringResource(R.string.toolkit_on_display_docked_mode_desc),
-                isChecked = viewModel.isAmbientMusicGlanceDockedModeEnabled.value,
-                onCheckedChange = { viewModel.setAmbientMusicGlanceDockedModeEnabled(it) },
-                enabled = isPermissionGranted && viewModel.isAmbientMusicGlanceEnabled.value,
+                isChecked = state.isAmbientMusicGlanceDockedModeEnabled.value,
+                onCheckedChange = { state.setAmbientMusicGlanceDockedModeEnabled(it) },
+                enabled = isPermissionGranted && state.isAmbientMusicGlanceEnabled.value,
                 onDisabledClick = { if (!isPermissionGranted) showPermissionSheet = true },
                 modifier = Modifier.highlight(highlightSetting == "toolkit_on_display_docked_mode"),
             )
 
             androidx.compose.animation.AnimatedVisibility(
-                visible = viewModel.isAmbientMusicGlanceDockedModeEnabled.value,
+                visible = state.isAmbientMusicGlanceDockedModeEnabled.value,
                 enter = androidx.compose.animation.expandVertically() + androidx.compose.animation.fadeIn(),
                 exit = androidx.compose.animation.shrinkVertically() + androidx.compose.animation.fadeOut(),
             ) {
@@ -110,9 +110,9 @@ fun ToolkitOnDisplaySettingsUI(
                     iconRes = R.drawable.rounded_notification_sound_24,
                     title = stringResource(R.string.toolkit_on_display_respect_notifications_title),
                     description = stringResource(R.string.toolkit_on_display_respect_notifications_desc),
-                    isChecked = viewModel.isAmbientMusicGlanceRespectNotificationsEnabled.value,
+                    isChecked = state.isAmbientMusicGlanceRespectNotificationsEnabled.value,
                     onCheckedChange = {
-                        viewModel.setAmbientMusicGlanceRespectNotificationsEnabled(
+                        state.setAmbientMusicGlanceRespectNotificationsEnabled(
                             it,
                         )
                     },
@@ -128,13 +128,13 @@ fun ToolkitOnDisplaySettingsUI(
         )
 
         AlbumArtModePicker(
-            selectedMode = viewModel.ambientMusicGlanceAlbumArtMode.value,
-            onModeSelected = { viewModel.setAmbientMusicGlanceAlbumArtMode(it) },
+            selectedMode = state.ambientMusicGlanceAlbumArtMode.value,
+            onModeSelected = { state.setAmbientMusicGlanceAlbumArtMode(it) },
             modifier = Modifier.highlight(highlightSetting == "toolkit_on_display_album_art"),
         )
 
         androidx.compose.animation.AnimatedVisibility(
-            visible = viewModel.ambientMusicGlanceAlbumArtMode.value == "default",
+            visible = state.ambientMusicGlanceAlbumArtMode.value == "default",
             enter = androidx.compose.animation.expandVertically() + androidx.compose.animation.fadeIn(),
             exit = androidx.compose.animation.shrinkVertically() + androidx.compose.animation.fadeOut(),
         ) {
@@ -151,15 +151,15 @@ fun ToolkitOnDisplaySettingsUI(
                         iconRes = R.drawable.outline_interests_24,
                         title = stringResource(R.string.toolkit_on_display_random_shapes_title),
                         description = stringResource(R.string.toolkit_on_display_random_shapes_desc),
-                        isChecked = viewModel.isAmbientMusicGlanceRandomShapesEnabled.value,
-                        onCheckedChange = { viewModel.setAmbientMusicGlanceRandomShapesEnabled(it) },
+                        isChecked = state.isAmbientMusicGlanceRandomShapesEnabled.value,
+                        onCheckedChange = { state.setAmbientMusicGlanceRandomShapesEnabled(it) },
                     )
                 }
             }
         }
 
         androidx.compose.animation.AnimatedVisibility(
-            visible = viewModel.ambientMusicGlanceAlbumArtMode.value == "fill",
+            visible = state.ambientMusicGlanceAlbumArtMode.value == "fill",
             enter = androidx.compose.animation.expandVertically() + androidx.compose.animation.fadeIn(),
             exit = androidx.compose.animation.shrinkVertically() + androidx.compose.animation.fadeOut(),
         ) {
@@ -174,8 +174,8 @@ fun ToolkitOnDisplaySettingsUI(
                 RoundedCardContainer {
                     ConfigSliderItem(
                         title = stringResource(R.string.label_size),
-                        value = viewModel.ambientMusicGlanceClockSize.intValue.toFloat(),
-                        onValueChange = { viewModel.setAmbientMusicGlanceClockSize(it.toInt()) },
+                        value = state.ambientMusicGlanceClockSize.intValue.toFloat(),
+                        onValueChange = { state.setAmbientMusicGlanceClockSize(it.toInt()) },
                         valueRange = 40f..150f,
                         increment = 5f,
                         valueFormatter = { it.toInt().toString() },
@@ -184,8 +184,8 @@ fun ToolkitOnDisplaySettingsUI(
 
                     ConfigSliderItem(
                         title = stringResource(R.string.label_weight),
-                        value = viewModel.ambientMusicGlanceClockWeight.intValue.toFloat(),
-                        onValueChange = { viewModel.setAmbientMusicGlanceClockWeight(it.toInt()) },
+                        value = state.ambientMusicGlanceClockWeight.intValue.toFloat(),
+                        onValueChange = { state.setAmbientMusicGlanceClockWeight(it.toInt()) },
                         valueRange = 100f..1000f,
                         increment = 10f,
                         valueFormatter = { it.toInt().toString() },
@@ -194,8 +194,8 @@ fun ToolkitOnDisplaySettingsUI(
 
                     ConfigSliderItem(
                         title = stringResource(R.string.label_width),
-                        value = viewModel.ambientMusicGlanceClockWidth.intValue.toFloat(),
-                        onValueChange = { viewModel.setAmbientMusicGlanceClockWidth(it.toInt()) },
+                        value = state.ambientMusicGlanceClockWidth.intValue.toFloat(),
+                        onValueChange = { state.setAmbientMusicGlanceClockWidth(it.toInt()) },
                         valueRange = 25f..200f,
                         increment = 5f,
                         valueFormatter = { it.toInt().toString() },
@@ -204,8 +204,8 @@ fun ToolkitOnDisplaySettingsUI(
 
                     ConfigSliderItem(
                         title = stringResource(R.string.label_roundness),
-                        value = viewModel.ambientMusicGlanceClockRoundness.intValue.toFloat(),
-                        onValueChange = { viewModel.setAmbientMusicGlanceClockRoundness(it.toInt()) },
+                        value = state.ambientMusicGlanceClockRoundness.intValue.toFloat(),
+                        onValueChange = { state.setAmbientMusicGlanceClockRoundness(it.toInt()) },
                         valueRange = 0f..100f,
                         increment = 5f,
                         valueFormatter = { it.toInt().toString() },
@@ -220,9 +220,9 @@ fun ToolkitOnDisplaySettingsUI(
                         iconRes = R.drawable.rounded_battery_android_frame_plus_24,
                         title = stringResource(R.string.toolkit_on_display_force_fill_while_charging_title),
                         description = stringResource(R.string.toolkit_on_display_force_fill_while_charging_desc),
-                        isChecked = viewModel.isAmbientMusicGlanceForceFillWhileChargingEnabled.value,
+                        isChecked = state.isAmbientMusicGlanceForceFillWhileChargingEnabled.value,
                         onCheckedChange = {
-                            viewModel.setAmbientMusicGlanceForceFillWhileChargingEnabled(
+                            state.setAmbientMusicGlanceForceFillWhileChargingEnabled(
                                 it,
                             )
                         },
