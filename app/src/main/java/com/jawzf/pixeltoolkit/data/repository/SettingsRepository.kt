@@ -237,18 +237,6 @@ class SettingsRepository(
         const val KEY_SECURE_SENSITIVE_TILES = "secure_sensitive_tiles"
         const val KEY_LIKE_SONG_TOAST_ENABLED = "like_song_toast_enabled"
         const val KEY_LIKE_SONG_AOD_OVERLAY_ENABLED = "like_song_aod_overlay_enabled"
-        const val KEY_AMBIENT_MUSIC_GLANCE_ENABLED = "ambient_music_glance_enabled"
-        const val KEY_AMBIENT_MUSIC_GLANCE_DOCKED_MODE = "ambient_music_glance_docked_mode"
-        const val KEY_AMBIENT_MUSIC_GLANCE_RANDOM_SHAPES = "ambient_music_glance_random_shapes"
-        const val KEY_AMBIENT_MUSIC_GLANCE_ALBUM_ART_MODE = "ambient_music_glance_album_art_mode"
-        const val KEY_AMBIENT_MUSIC_GLANCE_CLOCK_SIZE = "ambient_music_glance_clock_size"
-        const val KEY_AMBIENT_MUSIC_GLANCE_CLOCK_WEIGHT = "ambient_music_glance_clock_weight"
-        const val KEY_AMBIENT_MUSIC_GLANCE_CLOCK_WIDTH = "ambient_music_glance_clock_width"
-        const val KEY_AMBIENT_MUSIC_GLANCE_CLOCK_ROUNDNESS = "ambient_music_glance_clock_roundness"
-        const val KEY_AMBIENT_MUSIC_GLANCE_FORCE_FILL_WHILE_CHARGING =
-            "ambient_music_glance_force_fill_while_charging"
-        const val KEY_AMBIENT_MUSIC_GLANCE_RESPECT_NOTIFICATIONS =
-            "ambient_music_glance_respect_notifications"
 
         const val KEY_FONT_SCALE = "font_scale"
         const val KEY_FONT_WEIGHT = "font_weight"
@@ -1582,101 +1570,6 @@ class SettingsRepository(
             e.printStackTrace()
         }
     }
-
-    /**
-     * Executes the get ambient music glance album art mode operation.
-     * @return The resulting String data.
-     */
-    fun getAmbientMusicGlanceAlbumArtMode(): String = prefs.getString(KEY_AMBIENT_MUSIC_GLANCE_ALBUM_ART_MODE, "default") ?: "default"
-
-    /**
-     * Executes the set ambient music glance album art mode operation.
-     *
-     * @param mode [String] Target mode.
-     */
-    fun setAmbientMusicGlanceAlbumArtMode(mode: String) = prefs.edit().putString(KEY_AMBIENT_MUSIC_GLANCE_ALBUM_ART_MODE, mode).apply()
-
-    /**
-     * Executes the get ambient music glance clock size operation.
-     * @return The resulting Int data.
-     */
-    fun getAmbientMusicGlanceClockSize(): Int = prefs.getInt(KEY_AMBIENT_MUSIC_GLANCE_CLOCK_SIZE, 80)
-
-    /**
-     * Executes the set ambient music glance clock size operation.
-     *
-     * @param size [Int] Target size.
-     */
-    fun setAmbientMusicGlanceClockSize(size: Int) = prefs.edit().putInt(KEY_AMBIENT_MUSIC_GLANCE_CLOCK_SIZE, size).apply()
-
-    /**
-     * Executes the get ambient music glance clock weight operation.
-     * @return The resulting Int data.
-     */
-    fun getAmbientMusicGlanceClockWeight(): Int = prefs.getInt(KEY_AMBIENT_MUSIC_GLANCE_CLOCK_WEIGHT, 400)
-
-    /**
-     * Executes the set ambient music glance clock weight operation.
-     *
-     * @param weight [Int] Target weight.
-     */
-    fun setAmbientMusicGlanceClockWeight(weight: Int) = prefs.edit().putInt(KEY_AMBIENT_MUSIC_GLANCE_CLOCK_WEIGHT, weight).apply()
-
-    /**
-     * Executes the get ambient music glance clock width operation.
-     * @return The resulting Int data.
-     */
-    fun getAmbientMusicGlanceClockWidth(): Int = prefs.getInt(KEY_AMBIENT_MUSIC_GLANCE_CLOCK_WIDTH, 100)
-
-    /**
-     * Executes the set ambient music glance clock width operation.
-     *
-     * @param width [Int] Target width.
-     */
-    fun setAmbientMusicGlanceClockWidth(width: Int) = prefs.edit().putInt(KEY_AMBIENT_MUSIC_GLANCE_CLOCK_WIDTH, width).apply()
-
-    /**
-     * Executes the get ambient music glance clock roundness operation.
-     * @return The resulting Int data.
-     */
-    fun getAmbientMusicGlanceClockRoundness(): Int = prefs.getInt(KEY_AMBIENT_MUSIC_GLANCE_CLOCK_ROUNDNESS, 50)
-
-    /**
-     * Executes the set ambient music glance clock roundness operation.
-     *
-     * @param roundness [Int] Target roundness.
-     */
-    fun setAmbientMusicGlanceClockRoundness(roundness: Int) =
-        prefs.edit().putInt(KEY_AMBIENT_MUSIC_GLANCE_CLOCK_ROUNDNESS, roundness).apply()
-
-    /**
-     * Executes the is ambient music glance force fill while charging enabled operation.
-     * @return The resulting Boolean data.
-     */
-    fun isAmbientMusicGlanceForceFillWhileChargingEnabled(): Boolean =
-        prefs.getBoolean(KEY_AMBIENT_MUSIC_GLANCE_FORCE_FILL_WHILE_CHARGING, false)
-
-    /**
-     * Executes the set ambient music glance force fill while charging enabled operation.
-     *
-     * @param enabled [Boolean] Target enabled.
-     */
-    fun setAmbientMusicGlanceForceFillWhileChargingEnabled(enabled: Boolean) =
-        prefs.edit().putBoolean(KEY_AMBIENT_MUSIC_GLANCE_FORCE_FILL_WHILE_CHARGING, enabled).apply()
-
-    /**
-     * Executes the is ambient music glance respect notifications enabled operation.
-     * @return The resulting Boolean data.
-     */
-    fun isAmbientMusicGlanceRespectNotificationsEnabled(): Boolean = prefs.getBoolean(KEY_AMBIENT_MUSIC_GLANCE_RESPECT_NOTIFICATIONS, true)
-
-    /**
-     * Executes the set ambient music glance respect notifications enabled operation.
-     *
-     * @param enabled [Boolean] Target enabled.
-     */
-    fun setAmbientMusicGlanceRespectNotificationsEnabled(enabled: Boolean) =
-        prefs.edit().putBoolean(KEY_AMBIENT_MUSIC_GLANCE_RESPECT_NOTIFICATIONS, enabled).apply()
 
     // Notification Glance Settings
 

@@ -19,5 +19,8 @@ class DisplaySettingsTest {
         assertEquals("aod_force_turn_off_enabled", DisplaySettings.KEY_AOD_FORCE_TURN_OFF_ENABLED)
         assertEquals("aod_wallpaper_timeout", DisplaySettings.KEY_AOD_WALLPAPER_TIMEOUT)
         assertEquals("notification_glance_enabled", DisplaySettings.KEY_NOTIFICATION_GLANCE_ENABLED)
+        assertEquals("ambient_music_glance_enabled", DisplaySettings.KEY_AMBIENT_MUSIC_GLANCE_ENABLED)
+        assertEquals("ambient_music_glance_docked_mode", DisplaySettings.KEY_AMBIENT_MUSIC_GLANCE_DOCKED_MODE)
+        assertEquals("ambient_music_glance_album_art_mode", DisplaySettings.KEY_AMBIENT_MUSIC_GLANCE_ALBUM_ART_MODE)
     }
 }

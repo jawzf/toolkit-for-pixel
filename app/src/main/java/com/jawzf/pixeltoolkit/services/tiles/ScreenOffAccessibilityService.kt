@@ -324,7 +324,8 @@ class ScreenOffAccessibilityService :
                 cameraSessions = { cameraSessions },
             )
         appFlowHandler = AppFlowHandler(this, this)
-        ambientGlanceHandler = AmbientGlanceHandler(this)
+        ambientGlanceHandler =
+            AmbientGlanceHandler(this, NotificationListener::getCachedBitmap, NotificationListener::clearUnreadNotifications)
         aodForceTurnOffHandler = AodForceTurnOffHandler(this) { DeviceLockUtils.performAccessibilityLock(this) }
         aodWallpaperOverlayHandler =
             AodWallpaperOverlayHandler(this, NotificationListener::getCachedBitmap, NotificationListener::getLatestArtBitmap)
@@ -807,7 +808,7 @@ class ScreenOffAccessibilityService :
 
     private fun triggerAmbientGlanceVolume(keyCode: Int) {
         val prefs = getSharedPreferences(SettingsRepository.PREFS_NAME, MODE_PRIVATE)
-        if (prefs.getBoolean(SettingsRepository.KEY_AMBIENT_MUSIC_GLANCE_ENABLED, false)) {
+        if (prefs.getBoolean(DisplaySettings.KEY_AMBIENT_MUSIC_GLANCE_ENABLED, false)) {
             // Skip if Android Auto is running
             if (CarConnectionMonitor
                     .isAndroidAutoRunning(this)
@@ -841,7 +842,7 @@ class ScreenOffAccessibilityService :
             val percentage = (currentVolume.toFloat() / maxVolume.toFloat() * 100).toInt()
 
             val isDockedMode =
-                prefs.getBoolean(SettingsRepository.KEY_AMBIENT_MUSIC_GLANCE_DOCKED_MODE, false)
+                prefs.getBoolean(DisplaySettings.KEY_AMBIENT_MUSIC_GLANCE_DOCKED_MODE, false)
 
             val intent =
                 Intent("SHOW_AMBIENT_GLANCE").apply {

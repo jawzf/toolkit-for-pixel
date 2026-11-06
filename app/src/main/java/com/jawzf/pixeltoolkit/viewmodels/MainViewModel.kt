@@ -65,6 +65,7 @@ import com.jawzf.pixeltoolkit.feature.apps.updates.github.GitHubUser
 import com.jawzf.pixeltoolkit.feature.connectivity.ConnectivitySettings
 import com.jawzf.pixeltoolkit.feature.connectivity.ConnectivityState
 import com.jawzf.pixeltoolkit.feature.display.aod.AodState
+import com.jawzf.pixeltoolkit.feature.display.ondisplay.ToolkitOnDisplayState
 import com.jawzf.pixeltoolkit.feature.display.pixels.SmartPixelsState
 import com.jawzf.pixeltoolkit.feature.display.refresh.RefreshRatePanelState
 import com.jawzf.pixeltoolkit.feature.input.InputState
@@ -377,6 +378,7 @@ class MainViewModel : ViewModel() {
     val smartPixels = SmartPixelsState()
     val refreshRate = RefreshRatePanelState()
     val aod = AodState(viewModelScope)
+    val toolkitOnDisplay = ToolkitOnDisplayState()
     val addedQSTiles = mutableStateOf<Set<String>>(emptySet())
     val isHideGestureBarEnabled = mutableStateOf(false)
     val isHideGestureBarOnLauncherEnabled = mutableStateOf(false)
@@ -480,15 +482,6 @@ class MainViewModel : ViewModel() {
     val isSensitiveNotificationsGranted = mutableStateOf(true)
     val isLocalNetworkGranted = mutableStateOf(true)
 
-    val isAmbientMusicGlanceDockedModeEnabled = mutableStateOf(false)
-    val isAmbientMusicGlanceRandomShapesEnabled = mutableStateOf(false)
-    val ambientMusicGlanceAlbumArtMode = mutableStateOf("default")
-    val ambientMusicGlanceClockSize = mutableIntStateOf(80)
-    val ambientMusicGlanceClockWeight = mutableIntStateOf(400)
-    val ambientMusicGlanceClockWidth = mutableIntStateOf(100)
-    val ambientMusicGlanceClockRoundness = mutableIntStateOf(50)
-    val isAmbientMusicGlanceForceFillWhileChargingEnabled = mutableStateOf(false)
-    val isAmbientMusicGlanceRespectNotificationsEnabled = mutableStateOf(true)
     val scaleAnimationsMode = mutableStateOf("default")
     val isTouchSensitivityEnabled = mutableStateOf(false)
     val isAutoRotateEnabled = mutableStateOf(false)
@@ -983,6 +976,7 @@ class MainViewModel : ViewModel() {
                     in SmartPixelsState.PREFERENCE_KEYS -> smartPixels.onPreferenceChanged(key)
                     in RefreshRatePanelState.PREFERENCE_KEYS -> refreshRate.onPreferenceChanged(key)
                     in AodState.PREFERENCE_KEYS -> aod.onPreferenceChanged(key)
+                    in ToolkitOnDisplayState.PREFERENCE_KEYS -> toolkitOnDisplay.onPreferenceChanged(key)
 
                     PowerSettings.KEY_MAPS_DISCOVERED_CHANNELS, PowerSettings.KEY_MAPS_DETECTION_CHANNELS -> power.onPreferenceChanged(key)
 
@@ -998,15 +992,6 @@ class MainViewModel : ViewModel() {
 
                     SettingsRepository.KEY_LIKE_SONG_AOD_OVERLAY_ENABLED -> {
                         isLikeSongAodOverlayEnabled.value = settingsRepository.getBoolean(key)
-                    }
-
-                    SettingsRepository.KEY_AMBIENT_MUSIC_GLANCE_ENABLED -> {
-                        isAmbientMusicGlanceEnabled.value = settingsRepository.getBoolean(key)
-                    }
-
-                    SettingsRepository.KEY_AMBIENT_MUSIC_GLANCE_DOCKED_MODE -> {
-                        isAmbientMusicGlanceDockedModeEnabled.value =
-                            settingsRepository.getBoolean(key)
                     }
 
                     SettingsRepository.KEY_ONBOARDING_COMPLETED -> {
@@ -1735,6 +1720,7 @@ class MainViewModel : ViewModel() {
         smallestWidth.intValue = settingsRepository.getSmallestWidth()
         refreshRate.load(context)
         aod.load(context)
+        toolkitOnDisplay.load(context)
         hasShizukuPermission.value = ShizukuUtils.hasPermission() || RootUtils.isRootAvailable()
 
         isUseUsageAccess.value =
@@ -2078,33 +2064,6 @@ class MainViewModel : ViewModel() {
                 SettingsRepository.KEY_LIKE_SONG_AOD_OVERLAY_ENABLED,
                 false,
             )
-        isAmbientMusicGlanceEnabled.value =
-            settingsRepository.getBoolean(
-                SettingsRepository.KEY_AMBIENT_MUSIC_GLANCE_ENABLED,
-                false,
-            )
-        isAmbientMusicGlanceDockedModeEnabled.value =
-            settingsRepository.getBoolean(
-                SettingsRepository.KEY_AMBIENT_MUSIC_GLANCE_DOCKED_MODE,
-                false,
-            )
-        isAmbientMusicGlanceRandomShapesEnabled.value =
-            settingsRepository.getBoolean(
-                SettingsRepository.KEY_AMBIENT_MUSIC_GLANCE_RANDOM_SHAPES,
-                false,
-            )
-        ambientMusicGlanceAlbumArtMode.value =
-            settingsRepository.getAmbientMusicGlanceAlbumArtMode()
-        ambientMusicGlanceClockSize.intValue = settingsRepository.getAmbientMusicGlanceClockSize()
-        ambientMusicGlanceClockWeight.intValue =
-            settingsRepository.getAmbientMusicGlanceClockWeight()
-        ambientMusicGlanceClockWidth.intValue = settingsRepository.getAmbientMusicGlanceClockWidth()
-        ambientMusicGlanceClockRoundness.intValue =
-            settingsRepository.getAmbientMusicGlanceClockRoundness()
-        isAmbientMusicGlanceForceFillWhileChargingEnabled.value =
-            settingsRepository.isAmbientMusicGlanceForceFillWhileChargingEnabled()
-        isAmbientMusicGlanceRespectNotificationsEnabled.value =
-            settingsRepository.isAmbientMusicGlanceRespectNotificationsEnabled()
         pixelSearchResultApps.value = settingsRepository.isPixelSearchResultAppsEnabled()
         pixelSearchResultMedia.value = settingsRepository.isPixelSearchResultMediaEnabled()
         pixelSearchResultFiles.value = settingsRepository.isPixelSearchResultFilesEnabled()
@@ -4913,101 +4872,6 @@ class MainViewModel : ViewModel() {
         settingsRepository.putBoolean(SettingsRepository.KEY_LIKE_SONG_AOD_OVERLAY_ENABLED, enabled)
     }
 
-    val isAmbientMusicGlanceEnabled = mutableStateOf(false)
-
-    /**
-     * Executes the set ambient music glance enabled operation.
-     *
-     * @param enabled [Boolean] Target enabled.
-     */
-    fun setAmbientMusicGlanceEnabled(enabled: Boolean) {
-        isAmbientMusicGlanceEnabled.value = enabled
-        settingsRepository.putBoolean(SettingsRepository.KEY_AMBIENT_MUSIC_GLANCE_ENABLED, enabled)
-    }
-
-    /**
-     * Executes the set ambient music glance random shapes enabled operation.
-     *
-     * @param enabled [Boolean] Target enabled.
-     */
-    fun setAmbientMusicGlanceRandomShapesEnabled(enabled: Boolean) {
-        isAmbientMusicGlanceRandomShapesEnabled.value = enabled
-        settingsRepository.putBoolean(
-            SettingsRepository.KEY_AMBIENT_MUSIC_GLANCE_RANDOM_SHAPES,
-            enabled,
-        )
-    }
-
-    /**
-     * Executes the set ambient music glance album art mode operation.
-     *
-     * @param mode [String] Target mode.
-     */
-    fun setAmbientMusicGlanceAlbumArtMode(mode: String) {
-        ambientMusicGlanceAlbumArtMode.value = mode
-        settingsRepository.setAmbientMusicGlanceAlbumArtMode(mode)
-    }
-
-    /**
-     * Executes the set ambient music glance clock size operation.
-     *
-     * @param size [Int] Target size.
-     */
-    fun setAmbientMusicGlanceClockSize(size: Int) {
-        ambientMusicGlanceClockSize.intValue = size
-        settingsRepository.setAmbientMusicGlanceClockSize(size)
-    }
-
-    /**
-     * Executes the set ambient music glance clock weight operation.
-     *
-     * @param weight [Int] Target weight.
-     */
-    fun setAmbientMusicGlanceClockWeight(weight: Int) {
-        ambientMusicGlanceClockWeight.intValue = weight
-        settingsRepository.setAmbientMusicGlanceClockWeight(weight)
-    }
-
-    /**
-     * Executes the set ambient music glance clock width operation.
-     *
-     * @param width [Int] Target width.
-     */
-    fun setAmbientMusicGlanceClockWidth(width: Int) {
-        ambientMusicGlanceClockWidth.intValue = width
-        settingsRepository.setAmbientMusicGlanceClockWidth(width)
-    }
-
-    /**
-     * Executes the set ambient music glance clock roundness operation.
-     *
-     * @param roundness [Int] Target roundness.
-     */
-    fun setAmbientMusicGlanceClockRoundness(roundness: Int) {
-        ambientMusicGlanceClockRoundness.intValue = roundness
-        settingsRepository.setAmbientMusicGlanceClockRoundness(roundness)
-    }
-
-    /**
-     * Executes the set ambient music glance force fill while charging enabled operation.
-     *
-     * @param enabled [Boolean] Target enabled.
-     */
-    fun setAmbientMusicGlanceForceFillWhileChargingEnabled(enabled: Boolean) {
-        isAmbientMusicGlanceForceFillWhileChargingEnabled.value = enabled
-        settingsRepository.setAmbientMusicGlanceForceFillWhileChargingEnabled(enabled)
-    }
-
-    /**
-     * Executes the set ambient music glance respect notifications enabled operation.
-     *
-     * @param enabled [Boolean] Target enabled.
-     */
-    fun setAmbientMusicGlanceRespectNotificationsEnabled(enabled: Boolean) {
-        isAmbientMusicGlanceRespectNotificationsEnabled.value = enabled
-        settingsRepository.setAmbientMusicGlanceRespectNotificationsEnabled(enabled)
-    }
-
     /**
      * Executes the switch scale animations mode operation.
      *
@@ -5216,19 +5080,6 @@ class MainViewModel : ViewModel() {
     fun resetScaleToDefault() {
         settingsRepository.resetSmallestWidth()
         smallestWidth.intValue = settingsRepository.getSmallestWidth()
-    }
-
-    /**
-     * Executes the set ambient music glance docked mode enabled operation.
-     *
-     * @param enabled [Boolean] Target enabled.
-     */
-    fun setAmbientMusicGlanceDockedModeEnabled(enabled: Boolean) {
-        isAmbientMusicGlanceDockedModeEnabled.value = enabled
-        settingsRepository.putBoolean(
-            SettingsRepository.KEY_AMBIENT_MUSIC_GLANCE_DOCKED_MODE,
-            enabled,
-        )
     }
 
     /**

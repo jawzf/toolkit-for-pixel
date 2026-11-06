@@ -2,9 +2,11 @@ package com.jawzf.pixeltoolkit.feature.display.ondisplay
 
 import android.accessibilityservice.AccessibilityService
 import android.content.BroadcastReceiver
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Color
@@ -26,15 +28,21 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextClock
 import android.widget.TextView
+import androidx.graphics.shapes.Morph
+import androidx.graphics.shapes.RoundedPolygon
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.overlay.AmbientMusicShapeHelper
+import com.jawzf.pixeltoolkit.core.platform.AppComponents
+import com.jawzf.pixeltoolkit.core.platform.PlatformPrefs
 import com.jawzf.pixeltoolkit.core.platform.device.CarConnectionMonitor
-import com.jawzf.pixeltoolkit.services.NotificationListener
+import com.jawzf.pixeltoolkit.feature.display.DisplaySettings
 import java.io.File
 import java.util.Random
 
 class AmbientGlanceHandler(
     private val service: AccessibilityService,
+    private val getCachedArt: (Long) -> Bitmap?,
+    private val clearUnreadNotifications: () -> Unit,
 ) {
     private var windowManager: WindowManager? = null
     private var overlayView: View? = null
@@ -66,7 +74,7 @@ class AmbientGlanceHandler(
                 val mediaSessionManager =
                     service.getSystemService(Context.MEDIA_SESSION_SERVICE) as MediaSessionManager
                 val componentName =
-                    android.content.ComponentName(service, NotificationListener::class.java)
+                    ComponentName(service, AppComponents.NOTIFICATION_LISTENER)
                 val sessions =
                     try {
                         mediaSessionManager.getActiveSessions(componentName)
@@ -98,7 +106,7 @@ class AmbientGlanceHandler(
     private var backgroundScrim: View? = null
 
     private var currentShapePath: Path? = null
-    private var currentPolygon: androidx.graphics.shapes.RoundedPolygon? = null
+    private var currentPolygon: RoundedPolygon? = null
     private var morphAnimator: android.animation.ValueAnimator? = null
 
     private var imageView: ImageView? = null
@@ -201,7 +209,7 @@ class AmbientGlanceHandler(
                 val mediaSessionManager =
                     service.getSystemService(Context.MEDIA_SESSION_SERVICE) as MediaSessionManager
                 val componentName =
-                    android.content.ComponentName(service, NotificationListener::class.java)
+                    ComponentName(service, AppComponents.NOTIFICATION_LISTENER)
                 val sessions =
                     try {
                         mediaSessionManager.getActiveSessions(componentName)
@@ -314,7 +322,7 @@ class AmbientGlanceHandler(
                 val mediaSessionManager =
                     service.getSystemService(Context.MEDIA_SESSION_SERVICE) as MediaSessionManager
                 val componentName =
-                    android.content.ComponentName(service, NotificationListener::class.java)
+                    ComponentName(service, AppComponents.NOTIFICATION_LISTENER)
                 val sessions =
                     try {
                         mediaSessionManager.getActiveSessions(componentName)
@@ -469,7 +477,7 @@ class AmbientGlanceHandler(
             )
 
         if (currentPolygon != null && currentPolygon != newPolygon) {
-            val morph = androidx.graphics.shapes.Morph(currentPolygon!!, newPolygon)
+            val morph = Morph(currentPolygon!!, newPolygon)
             morphAnimator?.cancel()
             morphAnimator =
                 android.animation.ValueAnimator.ofFloat(0f, 1f).apply {
@@ -578,14 +586,14 @@ class AmbientGlanceHandler(
     ) {
         val prefs =
             service.getSharedPreferences(
-                com.jawzf.pixeltoolkit.data.repository.SettingsRepository.PREFS_NAME,
+                PlatformPrefs.PREFS_NAME,
                 Context.MODE_PRIVATE,
             )
 
         if (isFill) {
             val size =
                 prefs.getInt(
-                    com.jawzf.pixeltoolkit.data.repository.SettingsRepository.KEY_AMBIENT_MUSIC_GLANCE_CLOCK_SIZE,
+                    DisplaySettings.KEY_AMBIENT_MUSIC_GLANCE_CLOCK_SIZE,
                     80,
                 )
             clock.textSize = size.toFloat()
@@ -593,17 +601,17 @@ class AmbientGlanceHandler(
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 val weight =
                     prefs.getInt(
-                        com.jawzf.pixeltoolkit.data.repository.SettingsRepository.KEY_AMBIENT_MUSIC_GLANCE_CLOCK_WEIGHT,
+                        DisplaySettings.KEY_AMBIENT_MUSIC_GLANCE_CLOCK_WEIGHT,
                         400,
                     )
                 val width =
                     prefs.getInt(
-                        com.jawzf.pixeltoolkit.data.repository.SettingsRepository.KEY_AMBIENT_MUSIC_GLANCE_CLOCK_WIDTH,
+                        DisplaySettings.KEY_AMBIENT_MUSIC_GLANCE_CLOCK_WIDTH,
                         100,
                     )
                 val roundness =
                     prefs.getInt(
-                        com.jawzf.pixeltoolkit.data.repository.SettingsRepository.KEY_AMBIENT_MUSIC_GLANCE_CLOCK_ROUNDNESS,
+                        DisplaySettings.KEY_AMBIENT_MUSIC_GLANCE_CLOCK_ROUNDNESS,
                         50,
                     )
                 clock.fontVariationSettings = "'wght' $weight, 'wdth' $width, 'ROND' $roundness"
@@ -654,7 +662,7 @@ class AmbientGlanceHandler(
 
             // 1. Try Memory Cache first (Instant)
             val cachedBitmap =
-                NotificationListener.getCachedBitmap(hashToUse)
+                getCachedArt(hashToUse)
             if (cachedBitmap != null) {
                 applyBitmaps(cachedBitmap)
                 return
@@ -1229,17 +1237,17 @@ class AmbientGlanceHandler(
     fun checkAndShowOnScreenOff() {
         val prefs =
             service.getSharedPreferences(
-                com.jawzf.pixeltoolkit.data.repository.SettingsRepository.PREFS_NAME,
+                PlatformPrefs.PREFS_NAME,
                 Context.MODE_PRIVATE,
             )
         val isEnabled =
             prefs.getBoolean(
-                com.jawzf.pixeltoolkit.data.repository.SettingsRepository.KEY_AMBIENT_MUSIC_GLANCE_ENABLED,
+                DisplaySettings.KEY_AMBIENT_MUSIC_GLANCE_ENABLED,
                 false,
             )
         val isDocked =
             prefs.getBoolean(
-                com.jawzf.pixeltoolkit.data.repository.SettingsRepository.KEY_AMBIENT_MUSIC_GLANCE_DOCKED_MODE,
+                DisplaySettings.KEY_AMBIENT_MUSIC_GLANCE_DOCKED_MODE,
                 false,
             )
 
@@ -1261,9 +1269,9 @@ class AmbientGlanceHandler(
                 val mediaSessionManager =
                     service.getSystemService(Context.MEDIA_SESSION_SERVICE) as MediaSessionManager
                 val componentName =
-                    android.content.ComponentName(
+                    ComponentName(
                         service,
-                        NotificationListener::class.java,
+                        AppComponents.NOTIFICATION_LISTENER,
                     )
                 val sessions = mediaSessionManager.getActiveSessions(componentName)
                 val playingSession =
@@ -1325,7 +1333,7 @@ class AmbientGlanceHandler(
         CarConnectionMonitor.removeListener(carConnectionListener)
 
         // Clear active unread notifications from the overlay on dismissal
-        NotificationListener.clearUnreadNotifications()
+        clearUnreadNotifications()
 
         if (overlayView != null && windowManager != null) {
             isDetached = true
@@ -1369,18 +1377,18 @@ class AmbientGlanceHandler(
     private fun getAlbumArtMode(): String {
         val prefs =
             service.getSharedPreferences(
-                com.jawzf.pixeltoolkit.data.repository.SettingsRepository.PREFS_NAME,
+                PlatformPrefs.PREFS_NAME,
                 Context.MODE_PRIVATE,
             )
         val selectedMode =
             prefs.getString(
-                com.jawzf.pixeltoolkit.data.repository.SettingsRepository.KEY_AMBIENT_MUSIC_GLANCE_ALBUM_ART_MODE,
+                DisplaySettings.KEY_AMBIENT_MUSIC_GLANCE_ALBUM_ART_MODE,
                 "default",
             ) ?: "default"
 
         val forceFillWhileCharging =
             prefs.getBoolean(
-                com.jawzf.pixeltoolkit.data.repository.SettingsRepository.KEY_AMBIENT_MUSIC_GLANCE_FORCE_FILL_WHILE_CHARGING,
+                DisplaySettings.KEY_AMBIENT_MUSIC_GLANCE_FORCE_FILL_WHILE_CHARGING,
                 false,
             )
         if (forceFillWhileCharging) {
@@ -1399,11 +1407,11 @@ class AmbientGlanceHandler(
     private fun isRandomShapesEnabled(): Boolean {
         val prefs =
             service.getSharedPreferences(
-                com.jawzf.pixeltoolkit.data.repository.SettingsRepository.PREFS_NAME,
+                PlatformPrefs.PREFS_NAME,
                 Context.MODE_PRIVATE,
             )
         return prefs.getBoolean(
-            com.jawzf.pixeltoolkit.data.repository.SettingsRepository.KEY_AMBIENT_MUSIC_GLANCE_RANDOM_SHAPES,
+            DisplaySettings.KEY_AMBIENT_MUSIC_GLANCE_RANDOM_SHAPES,
             false,
         )
     }

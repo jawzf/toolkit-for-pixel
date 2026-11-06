@@ -686,33 +686,33 @@ object CombinedActionExecutor {
                         when (action.toolkitOnDisplayMode) {
                             "Off" -> {
                                 repository.putBoolean(
-                                    com.jawzf.pixeltoolkit.data.repository.SettingsRepository.KEY_AMBIENT_MUSIC_GLANCE_ENABLED,
+                                    DisplaySettings.KEY_AMBIENT_MUSIC_GLANCE_ENABLED,
                                     false,
                                 )
                                 repository.putBoolean(
-                                    com.jawzf.pixeltoolkit.data.repository.SettingsRepository.KEY_AMBIENT_MUSIC_GLANCE_DOCKED_MODE,
+                                    DisplaySettings.KEY_AMBIENT_MUSIC_GLANCE_DOCKED_MODE,
                                     false,
                                 )
                             }
 
                             "On" -> {
                                 repository.putBoolean(
-                                    com.jawzf.pixeltoolkit.data.repository.SettingsRepository.KEY_AMBIENT_MUSIC_GLANCE_ENABLED,
+                                    DisplaySettings.KEY_AMBIENT_MUSIC_GLANCE_ENABLED,
                                     true,
                                 )
                                 repository.putBoolean(
-                                    com.jawzf.pixeltoolkit.data.repository.SettingsRepository.KEY_AMBIENT_MUSIC_GLANCE_DOCKED_MODE,
+                                    DisplaySettings.KEY_AMBIENT_MUSIC_GLANCE_DOCKED_MODE,
                                     false,
                                 )
                             }
 
                             "Docked" -> {
                                 repository.putBoolean(
-                                    com.jawzf.pixeltoolkit.data.repository.SettingsRepository.KEY_AMBIENT_MUSIC_GLANCE_ENABLED,
+                                    DisplaySettings.KEY_AMBIENT_MUSIC_GLANCE_ENABLED,
                                     true,
                                 )
                                 repository.putBoolean(
-                                    com.jawzf.pixeltoolkit.data.repository.SettingsRepository.KEY_AMBIENT_MUSIC_GLANCE_DOCKED_MODE,
+                                    DisplaySettings.KEY_AMBIENT_MUSIC_GLANCE_DOCKED_MODE,
                                     true,
                                 )
                             }

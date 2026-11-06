@@ -343,7 +343,7 @@ object FeatureRegistry {
                 parentFeatureId = "Display",
                 animationRes = R.raw.aod_animation,
             ) {
-                override fun isEnabled(viewModel: MainViewModel) = viewModel.isAmbientMusicGlanceEnabled.value
+                override fun isEnabled(viewModel: MainViewModel) = viewModel.toolkitOnDisplay.isAmbientMusicGlanceEnabled.value
 
                 override fun isToggleEnabled(
                     viewModel: MainViewModel,
@@ -354,7 +354,7 @@ object FeatureRegistry {
                     viewModel: MainViewModel,
                     context: Context,
                     enabled: Boolean,
-                ) = viewModel.setAmbientMusicGlanceEnabled(enabled)
+                ) = viewModel.toolkitOnDisplay.setAmbientMusicGlanceEnabled(enabled)
             },
             object : Feature(
                 id = "Always on Display",

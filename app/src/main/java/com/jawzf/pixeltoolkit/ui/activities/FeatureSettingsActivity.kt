@@ -1268,7 +1268,10 @@ class FeatureSettingsActivity : AppCompatActivity() {
 
                                     "Toolkit On Display" -> {
                                         ToolkitOnDisplaySettingsUI(
-                                            viewModel = viewModel,
+                                            state = viewModel.toolkitOnDisplay,
+                                            isAccessibilityEnabled = viewModel.isAccessibilityEnabled.value,
+                                            isNotificationListenerEnabled = viewModel.isNotificationListenerEnabled.value,
+                                            onRequestNotificationListener = { viewModel.requestNotificationListenerPermission(context) },
                                             modifier = Modifier.padding(top = 16.dp),
                                             highlightSetting = highlightSetting,
                                         )

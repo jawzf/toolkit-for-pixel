@@ -817,7 +817,7 @@ class NotificationListener : NotificationListenerService() {
             )
         val isEnabled =
             prefs.getBoolean(
-                SettingsRepository.KEY_AMBIENT_MUSIC_GLANCE_ENABLED,
+                DisplaySettings.KEY_AMBIENT_MUSIC_GLANCE_ENABLED,
                 false,
             )
 
@@ -837,7 +837,7 @@ class NotificationListener : NotificationListenerService() {
             val isAlreadyLiked = isAlreadyLikedOverride ?: isLikedState(activeSession)
             val isDockedMode =
                 prefs.getBoolean(
-                    SettingsRepository.KEY_AMBIENT_MUSIC_GLANCE_DOCKED_MODE,
+                    DisplaySettings.KEY_AMBIENT_MUSIC_GLANCE_DOCKED_MODE,
                     false,
                 )
 
@@ -1839,13 +1839,13 @@ class NotificationListener : NotificationListenerService() {
             val prefs = getSharedPreferences(SettingsRepository.PREFS_NAME, MODE_PRIVATE)
             val respectEnabled =
                 prefs.getBoolean(
-                    SettingsRepository.KEY_AMBIENT_MUSIC_GLANCE_RESPECT_NOTIFICATIONS,
+                    DisplaySettings.KEY_AMBIENT_MUSIC_GLANCE_RESPECT_NOTIFICATIONS,
                     false,
                 )
             if (!respectEnabled) return
 
             val isDocked =
-                prefs.getBoolean(SettingsRepository.KEY_AMBIENT_MUSIC_GLANCE_DOCKED_MODE, false)
+                prefs.getBoolean(DisplaySettings.KEY_AMBIENT_MUSIC_GLANCE_DOCKED_MODE, false)
             if (!isDocked) return
 
             // Criteria: Non-silent or Lighting logic
