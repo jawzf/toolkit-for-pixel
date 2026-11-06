@@ -1,6 +1,7 @@
 package com.jawzf.pixeltoolkit.feature.notifications.hilight
 
 import androidx.annotation.StringRes
+import com.jawzf.pixeltoolkit.core.data.action.HilightFrames
 import com.jawzf.pixeltoolkit.core.design.R
 import kotlin.math.ceil
 import kotlin.math.roundToInt

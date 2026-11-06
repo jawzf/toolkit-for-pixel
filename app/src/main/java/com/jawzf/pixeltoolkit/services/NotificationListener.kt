@@ -22,6 +22,9 @@ import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import android.util.Log
 import androidx.annotation.RequiresApi
+import com.jawzf.pixeltoolkit.core.data.action.NotificationLightingColorMode
+import com.jawzf.pixeltoolkit.core.data.action.NotificationLightingSide
+import com.jawzf.pixeltoolkit.core.data.action.NotificationLightingStyle
 import com.jawzf.pixeltoolkit.core.data.apps.AppColorUtil
 import com.jawzf.pixeltoolkit.core.data.apps.AppUtil
 import com.jawzf.pixeltoolkit.core.data.prefs.AppSelection
@@ -43,10 +46,7 @@ import com.jawzf.pixeltoolkit.feature.notifications.autodismiss.NotificationAuto
 import com.jawzf.pixeltoolkit.feature.notifications.hilight.HilightController
 import com.jawzf.pixeltoolkit.feature.notifications.hilight.HilightProgressTracker
 import com.jawzf.pixeltoolkit.feature.notifications.lighting.DashConfig
-import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingColorMode
 import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingService
-import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingSide
-import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingStyle
 import com.jawzf.pixeltoolkit.feature.notifications.lighting.RippleConfig
 import com.jawzf.pixeltoolkit.feature.notifications.lighting.overlay.fromPrefs
 import com.jawzf.pixeltoolkit.feature.notifications.lighting.overlay.writeTo

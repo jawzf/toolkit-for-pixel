@@ -11,9 +11,9 @@ import android.os.StatFs
 import android.provider.Settings
 import android.text.format.Formatter
 import android.widget.Toast
+import com.jawzf.pixeltoolkit.core.data.action.Action
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
-import com.jawzf.pixeltoolkit.domain.diy.Action
 import com.jawzf.pixeltoolkit.feature.apps.freeze.FreezeManager
 
 object DeviceCare {

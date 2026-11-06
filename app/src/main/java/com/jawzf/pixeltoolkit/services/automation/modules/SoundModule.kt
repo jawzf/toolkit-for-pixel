@@ -5,7 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.media.AudioManager
-import com.jawzf.pixeltoolkit.domain.diy.Action
+import com.jawzf.pixeltoolkit.core.data.action.Action
 import com.jawzf.pixeltoolkit.domain.diy.Automation
 import com.jawzf.pixeltoolkit.domain.diy.Trigger
 import com.jawzf.pixeltoolkit.services.automation.executors.CombinedActionExecutor

@@ -1,11 +1,11 @@
 package com.jawzf.pixeltoolkit.domain
 
 import com.google.gson.Gson
-import com.jawzf.pixeltoolkit.domain.diy.Action
-import com.jawzf.pixeltoolkit.domain.diy.ActionGsonAdapter
-import com.jawzf.pixeltoolkit.feature.notifications.hilight.HilightEffect
-import com.jawzf.pixeltoolkit.feature.notifications.hilight.HilightFrames
-import com.jawzf.pixeltoolkit.feature.notifications.hilight.HilightPattern
+import com.jawzf.pixeltoolkit.core.data.action.Action
+import com.jawzf.pixeltoolkit.core.data.action.ActionGsonAdapter
+import com.jawzf.pixeltoolkit.core.data.action.HilightEffect
+import com.jawzf.pixeltoolkit.core.data.action.HilightFrames
+import com.jawzf.pixeltoolkit.core.data.action.HilightPattern
 import org.junit.Assert.assertArrayEquals
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue

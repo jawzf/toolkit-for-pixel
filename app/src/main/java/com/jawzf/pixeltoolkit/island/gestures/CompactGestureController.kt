@@ -4,11 +4,11 @@ import android.content.Context
 import android.media.AudioManager
 import android.provider.Settings
 import android.view.KeyEvent
+import com.jawzf.pixeltoolkit.core.data.action.Action
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.domain.diy.Action
+import com.jawzf.pixeltoolkit.services.automation.executors.CombinedActionExecutor
 import com.jawzf.pixeltoolkit.utils.LinearBrightness
 import com.jawzf.pixeltoolkit.utils.media.MusicSessionUtil
-import com.jawzf.pixeltoolkit.services.automation.executors.CombinedActionExecutor
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 

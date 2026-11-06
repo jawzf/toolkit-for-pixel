@@ -8,8 +8,8 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.graphics.scale
-import com.jawzf.pixeltoolkit.domain.diy.Action
-import com.jawzf.pixeltoolkit.domain.model.ActivityIconSource
+import com.jawzf.pixeltoolkit.core.data.action.Action
+import com.jawzf.pixeltoolkit.core.data.action.ActivityIconSource
 import java.io.File
 import java.io.FileOutputStream
 

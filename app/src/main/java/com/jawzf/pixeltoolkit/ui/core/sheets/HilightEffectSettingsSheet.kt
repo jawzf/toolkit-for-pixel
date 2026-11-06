@@ -2,8 +2,8 @@ package com.jawzf.pixeltoolkit.ui.core.sheets
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
+import com.jawzf.pixeltoolkit.core.data.action.Action
 import com.jawzf.pixeltoolkit.core.design.R
-import com.jawzf.pixeltoolkit.domain.diy.Action
 import com.jawzf.pixeltoolkit.feature.notifications.hilight.ui.HilightEffectSheet
 
 @Composable

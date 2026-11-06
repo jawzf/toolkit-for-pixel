@@ -23,12 +23,12 @@ import androidx.graphics.shapes.toPath
 import androidx.lifecycle.setViewTreeLifecycleOwner
 import androidx.lifecycle.setViewTreeViewModelStoreOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
+import com.jawzf.pixeltoolkit.core.data.action.NotificationLightingSide
+import com.jawzf.pixeltoolkit.core.data.action.NotificationLightingStyle
 import com.jawzf.pixeltoolkit.core.design.overlay.AmbientMusicShapeHelper
 import com.jawzf.pixeltoolkit.core.design.overlay.OverlayLifecycleOwner
 import com.jawzf.pixeltoolkit.feature.notifications.NotificationSettings
 import com.jawzf.pixeltoolkit.feature.notifications.lighting.DashConfig
-import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingSide
-import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingStyle
 import com.jawzf.pixeltoolkit.feature.notifications.lighting.RippleConfig
 import com.jawzf.pixeltoolkit.feature.notifications.lighting.overlay.DashOverlay
 import com.jawzf.pixeltoolkit.feature.notifications.lighting.overlay.RippleOverlay

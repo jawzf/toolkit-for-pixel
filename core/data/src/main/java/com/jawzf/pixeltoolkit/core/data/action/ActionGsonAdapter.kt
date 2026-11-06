@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.domain.diy
+package com.jawzf.pixeltoolkit.core.data.action
 
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonArray

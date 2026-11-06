@@ -1,19 +1,19 @@
-package com.jawzf.pixeltoolkit.domain.diy
+package com.jawzf.pixeltoolkit.core.data.action
 
 import android.os.Build
 import androidx.annotation.DrawableRes
 import androidx.annotation.Keep
 import androidx.annotation.StringRes
 import com.google.gson.annotations.SerializedName
+import com.jawzf.pixeltoolkit.core.data.action.ActivityIconSource
+import com.jawzf.pixeltoolkit.core.data.action.HilightEffect
+import com.jawzf.pixeltoolkit.core.data.action.HilightPattern
+import com.jawzf.pixeltoolkit.core.data.action.NotificationLightingColorMode
+import com.jawzf.pixeltoolkit.core.data.action.NotificationLightingSide
+import com.jawzf.pixeltoolkit.core.data.action.NotificationLightingStyle
+import com.jawzf.pixeltoolkit.core.data.action.ScreenOffMethod
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticFeedbackType
-import com.jawzf.pixeltoolkit.domain.ScreenOffMethod
-import com.jawzf.pixeltoolkit.domain.model.ActivityIconSource
-import com.jawzf.pixeltoolkit.feature.notifications.hilight.HilightEffect
-import com.jawzf.pixeltoolkit.feature.notifications.hilight.HilightPattern
-import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingColorMode
-import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingSide
-import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingStyle
 import com.jawzf.pixeltoolkit.feature.power.charging.ChargingMode
 
 @Keep

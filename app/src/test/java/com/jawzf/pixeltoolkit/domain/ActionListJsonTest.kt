@@ -1,7 +1,7 @@
 package com.jawzf.pixeltoolkit.domain
 
-import com.jawzf.pixeltoolkit.domain.diy.Action
-import com.jawzf.pixeltoolkit.domain.diy.ActionGsonAdapter
+import com.jawzf.pixeltoolkit.core.data.action.Action
+import com.jawzf.pixeltoolkit.core.data.action.ActionGsonAdapter
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

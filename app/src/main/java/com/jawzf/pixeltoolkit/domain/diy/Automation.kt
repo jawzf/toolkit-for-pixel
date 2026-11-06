@@ -2,6 +2,7 @@ package com.jawzf.pixeltoolkit.domain.diy
 
 import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
+import com.jawzf.pixeltoolkit.core.data.action.Action
 
 @Keep
 data class Automation(

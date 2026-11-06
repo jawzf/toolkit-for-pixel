@@ -4,12 +4,12 @@ import android.content.Context
 import android.os.BatteryManager
 import android.os.IBinder
 import android.os.SystemClock
+import com.jawzf.pixeltoolkit.core.data.action.HilightEffect
+import com.jawzf.pixeltoolkit.core.data.action.HilightFrames
+import com.jawzf.pixeltoolkit.core.data.action.HilightPattern
 import com.jawzf.pixeltoolkit.core.data.apps.AppColorUtil
 import com.jawzf.pixeltoolkit.core.platform.AppGlobals
-import com.jawzf.pixeltoolkit.feature.notifications.hilight.HilightEffect
-import com.jawzf.pixeltoolkit.feature.notifications.hilight.HilightFrames
 import com.jawzf.pixeltoolkit.feature.notifications.hilight.HilightLights
-import com.jawzf.pixeltoolkit.feature.notifications.hilight.HilightPattern
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
