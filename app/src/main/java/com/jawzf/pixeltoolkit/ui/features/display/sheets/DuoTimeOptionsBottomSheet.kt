@@ -51,10 +51,10 @@ fun DuoTimeOptionsBottomSheet(
             ) {
                 ConfigSliderItem(
                     title = stringResource(R.string.island_font_scale_title),
-                    value = viewModel.duoTimeTextScale.floatValue,
+                    value = viewModel.duo.duoTimeTextScale.floatValue,
                     onValueChange = {
                         HapticUtil.performUIHaptic(view)
-                        viewModel.setDuoTimeTextScale(it)
+                        viewModel.duo.setDuoTimeTextScale(it)
                     },
                     valueRange = 0.7f..1.6f,
                     increment = 0.05f,

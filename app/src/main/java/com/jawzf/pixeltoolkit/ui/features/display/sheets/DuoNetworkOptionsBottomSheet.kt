@@ -53,10 +53,10 @@ fun DuoNetworkOptionsBottomSheet(
                     iconRes = R.drawable.rounded_android_wifi_3_bar_24,
                     title = stringResource(R.string.duo_differentiate_wifi_title),
                     description = stringResource(R.string.duo_differentiate_wifi_desc),
-                    isChecked = viewModel.isDuoDifferentiateWifi.value,
+                    isChecked = viewModel.duo.isDuoDifferentiateWifi.value,
                     onCheckedChange = { checked ->
                         HapticUtil.performVirtualKeyHaptic(view)
-                        viewModel.setDuoDifferentiateWifi(checked)
+                        viewModel.duo.setDuoDifferentiateWifi(checked)
                     },
                 )
             }
