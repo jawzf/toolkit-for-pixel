@@ -256,25 +256,6 @@ class SettingsRepository(
         const val KEY_TRANSITION_ANIMATION_SCALE = "transition_animation_scale"
         const val KEY_WINDOW_ANIMATION_SCALE = "window_animation_scale"
         const val KEY_SMALLEST_WIDTH = "smallest_width"
-        const val KEY_NOTIFICATION_GLANCE_ENABLED = "notification_glance_enabled"
-        const val KEY_NOTIFICATION_GLANCE_SAME_AS_LIGHTING = "notification_glance_same_as_lighting"
-        const val KEY_NOTIFICATION_GLANCE_SELECTED_APPS = "notification_glance_selected_apps"
-        const val KEY_AOD_FORCE_TURN_OFF_ENABLED = "aod_force_turn_off_enabled"
-        const val KEY_AOD_WALLPAPER_ENABLED = "aod_wallpaper_enabled"
-        const val KEY_AOD_WALLPAPER_OPACITY = "aod_wallpaper_opacity"
-        const val KEY_AOD_WALLPAPER_TIMEOUT = "aod_wallpaper_timeout"
-        const val KEY_AOD_WALLPAPER_CUSTOM_TIMEOUT = "aod_wallpaper_custom_timeout"
-        const val KEY_AOD_WALLPAPER_BLUR = "aod_wallpaper_blur"
-        const val KEY_AOD_WALLPAPER_VIGNETTE = "aod_wallpaper_vignette"
-        const val KEY_AOD_WALLPAPER_BLACK_THRESHOLD = "aod_wallpaper_black_threshold"
-        const val KEY_AOD_WALLPAPER_CUSTOM_IMAGE = "aod_wallpaper_custom_image"
-        const val KEY_AOD_WALLPAPER_USE_ALBUM_ART = "aod_wallpaper_use_album_art"
-        const val KEY_AOD_WALLPAPER_DISABLE_ON_DND = "aod_wallpaper_disable_on_dnd"
-        const val KEY_AOD_WALLPAPER_KEEP_ON_MEDIA = "aod_wallpaper_keep_on_media"
-        const val KEY_AOD_WALLPAPER_MEDIA_EXCLUDED_APPS = "aod_wallpaper_media_excluded_apps"
-        const val KEY_AOD_WALLPAPER_EXTENDED_MEDIA = "aod_wallpaper_extended_media"
-        const val KEY_AOD_WALLPAPER_EXTENDED_APP_ICON = "aod_wallpaper_extended_app_icon"
-        const val KEY_AOD_WALLPAPER_EXTENDED_TEXT_SCALE = "aod_wallpaper_extended_text_scale"
         const val KEY_PIXEL_SEARCH_RESULT_APPS = "pixel_search_result_apps"
         const val KEY_PIXEL_SEARCH_RESULT_CONTACTS = "pixel_search_result_contacts"
         const val KEY_PIXEL_SEARCH_RESULT_SETTINGS = "pixel_search_result_settings"
@@ -749,38 +730,6 @@ class SettingsRepository(
         packageName: String,
         enabled: Boolean,
     ) = updateAppSelection(KEY_DYNAMIC_NIGHT_LIGHT_SELECTED_APPS, packageName, enabled)
-
-    /**
-     * Executes the load notification glance selected apps operation.
-     */
-    fun loadNotificationGlanceSelectedApps() = loadAppSelection(KEY_NOTIFICATION_GLANCE_SELECTED_APPS)
-
-    /**
-     * Executes the save notification glance selected apps operation.
-     *
-     * @param apps [List<AppSelection>] Target apps.
-     */
-    fun saveNotificationGlanceSelectedApps(apps: List<AppSelection>) = saveAppSelection(KEY_NOTIFICATION_GLANCE_SELECTED_APPS, apps)
-
-    /**
-     * Executes the update notification glance app selection operation.
-     *
-     * @param packageName [String] Target package name.
-     * @param enabled [Boolean] Target enabled.
-     */
-    fun updateNotificationGlanceAppSelection(
-        packageName: String,
-        enabled: Boolean,
-    ) = updateAppSelection(KEY_NOTIFICATION_GLANCE_SELECTED_APPS, packageName, enabled)
-
-    fun loadAodWallpaperMediaExcludedApps() = loadAppSelection(KEY_AOD_WALLPAPER_MEDIA_EXCLUDED_APPS)
-
-    fun saveAodWallpaperMediaExcludedApps(apps: List<AppSelection>) = saveAppSelection(KEY_AOD_WALLPAPER_MEDIA_EXCLUDED_APPS, apps)
-
-    fun updateAodWallpaperMediaExcludedAppSelection(
-        packageName: String,
-        enabled: Boolean,
-    ) = updateAppSelection(KEY_AOD_WALLPAPER_MEDIA_EXCLUDED_APPS, packageName, enabled)
 
     /**
      * Executes the load shut up configs operation.
@@ -1635,40 +1584,6 @@ class SettingsRepository(
     }
 
     /**
-     * Executes the is aod enabled operation.
-     * @return The resulting Boolean data.
-     */
-    fun isAodEnabled(): Boolean =
-        android.provider.Settings.Secure.getInt(
-            context.contentResolver,
-            "doze_always_on",
-            1,
-        ) == 1
-
-    /**
-     * Updates System Secure setting for Doze Always-On-Display (AOD).
-     *
-     * @param enabled [Boolean] True to enable Always-On-Display, false to disable.
-     */
-    fun setAodEnabled(enabled: Boolean) {
-        try {
-            android.provider.Settings.Secure.putInt(
-                context.contentResolver,
-                "doze_always_on",
-                if (enabled) 1 else 0,
-            )
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
-
-    fun isAodWallpaperEnabled(): Boolean = prefs.getBoolean(KEY_AOD_WALLPAPER_ENABLED, false)
-
-    fun setAodWallpaperEnabled(enabled: Boolean) {
-        prefs.edit().putBoolean(KEY_AOD_WALLPAPER_ENABLED, enabled).apply()
-    }
-
-    /**
      * Executes the get ambient music glance album art mode operation.
      * @return The resulting String data.
      */
@@ -2010,74 +1925,6 @@ class SettingsRepository(
      * @param value [Int] Target value.
      */
     fun setLockScreenClockSeedColor(value: Int) = putInt(KEY_LOCK_SCREEN_CLOCK_SEED_COLOR, value)
-
-    fun getAodWallpaperOpacity(): Float = getFloat(KEY_AOD_WALLPAPER_OPACITY, 0.3f)
-
-    fun setAodWallpaperOpacity(value: Float) = putFloat(KEY_AOD_WALLPAPER_OPACITY, value)
-
-    // timeout as string (e.g., "never", "5s", "15s", "30s", "1m", "3m", "5m", "10m"); default = "3m"
-    fun getAodWallpaperTimeout(): String {
-        return try {
-            getString(KEY_AOD_WALLPAPER_TIMEOUT, "3m") ?: "3m"
-        } catch (e: Exception) {
-            val oldInt = getInt(KEY_AOD_WALLPAPER_TIMEOUT, 3)
-            val strVal = when (oldInt) {
-                0 -> "never"
-                1 -> "1m"
-                3 -> "3m"
-                5 -> "5m"
-                10 -> "10m"
-                else -> "${oldInt}m"
-            }
-            setAodWallpaperTimeout(strVal)
-            strVal
-        }
-    }
-
-    fun setAodWallpaperTimeout(value: String) = putString(KEY_AOD_WALLPAPER_TIMEOUT, value)
-
-    fun getAodWallpaperCustomTimeout(): Float = getFloat(KEY_AOD_WALLPAPER_CUSTOM_TIMEOUT, 30f)
-
-    fun setAodWallpaperCustomTimeout(value: Float) = putFloat(KEY_AOD_WALLPAPER_CUSTOM_TIMEOUT, value)
-
-    // blur  0-25
-    fun getAodWallpaperBlur(): Float = getFloat(KEY_AOD_WALLPAPER_BLUR, 0f)
-
-    fun setAodWallpaperBlur(value: Float) = putFloat(KEY_AOD_WALLPAPER_BLUR, value)
-
-    // vignette 0-100
-    fun getAodWallpaperVignette(): Float = getFloat(KEY_AOD_WALLPAPER_VIGNETTE, 0f)
-
-    fun setAodWallpaperVignette(value: Float) = putFloat(KEY_AOD_WALLPAPER_VIGNETTE, value)
-
-    // black threshold 0-50 (default 15)
-    fun getAodWallpaperBlackThreshold(): Float = getFloat(KEY_AOD_WALLPAPER_BLACK_THRESHOLD, 15f)
-
-    fun setAodWallpaperBlackThreshold(value: Float) = putFloat(KEY_AOD_WALLPAPER_BLACK_THRESHOLD, value)
-
-    fun hasAodWallpaperCustomImage(): Boolean = getBoolean(KEY_AOD_WALLPAPER_CUSTOM_IMAGE, false)
-
-    fun setAodWallpaperCustomImage(hasCustomImage: Boolean) = putBoolean(KEY_AOD_WALLPAPER_CUSTOM_IMAGE, hasCustomImage)
-
-    fun isAodWallpaperUseAlbumArtEnabled(): Boolean = getBoolean(KEY_AOD_WALLPAPER_USE_ALBUM_ART, false)
-
-    fun setAodWallpaperUseAlbumArt(enabled: Boolean) = putBoolean(KEY_AOD_WALLPAPER_USE_ALBUM_ART, enabled)
-
-    fun isAodWallpaperKeepOnMediaEnabled(): Boolean = getBoolean(KEY_AOD_WALLPAPER_KEEP_ON_MEDIA, false)
-
-    fun setAodWallpaperKeepOnMedia(enabled: Boolean) = putBoolean(KEY_AOD_WALLPAPER_KEEP_ON_MEDIA, enabled)
-
-    fun isAodWallpaperExtendedMediaEnabled(): Boolean = getBoolean(KEY_AOD_WALLPAPER_EXTENDED_MEDIA, false)
-
-    fun setAodWallpaperExtendedMedia(enabled: Boolean) = putBoolean(KEY_AOD_WALLPAPER_EXTENDED_MEDIA, enabled)
-
-    fun isAodWallpaperExtendedAppIconEnabled(): Boolean = getBoolean(KEY_AOD_WALLPAPER_EXTENDED_APP_ICON, false)
-
-    fun setAodWallpaperExtendedAppIcon(enabled: Boolean) = putBoolean(KEY_AOD_WALLPAPER_EXTENDED_APP_ICON, enabled)
-
-    fun getAodWallpaperExtendedTextScale(): Float = getFloat(KEY_AOD_WALLPAPER_EXTENDED_TEXT_SCALE, 1f)
-
-    fun setAodWallpaperExtendedTextScale(value: Float) = putFloat(KEY_AOD_WALLPAPER_EXTENDED_TEXT_SCALE, value)
 
     fun isPixelSearchResultAppsEnabled(): Boolean = getBoolean(KEY_PIXEL_SEARCH_RESULT_APPS, true)
     fun setPixelSearchResultAppsEnabled(enabled: Boolean) = putBoolean(KEY_PIXEL_SEARCH_RESULT_APPS, enabled)

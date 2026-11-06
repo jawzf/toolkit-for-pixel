@@ -15,6 +15,7 @@ import com.jawzf.pixeltoolkit.feature.connectivity.dns.PrivateDnsSettingsActivit
 import com.jawzf.pixeltoolkit.feature.connectivity.dns.PrivateDnsTileService
 import com.jawzf.pixeltoolkit.feature.connectivity.nfc.NfcTileService
 import com.jawzf.pixeltoolkit.feature.connectivity.sim.DataSimTileService
+import com.jawzf.pixeltoolkit.feature.display.aod.AlwaysOnDisplayTileService
 import com.jawzf.pixeltoolkit.feature.display.pixels.SmartPixelsTileService
 import com.jawzf.pixeltoolkit.feature.display.refresh.RefreshRateTileService
 import com.jawzf.pixeltoolkit.feature.input.links.UrlShortenerTileService
@@ -182,7 +183,7 @@ class QSPreferencesActivity : ComponentActivity() {
                     "com.jawzf.pixeltoolkit.services.tiles.UsbDebuggingTileService" -> "Quick settings tiles"
                     BatteryNotificationTileService::class.java.name -> "Batteries"
                     ChargeQuickTileService::class.java.name -> "Batteries"
-                    "com.jawzf.pixeltoolkit.services.tiles.AlwaysOnDisplayTileService" -> "Always on Display"
+                    AlwaysOnDisplayTileService::class.java.name -> "Always on Display"
                     UrlShortenerTileService::class.java.name -> "URL Shortener"
                     else -> null
                 }

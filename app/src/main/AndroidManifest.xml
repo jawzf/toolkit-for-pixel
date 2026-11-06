@@ -1095,21 +1095,6 @@
             </intent-filter>
         </receiver>
 
-        <service
-            android:name=".services.tiles.AlwaysOnDisplayTileService"
-            android:exported="true"
-            android:icon="@drawable/rounded_mobile_text_2_24"
-            android:label="@string/feat_always_on_display_title"
-            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
-            <intent-filter>
-                <action android:name="android.service.quicksettings.action.QS_TILE" />
-                <action android:name="android.service.quicksettings.action.QS_TILE_PREFERENCES" />
-            </intent-filter>
-            <meta-data
-                android:name="android.service.quicksettings.TILE_CATEGORY"
-                android:value="android.service.quicksettings.CATEGORY_DISPLAY" />
-        </service>
-
         <receiver
             android:name=".services.receivers.SecurityDeviceAdminReceiver"
             android:exported="true"

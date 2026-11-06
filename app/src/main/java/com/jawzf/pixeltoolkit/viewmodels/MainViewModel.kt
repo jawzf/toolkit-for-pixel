@@ -64,6 +64,7 @@ import com.jawzf.pixeltoolkit.feature.apps.freeze.FreezeState
 import com.jawzf.pixeltoolkit.feature.apps.updates.github.GitHubUser
 import com.jawzf.pixeltoolkit.feature.connectivity.ConnectivitySettings
 import com.jawzf.pixeltoolkit.feature.connectivity.ConnectivityState
+import com.jawzf.pixeltoolkit.feature.display.aod.AodState
 import com.jawzf.pixeltoolkit.feature.display.pixels.SmartPixelsState
 import com.jawzf.pixeltoolkit.feature.display.refresh.RefreshRatePanelState
 import com.jawzf.pixeltoolkit.feature.input.InputState
@@ -351,26 +352,7 @@ class MainViewModel : ViewModel() {
     val isUsageStatsPermissionGranted = mutableStateOf(false)
     val appLanguage = mutableStateOf("en")
 
-    val isAodEnabled = mutableStateOf(false)
-    val isNotificationGlanceEnabled = mutableStateOf(false)
-    val isAodForceTurnOffEnabled = mutableStateOf(false)
-    val isAodWallpaperEnabled = mutableStateOf(false)
-    val aodWallpaperOpacity = mutableFloatStateOf(0.3f)
-    val aodWallpaperTimeout = mutableStateOf("3m")
-    val aodWallpaperCustomTimeout = mutableFloatStateOf(30f)
-    val aodWallpaperBlur = mutableFloatStateOf(0f)
-    val aodWallpaperVignette = mutableFloatStateOf(0f)
-    val aodWallpaperBlackThreshold = mutableFloatStateOf(15f)
-    val hasAodWallpaperCustomImage = mutableStateOf(false)
-    val isAodWallpaperUseAlbumArt = mutableStateOf(false)
-    val isAodWallpaperDisableOnDnd = mutableStateOf(false)
-    val isAodWallpaperKeepOnMedia = mutableStateOf(false)
-    val isAodWallpaperExtendedMedia = mutableStateOf(false)
-    val isAodWallpaperExtendedAppIcon = mutableStateOf(false)
-    val aodWallpaperExtendedTextScale = mutableFloatStateOf(1f)
-    val currentWallpaperBitmap = mutableStateOf<Bitmap?>(null)
     val isAutoAccessibilityEnabled = mutableStateOf(false)
-    val isNotificationGlanceSameAsLightingEnabled = mutableStateOf(true)
     val isOnboardingCompleted =
         mutableStateOf(true) // Default to true so it doesn't flash on first check if not loaded
     val connectivity = ConnectivityState(viewModelScope)
@@ -394,6 +376,7 @@ class MainViewModel : ViewModel() {
     val input = InputState(viewModelScope) { context -> updateAppDetectionService(context) }
     val smartPixels = SmartPixelsState()
     val refreshRate = RefreshRatePanelState()
+    val aod = AodState(viewModelScope)
     val addedQSTiles = mutableStateOf<Set<String>>(emptySet())
     val isHideGestureBarEnabled = mutableStateOf(false)
     val isHideGestureBarOnLauncherEnabled = mutableStateOf(false)
@@ -560,7 +543,7 @@ class MainViewModel : ViewModel() {
                         }
 
                         Settings.Secure.getUriFor("doze_always_on") -> {
-                            isAodEnabled.value = settingsRepository.isAodEnabled()
+                            aod.syncAodEnabled()
                         }
 
                         Settings.Secure.getUriFor("sysui_qs_tiles") -> {
@@ -999,6 +982,7 @@ class MainViewModel : ViewModel() {
                     in FlashlightPulseState.PREFERENCE_KEYS -> flashlightPulse.onPreferenceChanged(key)
                     in SmartPixelsState.PREFERENCE_KEYS -> smartPixels.onPreferenceChanged(key)
                     in RefreshRatePanelState.PREFERENCE_KEYS -> refreshRate.onPreferenceChanged(key)
+                    in AodState.PREFERENCE_KEYS -> aod.onPreferenceChanged(key)
 
                     PowerSettings.KEY_MAPS_DISCOVERED_CHANNELS, PowerSettings.KEY_MAPS_DETECTION_CHANNELS -> power.onPreferenceChanged(key)
 
@@ -1057,66 +1041,6 @@ class MainViewModel : ViewModel() {
                         smallestWidth.intValue =
                             settingsRepository.getSmallestWidth()
 
-                    SettingsRepository.KEY_NOTIFICATION_GLANCE_ENABLED ->
-                        isNotificationGlanceEnabled.value =
-                            settingsRepository.getBoolean(key)
-
-                    SettingsRepository.KEY_AOD_FORCE_TURN_OFF_ENABLED ->
-                        isAodForceTurnOffEnabled.value =
-                            settingsRepository.getBoolean(key)
-
-                    SettingsRepository.KEY_AOD_WALLPAPER_ENABLED ->
-                        isAodWallpaperEnabled.value =
-                            settingsRepository.getBoolean(key)
-
-                    SettingsRepository.KEY_AOD_WALLPAPER_OPACITY ->
-                        aodWallpaperOpacity.floatValue =
-                            settingsRepository.getFloat(key, 0.3f)
-
-                    SettingsRepository.KEY_AOD_WALLPAPER_TIMEOUT ->
-                        aodWallpaperTimeout.value =
-                            settingsRepository.getAodWallpaperTimeout()
-
-                    SettingsRepository.KEY_AOD_WALLPAPER_CUSTOM_TIMEOUT ->
-                        aodWallpaperCustomTimeout.floatValue =
-                            settingsRepository.getAodWallpaperCustomTimeout()
-
-                    SettingsRepository.KEY_AOD_WALLPAPER_BLUR ->
-                        aodWallpaperBlur.floatValue =
-                            settingsRepository.getAodWallpaperBlur()
-
-                    SettingsRepository.KEY_AOD_WALLPAPER_VIGNETTE ->
-                        aodWallpaperVignette.floatValue =
-                            settingsRepository.getAodWallpaperVignette()
-
-                    SettingsRepository.KEY_AOD_WALLPAPER_BLACK_THRESHOLD ->
-                        aodWallpaperBlackThreshold.floatValue =
-                            settingsRepository.getAodWallpaperBlackThreshold()
-
-                    SettingsRepository.KEY_AOD_WALLPAPER_CUSTOM_IMAGE ->
-                        hasAodWallpaperCustomImage.value =
-                            settingsRepository.hasAodWallpaperCustomImage()
-
-                    SettingsRepository.KEY_AOD_WALLPAPER_USE_ALBUM_ART ->
-                        isAodWallpaperUseAlbumArt.value =
-                            settingsRepository.getBoolean(key)
-
-                    SettingsRepository.KEY_AOD_WALLPAPER_KEEP_ON_MEDIA ->
-                        isAodWallpaperKeepOnMedia.value =
-                            settingsRepository.getBoolean(key)
-
-                    SettingsRepository.KEY_AOD_WALLPAPER_EXTENDED_MEDIA ->
-                        isAodWallpaperExtendedMedia.value =
-                            settingsRepository.getBoolean(key)
-
-                    SettingsRepository.KEY_AOD_WALLPAPER_EXTENDED_APP_ICON ->
-                        isAodWallpaperExtendedAppIcon.value =
-                            settingsRepository.getBoolean(key)
-
-                    SettingsRepository.KEY_AOD_WALLPAPER_EXTENDED_TEXT_SCALE ->
-                        aodWallpaperExtendedTextScale.floatValue =
-                            settingsRepository.getAodWallpaperExtendedTextScale()
-
                     SecuritySettings.KEY_FACE_UNLOCK_BRIGHTNESS_ENABLED,
                     SecuritySettings.KEY_FACE_UNLOCK_MAX_BRIGHTNESS,
                     SecuritySettings.KEY_FACE_UNLOCK_AMBIENT_THRESHOLD,
@@ -1130,10 +1054,6 @@ class MainViewModel : ViewModel() {
                     SecuritySettings.KEY_SCREENSHOTS_CLEANED_COUNT,
                     SecuritySettings.KEY_SCREENSHOTS_CLEANED_BYTES,
                     -> security.onPreferenceChanged(key)
-
-                    SettingsRepository.KEY_NOTIFICATION_GLANCE_SAME_AS_LIGHTING ->
-                        isNotificationGlanceSameAsLightingEnabled.value =
-                            settingsRepository.getBoolean(key, true)
 
                     SettingsRepository.KEY_AUTO_ACCESSIBILITY_ENABLED ->
                         isAutoAccessibilityEnabled.value =
@@ -1814,6 +1734,7 @@ class MainViewModel : ViewModel() {
             settingsRepository.getAnimationScale(Settings.Global.WINDOW_ANIMATION_SCALE)
         smallestWidth.intValue = settingsRepository.getSmallestWidth()
         refreshRate.load(context)
+        aod.load(context)
         hasShizukuPermission.value = ShizukuUtils.hasPermission() || RootUtils.isRootAvailable()
 
         isUseUsageAccess.value =
@@ -1822,8 +1743,6 @@ class MainViewModel : ViewModel() {
             settingsRepository.getBoolean(SettingsRepository.KEY_HIDDEN_DEBUGGING_SUPPORT)
         isOnboardingCompleted.value =
             settingsRepository.getBoolean(SettingsRepository.KEY_ONBOARDING_COMPLETED, false)
-
-        isAodEnabled.value = settingsRepository.isAodEnabled()
 
         refreshPrivilegedMode()
 
@@ -2186,41 +2105,6 @@ class MainViewModel : ViewModel() {
             settingsRepository.isAmbientMusicGlanceForceFillWhileChargingEnabled()
         isAmbientMusicGlanceRespectNotificationsEnabled.value =
             settingsRepository.isAmbientMusicGlanceRespectNotificationsEnabled()
-        isNotificationGlanceEnabled.value =
-            settingsRepository.getBoolean(SettingsRepository.KEY_NOTIFICATION_GLANCE_ENABLED)
-        isAodForceTurnOffEnabled.value =
-            settingsRepository.getBoolean(SettingsRepository.KEY_AOD_FORCE_TURN_OFF_ENABLED)
-        isAodWallpaperEnabled.value =
-            settingsRepository.getBoolean(SettingsRepository.KEY_AOD_WALLPAPER_ENABLED)
-        aodWallpaperOpacity.floatValue =
-            settingsRepository.getAodWallpaperOpacity()
-        aodWallpaperTimeout.value =
-            settingsRepository.getAodWallpaperTimeout()
-        aodWallpaperCustomTimeout.floatValue =
-            settingsRepository.getAodWallpaperCustomTimeout()
-        aodWallpaperBlur.floatValue =
-            settingsRepository.getAodWallpaperBlur()
-        aodWallpaperVignette.floatValue =
-            settingsRepository.getAodWallpaperVignette()
-        aodWallpaperBlackThreshold.floatValue =
-            settingsRepository.getAodWallpaperBlackThreshold()
-        hasAodWallpaperCustomImage.value =
-            settingsRepository.hasAodWallpaperCustomImage()
-        isAodWallpaperUseAlbumArt.value =
-            settingsRepository.isAodWallpaperUseAlbumArtEnabled()
-        isAodWallpaperDisableOnDnd.value =
-            settingsRepository.getBoolean(
-                SettingsRepository.KEY_AOD_WALLPAPER_DISABLE_ON_DND,
-                false,
-            )
-        isAodWallpaperKeepOnMedia.value =
-            settingsRepository.isAodWallpaperKeepOnMediaEnabled()
-        isAodWallpaperExtendedMedia.value =
-            settingsRepository.isAodWallpaperExtendedMediaEnabled()
-        isAodWallpaperExtendedAppIcon.value =
-            settingsRepository.isAodWallpaperExtendedAppIconEnabled()
-        aodWallpaperExtendedTextScale.floatValue =
-            settingsRepository.getAodWallpaperExtendedTextScale()
         pixelSearchResultApps.value = settingsRepository.isPixelSearchResultAppsEnabled()
         pixelSearchResultMedia.value = settingsRepository.isPixelSearchResultMediaEnabled()
         pixelSearchResultFiles.value = settingsRepository.isPixelSearchResultFilesEnabled()
@@ -2231,11 +2115,6 @@ class MainViewModel : ViewModel() {
         pixelSearchBubblesWeb.value = settingsRepository.isPixelSearchBubblesWebEnabled()
         pixelSearchEngine.value = settingsRepository.getPixelSearchEngine()
         security.load(context)
-        isNotificationGlanceSameAsLightingEnabled.value =
-            settingsRepository.getBoolean(
-                SettingsRepository.KEY_NOTIFICATION_GLANCE_SAME_AS_LIGHTING,
-                true,
-            )
         scaleAnimationsMode.value = settingsRepository.getScaleAnimationsMode()
         isTouchSensitivityEnabled.value = settingsRepository.getTouchSensitivityEnabled()
         isAutoRotateEnabled.value = settingsRepository.getAutoRotateEnabled()
@@ -5815,260 +5694,6 @@ class MainViewModel : ViewModel() {
      */
     fun generateBugReport(context: Context): String {
         return LogManager.generateReport(context)
-    }
-
-    /**
-     * Executes the set aod enabled operation.
-     *
-     * @param enabled [Boolean] Target enabled.
-     */
-    fun setAodEnabled(enabled: Boolean) {
-        isAodEnabled.value = enabled
-        settingsRepository.setAodEnabled(enabled)
-    }
-
-    /**
-     * Executes the toggle notification glance enabled operation.
-     *
-     * @param enabled [Boolean] Target enabled.
-     */
-    fun toggleNotificationGlanceEnabled(enabled: Boolean) {
-        settingsRepository.putBoolean(SettingsRepository.KEY_NOTIFICATION_GLANCE_ENABLED, enabled)
-        isNotificationGlanceEnabled.value = enabled
-    }
-
-    /**
-     * Executes the toggle aod force turn off enabled operation.
-     *
-     * @param enabled [Boolean] Target enabled.
-     */
-    fun toggleAodForceTurnOffEnabled(enabled: Boolean) {
-        settingsRepository.putBoolean(SettingsRepository.KEY_AOD_FORCE_TURN_OFF_ENABLED, enabled)
-        isAodForceTurnOffEnabled.value = enabled
-    }
-
-    fun toggleAodWallpaperEnabled(enabled: Boolean) {
-        settingsRepository.setAodWallpaperEnabled(enabled)
-        isAodWallpaperEnabled.value = enabled
-    }
-
-    fun setAodWallpaperOpacity(opacity: Float) {
-        settingsRepository.setAodWallpaperOpacity(opacity)
-        aodWallpaperOpacity.floatValue = opacity
-    }
-
-    fun setAodWallpaperTimeout(timeout: String) {
-        settingsRepository.setAodWallpaperTimeout(timeout)
-        aodWallpaperTimeout.value = timeout
-    }
-
-    fun setAodWallpaperCustomTimeout(seconds: Float) {
-        settingsRepository.setAodWallpaperCustomTimeout(seconds)
-        aodWallpaperCustomTimeout.floatValue = seconds
-    }
-
-    fun setAodWallpaperBlur(radius: Float) {
-        settingsRepository.setAodWallpaperBlur(radius)
-        aodWallpaperBlur.floatValue = radius
-    }
-
-    fun setAodWallpaperVignette(intensity: Float) {
-        settingsRepository.setAodWallpaperVignette(intensity)
-        aodWallpaperVignette.floatValue = intensity
-    }
-
-    fun setAodWallpaperBlackThreshold(threshold: Float) {
-        settingsRepository.setAodWallpaperBlackThreshold(threshold)
-        aodWallpaperBlackThreshold.floatValue = threshold
-    }
-
-    fun setAodWallpaperDisableOnDnd(enabled: Boolean) {
-        settingsRepository.putBoolean(
-            SettingsRepository.KEY_AOD_WALLPAPER_DISABLE_ON_DND,
-            enabled,
-        )
-        isAodWallpaperDisableOnDnd.value = enabled
-    }
-
-    fun setAodWallpaperUseAlbumArt(enabled: Boolean) {
-        settingsRepository.setAodWallpaperUseAlbumArt(enabled)
-        isAodWallpaperUseAlbumArt.value = enabled
-    }
-
-    fun setAodWallpaperKeepOnMedia(enabled: Boolean) {
-        settingsRepository.setAodWallpaperKeepOnMedia(enabled)
-        isAodWallpaperKeepOnMedia.value = enabled
-    }
-
-    fun setAodWallpaperExtendedMedia(enabled: Boolean) {
-        settingsRepository.setAodWallpaperExtendedMedia(enabled)
-        isAodWallpaperExtendedMedia.value = enabled
-    }
-
-    fun setAodWallpaperExtendedTextScale(value: Float) {
-        settingsRepository.setAodWallpaperExtendedTextScale(value)
-        aodWallpaperExtendedTextScale.floatValue = value
-    }
-
-    fun setAodWallpaperExtendedAppIcon(enabled: Boolean) {
-        settingsRepository.setAodWallpaperExtendedAppIcon(enabled)
-        isAodWallpaperExtendedAppIcon.value = enabled
-    }
-
-    fun loadAodWallpaperMediaApps(context: Context): List<AppSelection> = settingsRepository.loadAodWallpaperMediaExcludedApps()
-
-    fun saveAodWallpaperMediaApps(
-        context: Context,
-        apps: List<AppSelection>,
-    ) {
-        settingsRepository.saveAodWallpaperMediaExcludedApps(apps)
-    }
-
-    fun updateAodWallpaperMediaAppEnabled(
-        context: Context,
-        packageName: String,
-        enabled: Boolean,
-    ) {
-        settingsRepository.updateAodWallpaperMediaExcludedAppSelection(packageName, enabled)
-    }
-
-    fun setCustomAodWallpaper(context: Context, uri: Uri) {
-        viewModelScope.launch(Dispatchers.IO) {
-            try {
-                val file = File(context.filesDir, "custom_aod_wallpaper.png")
-                val sampledBitmap = AppUtil.decodeSampledBitmapFromUri(context, uri, reqWidth = 1440, reqHeight = 3200)
-                if (sampledBitmap != null) {
-                    FileOutputStream(file).use { output ->
-                        sampledBitmap.compress(Bitmap.CompressFormat.PNG, 95, output)
-                    }
-                    settingsRepository.setAodWallpaperCustomImage(true)
-                    withContext(Dispatchers.Main) {
-                        hasAodWallpaperCustomImage.value = true
-                        currentWallpaperBitmap.value = sampledBitmap
-                    }
-                }
-            } catch (e: Throwable) {
-                Log.e("MainViewModel", "Failed to save custom AOD wallpaper", e)
-            }
-        }
-    }
-
-    fun removeCustomAodWallpaper(context: Context) {
-        viewModelScope.launch(Dispatchers.IO) {
-            try {
-                val file = File(context.filesDir, "custom_aod_wallpaper.png")
-                if (file.exists()) {
-                    file.delete()
-                }
-                settingsRepository.setAodWallpaperCustomImage(false)
-                withContext(Dispatchers.Main) {
-                    hasAodWallpaperCustomImage.value = false
-                }
-                loadCurrentWallpaperBitmap(context)
-            } catch (e: Throwable) {
-                Log.e("MainViewModel", "Failed to remove custom AOD wallpaper", e)
-            }
-        }
-    }
-
-    fun loadCurrentWallpaperBitmap(context: Context) {
-        viewModelScope.launch(Dispatchers.IO) {
-            try {
-                if (settingsRepository.hasAodWallpaperCustomImage()) {
-                    val file = File(context.filesDir, "custom_aod_wallpaper.png")
-                    if (file.exists()) {
-                        val bitmap = AppUtil.decodeSampledBitmapFromFile(file.absolutePath, reqWidth = 1440, reqHeight = 3200)
-                        if (bitmap != null) {
-                            withContext(Dispatchers.Main) {
-                                currentWallpaperBitmap.value = bitmap
-                            }
-                            return@launch
-                        }
-                    }
-                }
-
-                if (PermissionUtils.hasManageExternalStoragePermission(context)) {
-                    val wallpaperManager = android.app.WallpaperManager.getInstance(context)
-                    val drawable =
-                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-                            wallpaperManager.getDrawable(android.app.WallpaperManager.FLAG_LOCK)
-                                ?: wallpaperManager.drawable
-                        } else {
-                            wallpaperManager.drawable
-                        }
-                    if (drawable != null) {
-                        val bitmap =
-                            if (drawable is android.graphics.drawable.BitmapDrawable && drawable.bitmap != null) {
-                                val orig = drawable.bitmap
-                                if (orig.width > 2560 || orig.height > 2560) {
-                                    val scale = minOf(1440f / orig.width, 3200f / orig.height, 1.0f)
-                                    if (scale < 1.0f) {
-                                        Bitmap.createScaledBitmap(orig, (orig.width * scale).toInt(), (orig.height * scale).toInt(), true)
-                                    } else {
-                                        orig
-                                    }
-                                } else {
-                                    orig
-                                }
-                            } else {
-                                val width = if (drawable.intrinsicWidth in 1..2560) drawable.intrinsicWidth else 1080
-                                val height = if (drawable.intrinsicHeight in 1..3200) drawable.intrinsicHeight else 2400
-                                val bmp = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
-                                val canvas = android.graphics.Canvas(bmp)
-                                drawable.setBounds(0, 0, canvas.width, canvas.height)
-                                drawable.draw(canvas)
-                                bmp
-                            }
-                        withContext(Dispatchers.Main) {
-                            currentWallpaperBitmap.value = bitmap
-                        }
-                    }
-                }
-            } catch (_: Throwable) {
-            }
-        }
-    }
-
-    /**
-     * Executes the set notification glance same as lighting enabled operation.
-     *
-     * @param enabled [Boolean] Target enabled.
-     */
-    fun setNotificationGlanceSameAsLightingEnabled(enabled: Boolean) {
-        isNotificationGlanceSameAsLightingEnabled.value = enabled
-        settingsRepository.putBoolean(
-            SettingsRepository.KEY_NOTIFICATION_GLANCE_SAME_AS_LIGHTING,
-            enabled,
-        )
-    }
-
-    /**
-     * Executes the load notification glance selected apps operation.
-     *
-     * @param context [Context] Target context.
-     * @return The resulting List<AppSelection> data.
-     */
-    fun loadNotificationGlanceSelectedApps(context: Context): List<AppSelection> = settingsRepository.loadNotificationGlanceSelectedApps()
-
-    /**
-     * Executes the save notification glance selected apps operation.
-     *
-     * @param context [Context] Target context.
-     * @param apps [List<AppSelection>] Target apps.
-     */
-    fun saveNotificationGlanceSelectedApps(
-        context: Context,
-        apps: List<AppSelection>,
-    ) {
-        settingsRepository.saveNotificationGlanceSelectedApps(apps)
-    }
-
-    fun updateNotificationGlanceAppEnabled(
-        context: Context,
-        packageName: String,
-        enabled: Boolean,
-    ) {
-        settingsRepository.updateNotificationGlanceAppSelection(packageName, enabled)
     }
 
     override fun onCleared() {

@@ -36,6 +36,7 @@ import com.jawzf.pixeltoolkit.domain.model.ActiveNotificationAlert
 import com.jawzf.pixeltoolkit.domain.model.NavigationNotificationData
 import com.jawzf.pixeltoolkit.domain.model.NavigationParser
 import com.jawzf.pixeltoolkit.domain.model.NotificationActionItem
+import com.jawzf.pixeltoolkit.feature.display.DisplaySettings
 import com.jawzf.pixeltoolkit.feature.notifications.NotificationSettings
 import com.jawzf.pixeltoolkit.feature.notifications.autodismiss.NotificationAutoDismisser
 import com.jawzf.pixeltoolkit.feature.notifications.hilight.HilightController
@@ -1549,7 +1550,7 @@ class NotificationListener : NotificationListenerService() {
         try {
             val prefs = getSharedPreferences("toolkit_prefs", MODE_PRIVATE)
             val enabled =
-                prefs.getBoolean(SettingsRepository.KEY_NOTIFICATION_GLANCE_ENABLED, false)
+                prefs.getBoolean(DisplaySettings.KEY_NOTIFICATION_GLANCE_ENABLED, false)
             if (!enabled) {
                 if (activeGlanceNotifications.isNotEmpty()) {
                     activeGlanceNotifications.clear()
@@ -1589,7 +1590,7 @@ class NotificationListener : NotificationListenerService() {
                         val prefs = getSharedPreferences("toolkit_prefs", MODE_PRIVATE)
                         val forceTurnOffEnabled =
                             prefs.getBoolean(
-                                SettingsRepository.KEY_AOD_FORCE_TURN_OFF_ENABLED,
+                                DisplaySettings.KEY_AOD_FORCE_TURN_OFF_ENABLED,
                                 false,
                             )
                         if (forceTurnOffEnabled) {
@@ -1607,13 +1608,13 @@ class NotificationListener : NotificationListenerService() {
         try {
             val prefs = getSharedPreferences("toolkit_prefs", MODE_PRIVATE)
             val sameAsLighting =
-                prefs.getBoolean(SettingsRepository.KEY_NOTIFICATION_GLANCE_SAME_AS_LIGHTING, true)
+                prefs.getBoolean(DisplaySettings.KEY_NOTIFICATION_GLANCE_SAME_AS_LIGHTING, true)
             if (sameAsLighting) {
                 return isAppSelectedForNotificationLighting(packageName)
             }
 
             val json =
-                prefs.getString(SettingsRepository.KEY_NOTIFICATION_GLANCE_SELECTED_APPS, null)
+                prefs.getString(DisplaySettings.KEY_NOTIFICATION_GLANCE_SELECTED_APPS, null)
             if (json == null) return true
 
             val selectedApps: List<AppSelection> =
