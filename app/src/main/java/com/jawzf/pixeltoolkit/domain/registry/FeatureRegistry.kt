@@ -1207,7 +1207,7 @@ object FeatureRegistry {
                 parentFeatureId = "Notifications",
                 animationRes = R.raw.lighting_animation,
             ) {
-                override fun isEnabled(viewModel: MainViewModel) = viewModel.isNotificationLightingEnabled.value
+                override fun isEnabled(viewModel: MainViewModel) = viewModel.lighting.isNotificationLightingEnabled.value
 
                 override fun isToggleEnabled(
                     viewModel: MainViewModel,
@@ -1220,7 +1220,7 @@ object FeatureRegistry {
                     viewModel: MainViewModel,
                     context: Context,
                     enabled: Boolean,
-                ) = viewModel.setNotificationLightingEnabled(enabled, context)
+                ) = viewModel.lighting.setNotificationLightingEnabled(enabled)
             },
             object : Feature(
                 id = "Hilight",

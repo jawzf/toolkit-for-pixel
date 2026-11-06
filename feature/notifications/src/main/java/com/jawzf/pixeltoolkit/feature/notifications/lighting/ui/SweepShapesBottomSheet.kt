@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.core.sheets
+package com.jawzf.pixeltoolkit.feature.notifications.lighting.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -15,6 +15,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -38,12 +39,12 @@ import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.overlay.AmbientMusicShapeHelper
 import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
-import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.LightingState
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun SweepShapesBottomSheet(
-    viewModel: MainViewModel,
+    state: LightingState,
     onDismissRequest: () -> Unit,
 ) {
     val context = LocalContext.current
@@ -51,7 +52,7 @@ fun SweepShapesBottomSheet(
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
     // Loaded selection
-    val initiallySelected = remember { viewModel.edgeLightingSweepSelectedShapes.value }
+    val initiallySelected = remember { state.edgeLightingSweepSelectedShapes.value }
     var selectedShapes by remember { mutableStateOf(initiallySelected) }
 
     ToolkitBottomSheet(
@@ -137,7 +138,7 @@ fun SweepShapesBottomSheet(
                 Button(
                     onClick = {
                         HapticUtil.performHeavyHaptic(view)
-                        viewModel.saveEdgeLightingSweepSelectedShapes(selectedShapes)
+                        state.saveEdgeLightingSweepSelectedShapes(selectedShapes)
                         onDismissRequest()
                     },
                     modifier = Modifier.weight(1f),

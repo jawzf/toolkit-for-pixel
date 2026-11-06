@@ -97,19 +97,19 @@ fun RipplePositionPickerScreen(
         viewModel.check(context)
     }
 
-    val posX = viewModel.ripple.positionX.floatValue
-    val posY = viewModel.ripple.positionY.floatValue
+    val posX = viewModel.lighting.ripple.positionX.floatValue
+    val posY = viewModel.lighting.ripple.positionY.floatValue
 
     fun commitAndPreview(
         newX: Float,
         newY: Float,
         preview: Boolean,
     ) {
-        viewModel.ripple.savePositionXY(
+        viewModel.lighting.ripple.savePositionXY(
             newX.coerceIn(0f, 100f),
             newY.coerceIn(0f, 100f),
         )
-        if (preview) viewModel.triggerNotificationLightingForRipple(context)
+        if (preview) viewModel.lighting.triggerNotificationLightingForRipple(context)
     }
 
     fun updateFromOffset(
@@ -143,7 +143,7 @@ fun RipplePositionPickerScreen(
                         onDragStart = { offset -> updateFromOffset(offset, preview = false) },
                         onDragEnd = {
                             HapticUtil.performVirtualKeyHaptic(view)
-                            viewModel.triggerNotificationLightingForRipple(context)
+                            viewModel.lighting.triggerNotificationLightingForRipple(context)
                         },
                     ) { change, _ ->
                         updateFromOffset(change.position, preview = false)
@@ -212,7 +212,7 @@ fun RipplePositionPickerScreen(
                     Button(
                         onClick = {
                             HapticUtil.performVirtualKeyHaptic(view)
-                            viewModel.removePreviewOverlay(context)
+                            viewModel.lighting.removePreviewOverlay(context)
                             onDismiss()
                         },
                         modifier =

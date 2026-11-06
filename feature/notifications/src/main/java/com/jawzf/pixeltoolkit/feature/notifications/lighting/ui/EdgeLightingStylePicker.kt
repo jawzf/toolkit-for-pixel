@@ -1,7 +1,8 @@
-package com.jawzf.pixeltoolkit.ui.core.pickers
+package com.jawzf.pixeltoolkit.feature.notifications.lighting.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -22,24 +23,38 @@ import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingStyle
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
-fun NotificationLightingSystemModePicker(
-    selectedMode: Int,
-    onModeSelected: (Int) -> Unit,
+fun NotificationLightingStylePicker(
+    selectedStyle: NotificationLightingStyle,
+    onStyleSelected: (NotificationLightingStyle) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val modes = listOf(0, 1, 2) // 0: Charging, 1: Auth, 2: Custom
+    val styles =
+        listOf(
+            NotificationLightingStyle.STROKE,
+            NotificationLightingStyle.GLOW,
+            NotificationLightingStyle.INDICATOR,
+            NotificationLightingStyle.SWEEP,
+            NotificationLightingStyle.SYSTEM,
+            NotificationLightingStyle.RIPPLE,
+            NotificationLightingStyle.DASH,
+        )
     val icons =
         listOf(
-            R.drawable.rounded_keyboard_double_arrow_up_24,
-            R.drawable.rounded_center_focus_strong_24,
-            R.drawable.rounded_my_location_24,
+            R.drawable.rounded_rounded_corner_24,
+            R.drawable.rounded_blur_linear_24,
+            R.drawable.rounded_circles_24,
+            R.drawable.rounded_target_24,
+            R.drawable.rounded_mobile_24,
+            R.drawable.rounded_auto_awesome_24,
+            R.drawable.rounded_crop_portrait_24,
         )
-    val labels = listOf("Charging", "Auth", "Custom") // For semantics/descriptions
-
     val view = LocalView.current
+
+    val selectedIndex = styles.indexOf(selectedStyle).coerceAtLeast(0)
 
     RoundedCardContainer(modifier = Modifier) {
         Row(
@@ -51,27 +66,28 @@ fun NotificationLightingSystemModePicker(
                     ).padding(10.dp),
             horizontalArrangement = Arrangement.spacedBy(ButtonGroupDefaults.ConnectedSpaceBetween),
         ) {
-            val modifiers = List(modes.size) { Modifier.weight(1f) }
+            val modifiers = List(styles.size) { Modifier.weight(1f) }
 
-            modes.forEachIndexed { index, mode ->
+            styles.forEachIndexed { index, style ->
                 ToggleButton(
-                    checked = selectedMode == mode,
+                    checked = selectedIndex == index,
                     onCheckedChange = {
                         HapticUtil.performVirtualKeyHaptic(view)
-                        onModeSelected(mode)
+                        onStyleSelected(style)
                     },
                     modifier = modifiers[index].semantics { role = Role.RadioButton },
                     shapes =
                         when (index) {
                             0 -> ButtonGroupDefaults.connectedLeadingButtonShapes()
-                            modes.lastIndex -> ButtonGroupDefaults.connectedTrailingButtonShapes()
+                            styles.lastIndex -> ButtonGroupDefaults.connectedTrailingButtonShapes()
                             else -> ButtonGroupDefaults.connectedMiddleButtonShapes()
                         },
+                    contentPadding = PaddingValues(horizontal = 4.dp, vertical = 8.dp),
                 ) {
                     Icon(
                         painter = painterResource(id = icons[index]),
-                        contentDescription = labels[index],
-                        modifier = Modifier.size(24.dp),
+                        contentDescription = style.name,
+                        modifier = Modifier.size(22.dp),
                     )
                 }
             }

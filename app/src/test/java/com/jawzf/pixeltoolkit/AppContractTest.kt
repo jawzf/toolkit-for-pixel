@@ -12,6 +12,7 @@ import com.jawzf.pixeltoolkit.services.receivers.SecurityDeviceAdminReceiver
 import com.jawzf.pixeltoolkit.services.receivers.ShizukuActionReceiver
 import com.jawzf.pixeltoolkit.services.tiles.ScreenOffAccessibilityService
 import com.jawzf.pixeltoolkit.ui.activities.BubbleWebActivity
+import com.jawzf.pixeltoolkit.ui.activities.RipplePositionPickerActivity
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
@@ -30,6 +31,7 @@ class AppContractTest {
         assertEquals(BubbleWebActivity::class.java.name, AppComponents.BUBBLE_WEB_ACTIVITY)
         assertEquals(BubbleWebActivity.EXTRA_URL, AppComponents.BUBBLE_EXTRA_URL)
         assertEquals(BubbleWebActivity.EXTRA_PRIVATE_MODE, AppComponents.BUBBLE_EXTRA_PRIVATE_MODE)
+        assertEquals(RipplePositionPickerActivity::class.java.name, AppComponents.RIPPLE_POSITION_PICKER_ACTIVITY)
     }
 
     @Test

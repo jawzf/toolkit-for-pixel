@@ -69,14 +69,7 @@ import com.jawzf.pixeltoolkit.feature.notifications.NotificationSettings
 import com.jawzf.pixeltoolkit.feature.notifications.NotificationState
 import com.jawzf.pixeltoolkit.feature.notifications.autodismiss.NotificationAutoDismisser
 import com.jawzf.pixeltoolkit.feature.notifications.hilight.HilightState
-import com.jawzf.pixeltoolkit.feature.notifications.lighting.DashSettings
-import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingColorMode
-import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingService
-import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingSide
-import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingStyle
-import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingSweepPosition
-import com.jawzf.pixeltoolkit.feature.notifications.lighting.RippleSettings
-import com.jawzf.pixeltoolkit.feature.notifications.lighting.overlay.writeTo
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.LightingState
 import com.jawzf.pixeltoolkit.feature.power.BatteryState
 import com.jawzf.pixeltoolkit.feature.power.PowerSettings
 import com.jawzf.pixeltoolkit.feature.power.PowerState
@@ -122,16 +115,12 @@ class MainViewModel : ViewModel() {
     val pinnedFeatureKeys = mutableStateOf<List<String>>(emptyList())
     val pinnedQsTileKeys = mutableStateOf<List<String>>(emptyList())
     val isNotificationListenerEnabled = mutableStateOf(false)
-    val isNotificationLightingEnabled = mutableStateOf(false)
     val isOverlayPermissionGranted = mutableStateOf(false)
     val isNotificationLightingAccessibilityEnabled = mutableStateOf(false)
     val hapticFeedbackType = mutableStateOf(HapticFeedbackType.SUBTLE)
     val defaultTab = mutableStateOf(com.jawzf.pixeltoolkit.domain.DIYTabs.TOOLKIT)
     val selectedAppIcon = mutableStateOf(AppIcon.DEFAULT)
     val isDefaultBrowserSet = mutableStateOf(false)
-    val onlyShowWhenScreenOff = mutableStateOf(true)
-    val isAmbientDisplayEnabled = mutableStateOf(false)
-    val isAmbientShowLockScreenEnabled = mutableStateOf(false)
     val isButtonRemapEnabled = mutableStateOf(false)
     val isButtonRemapUseShizuku = mutableStateOf(false)
     val isButtonRemapPauseOnVolumeDialog = mutableStateOf(true)
@@ -406,6 +395,7 @@ class MainViewModel : ViewModel() {
             NotificationListener.instance?.let { NotificationAutoDismisser.resync(it) }
         }
     val hilight = HilightState()
+    val lighting = LightingState()
     val input = InputState(viewModelScope) { context -> updateAppDetectionService(context) }
     val addedQSTiles = mutableStateOf<Set<String>>(emptySet())
     val isHideGestureBarEnabled = mutableStateOf(false)
@@ -457,7 +447,6 @@ class MainViewModel : ViewModel() {
     val shutUpRestoreMode = mutableStateOf("Auto")
     val shutUpKeyboard = mutableStateOf("")
     val shizukuAuthToken = mutableStateOf("")
-    val edgeLightingSweepSelectedShapes = mutableStateOf<Set<String>>(emptySet())
 
     data class CalendarAccount(
         val id: Long,
@@ -469,24 +458,6 @@ class MainViewModel : ViewModel() {
     val isDeviceAdminEnabled = mutableStateOf(false)
     val isDeveloperModeEnabled = mutableStateOf(false)
     val isNotificationPolicyAccessGranted = mutableStateOf(false)
-    val skipSilentNotifications = mutableStateOf(true)
-    val notificationLightingStyle = mutableStateOf(NotificationLightingStyle.STROKE)
-    val notificationLightingColorMode = mutableStateOf(NotificationLightingColorMode.SYSTEM)
-    val notificationLightingCustomColor = mutableIntStateOf(0xFF6200EE.toInt()) // Default purple
-    val notificationLightingPulseCount = mutableStateOf(1f)
-    val notificationLightingPulseDuration = mutableStateOf(3000f)
-    val notificationLightingIndicatorX = mutableStateOf(50f) // 0-100 percentage
-    val notificationLightingIndicatorY = mutableStateOf(2f) // 0-100 percentage, default top
-    val notificationLightingIndicatorScale = mutableStateOf(1.0f)
-    val notificationLightingGlowSides =
-        mutableStateOf(setOf(NotificationLightingSide.LEFT, NotificationLightingSide.RIGHT))
-    val notificationLightingSweepPosition = mutableStateOf(NotificationLightingSweepPosition.CENTER)
-    val notificationLightingSweepThickness = mutableFloatStateOf(8f)
-    val notificationLightingSweepRandomShapes = mutableStateOf(false)
-    val notificationLightingSystemMode = mutableIntStateOf(0) // 0: Charging ripple, 1: Auth ripple
-    val ripple = RippleSettings { settingsRepository }
-    val dash = DashSettings { settingsRepository }
-    val skipPersistentNotifications = mutableStateOf(false)
     val isUseUsageAccess = mutableStateOf(false)
     val isHiddenDebuggingSupport = mutableStateOf(false)
 
@@ -555,7 +526,6 @@ class MainViewModel : ViewModel() {
     val hasShizukuPermission = mutableStateOf(false)
 
     lateinit var settingsRepository: SettingsRepository
-    private lateinit var lightingSettings: NotificationSettings
     private var appContext: Context? = null
 
     val gitHubToken = mutableStateOf<String?>(null)
@@ -643,10 +613,6 @@ class MainViewModel : ViewModel() {
                 if (key == null) return
 
                 when (key) {
-                    NotificationSettings.KEY_EDGE_LIGHTING_ENABLED ->
-                        isNotificationLightingEnabled.value =
-                            settingsRepository.getBoolean(key)
-
                     SettingsRepository.KEY_DYNAMIC_NIGHT_LIGHT_ENABLED ->
                         isDynamicNightLightEnabled.value =
                             settingsRepository.getBoolean(key)
@@ -1048,6 +1014,7 @@ class MainViewModel : ViewModel() {
                     PowerSettings.KEY_BATTERY_WIDGET_MAX_DEVICES -> battery.onPreferenceChanged(key)
 
                     in NotificationState.PREFERENCE_KEYS -> notifications.onPreferenceChanged(key)
+                    in LightingState.PREFERENCE_KEYS -> lighting.onPreferenceChanged(key)
 
                     PowerSettings.KEY_MAPS_DISCOVERED_CHANNELS, PowerSettings.KEY_MAPS_DETECTION_CHANNELS -> power.onPreferenceChanged(key)
 
@@ -1296,11 +1263,6 @@ class MainViewModel : ViewModel() {
                             settingsRepository.getShizukuAuthToken()
                     }
 
-                    NotificationSettings.KEY_EDGE_LIGHTING_SWEEP_SELECTED_SHAPES -> {
-                        edgeLightingSweepSelectedShapes.value =
-                            lightingSettings.getEdgeLightingSweepSelectedShapes()
-                    }
-
                     SettingsRepository.KEY_DISABLE_ROTATION_SUGGESTION -> {
                         isDisableRotationSuggestionEnabled.value =
                             settingsRepository.getBoolean(key)
@@ -1521,9 +1483,9 @@ class MainViewModel : ViewModel() {
     fun check(context: Context) {
         appContext = context.applicationContext
         settingsRepository = SettingsRepository(context)
-        lightingSettings = NotificationSettings(context)
         NotificationAutoDismisser.isSnoozedByUs = { LiveUpdateSnoozer.isSnoozedByUs(it) }
         notifications.load(context)
+        lighting.load(context)
         gitHubUser.value = AppsSettings(context).getGitHubUser()
 
         // Sync with system per-app language settings
@@ -1572,8 +1534,6 @@ class MainViewModel : ViewModel() {
                 SettingsRepository.KEY_HIDE_GESTURE_BAR_ON_LAUNCHER_ENABLED,
                 false,
             )
-        notificationLightingSystemMode.intValue =
-            lightingSettings.getNotificationLightingSystemMode()
 
         isShutUpAttemptShizukuRestart.value =
             settingsRepository.isShutUpAttemptShizukuRestartEnabled()
@@ -1584,8 +1544,6 @@ class MainViewModel : ViewModel() {
             settingsRepository.getShutUpRestoreMode()
         shizukuAuthToken.value =
             settingsRepository.getShizukuAuthToken()
-        edgeLightingSweepSelectedShapes.value =
-            lightingSettings.getEdgeLightingSweepSelectedShapes()
         isDisableRotationSuggestionEnabled.value =
             settingsRepository.getBoolean(SettingsRepository.KEY_DISABLE_ROTATION_SUGGESTION, false)
         isAllowOverlaysInSettingsEnabled.value =
@@ -1890,24 +1848,6 @@ class MainViewModel : ViewModel() {
         syncRefreshRateState(context)
         hasShizukuPermission.value = ShizukuUtils.hasPermission() || RootUtils.isRootAvailable()
 
-        isNotificationLightingEnabled.value =
-            settingsRepository.getBoolean(NotificationSettings.KEY_EDGE_LIGHTING_ENABLED)
-        onlyShowWhenScreenOff.value =
-            settingsRepository.getBoolean(
-                NotificationSettings.KEY_EDGE_LIGHTING_ONLY_SCREEN_OFF,
-                true,
-            )
-        isAmbientDisplayEnabled.value =
-            settingsRepository.getBoolean(NotificationSettings.KEY_EDGE_LIGHTING_AMBIENT_DISPLAY)
-        isAmbientShowLockScreenEnabled.value =
-            settingsRepository.getBoolean(NotificationSettings.KEY_EDGE_LIGHTING_AMBIENT_SHOW_LOCK_SCREEN)
-        skipSilentNotifications.value =
-            settingsRepository.getBoolean(NotificationSettings.KEY_EDGE_LIGHTING_SKIP_SILENT, true)
-        skipPersistentNotifications.value =
-            settingsRepository.getBoolean(NotificationSettings.KEY_EDGE_LIGHTING_SKIP_PERSISTENT)
-
-        notificationLightingStyle.value = lightingSettings.getNotificationLightingStyle()
-        notificationLightingColorMode.value = lightingSettings.getNotificationLightingColorMode()
         isUseUsageAccess.value =
             settingsRepository.getBoolean(SettingsRepository.KEY_USE_USAGE_ACCESS)
         isHiddenDebuggingSupport.value =
@@ -1915,19 +1855,6 @@ class MainViewModel : ViewModel() {
         isOnboardingCompleted.value =
             settingsRepository.getBoolean(SettingsRepository.KEY_ONBOARDING_COMPLETED, false)
 
-        notificationLightingCustomColor.intValue =
-            settingsRepository.getInt(
-                NotificationSettings.KEY_EDGE_LIGHTING_CUSTOM_COLOR,
-                0xFF6200EE.toInt(),
-            )
-        notificationLightingPulseCount.value =
-            settingsRepository.getFloat(NotificationSettings.KEY_EDGE_LIGHTING_PULSE_COUNT, 1f)
-        notificationLightingPulseDuration.value =
-            settingsRepository.getFloat(NotificationSettings.KEY_EDGE_LIGHTING_PULSE_DURATION, 3000f)
-        notificationLightingIndicatorX.value =
-            settingsRepository.getFloat(NotificationSettings.KEY_EDGE_LIGHTING_INDICATOR_X, 50f)
-        notificationLightingIndicatorY.value =
-            settingsRepository.getFloat(NotificationSettings.KEY_EDGE_LIGHTING_INDICATOR_Y, 2f)
         isAodEnabled.value = settingsRepository.isAodEnabled()
 
         refreshPrivilegedMode()
@@ -1940,21 +1867,6 @@ class MainViewModel : ViewModel() {
             isRootAvailable.value = false
             isRootPermissionGranted.value = false
         }
-
-        notificationLightingIndicatorScale.value =
-            settingsRepository.getFloat(NotificationSettings.KEY_EDGE_LIGHTING_INDICATOR_SCALE, 1.0f)
-        notificationLightingGlowSides.value = lightingSettings.getNotificationLightingGlowSides()
-        notificationLightingSweepPosition.value =
-            lightingSettings.getNotificationLightingSweepPosition()
-        notificationLightingSweepThickness.floatValue =
-            settingsRepository.getFloat(NotificationSettings.KEY_EDGE_LIGHTING_SWEEP_THICKNESS, 8f)
-        notificationLightingSweepRandomShapes.value =
-            settingsRepository.getBoolean(
-                NotificationSettings.KEY_EDGE_LIGHTING_SWEEP_RANDOM_SHAPES,
-                true,
-            )
-        ripple.load()
-        dash.load()
 
         hapticFeedbackType.value = settingsRepository.getHapticFeedbackType()
         defaultTab.value = settingsRepository.getDIYTab()
@@ -2787,65 +2699,6 @@ class MainViewModel : ViewModel() {
         isStatusBarIconControlEnabled.value = enabled
         settingsRepository.putBoolean(
             SettingsRepository.KEY_STATUS_BAR_ICON_CONTROL_ENABLED,
-            enabled,
-        )
-    }
-
-    /**
-     * Executes the set notification lighting enabled operation.
-     *
-     * @param enabled [Boolean] Target enabled.
-     * @param context [Context] Target context.
-     */
-    fun setNotificationLightingEnabled(
-        enabled: Boolean,
-        context: Context,
-    ) {
-        isNotificationLightingEnabled.value = enabled
-        settingsRepository.putBoolean(NotificationSettings.KEY_EDGE_LIGHTING_ENABLED, enabled)
-    }
-
-    /**
-     * Executes the set only show when screen off operation.
-     *
-     * @param enabled [Boolean] Target enabled.
-     * @param context [Context] Target context.
-     */
-    fun setOnlyShowWhenScreenOff(
-        enabled: Boolean,
-        context: Context,
-    ) {
-        onlyShowWhenScreenOff.value = enabled
-        settingsRepository.putBoolean(NotificationSettings.KEY_EDGE_LIGHTING_ONLY_SCREEN_OFF, enabled)
-    }
-
-    /**
-     * Executes the set ambient display enabled operation.
-     *
-     * @param enabled [Boolean] Target enabled.
-     * @param context [Context] Target context.
-     */
-    fun setAmbientDisplayEnabled(
-        enabled: Boolean,
-        context: Context,
-    ) {
-        isAmbientDisplayEnabled.value = enabled
-        settingsRepository.putBoolean(NotificationSettings.KEY_EDGE_LIGHTING_AMBIENT_DISPLAY, enabled)
-    }
-
-    /**
-     * Executes the set ambient show lock screen enabled operation.
-     *
-     * @param enabled [Boolean] Target enabled.
-     * @param context [Context] Target context.
-     */
-    fun setAmbientShowLockScreenEnabled(
-        enabled: Boolean,
-        context: Context,
-    ) {
-        isAmbientShowLockScreenEnabled.value = enabled
-        settingsRepository.putBoolean(
-            NotificationSettings.KEY_EDGE_LIGHTING_AMBIENT_SHOW_LOCK_SCREEN,
             enabled,
         )
     }
@@ -3816,94 +3669,6 @@ class MainViewModel : ViewModel() {
                 "HideGestureBar",
             )
         }
-    }
-
-    /**
-     * Executes the set skip silent notifications operation.
-     *
-     * @param enabled [Boolean] Target enabled.
-     * @param context [Context] Target context.
-     */
-    fun setSkipSilentNotifications(
-        enabled: Boolean,
-        context: Context,
-    ) {
-        skipSilentNotifications.value = enabled
-        settingsRepository.putBoolean(NotificationSettings.KEY_EDGE_LIGHTING_SKIP_SILENT, enabled)
-    }
-
-    /**
-     * Executes the set skip persistent notifications operation.
-     *
-     * @param enabled [Boolean] Target enabled.
-     * @param context [Context] Target context.
-     */
-    fun setSkipPersistentNotifications(
-        enabled: Boolean,
-        context: Context,
-    ) {
-        skipPersistentNotifications.value = enabled
-        settingsRepository.putBoolean(NotificationSettings.KEY_EDGE_LIGHTING_SKIP_PERSISTENT, enabled)
-    }
-
-    /**
-     * Executes the set notification lighting style operation.
-     *
-     * @param style [NotificationLightingStyle] Target style.
-     * @param context [Context] Target context.
-     */
-    fun setNotificationLightingStyle(
-        style: NotificationLightingStyle,
-        context: Context,
-    ) {
-        if (style == NotificationLightingStyle.SYSTEM && !ShellUtils.hasPermission(context)) {
-            // Permission handling should be done in UI, but we can ensure state consistency here
-            return
-        }
-        notificationLightingStyle.value = style
-        settingsRepository.putString(NotificationSettings.KEY_EDGE_LIGHTING_STYLE, style.name)
-    }
-
-    /**
-     * Executes the set notification lighting system mode operation.
-     *
-     * @param mode [Int] Target mode.
-     * @param context [Context] Target context.
-     */
-    fun setNotificationLightingSystemMode(
-        mode: Int,
-        context: Context,
-    ) {
-        notificationLightingSystemMode.intValue = mode
-        lightingSettings.saveNotificationLightingSystemMode(mode)
-    }
-
-    /**
-     * Executes the set notification lighting color mode operation.
-     *
-     * @param mode [NotificationLightingColorMode] Target mode.
-     * @param context [Context] Target context.
-     */
-    fun setNotificationLightingColorMode(
-        mode: NotificationLightingColorMode,
-        context: Context,
-    ) {
-        notificationLightingColorMode.value = mode
-        settingsRepository.putString(NotificationSettings.KEY_EDGE_LIGHTING_COLOR_MODE, mode.name)
-    }
-
-    /**
-     * Executes the set notification lighting custom color operation.
-     *
-     * @param color [Int] Target color.
-     * @param context [Context] Target context.
-     */
-    fun setNotificationLightingCustomColor(
-        color: Int,
-        context: Context,
-    ) {
-        notificationLightingCustomColor.intValue = color
-        settingsRepository.putInt(NotificationSettings.KEY_EDGE_LIGHTING_CUSTOM_COLOR, color)
     }
 
     /**
@@ -5916,34 +5681,6 @@ class MainViewModel : ViewModel() {
     }
 
     /**
-     * Executes the save notification lighting pulse count operation.
-     *
-     * @param context [Context] Target context.
-     * @param count [Float] Target count.
-     */
-    fun saveNotificationLightingPulseCount(
-        context: Context,
-        count: Float,
-    ) {
-        notificationLightingPulseCount.value = count
-        settingsRepository.putFloat(NotificationSettings.KEY_EDGE_LIGHTING_PULSE_COUNT, count)
-    }
-
-    /**
-     * Executes the save notification lighting pulse duration operation.
-     *
-     * @param context [Context] Target context.
-     * @param duration [Float] Target duration.
-     */
-    fun saveNotificationLightingPulseDuration(
-        context: Context,
-        duration: Float,
-    ) {
-        notificationLightingPulseDuration.value = duration
-        settingsRepository.putFloat(NotificationSettings.KEY_EDGE_LIGHTING_PULSE_DURATION, duration)
-    }
-
-    /**
      * Executes the set flashlight pulse enabled operation.
      *
      * @param enabled [Boolean] Target enabled.
@@ -6035,117 +5772,6 @@ class MainViewModel : ViewModel() {
         context.sendBroadcast(intent)
     }
 
-    private fun Intent.addLightingExtras(
-        cornerRadiusDp: Float? = null,
-        strokeThicknessDp: Float? = null,
-        isPreview: Boolean = true,
-        styleOverride: NotificationLightingStyle? = null,
-    ) {
-        val radius =
-            cornerRadiusDp
-                ?: settingsRepository.getFloat(NotificationSettings.KEY_EDGE_LIGHTING_CORNER_RADIUS, 20f)
-        val thickness =
-            strokeThicknessDp
-                ?: settingsRepository.getFloat(
-                    NotificationSettings.KEY_EDGE_LIGHTING_STROKE_THICKNESS,
-                    8f,
-                )
-
-        putExtra("corner_radius_dp", radius)
-        putExtra("stroke_thickness_dp", thickness)
-        putExtra("is_preview", isPreview)
-        putExtra("ignore_screen_state", true)
-        putExtra("style", (styleOverride ?: notificationLightingStyle.value).name)
-        putExtra("color_mode", notificationLightingColorMode.value.name)
-        putExtra("custom_color", notificationLightingCustomColor.intValue)
-        putExtra("pulse_count", notificationLightingPulseCount.value.toInt())
-        putExtra("pulse_duration", notificationLightingPulseDuration.value.toLong())
-        putExtra(
-            "glow_sides",
-            notificationLightingGlowSides.value.map { it.name }.toTypedArray(),
-        )
-        putExtra("indicator_x", notificationLightingIndicatorX.value)
-        putExtra("indicator_y", notificationLightingIndicatorY.value)
-        putExtra("indicator_scale", notificationLightingIndicatorScale.value)
-        putExtra("sweep_position", notificationLightingSweepPosition.value.name)
-        putExtra("sweep_thickness", notificationLightingSweepThickness.floatValue)
-        putExtra("random_shapes", notificationLightingSweepRandomShapes.value)
-        putExtra("system_lighting_mode", notificationLightingSystemMode.intValue)
-        ripple.toConfig().writeTo(this)
-        dash.toConfig().writeTo(this)
-    }
-
-    /**
-     * Executes the trigger notification lighting operation.
-     *
-     * @param context [Context] Target context.
-     */
-    fun triggerNotificationLighting(context: Context) {
-        if (notificationLightingStyle.value == NotificationLightingStyle.SYSTEM) {
-            triggerNotificationLightingSystem(context)
-            return
-        }
-        try {
-            val intent =
-                Intent(context, NotificationLightingService::class.java).apply {
-                    addLightingExtras(isPreview = false)
-                }
-            context.startService(intent)
-        } catch (e: Exception) {
-            // ignore
-        }
-    }
-
-    /**
-     * Executes the trigger notification lighting system operation.
-     *
-     * @param context [Context] Target context.
-     */
-    fun triggerNotificationLightingSystem(context: Context) {
-        if (!ShellUtils.hasPermission(context)) return
-
-        val windowManager =
-            context.getSystemService(Context.WINDOW_SERVICE) as android.view.WindowManager
-        val (widthPx, heightPx) =
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                val bounds = windowManager.currentWindowMetrics.bounds
-                Pair(bounds.width(), bounds.height())
-            } else {
-                val metrics = android.util.DisplayMetrics()
-                @Suppress("DEPRECATION")
-                windowManager.defaultDisplay.getRealMetrics(metrics)
-                Pair(metrics.widthPixels, metrics.heightPixels)
-            }
-        val centerX = widthPx / 2
-        val centerY = heightPx / 2
-
-        val command =
-            if (notificationLightingSystemMode.intValue == 0) {
-                "cmd statusbar charging-ripple"
-            } else if (notificationLightingSystemMode.intValue == 1) {
-                "cmd statusbar auth-ripple custom $centerX $centerY"
-            } else {
-                val posX = (notificationLightingIndicatorX.value / 100f * widthPx).toInt()
-                val posY = (notificationLightingIndicatorY.value / 100f * heightPx).toInt()
-                "cmd statusbar auth-ripple custom $posX $posY"
-            }
-
-        ShellUtils.runCommand(context, command)
-    }
-
-    // Helper to show the overlay service
-    fun triggerNotificationLightingPreview(context: Context) {
-        try {
-            val intent =
-                Intent(context, NotificationLightingService::class.java).apply {
-                    addLightingExtras(isPreview = true)
-                }
-            context.startService(intent)
-        } catch (e: Exception) {
-            // ignore
-        }
-    }
-
     /**
      * Executes the request write secure settings permission operation.
      *
@@ -6176,128 +5802,6 @@ class MainViewModel : ViewModel() {
      */
     fun requestWriteSettingsPermission(context: Context) {
         PermissionUtils.openWriteSettings(context)
-    }
-
-    /**
-     * Executes the trigger notification lighting with radius operation.
-     *
-     * @param context [Context] Target context.
-     * @param cornerRadiusDp [Float] Target corner radius dp.
-     */
-    fun triggerNotificationLightingWithRadius(
-        context: Context,
-        cornerRadiusDp: Float,
-    ) {
-        try {
-            val intent =
-                Intent(context, NotificationLightingService::class.java).apply {
-                    addLightingExtras(cornerRadiusDp = cornerRadiusDp)
-                }
-            context.startService(intent)
-        } catch (e: Exception) {
-            // ignore
-        }
-    }
-
-    fun triggerNotificationLightingWithRadiusAndThickness(
-        context: Context,
-        cornerRadiusDp: Float,
-        strokeThicknessDp: Float,
-    ) {
-        try {
-            val intent =
-                Intent(context, NotificationLightingService::class.java).apply {
-                    addLightingExtras(cornerRadiusDp, strokeThicknessDp)
-                }
-            context.startService(intent)
-        } catch (e: Exception) {
-            // ignore
-        }
-    }
-
-    fun triggerNotificationLightingForIndicator(
-        context: Context,
-        x: Float,
-        y: Float,
-        scale: Float,
-    ) {
-        notificationLightingIndicatorX.value = x
-        notificationLightingIndicatorY.value = y
-        notificationLightingIndicatorScale.value = scale
-
-        try {
-            val intent =
-                Intent(context, NotificationLightingService::class.java).apply {
-                    addLightingExtras(styleOverride = NotificationLightingStyle.INDICATOR)
-                }
-            context.startService(intent)
-        } catch (e: Exception) {
-            // ignore
-        }
-    }
-
-    fun triggerNotificationLightingForDash(context: Context) {
-        try {
-            val intent =
-                Intent(context, NotificationLightingService::class.java).apply {
-                    addLightingExtras(styleOverride = NotificationLightingStyle.DASH)
-                }
-            context.startService(intent)
-        } catch (e: Exception) {
-            // ignore
-        }
-    }
-
-    fun triggerNotificationLightingForRipple(context: Context) {
-        try {
-            val intent =
-                Intent(context, NotificationLightingService::class.java).apply {
-                    addLightingExtras(styleOverride = NotificationLightingStyle.RIPPLE)
-                }
-            context.startService(intent)
-        } catch (e: Exception) {
-            // ignore
-        }
-    }
-
-    fun triggerNotificationLightingForSweep(
-        context: Context,
-        position: NotificationLightingSweepPosition,
-        thickness: Float,
-    ) {
-        notificationLightingSweepPosition.value = position
-        notificationLightingSweepThickness.floatValue = thickness
-
-        try {
-            val intent =
-                Intent(context, NotificationLightingService::class.java).apply {
-                    addLightingExtras(styleOverride = NotificationLightingStyle.SWEEP)
-                }
-            context.startService(intent)
-        } catch (e: Exception) {
-            // ignore
-        }
-    }
-
-    // Helper to remove preview overlay
-    fun removePreviewOverlay(context: Context) {
-        try {
-            val intent1 =
-                Intent(context, NotificationLightingService::class.java).apply {
-                    putExtra("remove_preview", true)
-                }
-            context.startService(intent1)
-
-            // Also remove from ScreenOffAccessibilityService if it's running
-            val intent2 =
-                Intent(context, ScreenOffAccessibilityService::class.java).apply {
-                    action = "SHOW_NOTIFICATION_LIGHTING"
-                    putExtra("remove_preview", true)
-                }
-            context.startService(intent2)
-        } catch (e: Exception) {
-            // ignore
-        }
     }
 
     /**
@@ -6508,30 +6012,6 @@ class MainViewModel : ViewModel() {
 
     private fun isDefaultBrowser(context: Context): Boolean = PermissionUtils.isDefaultBrowser(context)
 
-    // Notification Lighting App Selection Methods
-    fun saveNotificationLightingSelectedApps(
-        context: Context,
-        apps: List<AppSelection>,
-    ) {
-        lightingSettings.saveNotificationLightingSelectedApps(apps)
-    }
-
-    /**
-     * Executes the load notification lighting selected apps operation.
-     *
-     * @param context [Context] Target context.
-     * @return The resulting List<AppSelection> data.
-     */
-    fun loadNotificationLightingSelectedApps(context: Context): List<AppSelection> = lightingSettings.loadNotificationLightingSelectedApps()
-
-    fun updateNotificationLightingAppEnabled(
-        context: Context,
-        packageName: String,
-        enabled: Boolean,
-    ) {
-        lightingSettings.updateNotificationLightingAppSelection(packageName, enabled)
-    }
-
     /**
      * Executes the load flashlight pulse selected apps operation.
      *
@@ -6567,46 +6047,6 @@ class MainViewModel : ViewModel() {
     ) {
         settingsRepository.updateFlashlightPulseAppSelection(packageName, enabled)
     }
-
-    // Notification Lighting Corner Radius Methods
-    fun saveNotificationLightingCornerRadius(
-        context: Context,
-        radiusDp: Float,
-    ) {
-        settingsRepository.putFloat(NotificationSettings.KEY_EDGE_LIGHTING_CORNER_RADIUS, radiusDp)
-    }
-
-    /**
-     * Executes the load notification lighting corner radius operation.
-     *
-     * @param context [Context] Target context.
-     * @return The resulting Float data.
-     */
-    fun loadNotificationLightingCornerRadius(context: Context): Float =
-        settingsRepository.getFloat(NotificationSettings.KEY_EDGE_LIGHTING_CORNER_RADIUS, 20f)
-
-    // Notification Lighting Stroke Thickness Methods
-    fun saveNotificationLightingStrokeThickness(
-        context: Context,
-        thicknessDp: Float,
-    ) {
-        settingsRepository.putFloat(
-            NotificationSettings.KEY_EDGE_LIGHTING_STROKE_THICKNESS,
-            thicknessDp,
-        )
-    }
-
-    /**
-     * Executes the load notification lighting stroke thickness operation.
-     *
-     * @param context [Context] Target context.
-     * @return The resulting Float data.
-     */
-    fun loadNotificationLightingStrokeThickness(context: Context): Float =
-        settingsRepository.getFloat(
-            NotificationSettings.KEY_EDGE_LIGHTING_STROKE_THICKNESS,
-            8f,
-        )
 
     // Dynamic Night Light App Selection Methods
     fun saveDynamicNightLightSelectedApps(
@@ -6764,111 +6204,6 @@ class MainViewModel : ViewModel() {
     ) {
         flashlightLastIntensity.value = intensity
         settingsRepository.putInt(SettingsRepository.KEY_FLASHLIGHT_LAST_INTENSITY, intensity)
-    }
-
-    /**
-     * Executes the set notification lighting glow sides operation.
-     *
-     * @param sides [Set<NotificationLightingSide>] Target sides.
-     * @param context [Context] Target context.
-     */
-    fun setNotificationLightingGlowSides(
-        sides: Set<NotificationLightingSide>,
-        context: Context,
-    ) {
-        notificationLightingGlowSides.value = sides
-        lightingSettings.saveNotificationLightingGlowSides(sides)
-    }
-
-    /**
-     * Executes the save notification lighting indicator x operation.
-     *
-     * @param context [Context] Target context.
-     * @param x [Float] Target x.
-     */
-    fun saveNotificationLightingIndicatorX(
-        context: Context,
-        x: Float,
-    ) {
-        notificationLightingIndicatorX.value = x
-        settingsRepository.putFloat(NotificationSettings.KEY_EDGE_LIGHTING_INDICATOR_X, x)
-    }
-
-    /**
-     * Executes the save notification lighting indicator y operation.
-     *
-     * @param context [Context] Target context.
-     * @param y [Float] Target y.
-     */
-    fun saveNotificationLightingIndicatorY(
-        context: Context,
-        y: Float,
-    ) {
-        notificationLightingIndicatorY.value = y
-        settingsRepository.putFloat(NotificationSettings.KEY_EDGE_LIGHTING_INDICATOR_Y, y)
-    }
-
-    /**
-     * Executes the save notification lighting indicator scale operation.
-     *
-     * @param context [Context] Target context.
-     * @param scale [Float] Target scale.
-     */
-    fun saveNotificationLightingIndicatorScale(
-        context: Context,
-        scale: Float,
-    ) {
-        notificationLightingIndicatorScale.value = scale
-        settingsRepository.putFloat(NotificationSettings.KEY_EDGE_LIGHTING_INDICATOR_SCALE, scale)
-    }
-
-    fun setNotificationLightingSweepPosition(
-        position: NotificationLightingSweepPosition,
-        context: Context,
-    ) {
-        notificationLightingSweepPosition.value = position
-        lightingSettings.saveNotificationLightingSweepPosition(position)
-    }
-
-    /**
-     * Executes the save notification lighting sweep thickness operation.
-     *
-     * @param context [Context] Target context.
-     * @param thickness [Float] Target thickness.
-     */
-    fun saveNotificationLightingSweepThickness(
-        context: Context,
-        thickness: Float,
-    ) {
-        notificationLightingSweepThickness.floatValue = thickness
-        settingsRepository.putFloat(NotificationSettings.KEY_EDGE_LIGHTING_SWEEP_THICKNESS, thickness)
-    }
-
-    /**
-     * Executes the save notification lighting sweep random shapes operation.
-     *
-     * @param context [Context] Target context.
-     * @param enabled [Boolean] Target enabled.
-     */
-    fun saveNotificationLightingSweepRandomShapes(
-        context: Context,
-        enabled: Boolean,
-    ) {
-        notificationLightingSweepRandomShapes.value = enabled
-        settingsRepository.putBoolean(
-            NotificationSettings.KEY_EDGE_LIGHTING_SWEEP_RANDOM_SHAPES,
-            enabled,
-        )
-    }
-
-    /**
-     * Executes the save edge lighting sweep selected shapes operation.
-     *
-     * @param shapes [Set<String>] Target shapes.
-     */
-    fun saveEdgeLightingSweepSelectedShapes(shapes: Set<String>) {
-        edgeLightingSweepSelectedShapes.value = shapes
-        lightingSettings.saveEdgeLightingSweepSelectedShapes(shapes)
     }
 
     /**

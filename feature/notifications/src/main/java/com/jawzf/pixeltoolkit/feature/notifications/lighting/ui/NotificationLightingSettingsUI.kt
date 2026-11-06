@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.features.system
+package com.jawzf.pixeltoolkit.feature.notifications.lighting.ui
 
 import android.content.Intent
 import android.net.Uri
@@ -48,33 +48,36 @@ import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.cards.FeatureCard
 import com.jawzf.pixeltoolkit.core.design.cards.IconToggleItem
+import com.jawzf.pixeltoolkit.core.design.components.ColorCircle
 import com.jawzf.pixeltoolkit.core.design.components.ConfigSliderItem
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.modifiers.highlight
 import com.jawzf.pixeltoolkit.core.design.sheets.PermissionItem
 import com.jawzf.pixeltoolkit.core.design.sheets.PermissionsBottomSheet
+import com.jawzf.pixeltoolkit.core.platform.AppComponents
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.LightingState
 import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingColorMode
 import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingRipplePosition
 import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingStyle
 import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingSweepPosition
-import com.jawzf.pixeltoolkit.ui.activities.RipplePositionPickerActivity
-import com.jawzf.pixeltoolkit.ui.core.pickers.GlowSidesPicker
-import com.jawzf.pixeltoolkit.ui.core.pickers.NotificationLightingColorModePicker
-import com.jawzf.pixeltoolkit.ui.core.pickers.NotificationLightingStylePicker
-import com.jawzf.pixeltoolkit.ui.core.pickers.NotificationLightingSystemModePicker
-import com.jawzf.pixeltoolkit.ui.core.sheets.AppColorSelectionSheet
-import com.jawzf.pixeltoolkit.ui.core.sheets.AppSelectionSheet
-import com.jawzf.pixeltoolkit.ui.core.sheets.SweepShapesBottomSheet
-import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.ui.AppColorSelectionSheet
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.ui.GlowSidesPicker
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.ui.NotificationLightingColorModePicker
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.ui.NotificationLightingStylePicker
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.ui.NotificationLightingSystemModePicker
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.ui.SweepShapesBottomSheet
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun NotificationLightingSettingsUI(
-    viewModel: MainViewModel,
+    state: LightingState,
+    isShizukuPermissionGranted: Boolean,
+    onRefreshPermissions: () -> Unit,
+    appSelectionSheet: @Composable (onDismiss: () -> Unit) -> Unit,
     modifier: Modifier = Modifier,
     highlightSetting: String? = null,
 ) {
@@ -92,48 +95,44 @@ fun NotificationLightingSettingsUI(
     // Corner radius state
     var cornerRadiusDp by remember {
         mutableFloatStateOf(
-            viewModel.loadNotificationLightingCornerRadius(
-                context,
-            ),
+            state.loadNotificationLightingCornerRadius(),
         )
     }
     var strokeThicknessDp by remember {
         mutableFloatStateOf(
-            viewModel.loadNotificationLightingStrokeThickness(
-                context,
-            ),
+            state.loadNotificationLightingStrokeThickness(),
         )
     }
 
-    var indicatorX by remember { mutableFloatStateOf(viewModel.notificationLightingIndicatorX.value) }
-    var indicatorY by remember { mutableFloatStateOf(viewModel.notificationLightingIndicatorY.value) }
-    var indicatorScale by remember { mutableFloatStateOf(viewModel.notificationLightingIndicatorScale.value) }
+    var indicatorX by remember { mutableFloatStateOf(state.notificationLightingIndicatorX.value) }
+    var indicatorY by remember { mutableFloatStateOf(state.notificationLightingIndicatorY.value) }
+    var indicatorScale by remember { mutableFloatStateOf(state.notificationLightingIndicatorScale.value) }
 
     val coroutineScope = rememberCoroutineScope()
 
     val previewRipple: () -> Unit = {
-        viewModel.triggerNotificationLightingForRipple(context)
+        state.triggerNotificationLightingForRipple(context)
         coroutineScope.launch {
             delay(5000)
-            viewModel.removePreviewOverlay(context)
+            state.removePreviewOverlay(context)
         }
     }
 
     val previewDash: () -> Unit = {
-        viewModel.triggerNotificationLightingForDash(context)
+        state.triggerNotificationLightingForDash(context)
         coroutineScope.launch {
             delay(5000)
-            viewModel.removePreviewOverlay(context)
+            state.removePreviewOverlay(context)
         }
     }
 
     DisposableEffect(Unit) {
         onDispose {
-            viewModel.removePreviewOverlay(context)
+            state.removePreviewOverlay(context)
         }
     }
 
-    val isNotificationLightingEnabled by viewModel.isNotificationLightingEnabled
+    val isNotificationLightingEnabled by state.isNotificationLightingEnabled
 
     Column(modifier = modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
         RoundedCardContainer {
@@ -142,7 +141,7 @@ fun NotificationLightingSettingsUI(
                 title = stringResource(R.string.feat_notification_lighting_title),
                 isChecked = isNotificationLightingEnabled,
                 onCheckedChange = { checked ->
-                    viewModel.setNotificationLightingEnabled(checked, context)
+                    state.setNotificationLightingEnabled(checked)
                 },
             )
         }
@@ -153,9 +152,9 @@ fun NotificationLightingSettingsUI(
             IconToggleItem(
                 iconRes = R.drawable.rounded_power_settings_new_24,
                 title = stringResource(R.string.notification_lighting_screen_off_title),
-                isChecked = viewModel.onlyShowWhenScreenOff.value,
+                isChecked = state.onlyShowWhenScreenOff.value,
                 onCheckedChange = { checked ->
-                    viewModel.setOnlyShowWhenScreenOff(checked, context)
+                    state.setOnlyShowWhenScreenOff(checked)
                 },
                 enabled = isNotificationLightingEnabled,
                 modifier = Modifier.highlight(highlightSetting == "only_screen_off"),
@@ -163,18 +162,18 @@ fun NotificationLightingSettingsUI(
             IconToggleItem(
                 iconRes = R.drawable.rounded_notifications_off_24,
                 title = stringResource(R.string.notification_lighting_skip_silent_title),
-                isChecked = viewModel.skipSilentNotifications.value,
+                isChecked = state.skipSilentNotifications.value,
                 onCheckedChange = { checked ->
-                    viewModel.setSkipSilentNotifications(checked, context)
+                    state.setSkipSilentNotifications(checked)
                 },
                 modifier = Modifier.highlight(highlightSetting == "skip_silent_notifications"),
             )
             IconToggleItem(
                 iconRes = R.drawable.outline_circle_notifications_24,
                 title = stringResource(R.string.notification_lighting_skip_persistent_title),
-                isChecked = viewModel.skipPersistentNotifications.value,
+                isChecked = state.skipPersistentNotifications.value,
                 onCheckedChange = { checked ->
-                    viewModel.setSkipPersistentNotifications(checked, context)
+                    state.setSkipPersistentNotifications(checked)
                 },
                 modifier = Modifier.highlight(highlightSetting == "skip_persistent_notifications"),
             )
@@ -214,26 +213,25 @@ fun NotificationLightingSettingsUI(
         )
 
         NotificationLightingStylePicker(
-            selectedStyle = viewModel.notificationLightingStyle.value,
+            selectedStyle = state.notificationLightingStyle.value,
             onStyleSelected = { style ->
                 if (style == NotificationLightingStyle.SYSTEM && !ShellUtils.hasPermission(context)) {
                     showPermissionsSheet = true
                     return@NotificationLightingStylePicker
                 }
-                viewModel.setNotificationLightingStyle(style, context)
+                state.setNotificationLightingStyle(style, context)
                 if (style.usesRestrictedColorModes &&
-                    viewModel.notificationLightingColorMode.value == NotificationLightingColorMode.CUSTOM
+                    state.notificationLightingColorMode.value == NotificationLightingColorMode.CUSTOM
                 ) {
-                    viewModel.setNotificationLightingColorMode(
+                    state.setNotificationLightingColorMode(
                         NotificationLightingColorMode.SYSTEM,
-                        context,
                     )
                 }
-                viewModel.triggerNotificationLighting(context)
+                state.triggerNotificationLighting(context)
             },
         )
 
-        val style = viewModel.notificationLightingStyle.value
+        val style = state.notificationLightingStyle.value
 
         // System Mode Sector (Only for SYSTEM style)
         if (style == NotificationLightingStyle.SYSTEM) {
@@ -245,15 +243,15 @@ fun NotificationLightingSettingsUI(
             )
 
             NotificationLightingSystemModePicker(
-                selectedMode = viewModel.notificationLightingSystemMode.intValue,
+                selectedMode = state.notificationLightingSystemMode.intValue,
                 onModeSelected = { mode ->
-                    viewModel.setNotificationLightingSystemMode(mode, context)
-                    viewModel.triggerNotificationLightingSystem(context)
+                    state.setNotificationLightingSystemMode(mode)
+                    state.triggerNotificationLightingSystem(context)
                 },
             )
 
             // Show placement sliders for custom system ripple
-            if (viewModel.notificationLightingSystemMode.intValue == 2) {
+            if (state.notificationLightingSystemMode.intValue == 2) {
                 Text(
                     text = stringResource(R.string.notification_lighting_indicator_adjustment_section),
                     style = MaterialTheme.typography.titleMedium,
@@ -268,12 +266,12 @@ fun NotificationLightingSettingsUI(
                         onValueChange = { newValue ->
                             indicatorX = newValue
                             HapticUtil.performSliderHaptic(view)
-                            viewModel.triggerNotificationLightingSystem(context)
+                            state.triggerNotificationLightingSystem(context)
                         },
                         valueRange = 0f..100f,
                         valueFormatter = { "%.1f%%".format(it) },
                         onValueChangeFinished = {
-                            viewModel.saveNotificationLightingIndicatorX(context, indicatorX)
+                            state.saveNotificationLightingIndicatorX(indicatorX)
                         },
                     )
 
@@ -283,12 +281,12 @@ fun NotificationLightingSettingsUI(
                         onValueChange = { newValue ->
                             indicatorY = newValue
                             HapticUtil.performSliderHaptic(view)
-                            viewModel.triggerNotificationLightingSystem(context)
+                            state.triggerNotificationLightingSystem(context)
                         },
                         valueRange = 0f..100f,
                         valueFormatter = { "%.1f%%".format(it) },
                         onValueChangeFinished = {
-                            viewModel.saveNotificationLightingIndicatorY(context, indicatorY)
+                            state.saveNotificationLightingIndicatorY(indicatorY)
                         },
                     )
                 }
@@ -312,7 +310,7 @@ fun NotificationLightingSettingsUI(
                         cornerRadiusDp = newValue
                         HapticUtil.performSliderHaptic(view)
                         // Show preview overlay while dragging
-                        viewModel.triggerNotificationLightingWithRadiusAndThickness(
+                        state.triggerNotificationLightingWithRadiusAndThickness(
                             context,
                             newValue,
                             strokeThicknessDp,
@@ -322,11 +320,11 @@ fun NotificationLightingSettingsUI(
                     valueFormatter = { "%.1f".format(it) },
                     onValueChangeFinished = {
                         // Save the corner radius
-                        viewModel.saveNotificationLightingCornerRadius(context, cornerRadiusDp)
+                        state.saveNotificationLightingCornerRadius(cornerRadiusDp)
                         // Wait 5 seconds then remove preview overlay
                         coroutineScope.launch {
                             delay(5000)
-                            viewModel.removePreviewOverlay(context)
+                            state.removePreviewOverlay(context)
                         }
                     },
                     modifier = Modifier.highlight(highlightSetting == "corner_radius"),
@@ -340,7 +338,7 @@ fun NotificationLightingSettingsUI(
                             strokeThicknessDp = newValue
                             HapticUtil.performSliderHaptic(view)
                             // Show preview overlay while dragging
-                            viewModel.triggerNotificationLightingWithRadiusAndThickness(
+                            state.triggerNotificationLightingWithRadiusAndThickness(
                                 context,
                                 cornerRadiusDp,
                                 newValue,
@@ -351,14 +349,13 @@ fun NotificationLightingSettingsUI(
                         valueFormatter = { "%.1f".format(it) },
                         onValueChangeFinished = {
                             // Save the stroke thickness
-                            viewModel.saveNotificationLightingStrokeThickness(
-                                context,
+                            state.saveNotificationLightingStrokeThickness(
                                 strokeThicknessDp,
                             )
                             // Wait 5 seconds then remove preview overlay
                             coroutineScope.launch {
                                 delay(5000)
-                                viewModel.removePreviewOverlay(context)
+                                state.removePreviewOverlay(context)
                             }
                         },
                     )
@@ -377,81 +374,81 @@ fun NotificationLightingSettingsUI(
             RoundedCardContainer(modifier = Modifier) {
                 ConfigSliderItem(
                     title = stringResource(R.string.notification_lighting_stroke_thickness_title),
-                    value = viewModel.dash.thickness.floatValue,
+                    value = state.dash.thickness.floatValue,
                     onValueChange = { newValue ->
-                        viewModel.dash.thickness.floatValue = newValue
+                        state.dash.thickness.floatValue = newValue
                         HapticUtil.performSliderHaptic(view)
                     },
                     valueRange = 1f..20f,
                     increment = 0.5f,
                     valueFormatter = { "%.1f".format(it) },
                     onValueChangeFinished = {
-                        viewModel.dash.saveThickness(viewModel.dash.thickness.floatValue)
+                        state.dash.saveThickness(state.dash.thickness.floatValue)
                         previewDash()
                     },
                 )
 
                 ConfigSliderItem(
                     title = stringResource(R.string.notification_lighting_dash_length_title),
-                    value = viewModel.dash.length.floatValue,
+                    value = state.dash.length.floatValue,
                     onValueChange = { newValue ->
-                        viewModel.dash.length.floatValue = newValue
+                        state.dash.length.floatValue = newValue
                         HapticUtil.performSliderHaptic(view)
                     },
                     valueRange = 5f..100f,
                     increment = 1f,
                     valueFormatter = { "%.0f%%".format(it) },
                     onValueChangeFinished = {
-                        viewModel.dash.saveLength(viewModel.dash.length.floatValue)
+                        state.dash.saveLength(state.dash.length.floatValue)
                         previewDash()
                     },
                 )
 
                 ConfigSliderItem(
                     title = stringResource(R.string.notification_lighting_dash_glow_title),
-                    value = viewModel.dash.glow.floatValue,
+                    value = state.dash.glow.floatValue,
                     onValueChange = { newValue ->
-                        viewModel.dash.glow.floatValue = newValue
+                        state.dash.glow.floatValue = newValue
                         HapticUtil.performSliderHaptic(view)
                     },
                     valueRange = 0f..3f,
                     increment = 0.1f,
                     valueFormatter = { "%.1fx".format(it) },
                     onValueChangeFinished = {
-                        viewModel.dash.saveGlow(viewModel.dash.glow.floatValue)
+                        state.dash.saveGlow(state.dash.glow.floatValue)
                         previewDash()
                     },
                 )
 
                 ConfigSliderItem(
                     title = stringResource(R.string.notification_lighting_dash_glow_length_title),
-                    value = viewModel.dash.glowLength.floatValue,
+                    value = state.dash.glowLength.floatValue,
                     onValueChange = { newValue ->
-                        viewModel.dash.glowLength.floatValue = newValue
+                        state.dash.glowLength.floatValue = newValue
                         HapticUtil.performSliderHaptic(view)
                     },
                     valueRange = 1f..3f,
                     increment = 0.1f,
                     valueFormatter = { "%.1fx".format(it) },
                     onValueChangeFinished = {
-                        viewModel.dash.saveGlowLength(viewModel.dash.glowLength.floatValue)
+                        state.dash.saveGlowLength(state.dash.glowLength.floatValue)
                         previewDash()
                     },
                 )
 
                 ConfigSliderItem(
                     title = stringResource(R.string.notification_lighting_pulse_overlap_title),
-                    value = viewModel.dash.overlap.floatValue,
+                    value = state.dash.overlap.floatValue,
                     onValueChange = { newValue ->
-                        viewModel.dash.overlap.floatValue = newValue
+                        state.dash.overlap.floatValue = newValue
                         HapticUtil.performSliderHaptic(view)
                     },
                     valueRange = 0f..90f,
                     increment = 5f,
                     valueFormatter = { "%.0f%%".format(it) },
-                    enabled = viewModel.notificationLightingPulseCount.value > 1f,
+                    enabled = state.notificationLightingPulseCount.value > 1f,
                     onValueChangeFinished = {
-                        viewModel.dash.saveOverlap(viewModel.dash.overlap.floatValue)
+                        state.dash.saveOverlap(state.dash.overlap.floatValue)
                         previewDash()
                     },
                 )
@@ -469,12 +466,12 @@ fun NotificationLightingSettingsUI(
 
             RoundedCardContainer(modifier = Modifier) {
                 GlowSidesPicker(
-                    selectedSides = viewModel.notificationLightingGlowSides.value,
+                    selectedSides = state.notificationLightingGlowSides.value,
                     onSideToggled = { side, isChecked ->
-                        val current = viewModel.notificationLightingGlowSides.value.toMutableSet()
+                        val current = state.notificationLightingGlowSides.value.toMutableSet()
                         if (isChecked) current.add(side) else current.remove(side)
-                        viewModel.setNotificationLightingGlowSides(current, context)
-                        viewModel.triggerNotificationLighting(context)
+                        state.setNotificationLightingGlowSides(current)
+                        state.triggerNotificationLighting(context)
                     },
                 )
 
@@ -484,7 +481,7 @@ fun NotificationLightingSettingsUI(
                     onValueChange = { newValue ->
                         strokeThicknessDp = newValue
                         HapticUtil.performSliderHaptic(view)
-                        viewModel.triggerNotificationLightingWithRadiusAndThickness(
+                        state.triggerNotificationLightingWithRadiusAndThickness(
                             context,
                             cornerRadiusDp,
                             newValue,
@@ -493,13 +490,12 @@ fun NotificationLightingSettingsUI(
                     valueRange = 1f..10f,
                     valueFormatter = { "%.1f".format(it) },
                     onValueChangeFinished = {
-                        viewModel.saveNotificationLightingStrokeThickness(
-                            context,
+                        state.saveNotificationLightingStrokeThickness(
                             strokeThicknessDp,
                         )
                         coroutineScope.launch {
                             delay(2000)
-                            viewModel.removePreviewOverlay(context)
+                            state.removePreviewOverlay(context)
                         }
                     },
                 )
@@ -517,18 +513,18 @@ fun NotificationLightingSettingsUI(
 
             RoundedCardContainer(modifier = Modifier) {
                 SweepPositionPicker(
-                    selectedPosition = viewModel.notificationLightingSweepPosition.value,
+                    selectedPosition = state.notificationLightingSweepPosition.value,
                     onPositionSelected = { pos ->
-                        viewModel.setNotificationLightingSweepPosition(pos, context)
-                        viewModel.triggerNotificationLightingForSweep(
+                        state.setNotificationLightingSweepPosition(pos)
+                        state.triggerNotificationLightingForSweep(
                             context,
                             pos,
-                            viewModel.notificationLightingSweepThickness.floatValue,
+                            state.notificationLightingSweepThickness.floatValue,
                         )
                         // Auto remove preview
                         coroutineScope.launch {
                             delay(5000)
-                            viewModel.removePreviewOverlay(context)
+                            state.removePreviewOverlay(context)
                         }
                     },
                 )
@@ -536,23 +532,23 @@ fun NotificationLightingSettingsUI(
                 IconToggleItem(
                     iconRes = R.drawable.rounded_interests_24,
                     title = stringResource(R.string.notification_lighting_sweep_random_shapes_title),
-                    isChecked = viewModel.notificationLightingSweepRandomShapes.value,
+                    isChecked = state.notificationLightingSweepRandomShapes.value,
                     onCheckedChange = { checked ->
-                        viewModel.saveNotificationLightingSweepRandomShapes(context, checked)
+                        state.saveNotificationLightingSweepRandomShapes(checked)
                         HapticUtil.performSliderHaptic(view)
-                        viewModel.triggerNotificationLightingForSweep(
+                        state.triggerNotificationLightingForSweep(
                             context,
-                            viewModel.notificationLightingSweepPosition.value,
-                            viewModel.notificationLightingSweepThickness.floatValue,
+                            state.notificationLightingSweepPosition.value,
+                            state.notificationLightingSweepThickness.floatValue,
                         )
                         coroutineScope.launch {
                             delay(5000)
-                            viewModel.removePreviewOverlay(context)
+                            state.removePreviewOverlay(context)
                         }
                     },
                 )
 
-                if (viewModel.notificationLightingSweepRandomShapes.value) {
+                if (state.notificationLightingSweepRandomShapes.value) {
                     FeatureCard(
                         title = stringResource(R.string.notification_lighting_sweep_select_shapes_title),
                         description = stringResource(R.string.notification_lighting_sweep_select_shapes_desc),
@@ -570,26 +566,25 @@ fun NotificationLightingSettingsUI(
 
                 ConfigSliderItem(
                     title = stringResource(R.string.notification_lighting_sweep_thickness_title),
-                    value = viewModel.notificationLightingSweepThickness.floatValue,
+                    value = state.notificationLightingSweepThickness.floatValue,
                     onValueChange = { newValue ->
-                        viewModel.notificationLightingSweepThickness.floatValue = newValue
+                        state.notificationLightingSweepThickness.floatValue = newValue
                         HapticUtil.performSliderHaptic(view)
-                        viewModel.triggerNotificationLightingForSweep(
+                        state.triggerNotificationLightingForSweep(
                             context,
-                            viewModel.notificationLightingSweepPosition.value,
+                            state.notificationLightingSweepPosition.value,
                             newValue,
                         )
                     },
                     valueRange = 1f..50f,
                     valueFormatter = { "%.1f".format(it) },
                     onValueChangeFinished = {
-                        viewModel.saveNotificationLightingSweepThickness(
-                            context,
-                            viewModel.notificationLightingSweepThickness.floatValue,
+                        state.saveNotificationLightingSweepThickness(
+                            state.notificationLightingSweepThickness.floatValue,
                         )
                         coroutineScope.launch {
                             delay(5000)
-                            viewModel.removePreviewOverlay(context)
+                            state.removePreviewOverlay(context)
                         }
                     },
                 )
@@ -606,12 +601,12 @@ fun NotificationLightingSettingsUI(
 
             RoundedCardContainer(modifier = Modifier) {
                 RipplePositionPicker(
-                    selectedPosition = viewModel.ripple.position.value,
+                    selectedPosition = state.ripple.position.value,
                     onPositionSelected = { position ->
-                        viewModel.ripple.savePosition(position)
+                        state.ripple.savePosition(position)
                         if (position == NotificationLightingRipplePosition.MANUAL) {
                             context.startActivity(
-                                Intent(context, RipplePositionPickerActivity::class.java),
+                                Intent().setClassName(context, AppComponents.RIPPLE_POSITION_PICKER_ACTIVITY),
                             )
                         } else {
                             previewRipple()
@@ -619,7 +614,7 @@ fun NotificationLightingSettingsUI(
                     },
                 )
 
-                if (viewModel.ripple.position.value ==
+                if (state.ripple.position.value ==
                     NotificationLightingRipplePosition.MANUAL
                 ) {
                     FeatureCard(
@@ -633,7 +628,7 @@ fun NotificationLightingSettingsUI(
                         onClick = {
                             HapticUtil.performVirtualKeyHaptic(view)
                             context.startActivity(
-                                Intent(context, RipplePositionPickerActivity::class.java),
+                                Intent().setClassName(context, AppComponents.RIPPLE_POSITION_PICKER_ACTIVITY),
                             )
                         },
                     )
@@ -651,43 +646,43 @@ fun NotificationLightingSettingsUI(
                 IconToggleItem(
                     iconRes = R.drawable.rounded_auto_awesome_24,
                     title = stringResource(R.string.notification_lighting_ripple_sparkle_title),
-                    isChecked = viewModel.ripple.sparklesEnabled.value,
+                    isChecked = state.ripple.sparklesEnabled.value,
                     onCheckedChange = { checked ->
-                        viewModel.ripple.saveSparklesEnabled(checked)
+                        state.ripple.saveSparklesEnabled(checked)
                         HapticUtil.performSliderHaptic(view)
                         previewRipple()
                     },
                 )
 
-                if (viewModel.ripple.sparklesEnabled.value) {
+                if (state.ripple.sparklesEnabled.value) {
                     ConfigSliderItem(
                         title = stringResource(R.string.notification_lighting_ripple_sparkle_count_title),
-                        value = viewModel.ripple.sparkleCount.floatValue,
+                        value = state.ripple.sparkleCount.floatValue,
                         onValueChange = { newValue ->
-                            viewModel.ripple.sparkleCount.floatValue = newValue
+                            state.ripple.sparkleCount.floatValue = newValue
                             HapticUtil.performSliderHaptic(view)
                         },
                         valueRange = 0f..1000f,
                         increment = 10f,
                         valueFormatter = { "%.0f".format(it) },
                         onValueChangeFinished = {
-                            viewModel.ripple.saveSparkleCount(viewModel.ripple.sparkleCount.floatValue)
+                            state.ripple.saveSparkleCount(state.ripple.sparkleCount.floatValue)
                             previewRipple()
                         },
                     )
 
                     ConfigSliderItem(
                         title = stringResource(R.string.notification_lighting_ripple_sparkle_size_title),
-                        value = viewModel.ripple.sparkleSize.floatValue,
+                        value = state.ripple.sparkleSize.floatValue,
                         onValueChange = { newValue ->
-                            viewModel.ripple.sparkleSize.floatValue = newValue
+                            state.ripple.sparkleSize.floatValue = newValue
                             HapticUtil.performSliderHaptic(view)
                         },
                         valueRange = 0.1f..3f,
                         increment = 0.1f,
                         valueFormatter = { "%.1fx".format(it) },
                         onValueChangeFinished = {
-                            viewModel.ripple.saveSparkleSize(viewModel.ripple.sparkleSize.floatValue)
+                            state.ripple.saveSparkleSize(state.ripple.sparkleSize.floatValue)
                             previewRipple()
                         },
                     )
@@ -695,25 +690,25 @@ fun NotificationLightingSettingsUI(
 
                 ConfigSliderItem(
                     title = stringResource(R.string.notification_lighting_ripple_speed_title),
-                    value = viewModel.ripple.speed.floatValue,
+                    value = state.ripple.speed.floatValue,
                     onValueChange = { newValue ->
-                        viewModel.ripple.speed.floatValue = newValue
+                        state.ripple.speed.floatValue = newValue
                         HapticUtil.performSliderHaptic(view)
                     },
                     valueRange = 0.5f..3f,
                     increment = 0.1f,
                     valueFormatter = { "%.1fx".format(it) },
                     onValueChangeFinished = {
-                        viewModel.ripple.saveSpeed(viewModel.ripple.speed.floatValue)
+                        state.ripple.saveSpeed(state.ripple.speed.floatValue)
                         previewRipple()
                     },
                 )
 
                 ConfigSliderItem(
                     title = stringResource(R.string.notification_lighting_ripple_repeat_count_title),
-                    value = viewModel.ripple.repeatCount.floatValue,
+                    value = state.ripple.repeatCount.floatValue,
                     onValueChange = { newValue ->
-                        viewModel.ripple.repeatCount.floatValue = newValue
+                        state.ripple.repeatCount.floatValue = newValue
                         HapticUtil.performSliderHaptic(view)
                     },
                     valueRange = 1f..10f,
@@ -721,56 +716,56 @@ fun NotificationLightingSettingsUI(
                     increment = 1f,
                     valueFormatter = { "%.0f".format(it) },
                     onValueChangeFinished = {
-                        viewModel.ripple.saveRepeatCount(viewModel.ripple.repeatCount.floatValue)
+                        state.ripple.saveRepeatCount(state.ripple.repeatCount.floatValue)
                         previewRipple()
                     },
                 )
 
                 ConfigSliderItem(
                     title = stringResource(R.string.notification_lighting_pulse_overlap_title),
-                    value = viewModel.ripple.overlap.floatValue,
+                    value = state.ripple.overlap.floatValue,
                     onValueChange = { newValue ->
-                        viewModel.ripple.overlap.floatValue = newValue
+                        state.ripple.overlap.floatValue = newValue
                         HapticUtil.performSliderHaptic(view)
                     },
                     valueRange = 0f..90f,
                     increment = 5f,
                     valueFormatter = { "%.0f%%".format(it) },
-                    enabled = viewModel.ripple.repeatCount.floatValue > 1f,
+                    enabled = state.ripple.repeatCount.floatValue > 1f,
                     onValueChangeFinished = {
-                        viewModel.ripple.saveOverlap(viewModel.ripple.overlap.floatValue)
+                        state.ripple.saveOverlap(state.ripple.overlap.floatValue)
                         previewRipple()
                     },
                 )
 
                 ConfigSliderItem(
                     title = stringResource(R.string.notification_lighting_ripple_wave_size_title),
-                    value = viewModel.ripple.waveSize.floatValue,
+                    value = state.ripple.waveSize.floatValue,
                     onValueChange = { newValue ->
-                        viewModel.ripple.waveSize.floatValue = newValue
+                        state.ripple.waveSize.floatValue = newValue
                         HapticUtil.performSliderHaptic(view)
                     },
                     valueRange = 0.5f..8f,
                     increment = 0.1f,
                     valueFormatter = { "%.1fx".format(it) },
                     onValueChangeFinished = {
-                        viewModel.ripple.saveWaveSize(viewModel.ripple.waveSize.floatValue)
+                        state.ripple.saveWaveSize(state.ripple.waveSize.floatValue)
                         previewRipple()
                     },
                 )
 
                 ConfigSliderItem(
                     title = stringResource(R.string.notification_lighting_ripple_opacity_title),
-                    value = viewModel.ripple.opacity.floatValue,
+                    value = state.ripple.opacity.floatValue,
                     onValueChange = { newValue ->
-                        viewModel.ripple.opacity.floatValue = newValue
+                        state.ripple.opacity.floatValue = newValue
                         HapticUtil.performSliderHaptic(view)
                     },
                     valueRange = 0.2f..2f,
                     increment = 0.1f,
                     valueFormatter = { "%.1fx".format(it) },
                     onValueChangeFinished = {
-                        viewModel.ripple.saveOpacity(viewModel.ripple.opacity.floatValue)
+                        state.ripple.saveOpacity(state.ripple.opacity.floatValue)
                         previewRipple()
                     },
                 )
@@ -793,7 +788,7 @@ fun NotificationLightingSettingsUI(
                     onValueChange = { newValue ->
                         indicatorX = newValue
                         HapticUtil.performSliderHaptic(view)
-                        viewModel.triggerNotificationLightingForIndicator(
+                        state.triggerNotificationLightingForIndicator(
                             context,
                             newValue,
                             indicatorY,
@@ -803,10 +798,10 @@ fun NotificationLightingSettingsUI(
                     valueRange = 0f..100f,
                     valueFormatter = { "%.1f%%".format(it) },
                     onValueChangeFinished = {
-                        viewModel.saveNotificationLightingIndicatorX(context, indicatorX)
+                        state.saveNotificationLightingIndicatorX(indicatorX)
                         coroutineScope.launch {
                             delay(5000)
-                            viewModel.removePreviewOverlay(context)
+                            state.removePreviewOverlay(context)
                         }
                     },
                 )
@@ -817,7 +812,7 @@ fun NotificationLightingSettingsUI(
                     onValueChange = { newValue ->
                         indicatorY = newValue
                         HapticUtil.performSliderHaptic(view)
-                        viewModel.triggerNotificationLightingForIndicator(
+                        state.triggerNotificationLightingForIndicator(
                             context,
                             indicatorX,
                             newValue,
@@ -827,10 +822,10 @@ fun NotificationLightingSettingsUI(
                     valueRange = 0f..100f,
                     valueFormatter = { "%.1f%%".format(it) },
                     onValueChangeFinished = {
-                        viewModel.saveNotificationLightingIndicatorY(context, indicatorY)
+                        state.saveNotificationLightingIndicatorY(indicatorY)
                         coroutineScope.launch {
                             delay(5000)
-                            viewModel.removePreviewOverlay(context)
+                            state.removePreviewOverlay(context)
                         }
                     },
                 )
@@ -850,7 +845,7 @@ fun NotificationLightingSettingsUI(
                     onValueChange = { newValue ->
                         indicatorScale = newValue
                         HapticUtil.performSliderHaptic(view)
-                        viewModel.triggerNotificationLightingForIndicator(
+                        state.triggerNotificationLightingForIndicator(
                             context,
                             indicatorX,
                             indicatorY,
@@ -860,25 +855,25 @@ fun NotificationLightingSettingsUI(
                     valueRange = 0.5f..3f,
                     valueFormatter = { "%.1fx".format(it) },
                     onValueChangeFinished = {
-                        viewModel.saveNotificationLightingIndicatorScale(context, indicatorScale)
+                        state.saveNotificationLightingIndicatorScale(indicatorScale)
                         coroutineScope.launch {
                             delay(5000)
-                            viewModel.removePreviewOverlay(context)
+                            state.removePreviewOverlay(context)
                         }
                     },
                 )
 
                 ConfigSliderItem(
                     title = stringResource(R.string.notification_lighting_duration_title),
-                    value = viewModel.notificationLightingPulseDuration.value,
+                    value = state.notificationLightingPulseDuration.value,
                     onValueChange = {
-                        viewModel.saveNotificationLightingPulseDuration(context, it)
+                        state.saveNotificationLightingPulseDuration(it)
                         HapticUtil.performSliderHaptic(view)
                     },
                     valueRange = 1000f..10000f,
                     increment = 100f,
                     valueFormatter = { "%.1fs".format(it / 1000f) },
-                    onValueChangeFinished = { viewModel.triggerNotificationLighting(context) },
+                    onValueChangeFinished = { state.triggerNotificationLighting(context) },
                 )
             }
         }
@@ -899,29 +894,29 @@ fun NotificationLightingSettingsUI(
             RoundedCardContainer(modifier = Modifier) {
                 ConfigSliderItem(
                     title = stringResource(R.string.notification_lighting_pulse_count_title),
-                    value = viewModel.notificationLightingPulseCount.value,
+                    value = state.notificationLightingPulseCount.value,
                     onValueChange = {
-                        viewModel.saveNotificationLightingPulseCount(context, it)
+                        state.saveNotificationLightingPulseCount(it)
                         HapticUtil.performSliderHaptic(view)
                     },
                     valueRange = 1f..5f,
                     steps = 3,
                     increment = 1f,
                     valueFormatter = { "%.1f".format(it) },
-                    onValueChangeFinished = { viewModel.triggerNotificationLighting(context) },
+                    onValueChangeFinished = { state.triggerNotificationLighting(context) },
                 )
 
                 ConfigSliderItem(
                     title = stringResource(R.string.notification_lighting_pulse_duration_title),
-                    value = viewModel.notificationLightingPulseDuration.value,
+                    value = state.notificationLightingPulseDuration.value,
                     onValueChange = {
-                        viewModel.saveNotificationLightingPulseDuration(context, it)
+                        state.saveNotificationLightingPulseDuration(it)
                         HapticUtil.performSliderHaptic(view)
                     },
                     valueRange = 100f..10000f,
                     increment = 100f,
                     valueFormatter = { "%.1fs".format(it / 1000f) },
-                    onValueChangeFinished = { viewModel.triggerNotificationLighting(context) },
+                    onValueChangeFinished = { state.triggerNotificationLighting(context) },
                 )
             }
         }
@@ -939,11 +934,11 @@ fun NotificationLightingSettingsUI(
                 modifier = Modifier,
             ) {
                 NotificationLightingColorModePicker(
-                    selectedMode = viewModel.notificationLightingColorMode.value,
+                    selectedMode = state.notificationLightingColorMode.value,
                     onModeSelected = { mode ->
                         HapticUtil.performVirtualKeyHaptic(view)
-                        viewModel.setNotificationLightingColorMode(mode, context)
-                        viewModel.triggerNotificationLighting(context)
+                        state.setNotificationLightingColorMode(mode)
+                        state.triggerNotificationLighting(context)
                     },
                     options =
                         if (style.usesRestrictedColorModes) {
@@ -960,7 +955,7 @@ fun NotificationLightingSettingsUI(
                         },
                 )
 
-                if (viewModel.notificationLightingColorMode.value ==
+                if (state.notificationLightingColorMode.value ==
                     NotificationLightingColorMode.APP_SPECIFIC
                 ) {
                     FeatureCard(
@@ -978,7 +973,7 @@ fun NotificationLightingSettingsUI(
                     )
                 }
 
-                if (viewModel.notificationLightingColorMode.value == NotificationLightingColorMode.CUSTOM) {
+                if (state.notificationLightingColorMode.value == NotificationLightingColorMode.CUSTOM) {
                     Column(
                         modifier =
                             Modifier
@@ -1044,7 +1039,7 @@ fun NotificationLightingSettingsUI(
 
                         val pages = allColors.chunked(21)
                         val pagerState = rememberPagerState(pageCount = { pages.size })
-                        val currentCustomColor = viewModel.notificationLightingCustomColor.intValue
+                        val currentCustomColor = state.notificationLightingCustomColor.intValue
 
                         HorizontalPager(
                             state = pagerState,
@@ -1074,11 +1069,10 @@ fun NotificationLightingSettingsUI(
                                                 size = 36.dp,
                                                 onClick = {
                                                     HapticUtil.performVirtualKeyHaptic(view)
-                                                    viewModel.setNotificationLightingCustomColor(
+                                                    state.setNotificationLightingCustomColor(
                                                         colorInt,
-                                                        context,
                                                     )
-                                                    viewModel.triggerNotificationLighting(context)
+                                                    state.triggerNotificationLighting(context)
                                                 },
                                             )
                                         }
@@ -1138,20 +1132,20 @@ fun NotificationLightingSettingsUI(
                     iconRes = R.drawable.rounded_nightlight_24,
                     title = stringResource(R.string.ambient_display_title),
                     description = stringResource(R.string.ambient_display_desc),
-                    isChecked = viewModel.isAmbientDisplayEnabled.value,
+                    isChecked = state.isAmbientDisplayEnabled.value,
                     onCheckedChange = { checked ->
-                        viewModel.setAmbientDisplayEnabled(checked, context)
+                        state.setAmbientDisplayEnabled(checked)
                     },
                     modifier = Modifier.highlight(highlightSetting == "ambient_display"),
                 )
-                if (viewModel.isAmbientDisplayEnabled.value) {
+                if (state.isAmbientDisplayEnabled.value) {
                     IconToggleItem(
                         iconRes = R.drawable.rounded_mobile_lock_portrait_24,
                         title = stringResource(R.string.ambient_show_lock_screen_title),
                         description = stringResource(R.string.ambient_show_lock_screen_desc),
-                        isChecked = viewModel.isAmbientShowLockScreenEnabled.value,
+                        isChecked = state.isAmbientShowLockScreenEnabled.value,
                         onCheckedChange = { checked ->
-                            viewModel.setAmbientShowLockScreenEnabled(checked, context)
+                            state.setAmbientShowLockScreenEnabled(checked)
                         },
                         modifier = Modifier.highlight(highlightSetting == "ambient_show_lock_screen"),
                     )
@@ -1162,36 +1156,19 @@ fun NotificationLightingSettingsUI(
         Spacer(modifier = Modifier.height(80.dp))
 
         if (showAppSelectionSheet) {
-            AppSelectionSheet(
-                onDismissRequest = { showAppSelectionSheet = false },
-                onLoadApps = { viewModel.loadNotificationLightingSelectedApps(it) },
-                onSaveApps = { ctx, apps ->
-                    viewModel.saveNotificationLightingSelectedApps(
-                        ctx,
-                        apps,
-                    )
-                },
-                onAppToggle = { ctx, pkg, enabled ->
-                    viewModel.updateNotificationLightingAppEnabled(
-                        ctx,
-                        pkg,
-                        enabled,
-                    )
-                },
-                context = context,
-            )
+            appSelectionSheet { showAppSelectionSheet = false }
         }
 
         if (showAppColorsSheet) {
             AppColorSelectionSheet(
                 onDismissRequest = { showAppColorsSheet = false },
-                onLoadAllowedApps = { viewModel.loadNotificationLightingSelectedApps(it) },
+                onLoadAllowedApps = { state.loadNotificationLightingSelectedApps() },
             )
         }
 
         if (showSweepShapesSheet) {
             SweepShapesBottomSheet(
-                viewModel = viewModel,
+                state = state,
                 onDismissRequest = { showSweepShapesSheet = false },
             )
         }
@@ -1217,8 +1194,8 @@ fun NotificationLightingSettingsUI(
                                 context.startActivity(intent)
                             },
                             secondaryActionLabel = R.string.action_refresh,
-                            secondaryAction = { viewModel.check(context) },
-                            isGranted = viewModel.isShizukuPermissionGranted.value,
+                            secondaryAction = { onRefreshPermissions() },
+                            isGranted = isShizukuPermissionGranted,
                         ),
                     ),
             )
@@ -1233,34 +1210,6 @@ fun NotificationLightingSettingsUI(
                         .fillMaxWidth()
                         .padding(16.dp),
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-        }
-    }
-}
-
-@Composable
-fun ColorCircle(
-    color: Color,
-    isSelected: Boolean,
-    size: Dp = 40.dp,
-    onClick: () -> Unit,
-) {
-    Box(
-        modifier =
-            Modifier
-                .size(size)
-                .clip(CircleShape)
-                .background(color)
-                .clickable(onClick = onClick),
-        contentAlignment = Alignment.Center,
-    ) {
-        if (isSelected) {
-            Box(
-                modifier =
-                    Modifier
-                        .size(size * 0.4f)
-                        .clip(CircleShape)
-                        .background(Color.White.copy(alpha = 0.8f)),
             )
         }
     }

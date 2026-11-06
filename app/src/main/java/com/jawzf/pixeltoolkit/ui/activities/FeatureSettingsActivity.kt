@@ -82,6 +82,7 @@ import com.jawzf.pixeltoolkit.feature.notifications.hilight.ui.HilightNotificati
 import com.jawzf.pixeltoolkit.feature.notifications.hilight.ui.HilightProgressSettingsUI
 import com.jawzf.pixeltoolkit.feature.notifications.hilight.ui.HilightSettingsUI
 import com.jawzf.pixeltoolkit.feature.notifications.hilight.ui.HilightStatus
+import com.jawzf.pixeltoolkit.feature.notifications.lighting.ui.NotificationLightingSettingsUI
 import com.jawzf.pixeltoolkit.feature.notifications.snooze.ui.NotificationSnoozingSettingsUI
 import com.jawzf.pixeltoolkit.feature.notifications.snooze.ui.SnoozeNotificationsSettingsUI
 import com.jawzf.pixeltoolkit.feature.power.battery.ui.BatteriesPreviewCard
@@ -127,7 +128,6 @@ import com.jawzf.pixeltoolkit.ui.features.system.LiveWallpaperSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.LockScreenClockSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.LockscreenShortcutsSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.NavigationSettingsUI
-import com.jawzf.pixeltoolkit.ui.features.system.NotificationLightingSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.OtherCustomizationsSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.QuickSettingsTilesSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.RefreshRateSettingsUI
@@ -948,7 +948,24 @@ class FeatureSettingsActivity : AppCompatActivity() {
 
                                     "Notification lighting" -> {
                                         NotificationLightingSettingsUI(
-                                            viewModel = viewModel,
+                                            state = viewModel.lighting,
+                                            isShizukuPermissionGranted = viewModel.isShizukuPermissionGranted.value,
+                                            onRefreshPermissions = { viewModel.check(context) },
+                                            appSelectionSheet = { onDismiss ->
+                                                AppSelectionSheet(
+                                                    onDismissRequest = onDismiss,
+                                                    onLoadApps = {
+                                                        viewModel.lighting.loadNotificationLightingSelectedApps()
+                                                    },
+                                                    onSaveApps = { _, apps ->
+                                                        viewModel.lighting.saveNotificationLightingSelectedApps(apps)
+                                                    },
+                                                    onAppToggle = { _, pkg, enabled ->
+                                                        viewModel.lighting.updateNotificationLightingAppEnabled(pkg, enabled)
+                                                    },
+                                                    context = context,
+                                                )
+                                            },
                                             modifier = Modifier.padding(top = 16.dp),
                                             highlightSetting = highlightSetting,
                                         )
