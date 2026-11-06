@@ -75,6 +75,9 @@ import com.jawzf.pixeltoolkit.feature.apps.consciousgate.ui.CONSCIOUS_GATE_FEATU
 import com.jawzf.pixeltoolkit.feature.apps.consciousgate.ui.ConsciousGateSettingsUI
 import com.jawzf.pixeltoolkit.feature.apps.freeze.ui.FreezeSettingsUI
 import com.jawzf.pixeltoolkit.feature.connectivity.ui.NetworksSettingsUI
+import com.jawzf.pixeltoolkit.feature.display.aod.ui.AlwaysOnDisplaySettingsUI
+import com.jawzf.pixeltoolkit.feature.display.aod.ui.AodWallpaperPreviewCard
+import com.jawzf.pixeltoolkit.feature.display.aod.ui.AodWallpaperSettingsUI
 import com.jawzf.pixeltoolkit.feature.display.pixels.ui.SmartPixelsSettingsUI
 import com.jawzf.pixeltoolkit.feature.display.refresh.ui.RefreshRateSettingsUI
 import com.jawzf.pixeltoolkit.feature.input.gesture.ui.BACK_GESTURE_FEATURE_ID
@@ -106,8 +109,6 @@ import com.jawzf.pixeltoolkit.feature.sound.ui.VolumeStepsSettingsUI
 import com.jawzf.pixeltoolkit.ui.core.sheets.AppSelectionSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.ShakeForHelp
 import com.jawzf.pixeltoolkit.ui.core.sheets.SingleAppSelectionSheet
-import com.jawzf.pixeltoolkit.ui.features.display.AodWallpaperPreviewCard
-import com.jawzf.pixeltoolkit.ui.features.display.AodWallpaperSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.display.DuoSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.display.ISLAND_BEHAVIOR_FEATURE_ID
 import com.jawzf.pixeltoolkit.ui.features.display.ISLAND_DURATION_FEATURE_ID
@@ -124,7 +125,6 @@ import com.jawzf.pixeltoolkit.ui.features.display.IslandVisualsSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.display.StatusGlanceSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.ActivityLauncherSearchBar
 import com.jawzf.pixeltoolkit.ui.features.system.ActivityLauncherSettingsUI
-import com.jawzf.pixeltoolkit.ui.features.system.AlwaysOnDisplaySettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.ButtonRemapSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.DynamicNightLightSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.FlashlightSettingsUI

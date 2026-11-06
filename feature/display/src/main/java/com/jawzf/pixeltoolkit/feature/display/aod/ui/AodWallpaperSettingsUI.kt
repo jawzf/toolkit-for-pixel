@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.features.display
+package com.jawzf.pixeltoolkit.feature.display.aod.ui
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween

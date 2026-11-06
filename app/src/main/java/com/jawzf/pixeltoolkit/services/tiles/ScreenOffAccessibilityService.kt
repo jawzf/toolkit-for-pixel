@@ -28,6 +28,8 @@ import com.jawzf.pixeltoolkit.core.design.haptics.performHapticFeedback
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.feature.apps.freeze.FreezeManager
 import com.jawzf.pixeltoolkit.feature.display.DisplaySettings
+import com.jawzf.pixeltoolkit.feature.display.aod.AodForceTurnOffHandler
+import com.jawzf.pixeltoolkit.feature.display.aod.AodWallpaperOverlayHandler
 import com.jawzf.pixeltoolkit.feature.display.pixels.SmartPixelsHandler
 import com.jawzf.pixeltoolkit.feature.input.gesture.OmniGestureOverlayHandler
 import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingHandler
@@ -44,8 +46,6 @@ import com.jawzf.pixeltoolkit.services.InputEventListenerService
 import com.jawzf.pixeltoolkit.services.LiveUpdateSnoozer
 import com.jawzf.pixeltoolkit.services.NotificationListener
 import com.jawzf.pixeltoolkit.services.handlers.AmbientGlanceHandler
-import com.jawzf.pixeltoolkit.services.handlers.AodForceTurnOffHandler
-import com.jawzf.pixeltoolkit.services.handlers.AodWallpaperOverlayHandler
 import com.jawzf.pixeltoolkit.services.handlers.AppFlowHandler
 import com.jawzf.pixeltoolkit.services.handlers.ButtonRemapHandler
 import com.jawzf.pixeltoolkit.services.handlers.DuoOverlayHandler
