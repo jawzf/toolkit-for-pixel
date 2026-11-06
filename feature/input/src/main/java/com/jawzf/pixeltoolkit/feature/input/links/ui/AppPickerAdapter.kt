@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.components.linkActions
+package com.jawzf.pixeltoolkit.feature.input.links.ui
 
 import android.content.pm.ResolveInfo
 import android.graphics.drawable.Drawable

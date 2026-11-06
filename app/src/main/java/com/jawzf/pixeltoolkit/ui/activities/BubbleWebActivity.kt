@@ -72,6 +72,7 @@ import com.jawzf.pixeltoolkit.LinkPickerActivity
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.theme.ToolkitTheme
+import com.jawzf.pixeltoolkit.core.platform.AppComponents
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 import kotlin.math.roundToInt
@@ -79,8 +80,8 @@ import kotlin.math.roundToInt
 class BubbleWebActivity : ComponentActivity() {
 
     companion object {
-        const val EXTRA_URL = "extra_bubble_url"
-        const val EXTRA_PRIVATE_MODE = "extra_bubble_private_mode"
+        const val EXTRA_URL = AppComponents.BUBBLE_EXTRA_URL
+        const val EXTRA_PRIVATE_MODE = AppComponents.BUBBLE_EXTRA_PRIVATE_MODE
         const val EXTRA_FULLSCREEN = "extra_bubble_fullscreen"
 
         fun sanitizeUrl(raw: String): String {

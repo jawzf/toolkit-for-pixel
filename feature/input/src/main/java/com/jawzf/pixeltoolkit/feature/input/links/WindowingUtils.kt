@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.utils
+package com.jawzf.pixeltoolkit.feature.input.links
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -17,8 +17,8 @@ import androidx.core.content.pm.ShortcutInfoCompat
 import androidx.core.content.pm.ShortcutManagerCompat
 import androidx.core.graphics.drawable.IconCompat
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.platform.AppComponents
 import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
-import com.jawzf.pixeltoolkit.ui.activities.BubbleWebActivity
 
 object WindowingUtils {
     private const val TAG = "WindowingUtils"
@@ -105,11 +105,11 @@ object WindowingUtils {
         val iconRes = R.drawable.rounded_globe_24
         val bubbleIcon = IconCompat.createWithResource(context, iconRes)
 
-        val bubbleIntent = Intent(context, BubbleWebActivity::class.java).apply {
+        val bubbleIntent = Intent().setClassName(context, AppComponents.BUBBLE_WEB_ACTIVITY).apply {
             action = Intent.ACTION_VIEW
             data = uri
-            putExtra(BubbleWebActivity.EXTRA_URL, targetUrl)
-            putExtra(BubbleWebActivity.EXTRA_PRIVATE_MODE, isPrivate)
+            putExtra(AppComponents.BUBBLE_EXTRA_URL, targetUrl)
+            putExtra(AppComponents.BUBBLE_EXTRA_PRIVATE_MODE, isPrivate)
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         }
 

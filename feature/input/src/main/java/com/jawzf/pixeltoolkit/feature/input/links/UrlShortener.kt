@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.utils
+package com.jawzf.pixeltoolkit.feature.input.links
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -11,7 +11,7 @@ import android.util.Base64
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.jawzf.pixeltoolkit.core.design.R
-import com.jawzf.pixeltoolkit.receivers.UrlShortenerActionReceiver
+import com.jawzf.pixeltoolkit.feature.input.links.UrlShortenerActionReceiver
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONArray

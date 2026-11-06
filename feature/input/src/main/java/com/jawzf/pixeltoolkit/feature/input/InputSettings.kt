@@ -33,6 +33,14 @@ class InputSettings(
      */
     fun setAccentedCharactersEnabled(enabled: Boolean) = putBoolean(KEY_KEYBOARD_ACCENTED_CHARACTERS, enabled)
 
+    fun isLinkPreviewEnabled(): Boolean = getBoolean(KEY_LINK_PREVIEW_ENABLED, true)
+
+    fun setLinkPreviewEnabled(enabled: Boolean) = putBoolean(KEY_LINK_PREVIEW_ENABLED, enabled)
+
+    fun isLinkPreviewImagesEnabled(): Boolean = getBoolean(KEY_LINK_PREVIEW_IMAGES_ENABLED, true)
+
+    fun setLinkPreviewImagesEnabled(enabled: Boolean) = putBoolean(KEY_LINK_PREVIEW_IMAGES_ENABLED, enabled)
+
     companion object {
         const val KEY_KEYBOARD_HEIGHT = "keyboard_height"
         const val KEY_KEYBOARD_BOTTOM_PADDING = "keyboard_bottom_padding"
@@ -50,5 +58,8 @@ class InputSettings(
 
         const val KEY_USER_DICTIONARY_ENABLED = "user_dictionary_enabled"
         const val KEY_USER_DICT_LAST_UPDATE = "user_dict_last_update"
+
+        const val KEY_LINK_PREVIEW_ENABLED = "link_preview_enabled"
+        const val KEY_LINK_PREVIEW_IMAGES_ENABLED = "link_preview_images_enabled"
     }
 }
