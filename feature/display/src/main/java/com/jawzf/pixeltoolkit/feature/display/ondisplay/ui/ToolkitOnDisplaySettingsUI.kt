@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.features.system
+package com.jawzf.pixeltoolkit.feature.display.ondisplay.ui
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -24,7 +24,7 @@ import com.jawzf.pixeltoolkit.core.design.modifiers.highlight
 import com.jawzf.pixeltoolkit.core.design.sheets.PermissionItem
 import com.jawzf.pixeltoolkit.core.design.sheets.PermissionsBottomSheet
 import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
-import com.jawzf.pixeltoolkit.ui.core.pickers.AlbumArtModePicker
+import com.jawzf.pixeltoolkit.feature.display.ondisplay.ui.AlbumArtModePicker
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)

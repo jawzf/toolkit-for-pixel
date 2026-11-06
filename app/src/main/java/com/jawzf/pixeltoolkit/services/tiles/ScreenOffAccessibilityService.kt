@@ -25,11 +25,13 @@ import android.view.accessibility.AccessibilityEvent
 import androidx.core.content.ContextCompat
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticFeedbackType
 import com.jawzf.pixeltoolkit.core.design.haptics.performHapticFeedback
+import com.jawzf.pixeltoolkit.core.platform.device.CarConnectionMonitor
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.feature.apps.freeze.FreezeManager
 import com.jawzf.pixeltoolkit.feature.display.DisplaySettings
 import com.jawzf.pixeltoolkit.feature.display.aod.AodForceTurnOffHandler
 import com.jawzf.pixeltoolkit.feature.display.aod.AodWallpaperOverlayHandler
+import com.jawzf.pixeltoolkit.feature.display.ondisplay.AmbientGlanceHandler
 import com.jawzf.pixeltoolkit.feature.display.pixels.SmartPixelsHandler
 import com.jawzf.pixeltoolkit.feature.input.gesture.OmniGestureOverlayHandler
 import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingHandler
@@ -45,7 +47,6 @@ import com.jawzf.pixeltoolkit.island.service.IslandCoordinator
 import com.jawzf.pixeltoolkit.services.InputEventListenerService
 import com.jawzf.pixeltoolkit.services.LiveUpdateSnoozer
 import com.jawzf.pixeltoolkit.services.NotificationListener
-import com.jawzf.pixeltoolkit.services.handlers.AmbientGlanceHandler
 import com.jawzf.pixeltoolkit.services.handlers.AppFlowHandler
 import com.jawzf.pixeltoolkit.services.handlers.ButtonRemapHandler
 import com.jawzf.pixeltoolkit.services.handlers.DuoOverlayHandler
@@ -55,7 +56,6 @@ import com.jawzf.pixeltoolkit.services.handlers.StatusBarIconHandler
 import com.jawzf.pixeltoolkit.services.handlers.StatusGlanceHandler
 import com.jawzf.pixeltoolkit.services.receivers.FlashlightActionReceiver
 import com.jawzf.pixeltoolkit.utils.CameraSession
-import com.jawzf.pixeltoolkit.utils.CarConnectionMonitor
 import com.jawzf.pixeltoolkit.utils.DeviceLockUtils
 import com.jawzf.pixeltoolkit.utils.PowerButtonGestures
 import kotlinx.coroutines.CoroutineScope

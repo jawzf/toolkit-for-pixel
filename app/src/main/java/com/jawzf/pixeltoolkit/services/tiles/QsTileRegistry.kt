@@ -11,6 +11,7 @@ import com.jawzf.pixeltoolkit.feature.connectivity.nfc.NfcTileService
 import com.jawzf.pixeltoolkit.feature.connectivity.sim.DataSimController
 import com.jawzf.pixeltoolkit.feature.connectivity.sim.DataSimTileService
 import com.jawzf.pixeltoolkit.feature.display.aod.AlwaysOnDisplayTileService
+import com.jawzf.pixeltoolkit.feature.display.ondisplay.ToolkitOnDisplayTileService
 import com.jawzf.pixeltoolkit.feature.display.pixels.SmartPixelsTileService
 import com.jawzf.pixeltoolkit.feature.display.refresh.RefreshRateTileService
 import com.jawzf.pixeltoolkit.feature.input.links.UrlShortenerTileService

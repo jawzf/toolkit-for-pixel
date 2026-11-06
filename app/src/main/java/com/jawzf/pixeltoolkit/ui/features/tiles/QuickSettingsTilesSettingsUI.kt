@@ -67,6 +67,7 @@ import com.jawzf.pixeltoolkit.feature.apps.freeze.AppFreezingTileService
 import com.jawzf.pixeltoolkit.feature.connectivity.dns.PrivateDnsTileService
 import com.jawzf.pixeltoolkit.feature.connectivity.nfc.NfcTileService
 import com.jawzf.pixeltoolkit.feature.display.aod.AlwaysOnDisplayTileService
+import com.jawzf.pixeltoolkit.feature.display.ondisplay.ToolkitOnDisplayTileService
 import com.jawzf.pixeltoolkit.feature.display.pixels.SmartPixelsTileService
 import com.jawzf.pixeltoolkit.feature.display.refresh.RefreshRateTileService
 import com.jawzf.pixeltoolkit.feature.input.links.UrlShortenerTileService
@@ -89,7 +90,6 @@ import com.jawzf.pixeltoolkit.services.tiles.RestartSystemUiTileService
 import com.jawzf.pixeltoolkit.services.tiles.ScaleAnimationsTileService
 import com.jawzf.pixeltoolkit.services.tiles.StayAwakeTileService
 import com.jawzf.pixeltoolkit.services.tiles.TapToWakeTileService
-import com.jawzf.pixeltoolkit.services.tiles.ToolkitOnDisplayTileService
 import com.jawzf.pixeltoolkit.services.tiles.UiBlurTileService
 import com.jawzf.pixeltoolkit.services.tiles.UsbDebuggingTileService
 import com.jawzf.pixeltoolkit.utils.PermissionUIHelper

@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.services.handlers
+package com.jawzf.pixeltoolkit.feature.display.ondisplay
 
 import android.accessibilityservice.AccessibilityService
 import android.content.BroadcastReceiver
@@ -28,8 +28,8 @@ import android.widget.TextClock
 import android.widget.TextView
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.overlay.AmbientMusicShapeHelper
+import com.jawzf.pixeltoolkit.core.platform.device.CarConnectionMonitor
 import com.jawzf.pixeltoolkit.services.NotificationListener
-import com.jawzf.pixeltoolkit.utils.CarConnectionMonitor
 import java.io.File
 import java.util.Random
 

@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.utils
+package com.jawzf.pixeltoolkit.core.platform.device
 
 import android.content.Context
 import androidx.car.app.connection.CarConnection
