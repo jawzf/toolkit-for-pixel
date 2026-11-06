@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.features.system
+package com.jawzf.pixeltoolkit.feature.notifications.flashlight.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -16,7 +16,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -28,23 +27,23 @@ import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.modifiers.highlight
 import com.jawzf.pixeltoolkit.core.design.sheets.PermissionItem
 import com.jawzf.pixeltoolkit.core.design.sheets.PermissionsBottomSheet
-import com.jawzf.pixeltoolkit.domain.registry.PermissionRegistry
-import com.jawzf.pixeltoolkit.ui.core.sheets.AppSelectionSheet
-import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
+import com.jawzf.pixeltoolkit.feature.notifications.flashlight.FlashlightPulseState
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun FlashlightPulseSettingsUI(
-    viewModel: MainViewModel,
+    state: FlashlightPulseState,
+    isNotificationListenerEnabled: Boolean,
+    permissionItems: List<PermissionItem>,
+    onPreview: () -> Unit,
+    appSelectionSheet: @Composable (onDismiss: () -> Unit) -> Unit,
     modifier: Modifier = Modifier,
     highlightSetting: String? = null,
 ) {
-    val context = LocalContext.current
     val view = LocalView.current
 
     var showAppSelectionSheet by remember { mutableStateOf(false) }
     var showPermissionsSheet by remember { mutableStateOf(false) }
-    val isNotificationListenerEnabled by viewModel.isNotificationListenerEnabled
 
     Column(modifier = modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
         Text(
@@ -58,21 +57,21 @@ fun FlashlightPulseSettingsUI(
             IconToggleItem(
                 iconRes = R.drawable.rounded_flashlight_on_24,
                 title = stringResource(R.string.flashlight_pulse_title),
-                isChecked = viewModel.isFlashlightPulseEnabled.value,
+                isChecked = state.isFlashlightPulseEnabled.value,
                 enabled = isNotificationListenerEnabled,
                 onDisabledClick = { showPermissionsSheet = true },
                 onCheckedChange = { checked ->
-                    viewModel.setFlashlightPulseEnabled(checked, context)
+                    state.setFlashlightPulseEnabled(checked)
                 },
                 modifier = Modifier.highlight(highlightSetting == "flashlight_pulse" || highlightSetting == "flashlight_pulse_enabled"),
             )
-            if (viewModel.isFlashlightPulseEnabled.value) {
+            if (state.isFlashlightPulseEnabled.value) {
                 IconToggleItem(
                     iconRes = R.drawable.rounded_mobile_text_24,
                     title = stringResource(R.string.flashlight_pulse_facedown_title),
-                    isChecked = viewModel.isFlashlightPulseFacedownOnly.value,
+                    isChecked = state.isFlashlightPulseFacedownOnly.value,
                     onCheckedChange = { checked ->
-                        viewModel.setFlashlightPulseFacedownOnly(checked, context)
+                        state.setFlashlightPulseFacedownOnly(checked)
                     },
                     modifier =
                         Modifier.highlight(
@@ -83,17 +82,17 @@ fun FlashlightPulseSettingsUI(
                 IconToggleItem(
                     iconRes = R.drawable.rounded_do_not_disturb_on_24,
                     title = stringResource(R.string.flashlight_pulse_disable_on_dnd_title),
-                    isChecked = viewModel.isFlashlightPulseDisableOnDnd.value,
+                    isChecked = state.isFlashlightPulseDisableOnDnd.value,
                     onCheckedChange = { checked ->
-                        viewModel.setFlashlightPulseDisableOnDnd(checked, context)
+                        state.setFlashlightPulseDisableOnDnd(checked)
                     },
                     modifier = Modifier.highlight(highlightSetting == "flashlight_pulse_disable_on_dnd"),
                 )
 
                 ConfigSliderItem(
                     title = stringResource(R.string.flashlight_pulse_max_brightness),
-                    value = viewModel.flashlightPulseMaxIntensity.floatValue,
-                    onValueChange = { viewModel.setFlashlightPulseMaxIntensity(it) },
+                    value = state.flashlightPulseMaxIntensity.floatValue,
+                    onValueChange = { state.setFlashlightPulseMaxIntensity(it) },
                     valueRange = 0.01f..1f,
                     valueFormatter = { "${Math.round(it * 100)}%" },
                     increment = 0.01f,
@@ -103,9 +102,9 @@ fun FlashlightPulseSettingsUI(
             IconToggleItem(
                 iconRes = R.drawable.rounded_apps_24,
                 title = stringResource(R.string.flashlight_pulse_same_as_lighting_title),
-                isChecked = viewModel.isFlashlightPulseUseLightingApps.value,
+                isChecked = state.isFlashlightPulseUseLightingApps.value,
                 onCheckedChange = { checked ->
-                    viewModel.setFlashlightPulseUseLightingApps(checked, context)
+                    state.setFlashlightPulseUseLightingApps(checked)
                 },
                 modifier = Modifier.highlight(highlightSetting == "flashlight_pulse_same_apps"),
             )
@@ -118,20 +117,20 @@ fun FlashlightPulseSettingsUI(
                 showAppSelectionSheet = true
             },
             modifier = Modifier.fillMaxWidth(),
-            enabled = viewModel.isFlashlightPulseEnabled.value && !viewModel.isFlashlightPulseUseLightingApps.value,
+            enabled = state.isFlashlightPulseEnabled.value && !state.isFlashlightPulseUseLightingApps.value,
         ) {
             Text(stringResource(R.string.action_select_apps))
         }
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        if (viewModel.isFlashlightPulseEnabled.value) {
+        if (state.isFlashlightPulseEnabled.value) {
             Spacer(modifier = Modifier.height(16.dp))
 
             Button(
                 onClick = {
                     HapticUtil.performVirtualKeyHaptic(view)
-                    viewModel.previewFlashlightPulse(context)
+                    onPreview()
                 },
                 modifier = Modifier.fillMaxWidth(),
             ) {
@@ -142,37 +141,14 @@ fun FlashlightPulseSettingsUI(
         Spacer(modifier = Modifier.height(80.dp))
 
         if (showAppSelectionSheet) {
-            AppSelectionSheet(
-                onDismissRequest = { showAppSelectionSheet = false },
-                onLoadApps = { viewModel.loadFlashlightPulseSelectedApps(it) },
-                onSaveApps = { ctx, apps -> viewModel.saveFlashlightPulseSelectedApps(ctx, apps) },
-                onAppToggle = { ctx, pkg, enabled ->
-                    viewModel.updateFlashlightPulseAppEnabled(
-                        ctx,
-                        pkg,
-                        enabled,
-                    )
-                },
-                context = context,
-            )
+            appSelectionSheet { showAppSelectionSheet = false }
         }
 
         if (showPermissionsSheet) {
             PermissionsBottomSheet(
                 onDismissRequest = { showPermissionsSheet = false },
                 featureTitle = R.string.flashlight_pulse_title,
-                permissions =
-                    listOf(
-                        PermissionItem(
-                            iconRes = R.drawable.rounded_notifications_unread_24,
-                            title = R.string.perm_notif_listener_title,
-                            description = R.string.perm_notif_listener_desc_lighting,
-                            dependentFeatures = PermissionRegistry.getFeatures("NOTIFICATION_LISTENER"),
-                            actionLabel = R.string.perm_action_grant,
-                            action = { viewModel.requestNotificationListenerPermission(context) },
-                            isGranted = isNotificationListenerEnabled,
-                        ),
-                    ),
+                permissions = permissionItems,
             )
         }
     }

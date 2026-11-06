@@ -60,6 +60,7 @@ import com.jawzf.pixeltoolkit.core.design.modifiers.highlight
 import com.jawzf.pixeltoolkit.core.design.modifiers.progressiveBlur
 import com.jawzf.pixeltoolkit.core.design.modifiers.scrollMotionBlur
 import com.jawzf.pixeltoolkit.core.design.sheets.InstructionsBottomSheet
+import com.jawzf.pixeltoolkit.core.design.sheets.PermissionItem
 import com.jawzf.pixeltoolkit.core.design.sheets.PermissionsBottomSheet
 import com.jawzf.pixeltoolkit.core.design.state.LocalMenuStateManager
 import com.jawzf.pixeltoolkit.core.design.state.MenuStateManager
@@ -68,6 +69,7 @@ import com.jawzf.pixeltoolkit.core.platform.device.DeviceUtils
 import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.domain.registry.FeatureRegistry
+import com.jawzf.pixeltoolkit.domain.registry.PermissionRegistry
 import com.jawzf.pixeltoolkit.feature.apps.applock.ui.AppLockSettingsUI
 import com.jawzf.pixeltoolkit.feature.apps.consciousgate.ui.CONSCIOUS_GATE_FEATURE_ID
 import com.jawzf.pixeltoolkit.feature.apps.consciousgate.ui.ConsciousGateSettingsUI
@@ -78,6 +80,7 @@ import com.jawzf.pixeltoolkit.feature.input.gesture.ui.BackGestureSettingsUI
 import com.jawzf.pixeltoolkit.feature.input.ime.ui.KeyboardSettingsUI
 import com.jawzf.pixeltoolkit.feature.input.links.ui.LinkPickerScreen
 import com.jawzf.pixeltoolkit.feature.notifications.autodismiss.ui.AutoDismissNotificationsSettingsUI
+import com.jawzf.pixeltoolkit.feature.notifications.flashlight.ui.FlashlightPulseSettingsUI
 import com.jawzf.pixeltoolkit.feature.notifications.hilight.ui.HilightNotificationsSettingsUI
 import com.jawzf.pixeltoolkit.feature.notifications.hilight.ui.HilightProgressSettingsUI
 import com.jawzf.pixeltoolkit.feature.notifications.hilight.ui.HilightSettingsUI
@@ -122,7 +125,6 @@ import com.jawzf.pixeltoolkit.ui.features.system.ActivityLauncherSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.AlwaysOnDisplaySettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.ButtonRemapSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.DynamicNightLightSettingsUI
-import com.jawzf.pixeltoolkit.ui.features.system.FlashlightPulseSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.FlashlightSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.LiveWallpaperSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.LockScreenClockSettingsUI
@@ -1336,7 +1338,34 @@ class FeatureSettingsActivity : AppCompatActivity() {
 
                                     "Flashlight pulse" -> {
                                         FlashlightPulseSettingsUI(
-                                            viewModel = viewModel,
+                                            state = viewModel.flashlightPulse,
+                                            isNotificationListenerEnabled = isNotificationListenerEnabled,
+                                            permissionItems =
+                                                listOf(
+                                                    PermissionItem(
+                                                        iconRes = R.drawable.rounded_notifications_unread_24,
+                                                        title = R.string.perm_notif_listener_title,
+                                                        description = R.string.perm_notif_listener_desc_lighting,
+                                                        dependentFeatures = PermissionRegistry.getFeatures("NOTIFICATION_LISTENER"),
+                                                        actionLabel = R.string.perm_action_grant,
+                                                        action = { viewModel.requestNotificationListenerPermission(context) },
+                                                        isGranted = isNotificationListenerEnabled,
+                                                    ),
+                                                ),
+                                            onPreview = { viewModel.previewFlashlightPulse(context) },
+                                            appSelectionSheet = { onDismiss ->
+                                                AppSelectionSheet(
+                                                    onDismissRequest = onDismiss,
+                                                    onLoadApps = { viewModel.flashlightPulse.loadFlashlightPulseSelectedApps() },
+                                                    onSaveApps = { _, apps ->
+                                                        viewModel.flashlightPulse.saveFlashlightPulseSelectedApps(apps)
+                                                    },
+                                                    onAppToggle = { _, pkg, enabled ->
+                                                        viewModel.flashlightPulse.updateFlashlightPulseAppEnabled(pkg, enabled)
+                                                    },
+                                                    context = context,
+                                                )
+                                            },
                                             modifier = Modifier.padding(top = 16.dp),
                                             highlightSetting = highlightSetting,
                                         )

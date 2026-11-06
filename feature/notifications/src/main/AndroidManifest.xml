@@ -20,6 +20,20 @@
             android:name="com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingService"
             android:exported="false"
             android:foregroundServiceType="specialUse" />
+
+        <service
+            android:name="com.jawzf.pixeltoolkit.feature.notifications.flashlight.FlashlightPulseTileService"
+            android:exported="true"
+            android:icon="@drawable/outline_backlight_high_24"
+            android:label="@string/flashlight_pulse_tile_label"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.TILE_CATEGORY"
+                android:value="android.service.quicksettings.CATEGORY_UTILITIES" />
+        </service>
     </application>
 
 </manifest>

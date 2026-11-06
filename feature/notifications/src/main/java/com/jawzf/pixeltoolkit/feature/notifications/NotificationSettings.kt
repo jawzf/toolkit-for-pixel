@@ -331,6 +331,31 @@ class NotificationSettings(
         saveNotificationLightingSelectedApps(withSelection(loadNotificationLightingSelectedApps(), packageName, enabled))
     }
 
+    /**
+     * Executes the load flashlight pulse selected apps operation.
+     */
+    fun loadFlashlightPulseSelectedApps(): List<AppSelection> = loadAppSelection(KEY_FLASHLIGHT_PULSE_SELECTED_APPS)
+
+    /**
+     * Executes the save flashlight pulse selected apps operation.
+     *
+     * @param apps [List<AppSelection>] Target apps.
+     */
+    fun saveFlashlightPulseSelectedApps(apps: List<AppSelection>) = saveAppSelection(KEY_FLASHLIGHT_PULSE_SELECTED_APPS, apps)
+
+    /**
+     * Executes the update flashlight pulse app selection operation.
+     *
+     * @param packageName [String] Target package name.
+     * @param enabled [Boolean] Target enabled.
+     */
+    fun updateFlashlightPulseAppSelection(
+        packageName: String,
+        enabled: Boolean,
+    ) {
+        saveFlashlightPulseSelectedApps(withSelection(loadFlashlightPulseSelectedApps(), packageName, enabled))
+    }
+
     private fun withSelection(
         current: List<AppSelection>,
         packageName: String,
@@ -436,5 +461,11 @@ class NotificationSettings(
         const val KEY_EDGE_LIGHTING_RIPPLE_OVERLAP = "edge_lighting_ripple_overlap"
         const val KEY_EDGE_LIGHTING_SWEEP_SELECTED_SHAPES = "edge_lighting_sweep_selected_shapes"
         const val KEY_USE_RIPPLE = "use_ripple"
+        const val KEY_FLASHLIGHT_PULSE_ENABLED = "flashlight_pulse_enabled"
+        const val KEY_FLASHLIGHT_PULSE_FACEDOWN_ONLY = "flashlight_pulse_facedown_only"
+        const val KEY_FLASHLIGHT_PULSE_MAX_INTENSITY = "flashlight_pulse_max_intensity"
+        const val KEY_FLASHLIGHT_PULSE_DISABLE_ON_DND = "flashlight_pulse_disable_on_dnd"
+        const val KEY_FLASHLIGHT_PULSE_SELECTED_APPS = "flashlight_pulse_selected_apps"
+        const val KEY_FLASHLIGHT_PULSE_SAME_AS_LIGHTING = "flashlight_pulse_same_as_lighting"
     }
 }

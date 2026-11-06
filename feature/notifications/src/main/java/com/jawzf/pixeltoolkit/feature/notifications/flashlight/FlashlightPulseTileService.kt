@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.services.tiles
+package com.jawzf.pixeltoolkit.feature.notifications.flashlight
 
 import android.service.quicksettings.Tile
 import androidx.core.content.edit

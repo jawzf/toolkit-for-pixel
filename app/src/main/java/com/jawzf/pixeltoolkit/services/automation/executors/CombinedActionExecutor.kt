@@ -665,7 +665,7 @@ object CombinedActionExecutor {
 
                     if (action.changeFlashlightPulse) {
                         repository.putBoolean(
-                            com.jawzf.pixeltoolkit.data.repository.SettingsRepository.KEY_FLASHLIGHT_PULSE_ENABLED,
+                            NotificationSettings.KEY_FLASHLIGHT_PULSE_ENABLED,
                             action.flashlightPulseEnabled,
                         )
                     }

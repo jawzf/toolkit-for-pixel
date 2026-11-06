@@ -16,6 +16,7 @@ import com.jawzf.pixeltoolkit.feature.connectivity.dns.PrivateDnsTileService
 import com.jawzf.pixeltoolkit.feature.connectivity.nfc.NfcTileService
 import com.jawzf.pixeltoolkit.feature.connectivity.sim.DataSimTileService
 import com.jawzf.pixeltoolkit.feature.input.links.UrlShortenerTileService
+import com.jawzf.pixeltoolkit.feature.notifications.flashlight.FlashlightPulseTileService
 import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingTileService
 import com.jawzf.pixeltoolkit.feature.power.battery.BatteryDetailsActivity
 import com.jawzf.pixeltoolkit.feature.power.battery.BatteryNotificationTileService
@@ -170,7 +171,7 @@ class QSPreferencesActivity : ComponentActivity() {
                     AppLockTileService::class.java.name -> "App lock"
                     ScreenLockedSecurityTileService::class.java.name -> "Screen locked security"
                     AppFreezingTileService::class.java.name -> "Freeze"
-                    "com.jawzf.pixeltoolkit.services.tiles.FlashlightPulseTileService" -> "Notification lighting"
+                    FlashlightPulseTileService::class.java.name -> "Notification lighting"
                     "com.jawzf.pixeltoolkit.services.tiles.StayAwakeTileService" -> "Quick settings tiles"
                     NfcTileService::class.java.name -> "NFC"
                     "com.jawzf.pixeltoolkit.services.tiles.AdaptiveBrightnessTileService" -> "Quick settings tiles"

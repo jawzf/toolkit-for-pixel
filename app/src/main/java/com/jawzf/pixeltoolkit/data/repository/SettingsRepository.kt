@@ -205,10 +205,6 @@ class SettingsRepository(
         const val KEY_FLASHLIGHT_GLOBAL_ENABLED = "flashlight_global_enabled"
         const val KEY_FLASHLIGHT_LIVE_UPDATE_ENABLED = "flashlight_live_update_enabled"
         const val KEY_FLASHLIGHT_LAST_INTENSITY = "flashlight_last_intensity"
-        const val KEY_FLASHLIGHT_PULSE_ENABLED = "flashlight_pulse_enabled"
-        const val KEY_FLASHLIGHT_PULSE_FACEDOWN_ONLY = "flashlight_pulse_facedown_only"
-        const val KEY_FLASHLIGHT_PULSE_MAX_INTENSITY = "flashlight_pulse_max_intensity"
-        const val KEY_FLASHLIGHT_PULSE_DISABLE_ON_DND = "flashlight_pulse_disable_on_dnd"
         const val KEY_FLASHLIGHT_POCKET_TURN_OFF_ENABLED = "flashlight_pocket_turn_off_enabled"
         const val KEY_FLASHLIGHT_OVERHEAT_PREVENTION_ENABLED =
             "flashlight_overheat_prevention_enabled"
@@ -254,9 +250,6 @@ class SettingsRepository(
             "ambient_music_glance_force_fill_while_charging"
         const val KEY_AMBIENT_MUSIC_GLANCE_RESPECT_NOTIFICATIONS =
             "ambient_music_glance_respect_notifications"
-
-        const val KEY_FLASHLIGHT_PULSE_SELECTED_APPS = "flashlight_pulse_selected_apps"
-        const val KEY_FLASHLIGHT_PULSE_SAME_AS_LIGHTING = "flashlight_pulse_same_as_lighting"
 
         const val KEY_FONT_SCALE = "font_scale"
         const val KEY_FONT_WEIGHT = "font_weight"
@@ -762,29 +755,6 @@ class SettingsRepository(
         packageName: String,
         enabled: Boolean,
     ) = updateAppSelection(KEY_DYNAMIC_NIGHT_LIGHT_SELECTED_APPS, packageName, enabled)
-
-    /**
-     * Executes the load flashlight pulse selected apps operation.
-     */
-    fun loadFlashlightPulseSelectedApps() = loadAppSelection(KEY_FLASHLIGHT_PULSE_SELECTED_APPS)
-
-    /**
-     * Executes the save flashlight pulse selected apps operation.
-     *
-     * @param apps [List<AppSelection>] Target apps.
-     */
-    fun saveFlashlightPulseSelectedApps(apps: List<AppSelection>) = saveAppSelection(KEY_FLASHLIGHT_PULSE_SELECTED_APPS, apps)
-
-    /**
-     * Executes the update flashlight pulse app selection operation.
-     *
-     * @param packageName [String] Target package name.
-     * @param enabled [Boolean] Target enabled.
-     */
-    fun updateFlashlightPulseAppSelection(
-        packageName: String,
-        enabled: Boolean,
-    ) = updateAppSelection(KEY_FLASHLIGHT_PULSE_SELECTED_APPS, packageName, enabled)
 
     /**
      * Executes the load notification glance selected apps operation.
