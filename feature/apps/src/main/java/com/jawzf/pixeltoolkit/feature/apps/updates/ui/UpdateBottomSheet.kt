@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.core.sheets
+package com.jawzf.pixeltoolkit.feature.apps.updates.ui
 
 import android.content.Intent
 import androidx.compose.foundation.layout.Arrangement
@@ -50,7 +50,6 @@ import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
 import com.jawzf.pixeltoolkit.feature.apps.updates.UpdateInfo
-import com.jawzf.pixeltoolkit.utils.AutoUpdateManagerHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -63,6 +62,7 @@ fun UpdateBottomSheet(
     updateInfo: UpdateInfo?,
     isChecking: Boolean,
     onDismissRequest: () -> Unit,
+    onDownloadAndInstall: suspend (apkUrl: String, apkName: String, onProgressUpdate: (Int) -> Unit) -> Unit,
 ) {
     val sheetState = rememberModalBottomSheetState()
     val context = LocalContext.current
@@ -276,17 +276,16 @@ fun UpdateBottomSheet(
                                 onClick = {
                                     HapticUtil.performUIHaptic(view)
                                     isDownloading = true
-                                    val helper = AutoUpdateManagerHelper(context)
                                     coroutineScope.launch {
                                         val cleanVersion =
                                             updateInfo.versionName.replace(
                                                 Regex("[^a-zA-Z0-9]"),
                                                 "_",
                                             )
-                                        helper.downloadAndInstallApk(
-                                            apkUrl = updateInfo.downloadUrl,
-                                            apkName = "Toolkit_$cleanVersion",
-                                            onProgressUpdate = { progress ->
+                                        onDownloadAndInstall(
+                                            updateInfo.downloadUrl,
+                                            "Toolkit_$cleanVersion",
+                                            { progress ->
                                                 downloadProgress = progress
                                                 if (progress >= 100) {
                                                     isDownloading = false

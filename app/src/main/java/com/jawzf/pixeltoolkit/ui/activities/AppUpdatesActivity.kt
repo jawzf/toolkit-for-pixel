@@ -55,10 +55,12 @@ import com.jawzf.pixeltoolkit.core.design.modifiers.scrollMotionBlur
 import com.jawzf.pixeltoolkit.core.design.theme.ToolkitTheme
 import com.jawzf.pixeltoolkit.feature.apps.updates.AppUpdatesViewModel
 import com.jawzf.pixeltoolkit.feature.apps.updates.UpdateInfo
-import com.jawzf.pixeltoolkit.ui.components.ReusableTopAppBar
-import com.jawzf.pixeltoolkit.ui.core.cards.TrackedRepoCard
-import com.jawzf.pixeltoolkit.ui.core.sheets.AddRepoBottomSheet
-import com.jawzf.pixeltoolkit.ui.core.sheets.UpdateBottomSheet
+import com.jawzf.pixeltoolkit.feature.apps.updates.ui.AddRepoBottomSheet
+import com.jawzf.pixeltoolkit.feature.apps.updates.ui.ReusableTopAppBar
+import com.jawzf.pixeltoolkit.feature.apps.updates.ui.TrackedRepoCard
+import com.jawzf.pixeltoolkit.feature.apps.updates.ui.UpdateBottomSheet
+import com.jawzf.pixeltoolkit.ui.core.sheets.SingleAppSelectionSheet
+import com.jawzf.pixeltoolkit.utils.AutoUpdateManagerHelper
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -194,6 +196,15 @@ class AppUpdatesActivity : AppCompatActivity() {
                             showAddRepoSheet = false
                             updatesViewModel.clearSearch()
                         },
+                        appPicker = { onDismiss, onAppSelected ->
+                            SingleAppSelectionSheet(
+                                onDismissRequest = onDismiss,
+                                onAppSelected = onAppSelected,
+                            )
+                        },
+                        onDownloadAndInstall = { apkUrl, apkName, onProgressUpdate ->
+                            AutoUpdateManagerHelper(context).downloadAndInstallApk(apkUrl, apkName, onProgressUpdate)
+                        },
                     )
                 }
 
@@ -212,6 +223,9 @@ class AppUpdatesActivity : AppCompatActivity() {
                                 ),
                             isChecking = isNotesLoading,
                             onDismissRequest = { repoToShowReleaseNotesFullName = null },
+                            onDownloadAndInstall = { apkUrl, apkName, onProgressUpdate ->
+                                AutoUpdateManagerHelper(context).downloadAndInstallApk(apkUrl, apkName, onProgressUpdate)
+                            },
                         )
                     } else {
                         repoToShowReleaseNotesFullName = null

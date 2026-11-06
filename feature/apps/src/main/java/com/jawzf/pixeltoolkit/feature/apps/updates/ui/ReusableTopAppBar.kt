@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.components
+package com.jawzf.pixeltoolkit.feature.apps.updates.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

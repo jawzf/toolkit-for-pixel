@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.core.sheets
+package com.jawzf.pixeltoolkit.feature.apps.updates.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -45,6 +45,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.jawzf.pixeltoolkit.core.data.apps.NotificationApp
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.components.SimpleMarkdown
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
@@ -61,6 +62,8 @@ fun AddRepoBottomSheet(
     viewModel: AppUpdatesViewModel,
     onDismissRequest: () -> Unit,
     onTrackClick: () -> Unit,
+    appPicker: @Composable (onDismiss: () -> Unit, onAppSelected: (NotificationApp) -> Unit) -> Unit,
+    onDownloadAndInstall: suspend (apkUrl: String, apkName: String, onProgressUpdate: (Int) -> Unit) -> Unit,
 ) {
     val context = LocalContext.current
     val view = LocalView.current
@@ -121,6 +124,7 @@ fun AddRepoBottomSheet(
             updateInfo = updateInfo,
             isChecking = false,
             onDismissRequest = { showReleaseNotes = false },
+            onDownloadAndInstall = onDownloadAndInstall,
         )
     }
 
@@ -151,12 +155,7 @@ fun AddRepoBottomSheet(
     }
 
     if (showAppPicker) {
-        SingleAppSelectionSheet(
-            onDismissRequest = { showAppPicker = false },
-            onAppSelected = { app ->
-                viewModel.onAppSelected(app)
-            },
-        )
+        appPicker({ showAppPicker = false }, { app -> viewModel.onAppSelected(app) })
     }
 
     ToolkitBottomSheet(
