@@ -283,18 +283,15 @@ class NotificationState(
             Settings.Global.getString(context.contentResolver, "notification_snooze_options") ?: ""
         var def = 60
         var opts = listOf(15, 30, 60, 120)
-        if (raw.isNotEmpty()) {
-            raw.split(",").forEach { pair ->
-                val parts = pair.split("=", limit = 2)
-                if (parts.size == 2) {
-                    val key = parts[0].trim()
-                    val value = parts[1].trim()
-                    if (key == "default") {
-                        def = value.toIntOrNull() ?: 60
-                    } else if (key == "options_array") {
-                        opts = value.split(":").mapNotNull { it.trim().toIntOrNull() }
-                    }
-                }
+        raw.split(",").forEach { pair ->
+            val parts = pair.split("=", limit = 2)
+            if (parts.size != 2) return@forEach
+            val key = parts[0].trim()
+            val value = parts[1].trim()
+            if (key == "default") {
+                def = value.toIntOrNull() ?: 60
+            } else if (key == "options_array") {
+                opts = value.split(":").mapNotNull { it.trim().toIntOrNull() }
             }
         }
         notificationSnoozeDefault.intValue = def

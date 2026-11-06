@@ -1046,9 +1046,13 @@ class FeatureSettingsActivity : AppCompatActivity() {
                                                 AppSelectionSheet(
                                                     onDismissRequest = onDismiss,
                                                     onLoadApps = { _ ->
-                                                        viewModel.notifications.autoDismissConfigs.value.map { AppSelection(it.packageName, true) }
+                                                        viewModel.notifications.autoDismissConfigs.value.map {
+                                                            AppSelection(it.packageName, true)
+                                                        }
                                                     },
-                                                    onSaveApps = { ctx, apps -> viewModel.notifications.saveAutoDismissSelectedApps(ctx, apps) },
+                                                    onSaveApps = { ctx, apps ->
+                                                        viewModel.notifications.saveAutoDismissSelectedApps(ctx, apps)
+                                                    },
                                                 )
                                             },
                                             modifier = Modifier.padding(top = 16.dp),
