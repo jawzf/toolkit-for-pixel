@@ -38,7 +38,6 @@ import com.jawzf.pixeltoolkit.core.data.action.Action
 import com.jawzf.pixeltoolkit.core.data.apps.AppUtil
 import com.jawzf.pixeltoolkit.core.data.backup.ConfigBackup
 import com.jawzf.pixeltoolkit.core.data.duo.DuoSettings
-import com.jawzf.pixeltoolkit.core.data.glance.StatusGlanceSettings
 import com.jawzf.pixeltoolkit.core.data.log.LogManager
 import com.jawzf.pixeltoolkit.core.data.prefs.AppSelection
 import com.jawzf.pixeltoolkit.core.design.R
@@ -71,6 +70,7 @@ import com.jawzf.pixeltoolkit.feature.connectivity.ConnectivityState
 import com.jawzf.pixeltoolkit.feature.display.aod.AodState
 import com.jawzf.pixeltoolkit.feature.display.duo.DuoIslandLink
 import com.jawzf.pixeltoolkit.feature.display.duo.DuoState
+import com.jawzf.pixeltoolkit.feature.display.glance.StatusGlanceState
 import com.jawzf.pixeltoolkit.feature.display.lockclock.LockClockState
 import com.jawzf.pixeltoolkit.feature.display.nightlight.NightLightState
 import com.jawzf.pixeltoolkit.feature.display.ondisplay.ToolkitOnDisplayState
@@ -258,39 +258,7 @@ class MainViewModel : ViewModel() {
     val isIslandLikeWhilePlaying = mutableStateOf(false)
     val isIslandSlideInvertDirection = mutableStateOf(true)
 
-    val isStatusGlanceEnabled = mutableStateOf(false)
-    val isStatusGlanceAutoDetect = mutableStateOf(true)
-    val isStatusGlanceOrientationProfiles = mutableStateOf(false)
-    val isStatusGlanceHiddenInCurrentOrientation = mutableStateOf(false)
-    val statusGlanceOffsetX = mutableFloatStateOf(60f)
-    val statusGlanceOffsetY = mutableFloatStateOf(2f)
-    val statusGlanceMaxWidth = mutableFloatStateOf(180f)
-    val statusGlanceFontSize = mutableFloatStateOf(13f)
-    val isStatusGlanceShowFlashlight = mutableStateOf(true)
-    val isStatusGlanceShowCalendar = mutableStateOf(true)
-    val statusGlanceCalendarTimeframe = mutableStateOf("today")
-    val statusGlanceCalendarShowAllDay = mutableStateOf(false)
-    val statusGlanceSelectedCalendarIds = mutableStateOf<Set<String>>(emptySet())
-    val statusGlanceAvailableCalendars = mutableStateListOf<CalendarAccount>()
     val islandCalendarEmojis = mutableStateOf<Map<Long, String>>(emptyMap())
-    val isStatusGlanceShowMedia = mutableStateOf(true)
-    val isStatusGlanceShowTime = mutableStateOf(true)
-    val isStatusGlanceBackgroundPill = mutableStateOf(false)
-    val isStatusGlanceAlbumArtColors = mutableStateOf(true)
-    val isStatusGlanceHideWhenFullscreen = mutableStateOf(true)
-    val isStatusGlanceHideInQuickSettings = mutableStateOf(true)
-    val isStatusGlanceHideWhenLocked = mutableStateOf(true)
-    val isStatusGlanceBoldText = mutableStateOf(false)
-    val isStatusGlanceShowBattery = mutableStateOf(false)
-    val statusGlanceBatteryDisplayMode = mutableStateOf("icon")
-    val isStatusGlanceBatteryShowLow = mutableStateOf(true)
-    val isStatusGlanceBatteryShowCharging = mutableStateOf(true)
-    val isStatusGlanceBatteryShowFull = mutableStateOf(true)
-    val isStatusGlanceBatteryShowOtherwise = mutableStateOf(true)
-    val statusGlanceBatteryIconSize = mutableFloatStateOf(16f)
-    val statusGlanceTapAction = mutableStateOf<Action?>(null)
-    val statusGlanceDoubleTapAction = mutableStateOf<Action?>(null)
-    val statusGlanceLongPressAction = mutableStateOf<Action?>(null)
 
     val isFlashlightAlwaysTurnOffEnabled = mutableStateOf(false)
     val isFlashlightFadeEnabled = mutableStateOf(false)
@@ -373,6 +341,8 @@ class MainViewModel : ViewModel() {
                 },
             onFoldableChanged = { isFoldableCameraDevice.value = it },
         )
+    val statusGlance =
+        StatusGlanceState(viewModelScope) { isFoldableCameraDevice.value = it }
     val addedQSTiles = mutableStateOf<Set<String>>(emptySet())
     val isHideGestureBarEnabled = mutableStateOf(false)
     val isHideGestureBarOnLauncherEnabled = mutableStateOf(false)
@@ -409,13 +379,6 @@ class MainViewModel : ViewModel() {
     val shutUpRestoreMode = mutableStateOf("Auto")
     val shutUpKeyboard = mutableStateOf("")
     val shizukuAuthToken = mutableStateOf("")
-
-    data class CalendarAccount(
-        val id: Long,
-        val name: String,
-        val accountName: String,
-        val isSelected: Boolean,
-    )
 
     val isDeviceAdminEnabled = mutableStateOf(false)
     val isDeveloperModeEnabled = mutableStateOf(false)
@@ -476,7 +439,6 @@ class MainViewModel : ViewModel() {
 
     lateinit var settingsRepository: SettingsRepository
     private lateinit var duoSettings: DuoSettings
-    private lateinit var glanceSettings: StatusGlanceSettings
     private var appContext: Context? = null
 
     val gitHubToken = mutableStateOf<String?>(null)
@@ -687,93 +649,6 @@ class MainViewModel : ViewModel() {
                     SettingsRepository.KEY_ISLAND_OTP_TIMEOUT_MS ->
                         islandOtpTimeoutMs.longValue = settingsRepository.getIslandOtpTimeoutMs()
 
-                    StatusGlanceSettings.KEY_STATUS_GLANCE_ENABLED ->
-                        isStatusGlanceEnabled.value = glanceSettings.isStatusGlanceEnabled()
-
-                    StatusGlanceSettings.KEY_STATUS_GLANCE_USE_AUTO_DETECT ->
-                        isStatusGlanceAutoDetect.value = glanceSettings.isStatusGlanceAutoDetectEnabled()
-
-                    StatusGlanceSettings.KEY_STATUS_GLANCE_OFFSET_X ->
-                        statusGlanceOffsetX.floatValue = glanceSettings.getStatusGlanceOffsetX()
-
-                    StatusGlanceSettings.KEY_STATUS_GLANCE_OFFSET_Y ->
-                        statusGlanceOffsetY.floatValue = glanceSettings.getStatusGlanceOffsetY()
-
-                    StatusGlanceSettings.KEY_STATUS_GLANCE_MAX_WIDTH ->
-                        statusGlanceMaxWidth.floatValue = glanceSettings.getStatusGlanceMaxWidth()
-
-                    StatusGlanceSettings.KEY_STATUS_GLANCE_FONT_SIZE ->
-                        statusGlanceFontSize.floatValue = glanceSettings.getStatusGlanceFontSize()
-
-                    StatusGlanceSettings.KEY_STATUS_GLANCE_SHOW_FLASHLIGHT ->
-                        isStatusGlanceShowFlashlight.value = glanceSettings.isStatusGlanceShowFlashlightEnabled()
-
-                    StatusGlanceSettings.KEY_STATUS_GLANCE_SHOW_CALENDAR ->
-                        isStatusGlanceShowCalendar.value = glanceSettings.isStatusGlanceShowCalendarEnabled()
-
-                    StatusGlanceSettings.KEY_STATUS_GLANCE_CALENDAR_TIMEFRAME ->
-                        statusGlanceCalendarTimeframe.value = glanceSettings.getStatusGlanceCalendarTimeframe()
-
-                    StatusGlanceSettings.KEY_STATUS_GLANCE_CALENDAR_SHOW_ALL_DAY ->
-                        statusGlanceCalendarShowAllDay.value = glanceSettings.isStatusGlanceCalendarShowAllDayEnabled()
-
-                    StatusGlanceSettings.KEY_STATUS_GLANCE_CALENDAR_SELECTED_CALENDARS ->
-                        statusGlanceSelectedCalendarIds.value = glanceSettings.getStatusGlanceCalendarSelectedCalendars()
-
-                    StatusGlanceSettings.KEY_STATUS_GLANCE_SHOW_MEDIA ->
-                        isStatusGlanceShowMedia.value = glanceSettings.isStatusGlanceShowMediaEnabled()
-
-                    StatusGlanceSettings.KEY_STATUS_GLANCE_SHOW_TIME ->
-                        isStatusGlanceShowTime.value = glanceSettings.isStatusGlanceShowTimeEnabled()
-
-                    StatusGlanceSettings.KEY_STATUS_GLANCE_BACKGROUND_PILL ->
-                        isStatusGlanceBackgroundPill.value = glanceSettings.isStatusGlanceBackgroundPillEnabled()
-
-                    StatusGlanceSettings.KEY_STATUS_GLANCE_ALBUM_ART_COLORS ->
-                        isStatusGlanceAlbumArtColors.value = glanceSettings.isStatusGlanceAlbumArtColorsEnabled()
-
-                    StatusGlanceSettings.KEY_STATUS_GLANCE_HIDE_WHEN_FULLSCREEN ->
-                        isStatusGlanceHideWhenFullscreen.value = glanceSettings.isStatusGlanceHideWhenFullscreenEnabled()
-
-                    StatusGlanceSettings.KEY_STATUS_GLANCE_HIDE_IN_QUICK_SETTINGS ->
-                        isStatusGlanceHideInQuickSettings.value = glanceSettings.isStatusGlanceHideInQuickSettingsEnabled()
-
-                    StatusGlanceSettings.KEY_STATUS_GLANCE_HIDE_WHEN_LOCKED ->
-                        isStatusGlanceHideWhenLocked.value = glanceSettings.isStatusGlanceHideWhenLockedEnabled()
-
-                    StatusGlanceSettings.KEY_STATUS_GLANCE_BOLD_TEXT ->
-                        isStatusGlanceBoldText.value = glanceSettings.isStatusGlanceBoldTextEnabled()
-
-                    StatusGlanceSettings.KEY_STATUS_GLANCE_SHOW_BATTERY ->
-                        isStatusGlanceShowBattery.value = glanceSettings.isStatusGlanceShowBatteryEnabled()
-
-                    StatusGlanceSettings.KEY_STATUS_GLANCE_BATTERY_DISPLAY_MODE ->
-                        statusGlanceBatteryDisplayMode.value = glanceSettings.getStatusGlanceBatteryDisplayMode()
-
-                    StatusGlanceSettings.KEY_STATUS_GLANCE_BATTERY_SHOW_LOW ->
-                        isStatusGlanceBatteryShowLow.value = glanceSettings.isStatusGlanceBatteryShowLowEnabled()
-
-                    StatusGlanceSettings.KEY_STATUS_GLANCE_BATTERY_SHOW_CHARGING ->
-                        isStatusGlanceBatteryShowCharging.value = glanceSettings.isStatusGlanceBatteryShowChargingEnabled()
-
-                    StatusGlanceSettings.KEY_STATUS_GLANCE_BATTERY_SHOW_FULL ->
-                        isStatusGlanceBatteryShowFull.value = glanceSettings.isStatusGlanceBatteryShowFullEnabled()
-
-                    StatusGlanceSettings.KEY_STATUS_GLANCE_BATTERY_SHOW_OTHERWISE ->
-                        isStatusGlanceBatteryShowOtherwise.value = glanceSettings.isStatusGlanceBatteryShowOtherwiseEnabled()
-
-                    StatusGlanceSettings.KEY_STATUS_GLANCE_BATTERY_ICON_SIZE ->
-                        statusGlanceBatteryIconSize.floatValue = glanceSettings.getStatusGlanceBatteryIconSize()
-
-                    StatusGlanceSettings.KEY_STATUS_GLANCE_TAP_ACTION ->
-                        statusGlanceTapAction.value = glanceSettings.getStatusGlanceTapAction()
-
-                    StatusGlanceSettings.KEY_STATUS_GLANCE_DOUBLE_TAP_ACTION ->
-                        statusGlanceDoubleTapAction.value = glanceSettings.getStatusGlanceDoubleTapAction()
-
-                    StatusGlanceSettings.KEY_STATUS_GLANCE_LONG_PRESS_ACTION ->
-                        statusGlanceLongPressAction.value = glanceSettings.getStatusGlanceLongPressAction()
-
                     SecuritySettings.KEY_SCREEN_LOCKED_SECURITY_ENABLED,
                     SecuritySettings.KEY_SCREEN_LOCKED_DISABLE_ON_EXTENDED_UNLOCK,
                     -> security.onPreferenceChanged(key)
@@ -834,6 +709,7 @@ class MainViewModel : ViewModel() {
                     in StatusBarControlState.PREFERENCE_KEYS -> statusBarControl.onPreferenceChanged(key)
                     in NightLightState.PREFERENCE_KEYS -> nightLight.onPreferenceChanged(key)
                     in DuoState.PREFERENCE_KEYS -> duo.onPreferenceChanged(key)
+                    in StatusGlanceState.PREFERENCE_KEYS -> statusGlance.onPreferenceChanged(key)
 
                     PowerSettings.KEY_MAPS_DISCOVERED_CHANNELS, PowerSettings.KEY_MAPS_DETECTION_CHANNELS -> power.onPreferenceChanged(key)
 
@@ -1198,7 +1074,6 @@ class MainViewModel : ViewModel() {
     fun check(context: Context) {
         appContext = context.applicationContext
         settingsRepository = SettingsRepository(context)
-        glanceSettings = StatusGlanceSettings(context)
         duoSettings = DuoSettings(context)
         NotificationAutoDismisser.isSnoozedByUs = { LiveUpdateSnoozer.isSnoozedByUs(it) }
         notifications.load(context)
@@ -1766,35 +1641,7 @@ class MainViewModel : ViewModel() {
         isIslandSlideTrack.value = settingsRepository.isIslandSlideTrackEnabled()
         isIslandLikeWhilePlaying.value = settingsRepository.isIslandLikeWhilePlayingEnabled()
         isIslandSlideInvertDirection.value = settingsRepository.isIslandSlideInvertDirectionEnabled()
-        isStatusGlanceEnabled.value = glanceSettings.isStatusGlanceEnabled()
-        isStatusGlanceAutoDetect.value = glanceSettings.isStatusGlanceAutoDetectEnabled()
-        statusGlanceOffsetX.floatValue = glanceSettings.getStatusGlanceOffsetX()
-        statusGlanceOffsetY.floatValue = glanceSettings.getStatusGlanceOffsetY()
-        statusGlanceMaxWidth.floatValue = glanceSettings.getStatusGlanceMaxWidth()
-        statusGlanceFontSize.floatValue = glanceSettings.getStatusGlanceFontSize()
-        isStatusGlanceShowFlashlight.value = glanceSettings.isStatusGlanceShowFlashlightEnabled()
-        isStatusGlanceShowCalendar.value = glanceSettings.isStatusGlanceShowCalendarEnabled()
-        statusGlanceCalendarTimeframe.value = glanceSettings.getStatusGlanceCalendarTimeframe()
-        statusGlanceCalendarShowAllDay.value = glanceSettings.isStatusGlanceCalendarShowAllDayEnabled()
-        statusGlanceSelectedCalendarIds.value = glanceSettings.getStatusGlanceCalendarSelectedCalendars()
-        isStatusGlanceShowMedia.value = glanceSettings.isStatusGlanceShowMediaEnabled()
-        isStatusGlanceShowTime.value = glanceSettings.isStatusGlanceShowTimeEnabled()
-        isStatusGlanceBackgroundPill.value = glanceSettings.isStatusGlanceBackgroundPillEnabled()
-        isStatusGlanceAlbumArtColors.value = glanceSettings.isStatusGlanceAlbumArtColorsEnabled()
-        isStatusGlanceHideWhenFullscreen.value = glanceSettings.isStatusGlanceHideWhenFullscreenEnabled()
-        isStatusGlanceHideInQuickSettings.value = glanceSettings.isStatusGlanceHideInQuickSettingsEnabled()
-        isStatusGlanceHideWhenLocked.value = glanceSettings.isStatusGlanceHideWhenLockedEnabled()
-        isStatusGlanceBoldText.value = glanceSettings.isStatusGlanceBoldTextEnabled()
-        isStatusGlanceShowBattery.value = glanceSettings.isStatusGlanceShowBatteryEnabled()
-        statusGlanceBatteryDisplayMode.value = glanceSettings.getStatusGlanceBatteryDisplayMode()
-        isStatusGlanceBatteryShowLow.value = glanceSettings.isStatusGlanceBatteryShowLowEnabled()
-        isStatusGlanceBatteryShowCharging.value = glanceSettings.isStatusGlanceBatteryShowChargingEnabled()
-        isStatusGlanceBatteryShowFull.value = glanceSettings.isStatusGlanceBatteryShowFullEnabled()
-        isStatusGlanceBatteryShowOtherwise.value = glanceSettings.isStatusGlanceBatteryShowOtherwiseEnabled()
-        statusGlanceBatteryIconSize.floatValue = glanceSettings.getStatusGlanceBatteryIconSize()
-        statusGlanceTapAction.value = glanceSettings.getStatusGlanceTapAction()
-        statusGlanceDoubleTapAction.value = glanceSettings.getStatusGlanceDoubleTapAction()
-        statusGlanceLongPressAction.value = glanceSettings.getStatusGlanceLongPressAction()
+        statusGlance.load(context)
         isFlashlightAlwaysTurnOffEnabled.value =
             settingsRepository.getBoolean(SettingsRepository.KEY_FLASHLIGHT_ALWAYS_TURN_OFF_ENABLED)
         isFlashlightFadeEnabled.value =
@@ -3769,272 +3616,6 @@ class MainViewModel : ViewModel() {
     fun triggerIslandPreview(context: Context) {
         val alert = TestNotificationUtil.generateRandomNotification(context)
         com.jawzf.pixeltoolkit.services.NotificationListener.notifyAlertPosted(alert)
-    }
-
-    fun setStatusGlanceEnabled(enabled: Boolean) {
-        isStatusGlanceEnabled.value = enabled
-        glanceSettings.setStatusGlanceEnabled(enabled)
-    }
-
-    fun setStatusGlanceAutoDetect(enabled: Boolean) {
-        isStatusGlanceAutoDetect.value = enabled
-        glanceSettings.setStatusGlanceAutoDetectEnabled(enabled)
-    }
-
-    fun refreshStatusGlanceCameraPlacement() {
-        isFoldableCameraDevice.value = duoSettings.isFoldableDevice()
-        isStatusGlanceOrientationProfiles.value = glanceSettings.isStatusGlanceOrientationProfilesEnabled()
-        isStatusGlanceHiddenInCurrentOrientation.value = glanceSettings.isStatusGlanceHiddenInCurrentOrientation()
-        statusGlanceOffsetX.floatValue = glanceSettings.getStatusGlanceOffsetX()
-        statusGlanceOffsetY.floatValue = glanceSettings.getStatusGlanceOffsetY()
-    }
-
-    fun setStatusGlanceOrientationProfiles(enabled: Boolean) {
-        glanceSettings.setStatusGlanceOrientationProfilesEnabled(enabled)
-        refreshStatusGlanceCameraPlacement()
-    }
-
-    fun setStatusGlanceHiddenInCurrentOrientation(hidden: Boolean) {
-        glanceSettings.setStatusGlanceHiddenInCurrentOrientation(hidden)
-        isStatusGlanceHiddenInCurrentOrientation.value = hidden
-    }
-
-    fun setStatusGlanceOffsetX(value: Float) {
-        statusGlanceOffsetX.floatValue = value
-        glanceSettings.setStatusGlanceOffsetX(value)
-    }
-
-    fun setStatusGlanceOffsetY(value: Float) {
-        statusGlanceOffsetY.floatValue = value
-        glanceSettings.setStatusGlanceOffsetY(value)
-    }
-
-    fun setStatusGlanceShowFlashlight(enabled: Boolean) {
-        isStatusGlanceShowFlashlight.value = enabled
-        glanceSettings.setStatusGlanceShowFlashlightEnabled(enabled)
-    }
-
-    fun setStatusGlanceShowCalendar(enabled: Boolean) {
-        isStatusGlanceShowCalendar.value = enabled
-        glanceSettings.setStatusGlanceShowCalendarEnabled(enabled)
-    }
-
-    fun setStatusGlanceCalendarTimeframe(timeframe: String) {
-        statusGlanceCalendarTimeframe.value = timeframe
-        glanceSettings.setStatusGlanceCalendarTimeframe(timeframe)
-    }
-
-    fun setStatusGlanceCalendarShowAllDay(enabled: Boolean) {
-        statusGlanceCalendarShowAllDay.value = enabled
-        glanceSettings.setStatusGlanceCalendarShowAllDayEnabled(enabled)
-    }
-
-    fun fetchStatusGlanceCalendars(context: Context) {
-        if (ContextCompat.checkSelfPermission(
-                context,
-                Manifest.permission.READ_CALENDAR,
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            return
-        }
-
-        viewModelScope.launch(Dispatchers.IO) {
-            val savedSelected = glanceSettings.getStatusGlanceCalendarSelectedCalendars()
-            withContext(Dispatchers.Main) {
-                statusGlanceSelectedCalendarIds.value = savedSelected
-            }
-
-            val calendars = mutableListOf<CalendarAccount>()
-            val projection =
-                arrayOf(
-                    CalendarContract.Calendars._ID,
-                    CalendarContract.Calendars.CALENDAR_DISPLAY_NAME,
-                    CalendarContract.Calendars.ACCOUNT_NAME,
-                    CalendarContract.Calendars.CALENDAR_COLOR,
-                )
-
-            context.contentResolver
-                .query(
-                    CalendarContract.Calendars.CONTENT_URI,
-                    projection,
-                    null,
-                    null,
-                    null,
-                )?.use { cursor ->
-                    val idColumn = cursor.getColumnIndex(CalendarContract.Calendars._ID)
-                    val nameColumn = cursor.getColumnIndex(CalendarContract.Calendars.CALENDAR_DISPLAY_NAME)
-                    val accountColumn = cursor.getColumnIndex(CalendarContract.Calendars.ACCOUNT_NAME)
-
-                    while (cursor.moveToNext()) {
-                        val id = cursor.getLong(idColumn)
-                        val name = cursor.getString(nameColumn) ?: "Unnamed Calendar"
-                        val account = cursor.getString(accountColumn) ?: "Local"
-
-                        calendars.add(
-                            CalendarAccount(
-                                id,
-                                name,
-                                account,
-                                savedSelected.isEmpty() || savedSelected.contains(id.toString()),
-                            ),
-                        )
-                    }
-                }
-
-            withContext(Dispatchers.Main) {
-                statusGlanceAvailableCalendars.clear()
-                statusGlanceAvailableCalendars.addAll(calendars)
-            }
-        }
-    }
-
-    fun toggleStatusGlanceCalendarSelection(calendarId: Long) {
-        val currentIds = statusGlanceSelectedCalendarIds.value.toMutableSet()
-        val idString = calendarId.toString()
-        if (currentIds.contains(idString)) {
-            currentIds.remove(idString)
-        } else {
-            currentIds.add(idString)
-        }
-        statusGlanceSelectedCalendarIds.value = currentIds
-        glanceSettings.saveStatusGlanceCalendarSelectedCalendars(currentIds)
-
-        val index = statusGlanceAvailableCalendars.indexOfFirst { it.id == calendarId }
-        if (index != -1) {
-            statusGlanceAvailableCalendars[index] =
-                statusGlanceAvailableCalendars[index].copy(isSelected = currentIds.contains(idString))
-        }
-    }
-
-    fun setStatusGlanceShowMedia(enabled: Boolean) {
-        isStatusGlanceShowMedia.value = enabled
-        glanceSettings.setStatusGlanceShowMediaEnabled(enabled)
-    }
-
-    fun setStatusGlanceShowTime(enabled: Boolean) {
-        isStatusGlanceShowTime.value = enabled
-        glanceSettings.setStatusGlanceShowTimeEnabled(enabled)
-    }
-
-    fun setStatusGlanceBackgroundPill(enabled: Boolean) {
-        isStatusGlanceBackgroundPill.value = enabled
-        glanceSettings.setStatusGlanceBackgroundPillEnabled(enabled)
-    }
-
-    fun setStatusGlanceAlbumArtColors(enabled: Boolean) {
-        isStatusGlanceAlbumArtColors.value = enabled
-        glanceSettings.setStatusGlanceAlbumArtColorsEnabled(enabled)
-    }
-
-    fun setStatusGlanceHideWhenFullscreen(enabled: Boolean) {
-        isStatusGlanceHideWhenFullscreen.value = enabled
-        glanceSettings.setStatusGlanceHideWhenFullscreenEnabled(enabled)
-    }
-
-    fun setStatusGlanceHideInQuickSettings(enabled: Boolean) {
-        isStatusGlanceHideInQuickSettings.value = enabled
-        glanceSettings.setStatusGlanceHideInQuickSettingsEnabled(enabled)
-    }
-
-    fun setStatusGlanceHideWhenLocked(enabled: Boolean) {
-        isStatusGlanceHideWhenLocked.value = enabled
-        glanceSettings.setStatusGlanceHideWhenLockedEnabled(enabled)
-    }
-
-    fun setStatusGlanceBoldText(enabled: Boolean) {
-        isStatusGlanceBoldText.value = enabled
-        glanceSettings.setStatusGlanceBoldTextEnabled(enabled)
-    }
-
-    fun setStatusGlanceShowBattery(enabled: Boolean) {
-        isStatusGlanceShowBattery.value = enabled
-        glanceSettings.setStatusGlanceShowBatteryEnabled(enabled)
-    }
-
-    fun setStatusGlanceBatteryDisplayMode(mode: String) {
-        statusGlanceBatteryDisplayMode.value = mode
-        glanceSettings.setStatusGlanceBatteryDisplayMode(mode)
-    }
-
-    fun setStatusGlanceBatteryShowLow(enabled: Boolean) {
-        isStatusGlanceBatteryShowLow.value = enabled
-        glanceSettings.setStatusGlanceBatteryShowLowEnabled(enabled)
-    }
-
-    fun setStatusGlanceBatteryShowCharging(enabled: Boolean) {
-        isStatusGlanceBatteryShowCharging.value = enabled
-        glanceSettings.setStatusGlanceBatteryShowChargingEnabled(enabled)
-    }
-
-    fun setStatusGlanceBatteryShowFull(enabled: Boolean) {
-        isStatusGlanceBatteryShowFull.value = enabled
-        glanceSettings.setStatusGlanceBatteryShowFullEnabled(enabled)
-    }
-
-    fun setStatusGlanceBatteryShowOtherwise(enabled: Boolean) {
-        isStatusGlanceBatteryShowOtherwise.value = enabled
-        glanceSettings.setStatusGlanceBatteryShowOtherwiseEnabled(enabled)
-    }
-
-    fun setStatusGlanceBatteryIconSize(size: Float) {
-        statusGlanceBatteryIconSize.floatValue = size
-        glanceSettings.setStatusGlanceBatteryIconSize(size)
-    }
-
-    fun setStatusGlanceTapAction(action: Action?) {
-        statusGlanceTapAction.value = action
-        glanceSettings.setStatusGlanceTapAction(action)
-    }
-
-    fun setStatusGlanceDoubleTapAction(action: Action?) {
-        statusGlanceDoubleTapAction.value = action
-        glanceSettings.setStatusGlanceDoubleTapAction(action)
-    }
-
-    fun setStatusGlanceLongPressAction(action: Action?) {
-        statusGlanceLongPressAction.value = action
-        glanceSettings.setStatusGlanceLongPressAction(action)
-    }
-
-    fun setStatusGlanceMaxWidth(value: Float) {
-        statusGlanceMaxWidth.floatValue = value
-        glanceSettings.setStatusGlanceMaxWidth(value)
-    }
-
-    fun setStatusGlanceFontSize(value: Float) {
-        statusGlanceFontSize.floatValue = value
-        glanceSettings.setStatusGlanceFontSize(value)
-    }
-
-    fun autoDetectStatusGlancePosition(context: Context) {
-        val wm = context.getSystemService(Context.WINDOW_SERVICE) as? WindowManager ?: return
-        val dm = context.resources.displayMetrics
-        val screenWidth = dm.widthPixels.toFloat()
-        val screenHeight = dm.heightPixels.toFloat()
-        val density = dm.density
-
-        var detectedXPercent = 60f
-        var detectedYPercent = 2f
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            @Suppress("DEPRECATION")
-            val cutout = wm.defaultDisplay?.cutout
-            if (cutout != null && cutout.boundingRects.isNotEmpty()) {
-                val targetRect = cutout.boundingRects.firstOrNull()
-                if (targetRect != null) {
-                    detectedXPercent = ((targetRect.right + 8f * density) / screenWidth) * 100f
-                    detectedYPercent = (targetRect.centerY().toFloat() / screenHeight) * 100f
-                }
-            } else {
-                val resourceId = context.resources.getIdentifier("status_bar_height", "dimen", "android")
-                val statusBarHeight = if (resourceId > 0) context.resources.getDimensionPixelSize(resourceId).toFloat() else 24f * density
-                detectedXPercent = 50f
-                detectedYPercent = ((statusBarHeight / 2f) / screenHeight) * 100f
-            }
-        }
-
-        setStatusGlanceOffsetX(detectedXPercent.coerceIn(0f, 100f))
-        setStatusGlanceOffsetY(detectedYPercent.coerceIn(0f, 20f))
     }
 
     /**

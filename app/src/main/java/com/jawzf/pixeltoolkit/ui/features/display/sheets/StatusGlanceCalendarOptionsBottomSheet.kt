@@ -34,6 +34,7 @@ import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
+import com.jawzf.pixeltoolkit.feature.display.glance.CalendarAccount
 import com.jawzf.pixeltoolkit.utils.EmojiUtil
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 
@@ -47,10 +48,10 @@ fun StatusGlanceCalendarOptionsBottomSheet(
     val context = LocalContext.current
     val view = LocalView.current
     val scrollState = rememberScrollState()
-    var editingCalendar by remember { mutableStateOf<MainViewModel.CalendarAccount?>(null) }
+    var editingCalendar by remember { mutableStateOf<CalendarAccount?>(null) }
 
     LaunchedEffect(Unit) {
-        viewModel.fetchStatusGlanceCalendars(context)
+        viewModel.statusGlance.fetchStatusGlanceCalendars(context)
         if (allowIconEdit) viewModel.loadIslandCalendarEmojis()
     }
 
@@ -65,7 +66,7 @@ fun StatusGlanceCalendarOptionsBottomSheet(
         "next" to stringResource(R.string.status_glance_calendar_timeframe_next),
     )
 
-    val currentCode = viewModel.statusGlanceCalendarTimeframe.value
+    val currentCode = viewModel.statusGlance.statusGlanceCalendarTimeframe.value
     val timeframeMinutes = when (currentCode) {
         "15m" -> 15
         "30m" -> 30
@@ -129,7 +130,7 @@ fun StatusGlanceCalendarOptionsBottomSheet(
                         SegmentedDropdownMenuItem(
                             text = { Text(label) },
                             onClick = {
-                                viewModel.setStatusGlanceCalendarTimeframe(code)
+                                viewModel.statusGlance.setStatusGlanceCalendarTimeframe(code)
                             },
                         )
                     }
@@ -157,10 +158,10 @@ fun StatusGlanceCalendarOptionsBottomSheet(
                 IconToggleItem(
                     title = stringResource(R.string.status_glance_calendar_show_all_day_title),
                     iconRes = R.drawable.rounded_calendar_today_24,
-                    isChecked = viewModel.statusGlanceCalendarShowAllDay.value,
+                    isChecked = viewModel.statusGlance.statusGlanceCalendarShowAllDay.value,
                     onCheckedChange = { checked ->
                         HapticUtil.performVirtualKeyHaptic(view)
-                        viewModel.setStatusGlanceCalendarShowAllDay(checked)
+                        viewModel.statusGlance.setStatusGlanceCalendarShowAllDay(checked)
                     },
                 )
             }
@@ -172,7 +173,7 @@ fun StatusGlanceCalendarOptionsBottomSheet(
                 modifier = Modifier.padding(start = 8.dp),
             )
 
-            val calendars = viewModel.statusGlanceAvailableCalendars
+            val calendars = viewModel.statusGlance.statusGlanceAvailableCalendars
             if (calendars.isEmpty()) {
                 Text(
                     text = stringResource(R.string.status_glance_calendar_no_calendars),
@@ -202,7 +203,7 @@ fun StatusGlanceCalendarOptionsBottomSheet(
                                 isChecked = calendar.isSelected,
                                 onCheckedChange = {
                                     HapticUtil.performVirtualKeyHaptic(view)
-                                    viewModel.toggleStatusGlanceCalendarSelection(calendar.id)
+                                    viewModel.statusGlance.toggleStatusGlanceCalendarSelection(calendar.id)
                                 },
                                 onSettingsClick = if (allowIconEdit) ({ editingCalendar = calendar }) else null,
                                 settingsIconRes = R.drawable.rounded_edit_24,

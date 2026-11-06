@@ -731,7 +731,7 @@ object FeatureRegistry {
                 isLegacy = true,
                 parentFeatureId = "Display",
             ) {
-                override fun isEnabled(viewModel: MainViewModel) = viewModel.isStatusGlanceEnabled.value
+                override fun isEnabled(viewModel: MainViewModel) = viewModel.statusGlance.isStatusGlanceEnabled.value
 
                 override fun isToggleEnabled(
                     viewModel: MainViewModel,
@@ -742,7 +742,7 @@ object FeatureRegistry {
                     viewModel: MainViewModel,
                     context: Context,
                     enabled: Boolean,
-                ) = viewModel.setStatusGlanceEnabled(enabled)
+                ) = viewModel.statusGlance.setStatusGlanceEnabled(enabled)
             },
             object : Feature(
                 id = "Duo",
