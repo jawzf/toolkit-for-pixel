@@ -72,6 +72,7 @@ import com.jawzf.pixeltoolkit.feature.apps.consciousgate.ui.CONSCIOUS_GATE_FEATU
 import com.jawzf.pixeltoolkit.feature.apps.consciousgate.ui.ConsciousGateSettingsUI
 import com.jawzf.pixeltoolkit.feature.apps.freeze.ui.FreezeSettingsUI
 import com.jawzf.pixeltoolkit.feature.connectivity.ui.NetworksSettingsUI
+import com.jawzf.pixeltoolkit.feature.input.ime.ui.KeyboardSettingsUI
 import com.jawzf.pixeltoolkit.feature.power.battery.ui.BatteriesPreviewCard
 import com.jawzf.pixeltoolkit.feature.power.battery.ui.BatteriesSettingsUI
 import com.jawzf.pixeltoolkit.feature.power.caffeinate.CaffeinateViewModel
@@ -119,7 +120,6 @@ import com.jawzf.pixeltoolkit.ui.features.system.HilightNotificationsSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.HilightProgressSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.HilightSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.HilightStatus
-import com.jawzf.pixeltoolkit.ui.features.system.KeyboardSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.LiveWallpaperSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.LockScreenClockSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.LockscreenShortcutsSettingsUI
@@ -1193,7 +1193,10 @@ class FeatureSettingsActivity : AppCompatActivity() {
 
                                     "System Keyboard" -> {
                                         KeyboardSettingsUI(
-                                            viewModel = viewModel,
+                                            state = viewModel.input,
+                                            isKeyboardEnabled = viewModel.isKeyboardEnabled.value,
+                                            isKeyboardSelected = viewModel.isKeyboardSelected.value,
+                                            onRefresh = { viewModel.check(context) },
                                             modifier = Modifier.padding(top = 16.dp),
                                             highlightSetting = highlightSetting,
                                         )

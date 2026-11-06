@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.features.apps.sheets
+package com.jawzf.pixeltoolkit.feature.input.ime.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -37,12 +37,12 @@ import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
-import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
+import com.jawzf.pixeltoolkit.feature.input.InputState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UserDictionaryBottomSheet(
-    viewModel: MainViewModel,
+    state: InputState,
     onDismissRequest: () -> Unit,
 ) {
     val context = LocalContext.current
@@ -51,10 +51,10 @@ fun UserDictionaryBottomSheet(
 
     // Load words on open
     LaunchedEffect(Unit) {
-        viewModel.loadUserDictionaryWords(context)
+        state.loadUserDictionaryWords(context)
     }
 
-    val words = viewModel.userDictionaryWords.value
+    val words = state.userDictionaryWords.value
     var showDeleteConfirmation by remember { mutableStateOf(false) }
 
     if (showDeleteConfirmation) {
@@ -65,7 +65,7 @@ fun UserDictionaryBottomSheet(
             confirmButton = {
                 androidx.compose.material3.TextButton(
                     onClick = {
-                        viewModel.clearUserDictionary(context)
+                        state.clearUserDictionary(context)
                         showDeleteConfirmation = false
                     },
                 ) {
@@ -178,7 +178,7 @@ fun UserDictionaryBottomSheet(
                                                 HapticUtil.performVirtualKeyHaptic(
                                                     view,
                                                 )
-                                                viewModel.deleteUserWord(word, context)
+                                                state.deleteUserWord(word, context)
                                             },
                                         ) {
                                             Icon(
