@@ -26,6 +26,7 @@
 -keep class kotlin.reflect.** { *; }
 -keep class com.jawzf.pixeltoolkit.domain.model.** { *; }
 -keep class com.jawzf.pixeltoolkit.domain.diy.** { *; }
+-keep class com.jawzf.pixeltoolkit.core.data.action.** { *; }
 
 # Prevent over-minification of settings and registry classes
 -keep class com.jawzf.pixeltoolkit.data.repository.** { *; }

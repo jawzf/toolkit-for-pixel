@@ -1,7 +1,7 @@
 package com.jawzf.pixeltoolkit.feature.power.battery
 
 import android.content.Context
-import com.jawzf.pixeltoolkit.feature.power.charging.ChargingMode
+import com.jawzf.pixeltoolkit.core.data.action.ChargingMode
 import com.jawzf.pixeltoolkit.feature.power.charging.ChargingModeUtil
 
 object ChargeLimitUtil {

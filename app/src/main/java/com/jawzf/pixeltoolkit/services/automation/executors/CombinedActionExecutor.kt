@@ -25,6 +25,7 @@ import android.view.KeyEvent
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.jawzf.pixeltoolkit.core.data.action.Action
+import com.jawzf.pixeltoolkit.core.data.action.ActionExecutor
 import com.jawzf.pixeltoolkit.core.data.action.NotificationLightingStyle
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticFeedbackType
@@ -67,7 +68,7 @@ import kotlinx.coroutines.withContext
 import rikka.shizuku.ShizukuBinderWrapper
 import rikka.shizuku.SystemServiceHelper
 
-object CombinedActionExecutor {
+object CombinedActionExecutor : ActionExecutor {
     private suspend fun vibrateModeHaptic(context: Context) {
         kotlinx.coroutines.delay(350)
         HapticUtil.performStrongDoubleHaptic(context)
@@ -140,7 +141,7 @@ object CombinedActionExecutor {
     }
 
     // Runs actions in order with a short gap, as Button remap does, so each can take effect
-    suspend fun executeAll(
+    override suspend fun executeAll(
         context: Context,
         actions: List<Action>,
     ) {
@@ -163,10 +164,10 @@ object CombinedActionExecutor {
 
     const val ACTION_SEQUENCE_GAP_MS = 150L
 
-    suspend fun execute(
+    override suspend fun execute(
         context: Context,
         action: Action,
-        fromAutomation: Boolean = false,
+        fromAutomation: Boolean,
     ) {
         kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Main) {
             when (action) {

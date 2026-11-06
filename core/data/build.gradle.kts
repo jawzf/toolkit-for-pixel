@@ -13,4 +13,5 @@ dependencies {
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.core.ktx)
     implementation(libs.gson)
+    implementation(kotlin("reflect"))
 }

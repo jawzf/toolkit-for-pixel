@@ -14,7 +14,6 @@ import com.jawzf.pixeltoolkit.core.data.action.NotificationLightingStyle
 import com.jawzf.pixeltoolkit.core.data.action.ScreenOffMethod
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticFeedbackType
-import com.jawzf.pixeltoolkit.feature.power.charging.ChargingMode
 
 @Keep
 sealed interface Action {
