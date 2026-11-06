@@ -1,6 +1,6 @@
-package com.jawzf.pixeltoolkit.domain.controller
+package com.jawzf.pixeltoolkit.feature.input.gesture
 
-import com.jawzf.pixeltoolkit.domain.model.BackGestureAppConfig
+import com.jawzf.pixeltoolkit.feature.input.gesture.BackGestureAppConfig
 import kotlin.math.abs
 
 interface BackGestureStore {

@@ -42,6 +42,7 @@ import com.jawzf.pixeltoolkit.domain.model.RippleConfig
 import com.jawzf.pixeltoolkit.feature.apps.AppsSettings
 import com.jawzf.pixeltoolkit.feature.apps.freeze.FreezeManager
 import com.jawzf.pixeltoolkit.feature.connectivity.hotspot.HotspotController
+import com.jawzf.pixeltoolkit.feature.input.gesture.OmniTriggerUtil
 import com.jawzf.pixeltoolkit.feature.power.PowerSettings
 import com.jawzf.pixeltoolkit.feature.power.caffeinate.CaffeinateController
 import com.jawzf.pixeltoolkit.feature.power.charging.ChargingModeUtil
@@ -587,7 +588,7 @@ object CombinedActionExecutor {
                 }
 
                 is Action.CircleToSearch -> {
-                    com.jawzf.pixeltoolkit.utils.OmniTriggerUtil
+                    OmniTriggerUtil
                         .trigger(context)
                 }
 

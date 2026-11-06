@@ -24,10 +24,10 @@ import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuUtils.toggleShizuku
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.domain.diy.Automation
 import com.jawzf.pixeltoolkit.domain.diy.DIYRepository
-import com.jawzf.pixeltoolkit.domain.model.BackGestureAppConfig
 import com.jawzf.pixeltoolkit.feature.apps.applock.AppLockActivity
 import com.jawzf.pixeltoolkit.feature.apps.consciousgate.ConsciousGateActivity
 import com.jawzf.pixeltoolkit.feature.apps.freeze.FreezeManager
+import com.jawzf.pixeltoolkit.feature.input.gesture.BackGestureAppConfig
 import com.jawzf.pixeltoolkit.services.automation.executors.CombinedActionExecutor
 import com.jawzf.pixeltoolkit.services.tiles.ScreenOffAccessibilityService
 import com.jawzf.pixeltoolkit.utils.StatusBarManager
