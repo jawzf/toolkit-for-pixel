@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.features.consciousgate
+package com.jawzf.pixeltoolkit.feature.apps.consciousgate.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

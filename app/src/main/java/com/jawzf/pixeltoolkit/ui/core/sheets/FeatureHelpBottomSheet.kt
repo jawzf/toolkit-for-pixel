@@ -61,7 +61,7 @@ import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.domain.model.Feature
 import com.jawzf.pixeltoolkit.domain.registry.FeatureResetRegistry
-import com.jawzf.pixeltoolkit.ui.features.consciousgate.HoldToContinueButton
+import com.jawzf.pixeltoolkit.feature.apps.consciousgate.ui.HoldToContinueButton
 import com.jawzf.pixeltoolkit.utils.PermissionUIHelper
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 

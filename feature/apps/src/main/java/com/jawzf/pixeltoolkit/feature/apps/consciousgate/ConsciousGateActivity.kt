@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.activities
+package com.jawzf.pixeltoolkit.feature.apps.consciousgate
 
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -17,9 +17,9 @@ import androidx.compose.ui.res.stringResource
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.theme.ToolkitTheme
+import com.jawzf.pixeltoolkit.feature.apps.consciousgate.ui.ConsciousGatePauseScreen
+import com.jawzf.pixeltoolkit.feature.apps.consciousgate.ui.UnscaledMotion
 import com.jawzf.pixeltoolkit.services.tiles.ScreenOffAccessibilityService
-import com.jawzf.pixeltoolkit.ui.features.consciousgate.ConsciousGatePauseScreen
-import com.jawzf.pixeltoolkit.ui.features.consciousgate.UnscaledMotion
 import kotlinx.coroutines.withContext
 
 class ConsciousGateActivity : AppCompatActivity() {

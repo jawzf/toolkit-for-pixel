@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.features.consciousgate
+package com.jawzf.pixeltoolkit.feature.apps.consciousgate.ui
 
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
