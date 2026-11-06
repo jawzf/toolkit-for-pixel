@@ -4,6 +4,7 @@ import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.jawzf.pixeltoolkit.core.data.action.HilightEffect
+import com.jawzf.pixeltoolkit.core.data.action.HilightProgressColorMode
 import com.jawzf.pixeltoolkit.core.data.action.NotificationLightingColorMode
 import com.jawzf.pixeltoolkit.core.data.action.NotificationLightingSide
 import com.jawzf.pixeltoolkit.core.data.action.NotificationLightingStyle
@@ -13,7 +14,6 @@ import com.jawzf.pixeltoolkit.core.design.overlay.AmbientMusicShapeHelper
 import com.jawzf.pixeltoolkit.feature.notifications.autodismiss.AutoDismissAppConfig
 import com.jawzf.pixeltoolkit.feature.notifications.autodismiss.AutoDismissChannel
 import com.jawzf.pixeltoolkit.feature.notifications.autodismiss.AutoDismissStat
-import com.jawzf.pixeltoolkit.feature.notifications.hilight.HilightProgressColorMode
 import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingSweepPosition
 import com.jawzf.pixeltoolkit.feature.notifications.snooze.SnoozeChannel
 

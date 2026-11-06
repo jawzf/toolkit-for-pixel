@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.feature.notifications.hilight
+package com.jawzf.pixeltoolkit.core.data.action
 
 import androidx.annotation.StringRes
 import com.jawzf.pixeltoolkit.core.data.action.HilightFrames

@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import com.jawzf.pixeltoolkit.core.data.action.HilightEffect
+import com.jawzf.pixeltoolkit.core.data.action.HilightProgressColorMode
 import com.jawzf.pixeltoolkit.feature.notifications.NotificationSettings
 
 class HilightState {
