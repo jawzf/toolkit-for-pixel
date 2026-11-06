@@ -40,6 +40,8 @@ import com.jawzf.pixeltoolkit.domain.model.NotificationLightingColorMode
 import com.jawzf.pixeltoolkit.domain.model.NotificationLightingSide
 import com.jawzf.pixeltoolkit.domain.model.ProgressNotificationData
 import com.jawzf.pixeltoolkit.domain.model.RippleConfig
+import com.jawzf.pixeltoolkit.feature.notifications.autodismiss.NotificationAutoDismisser
+import com.jawzf.pixeltoolkit.feature.notifications.snooze.SnoozeChannel
 import com.jawzf.pixeltoolkit.feature.power.maps.MapsChannel
 import com.jawzf.pixeltoolkit.feature.power.maps.MapsState
 import com.jawzf.pixeltoolkit.feature.sound.SoundSettings
@@ -476,13 +478,13 @@ class NotificationListener : NotificationListenerService() {
                     )
                 val discoveredJson = prefs.getString("snooze_discovered_channels", null)
                 val gson = com.google.gson.Gson()
-                val discoveredChannels: MutableList<com.jawzf.pixeltoolkit.domain.model.SnoozeChannel> =
+                val discoveredChannels: MutableList<SnoozeChannel> =
                     if (discoveredJson != null) {
                         try {
                             gson
                                 .fromJson(
                                     discoveredJson,
-                                    Array<com.jawzf.pixeltoolkit.domain.model.SnoozeChannel>::class.java,
+                                    Array<SnoozeChannel>::class.java,
                                 ).toMutableList()
                         } catch (_: Exception) {
                             mutableListOf()
@@ -510,7 +512,7 @@ class NotificationListener : NotificationListenerService() {
                     val finalName = if (packageName == "android") name else "[$packageName] $name"
 
                     discoveredChannels.add(
-                        com.jawzf.pixeltoolkit.domain.model.SnoozeChannel(
+                        SnoozeChannel(
                             channelId,
                             finalName,
                         ),

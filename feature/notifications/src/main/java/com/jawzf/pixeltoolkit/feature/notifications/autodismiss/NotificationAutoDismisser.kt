@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.services
+package com.jawzf.pixeltoolkit.feature.notifications.autodismiss
 
 import android.app.Notification
 import android.os.Handler
@@ -7,8 +7,8 @@ import android.os.SystemClock
 import android.service.notification.NotificationListenerService.Ranking
 import android.service.notification.StatusBarNotification
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.domain.model.AutoDismissAppConfig
-import com.jawzf.pixeltoolkit.domain.model.AutoDismissChannel
+import com.jawzf.pixeltoolkit.feature.notifications.autodismiss.AutoDismissAppConfig
+import com.jawzf.pixeltoolkit.feature.notifications.autodismiss.AutoDismissChannel
 
 object NotificationAutoDismisser {
     private val handler = Handler(Looper.getMainLooper())

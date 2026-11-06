@@ -1,6 +1,6 @@
-package com.jawzf.pixeltoolkit.services
+package com.jawzf.pixeltoolkit.feature.notifications.autodismiss
 
-import com.jawzf.pixeltoolkit.domain.model.AutoDismissAppConfig
+import com.jawzf.pixeltoolkit.feature.notifications.autodismiss.AutoDismissAppConfig
 
 val AUTO_DISMISS_MINUTES = listOf(1, 5, 10, 15, 30, 60, 120, 180, 360, 720, 1440)
 

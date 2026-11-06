@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.features.system
+package com.jawzf.pixeltoolkit.feature.notifications.autodismiss.ui
 
 import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
@@ -36,8 +36,8 @@ import com.jawzf.pixeltoolkit.core.design.cards.IconToggleItem
 import com.jawzf.pixeltoolkit.core.design.components.ConfigSliderItem
 import com.jawzf.pixeltoolkit.core.design.components.SegmentedDropdownMenuItem
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
-import com.jawzf.pixeltoolkit.domain.model.AutoDismissAppConfig
-import com.jawzf.pixeltoolkit.services.AUTO_DISMISS_MINUTES
+import com.jawzf.pixeltoolkit.feature.notifications.autodismiss.AUTO_DISMISS_MINUTES
+import com.jawzf.pixeltoolkit.feature.notifications.autodismiss.AutoDismissAppConfig
 import com.jawzf.pixeltoolkit.ui.core.sheets.AppSelectionSheet
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 import java.text.DateFormat

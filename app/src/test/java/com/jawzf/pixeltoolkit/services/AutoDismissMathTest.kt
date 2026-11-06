@@ -1,6 +1,8 @@
 package com.jawzf.pixeltoolkit.services
 
-import com.jawzf.pixeltoolkit.domain.model.AutoDismissAppConfig
+import com.jawzf.pixeltoolkit.feature.notifications.autodismiss.AUTO_DISMISS_MINUTES
+import com.jawzf.pixeltoolkit.feature.notifications.autodismiss.AutoDismissAppConfig
+import com.jawzf.pixeltoolkit.feature.notifications.autodismiss.autoDismissDeadline
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test

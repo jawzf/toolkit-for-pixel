@@ -76,6 +76,9 @@ import com.jawzf.pixeltoolkit.feature.input.gesture.ui.BACK_GESTURE_FEATURE_ID
 import com.jawzf.pixeltoolkit.feature.input.gesture.ui.BackGestureSettingsUI
 import com.jawzf.pixeltoolkit.feature.input.ime.ui.KeyboardSettingsUI
 import com.jawzf.pixeltoolkit.feature.input.links.ui.LinkPickerScreen
+import com.jawzf.pixeltoolkit.feature.notifications.autodismiss.ui.AutoDismissNotificationsSettingsUI
+import com.jawzf.pixeltoolkit.feature.notifications.snooze.ui.NotificationSnoozingSettingsUI
+import com.jawzf.pixeltoolkit.feature.notifications.snooze.ui.SnoozeNotificationsSettingsUI
 import com.jawzf.pixeltoolkit.feature.power.battery.ui.BatteriesPreviewCard
 import com.jawzf.pixeltoolkit.feature.power.battery.ui.BatteriesSettingsUI
 import com.jawzf.pixeltoolkit.feature.power.caffeinate.CaffeinateViewModel
@@ -111,7 +114,6 @@ import com.jawzf.pixeltoolkit.ui.features.display.StatusGlanceSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.ActivityLauncherSearchBar
 import com.jawzf.pixeltoolkit.ui.features.system.ActivityLauncherSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.AlwaysOnDisplaySettingsUI
-import com.jawzf.pixeltoolkit.ui.features.system.AutoDismissNotificationsSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.ButtonRemapSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.DynamicNightLightSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.FlashlightPulseSettingsUI
@@ -125,13 +127,11 @@ import com.jawzf.pixeltoolkit.ui.features.system.LockScreenClockSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.LockscreenShortcutsSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.NavigationSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.NotificationLightingSettingsUI
-import com.jawzf.pixeltoolkit.ui.features.system.NotificationSnoozingSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.OtherCustomizationsSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.QuickSettingsTilesSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.RefreshRateSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.ScreenOffWidgetSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.ShutUpSettingsUI
-import com.jawzf.pixeltoolkit.ui.features.system.SnoozeNotificationsSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.StatusBarIconSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.TextAnimationsSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.ToolkitOnDisplaySettingsUI

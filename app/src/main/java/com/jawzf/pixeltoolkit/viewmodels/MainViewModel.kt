@@ -50,9 +50,6 @@ import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuUtils
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.domain.diy.Action
 import com.jawzf.pixeltoolkit.domain.model.AppIcon
-import com.jawzf.pixeltoolkit.domain.model.AutoDismissAppConfig
-import com.jawzf.pixeltoolkit.domain.model.AutoDismissChannel
-import com.jawzf.pixeltoolkit.domain.model.AutoDismissStat
 import com.jawzf.pixeltoolkit.domain.model.HilightEffect
 import com.jawzf.pixeltoolkit.domain.model.HilightProgressColorMode
 import com.jawzf.pixeltoolkit.domain.model.LockscreenShortcutSide
@@ -74,6 +71,11 @@ import com.jawzf.pixeltoolkit.feature.apps.updates.github.GitHubUser
 import com.jawzf.pixeltoolkit.feature.connectivity.ConnectivitySettings
 import com.jawzf.pixeltoolkit.feature.connectivity.ConnectivityState
 import com.jawzf.pixeltoolkit.feature.input.InputState
+import com.jawzf.pixeltoolkit.feature.notifications.autodismiss.AutoDismissAppConfig
+import com.jawzf.pixeltoolkit.feature.notifications.autodismiss.AutoDismissChannel
+import com.jawzf.pixeltoolkit.feature.notifications.autodismiss.AutoDismissStat
+import com.jawzf.pixeltoolkit.feature.notifications.autodismiss.NotificationAutoDismisser
+import com.jawzf.pixeltoolkit.feature.notifications.snooze.SnoozeChannel
 import com.jawzf.pixeltoolkit.feature.power.BatteryState
 import com.jawzf.pixeltoolkit.feature.power.PowerSettings
 import com.jawzf.pixeltoolkit.feature.power.PowerState
@@ -82,7 +84,6 @@ import com.jawzf.pixeltoolkit.feature.security.SecurityState
 import com.jawzf.pixeltoolkit.feature.sound.SoundSettings
 import com.jawzf.pixeltoolkit.feature.sound.SoundState
 import com.jawzf.pixeltoolkit.island.service.IslandStatusBarHider
-import com.jawzf.pixeltoolkit.services.NotificationAutoDismisser
 import com.jawzf.pixeltoolkit.services.NotificationLightingService
 import com.jawzf.pixeltoolkit.services.NotificationListener
 import com.jawzf.pixeltoolkit.services.receivers.FlashlightActionReceiver
@@ -358,7 +359,7 @@ class MainViewModel : ViewModel() {
     val statusGlanceLongPressAction = mutableStateOf<Action?>(null)
 
     val snoozeChannels =
-        mutableStateOf<List<com.jawzf.pixeltoolkit.domain.model.SnoozeChannel>>(emptyList())
+        mutableStateOf<List<SnoozeChannel>>(emptyList())
     val isSnoozeHeadsUpEnabled = mutableStateOf(false)
     val isAutoDismissEnabled = mutableStateOf(false)
     val isFlashlightAlwaysTurnOffEnabled = mutableStateOf(false)

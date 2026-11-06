@@ -15,9 +15,6 @@ import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuUtils
 import com.jawzf.pixeltoolkit.domain.diy.Action
 import com.jawzf.pixeltoolkit.domain.diy.ActionGsonAdapter
 import com.jawzf.pixeltoolkit.domain.model.AppIcon
-import com.jawzf.pixeltoolkit.domain.model.AutoDismissAppConfig
-import com.jawzf.pixeltoolkit.domain.model.AutoDismissChannel
-import com.jawzf.pixeltoolkit.domain.model.AutoDismissStat
 import com.jawzf.pixeltoolkit.domain.model.HilightEffect
 import com.jawzf.pixeltoolkit.domain.model.HilightProgressColorMode
 import com.jawzf.pixeltoolkit.domain.model.NotificationLightingColorMode
@@ -29,6 +26,10 @@ import com.jawzf.pixeltoolkit.domain.model.RemapSlot
 import com.jawzf.pixeltoolkit.domain.model.ScaleAnimationsProfile
 import com.jawzf.pixeltoolkit.domain.model.SystemShortcutsState
 import com.jawzf.pixeltoolkit.feature.apps.AppsSettings
+import com.jawzf.pixeltoolkit.feature.notifications.autodismiss.AutoDismissAppConfig
+import com.jawzf.pixeltoolkit.feature.notifications.autodismiss.AutoDismissChannel
+import com.jawzf.pixeltoolkit.feature.notifications.autodismiss.AutoDismissStat
+import com.jawzf.pixeltoolkit.feature.notifications.snooze.SnoozeChannel
 import com.jawzf.pixeltoolkit.feature.power.PowerSettings
 import com.jawzf.pixeltoolkit.ui.core.pickers.NetworkType
 import com.jawzf.pixeltoolkit.utils.DuoBatteryLevels
@@ -1225,14 +1226,14 @@ class SettingsRepository(
     }
 
     // Snooze Notifications Helper
-    fun loadSnoozeDiscoveredChannels(): List<com.jawzf.pixeltoolkit.domain.model.SnoozeChannel> {
+    fun loadSnoozeDiscoveredChannels(): List<SnoozeChannel> {
         val json = prefs.getString(KEY_SNOOZE_DISCOVERED_CHANNELS, null)
         return if (json != null) {
             try {
                 gson
                     .fromJson(
                         json,
-                        Array<com.jawzf.pixeltoolkit.domain.model.SnoozeChannel>::class.java,
+                        Array<SnoozeChannel>::class.java,
                     ).toList()
             } catch (e: Exception) {
                 emptyList()
@@ -1245,9 +1246,9 @@ class SettingsRepository(
     /**
      * Executes the save snooze discovered channels operation.
      *
-     * @param channels [List<com.jawzf.pixeltoolkit.domain.model.SnoozeChannel>] Target channels.
+     * @param channels [List<SnoozeChannel>] Target channels.
      */
-    fun saveSnoozeDiscoveredChannels(channels: List<com.jawzf.pixeltoolkit.domain.model.SnoozeChannel>) {
+    fun saveSnoozeDiscoveredChannels(channels: List<SnoozeChannel>) {
         val json = gson.toJson(channels)
         putString(KEY_SNOOZE_DISCOVERED_CHANNELS, json)
     }
