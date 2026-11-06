@@ -37,6 +37,7 @@ import com.jawzf.pixeltoolkit.ToolkitApp
 import com.jawzf.pixeltoolkit.core.data.action.Action
 import com.jawzf.pixeltoolkit.core.data.apps.AppUtil
 import com.jawzf.pixeltoolkit.core.data.backup.ConfigBackup
+import com.jawzf.pixeltoolkit.core.data.duo.DuoBatteryLevels
 import com.jawzf.pixeltoolkit.core.data.log.LogManager
 import com.jawzf.pixeltoolkit.core.data.prefs.AppSelection
 import com.jawzf.pixeltoolkit.core.design.R
@@ -95,7 +96,6 @@ import com.jawzf.pixeltoolkit.services.receivers.SecurityDeviceAdminReceiver
 import com.jawzf.pixeltoolkit.services.receivers.SecurityReceiver
 import com.jawzf.pixeltoolkit.services.tiles.ScreenOffAccessibilityService
 import com.jawzf.pixeltoolkit.utils.AppIconUtil
-import com.jawzf.pixeltoolkit.utils.DuoBatteryLevels
 import com.jawzf.pixeltoolkit.utils.PowerButtonGestures
 import com.jawzf.pixeltoolkit.utils.SplitScreenUtil
 import com.jawzf.pixeltoolkit.utils.SurfaceFlingerControl

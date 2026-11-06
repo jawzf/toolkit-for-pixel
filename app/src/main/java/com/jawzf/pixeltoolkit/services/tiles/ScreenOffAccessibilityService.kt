@@ -31,6 +31,7 @@ import com.jawzf.pixeltoolkit.feature.apps.freeze.FreezeManager
 import com.jawzf.pixeltoolkit.feature.display.DisplaySettings
 import com.jawzf.pixeltoolkit.feature.display.aod.AodForceTurnOffHandler
 import com.jawzf.pixeltoolkit.feature.display.aod.AodWallpaperOverlayHandler
+import com.jawzf.pixeltoolkit.feature.display.duo.DuoOverlayHandler
 import com.jawzf.pixeltoolkit.feature.display.ondisplay.AmbientGlanceHandler
 import com.jawzf.pixeltoolkit.feature.display.pixels.SmartPixelsHandler
 import com.jawzf.pixeltoolkit.feature.display.statusbar.StatusBarIconHandler
@@ -50,7 +51,6 @@ import com.jawzf.pixeltoolkit.services.LiveUpdateSnoozer
 import com.jawzf.pixeltoolkit.services.NotificationListener
 import com.jawzf.pixeltoolkit.services.handlers.AppFlowHandler
 import com.jawzf.pixeltoolkit.services.handlers.ButtonRemapHandler
-import com.jawzf.pixeltoolkit.services.handlers.DuoOverlayHandler
 import com.jawzf.pixeltoolkit.services.handlers.FlashlightHandler
 import com.jawzf.pixeltoolkit.services.handlers.LockscreenShortcutsHandler
 import com.jawzf.pixeltoolkit.services.handlers.StatusGlanceHandler

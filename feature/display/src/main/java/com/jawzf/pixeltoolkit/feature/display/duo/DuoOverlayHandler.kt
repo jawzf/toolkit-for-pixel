@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.services.handlers
+package com.jawzf.pixeltoolkit.feature.display.duo
 
 import android.accessibilityservice.AccessibilityService
 import android.content.BroadcastReceiver
@@ -47,14 +47,14 @@ import com.jawzf.pixeltoolkit.core.data.apps.AppUtil
 import com.jawzf.pixeltoolkit.core.data.prefs.AppSelection
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.overlay.OverlayWindows
+import com.jawzf.pixeltoolkit.core.platform.device.FlashlightUtil
 import com.jawzf.pixeltoolkit.core.platform.device.ProgressNotificationData
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.domain.model.ActiveNotificationAlert
 import com.jawzf.pixeltoolkit.feature.display.DisplaySettings
+import com.jawzf.pixeltoolkit.feature.display.duo.DuoOverlayView
 import com.jawzf.pixeltoolkit.feature.power.battery.ChargeLimitUtil
 import com.jawzf.pixeltoolkit.services.NotificationListener
-import com.jawzf.pixeltoolkit.utils.DuoOverlayView
-import com.jawzf.pixeltoolkit.utils.FlashlightUtil
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job

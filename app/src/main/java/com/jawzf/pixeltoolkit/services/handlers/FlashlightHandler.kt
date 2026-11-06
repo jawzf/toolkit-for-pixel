@@ -26,8 +26,8 @@ import androidx.core.content.edit
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticFeedbackType
 import com.jawzf.pixeltoolkit.core.design.haptics.performHapticFeedback
+import com.jawzf.pixeltoolkit.core.platform.device.FlashlightUtil
 import com.jawzf.pixeltoolkit.services.receivers.FlashlightActionReceiver
-import com.jawzf.pixeltoolkit.utils.FlashlightUtil
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.isActive

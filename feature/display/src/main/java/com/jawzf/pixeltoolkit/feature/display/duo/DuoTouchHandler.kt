@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.services.handlers
+package com.jawzf.pixeltoolkit.feature.display.duo
 
 import android.accessibilityservice.AccessibilityService
 import android.content.Context
@@ -15,10 +15,11 @@ import android.view.MotionEvent
 import com.jawzf.pixeltoolkit.core.data.action.Action
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticFeedbackType
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
+import com.jawzf.pixeltoolkit.core.platform.device.LinearBrightness
+import com.jawzf.pixeltoolkit.core.platform.media.MusicSessionUtil
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
+import com.jawzf.pixeltoolkit.feature.display.duo.DuoOverlayView
 import com.jawzf.pixeltoolkit.services.automation.executors.CombinedActionExecutor
-import com.jawzf.pixeltoolkit.utils.DuoOverlayView
-import com.jawzf.pixeltoolkit.utils.media.MusicSessionUtil
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -45,7 +46,7 @@ class DuoTouchHandler(
     private var downY: Float = 0f
     private var downTime: Long = 0L
     private var lastSlideX: Float = 0f
-    private val brightnessSlide = com.jawzf.pixeltoolkit.utils.LinearBrightness(service)
+    private val brightnessSlide = LinearBrightness(service)
     private var lastBrightnessPercent: Int = 0
 
     private var lastTapTime: Long = 0L

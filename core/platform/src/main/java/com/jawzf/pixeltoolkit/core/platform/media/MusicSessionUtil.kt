@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.utils.media
+package com.jawzf.pixeltoolkit.core.platform.media
 
 import android.content.ComponentName
 import android.content.Context

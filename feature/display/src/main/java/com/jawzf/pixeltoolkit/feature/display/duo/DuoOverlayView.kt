@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.utils
+package com.jawzf.pixeltoolkit.feature.display.duo
 
 import android.animation.ArgbEvaluator
 import android.animation.ValueAnimator
@@ -21,6 +21,7 @@ import android.view.animation.PathInterpolator
 import androidx.core.content.ContextCompat
 import androidx.palette.graphics.Palette
 import com.jawzf.pixeltoolkit.core.data.apps.AppUtil
+import com.jawzf.pixeltoolkit.core.data.duo.DuoBatteryLevels
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.services.dreams.AmbientDreamService
 import kotlin.math.cos
