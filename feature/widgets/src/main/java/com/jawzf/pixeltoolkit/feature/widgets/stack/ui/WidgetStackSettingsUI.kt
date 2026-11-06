@@ -34,10 +34,10 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
+import com.jawzf.pixeltoolkit.core.platform.AppComponents
 import com.jawzf.pixeltoolkit.feature.widgets.stack.StackWidgetProvider
 import com.jawzf.pixeltoolkit.feature.widgets.stack.WidgetStackConfig
 import com.jawzf.pixeltoolkit.feature.widgets.stack.WidgetStackRepository
-import com.jawzf.pixeltoolkit.ui.activities.WidgetStackConfigureActivity
 
 @Composable
 fun WidgetStackSettingsUI(modifier: Modifier = Modifier) {
@@ -96,7 +96,7 @@ fun WidgetStackSettingsUI(modifier: Modifier = Modifier) {
                             Modifier.clickable {
                                 HapticUtil.performVirtualKeyHaptic(view)
                                 context.startActivity(
-                                    Intent(context, WidgetStackConfigureActivity::class.java).apply {
+                                    Intent().setClassName(context, AppComponents.WIDGET_STACK_CONFIGURE_ACTIVITY).apply {
                                         flags = Intent.FLAG_ACTIVITY_NEW_TASK
                                         putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, stack.stackWidgetId)
                                     },
@@ -152,7 +152,7 @@ private fun requestPinStack(context: Context) {
         PendingIntent.getActivity(
             context,
             0,
-            Intent(context, WidgetStackConfigureActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+            Intent().setClassName(context, AppComponents.WIDGET_STACK_CONFIGURE_ACTIVITY).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE,
         )
     val pinned =

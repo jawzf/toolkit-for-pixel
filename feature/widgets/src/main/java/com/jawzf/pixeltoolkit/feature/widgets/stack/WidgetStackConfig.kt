@@ -23,6 +23,7 @@ data class WidgetStackConfig(
 
     fun withSmart(on: Boolean) = copy(smartMode = on)
 
+    @Keep
     enum class ControlsMode {
         ALWAYS,
 

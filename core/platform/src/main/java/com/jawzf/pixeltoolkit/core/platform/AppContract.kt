@@ -21,6 +21,7 @@ object AppComponents {
     const val BUBBLE_EXTRA_URL = "extra_bubble_url"
     const val BUBBLE_EXTRA_PRIVATE_MODE = "extra_bubble_private_mode"
     const val RIPPLE_POSITION_PICKER_ACTIVITY = "com.jawzf.pixeltoolkit.ui.activities.RipplePositionPickerActivity"
+    const val WIDGET_STACK_CONFIGURE_ACTIVITY = "com.jawzf.pixeltoolkit.ui.activities.WidgetStackConfigureActivity"
 
     /** The app's launch intent, or MainActivity when the launcher alias is disabled. */
     fun mainIntent(context: Context): Intent =

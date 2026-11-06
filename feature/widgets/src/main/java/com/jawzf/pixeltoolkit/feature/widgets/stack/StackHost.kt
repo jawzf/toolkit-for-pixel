@@ -29,7 +29,6 @@ import androidx.work.WorkManager
 import com.jawzf.pixeltoolkit.core.data.media.MediaSessionSource
 import com.jawzf.pixeltoolkit.core.platform.device.CalendarEventUtil
 import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
-import com.jawzf.pixeltoolkit.feature.power.battery.BatteryInfoUtil
 import com.jawzf.pixeltoolkit.feature.widgets.stack.WidgetStackConfig
 import com.jawzf.pixeltoolkit.feature.widgets.stack.WidgetStackRepository
 import kotlinx.coroutines.CoroutineScope
@@ -403,7 +402,7 @@ object StackHost {
                 hostedComponents = hostedComponents,
                 playingPackage = playingPackage(),
                 calendarPackages = if (calendarSoon) calendarPackages() else emptySet(),
-                charging = (BatteryInfoUtil.getBatteryIntent(appContext)?.getIntExtra(BatteryManager.EXTRA_PLUGGED, 0) ?: 0) > 0,
+                charging = (batteryIntent(appContext)?.getIntExtra(BatteryManager.EXTRA_PLUGGED, 0) ?: 0) > 0,
             )
         if (index == null) {
             if (heldStacks.remove(stackWidgetId)) {
@@ -448,6 +447,8 @@ object StackHost {
     }
 
     private fun playingPackage(): String? = media?.all?.firstOrNull { it.playbackState?.state == PlaybackState.STATE_PLAYING }?.packageName
+
+    private fun batteryIntent(context: Context): Intent? = context.registerReceiver(null, IntentFilter(Intent.ACTION_BATTERY_CHANGED))
 
     private fun cancelTimer(stackWidgetId: Int) {
         timers.remove(stackWidgetId)?.let { handler.removeCallbacks(it) }
