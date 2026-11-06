@@ -78,6 +78,7 @@ import com.jawzf.pixeltoolkit.feature.connectivity.ui.NetworksSettingsUI
 import com.jawzf.pixeltoolkit.feature.display.aod.ui.AlwaysOnDisplaySettingsUI
 import com.jawzf.pixeltoolkit.feature.display.aod.ui.AodWallpaperPreviewCard
 import com.jawzf.pixeltoolkit.feature.display.aod.ui.AodWallpaperSettingsUI
+import com.jawzf.pixeltoolkit.feature.display.lockclock.ui.LockScreenClockSettingsUI
 import com.jawzf.pixeltoolkit.feature.display.ondisplay.ui.ToolkitOnDisplaySettingsUI
 import com.jawzf.pixeltoolkit.feature.display.pixels.ui.SmartPixelsSettingsUI
 import com.jawzf.pixeltoolkit.feature.display.refresh.ui.RefreshRateSettingsUI
@@ -130,7 +131,6 @@ import com.jawzf.pixeltoolkit.ui.features.system.ButtonRemapSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.DynamicNightLightSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.FlashlightSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.LiveWallpaperSettingsUI
-import com.jawzf.pixeltoolkit.ui.features.system.LockScreenClockSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.LockscreenShortcutsSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.NavigationSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.OtherCustomizationsSettingsUI

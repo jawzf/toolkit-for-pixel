@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.features.system
+package com.jawzf.pixeltoolkit.feature.display.lockclock.ui
 
 import android.app.Activity
 import androidx.compose.foundation.background
