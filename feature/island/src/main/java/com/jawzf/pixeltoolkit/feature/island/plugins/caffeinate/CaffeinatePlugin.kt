@@ -16,10 +16,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.jawzf.pixeltoolkit.MainActivity
+import com.jawzf.pixeltoolkit.core.data.island.IslandSettings
 import com.jawzf.pixeltoolkit.core.data.power.CaffeinateController
 import com.jawzf.pixeltoolkit.core.design.R
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.feature.island.model.CompactCell
 import com.jawzf.pixeltoolkit.feature.island.model.CompactPlacement
 import com.jawzf.pixeltoolkit.feature.island.model.ExpandedContent
@@ -45,8 +44,8 @@ class CaffeinatePlugin : BaseIslandPlugin() {
     override val id = "caffeinate"
 
     override val settingKeys = setOf(
-        SettingsRepository.KEY_ISLAND_SHOW_CAFFEINATE,
-        SettingsRepository.KEY_ISLAND_CAFFEINATE_SHOW_TIME,
+        IslandSettings.KEY_ISLAND_SHOW_CAFFEINATE,
+        IslandSettings.KEY_ISLAND_CAFFEINATE_SHOW_TIME,
     )
 
     private var observer: Job? = null

@@ -6,15 +6,15 @@ import android.provider.Settings
 import android.view.KeyEvent
 import com.jawzf.pixeltoolkit.core.data.action.Action
 import com.jawzf.pixeltoolkit.core.data.action.ActionRunner
+import com.jawzf.pixeltoolkit.core.data.island.IslandSettings
 import com.jawzf.pixeltoolkit.core.platform.device.LinearBrightness
 import com.jawzf.pixeltoolkit.core.platform.media.MusicSessionUtil
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 class CompactGestureController(
     private val context: Context,
-    private val settings: SettingsRepository,
+    private val settings: IslandSettings,
     private val scope: () -> CoroutineScope?,
     private val openBrief: () -> Unit,
 ) : CompactGestures {

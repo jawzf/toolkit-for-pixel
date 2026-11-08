@@ -10,10 +10,10 @@ import com.jawzf.pixeltoolkit.core.data.calls.CallNotificationAction
 import com.jawzf.pixeltoolkit.core.data.calls.CallPhase
 import com.jawzf.pixeltoolkit.core.data.calls.CallSnapshot
 import com.jawzf.pixeltoolkit.core.data.calls.CallStateRepository
+import com.jawzf.pixeltoolkit.core.data.island.IslandSettings
 import com.jawzf.pixeltoolkit.core.data.notifications.NotificationHub
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.feature.island.model.CompactCell
 import com.jawzf.pixeltoolkit.feature.island.model.CompactPlacement
 import com.jawzf.pixeltoolkit.feature.island.model.ExpandedContent
@@ -35,15 +35,15 @@ import java.util.Locale
 class CallPlugin : BaseIslandPlugin() {
     override val id = "call"
 
-    override val settingKeys = setOf(SettingsRepository.KEY_ISLAND_SHOW_CALLS)
+    override val settingKeys = setOf(IslandSettings.KEY_ISLAND_SHOW_CALLS)
 
     private fun popUp() {
         val c = ctx ?: return
-        val sticky = settings.getBoolean(SettingsRepository.KEY_ISLAND_CALL_STICKY, false)
-        val mode = settings.getString(SettingsRepository.KEY_ISLAND_CALL_SHOW_MODE, SettingsRepository.ISLAND_CALL_SHOW_PEEK)
+        val sticky = settings.getBoolean(IslandSettings.KEY_ISLAND_CALL_STICKY, false)
+        val mode = settings.getString(IslandSettings.KEY_ISLAND_CALL_SHOW_MODE, IslandSettings.ISLAND_CALL_SHOW_PEEK)
         when {
-            mode == SettingsRepository.ISLAND_CALL_SHOW_COMPACT -> Unit
-            mode == SettingsRepository.ISLAND_CALL_SHOW_PEEK && settings.isIslandLineStageEnabled() ->
+            mode == IslandSettings.ISLAND_CALL_SHOW_COMPACT -> Unit
+            mode == IslandSettings.ISLAND_CALL_SHOW_PEEK && settings.isIslandLineStageEnabled() ->
                 c.request(PluginRequest.Peek(ITEM_KEY, settings.getIslandTimeoutMs(), sticky))
             else -> c.request(PluginRequest.Expand(ITEM_KEY, sticky))
         }

@@ -6,16 +6,16 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import androidx.core.content.ContextCompat
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
+import com.jawzf.pixeltoolkit.core.data.island.IslandSettings
 import com.jawzf.pixeltoolkit.feature.island.plugins.BaseIslandPlugin
 
 class RemoteProvidersPlugin : BaseIslandPlugin() {
     override val id = "remote_providers"
 
     override val settingKeys = setOf(
-        SettingsRepository.KEY_ISLAND_PROVIDERS,
-        SettingsRepository.KEY_ISLAND_PROVIDERS_HIDDEN,
-        SettingsRepository.KEY_ISLAND_PROVIDERS_HIDE_LOCKED,
+        IslandSettings.KEY_ISLAND_PROVIDERS,
+        IslandSettings.KEY_ISLAND_PROVIDERS_HIDDEN,
+        IslandSettings.KEY_ISLAND_PROVIDERS_HIDE_LOCKED,
     )
 
     private val connections = HashMap<String, ProviderConnection>()

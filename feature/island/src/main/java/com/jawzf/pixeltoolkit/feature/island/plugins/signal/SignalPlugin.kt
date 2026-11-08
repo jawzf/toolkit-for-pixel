@@ -17,9 +17,9 @@ import android.telephony.TelephonyCallback
 import android.telephony.TelephonyManager
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.unit.dp
+import com.jawzf.pixeltoolkit.core.data.island.IslandSettings
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.pickers.NetworkType
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.feature.island.model.CompactCell
 import com.jawzf.pixeltoolkit.feature.island.model.CompactPlacement
 import com.jawzf.pixeltoolkit.feature.island.model.IslandItem
@@ -31,12 +31,12 @@ class SignalPlugin : BaseIslandPlugin() {
     override val id = "signal"
 
     override val settingKeys = setOf(
-        SettingsRepository.KEY_ISLAND_SHOW_NETWORK,
-        SettingsRepository.KEY_ISLAND_SHOW_SIGNAL,
-        SettingsRepository.KEY_ISLAND_SIGNAL_NETWORK_TYPES,
-        SettingsRepository.KEY_ISLAND_SIGNAL_SHOW_MODE,
-        SettingsRepository.KEY_ISLAND_SIGNAL_WIFI,
-        SettingsRepository.KEY_ISLAND_SIGNAL_LOW_ONLY,
+        IslandSettings.KEY_ISLAND_SHOW_NETWORK,
+        IslandSettings.KEY_ISLAND_SHOW_SIGNAL,
+        IslandSettings.KEY_ISLAND_SIGNAL_NETWORK_TYPES,
+        IslandSettings.KEY_ISLAND_SIGNAL_SHOW_MODE,
+        IslandSettings.KEY_ISLAND_SIGNAL_WIFI,
+        IslandSettings.KEY_ISLAND_SIGNAL_LOW_ONLY,
     )
 
     private val connectivity by lazy { context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager }

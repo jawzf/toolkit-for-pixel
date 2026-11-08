@@ -9,10 +9,10 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.jawzf.pixeltoolkit.core.data.island.IslandSettings
 import com.jawzf.pixeltoolkit.core.data.media.MediaSessionSource
 import com.jawzf.pixeltoolkit.core.design.components.EqualizerBars
 import com.jawzf.pixeltoolkit.core.platform.AppComponents
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.feature.island.gestures.IslandSlideFeedback
 import com.jawzf.pixeltoolkit.feature.island.gestures.SlideFeedback
 import com.jawzf.pixeltoolkit.feature.island.model.CompactCell
@@ -38,10 +38,10 @@ class MediaPlugin : BaseIslandPlugin() {
     override val id = "media"
 
     override val settingKeys = setOf(
-        SettingsRepository.KEY_ISLAND_SHOW_MEDIA,
-        SettingsRepository.KEY_ISLAND_MEDIA_EXCLUDED_APPS,
-        SettingsRepository.KEY_ISLAND_MEDIA_SHOW_PREVIOUS,
-        SettingsRepository.KEY_ISLAND_MEDIA_SHOW_LIKE,
+        IslandSettings.KEY_ISLAND_SHOW_MEDIA,
+        IslandSettings.KEY_ISLAND_MEDIA_EXCLUDED_APPS,
+        IslandSettings.KEY_ISLAND_MEDIA_SHOW_PREVIOUS,
+        IslandSettings.KEY_ISLAND_MEDIA_SHOW_LIKE,
     )
 
     private val ART_RETRY_DELAYS_MS = longArrayOf(1500L, 3000L)

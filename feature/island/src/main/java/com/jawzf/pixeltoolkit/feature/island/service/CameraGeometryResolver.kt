@@ -5,12 +5,16 @@ import android.content.res.Configuration
 import android.graphics.Point
 import android.os.Build
 import android.view.WindowManager
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
+import com.jawzf.pixeltoolkit.core.data.island.IslandSettings
 import com.jawzf.pixeltoolkit.feature.island.state.CameraAnchor
 import com.jawzf.pixeltoolkit.feature.island.state.CameraGeometry
 
 object CameraGeometryResolver {
-    fun resolve(context: Context, wm: WindowManager, settings: SettingsRepository): CameraGeometry {
+    fun resolve(
+        context: Context,
+        wm: WindowManager,
+        settings: IslandSettings,
+    ): CameraGeometry {
         val density = context.resources.displayMetrics.density
         val (screenWidth, screenHeight) = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             val bounds = wm.maximumWindowMetrics.bounds
@@ -71,9 +75,9 @@ object CameraGeometryResolver {
     }
 
     @Suppress("UNUSED_PARAMETER")
-    private fun anchorFor(settings: SettingsRepository): CameraAnchor = when (settings.getIslandCameraPosition()) {
-        SettingsRepository.ISLAND_CAMERA_POSITION_LEFT -> CameraAnchor.Start
-        SettingsRepository.ISLAND_CAMERA_POSITION_RIGHT -> CameraAnchor.End
+    private fun anchorFor(settings: IslandSettings): CameraAnchor = when (settings.getIslandCameraPosition()) {
+        IslandSettings.ISLAND_CAMERA_POSITION_LEFT -> CameraAnchor.Start
+        IslandSettings.ISLAND_CAMERA_POSITION_RIGHT -> CameraAnchor.End
         else -> CameraAnchor.Center
     }
 }

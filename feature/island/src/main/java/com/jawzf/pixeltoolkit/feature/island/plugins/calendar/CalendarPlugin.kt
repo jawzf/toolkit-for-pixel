@@ -8,9 +8,9 @@ import android.provider.CalendarContract
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.core.data.glance.StatusGlanceSettings
+import com.jawzf.pixeltoolkit.core.data.island.IslandSettings
 import com.jawzf.pixeltoolkit.core.platform.device.CalendarEventUtil
 import com.jawzf.pixeltoolkit.core.platform.device.UpcomingCalendarEvent
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.feature.island.model.CompactCell
 import com.jawzf.pixeltoolkit.feature.island.model.CompactPlacement
 import com.jawzf.pixeltoolkit.feature.island.model.ExpandedContent
@@ -27,11 +27,11 @@ class CalendarPlugin : BaseIslandPlugin() {
     override val id = "calendar"
 
     override val settingKeys = setOf(
-        SettingsRepository.KEY_ISLAND_SHOW_CALENDAR,
-        SettingsRepository.KEY_ISLAND_SHOW_GLOW,
-        SettingsRepository.KEY_ISLAND_CALENDAR_EMOJIS,
-        SettingsRepository.KEY_ISLAND_CALENDAR_PRIORITY_MINUTES,
-        SettingsRepository.KEY_ISLAND_CALENDAR_HIDE_LOCKED,
+        IslandSettings.KEY_ISLAND_SHOW_CALENDAR,
+        IslandSettings.KEY_ISLAND_SHOW_GLOW,
+        IslandSettings.KEY_ISLAND_CALENDAR_EMOJIS,
+        IslandSettings.KEY_ISLAND_CALENDAR_PRIORITY_MINUTES,
+        IslandSettings.KEY_ISLAND_CALENDAR_HIDE_LOCKED,
     )
 
     private var event: UpcomingCalendarEvent? = null
@@ -74,7 +74,7 @@ class CalendarPlugin : BaseIslandPlugin() {
             return
         }
         val e = event
-        val hiddenWhileLocked = settings.getBoolean(SettingsRepository.KEY_ISLAND_CALENDAR_HIDE_LOCKED, false) &&
+        val hiddenWhileLocked = settings.getBoolean(IslandSettings.KEY_ISLAND_CALENDAR_HIDE_LOCKED, false) &&
             (context.getSystemService(Context.KEYGUARD_SERVICE) as? KeyguardManager)?.isKeyguardLocked == true
         if (e == null || ctx == null || hiddenWhileLocked) {
             publish(null)

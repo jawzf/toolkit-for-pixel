@@ -30,9 +30,9 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.jawzf.pixeltoolkit.core.data.island.IslandSettings
 import com.jawzf.pixeltoolkit.core.platform.device.ProgressNotificationData
 import com.jawzf.pixeltoolkit.core.platform.device.ProgressNotificationHub
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.feature.island.model.CompactCell
 import com.jawzf.pixeltoolkit.feature.island.model.CompactPlacement
 import com.jawzf.pixeltoolkit.feature.island.model.ExpandedContent
@@ -49,7 +49,7 @@ import com.jawzf.pixeltoolkit.feature.island.ui.IslandMotion
 class ProgressPlugin : BaseIslandPlugin() {
     override val id = "progress"
 
-    override val settingKeys = setOf(SettingsRepository.KEY_ISLAND_NOTIF_KEEP_PROGRESS)
+    override val settingKeys = setOf(IslandSettings.KEY_ISLAND_NOTIF_KEEP_PROGRESS)
 
     private var data: ProgressNotificationData? = null
     private var icon: ImageBitmap? = null

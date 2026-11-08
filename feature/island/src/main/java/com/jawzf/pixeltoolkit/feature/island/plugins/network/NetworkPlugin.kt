@@ -15,9 +15,9 @@ import android.provider.Settings
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.jawzf.pixeltoolkit.core.data.island.IslandSettings
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.platform.device.WifiUtil
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.feature.island.model.CompactCell
 import com.jawzf.pixeltoolkit.feature.island.model.CompactPlacement
 import com.jawzf.pixeltoolkit.feature.island.model.IslandItem
@@ -31,9 +31,9 @@ class NetworkPlugin : BaseIslandPlugin() {
     override val id = "network"
 
     override val settingKeys = setOf(
-        SettingsRepository.KEY_ISLAND_SHOW_NETWORK,
-        SettingsRepository.KEY_ISLAND_NETWORK_ACTIVITY,
-        SettingsRepository.KEY_ISLAND_LINE_STAGE_ENABLED,
+        IslandSettings.KEY_ISLAND_SHOW_NETWORK,
+        IslandSettings.KEY_ISLAND_NETWORK_ACTIVITY,
+        IslandSettings.KEY_ISLAND_LINE_STAGE_ENABLED,
     )
 
     private class WifiEvent(val connected: Boolean, val name: String)

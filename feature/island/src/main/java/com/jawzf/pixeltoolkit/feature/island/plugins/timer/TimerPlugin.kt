@@ -13,8 +13,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jawzf.pixeltoolkit.core.data.calls.ChronometerEntry
 import com.jawzf.pixeltoolkit.core.data.calls.ChronometerRepository
+import com.jawzf.pixeltoolkit.core.data.island.IslandSettings
 import com.jawzf.pixeltoolkit.core.design.R
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.feature.island.model.CompactCell
 import com.jawzf.pixeltoolkit.feature.island.model.CompactPlacement
 import com.jawzf.pixeltoolkit.feature.island.model.ExpandedContent
@@ -43,10 +43,10 @@ class TimerPlugin : BaseIslandPlugin() {
     override val id = "timer"
 
     override val settingKeys = setOf(
-        SettingsRepository.KEY_ISLAND_SHOW_TIMERS,
-        SettingsRepository.KEY_ISLAND_TIMERS_SHOW_SCREEN_RECORDER,
-        SettingsRepository.KEY_ISLAND_TIMERS_FILTER_APPS,
-        SettingsRepository.KEY_ISLAND_TIMERS_SELECTED_APPS,
+        IslandSettings.KEY_ISLAND_SHOW_TIMERS,
+        IslandSettings.KEY_ISLAND_TIMERS_SHOW_SCREEN_RECORDER,
+        IslandSettings.KEY_ISLAND_TIMERS_FILTER_APPS,
+        IslandSettings.KEY_ISLAND_TIMERS_SELECTED_APPS,
     )
 
     private var allEntries: List<ChronometerEntry> = emptyList()

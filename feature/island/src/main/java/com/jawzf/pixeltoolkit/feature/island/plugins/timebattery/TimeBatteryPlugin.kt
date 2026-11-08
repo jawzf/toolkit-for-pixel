@@ -12,9 +12,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.core.data.duo.DuoSettings
+import com.jawzf.pixeltoolkit.core.data.island.IslandSettings
 import com.jawzf.pixeltoolkit.core.data.power.ChargeLimitUtil
 import com.jawzf.pixeltoolkit.core.design.R
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.feature.island.model.CompactCell
 import com.jawzf.pixeltoolkit.feature.island.model.CompactPlacement
 import com.jawzf.pixeltoolkit.feature.island.model.IslandItem
@@ -36,20 +36,20 @@ class TimeBatteryPlugin : BaseIslandPlugin() {
     override val id = "time_battery"
 
     override val settingKeys = setOf(
-        SettingsRepository.KEY_ISLAND_SHOW_TIME_BATTERY,
-        SettingsRepository.KEY_ISLAND_TIME_SHOW_SECONDS,
-        SettingsRepository.KEY_ISLAND_TIME_FORMAT,
-        SettingsRepository.KEY_ISLAND_TIME_PERIOD,
-        SettingsRepository.KEY_ISLAND_TIME_LEADING_ZERO,
-        SettingsRepository.KEY_ISLAND_TIME_HIDE_LOCKED,
-        SettingsRepository.KEY_ISLAND_BATTERY_HIDE_LOCKED,
-        SettingsRepository.KEY_ISLAND_SHOW_BATTERY,
-        SettingsRepository.KEY_ISLAND_BATTERY_STYLE,
-        SettingsRepository.KEY_ISLAND_BATTERY_PERCENTAGE,
-        SettingsRepository.KEY_ISLAND_BATTERY_PERCENTAGE_CONDITIONAL,
-        SettingsRepository.KEY_ISLAND_BATTERY_ONLY_LOW,
-        SettingsRepository.KEY_ISLAND_BATTERY_ICON_CONDITIONAL,
-        SettingsRepository.KEY_ISLAND_BATTERY_PEEK_ALERTS,
+        IslandSettings.KEY_ISLAND_SHOW_TIME_BATTERY,
+        IslandSettings.KEY_ISLAND_TIME_SHOW_SECONDS,
+        IslandSettings.KEY_ISLAND_TIME_FORMAT,
+        IslandSettings.KEY_ISLAND_TIME_PERIOD,
+        IslandSettings.KEY_ISLAND_TIME_LEADING_ZERO,
+        IslandSettings.KEY_ISLAND_TIME_HIDE_LOCKED,
+        IslandSettings.KEY_ISLAND_BATTERY_HIDE_LOCKED,
+        IslandSettings.KEY_ISLAND_SHOW_BATTERY,
+        IslandSettings.KEY_ISLAND_BATTERY_STYLE,
+        IslandSettings.KEY_ISLAND_BATTERY_PERCENTAGE,
+        IslandSettings.KEY_ISLAND_BATTERY_PERCENTAGE_CONDITIONAL,
+        IslandSettings.KEY_ISLAND_BATTERY_ONLY_LOW,
+        IslandSettings.KEY_ISLAND_BATTERY_ICON_CONDITIONAL,
+        IslandSettings.KEY_ISLAND_BATTERY_PEEK_ALERTS,
         DuoSettings.KEY_DUO_BATTERY_LOW_LEVEL,
         DuoSettings.KEY_DUO_BATTERY_CRITICAL_LEVEL,
         DuoSettings.KEY_DUO_BATTERY_CHARGING_COLOR_ENABLED,
@@ -57,8 +57,8 @@ class TimeBatteryPlugin : BaseIslandPlugin() {
         DuoSettings.KEY_DUO_BATTERY_POWER_SAVE_COLOR_ENABLED,
         DuoSettings.KEY_DUO_BATTERY_POWER_SAVE_COLOR,
         DuoSettings.KEY_DUO_BATTERY_LOW_COLOR_ENABLED,
-        SettingsRepository.KEY_ISLAND_BATTERY_IDLE_COLOR_ENABLED,
-        SettingsRepository.KEY_ISLAND_BATTERY_IDLE_COLOR,
+        IslandSettings.KEY_ISLAND_BATTERY_IDLE_COLOR_ENABLED,
+        IslandSettings.KEY_ISLAND_BATTERY_IDLE_COLOR,
         DuoSettings.KEY_DUO_BATTERY_LOW_COLOR,
         DuoSettings.KEY_DUO_BATTERY_CRITICAL_COLOR_ENABLED,
         DuoSettings.KEY_DUO_BATTERY_CRITICAL_COLOR,
@@ -174,25 +174,25 @@ class TimeBatteryPlugin : BaseIslandPlugin() {
         handler.postDelayed(secondsTick, 1000L - System.currentTimeMillis() % 1000L)
     }
 
-    private fun showSeconds() = settings.getBoolean(SettingsRepository.KEY_ISLAND_TIME_SHOW_SECONDS, false)
+    private fun showSeconds() = settings.getBoolean(IslandSettings.KEY_ISLAND_TIME_SHOW_SECONDS, false)
 
     private fun readTime() {
-        val format = settings.getString(SettingsRepository.KEY_ISLAND_TIME_FORMAT, null) ?: SettingsRepository.ISLAND_TIME_FORMAT_SYSTEM
+        val format = settings.getString(IslandSettings.KEY_ISLAND_TIME_FORMAT, null) ?: IslandSettings.ISLAND_TIME_FORMAT_SYSTEM
         val is24 = when (format) {
-            SettingsRepository.ISLAND_TIME_FORMAT_12H -> false
-            SettingsRepository.ISLAND_TIME_FORMAT_24H -> true
+            IslandSettings.ISLAND_TIME_FORMAT_12H -> false
+            IslandSettings.ISLAND_TIME_FORMAT_24H -> true
             else -> DateFormat.is24HourFormat(context)
         }
         val base = if (is24) {
             "HH:mm"
-        } else if (settings.getBoolean(SettingsRepository.KEY_ISLAND_TIME_LEADING_ZERO, false)) {
+        } else if (settings.getBoolean(IslandSettings.KEY_ISLAND_TIME_LEADING_ZERO, false)) {
             "hh:mm"
         } else {
             "h:mm"
         }
         val withSeconds = if (showSeconds()) "$base:ss" else base
         val showPeriod = !is24 &&
-            settings.getString(SettingsRepository.KEY_ISLAND_TIME_PERIOD, null) == SettingsRepository.ISLAND_TIME_PERIOD_AM_PM
+            settings.getString(IslandSettings.KEY_ISLAND_TIME_PERIOD, null) == IslandSettings.ISLAND_TIME_PERIOD_AM_PM
         val pattern = if (showPeriod) "$withSeconds a" else withSeconds
         time = SimpleDateFormat(pattern, Locale.getDefault()).format(Date())
     }
@@ -243,9 +243,9 @@ class TimeBatteryPlugin : BaseIslandPlugin() {
         ctx ?: return
         val locked = (context.getSystemService(Context.KEYGUARD_SERVICE) as? KeyguardManager)?.isKeyguardLocked == true
         val showTime = settings.isIslandShowTimeBatteryEnabled() &&
-            !(locked && settings.getBoolean(SettingsRepository.KEY_ISLAND_TIME_HIDE_LOCKED, false))
+            !(locked && settings.getBoolean(IslandSettings.KEY_ISLAND_TIME_HIDE_LOCKED, false))
         val showBatteryItem = settings.isIslandShowBatteryEnabled() &&
-            !(locked && settings.getBoolean(SettingsRepository.KEY_ISLAND_BATTERY_HIDE_LOCKED, false))
+            !(locked && settings.getBoolean(IslandSettings.KEY_ISLAND_BATTERY_HIDE_LOCKED, false))
         if (!showTime && !showBatteryItem) {
             publish(emptyList())
             return
@@ -254,7 +254,7 @@ class TimeBatteryPlugin : BaseIslandPlugin() {
         val batteryLevel = level
         val stateColor = stateColor()
         val displayColor = stateColor ?: idleColor()
-        val iconStyle = settings.getIslandBatteryStyle() == SettingsRepository.ISLAND_BATTERY_STYLE_ICON
+        val iconStyle = settings.getIslandBatteryStyle() == IslandSettings.ISLAND_BATTERY_STYLE_ICON
         val showLevel = settings.isIslandBatteryPercentageEnabled() &&
             (!settings.isIslandBatteryPercentageConditional() || stateColor != null)
 

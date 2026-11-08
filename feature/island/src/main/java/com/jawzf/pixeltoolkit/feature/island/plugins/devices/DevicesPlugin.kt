@@ -16,10 +16,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.core.data.duo.DuoSettings
+import com.jawzf.pixeltoolkit.core.data.island.IslandSettings
 import com.jawzf.pixeltoolkit.core.data.power.BluetoothDeviceIcons
 import com.jawzf.pixeltoolkit.core.data.power.BluetoothDeviceOrder
 import com.jawzf.pixeltoolkit.core.design.R
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.feature.island.model.CompactCell
 import com.jawzf.pixeltoolkit.feature.island.model.CompactPlacement
 import com.jawzf.pixeltoolkit.feature.island.model.IslandItem
@@ -36,17 +36,17 @@ class DevicesPlugin : BaseIslandPlugin() {
     override val id = "devices"
 
     override val settingKeys = setOf(
-        SettingsRepository.KEY_ISLAND_SHOW_DEVICES,
-        SettingsRepository.KEY_ISLAND_LINE_STAGE_ENABLED,
-        SettingsRepository.KEY_ISLAND_BATTERY_STYLE,
-        SettingsRepository.KEY_ISLAND_DEVICES_BATTERY_STYLE,
-        SettingsRepository.KEY_ISLAND_DEVICES_BATTERY_ORDER,
-        SettingsRepository.KEY_ISLAND_BATTERY_PERCENTAGE,
-        SettingsRepository.KEY_ISLAND_BATTERY_PERCENTAGE_CONDITIONAL,
-        SettingsRepository.KEY_ISLAND_DEVICES_BATTERY_ONLY_LOW,
+        IslandSettings.KEY_ISLAND_SHOW_DEVICES,
+        IslandSettings.KEY_ISLAND_LINE_STAGE_ENABLED,
+        IslandSettings.KEY_ISLAND_BATTERY_STYLE,
+        IslandSettings.KEY_ISLAND_DEVICES_BATTERY_STYLE,
+        IslandSettings.KEY_ISLAND_DEVICES_BATTERY_ORDER,
+        IslandSettings.KEY_ISLAND_BATTERY_PERCENTAGE,
+        IslandSettings.KEY_ISLAND_BATTERY_PERCENTAGE_CONDITIONAL,
+        IslandSettings.KEY_ISLAND_DEVICES_BATTERY_ONLY_LOW,
         DuoSettings.KEY_DUO_BATTERY_LOW_COLOR_ENABLED,
-        SettingsRepository.KEY_ISLAND_BATTERY_IDLE_COLOR_ENABLED,
-        SettingsRepository.KEY_ISLAND_BATTERY_IDLE_COLOR,
+        IslandSettings.KEY_ISLAND_BATTERY_IDLE_COLOR_ENABLED,
+        IslandSettings.KEY_ISLAND_BATTERY_IDLE_COLOR,
         DuoSettings.KEY_DUO_BATTERY_LOW_COLOR,
         DuoSettings.KEY_DUO_BATTERY_CRITICAL_COLOR_ENABLED,
         DuoSettings.KEY_DUO_BATTERY_CRITICAL_COLOR,
@@ -271,7 +271,7 @@ class DevicesPlugin : BaseIslandPlugin() {
             publish(null)
             return
         }
-        val iconStyle = settings.getIslandDevicesBatteryStyle() == SettingsRepository.ISLAND_BATTERY_STYLE_ICON
+        val iconStyle = settings.getIslandDevicesBatteryStyle() == IslandSettings.ISLAND_BATTERY_STYLE_ICON
         val items = mutableListOf<IslandItem>()
         batteryDevice?.let { d ->
             val color = levelColor(d.level)

@@ -78,6 +78,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jawzf.pixeltoolkit.core.data.glance.StatusGlanceSettings
+import com.jawzf.pixeltoolkit.core.data.island.IslandSettings
 import com.jawzf.pixeltoolkit.core.data.power.BluetoothBatteryUtils
 import com.jawzf.pixeltoolkit.core.data.power.BluetoothDeviceIcons
 import com.jawzf.pixeltoolkit.core.data.power.BluetoothDeviceOrder
@@ -85,7 +86,6 @@ import com.jawzf.pixeltoolkit.core.data.power.PowerSettings
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.platform.device.CalendarEventUtil
 import com.jawzf.pixeltoolkit.core.platform.device.UpcomingCalendarEvent
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.feature.island.model.CompactCell
 import com.jawzf.pixeltoolkit.feature.island.model.CompactPlacement
 import com.jawzf.pixeltoolkit.feature.island.model.ExpandedContent
@@ -131,13 +131,13 @@ class BriefPlugin : BaseIslandPlugin() {
     private var pageOpen: (() -> Unit)? = null
 
     override val settingKeys = setOf(
-        SettingsRepository.KEY_ISLAND_BRIEF_ENABLED,
-        SettingsRepository.KEY_ISLAND_BATTERY_STYLE,
-        SettingsRepository.KEY_ISLAND_DEVICES_BATTERY_STYLE,
+        IslandSettings.KEY_ISLAND_BRIEF_ENABLED,
+        IslandSettings.KEY_ISLAND_BATTERY_STYLE,
+        IslandSettings.KEY_ISLAND_DEVICES_BATTERY_STYLE,
         StatusGlanceSettings.KEY_STATUS_GLANCE_CALENDAR_SHOW_ALL_DAY,
-        SettingsRepository.KEY_ISLAND_BRIEF_SHOW_ALARM,
-        SettingsRepository.KEY_ISLAND_BRIEF_TWO_LINE_HEADER,
-        SettingsRepository.KEY_ISLAND_ALARM_WINDOW_HOURS,
+        IslandSettings.KEY_ISLAND_BRIEF_SHOW_ALARM,
+        IslandSettings.KEY_ISLAND_BRIEF_TWO_LINE_HEADER,
+        IslandSettings.KEY_ISLAND_ALARM_WINDOW_HOURS,
     )
 
     override fun refresh() {
@@ -145,15 +145,15 @@ class BriefPlugin : BaseIslandPlugin() {
             publish(null)
             return
         }
-        val iconStyle = settings.getIslandBatteryStyle() == SettingsRepository.ISLAND_BATTERY_STYLE_ICON
-        val devicesIconStyle = settings.getIslandDevicesBatteryStyle() == SettingsRepository.ISLAND_BATTERY_STYLE_ICON
+        val iconStyle = settings.getIslandBatteryStyle() == IslandSettings.ISLAND_BATTERY_STYLE_ICON
+        val devicesIconStyle = settings.getIslandDevicesBatteryStyle() == IslandSettings.ISLAND_BATTERY_STYLE_ICON
         val alarmHours = if (settings.isIslandBriefShowAlarmEnabled()) settings.getIslandAlarmWindowHours() else null
         val glanceSettings = StatusGlanceSettings(context)
         val calendarIds = glanceSettings.getStatusGlanceCalendarSelectedCalendars().mapNotNull { it.toLongOrNull() }.toSet()
         val showAllDay = glanceSettings.isStatusGlanceCalendarShowAllDayEnabled()
         val showGlow = settings.isIslandShowGlowEnabled()
         val calendarEnabled = context.checkSelfPermission(Manifest.permission.READ_CALENDAR) == PackageManager.PERMISSION_GRANTED
-        val twoLineHeader = settings.getBoolean(SettingsRepository.KEY_ISLAND_BRIEF_TWO_LINE_HEADER, false)
+        val twoLineHeader = settings.getBoolean(IslandSettings.KEY_ISLAND_BRIEF_TWO_LINE_HEADER, false)
         ctx?.scope?.launch(Dispatchers.IO) { BriefDevicesCache.devices = readDevices(context) }
         publish(
             IslandItem(
@@ -377,7 +377,7 @@ private fun BriefEventDetail(event: UpcomingCalendarEvent, showGlow: Boolean, sc
             },
             scope = scope,
             emoji = remember(event.calendarId) {
-                SettingsRepository(context).getIslandCalendarEmojis()[event.calendarId]
+                IslandSettings(context).getIslandCalendarEmojis()[event.calendarId]
             },
             drawBackground = false,
         )

@@ -31,10 +31,10 @@ import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.jawzf.pixeltoolkit.core.data.island.IslandSettings
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.feature.island.model.CompactCell
 import com.jawzf.pixeltoolkit.feature.island.model.CompactPlacement
 import com.jawzf.pixeltoolkit.feature.island.model.IslandItem
@@ -52,7 +52,7 @@ import org.lsposed.hiddenapibypass.HiddenApiBypass
 class HotspotPlugin : BaseIslandPlugin() {
     override val id = "hotspot"
 
-    override val settingKeys = setOf(SettingsRepository.KEY_ISLAND_SHOW_HOTSPOT)
+    override val settingKeys = setOf(IslandSettings.KEY_ISLAND_SHOW_HOTSPOT)
 
     private val stats by lazy { context.getSystemService(NetworkStatsManager::class.java) }
     private val wifi by lazy { context.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager }

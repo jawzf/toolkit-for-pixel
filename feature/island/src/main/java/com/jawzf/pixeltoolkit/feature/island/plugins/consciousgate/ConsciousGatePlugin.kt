@@ -11,11 +11,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jawzf.pixeltoolkit.core.data.apps.AppUtil
+import com.jawzf.pixeltoolkit.core.data.island.IslandSettings
 import com.jawzf.pixeltoolkit.core.data.notifications.NotificationHub
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticFeedbackType
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.feature.island.model.CompactCell
 import com.jawzf.pixeltoolkit.feature.island.model.CompactPlacement
 import com.jawzf.pixeltoolkit.feature.island.model.ExpandedContent
@@ -34,7 +34,7 @@ import java.util.Locale
 class ConsciousGatePlugin : BaseIslandPlugin() {
     override val id = "conscious_gate"
 
-    override val settingKeys = setOf(SettingsRepository.KEY_ISLAND_SHOW_CONSCIOUS_GATE)
+    override val settingKeys = setOf(IslandSettings.KEY_ISLAND_SHOW_CONSCIOUS_GATE)
 
     private var cachedPkg: String? = null
     private var cachedIcon: Bitmap? = null

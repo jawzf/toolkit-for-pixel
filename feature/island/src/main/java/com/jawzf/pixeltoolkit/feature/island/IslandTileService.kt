@@ -4,14 +4,14 @@ import android.graphics.drawable.Icon
 import android.os.Build
 import android.service.quicksettings.Tile
 import androidx.annotation.RequiresApi
+import com.jawzf.pixeltoolkit.core.data.island.IslandSettings
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.core.platform.tiles.BaseTileService
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 
 @RequiresApi(Build.VERSION_CODES.N)
 class IslandTileService : BaseTileService() {
-    private val settings by lazy { SettingsRepository(this) }
+    private val settings by lazy { IslandSettings(this) }
 
     override fun getTileLabel(): String = getString(R.string.island_title)
 

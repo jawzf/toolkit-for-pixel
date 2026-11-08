@@ -14,8 +14,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.toArgb
+import com.jawzf.pixeltoolkit.core.data.island.IslandSettings
 import com.jawzf.pixeltoolkit.core.platform.device.DeviceUtils
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.feature.island.model.IslandExpandedScope
 import com.jawzf.pixeltoolkit.feature.island.model.IslandItem
 import com.jawzf.pixeltoolkit.feature.island.model.IslandPriorityEntries
@@ -44,7 +44,7 @@ import kotlin.math.roundToInt
 
 class ProviderConnection(
     private val context: Context,
-    private val settings: SettingsRepository,
+    private val settings: IslandSettings,
     private val info: ProviderInfo,
     private val scope: CoroutineScope,
     private val request: (PluginRequest) -> Unit,

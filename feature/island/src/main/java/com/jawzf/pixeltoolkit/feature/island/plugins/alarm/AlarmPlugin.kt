@@ -9,8 +9,8 @@ import android.text.format.DateFormat
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.ui.unit.dp
+import com.jawzf.pixeltoolkit.core.data.island.IslandSettings
 import com.jawzf.pixeltoolkit.core.design.R
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.feature.island.model.CompactCell
 import com.jawzf.pixeltoolkit.feature.island.model.CompactPlacement
 import com.jawzf.pixeltoolkit.feature.island.model.IslandItem
@@ -28,9 +28,9 @@ class AlarmPlugin : BaseIslandPlugin() {
     override val id = "alarm"
 
     override val settingKeys = setOf(
-        SettingsRepository.KEY_ISLAND_SHOW_ALARM,
-        SettingsRepository.KEY_ISLAND_ALARM_WINDOW_HOURS,
-        SettingsRepository.KEY_ISLAND_ALARM_HIDE_TIME,
+        IslandSettings.KEY_ISLAND_SHOW_ALARM,
+        IslandSettings.KEY_ISLAND_ALARM_WINDOW_HOURS,
+        IslandSettings.KEY_ISLAND_ALARM_HIDE_TIME,
     )
 
     private var registered = false
@@ -94,7 +94,7 @@ class AlarmPlugin : BaseIslandPlugin() {
         c.mainHandler.postDelayed(recheck, info.triggerTime - now + 60_000L)
         val shortTime = NextAlarm.format(context, info.triggerTime, withPeriod = false)
         val fullTime = NextAlarm.format(context, info.triggerTime, withPeriod = true)
-        val hideTime = settings.getBoolean(SettingsRepository.KEY_ISLAND_ALARM_HIDE_TIME, false)
+        val hideTime = settings.getBoolean(IslandSettings.KEY_ISLAND_ALARM_HIDE_TIME, false)
         publish(
             IslandItem(
                 key = ITEM_KEY,

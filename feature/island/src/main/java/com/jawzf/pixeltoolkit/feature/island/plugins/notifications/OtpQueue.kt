@@ -1,6 +1,6 @@
 package com.jawzf.pixeltoolkit.feature.island.plugins.notifications
 
-internal fun <T> MutableList<T>.removeKeepingCurrent(
+fun <T> MutableList<T>.removeKeepingCurrent(
     index: Int,
     currentIndex: Int,
 ): Int {

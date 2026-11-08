@@ -36,9 +36,9 @@ import androidx.compose.ui.graphics.blur.BlurStop
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import com.jawzf.pixeltoolkit.core.data.island.IslandSettings
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.platform.device.FlashlightUtil
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.feature.island.model.CompactCell
 import com.jawzf.pixeltoolkit.feature.island.model.CompactPlacement
 import com.jawzf.pixeltoolkit.feature.island.model.ExpandedContent
@@ -57,7 +57,7 @@ import kotlinx.coroutines.launch
 class FlashlightPlugin : BaseIslandPlugin() {
     override val id = "flashlight"
 
-    override val settingKeys = setOf(SettingsRepository.KEY_ISLAND_SHOW_FLASHLIGHT)
+    override val settingKeys = setOf(IslandSettings.KEY_ISLAND_SHOW_FLASHLIGHT)
 
     private val cameraManager by lazy { context.getSystemService(Context.CAMERA_SERVICE) as CameraManager }
     private var cameraId: String? = null

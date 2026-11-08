@@ -10,10 +10,10 @@ import android.media.AudioManager
 import android.os.Build
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.unit.dp
+import com.jawzf.pixeltoolkit.core.data.island.IslandSettings
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.platform.device.ZenModeController
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.feature.island.model.CompactCell
 import com.jawzf.pixeltoolkit.feature.island.model.CompactPlacement
 import com.jawzf.pixeltoolkit.feature.island.model.IslandItem
@@ -28,7 +28,7 @@ import kotlinx.coroutines.launch
 class SoundModePlugin : BaseIslandPlugin() {
     override val id = "sound_mode"
 
-    override val settingKeys = setOf(SettingsRepository.KEY_ISLAND_SHOW_SOUND_MODE, SettingsRepository.KEY_ISLAND_SOUND_MODE_KEEP_ICON)
+    override val settingKeys = setOf(IslandSettings.KEY_ISLAND_SHOW_SOUND_MODE, IslandSettings.KEY_ISLAND_SOUND_MODE_KEEP_ICON)
 
     private val audioManager by lazy { context.getSystemService(Context.AUDIO_SERVICE) as AudioManager }
     private val notificationManager by lazy { context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager }

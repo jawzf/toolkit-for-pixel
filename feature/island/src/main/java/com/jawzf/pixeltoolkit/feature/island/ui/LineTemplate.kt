@@ -117,7 +117,7 @@ fun LineTemplate(
     }
 }
 
-internal fun condensedTitleWidth(
+fun condensedTitleWidth(
     natural: Dp,
     lineWidth: Dp,
     cameraSlotWidth: Dp,

@@ -2,13 +2,13 @@ package com.jawzf.pixeltoolkit.feature.island.model
 
 import android.accessibilityservice.AccessibilityService
 import android.os.Handler
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
+import com.jawzf.pixeltoolkit.core.data.island.IslandSettings
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.StateFlow
 
 class IslandPluginContext(
     val service: AccessibilityService,
-    val settings: SettingsRepository,
+    val settings: IslandSettings,
     val scope: CoroutineScope,
     val mainHandler: Handler,
     val request: (PluginRequest) -> Unit,

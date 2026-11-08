@@ -7,12 +7,12 @@ import android.os.PowerManager
 import android.widget.Toast
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.jawzf.pixeltoolkit.core.data.island.IslandSettings
 import com.jawzf.pixeltoolkit.core.data.notifications.ActiveNotificationAlert
 import com.jawzf.pixeltoolkit.core.data.notifications.NotificationActionItem
 import com.jawzf.pixeltoolkit.core.data.notifications.NotificationHub
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.feature.island.model.CompactCell
 import com.jawzf.pixeltoolkit.feature.island.model.CompactPlacement
 import com.jawzf.pixeltoolkit.feature.island.model.ExpandedContent
@@ -40,32 +40,32 @@ class NotificationsPlugin : BaseIslandPlugin() {
     override val id = "notifications"
 
     override val settingKeys = setOf(
-        SettingsRepository.KEY_ISLAND_CATCH_UP_ENABLED,
-        SettingsRepository.KEY_ISLAND_NOTIF_PEEK_STYLE,
-        SettingsRepository.KEY_ISLAND_NOTIF_QUEUE_STYLE,
-        SettingsRepository.KEY_ISLAND_NOTIF_QUEUE_INLINE,
-        SettingsRepository.KEY_ISLAND_LINE_STAGE_ENABLED,
-        SettingsRepository.KEY_ISLAND_SHOW_GLOW,
-        SettingsRepository.KEY_ISLAND_NOTIF_QUEUE,
-        SettingsRepository.KEY_ISLAND_NOTIF_SKIP_SILENT,
-        SettingsRepository.KEY_ISLAND_NOTIF_FOLLOW_DND,
-        SettingsRepository.KEY_ISLAND_NOTIF_FILTER_APPS,
-        SettingsRepository.KEY_ISLAND_NOTIF_FILTER_APPS_LIST,
-        SettingsRepository.KEY_ISLAND_NOTIF_TAP_TO_OPEN,
-        SettingsRepository.KEY_ISLAND_SHOW_NOTIFICATIONS,
-        SettingsRepository.KEY_ISLAND_NOTIF_HUB,
-        SettingsRepository.KEY_ISLAND_NOTIF_HUB_ICONS,
-        SettingsRepository.KEY_ISLAND_NOTIF_HUB_ORDER,
-        SettingsRepository.KEY_ISLAND_NOTIF_HUB_SILENT,
-        SettingsRepository.KEY_ISLAND_NOTIF_HUB_GROUP,
-        SettingsRepository.KEY_ISLAND_NOTIF_DISABLE_LOCKED,
-        SettingsRepository.KEY_ISLAND_NOTIF_CONCEAL_LOCKED,
-        SettingsRepository.KEY_ISLAND_NOTIF_CONCEAL_CHAT_PICTURES,
-        SettingsRepository.KEY_ISLAND_OTP_ENABLED,
-        SettingsRepository.KEY_ISLAND_OTP_TAP_TO_COPY,
-        SettingsRepository.KEY_ISLAND_OTP_DISMISS_AFTER_COPY,
-        SettingsRepository.KEY_ISLAND_OTP_BYPASS_FILTER,
-        SettingsRepository.KEY_ISLAND_OTP_TIMEOUT_MS,
+        IslandSettings.KEY_ISLAND_CATCH_UP_ENABLED,
+        IslandSettings.KEY_ISLAND_NOTIF_PEEK_STYLE,
+        IslandSettings.KEY_ISLAND_NOTIF_QUEUE_STYLE,
+        IslandSettings.KEY_ISLAND_NOTIF_QUEUE_INLINE,
+        IslandSettings.KEY_ISLAND_LINE_STAGE_ENABLED,
+        IslandSettings.KEY_ISLAND_SHOW_GLOW,
+        IslandSettings.KEY_ISLAND_NOTIF_QUEUE,
+        IslandSettings.KEY_ISLAND_NOTIF_SKIP_SILENT,
+        IslandSettings.KEY_ISLAND_NOTIF_FOLLOW_DND,
+        IslandSettings.KEY_ISLAND_NOTIF_FILTER_APPS,
+        IslandSettings.KEY_ISLAND_NOTIF_FILTER_APPS_LIST,
+        IslandSettings.KEY_ISLAND_NOTIF_TAP_TO_OPEN,
+        IslandSettings.KEY_ISLAND_SHOW_NOTIFICATIONS,
+        IslandSettings.KEY_ISLAND_NOTIF_HUB,
+        IslandSettings.KEY_ISLAND_NOTIF_HUB_ICONS,
+        IslandSettings.KEY_ISLAND_NOTIF_HUB_ORDER,
+        IslandSettings.KEY_ISLAND_NOTIF_HUB_SILENT,
+        IslandSettings.KEY_ISLAND_NOTIF_HUB_GROUP,
+        IslandSettings.KEY_ISLAND_NOTIF_DISABLE_LOCKED,
+        IslandSettings.KEY_ISLAND_NOTIF_CONCEAL_LOCKED,
+        IslandSettings.KEY_ISLAND_NOTIF_CONCEAL_CHAT_PICTURES,
+        IslandSettings.KEY_ISLAND_OTP_ENABLED,
+        IslandSettings.KEY_ISLAND_OTP_TAP_TO_COPY,
+        IslandSettings.KEY_ISLAND_OTP_DISMISS_AFTER_COPY,
+        IslandSettings.KEY_ISLAND_OTP_BYPASS_FILTER,
+        IslandSettings.KEY_ISLAND_OTP_TIMEOUT_MS,
     )
 
     private val alerts = ArrayDeque<ActiveNotificationAlert>()
@@ -319,12 +319,12 @@ class NotificationsPlugin : BaseIslandPlugin() {
     private fun maskOtp(code: String) = formatOtp(code).map { if (it == ' ') ' ' else '•' }.joinToString("")
 
     private fun lockedOut(): Boolean =
-        settings.getBoolean(SettingsRepository.KEY_ISLAND_NOTIF_DISABLE_LOCKED, true) &&
+        settings.getBoolean(IslandSettings.KEY_ISLAND_NOTIF_DISABLE_LOCKED, true) &&
             ((context.getSystemService(Context.KEYGUARD_SERVICE) as? KeyguardManager)?.isKeyguardLocked == true ||
                 (context.getSystemService(Context.POWER_SERVICE) as? PowerManager)?.isInteractive == false)
 
     private fun concealed(): Boolean =
-        settings.getBoolean(SettingsRepository.KEY_ISLAND_NOTIF_CONCEAL_LOCKED, false) &&
+        settings.getBoolean(IslandSettings.KEY_ISLAND_NOTIF_CONCEAL_LOCKED, false) &&
             (context.getSystemService(Context.KEYGUARD_SERVICE) as? KeyguardManager)?.isKeyguardLocked == true
 
     private fun onPosted(alert: ActiveNotificationAlert) {
@@ -476,7 +476,7 @@ class NotificationsPlugin : BaseIslandPlugin() {
     // The newest notification that just dropped into the catch-up bubble leads and gets a ring for the catch-up timeout
     private fun pinLatest() {
         val c = ctx ?: return
-        if (!hub() || settings.getIslandNotifHubOrder() != SettingsRepository.ISLAND_NOTIF_HUB_ORDER_DYNAMIC) return
+        if (!hub() || settings.getIslandNotifHubOrder() != IslandSettings.ISLAND_NOTIF_HUB_ORDER_DYNAMIC) return
         c.mainHandler.removeCallbacks(unpinRunnable)
         pinnedKey = currentAlert()?.takeIf { !it.hubOnly }?.key
         if (pinnedKey == null) return
@@ -485,7 +485,7 @@ class NotificationsPlugin : BaseIslandPlugin() {
     }
 
     private fun bubbleCells(): Int {
-        if (!hub() || settings.getIslandNotifQueueStyle() != SettingsRepository.ISLAND_NOTIF_QUEUE_STYLE_OVERLAP) return 1
+        if (!hub() || settings.getIslandNotifQueueStyle() != IslandSettings.ISLAND_NOTIF_QUEUE_STYLE_OVERLAP) return 1
         val cap = settings.getIslandNotifHubIcons().let { if (it == 0) AUTO_CELL_ICONS else it }
         val count = hubEntries().size
         val shown = count.coerceIn(1, cap)
@@ -527,10 +527,10 @@ class NotificationsPlugin : BaseIslandPlugin() {
         }
         val mode = settings.getIslandNotifHubOrder()
         val recent = entries.sortedByDescending { it.timestamp }
-        if (mode == SettingsRepository.ISLAND_NOTIF_HUB_ORDER_RECENT) return recent
+        if (mode == IslandSettings.ISLAND_NOTIF_HUB_ORDER_RECENT) return recent
         val byPriority = recent.sortedBy(::entryRank)
         val pinned = pinnedKey
-            ?.takeIf { mode == SettingsRepository.ISLAND_NOTIF_HUB_ORDER_DYNAMIC }
+            ?.takeIf { mode == IslandSettings.ISLAND_NOTIF_HUB_ORDER_DYNAMIC }
             ?.let { key -> byPriority.firstOrNull { entry -> entry.alerts.any { it.key == key } } }
         return if (pinned != null) listOf(pinned) + byPriority.filter { it !== pinned } else byPriority
     }
@@ -675,7 +675,7 @@ class NotificationsPlugin : BaseIslandPlugin() {
 
     private fun queueCell(icons: List<StackIcon>): CompactCell = CompactCell("notif.queue") {
         when (settings.getIslandNotifQueueStyle()) {
-            SettingsRepository.ISLAND_NOTIF_QUEUE_STYLE_OVERLAP -> IslandStackOverlap(icons, 22.dp)
+            IslandSettings.ISLAND_NOTIF_QUEUE_STYLE_OVERLAP -> IslandStackOverlap(icons, 22.dp)
             else -> IslandStackBubble(icons, 26.dp)
         }
     }
@@ -692,12 +692,12 @@ class NotificationsPlugin : BaseIslandPlugin() {
         if (settings.isIslandLineStageEnabled()) {
             settings.getIslandNotifPeekStyle()
         } else {
-            SettingsRepository.ISLAND_NOTIF_PEEK_STYLE_FULL
+            IslandSettings.ISLAND_NOTIF_PEEK_STYLE_FULL
         }
 
-    private fun condensedLine() = peekStyle() == SettingsRepository.ISLAND_NOTIF_PEEK_STYLE_COMPACT
+    private fun condensedLine() = peekStyle() == IslandSettings.ISLAND_NOTIF_PEEK_STYLE_COMPACT
 
-    private fun minimal() = peekStyle() == SettingsRepository.ISLAND_NOTIF_PEEK_STYLE_MINIMAL
+    private fun minimal() = peekStyle() == IslandSettings.ISLAND_NOTIF_PEEK_STYLE_MINIMAL
 
     private fun itemFor(alert: ActiveNotificationAlert): IslandItem {
         if (concealed()) return concealedItemFor(alert)
@@ -756,7 +756,7 @@ class NotificationsPlugin : BaseIslandPlugin() {
         )
     }
 
-    private fun hidesChatPictures() = settings.getBoolean(SettingsRepository.KEY_ISLAND_NOTIF_CONCEAL_CHAT_PICTURES, false)
+    private fun hidesChatPictures() = settings.getBoolean(IslandSettings.KEY_ISLAND_NOTIF_CONCEAL_CHAT_PICTURES, false)
 
     private fun concealedItemFor(alert: ActiveNotificationAlert): IslandItem {
         val hideChat = hidesChatPictures()
