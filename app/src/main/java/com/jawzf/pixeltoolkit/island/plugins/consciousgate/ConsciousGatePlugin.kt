@@ -11,6 +11,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jawzf.pixeltoolkit.core.data.apps.AppUtil
+import com.jawzf.pixeltoolkit.core.data.notifications.NotificationHub
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticFeedbackType
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
@@ -28,7 +29,6 @@ import com.jawzf.pixeltoolkit.island.ui.components.CameraRow
 import com.jawzf.pixeltoolkit.island.ui.components.IslandBitmap
 import com.jawzf.pixeltoolkit.island.ui.components.MarqueeText
 import com.jawzf.pixeltoolkit.island.ui.components.RollingText
-import com.jawzf.pixeltoolkit.services.tiles.ScreenOffAccessibilityService
 import java.util.Locale
 
 class ConsciousGatePlugin : BaseIslandPlugin() {
@@ -50,7 +50,7 @@ class ConsciousGatePlugin : BaseIslandPlugin() {
         val c = ctx ?: return
         c.mainHandler.removeCallbacks(tick)
         val session = if (settings.isIslandShowConsciousGateEnabled()) {
-            ScreenOffAccessibilityService.instance?.getActiveConsciousGateSession()
+            NotificationHub.activeConsciousGateSession()
         } else {
             null
         }

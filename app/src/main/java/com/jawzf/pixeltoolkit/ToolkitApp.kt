@@ -73,8 +73,7 @@ class ToolkitApp : Application() {
                         null
                     }
 
-                override fun activeConsciousGatePackage() =
-                    ScreenOffAccessibilityService.instance?.getActiveConsciousGateSession()?.packageName
+                override fun activeConsciousGateSession() = ScreenOffAccessibilityService.instance?.getActiveConsciousGateSession()
             },
         )
         HapticUtil.initialize(this)

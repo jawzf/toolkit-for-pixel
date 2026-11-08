@@ -25,6 +25,7 @@ import android.view.accessibility.AccessibilityEvent
 import androidx.core.content.ContextCompat
 import com.jawzf.pixeltoolkit.core.data.duo.DuoSettings
 import com.jawzf.pixeltoolkit.core.data.glance.StatusGlanceSettings
+import com.jawzf.pixeltoolkit.core.data.notifications.ConsciousGateSession
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticFeedbackType
 import com.jawzf.pixeltoolkit.core.design.haptics.performHapticFeedback
 import com.jawzf.pixeltoolkit.core.platform.device.CarConnectionMonitor
@@ -359,7 +360,7 @@ class ScreenOffAccessibilityService :
         setupReceivers()
     }
 
-    fun getActiveConsciousGateSession(): AppFlowHandler.ConsciousGateSession? =
+    fun getActiveConsciousGateSession(): ConsciousGateSession? =
         if (::appFlowHandler.isInitialized) appFlowHandler.getActiveConsciousGateSession() else null
 
     private fun setupReceivers() {

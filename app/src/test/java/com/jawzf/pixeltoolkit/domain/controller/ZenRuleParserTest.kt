@@ -6,13 +6,13 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class ZenRuleParserTest {
-    private class FakeAzrWithId(
+    class FakeAzrWithId(
         @JvmField val mId: String,
         @JvmField val mRule: String,
     )
 
-    private class FakeParceledListSlice(
-        private val items: List<Any>,
+    class FakeParceledListSlice(
+        val items: List<Any>,
     ) {
         fun getList(): List<Any> = items
     }

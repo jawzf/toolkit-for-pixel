@@ -25,7 +25,7 @@ object NotificationHub {
 
         fun activeNotificationKeys(): Set<String>?
 
-        fun activeConsciousGatePackage(): String?
+        fun activeConsciousGateSession(): ConsciousGateSession?
     }
 
     private val navigationListeners = mutableListOf<NavigationListener>()
@@ -86,5 +86,5 @@ object NotificationHub {
 
     fun activeNotificationKeys(): Set<String>? = source?.activeNotificationKeys()
 
-    fun activeConsciousGatePackage(): String? = source?.activeConsciousGatePackage()
+    fun activeConsciousGateSession(): ConsciousGateSession? = source?.activeConsciousGateSession()
 }
