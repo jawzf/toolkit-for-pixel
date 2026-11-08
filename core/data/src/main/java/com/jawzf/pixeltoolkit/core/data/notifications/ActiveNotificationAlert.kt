@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.domain.model
+package com.jawzf.pixeltoolkit.core.data.notifications
 
 import android.app.PendingIntent
 import android.graphics.Bitmap

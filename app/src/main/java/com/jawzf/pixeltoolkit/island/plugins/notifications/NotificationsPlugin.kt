@@ -7,11 +7,11 @@ import android.os.PowerManager
 import android.widget.Toast
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.jawzf.pixeltoolkit.core.data.notifications.ActiveNotificationAlert
+import com.jawzf.pixeltoolkit.core.data.notifications.NotificationActionItem
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.domain.model.ActiveNotificationAlert
-import com.jawzf.pixeltoolkit.domain.model.NotificationActionItem
 import com.jawzf.pixeltoolkit.island.model.CompactCell
 import com.jawzf.pixeltoolkit.island.model.CompactPlacement
 import com.jawzf.pixeltoolkit.island.model.ExpandedContent

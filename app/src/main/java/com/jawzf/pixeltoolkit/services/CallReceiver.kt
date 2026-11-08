@@ -1,11 +1,11 @@
 package com.jawzf.pixeltoolkit.services
 
-import com.jawzf.pixeltoolkit.utils.call.CallStateRepository
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.telephony.TelephonyManager
 import android.util.Log
+import com.jawzf.pixeltoolkit.core.platform.device.CallStateRepository
 
 class CallReceiver : BroadcastReceiver() {
     companion object {

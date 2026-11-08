@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.utils.chronometer
+package com.jawzf.pixeltoolkit.core.platform.device
 
 import android.app.Notification
 import android.app.PendingIntent

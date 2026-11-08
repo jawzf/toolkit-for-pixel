@@ -1,6 +1,6 @@
 package com.jawzf.pixeltoolkit.domain
 
-import com.jawzf.pixeltoolkit.domain.model.NavigationParser
+import com.jawzf.pixeltoolkit.core.data.notifications.NavigationParser
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test

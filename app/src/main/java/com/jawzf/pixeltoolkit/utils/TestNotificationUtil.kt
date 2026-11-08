@@ -6,8 +6,8 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.RectF
-import com.jawzf.pixeltoolkit.domain.model.ActiveNotificationAlert
-import com.jawzf.pixeltoolkit.domain.model.NotificationActionItem
+import com.jawzf.pixeltoolkit.core.data.notifications.ActiveNotificationAlert
+import com.jawzf.pixeltoolkit.core.data.notifications.NotificationActionItem
 import kotlin.random.Random
 
 object TestNotificationUtil {

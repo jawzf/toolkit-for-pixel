@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.domain.controller
+package com.jawzf.pixeltoolkit.core.platform.device
 
 import android.app.AutomaticZenRule
 import android.os.Build

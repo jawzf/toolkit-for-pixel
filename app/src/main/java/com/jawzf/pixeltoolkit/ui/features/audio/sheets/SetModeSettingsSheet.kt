@@ -42,7 +42,7 @@ import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.pickers.SegmentedPicker
 import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
-import com.jawzf.pixeltoolkit.domain.controller.ZenModeController
+import com.jawzf.pixeltoolkit.core.platform.device.ZenModeController
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
