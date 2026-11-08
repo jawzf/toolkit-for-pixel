@@ -12,21 +12,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.jawzf.pixeltoolkit.core.data.island.IslandSettings
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.cards.ConfigPickerItem
 import com.jawzf.pixeltoolkit.core.design.components.SegmentedDropdownMenuItem
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
+import com.jawzf.pixeltoolkit.feature.island.IslandState
 
 private val ALARM_WINDOW_OPTIONS = listOf(4, 8, 12, 24)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun IslandAlarmOptionsBottomSheet(
-    viewModel: MainViewModel,
+    state: IslandState,
     onDismissRequest: () -> Unit,
 ) {
     val view = LocalView.current
@@ -55,7 +55,7 @@ fun IslandAlarmOptionsBottomSheet(
             ) {
                 ConfigPickerItem(
                     title = stringResource(R.string.island_alarm_window_title),
-                    selectedValue = stringResource(R.string.island_alarm_window_hours, viewModel.island.islandAlarmWindowHours.intValue),
+                    selectedValue = stringResource(R.string.island_alarm_window_hours, state.islandAlarmWindowHours.intValue),
                     iconRes = R.drawable.rounded_schedule_24,
                     modifier = Modifier.fillMaxWidth(),
                 ) {
@@ -64,19 +64,19 @@ fun IslandAlarmOptionsBottomSheet(
                             text = { Text(stringResource(R.string.island_alarm_window_hours, hours)) },
                             onClick = {
                                 HapticUtil.performVirtualKeyHaptic(view)
-                                viewModel.island.setIslandAlarmWindowHours(hours)
+                                state.setIslandAlarmWindowHours(hours)
                             },
                         )
                     }
                 }
                 IslandPrefToggle(
-                    settingKey = SettingsRepository.KEY_ISLAND_ALARM_HIDE_TIME,
+                    settingKey = IslandSettings.KEY_ISLAND_ALARM_HIDE_TIME,
                     iconRes = R.drawable.rounded_schedule_24,
                     title = stringResource(R.string.island_alarm_hide_time_title),
                 )
             }
 
-            IslandLauncherOnlyToggle(SettingsRepository.KEY_ISLAND_ALARM_LAUNCHER_ONLY)
+            IslandLauncherOnlyToggle(IslandSettings.KEY_ISLAND_ALARM_LAUNCHER_ONLY)
         }
     }
 }

@@ -17,11 +17,11 @@ import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.LifecycleResumeEffect
+import com.jawzf.pixeltoolkit.core.data.island.IslandSettings
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.cards.IconToggleItem
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.feature.island.remote.ProviderDiscovery
 import com.jawzf.pixeltoolkit.feature.island.remote.ProviderInfo
 import com.jawzf.pixeltoolkit.feature.island.remote.ProviderPairing
@@ -33,7 +33,7 @@ import kotlinx.coroutines.launch
 fun IslandProvidersSection(onChanged: () -> Unit = {}) {
     val context = LocalContext.current
     val view = LocalView.current
-    val trust = remember { ProviderTrustStore(SettingsRepository(context)) }
+    val trust = remember { ProviderTrustStore(IslandSettings(context)) }
     var refresh by remember { mutableIntStateOf(0) }
     LifecycleResumeEffect(Unit) {
         refresh++

@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.jawzf.pixeltoolkit.core.data.island.IslandSettings
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.cards.IconToggleItem
 import com.jawzf.pixeltoolkit.core.design.components.ConfigSliderItem
@@ -19,13 +20,12 @@ import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.pickers.SegmentedPicker
 import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
+import com.jawzf.pixeltoolkit.feature.island.IslandState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun IslandNotificationHubOptionsBottomSheet(
-    viewModel: MainViewModel,
+    state: IslandState,
     onDismissRequest: () -> Unit,
 ) {
     val view = LocalView.current
@@ -52,16 +52,16 @@ fun IslandNotificationHubOptionsBottomSheet(
                 val recentLabel = stringResource(R.string.island_notif_hub_order_recent)
                 SegmentedPicker(
                     items = listOf(
-                        SettingsRepository.ISLAND_NOTIF_HUB_ORDER_DYNAMIC,
-                        SettingsRepository.ISLAND_NOTIF_HUB_ORDER_PRIORITY,
-                        SettingsRepository.ISLAND_NOTIF_HUB_ORDER_RECENT,
+                        IslandSettings.ISLAND_NOTIF_HUB_ORDER_DYNAMIC,
+                        IslandSettings.ISLAND_NOTIF_HUB_ORDER_PRIORITY,
+                        IslandSettings.ISLAND_NOTIF_HUB_ORDER_RECENT,
                     ),
-                    selectedItem = viewModel.island.islandNotifHubOrder.value,
-                    onItemSelected = { viewModel.island.setIslandNotifHubOrder(it) },
+                    selectedItem = state.islandNotifHubOrder.value,
+                    onItemSelected = { state.setIslandNotifHubOrder(it) },
                     labelProvider = {
                         when (it) {
-                            SettingsRepository.ISLAND_NOTIF_HUB_ORDER_PRIORITY -> priorityLabel
-                            SettingsRepository.ISLAND_NOTIF_HUB_ORDER_RECENT -> recentLabel
+                            IslandSettings.ISLAND_NOTIF_HUB_ORDER_PRIORITY -> priorityLabel
+                            IslandSettings.ISLAND_NOTIF_HUB_ORDER_RECENT -> recentLabel
                             else -> dynamicLabel
                         }
                     },
@@ -71,29 +71,29 @@ fun IslandNotificationHubOptionsBottomSheet(
                 IconToggleItem(
                     iconRes = R.drawable.rounded_notifications_off_24,
                     title = stringResource(R.string.island_notif_hub_include_silent),
-                    isChecked = viewModel.island.isIslandNotifHubIncludeSilent.value,
+                    isChecked = state.isIslandNotifHubIncludeSilent.value,
                     onCheckedChange = {
                         HapticUtil.performVirtualKeyHaptic(view)
-                        viewModel.island.setIslandNotifHubIncludeSilent(it)
+                        state.setIslandNotifHubIncludeSilent(it)
                     },
                 )
                 IconToggleItem(
                     iconRes = R.drawable.rounded_apps_24,
                     title = stringResource(R.string.island_notif_hub_group_apps),
-                    isChecked = viewModel.island.isIslandNotifHubGroupByApps.value,
+                    isChecked = state.isIslandNotifHubGroupByApps.value,
                     onCheckedChange = {
                         HapticUtil.performVirtualKeyHaptic(view)
-                        viewModel.island.setIslandNotifHubGroupByApps(it)
+                        state.setIslandNotifHubGroupByApps(it)
                     },
                 )
                 ConfigSliderItem(
                     title = stringResource(R.string.island_hide_icon_notifications),
                     value =
-                        viewModel.island.islandNotifHubIcons.intValue
+                        state.islandNotifHubIcons.intValue
                             .toFloat(),
                     onValueChange = {
                         HapticUtil.performUIHaptic(view)
-                        viewModel.island.setIslandNotifHubIcons(it.toInt())
+                        state.setIslandNotifHubIcons(it.toInt())
                     },
                     valueRange = 0f..8f,
                     increment = 1f,

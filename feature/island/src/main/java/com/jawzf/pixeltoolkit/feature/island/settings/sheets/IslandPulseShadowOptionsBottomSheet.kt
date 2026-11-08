@@ -17,13 +17,13 @@ import com.jawzf.pixeltoolkit.core.design.components.ConfigSliderItem
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
-import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
+import com.jawzf.pixeltoolkit.feature.island.IslandState
 import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun IslandPulseShadowOptionsBottomSheet(
-    viewModel: MainViewModel,
+    state: IslandState,
     onDismissRequest: () -> Unit,
 ) {
     val view = LocalView.current
@@ -46,10 +46,10 @@ fun IslandPulseShadowOptionsBottomSheet(
             RoundedCardContainer(spacing = 2.dp, cornerRadius = 24.dp) {
                 ConfigSliderItem(
                     title = stringResource(R.string.island_pulse_shadow_size_title),
-                    value = viewModel.island.islandPulseShadowSize.floatValue,
+                    value = state.islandPulseShadowSize.floatValue,
                     onValueChange = {
                         HapticUtil.performUIHaptic(view)
-                        viewModel.island.setIslandPulseShadowSize(it)
+                        state.setIslandPulseShadowSize(it)
                     },
                     valueRange = 0.2f..1f,
                     increment = 0.05f,
@@ -59,10 +59,10 @@ fun IslandPulseShadowOptionsBottomSheet(
 
                 ConfigSliderItem(
                     title = stringResource(R.string.island_pulse_shadow_y_shift_title),
-                    value = viewModel.island.islandPulseShadowYShift.floatValue,
+                    value = state.islandPulseShadowYShift.floatValue,
                     onValueChange = {
                         HapticUtil.performUIHaptic(view)
-                        viewModel.island.setIslandPulseShadowYShift(it)
+                        state.setIslandPulseShadowYShift(it)
                     },
                     valueRange = 0f..1f,
                     increment = 0.05f,
@@ -72,10 +72,10 @@ fun IslandPulseShadowOptionsBottomSheet(
 
                 ConfigSliderItem(
                     title = stringResource(R.string.island_pulse_shadow_spread_title),
-                    value = viewModel.island.islandPulseShadowSpread.floatValue,
+                    value = state.islandPulseShadowSpread.floatValue,
                     onValueChange = {
                         HapticUtil.performUIHaptic(view)
-                        viewModel.island.setIslandPulseShadowSpread(it)
+                        state.setIslandPulseShadowSpread(it)
                     },
                     valueRange = 1f..4f,
                     increment = 0.1f,
@@ -85,10 +85,10 @@ fun IslandPulseShadowOptionsBottomSheet(
 
                 ConfigSliderItem(
                     title = stringResource(R.string.island_pulse_shadow_duration_title),
-                    value = viewModel.island.islandPulseShadowDurationMs.floatValue,
+                    value = state.islandPulseShadowDurationMs.floatValue,
                     onValueChange = {
                         HapticUtil.performUIHaptic(view)
-                        viewModel.island.setIslandPulseShadowDurationMs(it)
+                        state.setIslandPulseShadowDurationMs(it)
                     },
                     valueRange = 300f..4000f,
                     increment = 50f,

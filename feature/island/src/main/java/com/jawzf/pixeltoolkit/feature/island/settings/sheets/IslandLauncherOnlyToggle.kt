@@ -10,17 +10,17 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.jawzf.pixeltoolkit.core.data.island.IslandSettings
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.cards.IconToggleItem
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 
 @Composable
 fun IslandLauncherOnlyToggle(settingKey: String, modifier: Modifier = Modifier) {
     val context = LocalContext.current
     val view = LocalView.current
-    val settings = remember { SettingsRepository(context) }
+    val settings = remember { IslandSettings(context) }
     var checked by remember { mutableStateOf(settings.getBoolean(settingKey, false)) }
     RoundedCardContainer(spacing = 2.dp, cornerRadius = 24.dp, modifier = modifier) {
         IconToggleItem(
@@ -48,7 +48,7 @@ fun IslandPrefToggle(
 ) {
     val context = LocalContext.current
     val view = LocalView.current
-    val settings = remember { SettingsRepository(context) }
+    val settings = remember { IslandSettings(context) }
     var checked by remember { mutableStateOf(settings.getBoolean(settingKey, defaultValue)) }
     IconToggleItem(
         iconRes = iconRes,
@@ -67,5 +67,5 @@ fun IslandPrefToggle(
 @Composable
 fun rememberIslandShowsWhileLocked(): Boolean {
     val context = LocalContext.current
-    return remember { SettingsRepository(context).getIslandShowWhen() != SettingsRepository.ISLAND_SHOW_WHEN_UNLOCKED }
+    return remember { IslandSettings(context).getIslandShowWhen() != IslandSettings.ISLAND_SHOW_WHEN_UNLOCKED }
 }

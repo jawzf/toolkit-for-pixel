@@ -23,16 +23,17 @@ import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.jawzf.pixeltoolkit.FeatureSettingsActivity
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
-import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
+import com.jawzf.pixeltoolkit.core.platform.AppComponents
+import com.jawzf.pixeltoolkit.feature.island.IslandState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun IslandDevicesBatteryBottomSheet(
-    viewModel: MainViewModel,
+    state: IslandState,
+    batteryColorOptions: @Composable () -> Unit,
     onDismissRequest: () -> Unit,
 ) {
     val context = LocalContext.current
@@ -56,9 +57,10 @@ fun IslandDevicesBatteryBottomSheet(
             )
 
             IslandBatteryOptions(
-                viewModel = viewModel,
-                onlyLow = viewModel.island.isIslandDevicesBatteryOnlyLow.value,
-                onOnlyLowChange = viewModel.island::setIslandDevicesBatteryOnlyLow,
+                state = state,
+                batteryColorOptions = batteryColorOptions,
+                onlyLow = state.isIslandDevicesBatteryOnlyLow.value,
+                onOnlyLowChange = state::setIslandDevicesBatteryOnlyLow,
                 devices = true,
             )
 
@@ -70,7 +72,7 @@ fun IslandDevicesBatteryBottomSheet(
                         .clickable {
                             HapticUtil.performVirtualKeyHaptic(view)
                             context.startActivity(
-                                Intent(context, FeatureSettingsActivity::class.java).apply {
+                                Intent().setClassName(context, AppComponents.FEATURE_SETTINGS_ACTIVITY).apply {
                                     putExtra("feature", "Batteries")
                                 },
                             )

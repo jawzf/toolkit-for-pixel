@@ -17,12 +17,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.jawzf.pixeltoolkit.core.data.island.IslandSettings
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.cards.IconToggleItem
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.feature.island.remote.ProviderTrustStore
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -34,7 +34,7 @@ fun IslandAppOptionsBottomSheet(
 ) {
     val context = LocalContext.current
     val view = LocalView.current
-    val store = remember { ProviderTrustStore(SettingsRepository(context)) }
+    val store = remember { ProviderTrustStore(IslandSettings(context)) }
     var launcherOnly by remember { mutableStateOf(packageName in store.launcherOnly()) }
     var hideWhenLocked by remember { mutableStateOf(packageName in store.hideWhenLocked()) }
 

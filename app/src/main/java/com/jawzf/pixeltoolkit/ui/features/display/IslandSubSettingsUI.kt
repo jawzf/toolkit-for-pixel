@@ -554,14 +554,14 @@ fun IslandVisualsSettingsUI(
 
     if (showBorderOutlineSheet) {
         IslandBorderOutlineOptionsBottomSheet(
-            viewModel = viewModel,
+            state = viewModel.island,
             onDismissRequest = { showBorderOutlineSheet = false },
         )
     }
 
     if (showPulseShadowSheet) {
         IslandPulseShadowOptionsBottomSheet(
-            viewModel = viewModel,
+            state = viewModel.island,
             onDismissRequest = { showPulseShadowSheet = false },
         )
     }
@@ -889,7 +889,7 @@ fun IslandBehaviorSettingsUI(
             )
 
             IslandHideIconsToggle(
-                viewModel = viewModel,
+                state = viewModel.island,
                 hasShellPermission = hasShellPermission,
                 onNeedPermission = {
                     requestingPermissionsFor =
@@ -1384,7 +1384,7 @@ fun IslandNotificationSettingsUI(
 
     if (showHubSheet) {
         IslandNotificationHubOptionsBottomSheet(
-            viewModel = viewModel,
+            state = viewModel.island,
             onDismissRequest = { showHubSheet = false },
         )
     }
