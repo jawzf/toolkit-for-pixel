@@ -11,9 +11,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.jawzf.pixeltoolkit.core.data.calls.ChronometerEntry
+import com.jawzf.pixeltoolkit.core.data.calls.ChronometerRepository
 import com.jawzf.pixeltoolkit.core.design.R
-import com.jawzf.pixeltoolkit.core.platform.device.ChronometerEntry
-import com.jawzf.pixeltoolkit.core.platform.device.ChronometerRepository
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.island.model.CompactCell
 import com.jawzf.pixeltoolkit.island.model.CompactPlacement

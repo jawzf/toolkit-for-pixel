@@ -5,7 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.telephony.TelephonyManager
 import android.util.Log
-import com.jawzf.pixeltoolkit.core.platform.device.CallStateRepository
+import com.jawzf.pixeltoolkit.core.data.calls.CallStateRepository
 
 class CallReceiver : BroadcastReceiver() {
     companion object {

@@ -1,5 +1,6 @@
 package com.jawzf.pixeltoolkit.domain.controller
 
+import com.jawzf.pixeltoolkit.core.platform.device.parseZenRules
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
