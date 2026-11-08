@@ -79,6 +79,7 @@ import com.jawzf.pixeltoolkit.feature.connectivity.ui.NetworksSettingsUI
 import com.jawzf.pixeltoolkit.feature.display.aod.ui.AlwaysOnDisplaySettingsUI
 import com.jawzf.pixeltoolkit.feature.display.aod.ui.AodWallpaperPreviewCard
 import com.jawzf.pixeltoolkit.feature.display.aod.ui.AodWallpaperSettingsUI
+import com.jawzf.pixeltoolkit.feature.display.duo.ui.BatteryColorOptions
 import com.jawzf.pixeltoolkit.feature.display.duo.ui.DuoSettingsUI
 import com.jawzf.pixeltoolkit.feature.display.glance.ui.StatusGlanceSettingsUI
 import com.jawzf.pixeltoolkit.feature.display.lockclock.ui.LockScreenClockSettingsUI
@@ -1352,7 +1353,60 @@ class FeatureSettingsActivity : AppCompatActivity() {
 
                                     "Island" -> {
                                         IslandSettingsUI(
-                                            viewModel = viewModel,
+                                            state = viewModel.island,
+                                            isDuoEnabled = viewModel.duo.isDuoEnabled.value,
+                                            isDuoIslandCombined = viewModel.duo.isDuoIslandCombined.value,
+                                            onDuoIslandCombinedChange = { viewModel.duo.setDuoIslandCombined(it) },
+                                            isAccessibilityEnabled = viewModel.isAccessibilityEnabled.value,
+                                            isNotificationListenerEnabled = viewModel.isNotificationListenerEnabled.value,
+                                            isCalendarPermissionGranted = viewModel.isCalendarPermissionGranted.value,
+                                            permissionItemsFor = { keys ->
+                                                PermissionUIHelper.getPermissionItems(keys, context, viewModel)
+                                            },
+                                            onRefreshPermissions = { viewModel.check(context) },
+                                            actionLabel = { it.displayName(context) },
+                                            gesturePicker = { currentAction, onActionSelected, onClosed ->
+                                                GestureActionPickerSheet(
+                                                    viewModel = viewModel,
+                                                    currentAction = currentAction,
+                                                    onActionSelected = onActionSelected,
+                                                    onPickerClosed = onClosed,
+                                                )
+                                            },
+                                            appPicker = { r ->
+                                                AppSelectionSheet(
+                                                    title = r.title,
+                                                    onDismissRequest = r.onDismiss,
+                                                    onLoadApps = r.onLoadApps,
+                                                    onSaveApps = r.onSaveApps,
+                                                    onAppToggle = r.onAppToggle,
+                                                    context = context,
+                                                    headerContent = r.headerContent,
+                                                )
+                                            },
+                                            batteryColorOptions = {
+                                                BatteryColorOptions(
+                                                    state = viewModel.duo,
+                                                    isIslandBatteryIdleColorEnabled =
+                                                        viewModel.island.isIslandBatteryIdleColorEnabled.value,
+                                                    islandBatteryIdleColor = viewModel.island.islandBatteryIdleColor.value,
+                                                    onIslandBatteryIdleColorEnabledChange = {
+                                                        viewModel.island.setIslandBatteryIdleColorEnabled(it)
+                                                    },
+                                                    onIslandBatteryIdleColorChange = {
+                                                        viewModel.island.setIslandBatteryIdleColor(it)
+                                                    },
+                                                    showIdleColor = true,
+                                                    showLevels = true,
+                                                )
+                                            },
+                                            calendarOptionsSheet = { onDismiss ->
+                                                StatusGlanceCalendarOptionsBottomSheet(
+                                                    viewModel = viewModel,
+                                                    onDismissRequest = onDismiss,
+                                                    allowIconEdit = true,
+                                                )
+                                            },
                                             modifier = Modifier.padding(top = 16.dp),
                                             highlightSetting = highlightSetting,
                                         )
@@ -1360,7 +1414,8 @@ class FeatureSettingsActivity : AppCompatActivity() {
 
                                     ISLAND_PLACEMENT_FEATURE_ID -> {
                                         IslandPlacementSettingsUI(
-                                            viewModel = viewModel,
+                                            state = viewModel.island,
+                                            isFoldableCameraDevice = viewModel.isFoldableCameraDevice.value,
                                             modifier = Modifier.padding(top = 16.dp),
                                             highlightSetting = highlightSetting,
                                         )
@@ -1368,7 +1423,7 @@ class FeatureSettingsActivity : AppCompatActivity() {
 
                                     ISLAND_VISUALS_FEATURE_ID -> {
                                         IslandVisualsSettingsUI(
-                                            viewModel = viewModel,
+                                            state = viewModel.island,
                                             modifier = Modifier.padding(top = 16.dp),
                                             highlightSetting = highlightSetting,
                                         )
@@ -1376,7 +1431,7 @@ class FeatureSettingsActivity : AppCompatActivity() {
 
                                     ISLAND_DURATION_FEATURE_ID -> {
                                         IslandDurationSettingsUI(
-                                            viewModel = viewModel,
+                                            state = viewModel.island,
                                             modifier = Modifier.padding(top = 16.dp),
                                             highlightSetting = highlightSetting,
                                         )
@@ -1384,7 +1439,13 @@ class FeatureSettingsActivity : AppCompatActivity() {
 
                                     ISLAND_BEHAVIOR_FEATURE_ID -> {
                                         IslandBehaviorSettingsUI(
-                                            viewModel = viewModel,
+                                            state = viewModel.island,
+                                            isRootPermissionGranted = viewModel.isRootPermissionGranted.value,
+                                            isShizukuPermissionGranted = viewModel.isShizukuPermissionGranted.value,
+                                            permissionItemsFor = { keys ->
+                                                PermissionUIHelper.getPermissionItems(keys, context, viewModel)
+                                            },
+                                            onRefreshPermissions = { viewModel.check(context) },
                                             modifier = Modifier.padding(top = 16.dp),
                                             highlightSetting = highlightSetting,
                                         )
@@ -1392,7 +1453,23 @@ class FeatureSettingsActivity : AppCompatActivity() {
 
                                     ISLAND_NOTIFICATIONS_FEATURE_ID -> {
                                         IslandNotificationSettingsUI(
-                                            viewModel = viewModel,
+                                            state = viewModel.island,
+                                            isSensitiveNotificationsGranted = viewModel.isSensitiveNotificationsGranted.value,
+                                            permissionItemsFor = { keys ->
+                                                PermissionUIHelper.getPermissionItems(keys, context, viewModel)
+                                            },
+                                            onRefreshPermissions = { viewModel.check(context) },
+                                            appPicker = { r ->
+                                                AppSelectionSheet(
+                                                    title = r.title,
+                                                    onDismissRequest = r.onDismiss,
+                                                    onLoadApps = r.onLoadApps,
+                                                    onSaveApps = r.onSaveApps,
+                                                    onAppToggle = r.onAppToggle,
+                                                    context = context,
+                                                    headerContent = r.headerContent,
+                                                )
+                                            },
                                             modifier = Modifier.padding(top = 16.dp),
                                             highlightSetting = highlightSetting,
                                         )
