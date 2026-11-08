@@ -35,6 +35,9 @@ import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.feature.display.glance.CalendarAccount
+import com.jawzf.pixeltoolkit.feature.island.settings.sheets.IslandLauncherOnlyToggle
+import com.jawzf.pixeltoolkit.feature.island.settings.sheets.IslandPrefToggle
+import com.jawzf.pixeltoolkit.feature.island.settings.sheets.rememberIslandShowsWhileLocked
 import com.jawzf.pixeltoolkit.utils.EmojiUtil
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 

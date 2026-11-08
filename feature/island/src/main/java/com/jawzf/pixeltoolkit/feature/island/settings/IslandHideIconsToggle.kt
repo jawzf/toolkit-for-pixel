@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.features.display
+package com.jawzf.pixeltoolkit.feature.island.settings
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

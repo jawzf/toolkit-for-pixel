@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.features.display
+package com.jawzf.pixeltoolkit.feature.island.settings
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.padding
@@ -26,7 +26,7 @@ import com.jawzf.pixeltoolkit.feature.island.remote.ProviderDiscovery
 import com.jawzf.pixeltoolkit.feature.island.remote.ProviderInfo
 import com.jawzf.pixeltoolkit.feature.island.remote.ProviderPairing
 import com.jawzf.pixeltoolkit.feature.island.remote.ProviderTrustStore
-import com.jawzf.pixeltoolkit.ui.features.display.sheets.IslandProviderPairingSheet
+import com.jawzf.pixeltoolkit.feature.island.settings.sheets.IslandProviderPairingSheet
 import kotlinx.coroutines.launch
 
 @Composable

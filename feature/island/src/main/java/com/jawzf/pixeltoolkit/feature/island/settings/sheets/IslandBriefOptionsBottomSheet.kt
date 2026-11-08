@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.features.display.sheets
+package com.jawzf.pixeltoolkit.feature.island.settings.sheets
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -16,14 +16,17 @@ import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.cards.IconToggleItem
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
+import com.jawzf.pixeltoolkit.core.design.modifiers.highlight
 import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
+import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun IslandSoundModeOptionsBottomSheet(
+fun IslandBriefOptionsBottomSheet(
     viewModel: MainViewModel,
     onDismissRequest: () -> Unit,
+    highlightSetting: String? = null,
 ) {
     val view = LocalView.current
 
@@ -39,7 +42,7 @@ fun IslandSoundModeOptionsBottomSheet(
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             Text(
-                text = stringResource(R.string.island_sound_mode_options_title),
+                text = stringResource(R.string.island_brief_options_title),
                 style = MaterialTheme.typography.titleLarge,
                 color = MaterialTheme.colorScheme.onSurface,
                 modifier = Modifier.padding(start = 8.dp, bottom = 4.dp),
@@ -50,13 +53,20 @@ fun IslandSoundModeOptionsBottomSheet(
                 cornerRadius = 24.dp,
             ) {
                 IconToggleItem(
-                    iconRes = R.drawable.rounded_volume_up_24,
-                    title = stringResource(R.string.island_sound_mode_keep_icon_title),
-                    isChecked = viewModel.island.isIslandSoundModeKeepIcon.value,
+                    iconRes = R.drawable.rounded_alarm_24,
+                    title = stringResource(R.string.island_brief_show_alarm_title),
+                    isChecked = viewModel.island.isIslandBriefShowAlarm.value,
                     onCheckedChange = { checked ->
                         HapticUtil.performVirtualKeyHaptic(view)
-                        viewModel.island.setIslandSoundModeKeepIcon(checked)
+                        viewModel.island.setIslandBriefShowAlarm(checked)
                     },
+                    modifier = Modifier.highlight(highlightSetting == "island_brief_show_alarm"),
+                )
+
+                IslandPrefToggle(
+                    settingKey = SettingsRepository.KEY_ISLAND_BRIEF_TWO_LINE_HEADER,
+                    iconRes = R.drawable.rounded_calendar_today_24,
+                    title = stringResource(R.string.island_brief_two_line_header_title),
                 )
             }
         }
