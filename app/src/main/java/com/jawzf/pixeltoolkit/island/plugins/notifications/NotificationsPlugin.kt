@@ -9,6 +9,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.core.data.notifications.ActiveNotificationAlert
 import com.jawzf.pixeltoolkit.core.data.notifications.NotificationActionItem
+import com.jawzf.pixeltoolkit.core.data.notifications.NotificationHub
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
@@ -33,7 +34,6 @@ import com.jawzf.pixeltoolkit.island.ui.IslandStackBubble
 import com.jawzf.pixeltoolkit.island.ui.IslandStackOverlap
 import com.jawzf.pixeltoolkit.island.ui.components.IslandBitmap
 import com.jawzf.pixeltoolkit.island.ui.components.IslandIcon
-import com.jawzf.pixeltoolkit.services.NotificationListener
 import kotlin.math.ceil
 
 class NotificationsPlugin : BaseIslandPlugin() {
@@ -182,7 +182,7 @@ class NotificationsPlugin : BaseIslandPlugin() {
     private var postedWhileCopied = false
     private val copiedRunnable = Runnable { finishCopy() }
 
-    private val listener = object : NotificationListener.NotificationAlertListener {
+    private val listener = object : NotificationHub.AlertListener {
         override fun onNotificationAlertPosted(alert: ActiveNotificationAlert) {
             ctx?.mainHandler?.post { onPosted(alert) }
         }
@@ -194,7 +194,7 @@ class NotificationsPlugin : BaseIslandPlugin() {
 
     override fun onStart() {
         if (!registered) {
-            NotificationListener.addNotificationAlertListener(listener)
+            NotificationHub.addAlertListener(listener)
             registered = true
         }
         if (hub()) syncHub()
@@ -202,7 +202,7 @@ class NotificationsPlugin : BaseIslandPlugin() {
 
     override fun onStop() {
         if (registered) {
-            NotificationListener.removeNotificationAlertListener(listener)
+            NotificationHub.removeAlertListener(listener)
             registered = false
         }
         cancelTimers()
@@ -231,7 +231,7 @@ class NotificationsPlugin : BaseIslandPlugin() {
     private fun maxQueue() = if (hub()) HUB_MAX_QUEUE else MAX_QUEUE
 
     private fun syncHub() {
-        val live = NotificationListener.instance?.hubAlerts().orEmpty()
+        val live = NotificationHub.hubAlerts()
         val liveKeys = live.mapTo(HashSet()) { it.key }
         val stale = alerts.filter { it.key !in liveKeys && !it.key.startsWith("simulated_") }
         stale.forEach { removeQuietly(it.key) }
@@ -744,7 +744,7 @@ class NotificationsPlugin : BaseIslandPlugin() {
             accent = accent,
             dismissible = true,
             onDismiss = {
-                NotificationListener.dismissNotification(alert.key)
+                NotificationHub.dismiss(alert.key)
                 popCurrent(reExpand = false)
             },
             onOpen = {
@@ -798,7 +798,7 @@ class NotificationsPlugin : BaseIslandPlugin() {
             accent = alert.appColor?.let { Color(soften(it)) },
             dismissible = true,
             onDismiss = {
-                NotificationListener.dismissNotification(alert.key)
+                NotificationHub.dismiss(alert.key)
                 popCurrent(reExpand = false)
             },
             onOpen = open,
@@ -814,7 +814,7 @@ class NotificationsPlugin : BaseIslandPlugin() {
         val icon = alert.appIcon ?: alert.icon
         val copy = { copyCode(alert, code) }
         val dismiss = {
-            NotificationListener.dismissNotification(alert.key)
+            NotificationHub.dismiss(alert.key)
             popCurrent(reExpand = false)
         }
         return IslandItem(
@@ -889,7 +889,7 @@ class NotificationsPlugin : BaseIslandPlugin() {
     private fun finishCopy() {
         val key = copiedKey ?: return
         copiedKey = null
-        if (settings.isIslandOtpDismissAfterCopyEnabled()) NotificationListener.dismissNotification(key)
+        if (settings.isIslandOtpDismissAfterCopyEnabled()) NotificationHub.dismiss(key)
         val index = alerts.indexOfFirst { it.key == key }
         if (index >= 0) currentIndex = alerts.removeKeepingCurrent(index, currentIndex)
         if (alerts.isEmpty()) {
@@ -947,7 +947,7 @@ class NotificationsPlugin : BaseIslandPlugin() {
 
     private fun sendReply(alert: ActiveNotificationAlert, action: NotificationActionItem, text: String) {
         val canCarryText = !action.remoteInputs.isNullOrEmpty()
-        val sent = canCarryText && NotificationListener.instance?.performNotificationAction(action, text) == true
+        val sent = canCarryText && NotificationHub.performAction(action, text)
         if (sent) {
             Toast.makeText(context, R.string.island_reply_sent, Toast.LENGTH_SHORT).show()
             dismissAfterReply(alert)
@@ -972,7 +972,7 @@ class NotificationsPlugin : BaseIslandPlugin() {
             context.performGlobalAction(AccessibilityService.GLOBAL_ACTION_NOTIFICATIONS)
             return
         }
-        if (action.pendingIntent != null) NotificationListener.instance?.performNotificationAction(action)
+        if (action.pendingIntent != null) NotificationHub.performAction(action, null)
         if (currentAlert()?.key == alert.key) popCurrent(reExpand = true)
     }
 

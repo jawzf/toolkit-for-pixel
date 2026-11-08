@@ -31,9 +31,11 @@ import com.jawzf.pixeltoolkit.core.data.notifications.ActiveNotificationAlert
 import com.jawzf.pixeltoolkit.core.data.notifications.NavigationNotificationData
 import com.jawzf.pixeltoolkit.core.data.notifications.NavigationParser
 import com.jawzf.pixeltoolkit.core.data.notifications.NotificationActionItem
+import com.jawzf.pixeltoolkit.core.data.notifications.NotificationHub
 import com.jawzf.pixeltoolkit.core.data.prefs.AppSelection
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticFeedbackType
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
+import com.jawzf.pixeltoolkit.core.platform.AppComponents
 import com.jawzf.pixeltoolkit.core.platform.device.CallStateRepository
 import com.jawzf.pixeltoolkit.core.platform.device.CarConnectionMonitor
 import com.jawzf.pixeltoolkit.core.platform.device.ChronometerRepository
@@ -69,15 +71,6 @@ import java.io.FileOutputStream
 import java.util.concurrent.ConcurrentHashMap
 
 class NotificationListener : NotificationListenerService() {
-    interface NavigationNotificationListener {
-        fun onNavigationNotificationUpdated(data: NavigationNotificationData?)
-    }
-
-    interface NotificationAlertListener {
-        fun onNotificationAlertPosted(alert: ActiveNotificationAlert)
-        fun onNotificationAlertRemoved(key: String)
-    }
-
     companion object {
         private const val PROGRESS_REFRESH_DEBOUNCE_MS = 250L
         private const val EXTRA_SHORT_CRITICAL_TEXT = "android.shortCriticalText"
@@ -94,7 +87,7 @@ class NotificationListener : NotificationListenerService() {
             Notification.CATEGORY_WORKOUT,
         )
 
-        const val ACTION_LIKE_CURRENT_SONG = "com.jawzf.pixeltoolkit.ACTION_LIKE_CURRENT_SONG"
+        const val ACTION_LIKE_CURRENT_SONG = AppComponents.ACTION_LIKE_CURRENT_SONG
         const val ACTION_REQUEST_AMBIENT_GLANCE =
             "com.jawzf.pixeltoolkit.ACTION_REQUEST_AMBIENT_GLANCE"
 
@@ -103,49 +96,19 @@ class NotificationListener : NotificationListenerService() {
 
         var instance: NotificationListener? = null
 
-        private val alertListeners = mutableListOf<NotificationAlertListener>()
-        private val navigationListeners = mutableListOf<NavigationNotificationListener>()
-
-        fun addNavigationNotificationListener(listener: NavigationNotificationListener) {
-            synchronized(navigationListeners) {
-                if (!navigationListeners.contains(listener)) navigationListeners.add(listener)
-            }
-        }
-
-        fun removeNavigationNotificationListener(listener: NavigationNotificationListener) {
-            synchronized(navigationListeners) { navigationListeners.remove(listener) }
-        }
-
         fun notifyNavigationListeners(data: NavigationNotificationData?) {
-            val listenersCopy = synchronized(navigationListeners) { navigationListeners.toList() }
-            listenersCopy.forEach { it.onNavigationNotificationUpdated(data) }
+            NotificationHub.notifyNavigation(data)
         }
 
         fun getLatestNavigationNotification(): NavigationNotificationData? =
             instance?.extractLatestNavigationNotification()
 
-        fun addNotificationAlertListener(listener: NotificationAlertListener) {
-            synchronized(alertListeners) {
-                if (!alertListeners.contains(listener)) {
-                    alertListeners.add(listener)
-                }
-            }
-        }
-
-        fun removeNotificationAlertListener(listener: NotificationAlertListener) {
-            synchronized(alertListeners) {
-                alertListeners.remove(listener)
-            }
-        }
-
         fun notifyAlertPosted(alert: ActiveNotificationAlert) {
-            val listenersCopy = synchronized(alertListeners) { alertListeners.toList() }
-            listenersCopy.forEach { it.onNotificationAlertPosted(alert) }
+            NotificationHub.notifyAlertPosted(alert)
         }
 
         fun notifyAlertRemoved(key: String) {
-            val listenersCopy = synchronized(alertListeners) { alertListeners.toList() }
-            listenersCopy.forEach { it.onNotificationAlertRemoved(key) }
+            NotificationHub.notifyAlertRemoved(key)
         }
 
         fun dismissNotification(key: String) {
@@ -1079,10 +1042,10 @@ class NotificationListener : NotificationListenerService() {
             )
             val callHidden = CallNotificationParser.isCall(sbn) && !SettingsRepository(applicationContext).isIslandShowCallsEnabled()
             if (alert != null && !callHidden) {
-                notifyAlertPosted(alert)
+                NotificationHub.notifyAlertPosted(alert)
             }
         } else if (!isRepost && isHubEnabled()) {
-            hubAlertOf(sbn, rankingMap)?.let(::notifyAlertPosted)
+            hubAlertOf(sbn, rankingMap)?.let(NotificationHub::notifyAlertPosted)
         }
 
         val pm = getSystemService(POWER_SERVICE) as PowerManager
@@ -1488,7 +1451,7 @@ class NotificationListener : NotificationListenerService() {
         ChronometerRepository.onRemoved(sbn.key)
         unreadNotifications.remove(sbn.key)
         lastCallVibrateTime.remove(sbn.key)
-        notifyAlertRemoved(sbn.key)
+        NotificationHub.notifyAlertRemoved(sbn.key)
         if (!hasReadableExtras(sbn)) {
             scheduleProgressRefresh()
             return

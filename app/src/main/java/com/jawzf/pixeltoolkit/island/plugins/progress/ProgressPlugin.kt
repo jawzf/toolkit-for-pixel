@@ -45,7 +45,6 @@ import com.jawzf.pixeltoolkit.island.plugins.BaseIslandPlugin
 import com.jawzf.pixeltoolkit.island.plugins.launchPackage
 import com.jawzf.pixeltoolkit.island.plugins.sendPendingIntent
 import com.jawzf.pixeltoolkit.island.ui.IslandMotion
-import com.jawzf.pixeltoolkit.services.NotificationListener
 
 class ProgressPlugin : BaseIslandPlugin() {
     override val id = "progress"
@@ -71,7 +70,7 @@ class ProgressPlugin : BaseIslandPlugin() {
 
     override fun refresh() {
         ctx ?: return
-        update(NotificationListener.getLatestProgressNotification())
+        update(ProgressNotificationHub.getLatest())
     }
 
     private fun update(next: ProgressNotificationData?) {

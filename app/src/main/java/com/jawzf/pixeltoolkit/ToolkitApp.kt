@@ -7,6 +7,8 @@ import android.content.IntentFilter
 import android.os.Build
 import com.jawzf.pixeltoolkit.core.data.action.ActionRunner
 import com.jawzf.pixeltoolkit.core.data.log.LogManager
+import com.jawzf.pixeltoolkit.core.data.notifications.NotificationActionItem
+import com.jawzf.pixeltoolkit.core.data.notifications.NotificationHub
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.platform.AppGlobals
 import com.jawzf.pixeltoolkit.core.platform.device.CarConnectionMonitor
@@ -14,9 +16,11 @@ import com.jawzf.pixeltoolkit.core.platform.device.ProgressNotificationHub
 import com.jawzf.pixeltoolkit.core.platform.media.MediaArtBridge
 import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuUtils
 import com.jawzf.pixeltoolkit.core.platform.statusbar.StatusBarManager
+import com.jawzf.pixeltoolkit.services.LiveUpdateSnoozer
 import com.jawzf.pixeltoolkit.services.NotificationListener
 import com.jawzf.pixeltoolkit.services.automation.executors.CombinedActionExecutor
 import com.jawzf.pixeltoolkit.services.receivers.SecurityReceiver
+import com.jawzf.pixeltoolkit.services.tiles.ScreenOffAccessibilityService
 import eu.darken.porter.bridge.PorterShizukuBridge
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -38,6 +42,41 @@ class ToolkitApp : Application() {
         ActionRunner.init(CombinedActionExecutor)
         MediaArtBridge.init(NotificationListener::getCachedBitmap, NotificationListener::getLatestArtBitmap)
         ProgressNotificationHub.init(NotificationListener::getLatestProgressNotification)
+        NotificationHub.init(
+            object : NotificationHub.Source {
+                override fun latestNavigation() = NotificationListener.getLatestNavigationNotification()
+
+                override fun hubAlerts() = NotificationListener.instance?.hubAlerts().orEmpty()
+
+                override fun dismiss(key: String) = NotificationListener.dismissNotification(key)
+
+                override fun performAction(
+                    action: NotificationActionItem,
+                    replyText: String?,
+                ) = NotificationListener.instance?.performNotificationAction(action, replyText) == true
+
+                override fun activeNotificationKeys(): Set<String>? =
+                    try {
+                        val listener = NotificationListener.instance
+                        if (listener == null) {
+                            null
+                        } else {
+                            val keys =
+                                listener.activeNotifications
+                                    .orEmpty()
+                                    .map { it.key }
+                                    .toMutableSet()
+                            LiveUpdateSnoozer.snoozedNotifications().forEach { keys += it.key }
+                            keys
+                        }
+                    } catch (_: Exception) {
+                        null
+                    }
+
+                override fun activeConsciousGatePackage() =
+                    ScreenOffAccessibilityService.instance?.getActiveConsciousGateSession()?.packageName
+            },
+        )
         HapticUtil.initialize(this)
 
         try {
