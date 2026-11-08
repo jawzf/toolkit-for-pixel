@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.features.display.sheets
+package com.jawzf.pixeltoolkit.feature.island.settings.sheets
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.jawzf.pixeltoolkit.core.data.island.IslandSettings
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.cards.ConfigPickerItem
 import com.jawzf.pixeltoolkit.core.design.cards.IconToggleItem
@@ -21,15 +22,14 @@ import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.pickers.SegmentedPicker
 import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
+import com.jawzf.pixeltoolkit.feature.island.IslandState
 
 private val EXPAND_DISTANCE_OPTIONS = listOf(0, 50, 100, 200, 500)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun IslandNavigationOptionsBottomSheet(
-    viewModel: MainViewModel,
+    state: IslandState,
     onDismissRequest: () -> Unit,
 ) {
     val view = LocalView.current
@@ -73,14 +73,14 @@ fun IslandNavigationOptionsBottomSheet(
                         modifier = Modifier.padding(horizontal = 16.dp),
                     )
                     val labels = mapOf(
-                        SettingsRepository.ISLAND_NAVIGATION_ON_NEW_EXPAND to stringResource(R.string.island_navigation_on_new_expand),
-                        SettingsRepository.ISLAND_NAVIGATION_ON_NEW_PEEK to stringResource(R.string.island_navigation_on_new_peek),
-                        SettingsRepository.ISLAND_NAVIGATION_ON_NEW_OFF to stringResource(R.string.island_navigation_expand_off),
+                        IslandSettings.ISLAND_NAVIGATION_ON_NEW_EXPAND to stringResource(R.string.island_navigation_on_new_expand),
+                        IslandSettings.ISLAND_NAVIGATION_ON_NEW_PEEK to stringResource(R.string.island_navigation_on_new_peek),
+                        IslandSettings.ISLAND_NAVIGATION_ON_NEW_OFF to stringResource(R.string.island_navigation_expand_off),
                     )
                     SegmentedPicker(
                         items = labels.keys.toList(),
-                        selectedItem = viewModel.island.islandNavigationOnNew.value,
-                        onItemSelected = { viewModel.island.setIslandNavigationOnNew(it) },
+                        selectedItem = state.islandNavigationOnNew.value,
+                        onItemSelected = { state.setIslandNavigationOnNew(it) },
                         labelProvider = { labels[it].orEmpty() },
                         title = R.string.island_navigation_on_new_title,
                         modifier = Modifier.fillMaxWidth(),
@@ -89,7 +89,7 @@ fun IslandNavigationOptionsBottomSheet(
 
                 ConfigPickerItem(
                     title = stringResource(R.string.island_navigation_expand_title),
-                    selectedValue = distanceLabel(viewModel.island.islandNavigationExpandDistance.intValue),
+                    selectedValue = distanceLabel(state.islandNavigationExpandDistance.intValue),
                     iconRes = R.drawable.rounded_magnify_fullscreen_24,
                     modifier = Modifier.fillMaxWidth(),
                 ) {
@@ -98,7 +98,7 @@ fun IslandNavigationOptionsBottomSheet(
                             text = { Text(distanceLabel(meters)) },
                             onClick = {
                                 HapticUtil.performVirtualKeyHaptic(view)
-                                viewModel.island.setIslandNavigationExpandDistance(meters)
+                                state.setIslandNavigationExpandDistance(meters)
                             },
                         )
                     }
@@ -108,10 +108,10 @@ fun IslandNavigationOptionsBottomSheet(
                     iconRes = R.drawable.round_navigation_24,
                     title = stringResource(R.string.island_navigation_peek_after_expand_title),
                     description = stringResource(R.string.island_navigation_peek_after_expand_desc),
-                    isChecked = viewModel.island.isIslandNavigationPeekAfterExpand.value,
+                    isChecked = state.isIslandNavigationPeekAfterExpand.value,
                     onCheckedChange = {
                         HapticUtil.performVirtualKeyHaptic(view)
-                        viewModel.island.setIslandNavigationPeekAfterExpand(it)
+                        state.setIslandNavigationPeekAfterExpand(it)
                     },
                 )
             }

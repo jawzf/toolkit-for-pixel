@@ -56,22 +56,23 @@ import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.feature.apps.consciousgate.ui.CONSCIOUS_GATE_FEATURE_ID
+import com.jawzf.pixeltoolkit.feature.island.settings.IslandHideIconsToggle
+import com.jawzf.pixeltoolkit.feature.island.settings.sheets.IslandAlarmOptionsBottomSheet
+import com.jawzf.pixeltoolkit.feature.island.settings.sheets.IslandBorderOutlineOptionsBottomSheet
+import com.jawzf.pixeltoolkit.feature.island.settings.sheets.IslandBriefOptionsBottomSheet
+import com.jawzf.pixeltoolkit.feature.island.settings.sheets.IslandCallOptionsBottomSheet
+import com.jawzf.pixeltoolkit.feature.island.settings.sheets.IslandDevicesBatteryBottomSheet
+import com.jawzf.pixeltoolkit.feature.island.settings.sheets.IslandNotificationHubOptionsBottomSheet
+import com.jawzf.pixeltoolkit.feature.island.settings.sheets.IslandPrefToggle
+import com.jawzf.pixeltoolkit.feature.island.settings.sheets.IslandPulseShadowOptionsBottomSheet
+import com.jawzf.pixeltoolkit.feature.island.settings.sheets.IslandTimeOptionsBottomSheet
+import com.jawzf.pixeltoolkit.feature.island.settings.sheets.IslandTimerOptionsBottomSheet
+import com.jawzf.pixeltoolkit.feature.island.settings.sheets.rememberIslandShowsWhileLocked
 import com.jawzf.pixeltoolkit.ui.core.sheets.AppSelectionSheet
 import com.jawzf.pixeltoolkit.ui.features.display.actions.GestureActionPickerSheet
 import com.jawzf.pixeltoolkit.ui.features.display.actions.HorizontalSlideModeSheet
 import com.jawzf.pixeltoolkit.ui.features.display.actions.horizontalSlideDescription
-import com.jawzf.pixeltoolkit.ui.features.display.sheets.IslandAlarmOptionsBottomSheet
-import com.jawzf.pixeltoolkit.ui.features.display.sheets.IslandBorderOutlineOptionsBottomSheet
-import com.jawzf.pixeltoolkit.ui.features.display.sheets.IslandBriefOptionsBottomSheet
-import com.jawzf.pixeltoolkit.ui.features.display.sheets.IslandCallOptionsBottomSheet
-import com.jawzf.pixeltoolkit.ui.features.display.sheets.IslandDevicesBatteryBottomSheet
-import com.jawzf.pixeltoolkit.ui.features.display.sheets.IslandNotificationHubOptionsBottomSheet
-import com.jawzf.pixeltoolkit.ui.features.display.sheets.IslandPrefToggle
-import com.jawzf.pixeltoolkit.ui.features.display.sheets.IslandPulseShadowOptionsBottomSheet
-import com.jawzf.pixeltoolkit.ui.features.display.sheets.IslandTimeOptionsBottomSheet
-import com.jawzf.pixeltoolkit.ui.features.display.sheets.IslandTimerOptionsBottomSheet
 import com.jawzf.pixeltoolkit.ui.features.display.sheets.StatusGlanceCalendarOptionsBottomSheet
-import com.jawzf.pixeltoolkit.ui.features.display.sheets.rememberIslandShowsWhileLocked
 import com.jawzf.pixeltoolkit.utils.PermissionUIHelper
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 
@@ -553,14 +554,14 @@ fun IslandVisualsSettingsUI(
 
     if (showBorderOutlineSheet) {
         IslandBorderOutlineOptionsBottomSheet(
-            viewModel = viewModel,
+            state = viewModel.island,
             onDismissRequest = { showBorderOutlineSheet = false },
         )
     }
 
     if (showPulseShadowSheet) {
         IslandPulseShadowOptionsBottomSheet(
-            viewModel = viewModel,
+            state = viewModel.island,
             onDismissRequest = { showPulseShadowSheet = false },
         )
     }
@@ -888,7 +889,7 @@ fun IslandBehaviorSettingsUI(
             )
 
             IslandHideIconsToggle(
-                viewModel = viewModel,
+                state = viewModel.island,
                 hasShellPermission = hasShellPermission,
                 onNeedPermission = {
                     requestingPermissionsFor =
@@ -1383,7 +1384,7 @@ fun IslandNotificationSettingsUI(
 
     if (showHubSheet) {
         IslandNotificationHubOptionsBottomSheet(
-            viewModel = viewModel,
+            state = viewModel.island,
             onDismissRequest = { showHubSheet = false },
         )
     }

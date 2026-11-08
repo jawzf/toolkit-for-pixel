@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.features.display
+package com.jawzf.pixeltoolkit.feature.island.settings
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -20,27 +20,27 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.jawzf.pixeltoolkit.core.data.island.IslandSettings
 import com.jawzf.pixeltoolkit.core.data.prefs.StatusBarPrefs
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.cards.IconToggleItem
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.theme.Shapes
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
+import com.jawzf.pixeltoolkit.feature.island.IslandState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun IslandHideIconsToggle(
-    viewModel: MainViewModel,
+    state: IslandState,
     hasShellPermission: Boolean,
     onNeedPermission: () -> Unit,
     highlighted: Boolean,
 ) {
     val context = LocalContext.current
     val view = LocalView.current
-    val settings = remember { SettingsRepository(context) }
+    val settings = remember { IslandSettings(context) }
     val statusBarPrefs = remember { StatusBarPrefs(context) }
-    var enabled by remember { mutableStateOf(settings.getBoolean(SettingsRepository.KEY_ISLAND_HIDE_ICONS_ENABLED, false)) }
+    var enabled by remember { mutableStateOf(settings.getBoolean(IslandSettings.KEY_ISLAND_HIDE_ICONS_ENABLED, false)) }
     var selected by remember { mutableStateOf(statusBarPrefs.getIslandHideIcons()) }
 
     IconToggleItem(
@@ -53,7 +53,7 @@ fun IslandHideIconsToggle(
                 onNeedPermission()
             } else {
                 enabled = checked
-                settings.putBoolean(SettingsRepository.KEY_ISLAND_HIDE_ICONS_ENABLED, checked)
+                settings.putBoolean(IslandSettings.KEY_ISLAND_HIDE_ICONS_ENABLED, checked)
             }
         },
     )

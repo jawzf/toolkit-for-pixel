@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.features.display.sheets
+package com.jawzf.pixeltoolkit.feature.island.settings.sheets
 
 import android.Manifest
 import android.app.Activity
@@ -22,6 +22,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.jawzf.pixeltoolkit.core.data.island.IslandSettings
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.cards.IconToggleItem
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
@@ -31,14 +32,13 @@ import com.jawzf.pixeltoolkit.core.design.sheets.PermissionItem
 import com.jawzf.pixeltoolkit.core.design.sheets.PermissionsBottomSheet
 import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
 import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun IslandSignalOptionsBottomSheet(onDismissRequest: () -> Unit) {
     val context = LocalContext.current
     val view = LocalView.current
-    val settings = remember { SettingsRepository(context) }
+    val settings = remember { IslandSettings(context) }
     var showPermissionSheet by remember { mutableStateOf(false) }
     var activity by remember { mutableStateOf(settings.isIslandNetworkActivityEnabled()) }
     var enabled by remember { mutableStateOf(settings.isIslandShowSignalEnabled()) }

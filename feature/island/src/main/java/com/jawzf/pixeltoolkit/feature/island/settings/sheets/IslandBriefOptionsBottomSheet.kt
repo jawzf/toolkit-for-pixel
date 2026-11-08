@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.features.display.sheets
+package com.jawzf.pixeltoolkit.feature.island.settings.sheets
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,19 +12,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.jawzf.pixeltoolkit.core.data.island.IslandSettings
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.cards.IconToggleItem
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.modifiers.highlight
 import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
+import com.jawzf.pixeltoolkit.feature.island.IslandState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun IslandBriefOptionsBottomSheet(
-    viewModel: MainViewModel,
+    state: IslandState,
     onDismissRequest: () -> Unit,
     highlightSetting: String? = null,
 ) {
@@ -55,16 +55,16 @@ fun IslandBriefOptionsBottomSheet(
                 IconToggleItem(
                     iconRes = R.drawable.rounded_alarm_24,
                     title = stringResource(R.string.island_brief_show_alarm_title),
-                    isChecked = viewModel.island.isIslandBriefShowAlarm.value,
+                    isChecked = state.isIslandBriefShowAlarm.value,
                     onCheckedChange = { checked ->
                         HapticUtil.performVirtualKeyHaptic(view)
-                        viewModel.island.setIslandBriefShowAlarm(checked)
+                        state.setIslandBriefShowAlarm(checked)
                     },
                     modifier = Modifier.highlight(highlightSetting == "island_brief_show_alarm"),
                 )
 
                 IslandPrefToggle(
-                    settingKey = SettingsRepository.KEY_ISLAND_BRIEF_TWO_LINE_HEADER,
+                    settingKey = IslandSettings.KEY_ISLAND_BRIEF_TWO_LINE_HEADER,
                     iconRes = R.drawable.rounded_calendar_today_24,
                     title = stringResource(R.string.island_brief_two_line_header_title),
                 )

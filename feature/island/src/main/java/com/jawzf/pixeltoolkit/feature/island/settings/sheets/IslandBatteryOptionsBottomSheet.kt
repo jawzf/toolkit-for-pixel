@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.features.display.sheets
+package com.jawzf.pixeltoolkit.feature.island.settings.sheets
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,18 +12,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.jawzf.pixeltoolkit.core.data.island.IslandSettings
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.cards.IconToggleItem
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
+import com.jawzf.pixeltoolkit.feature.island.IslandState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun IslandBatteryOptionsBottomSheet(
-    viewModel: MainViewModel,
+    state: IslandState,
+    batteryColorOptions: @Composable () -> Unit,
     onDismissRequest: () -> Unit,
 ) {
     val view = LocalView.current
@@ -41,10 +42,10 @@ fun IslandBatteryOptionsBottomSheet(
                 IconToggleItem(
                     iconRes = R.drawable.rounded_battery_alert_24,
                     title = stringResource(R.string.island_battery_peek_alerts_title),
-                    isChecked = viewModel.island.isIslandBatteryPeekAlerts.value,
+                    isChecked = state.isIslandBatteryPeekAlerts.value,
                     onCheckedChange = { checked ->
                         HapticUtil.performVirtualKeyHaptic(view)
-                        viewModel.island.setIslandBatteryPeekAlerts(checked)
+                        state.setIslandBatteryPeekAlerts(checked)
                     },
                 )
             }
@@ -52,7 +53,7 @@ fun IslandBatteryOptionsBottomSheet(
             if (rememberIslandShowsWhileLocked()) {
                 RoundedCardContainer(spacing = 2.dp, cornerRadius = 24.dp) {
                     IslandPrefToggle(
-                        settingKey = SettingsRepository.KEY_ISLAND_BATTERY_HIDE_LOCKED,
+                        settingKey = IslandSettings.KEY_ISLAND_BATTERY_HIDE_LOCKED,
                         iconRes = R.drawable.rounded_mobile_lock_portrait_24,
                         title = stringResource(R.string.island_hide_when_locked_title),
                     )
@@ -60,9 +61,10 @@ fun IslandBatteryOptionsBottomSheet(
             }
 
             IslandBatteryOptions(
-                viewModel = viewModel,
-                onlyLow = viewModel.island.isIslandBatteryOnlyLow.value,
-                onOnlyLowChange = viewModel.island::setIslandBatteryOnlyLow,
+                state = state,
+                batteryColorOptions = batteryColorOptions,
+                onlyLow = state.isIslandBatteryOnlyLow.value,
+                onOnlyLowChange = state::setIslandBatteryOnlyLow,
                 showIconConditional = true,
             )
         }

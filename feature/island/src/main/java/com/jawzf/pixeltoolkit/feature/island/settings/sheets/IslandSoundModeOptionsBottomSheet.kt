@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.features.display.sheets
+package com.jawzf.pixeltoolkit.feature.island.settings.sheets
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -17,12 +17,12 @@ import com.jawzf.pixeltoolkit.core.design.cards.IconToggleItem
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
-import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
+import com.jawzf.pixeltoolkit.feature.island.IslandState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun IslandSoundModeOptionsBottomSheet(
-    viewModel: MainViewModel,
+    state: IslandState,
     onDismissRequest: () -> Unit,
 ) {
     val view = LocalView.current
@@ -52,10 +52,10 @@ fun IslandSoundModeOptionsBottomSheet(
                 IconToggleItem(
                     iconRes = R.drawable.rounded_volume_up_24,
                     title = stringResource(R.string.island_sound_mode_keep_icon_title),
-                    isChecked = viewModel.island.isIslandSoundModeKeepIcon.value,
+                    isChecked = state.isIslandSoundModeKeepIcon.value,
                     onCheckedChange = { checked ->
                         HapticUtil.performVirtualKeyHaptic(view)
-                        viewModel.island.setIslandSoundModeKeepIcon(checked)
+                        state.setIslandSoundModeKeepIcon(checked)
                     },
                 )
             }

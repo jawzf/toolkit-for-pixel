@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.features.display.sheets
+package com.jawzf.pixeltoolkit.feature.island.settings.sheets
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -18,27 +18,27 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.jawzf.pixeltoolkit.core.data.island.IslandSettings
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.cards.IconToggleItem
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.pickers.SegmentedPicker
 import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun IslandCallOptionsBottomSheet(onDismissRequest: () -> Unit) {
     val context = LocalContext.current
     val view = LocalView.current
-    val settings = remember { SettingsRepository(context) }
+    val settings = remember { IslandSettings(context) }
     var mode by remember {
         mutableStateOf(
-            settings.getString(SettingsRepository.KEY_ISLAND_CALL_SHOW_MODE, SettingsRepository.ISLAND_CALL_SHOW_PEEK)
-                ?: SettingsRepository.ISLAND_CALL_SHOW_PEEK,
+            settings.getString(IslandSettings.KEY_ISLAND_CALL_SHOW_MODE, IslandSettings.ISLAND_CALL_SHOW_PEEK)
+                ?: IslandSettings.ISLAND_CALL_SHOW_PEEK,
         )
     }
-    var sticky by remember { mutableStateOf(settings.getBoolean(SettingsRepository.KEY_ISLAND_CALL_STICKY, false)) }
+    var sticky by remember { mutableStateOf(settings.getBoolean(IslandSettings.KEY_ISLAND_CALL_STICKY, false)) }
 
     ToolkitBottomSheet(onDismissRequest = onDismissRequest) {
         Column(
@@ -69,21 +69,21 @@ fun IslandCallOptionsBottomSheet(onDismissRequest: () -> Unit) {
                         modifier = Modifier.padding(horizontal = 16.dp),
                     )
                     val modes = listOf(
-                        SettingsRepository.ISLAND_CALL_SHOW_EXPANDED,
-                        SettingsRepository.ISLAND_CALL_SHOW_PEEK,
-                        SettingsRepository.ISLAND_CALL_SHOW_COMPACT,
+                        IslandSettings.ISLAND_CALL_SHOW_EXPANDED,
+                        IslandSettings.ISLAND_CALL_SHOW_PEEK,
+                        IslandSettings.ISLAND_CALL_SHOW_COMPACT,
                     )
                     val labels = mapOf(
-                        SettingsRepository.ISLAND_CALL_SHOW_EXPANDED to stringResource(R.string.island_call_show_expanded),
-                        SettingsRepository.ISLAND_CALL_SHOW_PEEK to stringResource(R.string.island_call_show_peek),
-                        SettingsRepository.ISLAND_CALL_SHOW_COMPACT to stringResource(R.string.island_call_show_compact),
+                        IslandSettings.ISLAND_CALL_SHOW_EXPANDED to stringResource(R.string.island_call_show_expanded),
+                        IslandSettings.ISLAND_CALL_SHOW_PEEK to stringResource(R.string.island_call_show_peek),
+                        IslandSettings.ISLAND_CALL_SHOW_COMPACT to stringResource(R.string.island_call_show_compact),
                     )
                     SegmentedPicker(
                         items = modes,
                         selectedItem = mode,
                         onItemSelected = {
                             mode = it
-                            settings.putString(SettingsRepository.KEY_ISLAND_CALL_SHOW_MODE, it)
+                            settings.putString(IslandSettings.KEY_ISLAND_CALL_SHOW_MODE, it)
                         },
                         labelProvider = { labels[it].orEmpty() },
                         title = R.string.island_call_show_mode_title,
@@ -91,7 +91,7 @@ fun IslandCallOptionsBottomSheet(onDismissRequest: () -> Unit) {
                     )
                 }
 
-                if (mode != SettingsRepository.ISLAND_CALL_SHOW_COMPACT) {
+                if (mode != IslandSettings.ISLAND_CALL_SHOW_COMPACT) {
                     IconToggleItem(
                         iconRes = R.drawable.rounded_lock_24,
                         title = stringResource(R.string.island_call_sticky_title),
@@ -99,7 +99,7 @@ fun IslandCallOptionsBottomSheet(onDismissRequest: () -> Unit) {
                         onCheckedChange = {
                             HapticUtil.performVirtualKeyHaptic(view)
                             sticky = it
-                            settings.putBoolean(SettingsRepository.KEY_ISLAND_CALL_STICKY, it)
+                            settings.putBoolean(IslandSettings.KEY_ISLAND_CALL_STICKY, it)
                         },
                     )
                 }

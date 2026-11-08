@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.features.display.sheets
+package com.jawzf.pixeltoolkit.feature.island.settings.sheets
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -22,17 +22,16 @@ import com.jawzf.pixeltoolkit.core.design.cards.IconToggleItem
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
-import com.jawzf.pixeltoolkit.ui.core.sheets.AppSelectionSheet
-import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
+import com.jawzf.pixeltoolkit.feature.island.IslandState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun IslandTimerOptionsBottomSheet(
-    viewModel: MainViewModel,
+    state: IslandState,
+    appSelectionSheet: @Composable (onDismiss: () -> Unit) -> Unit,
     onDismissRequest: () -> Unit,
 ) {
     val view = LocalView.current
-    val context = LocalContext.current
     var showAppSelectionSheet by remember { mutableStateOf(false) }
 
     ToolkitBottomSheet(
@@ -60,19 +59,19 @@ fun IslandTimerOptionsBottomSheet(
                 IconToggleItem(
                     iconRes = R.drawable.rounded_fiber_smart_record_24,
                     title = stringResource(R.string.island_timers_show_screen_recorder_title),
-                    isChecked = viewModel.island.isIslandTimersShowScreenRecorder.value,
+                    isChecked = state.isIslandTimersShowScreenRecorder.value,
                     onCheckedChange = { checked ->
                         HapticUtil.performVirtualKeyHaptic(view)
-                        viewModel.island.setIslandTimersShowScreenRecorder(checked)
+                        state.setIslandTimersShowScreenRecorder(checked)
                     },
                 )
                 IconToggleItem(
                     iconRes = R.drawable.rounded_apps_24,
                     title = stringResource(R.string.island_timers_filter_apps_title),
-                    isChecked = viewModel.island.isIslandTimersFilterApps.value,
+                    isChecked = state.isIslandTimersFilterApps.value,
                     onCheckedChange = { checked ->
                         HapticUtil.performVirtualKeyHaptic(view)
-                        viewModel.island.setIslandTimersFilterApps(checked)
+                        state.setIslandTimersFilterApps(checked)
                     },
                 )
                 IconToggleItem(
@@ -89,12 +88,6 @@ fun IslandTimerOptionsBottomSheet(
     }
 
     if (showAppSelectionSheet) {
-        AppSelectionSheet(
-            onDismissRequest = { showAppSelectionSheet = false },
-            onLoadApps = { viewModel.island.loadIslandTimersSelectedApps(it) },
-            onSaveApps = { ctx, apps -> viewModel.island.saveIslandTimersSelectedApps(ctx, apps) },
-            onAppToggle = { ctx, pkg, enabled -> viewModel.island.updateIslandTimersAppEnabled(ctx, pkg, enabled) },
-            context = context,
-        )
+        appSelectionSheet { showAppSelectionSheet = false }
     }
 }

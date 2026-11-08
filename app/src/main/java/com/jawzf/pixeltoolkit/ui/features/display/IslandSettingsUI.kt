@@ -59,28 +59,32 @@ import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.domain.diy.displayName
 import com.jawzf.pixeltoolkit.feature.apps.consciousgate.ui.CONSCIOUS_GATE_FEATURE_ID
+import com.jawzf.pixeltoolkit.feature.display.duo.ui.BatteryColorOptions
 import com.jawzf.pixeltoolkit.feature.island.model.IslandPriorityEntries
 import com.jawzf.pixeltoolkit.feature.island.remote.ProviderDiscovery
 import com.jawzf.pixeltoolkit.feature.island.remote.ProviderPriorities
 import com.jawzf.pixeltoolkit.feature.island.remote.ProviderTrustStore
+import com.jawzf.pixeltoolkit.feature.island.settings.IslandPriorityActions
+import com.jawzf.pixeltoolkit.feature.island.settings.IslandProvidersSection
+import com.jawzf.pixeltoolkit.feature.island.settings.ProviderAppIcon
+import com.jawzf.pixeltoolkit.feature.island.settings.sheets.IslandAlarmOptionsBottomSheet
+import com.jawzf.pixeltoolkit.feature.island.settings.sheets.IslandAppOptionsBottomSheet
+import com.jawzf.pixeltoolkit.feature.island.settings.sheets.IslandBatteryOptionsBottomSheet
+import com.jawzf.pixeltoolkit.feature.island.settings.sheets.IslandBorderOutlineOptionsBottomSheet
+import com.jawzf.pixeltoolkit.feature.island.settings.sheets.IslandBriefOptionsBottomSheet
+import com.jawzf.pixeltoolkit.feature.island.settings.sheets.IslandCaffeinateOptionsBottomSheet
+import com.jawzf.pixeltoolkit.feature.island.settings.sheets.IslandCallOptionsBottomSheet
+import com.jawzf.pixeltoolkit.feature.island.settings.sheets.IslandDevicesBatteryBottomSheet
+import com.jawzf.pixeltoolkit.feature.island.settings.sheets.IslandNavigationOptionsBottomSheet
+import com.jawzf.pixeltoolkit.feature.island.settings.sheets.IslandPulseShadowOptionsBottomSheet
+import com.jawzf.pixeltoolkit.feature.island.settings.sheets.IslandSignalOptionsBottomSheet
+import com.jawzf.pixeltoolkit.feature.island.settings.sheets.IslandSoundModeOptionsBottomSheet
+import com.jawzf.pixeltoolkit.feature.island.settings.sheets.IslandTimeOptionsBottomSheet
+import com.jawzf.pixeltoolkit.feature.island.settings.sheets.IslandTimerOptionsBottomSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.AppSelectionSheet
 import com.jawzf.pixeltoolkit.ui.features.display.actions.GestureActionPickerSheet
 import com.jawzf.pixeltoolkit.ui.features.display.actions.HorizontalSlideModeSheet
 import com.jawzf.pixeltoolkit.ui.features.display.actions.horizontalSlideDescription
-import com.jawzf.pixeltoolkit.ui.features.display.sheets.IslandAlarmOptionsBottomSheet
-import com.jawzf.pixeltoolkit.ui.features.display.sheets.IslandAppOptionsBottomSheet
-import com.jawzf.pixeltoolkit.ui.features.display.sheets.IslandBatteryOptionsBottomSheet
-import com.jawzf.pixeltoolkit.ui.features.display.sheets.IslandBorderOutlineOptionsBottomSheet
-import com.jawzf.pixeltoolkit.ui.features.display.sheets.IslandBriefOptionsBottomSheet
-import com.jawzf.pixeltoolkit.ui.features.display.sheets.IslandCaffeinateOptionsBottomSheet
-import com.jawzf.pixeltoolkit.ui.features.display.sheets.IslandCallOptionsBottomSheet
-import com.jawzf.pixeltoolkit.ui.features.display.sheets.IslandDevicesBatteryBottomSheet
-import com.jawzf.pixeltoolkit.ui.features.display.sheets.IslandNavigationOptionsBottomSheet
-import com.jawzf.pixeltoolkit.ui.features.display.sheets.IslandPulseShadowOptionsBottomSheet
-import com.jawzf.pixeltoolkit.ui.features.display.sheets.IslandSignalOptionsBottomSheet
-import com.jawzf.pixeltoolkit.ui.features.display.sheets.IslandSoundModeOptionsBottomSheet
-import com.jawzf.pixeltoolkit.ui.features.display.sheets.IslandTimeOptionsBottomSheet
-import com.jawzf.pixeltoolkit.ui.features.display.sheets.IslandTimerOptionsBottomSheet
 import com.jawzf.pixeltoolkit.ui.features.display.sheets.StatusGlanceCalendarOptionsBottomSheet
 import com.jawzf.pixeltoolkit.utils.PermissionUIHelper
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
@@ -775,7 +779,7 @@ fun IslandSettingsUI(
 
     if (showBriefOptionsSheet) {
         IslandBriefOptionsBottomSheet(
-            viewModel = viewModel,
+            state = viewModel.island,
             onDismissRequest = { showBriefOptionsSheet = false },
             highlightSetting = highlightSetting,
         )
@@ -783,21 +787,21 @@ fun IslandSettingsUI(
 
     if (showSoundModeOptionsSheet) {
         IslandSoundModeOptionsBottomSheet(
-            viewModel = viewModel,
+            state = viewModel.island,
             onDismissRequest = { showSoundModeOptionsSheet = false },
         )
     }
 
     if (showNavigationOptionsSheet) {
         IslandNavigationOptionsBottomSheet(
-            viewModel = viewModel,
+            state = viewModel.island,
             onDismissRequest = { showNavigationOptionsSheet = false },
         )
     }
 
     if (showAlarmOptionsSheet) {
         IslandAlarmOptionsBottomSheet(
-            viewModel = viewModel,
+            state = viewModel.island,
             onDismissRequest = { showAlarmOptionsSheet = false },
         )
     }
@@ -816,7 +820,16 @@ fun IslandSettingsUI(
 
     if (showTimerOptionsSheet) {
         IslandTimerOptionsBottomSheet(
-            viewModel = viewModel,
+            state = viewModel.island,
+            appSelectionSheet = { onDismiss ->
+                AppSelectionSheet(
+                    onDismissRequest = onDismiss,
+                    onLoadApps = { viewModel.island.loadIslandTimersSelectedApps(it) },
+                    onSaveApps = { ctx, apps -> viewModel.island.saveIslandTimersSelectedApps(ctx, apps) },
+                    onAppToggle = { ctx, pkg, enabled -> viewModel.island.updateIslandTimersAppEnabled(ctx, pkg, enabled) },
+                    context = context,
+                )
+            },
             onDismissRequest = { showTimerOptionsSheet = false },
         )
     }
@@ -833,14 +846,36 @@ fun IslandSettingsUI(
 
     if (showBatteryOptionsSheet) {
         IslandBatteryOptionsBottomSheet(
-            viewModel = viewModel,
+            state = viewModel.island,
+            batteryColorOptions = {
+                BatteryColorOptions(
+                    state = viewModel.duo,
+                    isIslandBatteryIdleColorEnabled = viewModel.island.isIslandBatteryIdleColorEnabled.value,
+                    islandBatteryIdleColor = viewModel.island.islandBatteryIdleColor.value,
+                    onIslandBatteryIdleColorEnabledChange = { viewModel.island.setIslandBatteryIdleColorEnabled(it) },
+                    onIslandBatteryIdleColorChange = { viewModel.island.setIslandBatteryIdleColor(it) },
+                    showIdleColor = true,
+                    showLevels = true,
+                )
+            },
             onDismissRequest = { showBatteryOptionsSheet = false },
         )
     }
 
     if (showDevicesBatterySheet) {
         IslandDevicesBatteryBottomSheet(
-            viewModel = viewModel,
+            state = viewModel.island,
+            batteryColorOptions = {
+                BatteryColorOptions(
+                    state = viewModel.duo,
+                    isIslandBatteryIdleColorEnabled = viewModel.island.isIslandBatteryIdleColorEnabled.value,
+                    islandBatteryIdleColor = viewModel.island.islandBatteryIdleColor.value,
+                    onIslandBatteryIdleColorEnabledChange = { viewModel.island.setIslandBatteryIdleColorEnabled(it) },
+                    onIslandBatteryIdleColorChange = { viewModel.island.setIslandBatteryIdleColor(it) },
+                    showIdleColor = true,
+                    showLevels = true,
+                )
+            },
             onDismissRequest = { showDevicesBatterySheet = false },
         )
     }

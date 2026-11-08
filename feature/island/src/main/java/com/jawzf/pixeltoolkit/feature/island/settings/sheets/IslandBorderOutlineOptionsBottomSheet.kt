@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.features.display.sheets
+package com.jawzf.pixeltoolkit.feature.island.settings.sheets
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.jawzf.pixeltoolkit.core.data.island.IslandSettings
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.cards.IconToggleItem
 import com.jawzf.pixeltoolkit.core.design.components.ConfigSliderItem
@@ -20,17 +21,16 @@ import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.pickers.ColorSwatchPicker
 import com.jawzf.pixeltoolkit.core.design.pickers.DUO_PRESET_COLORS
 import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
+import com.jawzf.pixeltoolkit.feature.island.IslandState
 
 // Default gray first, then the shared preset palette.
 private val OUTLINE_COLORS =
-    listOf(SettingsRepository.ISLAND_BORDER_OUTLINE_DEFAULT_COLOR) + DUO_PRESET_COLORS
+    listOf(IslandSettings.ISLAND_BORDER_OUTLINE_DEFAULT_COLOR) + DUO_PRESET_COLORS
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun IslandBorderOutlineOptionsBottomSheet(
-    viewModel: MainViewModel,
+    state: IslandState,
     onDismissRequest: () -> Unit,
 ) {
     val view = LocalView.current
@@ -53,10 +53,10 @@ fun IslandBorderOutlineOptionsBottomSheet(
             RoundedCardContainer(spacing = 2.dp, cornerRadius = 24.dp) {
                 ConfigSliderItem(
                     title = stringResource(R.string.island_border_outline_thickness_title),
-                    value = viewModel.island.islandBorderOutlineThickness.floatValue,
+                    value = state.islandBorderOutlineThickness.floatValue,
                     onValueChange = {
                         HapticUtil.performUIHaptic(view)
-                        viewModel.island.setIslandBorderOutlineThickness(it)
+                        state.setIslandBorderOutlineThickness(it)
                     },
                     valueRange = 1f..5f,
                     increment = 1f,
@@ -68,26 +68,26 @@ fun IslandBorderOutlineOptionsBottomSheet(
                     iconRes = R.drawable.rounded_visibility_off_24,
                     title = stringResource(R.string.island_border_outline_hide_expanded_title),
                     description = stringResource(R.string.island_border_outline_hide_expanded_desc),
-                    isChecked = viewModel.island.isIslandBorderOutlineHiddenWhenExpanded.value,
+                    isChecked = state.isIslandBorderOutlineHiddenWhenExpanded.value,
                     onCheckedChange = {
                         HapticUtil.performVirtualKeyHaptic(view)
-                        viewModel.island.setIslandBorderOutlineHiddenWhenExpanded(it)
+                        state.setIslandBorderOutlineHiddenWhenExpanded(it)
                     },
                 )
 
                 IconToggleItem(
                     iconRes = R.drawable.rounded_palette_24,
                     title = stringResource(R.string.island_border_outline_dynamic_title),
-                    isChecked = viewModel.island.isIslandBorderOutlineDynamic.value,
+                    isChecked = state.isIslandBorderOutlineDynamic.value,
                     onCheckedChange = {
                         HapticUtil.performVirtualKeyHaptic(view)
-                        viewModel.island.setIslandBorderOutlineDynamic(it)
+                        state.setIslandBorderOutlineDynamic(it)
                     },
                 )
 
                 ColorSwatchPicker(
-                    selectedColorHex = viewModel.island.islandBorderOutlineColor.value,
-                    onColorSelected = { viewModel.island.setIslandBorderOutlineColor(it) },
+                    selectedColorHex = state.islandBorderOutlineColor.value,
+                    onColorSelected = { state.setIslandBorderOutlineColor(it) },
                     colors = OUTLINE_COLORS,
                 )
             }

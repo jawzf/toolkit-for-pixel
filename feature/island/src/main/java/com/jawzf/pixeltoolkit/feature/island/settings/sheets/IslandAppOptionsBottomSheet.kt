@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.features.display.sheets
+package com.jawzf.pixeltoolkit.feature.island.settings.sheets
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -17,20 +17,26 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.jawzf.pixeltoolkit.core.data.island.IslandSettings
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.cards.IconToggleItem
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
+import com.jawzf.pixeltoolkit.feature.island.remote.ProviderTrustStore
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun IslandCaffeinateOptionsBottomSheet(onDismissRequest: () -> Unit) {
+fun IslandAppOptionsBottomSheet(
+    packageName: String,
+    label: String,
+    onDismissRequest: () -> Unit,
+) {
     val context = LocalContext.current
     val view = LocalView.current
-    val settings = remember { SettingsRepository(context) }
-    var showTime by remember { mutableStateOf(settings.isIslandCaffeinateShowTimeEnabled()) }
+    val store = remember { ProviderTrustStore(IslandSettings(context)) }
+    var launcherOnly by remember { mutableStateOf(packageName in store.launcherOnly()) }
+    var hideWhenLocked by remember { mutableStateOf(packageName in store.hideWhenLocked()) }
 
     ToolkitBottomSheet(onDismissRequest = onDismissRequest) {
         Column(
@@ -41,7 +47,7 @@ fun IslandCaffeinateOptionsBottomSheet(onDismissRequest: () -> Unit) {
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             Text(
-                text = stringResource(R.string.island_caffeinate_options_title),
+                text = label,
                 style = MaterialTheme.typography.titleLarge,
                 color = MaterialTheme.colorScheme.onSurface,
                 modifier = Modifier.padding(start = 8.dp, bottom = 4.dp),
@@ -49,13 +55,23 @@ fun IslandCaffeinateOptionsBottomSheet(onDismissRequest: () -> Unit) {
 
             RoundedCardContainer(spacing = 2.dp, cornerRadius = 24.dp) {
                 IconToggleItem(
-                    iconRes = R.drawable.rounded_timer_24,
-                    title = stringResource(R.string.island_caffeinate_show_time_title),
-                    isChecked = showTime,
+                    iconRes = R.drawable.rounded_home_24,
+                    title = stringResource(R.string.island_launcher_only_title),
+                    isChecked = launcherOnly,
                     onCheckedChange = {
                         HapticUtil.performVirtualKeyHaptic(view)
-                        showTime = it
-                        settings.setIslandCaffeinateShowTimeEnabled(it)
+                        launcherOnly = it
+                        store.setLauncherOnly(packageName, it)
+                    },
+                )
+                IconToggleItem(
+                    iconRes = R.drawable.rounded_lock_24,
+                    title = stringResource(R.string.island_hide_when_locked_title),
+                    isChecked = hideWhenLocked,
+                    onCheckedChange = {
+                        HapticUtil.performVirtualKeyHaptic(view)
+                        hideWhenLocked = it
+                        store.setHideWhenLocked(packageName, it)
                     },
                 )
             }
