@@ -67,6 +67,7 @@ import com.jawzf.pixeltoolkit.feature.island.remote.ProviderTrustStore
 import com.jawzf.pixeltoolkit.feature.island.settings.IslandPriorityActions
 import com.jawzf.pixeltoolkit.feature.island.settings.IslandProvidersSection
 import com.jawzf.pixeltoolkit.feature.island.settings.ProviderAppIcon
+import com.jawzf.pixeltoolkit.feature.island.settings.sheets.HorizontalSlideModeSheet
 import com.jawzf.pixeltoolkit.feature.island.settings.sheets.IslandAlarmOptionsBottomSheet
 import com.jawzf.pixeltoolkit.feature.island.settings.sheets.IslandAppOptionsBottomSheet
 import com.jawzf.pixeltoolkit.feature.island.settings.sheets.IslandBatteryOptionsBottomSheet
@@ -81,10 +82,9 @@ import com.jawzf.pixeltoolkit.feature.island.settings.sheets.IslandSignalOptions
 import com.jawzf.pixeltoolkit.feature.island.settings.sheets.IslandSoundModeOptionsBottomSheet
 import com.jawzf.pixeltoolkit.feature.island.settings.sheets.IslandTimeOptionsBottomSheet
 import com.jawzf.pixeltoolkit.feature.island.settings.sheets.IslandTimerOptionsBottomSheet
+import com.jawzf.pixeltoolkit.feature.island.settings.sheets.horizontalSlideDescription
 import com.jawzf.pixeltoolkit.ui.core.sheets.AppSelectionSheet
 import com.jawzf.pixeltoolkit.ui.features.display.actions.GestureActionPickerSheet
-import com.jawzf.pixeltoolkit.ui.features.display.actions.HorizontalSlideModeSheet
-import com.jawzf.pixeltoolkit.ui.features.display.actions.horizontalSlideDescription
 import com.jawzf.pixeltoolkit.ui.features.display.sheets.StatusGlanceCalendarOptionsBottomSheet
 import com.jawzf.pixeltoolkit.utils.PermissionUIHelper
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
