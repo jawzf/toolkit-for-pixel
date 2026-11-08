@@ -41,10 +41,10 @@ fun IslandBatteryOptionsBottomSheet(
                 IconToggleItem(
                     iconRes = R.drawable.rounded_battery_alert_24,
                     title = stringResource(R.string.island_battery_peek_alerts_title),
-                    isChecked = viewModel.isIslandBatteryPeekAlerts.value,
+                    isChecked = viewModel.island.isIslandBatteryPeekAlerts.value,
                     onCheckedChange = { checked ->
                         HapticUtil.performVirtualKeyHaptic(view)
-                        viewModel.setIslandBatteryPeekAlerts(checked)
+                        viewModel.island.setIslandBatteryPeekAlerts(checked)
                     },
                 )
             }
@@ -61,8 +61,8 @@ fun IslandBatteryOptionsBottomSheet(
 
             IslandBatteryOptions(
                 viewModel = viewModel,
-                onlyLow = viewModel.isIslandBatteryOnlyLow.value,
-                onOnlyLowChange = viewModel::setIslandBatteryOnlyLow,
+                onlyLow = viewModel.island.isIslandBatteryOnlyLow.value,
+                onOnlyLowChange = viewModel.island::setIslandBatteryOnlyLow,
                 showIconConditional = true,
             )
         }

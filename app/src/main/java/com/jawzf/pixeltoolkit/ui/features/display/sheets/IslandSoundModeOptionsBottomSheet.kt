@@ -52,10 +52,10 @@ fun IslandSoundModeOptionsBottomSheet(
                 IconToggleItem(
                     iconRes = R.drawable.rounded_volume_up_24,
                     title = stringResource(R.string.island_sound_mode_keep_icon_title),
-                    isChecked = viewModel.isIslandSoundModeKeepIcon.value,
+                    isChecked = viewModel.island.isIslandSoundModeKeepIcon.value,
                     onCheckedChange = { checked ->
                         HapticUtil.performVirtualKeyHaptic(view)
-                        viewModel.setIslandSoundModeKeepIcon(checked)
+                        viewModel.island.setIslandSoundModeKeepIcon(checked)
                     },
                 )
             }

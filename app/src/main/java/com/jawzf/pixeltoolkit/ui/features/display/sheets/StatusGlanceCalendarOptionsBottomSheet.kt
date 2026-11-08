@@ -52,7 +52,7 @@ fun StatusGlanceCalendarOptionsBottomSheet(
 
     LaunchedEffect(Unit) {
         viewModel.statusGlance.fetchStatusGlanceCalendars(context)
-        if (allowIconEdit) viewModel.loadIslandCalendarEmojis()
+        if (allowIconEdit) viewModel.island.loadIslandCalendarEmojis()
     }
 
     val timeframes = listOf(
@@ -196,7 +196,7 @@ fun StatusGlanceCalendarOptionsBottomSheet(
                         cornerRadius = 24.dp,
                     ) {
                         accountCalendars.forEach { calendar ->
-                            val emoji = if (allowIconEdit) viewModel.islandCalendarEmojis.value[calendar.id] else null
+                            val emoji = if (allowIconEdit) viewModel.island.islandCalendarEmojis.value[calendar.id] else null
                             IconToggleItem(
                                 title = if (emoji != null) "$emoji  ${calendar.name}" else calendar.name,
                                 iconRes = R.drawable.rounded_calendar_today_24,
@@ -218,8 +218,10 @@ fun StatusGlanceCalendarOptionsBottomSheet(
     editingCalendar?.let { calendar ->
         CalendarEmojiSheet(
             calendarName = calendar.name,
-            initial = viewModel.islandCalendarEmojis.value[calendar.id].orEmpty(),
-            onSave = { emoji -> viewModel.setIslandCalendarEmoji(calendar.id, emoji) },
+            initial =
+                viewModel.island.islandCalendarEmojis.value[calendar.id]
+                    .orEmpty(),
+            onSave = { emoji -> viewModel.island.setIslandCalendarEmoji(calendar.id, emoji) },
             onDismissRequest = { editingCalendar = null },
         )
     }

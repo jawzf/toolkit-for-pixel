@@ -55,7 +55,7 @@ fun IslandAlarmOptionsBottomSheet(
             ) {
                 ConfigPickerItem(
                     title = stringResource(R.string.island_alarm_window_title),
-                    selectedValue = stringResource(R.string.island_alarm_window_hours, viewModel.islandAlarmWindowHours.intValue),
+                    selectedValue = stringResource(R.string.island_alarm_window_hours, viewModel.island.islandAlarmWindowHours.intValue),
                     iconRes = R.drawable.rounded_schedule_24,
                     modifier = Modifier.fillMaxWidth(),
                 ) {
@@ -64,7 +64,7 @@ fun IslandAlarmOptionsBottomSheet(
                             text = { Text(stringResource(R.string.island_alarm_window_hours, hours)) },
                             onClick = {
                                 HapticUtil.performVirtualKeyHaptic(view)
-                                viewModel.setIslandAlarmWindowHours(hours)
+                                viewModel.island.setIslandAlarmWindowHours(hours)
                             },
                         )
                     }

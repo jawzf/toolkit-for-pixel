@@ -50,7 +50,6 @@ import com.jawzf.pixeltoolkit.core.platform.shell.PrivilegedMode
 import com.jawzf.pixeltoolkit.core.platform.shell.RootUtils
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuUtils
-import com.jawzf.pixeltoolkit.core.platform.statusbar.StatusBarInsetsUtils
 import com.jawzf.pixeltoolkit.core.platform.statusbar.StatusBarManager
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.domain.model.AppIcon
@@ -79,7 +78,8 @@ import com.jawzf.pixeltoolkit.feature.display.pixels.SmartPixelsState
 import com.jawzf.pixeltoolkit.feature.display.refresh.RefreshRatePanelState
 import com.jawzf.pixeltoolkit.feature.display.statusbar.StatusBarControlState
 import com.jawzf.pixeltoolkit.feature.input.InputState
-import com.jawzf.pixeltoolkit.feature.island.service.IslandStatusBarHider
+import com.jawzf.pixeltoolkit.feature.island.IslandDuoLink
+import com.jawzf.pixeltoolkit.feature.island.IslandState
 import com.jawzf.pixeltoolkit.feature.notifications.NotificationSettings
 import com.jawzf.pixeltoolkit.feature.notifications.NotificationState
 import com.jawzf.pixeltoolkit.feature.notifications.autodismiss.NotificationAutoDismisser
@@ -143,122 +143,6 @@ class MainViewModel : ViewModel() {
     val remapHapticType = mutableStateOf(HapticFeedbackType.DOUBLE)
 
     val isFoldableCameraDevice = mutableStateOf(false)
-    val isIslandBatteryIdleColorEnabled = mutableStateOf(false)
-    val islandBatteryIdleColor = mutableStateOf("#FFFFFF")
-
-    val isIslandEnabled = mutableStateOf(false)
-    val isIslandAutoDetect = mutableStateOf(true)
-    val isIslandOrientationProfiles = mutableStateOf(false)
-    val isIslandHiddenInCurrentOrientation = mutableStateOf(false)
-    val islandCameraOffsetX = mutableFloatStateOf(50f)
-    val islandCameraOffsetY = mutableFloatStateOf(3f)
-    val islandCameraSize = mutableFloatStateOf(1.0f)
-    val islandMaxWidth = mutableFloatStateOf(360f)
-    val islandCutoutGap = mutableFloatStateOf(6f)
-    val islandExpandedWidth = mutableFloatStateOf(360f)
-    val islandExpandedRoundness = mutableFloatStateOf(24f)
-    val islandFontScale = mutableFloatStateOf(1f)
-    val isIslandHideInOwnerApp = mutableStateOf(false)
-    val isIslandHideOnShade = mutableStateOf(false)
-    val isIslandKeepOnLandscape = mutableStateOf(false)
-    val isIslandKeepInFullscreen = mutableStateOf(false)
-    val isIslandDisableInteractionsInFullscreen = mutableStateOf(false)
-    val isIslandBondEdge = mutableStateOf(false)
-    val isIslandBalanceCompact = mutableStateOf(true)
-    val isIslandSecondaryBubble = mutableStateOf(true)
-    val islandMaxItems = mutableStateOf(2)
-    val isIslandAlwaysGestures = mutableStateOf(false)
-    val islandLandscapeTopSpacing = mutableFloatStateOf(0f)
-    val isIslandDismissOnOutside = mutableStateOf(false)
-    val isIslandHideLiveUpdates = mutableStateOf(false)
-    val isIslandHideStatusBarInsets = mutableStateOf(false)
-    val islandExpandedScale = mutableFloatStateOf(1f)
-    val islandCameraPosition = mutableStateOf(SettingsRepository.ISLAND_CAMERA_POSITION_CENTER)
-    val isIslandShowCalls = mutableStateOf(true)
-    val isIslandShowTimers = mutableStateOf(true)
-    val isIslandTimersShowScreenRecorder = mutableStateOf(true)
-    val isIslandTimersFilterApps = mutableStateOf(false)
-    val isIslandShowNetwork = mutableStateOf(true)
-    val isIslandShowSignal = mutableStateOf(false)
-    val isIslandShowSoundMode = mutableStateOf(true)
-    val isIslandSoundModeKeepIcon = mutableStateOf(true)
-    val isIslandShowAlarm = mutableStateOf(false)
-    val islandAlarmWindowHours = mutableIntStateOf(12)
-    val isIslandShowCaffeinate = mutableStateOf(true)
-    val isIslandShowNavigation = mutableStateOf(true)
-    val islandNavigationOnNew = mutableStateOf(SettingsRepository.ISLAND_NAVIGATION_ON_NEW_PEEK)
-    val islandNavigationExpandDistance = mutableIntStateOf(200)
-    val isIslandNavigationPeekAfterExpand = mutableStateOf(false)
-    val isIslandShowHotspot = mutableStateOf(false)
-    val isIslandShowDevices = mutableStateOf(true)
-    val isIslandBriefEnabled = mutableStateOf(false)
-    val isIslandBriefShowAlarm = mutableStateOf(true)
-    val islandDevicesBatteryOrder = mutableStateOf<List<String>>(emptyList())
-    val islandExpandedPadding = mutableFloatStateOf(16f)
-    val islandExpandedTopPadding = mutableFloatStateOf(0f)
-    val islandExpandedBottomPadding = mutableFloatStateOf(12f)
-    val islandExpandedTimeoutMs = mutableLongStateOf(0L)
-    val isIslandSuppressSystemHeadsUp = mutableStateOf(false)
-    val isIslandDynamicHideStatusBar = mutableStateOf(false)
-    val isIslandCompactHideStatusBar = mutableStateOf(false)
-    val isIslandHideWhenScreenOff = mutableStateOf(true)
-    val islandTimeoutMs = mutableLongStateOf(4500L)
-    val isIslandLineStageEnabled = mutableStateOf(false)
-    val isIslandMediaPeekSongChange = mutableStateOf(true)
-    val isIslandMediaKeepWhenPaused = mutableStateOf(true)
-    val isIslandMediaShowPrevious = mutableStateOf(false)
-    val isIslandMediaShowLike = mutableStateOf(true)
-    val islandNotifPeekStyle = mutableStateOf(SettingsRepository.ISLAND_NOTIF_PEEK_STYLE_FULL)
-    val isIslandNotifKeepProgress = mutableStateOf(true)
-    val isIslandNotifQueue = mutableStateOf(true)
-    val islandNotifQueueStyle = mutableStateOf(SettingsRepository.ISLAND_NOTIF_QUEUE_STYLE_STACK)
-    val isIslandNotifQueueInline = mutableStateOf(false)
-    val isIslandNotifSkipSilent = mutableStateOf(true)
-    val isIslandNotifFollowDnd = mutableStateOf(true)
-    val isIslandNotifFilterApps = mutableStateOf(false)
-    val isIslandShowNotifications = mutableStateOf(true)
-    val isIslandNotifHub = mutableStateOf(false)
-    val islandNotifHubIcons = mutableIntStateOf(0)
-    val isIslandNotifHubIncludeSilent = mutableStateOf(false)
-    val isIslandNotifHubGroupByApps = mutableStateOf(false)
-    val islandNotifHubOrder = mutableStateOf(SettingsRepository.ISLAND_NOTIF_HUB_ORDER_DYNAMIC)
-    val isIslandNotifTapToOpen = mutableStateOf(false)
-    val isIslandCatchUpEnabled = mutableStateOf(true)
-    val islandCatchUpTimeoutMs = mutableLongStateOf(10000L)
-    val isIslandOtpEnabled = mutableStateOf(false)
-    val islandOtpTimeoutMs = mutableLongStateOf(60_000L)
-    val isIslandShowGlow = mutableStateOf(true)
-    val isIslandBorderOutline = mutableStateOf(false)
-    val islandBorderOutlineColor = mutableStateOf(SettingsRepository.ISLAND_BORDER_OUTLINE_DEFAULT_COLOR)
-    val isIslandBorderOutlineDynamic = mutableStateOf(false)
-    val islandBorderOutlineThickness = mutableFloatStateOf(1f)
-    val isIslandBorderOutlineHiddenWhenExpanded = mutableStateOf(false)
-    val isIslandPulseShadow = mutableStateOf(false)
-    val islandPulseShadowSize = mutableFloatStateOf(0.5f)
-    val islandPulseShadowYShift = mutableFloatStateOf(0.35f)
-    val islandPulseShadowSpread = mutableFloatStateOf(2f)
-    val islandPulseShadowDurationMs = mutableFloatStateOf(1450f)
-    val isIslandShowMedia = mutableStateOf(true)
-    val isIslandShowCalendar = mutableStateOf(false)
-    val isIslandShowConsciousGate = mutableStateOf(true)
-    val isIslandShowTimeBattery = mutableStateOf(false)
-    val isIslandBatteryPeekAlerts = mutableStateOf(true)
-    val isIslandShowBattery = mutableStateOf(false)
-    val isIslandShowFlashlight = mutableStateOf(true)
-    val islandBatteryStyle = mutableStateOf(SettingsRepository.ISLAND_BATTERY_STYLE_RING)
-    val islandDevicesBatteryStyle = mutableStateOf(SettingsRepository.ISLAND_BATTERY_STYLE_RING)
-    val isIslandBatteryPercentageEnabled = mutableStateOf(false)
-    val isIslandBatteryPercentageConditional = mutableStateOf(false)
-    val isIslandBatteryIconConditional = mutableStateOf(false)
-    val isIslandBatteryOnlyLow = mutableStateOf(false)
-    val isIslandDevicesBatteryOnlyLow = mutableStateOf(false)
-    val islandLongPressAction = mutableStateOf<Action?>(null)
-    val islandSlideMode = mutableStateOf("none")
-    val isIslandSlideTrack = mutableStateOf(false)
-    val isIslandLikeWhilePlaying = mutableStateOf(false)
-    val isIslandSlideInvertDirection = mutableStateOf(true)
-
-    val islandCalendarEmojis = mutableStateOf<Map<Long, String>>(emptyMap())
 
     val isFlashlightAlwaysTurnOffEnabled = mutableStateOf(false)
     val isFlashlightFadeEnabled = mutableStateOf(false)
@@ -305,38 +189,65 @@ class MainViewModel : ViewModel() {
     val lockClock = LockClockState()
     val statusBarControl = StatusBarControlState()
     val nightLight = NightLightState { updateAppDetectionService(it) }
-    val duo =
+    val duo: DuoState =
         DuoState(
             islandLink =
                 object : DuoIslandLink {
                     override fun onDuoShowsTime() {
-                        isIslandShowTimeBattery.value = false
+                        island.isIslandShowTimeBattery.value = false
                         settingsRepository.setIslandShowTimeBatteryEnabled(false)
-                        setIslandShowBattery(false)
+                        island.setIslandShowBattery(false)
                     }
 
                     override fun onDuoShowsMedia() {
-                        isIslandShowMedia.value = false
+                        island.isIslandShowMedia.value = false
                         settingsRepository.setIslandShowMediaEnabled(false)
                     }
 
                     override fun onDuoShowsProgress() {
-                        isIslandNotifKeepProgress.value = false
+                        island.isIslandNotifKeepProgress.value = false
                         settingsRepository.setIslandNotifKeepProgressEnabled(false)
                     }
 
                     override fun onDuoShowsFlashlight() {
-                        isIslandShowFlashlight.value = false
+                        island.isIslandShowFlashlight.value = false
                         settingsRepository.setIslandShowFlashlightEnabled(false)
                     }
 
                     override fun onCombinedChanged(enabled: Boolean) {
                         if (!enabled) return
-                        setIslandShowTimeBattery(false)
-                        setIslandShowBattery(false)
-                        setIslandShowMedia(true)
-                        setIslandShowFlashlight(true)
-                        setIslandNotifKeepProgress(true)
+                        island.setIslandShowTimeBattery(false)
+                        island.setIslandShowBattery(false)
+                        island.setIslandShowMedia(true)
+                        island.setIslandShowFlashlight(true)
+                        island.setIslandNotifKeepProgress(true)
+                    }
+                },
+            onFoldableChanged = { isFoldableCameraDevice.value = it },
+        )
+    val island: IslandState =
+        IslandState(
+            scope = viewModelScope,
+            duoLink =
+                object : IslandDuoLink {
+                    override fun onIslandShowsTime() {
+                        duo.isDuoShowTime.value = false
+                        duoSettings.setDuoShowTimeEnabled(false)
+                    }
+
+                    override fun onIslandShowsMedia() {
+                        duo.isDuoShowMedia.value = false
+                        duoSettings.setDuoShowMediaEnabled(false)
+                    }
+
+                    override fun onIslandShowsProgress() {
+                        duo.isDuoShowProgress.value = false
+                        duoSettings.setDuoShowProgressEnabled(false)
+                    }
+
+                    override fun onIslandShowsFlashlight() {
+                        duo.isDuoShowFlashlight.value = false
+                        duoSettings.setDuoShowFlashlightEnabled(false)
                     }
                 },
             onFoldableChanged = { isFoldableCameraDevice.value = it },
@@ -526,129 +437,6 @@ class MainViewModel : ViewModel() {
                 if (key == null) return
 
                 when (key) {
-                    SettingsRepository.KEY_ISLAND_BATTERY_IDLE_COLOR_ENABLED ->
-                        isIslandBatteryIdleColorEnabled.value = settingsRepository.isIslandBatteryIdleColorEnabled()
-
-                    SettingsRepository.KEY_ISLAND_BATTERY_IDLE_COLOR ->
-                        islandBatteryIdleColor.value = settingsRepository.getIslandBatteryIdleColor()
-
-                    SettingsRepository.KEY_ISLAND_ENABLED ->
-                        isIslandEnabled.value = settingsRepository.isIslandEnabled()
-
-                    SettingsRepository.KEY_ISLAND_USE_AUTO_DETECT ->
-                        isIslandAutoDetect.value = settingsRepository.isIslandAutoDetectEnabled()
-
-                    SettingsRepository.KEY_ISLAND_CAMERA_OFFSET_X ->
-                        islandCameraOffsetX.floatValue = settingsRepository.getIslandCameraOffsetX()
-
-                    SettingsRepository.KEY_ISLAND_CAMERA_OFFSET_Y ->
-                        islandCameraOffsetY.floatValue = settingsRepository.getIslandCameraOffsetY()
-
-                    SettingsRepository.KEY_ISLAND_CAMERA_SIZE ->
-                        islandCameraSize.floatValue = settingsRepository.getIslandCameraSize()
-
-                    SettingsRepository.KEY_ISLAND_MAX_WIDTH ->
-                        islandMaxWidth.floatValue = settingsRepository.getIslandMaxWidth()
-
-                    SettingsRepository.KEY_ISLAND_CUTOUT_GAP ->
-                        islandCutoutGap.floatValue = settingsRepository.getIslandCutoutGap()
-
-                    SettingsRepository.KEY_ISLAND_SUPPRESS_SYSTEM_HEADS_UP ->
-                        isIslandSuppressSystemHeadsUp.value = settingsRepository.isIslandSuppressSystemHeadsUpEnabled()
-
-                    SettingsRepository.KEY_ISLAND_DYNAMIC_HIDE_STATUS_BAR ->
-                        isIslandDynamicHideStatusBar.value =
-                            settingsRepository.getBoolean(
-                                SettingsRepository.KEY_ISLAND_DYNAMIC_HIDE_STATUS_BAR,
-                                false,
-                            )
-
-                    SettingsRepository.KEY_ISLAND_HIDE_WHEN_SCREEN_OFF ->
-                        isIslandHideWhenScreenOff.value = settingsRepository.isIslandHideWhenScreenOffEnabled()
-
-                    SettingsRepository.KEY_ISLAND_TIMEOUT_MS ->
-                        islandTimeoutMs.longValue = settingsRepository.getIslandTimeoutMs()
-
-                    SettingsRepository.KEY_ISLAND_LINE_STAGE_ENABLED ->
-                        isIslandLineStageEnabled.value = settingsRepository.isIslandLineStageEnabled()
-
-                    SettingsRepository.KEY_ISLAND_MEDIA_PEEK_SONG_CHANGE ->
-                        isIslandMediaPeekSongChange.value = settingsRepository.isIslandMediaPeekSongChangeEnabled()
-
-                    SettingsRepository.KEY_ISLAND_MEDIA_KEEP_WHEN_PAUSED ->
-                        isIslandMediaKeepWhenPaused.value = settingsRepository.isIslandMediaKeepWhenPausedEnabled()
-
-                    SettingsRepository.KEY_ISLAND_MEDIA_SHOW_PREVIOUS ->
-                        isIslandMediaShowPrevious.value = settingsRepository.isIslandMediaShowPreviousEnabled()
-
-                    SettingsRepository.KEY_ISLAND_MEDIA_SHOW_LIKE ->
-                        isIslandMediaShowLike.value = settingsRepository.isIslandMediaShowLikeEnabled()
-
-                    SettingsRepository.KEY_ISLAND_NOTIF_PEEK_STYLE ->
-                        islandNotifPeekStyle.value = settingsRepository.getIslandNotifPeekStyle()
-
-                    SettingsRepository.KEY_ISLAND_NOTIF_QUEUE ->
-                        isIslandNotifQueue.value = settingsRepository.isIslandNotifQueueEnabled()
-
-                    SettingsRepository.KEY_ISLAND_NOTIF_QUEUE_STYLE ->
-                        islandNotifQueueStyle.value = settingsRepository.getIslandNotifQueueStyle()
-
-                    SettingsRepository.KEY_ISLAND_NOTIF_QUEUE_INLINE ->
-                        isIslandNotifQueueInline.value = settingsRepository.isIslandNotifQueueInlineEnabled()
-
-                    SettingsRepository.KEY_ISLAND_NOTIF_SKIP_SILENT ->
-                        isIslandNotifSkipSilent.value = settingsRepository.isIslandNotifSkipSilentEnabled()
-
-                    SettingsRepository.KEY_ISLAND_NOTIF_FOLLOW_DND ->
-                        isIslandNotifFollowDnd.value = settingsRepository.isIslandNotifFollowDndEnabled()
-
-                    SettingsRepository.KEY_ISLAND_NOTIF_FILTER_APPS ->
-                        isIslandNotifFilterApps.value = settingsRepository.isIslandNotifFilterAppsEnabled()
-
-                    SettingsRepository.KEY_ISLAND_SHOW_NOTIFICATIONS ->
-                        isIslandShowNotifications.value = settingsRepository.isIslandShowNotificationsEnabled()
-
-                    SettingsRepository.KEY_ISLAND_NOTIF_HUB -> syncIslandNotifHubState()
-
-                    SettingsRepository.KEY_ISLAND_NOTIF_HUB_SILENT ->
-                        isIslandNotifHubIncludeSilent.value = settingsRepository.isIslandNotifHubIncludeSilent()
-
-                    SettingsRepository.KEY_ISLAND_NOTIF_HUB_GROUP ->
-                        isIslandNotifHubGroupByApps.value = settingsRepository.isIslandNotifHubGroupByApps()
-
-                    SettingsRepository.KEY_ISLAND_NOTIF_HUB_ORDER ->
-                        islandNotifHubOrder.value = settingsRepository.getIslandNotifHubOrder()
-
-                    SettingsRepository.KEY_ISLAND_NOTIF_HUB_ICONS ->
-                        islandNotifHubIcons.intValue = settingsRepository.getIslandNotifHubIcons()
-
-                    SettingsRepository.KEY_ISLAND_NOTIF_TAP_TO_OPEN ->
-                        isIslandNotifTapToOpen.value = settingsRepository.isIslandNotifTapToOpenEnabled()
-
-                    SettingsRepository.KEY_ISLAND_SHOW_NAVIGATION ->
-                        isIslandShowNavigation.value = settingsRepository.isIslandShowNavigationEnabled()
-
-                    SettingsRepository.KEY_ISLAND_NAVIGATION_ON_NEW ->
-                        islandNavigationOnNew.value = settingsRepository.getIslandNavigationOnNew()
-
-                    SettingsRepository.KEY_ISLAND_NAVIGATION_EXPAND_DISTANCE ->
-                        islandNavigationExpandDistance.intValue = settingsRepository.getIslandNavigationExpandDistance()
-
-                    SettingsRepository.KEY_ISLAND_NAVIGATION_PEEK_AFTER_EXPAND ->
-                        isIslandNavigationPeekAfterExpand.value = settingsRepository.isIslandNavigationPeekAfterExpandEnabled()
-
-                    SettingsRepository.KEY_ISLAND_CATCH_UP_ENABLED ->
-                        isIslandCatchUpEnabled.value = settingsRepository.isIslandCatchUpEnabled()
-
-                    SettingsRepository.KEY_ISLAND_CATCH_UP_TIMEOUT_MS ->
-                        islandCatchUpTimeoutMs.longValue = settingsRepository.getIslandCatchUpStoredMs()
-
-                    SettingsRepository.KEY_ISLAND_OTP_ENABLED ->
-                        isIslandOtpEnabled.value = settingsRepository.isIslandOtpEnabled()
-
-                    SettingsRepository.KEY_ISLAND_OTP_TIMEOUT_MS ->
-                        islandOtpTimeoutMs.longValue = settingsRepository.getIslandOtpTimeoutMs()
-
                     SecuritySettings.KEY_SCREEN_LOCKED_SECURITY_ENABLED,
                     SecuritySettings.KEY_SCREEN_LOCKED_DISABLE_ON_EXTENDED_UNLOCK,
                     -> security.onPreferenceChanged(key)
@@ -709,6 +497,7 @@ class MainViewModel : ViewModel() {
                     in StatusBarControlState.PREFERENCE_KEYS -> statusBarControl.onPreferenceChanged(key)
                     in NightLightState.PREFERENCE_KEYS -> nightLight.onPreferenceChanged(key)
                     in DuoState.PREFERENCE_KEYS -> duo.onPreferenceChanged(key)
+                    in IslandState.PREFERENCE_KEYS -> island.onPreferenceChanged(key)
                     in StatusGlanceState.PREFERENCE_KEYS -> statusGlance.onPreferenceChanged(key)
 
                     PowerSettings.KEY_MAPS_DISCOVERED_CHANNELS, PowerSettings.KEY_MAPS_DETECTION_CHANNELS -> power.onPreferenceChanged(key)
@@ -1522,125 +1311,7 @@ class MainViewModel : ViewModel() {
 
         smartPixels.load(context)
         duo.load(context)
-        isIslandBatteryIdleColorEnabled.value = settingsRepository.isIslandBatteryIdleColorEnabled()
-        islandBatteryIdleColor.value = settingsRepository.getIslandBatteryIdleColor()
-        isIslandEnabled.value = settingsRepository.isIslandEnabled()
-        isIslandAutoDetect.value = settingsRepository.isIslandAutoDetectEnabled()
-        islandCameraOffsetX.floatValue = settingsRepository.getIslandCameraOffsetX()
-        islandCameraOffsetY.floatValue = settingsRepository.getIslandCameraOffsetY()
-        islandCameraSize.floatValue = settingsRepository.getIslandCameraSize()
-        islandMaxWidth.floatValue = settingsRepository.getIslandMaxWidth()
-        islandCutoutGap.floatValue = settingsRepository.getIslandCutoutGap()
-        islandExpandedWidth.floatValue = settingsRepository.getIslandExpandedWidth()
-        islandExpandedRoundness.floatValue = settingsRepository.getIslandExpandedRoundness()
-        islandFontScale.floatValue = settingsRepository.getIslandFontScale()
-        isIslandHideInOwnerApp.value = settingsRepository.isIslandHideInOwnerAppEnabled()
-        isIslandHideOnShade.value = settingsRepository.isIslandHideOnShadeEnabled()
-        isIslandKeepOnLandscape.value = settingsRepository.isIslandKeepOnLandscapeEnabled()
-        isIslandKeepInFullscreen.value = settingsRepository.isIslandKeepInFullscreenEnabled()
-        isIslandDisableInteractionsInFullscreen.value = settingsRepository.isIslandDisableInteractionsInFullscreenEnabled()
-        isIslandBondEdge.value = settingsRepository.isIslandBondEdgeEnabled()
-        isIslandBalanceCompact.value = settingsRepository.isIslandBalanceCompactEnabled()
-        isIslandSecondaryBubble.value = settingsRepository.isIslandSecondaryBubbleEnabled()
-        islandMaxItems.value = settingsRepository.getIslandMaxItems()
-        isIslandAlwaysGestures.value = settingsRepository.isIslandAlwaysGesturesEnabled()
-        islandLandscapeTopSpacing.floatValue = settingsRepository.getIslandLandscapeTopSpacing()
-        isIslandDismissOnOutside.value = settingsRepository.isIslandDismissOnOutsideEnabled()
-        isIslandHideLiveUpdates.value = settingsRepository.isIslandHideLiveUpdatesEnabled()
-        isIslandHideStatusBarInsets.value = settingsRepository.isIslandHideStatusBarInsetsEnabled()
-        islandExpandedScale.floatValue = settingsRepository.getIslandExpandedScale()
-        islandCameraPosition.value = settingsRepository.getIslandCameraPosition()
-        isIslandShowCalls.value = settingsRepository.isIslandShowCallsEnabled()
-        isIslandShowTimers.value = settingsRepository.isIslandShowTimersEnabled()
-        isIslandTimersShowScreenRecorder.value = settingsRepository.isIslandTimersShowScreenRecorderEnabled()
-        isIslandTimersFilterApps.value = settingsRepository.isIslandTimersFilterAppsEnabled()
-        isIslandShowNetwork.value = settingsRepository.isIslandShowNetworkEnabled()
-        isIslandShowSignal.value = settingsRepository.isIslandShowSignalEnabled()
-        isIslandShowSoundMode.value = settingsRepository.isIslandShowSoundModeEnabled()
-        isIslandSoundModeKeepIcon.value = settingsRepository.isIslandSoundModeKeepIconEnabled()
-        isIslandShowAlarm.value = settingsRepository.isIslandShowAlarmEnabled()
-        islandAlarmWindowHours.intValue = settingsRepository.getIslandAlarmWindowHours()
-        isIslandShowCaffeinate.value = settingsRepository.isIslandShowCaffeinateEnabled()
-        isIslandShowNavigation.value = settingsRepository.isIslandShowNavigationEnabled()
-        islandNavigationOnNew.value = settingsRepository.getIslandNavigationOnNew()
-        islandNavigationExpandDistance.intValue = settingsRepository.getIslandNavigationExpandDistance()
-        isIslandNavigationPeekAfterExpand.value = settingsRepository.isIslandNavigationPeekAfterExpandEnabled()
-        isIslandShowHotspot.value = settingsRepository.isIslandShowHotspotEnabled()
-        isIslandShowDevices.value = settingsRepository.isIslandShowDevicesEnabled()
-        isIslandBriefEnabled.value = settingsRepository.isIslandBriefEnabled()
-        isIslandBriefShowAlarm.value = settingsRepository.isIslandBriefShowAlarmEnabled()
-        islandDevicesBatteryOrder.value = settingsRepository.getIslandDevicesBatteryOrder()
-        islandExpandedPadding.floatValue = settingsRepository.getIslandExpandedPadding()
-        islandExpandedTopPadding.floatValue = settingsRepository.getIslandExpandedTopPadding()
-        islandExpandedBottomPadding.floatValue = settingsRepository.getIslandExpandedBottomPadding()
-        islandExpandedTimeoutMs.longValue = settingsRepository.getIslandExpandedTimeoutMs()
-        isIslandSuppressSystemHeadsUp.value = settingsRepository.isIslandSuppressSystemHeadsUpEnabled()
-        isIslandDynamicHideStatusBar.value =
-            settingsRepository.getBoolean(
-                SettingsRepository.KEY_ISLAND_DYNAMIC_HIDE_STATUS_BAR,
-                false,
-            )
-        isIslandCompactHideStatusBar.value =
-            settingsRepository.getBoolean(
-                SettingsRepository.KEY_ISLAND_COMPACT_HIDE_STATUS_BAR,
-                false,
-            )
-        isIslandHideWhenScreenOff.value = settingsRepository.isIslandHideWhenScreenOffEnabled()
-        islandTimeoutMs.longValue = settingsRepository.getIslandTimeoutMs()
-        isIslandLineStageEnabled.value = settingsRepository.isIslandLineStageEnabled()
-        isIslandMediaPeekSongChange.value = settingsRepository.isIslandMediaPeekSongChangeEnabled()
-        isIslandMediaKeepWhenPaused.value = settingsRepository.isIslandMediaKeepWhenPausedEnabled()
-        isIslandMediaShowPrevious.value = settingsRepository.isIslandMediaShowPreviousEnabled()
-        isIslandMediaShowLike.value = settingsRepository.isIslandMediaShowLikeEnabled()
-        islandNotifPeekStyle.value = settingsRepository.getIslandNotifPeekStyle()
-        isIslandNotifKeepProgress.value = settingsRepository.isIslandNotifKeepProgressEnabled()
-        isIslandNotifQueue.value = settingsRepository.isIslandNotifQueueEnabled()
-        islandNotifQueueStyle.value = settingsRepository.getIslandNotifQueueStyle()
-        isIslandNotifQueueInline.value = settingsRepository.isIslandNotifQueueInlineEnabled()
-        isIslandNotifSkipSilent.value = settingsRepository.isIslandNotifSkipSilentEnabled()
-        isIslandNotifFollowDnd.value = settingsRepository.isIslandNotifFollowDndEnabled()
-        isIslandNotifFilterApps.value = settingsRepository.isIslandNotifFilterAppsEnabled()
-        isIslandShowNotifications.value = settingsRepository.isIslandShowNotificationsEnabled()
-        isIslandNotifHub.value = settingsRepository.isIslandNotifHubEnabled()
-        islandNotifHubIcons.intValue = settingsRepository.getIslandNotifHubIcons()
-        islandNotifHubOrder.value = settingsRepository.getIslandNotifHubOrder()
-        isIslandNotifHubIncludeSilent.value = settingsRepository.isIslandNotifHubIncludeSilent()
-        isIslandNotifHubGroupByApps.value = settingsRepository.isIslandNotifHubGroupByApps()
-        isIslandNotifTapToOpen.value = settingsRepository.isIslandNotifTapToOpenEnabled()
-        isIslandCatchUpEnabled.value = settingsRepository.isIslandCatchUpEnabled()
-        islandCatchUpTimeoutMs.longValue = settingsRepository.getIslandCatchUpStoredMs()
-        isIslandOtpEnabled.value = settingsRepository.isIslandOtpEnabled()
-        islandOtpTimeoutMs.longValue = settingsRepository.getIslandOtpTimeoutMs()
-        isIslandShowGlow.value = settingsRepository.isIslandShowGlowEnabled()
-        isIslandBorderOutline.value = settingsRepository.isIslandBorderOutlineEnabled()
-        islandBorderOutlineColor.value = settingsRepository.getIslandBorderOutlineColor()
-        isIslandBorderOutlineDynamic.value = settingsRepository.isIslandBorderOutlineDynamicEnabled()
-        islandBorderOutlineThickness.floatValue = settingsRepository.getIslandBorderOutlineThickness()
-        isIslandBorderOutlineHiddenWhenExpanded.value = settingsRepository.isIslandBorderOutlineHiddenWhenExpanded()
-        isIslandPulseShadow.value = settingsRepository.isIslandPulseShadowEnabled()
-        islandPulseShadowSize.floatValue = settingsRepository.getIslandPulseShadowSize()
-        islandPulseShadowYShift.floatValue = settingsRepository.getIslandPulseShadowYShift()
-        islandPulseShadowSpread.floatValue = settingsRepository.getIslandPulseShadowSpread()
-        islandPulseShadowDurationMs.floatValue = settingsRepository.getIslandPulseShadowDurationMs()
-        isIslandShowMedia.value = settingsRepository.isIslandShowMediaEnabled()
-        isIslandShowCalendar.value = settingsRepository.isIslandShowCalendarEnabled()
-        isIslandShowConsciousGate.value = settingsRepository.isIslandShowConsciousGateEnabled()
-        isIslandShowTimeBattery.value = settingsRepository.isIslandShowTimeBatteryEnabled()
-        isIslandBatteryPeekAlerts.value = settingsRepository.isIslandBatteryPeekAlertsEnabled()
-        isIslandShowBattery.value = settingsRepository.isIslandShowBatteryEnabled()
-        isIslandShowFlashlight.value = settingsRepository.isIslandShowFlashlightEnabled()
-        islandBatteryStyle.value = settingsRepository.getIslandBatteryStyle()
-        islandDevicesBatteryStyle.value = settingsRepository.getIslandDevicesBatteryStyle()
-        isIslandBatteryPercentageEnabled.value = settingsRepository.isIslandBatteryPercentageEnabled()
-        isIslandBatteryPercentageConditional.value = settingsRepository.isIslandBatteryPercentageConditional()
-        isIslandBatteryIconConditional.value = settingsRepository.isIslandBatteryIconConditional()
-        isIslandBatteryOnlyLow.value = settingsRepository.isIslandBatteryOnlyLowEnabled()
-        isIslandDevicesBatteryOnlyLow.value = settingsRepository.isIslandDevicesBatteryOnlyLowEnabled()
-        islandLongPressAction.value = settingsRepository.getIslandLongPressAction()
-        islandSlideMode.value = settingsRepository.getIslandSlideMode()
-        isIslandSlideTrack.value = settingsRepository.isIslandSlideTrackEnabled()
-        isIslandLikeWhilePlaying.value = settingsRepository.isIslandLikeWhilePlayingEnabled()
-        isIslandSlideInvertDirection.value = settingsRepository.isIslandSlideInvertDirectionEnabled()
+        island.load(context)
         statusGlance.load(context)
         isFlashlightAlwaysTurnOffEnabled.value =
             settingsRepository.getBoolean(SettingsRepository.KEY_FLASHLIGHT_ALWAYS_TURN_OFF_ENABLED)
@@ -2931,686 +2602,6 @@ class MainViewModel : ViewModel() {
     ) {
         remapHapticType.value = type
         settingsRepository.putString(SettingsRepository.KEY_BUTTON_REMAP_HAPTIC_TYPE, type.name)
-    }
-
-    fun refreshIslandCameraPlacement() {
-        isFoldableCameraDevice.value = duoSettings.isFoldableDevice()
-        isIslandOrientationProfiles.value = settingsRepository.isIslandOrientationProfilesEnabled()
-        isIslandHiddenInCurrentOrientation.value = settingsRepository.isIslandHiddenInCurrentOrientation()
-        islandCameraOffsetX.floatValue = settingsRepository.getIslandCameraOffsetX()
-        islandCameraOffsetY.floatValue = settingsRepository.getIslandCameraOffsetY()
-        islandCameraSize.floatValue = settingsRepository.getIslandCameraSize()
-        islandCameraPosition.value = settingsRepository.getIslandCameraPosition()
-    }
-
-    fun setIslandOrientationProfiles(enabled: Boolean) {
-        settingsRepository.setIslandOrientationProfilesEnabled(enabled)
-        refreshIslandCameraPlacement()
-    }
-
-    fun setIslandHiddenInCurrentOrientation(hidden: Boolean) {
-        settingsRepository.setIslandHiddenInCurrentOrientation(hidden)
-        isIslandHiddenInCurrentOrientation.value = hidden
-    }
-
-    fun setIslandBatteryIdleColorEnabled(enabled: Boolean) {
-        isIslandBatteryIdleColorEnabled.value = enabled
-        settingsRepository.setIslandBatteryIdleColorEnabled(enabled)
-    }
-
-    fun setIslandBatteryIdleColor(colorHex: String) {
-        islandBatteryIdleColor.value = colorHex
-        settingsRepository.setIslandBatteryIdleColor(colorHex)
-    }
-
-    private fun combinedActive(): Boolean = duoSettings.isDuoIslandCombined()
-
-    fun setIslandEnabled(enabled: Boolean) {
-        isIslandEnabled.value = enabled
-        settingsRepository.setIslandEnabled(enabled)
-    }
-
-    fun setIslandAutoDetect(enabled: Boolean) {
-        isIslandAutoDetect.value = enabled
-        settingsRepository.setIslandAutoDetectEnabled(enabled)
-    }
-
-    fun autoAlignIslandWithCamera(context: Context): Boolean {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) return false
-        val wm = context.getSystemService(Context.WINDOW_SERVICE) as? WindowManager ?: return false
-        val metrics = wm.maximumWindowMetrics
-        val rect =
-            try {
-                metrics.windowInsets.displayCutout?.boundingRects
-                    ?.let { rects -> rects.find { it.top == 0 } ?: rects.firstOrNull() }
-            } catch (_: Exception) {
-                null
-            } ?: return false
-        val density = context.resources.displayMetrics.density
-        val screenWidth = metrics.bounds.width().toFloat()
-        val screenHeight = metrics.bounds.height().toFloat()
-        val radius = (minOf(rect.width(), rect.height()) / 2f).coerceAtLeast(12f * density)
-        setIslandCameraOffsetX((rect.exactCenterX() / screenWidth * 100f).coerceIn(0f, 100f))
-        setIslandCameraOffsetY((rect.exactCenterY() / screenHeight * 100f).coerceIn(0f, 20f))
-        setIslandCameraSize((radius / (16f * density)).coerceIn(0.05f, 2.0f))
-        setIslandAutoDetect(false)
-        return true
-    }
-
-    fun setIslandCameraOffsetX(value: Float) {
-        islandCameraOffsetX.floatValue = value
-        settingsRepository.setIslandCameraOffsetX(value)
-    }
-
-    fun setIslandCameraOffsetY(value: Float) {
-        islandCameraOffsetY.floatValue = value
-        settingsRepository.setIslandCameraOffsetY(value)
-    }
-
-    fun setIslandCameraSize(value: Float) {
-        islandCameraSize.floatValue = value
-        settingsRepository.setIslandCameraSize(value)
-    }
-
-    fun setIslandMaxWidth(value: Float) {
-        islandMaxWidth.floatValue = value
-        settingsRepository.setIslandMaxWidth(value)
-    }
-
-    fun setIslandCutoutGap(value: Float) {
-        islandCutoutGap.floatValue = value
-        settingsRepository.setIslandCutoutGap(value)
-    }
-
-    fun setIslandExpandedWidth(value: Float) {
-        islandExpandedWidth.floatValue = value
-        settingsRepository.setIslandExpandedWidth(value)
-    }
-
-    fun setIslandDevicesBatteryOrder(addresses: List<String>) {
-        islandDevicesBatteryOrder.value = addresses
-        settingsRepository.setIslandDevicesBatteryOrder(addresses)
-    }
-
-    fun setIslandBriefShowAlarm(enabled: Boolean) {
-        isIslandBriefShowAlarm.value = enabled
-        settingsRepository.setIslandBriefShowAlarmEnabled(enabled)
-    }
-
-    fun setIslandBriefEnabled(enabled: Boolean) {
-        isIslandBriefEnabled.value = enabled
-        settingsRepository.setIslandBriefEnabled(enabled)
-    }
-
-    fun setIslandShowDevices(enabled: Boolean) {
-        isIslandShowDevices.value = enabled
-        settingsRepository.setIslandShowDevicesEnabled(enabled)
-    }
-
-    fun setIslandShowNavigation(enabled: Boolean) {
-        isIslandShowNavigation.value = enabled
-        settingsRepository.setIslandShowNavigationEnabled(enabled)
-    }
-
-    fun setIslandNavigationOnNew(mode: String) {
-        islandNavigationOnNew.value = mode
-        settingsRepository.setIslandNavigationOnNew(mode)
-    }
-
-    fun setIslandNavigationExpandDistance(meters: Int) {
-        islandNavigationExpandDistance.intValue = meters
-        settingsRepository.setIslandNavigationExpandDistance(meters)
-    }
-
-    fun setIslandNavigationPeekAfterExpand(enabled: Boolean) {
-        isIslandNavigationPeekAfterExpand.value = enabled
-        settingsRepository.setIslandNavigationPeekAfterExpandEnabled(enabled)
-    }
-
-    fun setIslandShowHotspot(enabled: Boolean) {
-        isIslandShowHotspot.value = enabled
-        settingsRepository.setIslandShowHotspotEnabled(enabled)
-    }
-
-    fun setIslandShowCaffeinate(enabled: Boolean) {
-        isIslandShowCaffeinate.value = enabled
-        settingsRepository.setIslandShowCaffeinateEnabled(enabled)
-    }
-
-    fun setIslandShowAlarm(enabled: Boolean) {
-        isIslandShowAlarm.value = enabled
-        settingsRepository.setIslandShowAlarmEnabled(enabled)
-    }
-
-    fun setIslandAlarmWindowHours(hours: Int) {
-        islandAlarmWindowHours.intValue = hours
-        settingsRepository.setIslandAlarmWindowHours(hours)
-    }
-
-    fun setIslandShowSoundMode(enabled: Boolean) {
-        isIslandShowSoundMode.value = enabled
-        settingsRepository.setIslandShowSoundModeEnabled(enabled)
-    }
-
-    fun setIslandSoundModeKeepIcon(enabled: Boolean) {
-        isIslandSoundModeKeepIcon.value = enabled
-        settingsRepository.setIslandSoundModeKeepIconEnabled(enabled)
-    }
-
-    fun setIslandShowSignal(enabled: Boolean) {
-        isIslandShowSignal.value = enabled
-        settingsRepository.setIslandShowSignalEnabled(enabled)
-    }
-
-    fun setIslandShowNetwork(enabled: Boolean) {
-        isIslandShowNetwork.value = enabled
-        settingsRepository.setIslandShowNetworkEnabled(enabled)
-    }
-
-    fun loadIslandCalendarEmojis() {
-        islandCalendarEmojis.value = settingsRepository.getIslandCalendarEmojis()
-    }
-
-    fun setIslandCalendarEmoji(calendarId: Long, emoji: String?) {
-        settingsRepository.setIslandCalendarEmoji(calendarId, emoji)
-        islandCalendarEmojis.value = settingsRepository.getIslandCalendarEmojis()
-    }
-
-    fun setIslandShowTimers(enabled: Boolean) {
-        isIslandShowTimers.value = enabled
-        settingsRepository.setIslandShowTimersEnabled(enabled)
-    }
-
-    fun setIslandTimersShowScreenRecorder(enabled: Boolean) {
-        isIslandTimersShowScreenRecorder.value = enabled
-        settingsRepository.setIslandTimersShowScreenRecorderEnabled(enabled)
-    }
-
-    fun setIslandTimersFilterApps(enabled: Boolean) {
-        isIslandTimersFilterApps.value = enabled
-        settingsRepository.setIslandTimersFilterAppsEnabled(enabled)
-    }
-
-    fun loadIslandTimersSelectedApps(context: Context): List<AppSelection> = settingsRepository.loadIslandTimersSelectedApps()
-
-    fun saveIslandTimersSelectedApps(context: Context, apps: List<AppSelection>) {
-        settingsRepository.saveIslandTimersSelectedApps(apps)
-    }
-
-    fun updateIslandTimersAppEnabled(context: Context, packageName: String, enabled: Boolean) {
-        settingsRepository.updateIslandTimersAppSelection(packageName, enabled)
-    }
-
-    fun setIslandShowCalls(enabled: Boolean) {
-        isIslandShowCalls.value = enabled
-        settingsRepository.setIslandShowCallsEnabled(enabled)
-    }
-
-    fun setIslandCameraPosition(value: String) {
-        islandCameraPosition.value = value
-        settingsRepository.setIslandCameraPosition(value)
-    }
-
-    fun setIslandExpandedScale(value: Float) {
-        islandExpandedScale.floatValue = value
-        settingsRepository.setIslandExpandedScale(value)
-    }
-
-    fun setIslandHideLiveUpdates(enabled: Boolean) {
-        isIslandHideLiveUpdates.value = enabled
-        settingsRepository.setIslandHideLiveUpdatesEnabled(enabled)
-    }
-
-    fun setIslandHideStatusBarInsets(
-        enabled: Boolean,
-        context: Context,
-    ) {
-        isIslandHideStatusBarInsets.value = enabled
-        settingsRepository.setIslandHideStatusBarInsetsEnabled(enabled)
-        if (enabled) setIslandHideLiveUpdates(false)
-        val appContext = context.applicationContext
-        viewModelScope.launch(Dispatchers.IO) {
-            StatusBarInsetsUtils.apply(appContext, enabled)
-        }
-    }
-
-    fun setIslandDismissOnOutside(enabled: Boolean) {
-        isIslandDismissOnOutside.value = enabled
-        settingsRepository.setIslandDismissOnOutsideEnabled(enabled)
-    }
-
-    fun setIslandHideInOwnerApp(enabled: Boolean) {
-        isIslandHideInOwnerApp.value = enabled
-        settingsRepository.setIslandHideInOwnerAppEnabled(enabled)
-    }
-
-    fun setIslandLandscapeTopSpacing(value: Float) {
-        islandLandscapeTopSpacing.floatValue = value
-        settingsRepository.setIslandLandscapeTopSpacing(value)
-    }
-
-    fun setIslandAlwaysGestures(enabled: Boolean) {
-        isIslandAlwaysGestures.value = enabled
-        settingsRepository.setIslandAlwaysGesturesEnabled(enabled)
-    }
-
-    fun setIslandMaxItems(value: Int) {
-        islandMaxItems.value = value
-        settingsRepository.setIslandMaxItems(value)
-    }
-
-    fun setIslandSecondaryBubble(enabled: Boolean) {
-        isIslandSecondaryBubble.value = enabled
-        settingsRepository.setIslandSecondaryBubbleEnabled(enabled)
-    }
-
-    fun setIslandBalanceCompact(enabled: Boolean) {
-        isIslandBalanceCompact.value = enabled
-        settingsRepository.setIslandBalanceCompactEnabled(enabled)
-    }
-
-    fun setIslandBondEdge(enabled: Boolean) {
-        isIslandBondEdge.value = enabled
-        settingsRepository.setIslandBondEdgeEnabled(enabled)
-    }
-
-    fun setIslandKeepInFullscreen(enabled: Boolean) {
-        isIslandKeepInFullscreen.value = enabled
-        settingsRepository.setIslandKeepInFullscreenEnabled(enabled)
-    }
-
-    fun setIslandDisableInteractionsInFullscreen(enabled: Boolean) {
-        isIslandDisableInteractionsInFullscreen.value = enabled
-        settingsRepository.setIslandDisableInteractionsInFullscreenEnabled(enabled)
-    }
-
-    fun setIslandKeepOnLandscape(enabled: Boolean) {
-        isIslandKeepOnLandscape.value = enabled
-        settingsRepository.setIslandKeepOnLandscapeEnabled(enabled)
-    }
-
-    fun setIslandHideOnShade(enabled: Boolean) {
-        isIslandHideOnShade.value = enabled
-        settingsRepository.setIslandHideOnShadeEnabled(enabled)
-    }
-
-    fun setIslandFontScale(value: Float) {
-        islandFontScale.floatValue = value
-        settingsRepository.setIslandFontScale(value)
-    }
-
-    fun setIslandExpandedRoundness(value: Float) {
-        islandExpandedRoundness.floatValue = value
-        settingsRepository.setIslandExpandedRoundness(value)
-    }
-
-    fun setIslandExpandedPadding(value: Float) {
-        islandExpandedPadding.floatValue = value
-        settingsRepository.setIslandExpandedPadding(value)
-    }
-
-    fun setIslandExpandedTopPadding(value: Float) {
-        islandExpandedTopPadding.floatValue = value
-        settingsRepository.setIslandExpandedTopPadding(value)
-    }
-
-    fun setIslandExpandedBottomPadding(value: Float) {
-        islandExpandedBottomPadding.floatValue = value
-        settingsRepository.setIslandExpandedBottomPadding(value)
-    }
-
-    fun setIslandExpandedTimeoutMs(value: Long) {
-        islandExpandedTimeoutMs.longValue = value
-        settingsRepository.setIslandExpandedTimeoutMs(value)
-    }
-
-    fun setIslandSuppressSystemHeadsUp(enabled: Boolean) {
-        isIslandSuppressSystemHeadsUp.value = enabled
-        settingsRepository.setIslandSuppressSystemHeadsUpEnabled(enabled)
-    }
-
-    fun setIslandCompactHideStatusBar(enabled: Boolean) {
-        isIslandCompactHideStatusBar.value = enabled
-        settingsRepository.putBoolean(SettingsRepository.KEY_ISLAND_COMPACT_HIDE_STATUS_BAR, enabled)
-    }
-
-    fun setIslandDynamicHideStatusBar(
-        enabled: Boolean,
-        context: Context,
-    ) {
-        isIslandDynamicHideStatusBar.value = enabled
-        settingsRepository.putBoolean(
-            SettingsRepository.KEY_ISLAND_DYNAMIC_HIDE_STATUS_BAR,
-            enabled,
-        )
-        if (!enabled) {
-            IslandStatusBarHider.restore(context)
-        }
-    }
-
-    fun setIslandHideWhenScreenOff(enabled: Boolean) {
-        isIslandHideWhenScreenOff.value = enabled
-        settingsRepository.setIslandHideWhenScreenOffEnabled(enabled)
-    }
-
-    fun setIslandTimeoutMs(value: Long) {
-        islandTimeoutMs.longValue = value
-        settingsRepository.setIslandTimeoutMs(value)
-    }
-
-    fun setIslandLineStageEnabled(enabled: Boolean) {
-        isIslandLineStageEnabled.value = enabled
-        settingsRepository.setIslandLineStageEnabled(enabled)
-    }
-
-    fun setIslandMediaPeekSongChange(enabled: Boolean) {
-        isIslandMediaPeekSongChange.value = enabled
-        settingsRepository.setIslandMediaPeekSongChangeEnabled(enabled)
-    }
-
-    fun setIslandMediaKeepWhenPaused(enabled: Boolean) {
-        isIslandMediaKeepWhenPaused.value = enabled
-        settingsRepository.setIslandMediaKeepWhenPausedEnabled(enabled)
-    }
-
-    fun setIslandMediaShowPrevious(enabled: Boolean) {
-        isIslandMediaShowPrevious.value = enabled
-        settingsRepository.setIslandMediaShowPreviousEnabled(enabled)
-    }
-
-    fun setIslandMediaShowLike(enabled: Boolean) {
-        isIslandMediaShowLike.value = enabled
-        settingsRepository.setIslandMediaShowLikeEnabled(enabled)
-    }
-
-    fun setIslandShowNotifications(enabled: Boolean) {
-        isIslandShowNotifications.value = enabled
-        settingsRepository.setIslandShowNotificationsEnabled(enabled)
-    }
-
-    fun setIslandNotifHub(enabled: Boolean) {
-        if (enabled) settingsRepository.setIslandShowNotificationsEnabled(true)
-        settingsRepository.setIslandNotifHubEnabled(enabled)
-        isIslandShowNotifications.value = settingsRepository.isIslandShowNotificationsEnabled()
-        syncIslandNotifHubState()
-    }
-
-    fun setIslandNotifHubIncludeSilent(enabled: Boolean) {
-        isIslandNotifHubIncludeSilent.value = enabled
-        settingsRepository.setIslandNotifHubIncludeSilent(enabled)
-    }
-
-    fun setIslandNotifHubGroupByApps(enabled: Boolean) {
-        isIslandNotifHubGroupByApps.value = enabled
-        settingsRepository.setIslandNotifHubGroupByApps(enabled)
-    }
-
-    fun setIslandNotifHubOrder(value: String) {
-        islandNotifHubOrder.value = value
-        settingsRepository.setIslandNotifHubOrder(value)
-    }
-
-    fun setIslandNotifHubIcons(value: Int) {
-        islandNotifHubIcons.intValue = value
-        settingsRepository.setIslandNotifHubIcons(value)
-    }
-
-    private fun syncIslandNotifHubState() {
-        isIslandNotifHub.value = settingsRepository.isIslandNotifHubEnabled()
-        isIslandNotifQueue.value = settingsRepository.isIslandNotifQueueEnabled()
-        isIslandCatchUpEnabled.value = settingsRepository.isIslandCatchUpEnabled()
-        islandCatchUpTimeoutMs.longValue = settingsRepository.getIslandCatchUpStoredMs()
-    }
-
-    fun setIslandNotifQueueInline(enabled: Boolean) {
-        isIslandNotifQueueInline.value = enabled
-        settingsRepository.setIslandNotifQueueInlineEnabled(enabled)
-    }
-
-    fun setIslandNotifQueueStyle(style: String) {
-        islandNotifQueueStyle.value = style
-        settingsRepository.setIslandNotifQueueStyle(style)
-    }
-
-    fun setIslandNotifQueue(enabled: Boolean) {
-        isIslandNotifQueue.value = enabled
-        settingsRepository.setIslandNotifQueueEnabled(enabled)
-    }
-
-    fun setIslandNotifSkipSilent(enabled: Boolean) {
-        isIslandNotifSkipSilent.value = enabled
-        settingsRepository.setIslandNotifSkipSilentEnabled(enabled)
-    }
-
-    fun setIslandNotifFollowDnd(enabled: Boolean) {
-        isIslandNotifFollowDnd.value = enabled
-        settingsRepository.setIslandNotifFollowDndEnabled(enabled)
-    }
-
-    fun setIslandNotifFilterApps(enabled: Boolean) {
-        isIslandNotifFilterApps.value = enabled
-        settingsRepository.setIslandNotifFilterAppsEnabled(enabled)
-    }
-
-    fun loadIslandNotifFilterApps(): List<AppSelection> = settingsRepository.loadIslandNotifFilterApps()
-
-    fun saveIslandNotifFilterApps(apps: List<AppSelection>) {
-        settingsRepository.saveIslandNotifFilterApps(apps)
-    }
-
-    fun updateIslandNotifFilterApp(packageName: String, enabled: Boolean) {
-        settingsRepository.updateIslandNotifFilterAppSelection(packageName, enabled)
-    }
-
-    fun setIslandNotifTapToOpen(enabled: Boolean) {
-        isIslandNotifTapToOpen.value = enabled
-        settingsRepository.setIslandNotifTapToOpenEnabled(enabled)
-    }
-
-    fun setIslandNotifKeepProgress(enabled: Boolean) {
-        isIslandNotifKeepProgress.value = enabled
-        settingsRepository.setIslandNotifKeepProgressEnabled(enabled)
-        if (enabled && combinedActive()) {
-            duo.isDuoShowProgress.value = false
-            duoSettings.setDuoShowProgressEnabled(false)
-        }
-    }
-
-    fun setIslandNotifPeekStyle(style: String) {
-        islandNotifPeekStyle.value = style
-        settingsRepository.setIslandNotifPeekStyle(style)
-    }
-
-    fun setIslandCatchUpEnabled(enabled: Boolean) {
-        isIslandCatchUpEnabled.value = enabled
-        settingsRepository.setIslandCatchUpEnabled(enabled)
-    }
-
-    fun setIslandCatchUpTimeoutMs(value: Long) {
-        islandCatchUpTimeoutMs.longValue = value
-        settingsRepository.setIslandCatchUpTimeoutMs(value)
-    }
-
-    fun setIslandOtpEnabled(enabled: Boolean) {
-        isIslandOtpEnabled.value = enabled
-        settingsRepository.setIslandOtpEnabled(enabled)
-    }
-
-    fun setIslandOtpTimeoutMs(value: Long) {
-        islandOtpTimeoutMs.longValue = value
-        settingsRepository.setIslandOtpTimeoutMs(value)
-    }
-
-    fun setIslandShowGlow(enabled: Boolean) {
-        isIslandShowGlow.value = enabled
-        settingsRepository.setIslandShowGlowEnabled(enabled)
-    }
-
-    fun setIslandBorderOutline(enabled: Boolean) {
-        isIslandBorderOutline.value = enabled
-        settingsRepository.setIslandBorderOutlineEnabled(enabled)
-    }
-
-    fun setIslandBorderOutlineColor(colorHex: String) {
-        islandBorderOutlineColor.value = colorHex
-        settingsRepository.setIslandBorderOutlineColor(colorHex)
-    }
-
-    fun setIslandBorderOutlineDynamic(enabled: Boolean) {
-        isIslandBorderOutlineDynamic.value = enabled
-        settingsRepository.setIslandBorderOutlineDynamicEnabled(enabled)
-    }
-
-    fun setIslandBorderOutlineThickness(value: Float) {
-        islandBorderOutlineThickness.floatValue = value
-        settingsRepository.setIslandBorderOutlineThickness(value)
-    }
-
-    fun setIslandBorderOutlineHiddenWhenExpanded(hidden: Boolean) {
-        isIslandBorderOutlineHiddenWhenExpanded.value = hidden
-        settingsRepository.setIslandBorderOutlineHiddenWhenExpanded(hidden)
-    }
-
-    fun setIslandPulseShadow(enabled: Boolean) {
-        isIslandPulseShadow.value = enabled
-        settingsRepository.setIslandPulseShadowEnabled(enabled)
-    }
-
-    fun setIslandPulseShadowSize(value: Float) {
-        islandPulseShadowSize.floatValue = value
-        settingsRepository.setIslandPulseShadowSize(value)
-    }
-
-    fun setIslandPulseShadowYShift(value: Float) {
-        islandPulseShadowYShift.floatValue = value
-        settingsRepository.setIslandPulseShadowYShift(value)
-    }
-
-    fun setIslandPulseShadowSpread(value: Float) {
-        islandPulseShadowSpread.floatValue = value
-        settingsRepository.setIslandPulseShadowSpread(value)
-    }
-
-    fun setIslandPulseShadowDurationMs(value: Float) {
-        islandPulseShadowDurationMs.floatValue = value
-        settingsRepository.setIslandPulseShadowDurationMs(value)
-    }
-
-    fun setIslandShowMedia(enabled: Boolean) {
-        isIslandShowMedia.value = enabled
-        settingsRepository.setIslandShowMediaEnabled(enabled)
-        if (enabled && combinedActive()) {
-            duo.isDuoShowMedia.value = false
-            duoSettings.setDuoShowMediaEnabled(false)
-        }
-    }
-
-    fun setIslandShowCalendar(enabled: Boolean) {
-        isIslandShowCalendar.value = enabled
-        settingsRepository.setIslandShowCalendarEnabled(enabled)
-    }
-
-    fun setIslandShowConsciousGate(enabled: Boolean) {
-        isIslandShowConsciousGate.value = enabled
-        settingsRepository.setIslandShowConsciousGateEnabled(enabled)
-    }
-
-    fun setIslandShowFlashlight(enabled: Boolean) {
-        isIslandShowFlashlight.value = enabled
-        settingsRepository.setIslandShowFlashlightEnabled(enabled)
-        if (enabled && combinedActive()) {
-            duo.isDuoShowFlashlight.value = false
-            duoSettings.setDuoShowFlashlightEnabled(false)
-        }
-    }
-
-    fun setIslandShowTimeBattery(enabled: Boolean) {
-        isIslandShowTimeBattery.value = enabled
-        settingsRepository.setIslandShowTimeBatteryEnabled(enabled)
-        if (enabled && combinedActive()) {
-            duo.isDuoShowTime.value = false
-            duoSettings.setDuoShowTimeEnabled(false)
-        }
-    }
-
-    fun setIslandBatteryStyle(value: String) {
-        islandBatteryStyle.value = value
-        settingsRepository.setIslandBatteryStyle(value)
-    }
-
-    fun setIslandDevicesBatteryStyle(value: String) {
-        islandDevicesBatteryStyle.value = value
-        settingsRepository.setIslandDevicesBatteryStyle(value)
-    }
-
-    fun setIslandShowBattery(enabled: Boolean) {
-        isIslandShowBattery.value = enabled
-        settingsRepository.setIslandShowBatteryEnabled(enabled)
-    }
-
-    fun setIslandBatteryPeekAlerts(enabled: Boolean) {
-        isIslandBatteryPeekAlerts.value = enabled
-        settingsRepository.setIslandBatteryPeekAlertsEnabled(enabled)
-    }
-
-    fun setIslandBatteryPercentageEnabled(enabled: Boolean) {
-        isIslandBatteryPercentageEnabled.value = enabled
-        settingsRepository.setIslandBatteryPercentageEnabled(enabled)
-    }
-
-    fun setIslandDevicesBatteryOnlyLow(enabled: Boolean) {
-        isIslandDevicesBatteryOnlyLow.value = enabled
-        settingsRepository.setIslandDevicesBatteryOnlyLowEnabled(enabled)
-    }
-
-    fun setIslandBatteryOnlyLow(enabled: Boolean) {
-        isIslandBatteryOnlyLow.value = enabled
-        settingsRepository.setIslandBatteryOnlyLowEnabled(enabled)
-    }
-
-    fun setIslandBatteryIconConditional(enabled: Boolean) {
-        isIslandBatteryIconConditional.value = enabled
-        settingsRepository.setIslandBatteryIconConditional(enabled)
-    }
-
-    fun setIslandBatteryPercentageConditional(enabled: Boolean) {
-        isIslandBatteryPercentageConditional.value = enabled
-        settingsRepository.setIslandBatteryPercentageConditional(enabled)
-    }
-
-    fun setIslandLongPressAction(action: Action?) {
-        islandLongPressAction.value = action
-        settingsRepository.setIslandLongPressAction(action)
-    }
-
-    fun setIslandSlideMode(mode: String) {
-        islandSlideMode.value = mode
-        settingsRepository.setIslandSlideMode(mode)
-    }
-
-    fun setIslandLikeWhilePlayingEnabled(enabled: Boolean) {
-        isIslandLikeWhilePlaying.value = enabled
-        settingsRepository.setIslandLikeWhilePlayingEnabled(enabled)
-    }
-
-    fun setIslandSlideTrackEnabled(enabled: Boolean) {
-        isIslandSlideTrack.value = enabled
-        settingsRepository.setIslandSlideTrackEnabled(enabled)
-    }
-
-    fun setIslandSlideInvertDirection(enabled: Boolean) {
-        isIslandSlideInvertDirection.value = enabled
-        settingsRepository.setIslandSlideInvertDirection(enabled)
-    }
-
-    fun loadIslandMediaApps(context: Context): List<AppSelection> = settingsRepository.loadIslandMediaExcludedApps()
-
-    fun saveIslandMediaApps(context: Context, apps: List<AppSelection>) {
-        settingsRepository.saveIslandMediaExcludedApps(apps)
-    }
-
-    fun updateIslandMediaAppEnabled(context: Context, packageName: String, enabled: Boolean) {
-        settingsRepository.updateIslandMediaExcludedAppSelection(packageName, enabled)
     }
 
     fun triggerIslandPreview(context: Context) {

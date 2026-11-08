@@ -53,10 +53,10 @@ fun IslandBorderOutlineOptionsBottomSheet(
             RoundedCardContainer(spacing = 2.dp, cornerRadius = 24.dp) {
                 ConfigSliderItem(
                     title = stringResource(R.string.island_border_outline_thickness_title),
-                    value = viewModel.islandBorderOutlineThickness.floatValue,
+                    value = viewModel.island.islandBorderOutlineThickness.floatValue,
                     onValueChange = {
                         HapticUtil.performUIHaptic(view)
-                        viewModel.setIslandBorderOutlineThickness(it)
+                        viewModel.island.setIslandBorderOutlineThickness(it)
                     },
                     valueRange = 1f..5f,
                     increment = 1f,
@@ -68,26 +68,26 @@ fun IslandBorderOutlineOptionsBottomSheet(
                     iconRes = R.drawable.rounded_visibility_off_24,
                     title = stringResource(R.string.island_border_outline_hide_expanded_title),
                     description = stringResource(R.string.island_border_outline_hide_expanded_desc),
-                    isChecked = viewModel.isIslandBorderOutlineHiddenWhenExpanded.value,
+                    isChecked = viewModel.island.isIslandBorderOutlineHiddenWhenExpanded.value,
                     onCheckedChange = {
                         HapticUtil.performVirtualKeyHaptic(view)
-                        viewModel.setIslandBorderOutlineHiddenWhenExpanded(it)
+                        viewModel.island.setIslandBorderOutlineHiddenWhenExpanded(it)
                     },
                 )
 
                 IconToggleItem(
                     iconRes = R.drawable.rounded_palette_24,
                     title = stringResource(R.string.island_border_outline_dynamic_title),
-                    isChecked = viewModel.isIslandBorderOutlineDynamic.value,
+                    isChecked = viewModel.island.isIslandBorderOutlineDynamic.value,
                     onCheckedChange = {
                         HapticUtil.performVirtualKeyHaptic(view)
-                        viewModel.setIslandBorderOutlineDynamic(it)
+                        viewModel.island.setIslandBorderOutlineDynamic(it)
                     },
                 )
 
                 ColorSwatchPicker(
-                    selectedColorHex = viewModel.islandBorderOutlineColor.value,
-                    onColorSelected = { viewModel.setIslandBorderOutlineColor(it) },
+                    selectedColorHex = viewModel.island.islandBorderOutlineColor.value,
+                    onColorSelected = { viewModel.island.setIslandBorderOutlineColor(it) },
                     colors = OUTLINE_COLORS,
                 )
             }
