@@ -36,6 +36,7 @@ import com.jawzf.pixeltoolkit.core.data.prefs.AppSelection
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticFeedbackType
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.platform.AppComponents
+import com.jawzf.pixeltoolkit.core.platform.device.CallNotificationParser
 import com.jawzf.pixeltoolkit.core.platform.device.CallStateRepository
 import com.jawzf.pixeltoolkit.core.platform.device.CarConnectionMonitor
 import com.jawzf.pixeltoolkit.core.platform.device.ChronometerRepository
@@ -63,7 +64,6 @@ import com.jawzf.pixeltoolkit.island.plugins.notifications.OtpExtractor
 import com.jawzf.pixeltoolkit.services.receivers.FlashlightActionReceiver
 import com.jawzf.pixeltoolkit.services.tiles.ScreenOffAccessibilityService
 import com.jawzf.pixeltoolkit.services.widgets.PixelSearchbarWidget
-import com.jawzf.pixeltoolkit.utils.call.CallNotificationParser
 import com.jawzf.pixeltoolkit.utils.notification.NotificationRepostFilter
 import kotlinx.coroutines.launch
 import java.io.File
