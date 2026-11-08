@@ -10,7 +10,7 @@ import rikka.shizuku.SystemServiceHelper
 import java.lang.reflect.InvocationTargetException
 
 @RequiresApi(Build.VERSION_CODES.VANILLA_ICE_CREAM)
-internal object ZenModeController {
+object ZenModeController {
     private const val MANAGER = "android.app.INotificationManager"
     private const val MODES_SERVICE = "contextual_mode"
     private const val MODES_MANAGER = "android.app.modes.IContextualModeManager"
