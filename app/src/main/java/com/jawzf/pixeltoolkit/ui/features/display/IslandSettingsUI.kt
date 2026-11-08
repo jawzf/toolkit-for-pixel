@@ -43,7 +43,8 @@ import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.jawzf.pixeltoolkit.FeatureSettingsActivity
+import com.jawzf.pixeltoolkit.core.data.action.Action
+import com.jawzf.pixeltoolkit.core.data.island.IslandSettings
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.cards.FeatureCard
 import com.jawzf.pixeltoolkit.core.design.cards.IconToggleItem
@@ -53,20 +54,22 @@ import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.modifiers.highlight
 import com.jawzf.pixeltoolkit.core.design.pickers.ColorSwatchPicker
 import com.jawzf.pixeltoolkit.core.design.pickers.SegmentedPicker
+import com.jawzf.pixeltoolkit.core.design.sheets.PermissionItem
 import com.jawzf.pixeltoolkit.core.design.sheets.PermissionsBottomSheet
+import com.jawzf.pixeltoolkit.core.platform.AppComponents
 import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.domain.diy.displayName
 import com.jawzf.pixeltoolkit.feature.apps.consciousgate.ui.CONSCIOUS_GATE_FEATURE_ID
-import com.jawzf.pixeltoolkit.feature.display.duo.ui.BatteryColorOptions
+import com.jawzf.pixeltoolkit.feature.island.IslandState
 import com.jawzf.pixeltoolkit.feature.island.model.IslandPriorityEntries
 import com.jawzf.pixeltoolkit.feature.island.remote.ProviderDiscovery
 import com.jawzf.pixeltoolkit.feature.island.remote.ProviderPriorities
 import com.jawzf.pixeltoolkit.feature.island.remote.ProviderTrustStore
+import com.jawzf.pixeltoolkit.feature.island.settings.AppPickerRequest
 import com.jawzf.pixeltoolkit.feature.island.settings.IslandPriorityActions
 import com.jawzf.pixeltoolkit.feature.island.settings.IslandProvidersSection
 import com.jawzf.pixeltoolkit.feature.island.settings.ProviderAppIcon
+import com.jawzf.pixeltoolkit.feature.island.settings.sheets.HorizontalSlideModeSheet
 import com.jawzf.pixeltoolkit.feature.island.settings.sheets.IslandAlarmOptionsBottomSheet
 import com.jawzf.pixeltoolkit.feature.island.settings.sheets.IslandAppOptionsBottomSheet
 import com.jawzf.pixeltoolkit.feature.island.settings.sheets.IslandBatteryOptionsBottomSheet
@@ -81,19 +84,26 @@ import com.jawzf.pixeltoolkit.feature.island.settings.sheets.IslandSignalOptions
 import com.jawzf.pixeltoolkit.feature.island.settings.sheets.IslandSoundModeOptionsBottomSheet
 import com.jawzf.pixeltoolkit.feature.island.settings.sheets.IslandTimeOptionsBottomSheet
 import com.jawzf.pixeltoolkit.feature.island.settings.sheets.IslandTimerOptionsBottomSheet
-import com.jawzf.pixeltoolkit.ui.core.sheets.AppSelectionSheet
-import com.jawzf.pixeltoolkit.ui.features.display.actions.GestureActionPickerSheet
-import com.jawzf.pixeltoolkit.ui.features.display.actions.HorizontalSlideModeSheet
-import com.jawzf.pixeltoolkit.ui.features.display.actions.horizontalSlideDescription
-import com.jawzf.pixeltoolkit.ui.features.display.sheets.StatusGlanceCalendarOptionsBottomSheet
-import com.jawzf.pixeltoolkit.utils.PermissionUIHelper
-import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
+import com.jawzf.pixeltoolkit.feature.island.settings.sheets.horizontalSlideDescription
 import sh.calvin.reorderable.ReorderableColumn
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun IslandSettingsUI(
-    viewModel: MainViewModel,
+    state: IslandState,
+    isDuoEnabled: Boolean,
+    isDuoIslandCombined: Boolean,
+    onDuoIslandCombinedChange: (Boolean) -> Unit,
+    isAccessibilityEnabled: Boolean,
+    isNotificationListenerEnabled: Boolean,
+    isCalendarPermissionGranted: Boolean,
+    permissionItemsFor: (List<String>) -> List<PermissionItem>,
+    onRefreshPermissions: () -> Unit,
+    actionLabel: (Action) -> String,
+    gesturePicker: @Composable (currentAction: Action?, onActionSelected: (Action?) -> Unit, onClosed: () -> Unit) -> Unit,
+    appPicker: @Composable (AppPickerRequest) -> Unit,
+    batteryColorOptions: @Composable () -> Unit,
+    calendarOptionsSheet: @Composable (onDismiss: () -> Unit) -> Unit,
     modifier: Modifier = Modifier,
     highlightSetting: String? = null,
 ) {
@@ -101,7 +111,7 @@ fun IslandSettingsUI(
     val view = LocalView.current
     var requestingPermissionsFor by remember { mutableStateOf<Pair<Int, List<String>>?>(null) }
 
-    val prioritySettings = remember { SettingsRepository(context) }
+    val prioritySettings = remember { IslandSettings(context) }
     var reorderMode by remember { mutableStateOf(false) }
     var providerVersion by remember { mutableIntStateOf(0) }
     var providerOptionsFor by remember { mutableStateOf<Pair<String, String>?>(null) }
@@ -127,11 +137,11 @@ fun IslandSettingsUI(
 
     if (requestingPermissionsFor != null) {
         val (titleRes, permKeys) = requestingPermissionsFor!!
-        val permissionItems = PermissionUIHelper.getPermissionItems(permKeys, context, viewModel)
+        val permissionItems = permissionItemsFor(permKeys)
         PermissionsBottomSheet(
             onDismissRequest = {
                 requestingPermissionsFor = null
-                viewModel.check(context)
+                onRefreshPermissions()
             },
             featureTitle = stringResource(titleRes),
             permissions = permissionItems,
@@ -151,25 +161,25 @@ fun IslandSettingsUI(
             IconToggleItem(
                 iconRes = R.drawable.rounded_notifications_unread_24,
                 title = stringResource(R.string.island_enable_title),
-                isChecked = viewModel.island.isIslandEnabled.value,
+                isChecked = state.isIslandEnabled.value,
                 onCheckedChange = { checked ->
                     HapticUtil.performVirtualKeyHaptic(view)
                     if (checked) {
                         val missingPermissions = mutableListOf<String>()
-                        if (!viewModel.isAccessibilityEnabled.value) {
+                        if (!isAccessibilityEnabled) {
                             missingPermissions.add("ACCESSIBILITY")
                         }
-                        if (!viewModel.isNotificationListenerEnabled.value) {
+                        if (!isNotificationListenerEnabled) {
                             missingPermissions.add("NOTIFICATION_LISTENER")
                         }
 
                         if (missingPermissions.isNotEmpty()) {
                             requestingPermissionsFor = Pair(R.string.island_title, missingPermissions)
                         } else {
-                            viewModel.island.setIslandEnabled(true)
+                            state.setIslandEnabled(true)
                         }
                     } else {
-                        viewModel.island.setIslandEnabled(false)
+                        state.setIslandEnabled(false)
                     }
                 },
                 modifier = Modifier.highlight(highlightSetting == "island_enabled"),
@@ -190,7 +200,7 @@ fun IslandSettingsUI(
                     onClick = {
                         HapticUtil.performVirtualKeyHaptic(view)
                         context.startActivity(
-                            Intent(context, FeatureSettingsActivity::class.java).apply {
+                            Intent().setClassName(context, AppComponents.FEATURE_SETTINGS_ACTIVITY).apply {
                                 putExtra("feature", featureId)
                             },
                         )
@@ -225,10 +235,10 @@ fun IslandSettingsUI(
                 )
                 SegmentedPicker(
                     items = listOf(1, 2, 3, 4),
-                    selectedItem = viewModel.island.islandMaxItems.value,
+                    selectedItem = state.islandMaxItems.value,
                     onItemSelected = {
                         HapticUtil.performVirtualKeyHaptic(view)
-                        viewModel.island.setIslandMaxItems(it)
+                        state.setIslandMaxItems(it)
                     },
                     labelProvider = { it.toString() },
                     title = R.string.island_max_items_title,
@@ -247,13 +257,14 @@ fun IslandSettingsUI(
                         dragHandle = handle,
                         iconRes = R.drawable.rounded_call_24,
                         title = stringResource(R.string.island_show_calls_title),
-                        isChecked = viewModel.island.isIslandShowCalls.value && PermissionUtils.hasCallPermissions(context),
+                        isChecked = state.isIslandShowCalls.value && PermissionUtils.hasCallPermissions(context),
                         onCheckedChange = { checked ->
                             HapticUtil.performVirtualKeyHaptic(view)
                             if (checked && !PermissionUtils.hasCallPermissions(context)) {
-                                requestingPermissionsFor = Pair(R.string.island_title, listOf("READ_PHONE_STATE", "ANSWER_PHONE_CALLS", "READ_CONTACTS"))
+                                requestingPermissionsFor =
+                                    Pair(R.string.island_title, listOf("READ_PHONE_STATE", "ANSWER_PHONE_CALLS", "READ_CONTACTS"))
                             } else {
-                                viewModel.island.setIslandShowCalls(checked)
+                                state.setIslandShowCalls(checked)
                             }
                         },
                         onSettingsClick = { showCallOptionsSheet = true },
@@ -263,15 +274,15 @@ fun IslandSettingsUI(
                         dragHandle = handle,
                         iconRes = R.drawable.rounded_notifications_unread_24,
                         title = stringResource(R.string.island_section_notifications),
-                        isChecked = viewModel.island.isIslandShowNotifications.value,
+                        isChecked = state.isIslandShowNotifications.value,
                         onCheckedChange = { checked ->
                             HapticUtil.performVirtualKeyHaptic(view)
-                            viewModel.island.setIslandShowNotifications(checked)
+                            state.setIslandShowNotifications(checked)
                         },
                         onSettingsClick = {
                             HapticUtil.performVirtualKeyHaptic(view)
                             context.startActivity(
-                                Intent(context, FeatureSettingsActivity::class.java).apply {
+                                Intent().setClassName(context, AppComponents.FEATURE_SETTINGS_ACTIVITY).apply {
                                     putExtra("feature", ISLAND_NOTIFICATIONS_FEATURE_ID)
                                 },
                             )
@@ -282,10 +293,10 @@ fun IslandSettingsUI(
                         dragHandle = handle,
                         iconRes = R.drawable.rounded_schedule_24,
                         title = stringResource(R.string.island_show_time_title),
-                        isChecked = viewModel.island.isIslandShowTimeBattery.value,
+                        isChecked = state.isIslandShowTimeBattery.value,
                         onCheckedChange = { checked ->
                             HapticUtil.performVirtualKeyHaptic(view)
-                            viewModel.island.setIslandShowTimeBattery(checked)
+                            state.setIslandShowTimeBattery(checked)
                         },
                         onSettingsClick = { showTimeOptionsSheet = true },
                         modifier = Modifier.highlight(highlightSetting == "island_show_time_battery"),
@@ -294,10 +305,10 @@ fun IslandSettingsUI(
                         dragHandle = handle,
                         iconRes = R.drawable.rounded_battery_android_0_24,
                         title = stringResource(R.string.island_show_battery_title),
-                        isChecked = viewModel.island.isIslandShowBattery.value,
+                        isChecked = state.isIslandShowBattery.value,
                         onCheckedChange = { checked ->
                             HapticUtil.performVirtualKeyHaptic(view)
-                            viewModel.island.setIslandShowBattery(checked)
+                            state.setIslandShowBattery(checked)
                         },
                         onSettingsClick = { showBatteryOptionsSheet = true },
                         modifier = Modifier.highlight(highlightSetting == "island_show_battery"),
@@ -306,10 +317,10 @@ fun IslandSettingsUI(
                         dragHandle = handle,
                         iconRes = R.drawable.rounded_flashlight_on_24,
                         title = stringResource(R.string.feat_flashlight_title),
-                        isChecked = viewModel.island.isIslandShowFlashlight.value,
+                        isChecked = state.isIslandShowFlashlight.value,
                         onCheckedChange = { checked ->
                             HapticUtil.performVirtualKeyHaptic(view)
-                            viewModel.island.setIslandShowFlashlight(checked)
+                            state.setIslandShowFlashlight(checked)
                         },
                         modifier = Modifier.highlight(highlightSetting == "island_show_flashlight"),
                     )
@@ -317,10 +328,10 @@ fun IslandSettingsUI(
                         dragHandle = handle,
                         iconRes = R.drawable.rounded_timer_24,
                         title = stringResource(R.string.island_show_timers_title),
-                        isChecked = viewModel.island.isIslandShowTimers.value,
+                        isChecked = state.isIslandShowTimers.value,
                         onCheckedChange = { checked ->
                             HapticUtil.performVirtualKeyHaptic(view)
-                            viewModel.island.setIslandShowTimers(checked)
+                            state.setIslandShowTimers(checked)
                         },
                         onSettingsClick = { showTimerOptionsSheet = true },
                         modifier = Modifier.highlight(highlightSetting == "island_show_timers"),
@@ -329,10 +340,10 @@ fun IslandSettingsUI(
                         dragHandle = handle,
                         iconRes = R.drawable.rounded_motion_play_24,
                         title = stringResource(R.string.duo_show_media_title),
-                        isChecked = viewModel.island.isIslandShowMedia.value,
+                        isChecked = state.isIslandShowMedia.value,
                         onCheckedChange = { checked ->
                             HapticUtil.performVirtualKeyHaptic(view)
-                            viewModel.island.setIslandShowMedia(checked)
+                            state.setIslandShowMedia(checked)
                         },
                         onSettingsClick = { showMediaAppSelectionSheet = true },
                         modifier = Modifier.highlight(highlightSetting == "island_show_media"),
@@ -341,13 +352,13 @@ fun IslandSettingsUI(
                         dragHandle = handle,
                         iconRes = R.drawable.rounded_pause_24,
                         title = stringResource(R.string.feat_conscious_gate_title),
-                        isChecked = viewModel.island.isIslandShowConsciousGate.value,
+                        isChecked = state.isIslandShowConsciousGate.value,
                         onCheckedChange = { checked ->
                             HapticUtil.performVirtualKeyHaptic(view)
-                            viewModel.island.setIslandShowConsciousGate(checked)
+                            state.setIslandShowConsciousGate(checked)
                         },
                         onSettingsClick = {
-                            val intent = Intent(context, FeatureSettingsActivity::class.java).apply {
+                            val intent = Intent().setClassName(context, AppComponents.FEATURE_SETTINGS_ACTIVITY).apply {
                                 putExtra("feature", CONSCIOUS_GATE_FEATURE_ID)
                             }
                             context.startActivity(intent)
@@ -358,10 +369,10 @@ fun IslandSettingsUI(
                         dragHandle = handle,
                         iconRes = R.drawable.rounded_coffee_24,
                         title = stringResource(R.string.feat_caffeinate_title),
-                        isChecked = viewModel.island.isIslandShowCaffeinate.value,
+                        isChecked = state.isIslandShowCaffeinate.value,
                         onCheckedChange = { checked ->
                             HapticUtil.performVirtualKeyHaptic(view)
-                            viewModel.island.setIslandShowCaffeinate(checked)
+                            state.setIslandShowCaffeinate(checked)
                         },
                         onSettingsClick = { showCaffeinateOptionsSheet = true },
                         modifier = Modifier.highlight(highlightSetting == "island_show_caffeinate"),
@@ -370,13 +381,13 @@ fun IslandSettingsUI(
                         dragHandle = handle,
                         iconRes = R.drawable.rounded_calendar_today_24,
                         title = stringResource(R.string.status_glance_show_calendar_title),
-                        isChecked = viewModel.island.isIslandShowCalendar.value,
+                        isChecked = state.isIslandShowCalendar.value,
                         onCheckedChange = { checked ->
                             HapticUtil.performVirtualKeyHaptic(view)
-                            if (checked && !viewModel.isCalendarPermissionGranted.value) {
+                            if (checked && !isCalendarPermissionGranted) {
                                 requestingPermissionsFor = Pair(R.string.island_title, listOf("READ_CALENDAR"))
                             } else {
-                                viewModel.island.setIslandShowCalendar(checked)
+                                state.setIslandShowCalendar(checked)
                             }
                         },
                         onSettingsClick = { showCalendarOptionsSheet = true },
@@ -386,10 +397,10 @@ fun IslandSettingsUI(
                         dragHandle = handle,
                         iconRes = R.drawable.rounded_volume_up_24,
                         title = stringResource(R.string.island_show_sound_mode_title),
-                        isChecked = viewModel.island.isIslandShowSoundMode.value,
+                        isChecked = state.isIslandShowSoundMode.value,
                         onCheckedChange = { checked ->
                             HapticUtil.performVirtualKeyHaptic(view)
-                            viewModel.island.setIslandShowSoundMode(checked)
+                            state.setIslandShowSoundMode(checked)
                         },
                         onSettingsClick = { showSoundModeOptionsSheet = true },
                         modifier = Modifier.highlight(highlightSetting == "island_show_sound_mode"),
@@ -398,10 +409,10 @@ fun IslandSettingsUI(
                         dragHandle = handle,
                         iconRes = R.drawable.rounded_android_wifi_3_bar_24,
                         title = stringResource(R.string.island_show_network_title),
-                        isChecked = viewModel.island.isIslandShowNetwork.value,
+                        isChecked = state.isIslandShowNetwork.value,
                         onCheckedChange = { checked ->
                             HapticUtil.performVirtualKeyHaptic(view)
-                            viewModel.island.setIslandShowNetwork(checked)
+                            state.setIslandShowNetwork(checked)
                         },
                         onSettingsClick = { showSignalOptionsSheet = true },
                         modifier = Modifier.highlight(highlightSetting == "island_show_network"),
@@ -410,10 +421,10 @@ fun IslandSettingsUI(
                         dragHandle = handle,
                         iconRes = R.drawable.rounded_alarm_24,
                         title = stringResource(R.string.island_show_alarm_title),
-                        isChecked = viewModel.island.isIslandShowAlarm.value,
+                        isChecked = state.isIslandShowAlarm.value,
                         onCheckedChange = { checked ->
                             HapticUtil.performVirtualKeyHaptic(view)
-                            viewModel.island.setIslandShowAlarm(checked)
+                            state.setIslandShowAlarm(checked)
                         },
                         onSettingsClick = { showAlarmOptionsSheet = true },
                         modifier = Modifier.highlight(highlightSetting == "island_show_alarm"),
@@ -422,10 +433,10 @@ fun IslandSettingsUI(
                         dragHandle = handle,
                         iconRes = R.drawable.round_navigation_24,
                         title = stringResource(R.string.island_show_navigation_title),
-                        isChecked = viewModel.island.isIslandShowNavigation.value,
+                        isChecked = state.isIslandShowNavigation.value,
                         onCheckedChange = { checked ->
                             HapticUtil.performVirtualKeyHaptic(view)
-                            viewModel.island.setIslandShowNavigation(checked)
+                            state.setIslandShowNavigation(checked)
                         },
                         onSettingsClick = { showNavigationOptionsSheet = true },
                         modifier = Modifier.highlight(highlightSetting == "island_show_navigation"),
@@ -434,10 +445,10 @@ fun IslandSettingsUI(
                         dragHandle = handle,
                         iconRes = R.drawable.rounded_wifi_tethering_24,
                         title = stringResource(R.string.island_show_hotspot_title),
-                        isChecked = viewModel.island.isIslandShowHotspot.value,
+                        isChecked = state.isIslandShowHotspot.value,
                         onCheckedChange = { checked ->
                             HapticUtil.performVirtualKeyHaptic(view)
-                            viewModel.island.setIslandShowHotspot(checked)
+                            state.setIslandShowHotspot(checked)
                             if (checked) {
                                 val missing = mutableListOf<String>()
                                 if (!PermissionUtils.hasUsageStatsPermission(context)) missing.add("USAGE_STATS")
@@ -451,13 +462,13 @@ fun IslandSettingsUI(
                         dragHandle = handle,
                         iconRes = R.drawable.rounded_bluetooth_24,
                         title = stringResource(R.string.island_show_devices_title),
-                        isChecked = viewModel.island.isIslandShowDevices.value && PermissionUtils.hasBluetoothPermission(context),
+                        isChecked = state.isIslandShowDevices.value && PermissionUtils.hasBluetoothPermission(context),
                         onCheckedChange = { checked ->
                             HapticUtil.performVirtualKeyHaptic(view)
                             if (checked && !PermissionUtils.hasBluetoothPermission(context)) {
                                 requestingPermissionsFor = Pair(R.string.island_title, listOf("BLUETOOTH_CONNECT", "BLUETOOTH_SCAN"))
                             } else {
-                                viewModel.island.setIslandShowDevices(checked)
+                                state.setIslandShowDevices(checked)
                             }
                         },
                         onSettingsClick = { showDevicesBatterySheet = true },
@@ -540,10 +551,10 @@ fun IslandSettingsUI(
                 iconRes = R.drawable.rounded_calendar_today_24,
                 title = stringResource(R.string.island_brief_title),
                 description = stringResource(R.string.island_brief_desc),
-                isChecked = viewModel.island.isIslandBriefEnabled.value,
+                isChecked = state.isIslandBriefEnabled.value,
                 onCheckedChange = { checked ->
                     HapticUtil.performVirtualKeyHaptic(view)
-                    viewModel.island.setIslandBriefEnabled(checked)
+                    state.setIslandBriefEnabled(checked)
                 },
                 onSettingsClick = { showBriefOptionsSheet = true },
                 modifier = Modifier.highlight(highlightSetting == "island_brief_enabled"),
@@ -567,14 +578,14 @@ fun IslandSettingsUI(
                 iconRes = R.drawable.rounded_front_hand_24,
                 title = stringResource(R.string.duo_action_long_press_title),
                 description =
-                    if (viewModel.island.isIslandBriefEnabled.value) {
+                    if (state.isIslandBriefEnabled.value) {
                         stringResource(R.string.island_brief_title)
                     } else {
-                        viewModel.island.islandLongPressAction.value
-                            ?.displayName(context) ?: stringResource(R.string.duo_action_none)
+                        state.islandLongPressAction.value
+                            ?.let(actionLabel) ?: stringResource(R.string.duo_action_none)
                     },
                 showToggle = false,
-                enabled = !viewModel.island.isIslandBriefEnabled.value,
+                enabled = !state.isIslandBriefEnabled.value,
                 onClick = {
                     HapticUtil.performVirtualKeyHaptic(view)
                     pickingGesture = "long_press"
@@ -585,10 +596,10 @@ fun IslandSettingsUI(
             IconToggleItem(
                 iconRes = R.drawable.rounded_favorite_24,
                 title = stringResource(R.string.island_like_while_playing_title),
-                isChecked = viewModel.island.isIslandLikeWhilePlaying.value,
+                isChecked = state.isIslandLikeWhilePlaying.value,
                 onCheckedChange = { checked ->
                     HapticUtil.performVirtualKeyHaptic(view)
-                    viewModel.island.setIslandLikeWhilePlayingEnabled(checked)
+                    state.setIslandLikeWhilePlayingEnabled(checked)
                 },
                 modifier = Modifier.highlight(highlightSetting == "island_like_while_playing"),
             )
@@ -601,7 +612,7 @@ fun IslandSettingsUI(
             IconToggleItem(
                 iconRes = R.drawable.rounded_compare_arrows_24,
                 title = stringResource(R.string.duo_action_horizontal_slide_title),
-                description = horizontalSlideDescription(viewModel.island.islandSlideMode.value, viewModel.island.isIslandSlideTrack.value),
+                description = horizontalSlideDescription(state.islandSlideMode.value, state.isIslandSlideTrack.value),
                 showToggle = false,
                 onClick = {
                     HapticUtil.performVirtualKeyHaptic(view)
@@ -614,26 +625,26 @@ fun IslandSettingsUI(
                 iconRes = R.drawable.rounded_skip_next_24,
                 title = stringResource(R.string.duo_action_horizontal_slide_track),
                 description = stringResource(R.string.duo_action_horizontal_slide_track_desc),
-                isChecked = viewModel.island.isIslandSlideTrack.value,
+                isChecked = state.isIslandSlideTrack.value,
                 onCheckedChange = { checked ->
                     HapticUtil.performVirtualKeyHaptic(view)
-                    viewModel.island.setIslandSlideTrackEnabled(checked)
+                    state.setIslandSlideTrackEnabled(checked)
                 },
                 modifier = Modifier.highlight(highlightSetting == "island_slide_track"),
             )
 
             AnimatedVisibility(
-                visible = viewModel.island.isIslandSlideTrack.value || viewModel.island.islandSlideMode.value == "sound_mode",
+                visible = state.isIslandSlideTrack.value || state.islandSlideMode.value == "sound_mode",
                 enter = expandVertically() + fadeIn(),
                 exit = shrinkVertically() + fadeOut(),
             ) {
                 IconToggleItem(
                     iconRes = R.drawable.rounded_compare_arrows_24,
                     title = stringResource(R.string.duo_slide_mirror_direction_title),
-                    isChecked = viewModel.island.isIslandSlideInvertDirection.value,
+                    isChecked = state.isIslandSlideInvertDirection.value,
                     onCheckedChange = { checked ->
                         HapticUtil.performVirtualKeyHaptic(view)
-                        viewModel.island.setIslandSlideInvertDirection(checked)
+                        state.setIslandSlideInvertDirection(checked)
                     },
                     modifier = Modifier.highlight(highlightSetting == "island_slide_invert_direction"),
                 )
@@ -648,17 +659,17 @@ fun IslandSettingsUI(
                 iconRes = R.drawable.rounded_touch_app_24,
                 title = stringResource(R.string.island_always_gestures_title),
                 description = stringResource(R.string.island_always_gestures_desc),
-                isChecked = viewModel.island.isIslandAlwaysGestures.value,
+                isChecked = state.isIslandAlwaysGestures.value,
                 onCheckedChange = { checked ->
                     HapticUtil.performVirtualKeyHaptic(view)
-                    viewModel.island.setIslandAlwaysGestures(checked)
+                    state.setIslandAlwaysGestures(checked)
                 },
                 modifier = Modifier.highlight(highlightSetting == "island_always_gestures"),
             )
         }
 
         AnimatedVisibility(
-            visible = !viewModel.island.isIslandShowTimeBattery.value,
+            visible = !state.isIslandShowTimeBattery.value,
             enter = expandVertically() + fadeIn(),
             exit = shrinkVertically() + fadeOut(),
         ) {
@@ -671,7 +682,7 @@ fun IslandSettingsUI(
         }
 
         AnimatedVisibility(
-            visible = viewModel.duo.isDuoEnabled.value && viewModel.island.isIslandEnabled.value,
+            visible = isDuoEnabled && state.isIslandEnabled.value,
             enter = expandVertically() + fadeIn(),
             exit = shrinkVertically() + fadeOut(),
         ) {
@@ -682,10 +693,10 @@ fun IslandSettingsUI(
                 IconToggleItem(
                     iconRes = R.drawable.rounded_link_24,
                     title = stringResource(R.string.island_combine_with_duo),
-                    isChecked = viewModel.duo.isDuoIslandCombined.value,
+                    isChecked = isDuoIslandCombined,
                     onCheckedChange = { checked ->
                         HapticUtil.performVirtualKeyHaptic(view)
-                        viewModel.duo.setDuoIslandCombined(checked)
+                        onDuoIslandCombinedChange(checked)
                     },
                     modifier = Modifier.highlight(highlightSetting == "duo_island_combined"),
                 )
@@ -696,90 +707,86 @@ fun IslandSettingsUI(
     }
 
     if (pickingGesture != null) {
-        GestureActionPickerSheet(
-            viewModel = viewModel,
-            currentAction = viewModel.island.islandLongPressAction.value,
-            onActionSelected = viewModel.island::setIslandLongPressAction,
-            onPickerClosed = { pickingGesture = null },
-        )
+        gesturePicker(state.islandLongPressAction.value, state::setIslandLongPressAction) { pickingGesture = null }
     }
 
     if (showSlideModeSheet) {
         HorizontalSlideModeSheet(
-            mode = viewModel.island.islandSlideMode.value,
-            onModeSelected = viewModel.island::setIslandSlideMode,
+            mode = state.islandSlideMode.value,
+            onModeSelected = state::setIslandSlideMode,
             onDismissRequest = { showSlideModeSheet = false },
         )
     }
 
     if (showMediaAppSelectionSheet) {
-        AppSelectionSheet(
-            title = stringResource(R.string.island_media_config_title),
-            onDismissRequest = { showMediaAppSelectionSheet = false },
-            onLoadApps = { viewModel.island.loadIslandMediaApps(it) },
-            onSaveApps = { ctx, apps -> viewModel.island.saveIslandMediaApps(ctx, apps) },
-            onAppToggle = { ctx, pkg, enabled -> viewModel.island.updateIslandMediaAppEnabled(ctx, pkg, enabled) },
-            context = context,
-            headerContent = {
-                Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
-                    RoundedCardContainer(spacing = 2.dp, cornerRadius = 24.dp) {
-                        if (viewModel.island.isIslandLineStageEnabled.value) {
+        appPicker(
+            AppPickerRequest(
+                title = stringResource(R.string.island_media_config_title),
+                onDismiss = { showMediaAppSelectionSheet = false },
+                onLoadApps = { state.loadIslandMediaApps(it) },
+                onSaveApps = { ctx, apps -> state.saveIslandMediaApps(ctx, apps) },
+                onAppToggle = { ctx, pkg, enabled -> state.updateIslandMediaAppEnabled(ctx, pkg, enabled) },
+                headerContent = {
+                    Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+                        RoundedCardContainer(spacing = 2.dp, cornerRadius = 24.dp) {
+                            if (state.isIslandLineStageEnabled.value) {
+                                IconToggleItem(
+                                    iconRes = R.drawable.rounded_music_note_24,
+                                    title = stringResource(R.string.island_media_peek_song_change_title),
+                                    isChecked = state.isIslandMediaPeekSongChange.value,
+                                    onCheckedChange = { checked ->
+                                        HapticUtil.performVirtualKeyHaptic(view)
+                                        state.setIslandMediaPeekSongChange(checked)
+                                    },
+                                    modifier = Modifier.highlight(highlightSetting == "island_media_peek_song_change"),
+                                )
+                            }
                             IconToggleItem(
-                                iconRes = R.drawable.rounded_music_note_24,
-                                title = stringResource(R.string.island_media_peek_song_change_title),
-                                isChecked = viewModel.island.isIslandMediaPeekSongChange.value,
+                                iconRes = R.drawable.rounded_pause_24,
+                                title = stringResource(R.string.island_media_keep_when_paused_title),
+                                isChecked = state.isIslandMediaKeepWhenPaused.value,
                                 onCheckedChange = { checked ->
                                     HapticUtil.performVirtualKeyHaptic(view)
-                                    viewModel.island.setIslandMediaPeekSongChange(checked)
+                                    state.setIslandMediaKeepWhenPaused(checked)
                                 },
-                                modifier = Modifier.highlight(highlightSetting == "island_media_peek_song_change"),
+                                modifier = Modifier.highlight(highlightSetting == "island_media_keep_when_paused"),
+                            )
+                            IconToggleItem(
+                                iconRes = R.drawable.rounded_skip_previous_24,
+                                title = stringResource(R.string.island_media_show_previous_title),
+                                isChecked = state.isIslandMediaShowPrevious.value,
+                                onCheckedChange = { checked ->
+                                    HapticUtil.performVirtualKeyHaptic(view)
+                                    state.setIslandMediaShowPrevious(checked)
+                                },
+                                modifier = Modifier.highlight(highlightSetting == "island_media_show_previous"),
+                            )
+                            IconToggleItem(
+                                iconRes = R.drawable.rounded_favorite_24,
+                                title = stringResource(R.string.island_media_show_like_title),
+                                isChecked = state.isIslandMediaShowLike.value,
+                                onCheckedChange = { checked ->
+                                    HapticUtil.performVirtualKeyHaptic(view)
+                                    state.setIslandMediaShowLike(checked)
+                                },
+                                modifier = Modifier.highlight(highlightSetting == "island_media_show_like"),
                             )
                         }
-                        IconToggleItem(
-                            iconRes = R.drawable.rounded_pause_24,
-                            title = stringResource(R.string.island_media_keep_when_paused_title),
-                            isChecked = viewModel.island.isIslandMediaKeepWhenPaused.value,
-                            onCheckedChange = { checked ->
-                                HapticUtil.performVirtualKeyHaptic(view)
-                                viewModel.island.setIslandMediaKeepWhenPaused(checked)
-                            },
-                            modifier = Modifier.highlight(highlightSetting == "island_media_keep_when_paused"),
-                        )
-                        IconToggleItem(
-                            iconRes = R.drawable.rounded_skip_previous_24,
-                            title = stringResource(R.string.island_media_show_previous_title),
-                            isChecked = viewModel.island.isIslandMediaShowPrevious.value,
-                            onCheckedChange = { checked ->
-                                HapticUtil.performVirtualKeyHaptic(view)
-                                viewModel.island.setIslandMediaShowPrevious(checked)
-                            },
-                            modifier = Modifier.highlight(highlightSetting == "island_media_show_previous"),
-                        )
-                        IconToggleItem(
-                            iconRes = R.drawable.rounded_favorite_24,
-                            title = stringResource(R.string.island_media_show_like_title),
-                            isChecked = viewModel.island.isIslandMediaShowLike.value,
-                            onCheckedChange = { checked ->
-                                HapticUtil.performVirtualKeyHaptic(view)
-                                viewModel.island.setIslandMediaShowLike(checked)
-                            },
-                            modifier = Modifier.highlight(highlightSetting == "island_media_show_like"),
+                        Text(
+                            text = stringResource(R.string.duo_media_skip_apps_title),
+                            style = MaterialTheme.typography.titleSmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.padding(start = 8.dp),
                         )
                     }
-                    Text(
-                        text = stringResource(R.string.duo_media_skip_apps_title),
-                        style = MaterialTheme.typography.titleSmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.padding(start = 8.dp),
-                    )
-                }
-            },
+                },
+            ),
         )
     }
 
     if (showBriefOptionsSheet) {
         IslandBriefOptionsBottomSheet(
-            state = viewModel.island,
+            state = state,
             onDismissRequest = { showBriefOptionsSheet = false },
             highlightSetting = highlightSetting,
         )
@@ -787,21 +794,21 @@ fun IslandSettingsUI(
 
     if (showSoundModeOptionsSheet) {
         IslandSoundModeOptionsBottomSheet(
-            state = viewModel.island,
+            state = state,
             onDismissRequest = { showSoundModeOptionsSheet = false },
         )
     }
 
     if (showNavigationOptionsSheet) {
         IslandNavigationOptionsBottomSheet(
-            state = viewModel.island,
+            state = state,
             onDismissRequest = { showNavigationOptionsSheet = false },
         )
     }
 
     if (showAlarmOptionsSheet) {
         IslandAlarmOptionsBottomSheet(
-            state = viewModel.island,
+            state = state,
             onDismissRequest = { showAlarmOptionsSheet = false },
         )
     }
@@ -820,14 +827,17 @@ fun IslandSettingsUI(
 
     if (showTimerOptionsSheet) {
         IslandTimerOptionsBottomSheet(
-            state = viewModel.island,
+            state = state,
             appSelectionSheet = { onDismiss ->
-                AppSelectionSheet(
-                    onDismissRequest = onDismiss,
-                    onLoadApps = { viewModel.island.loadIslandTimersSelectedApps(it) },
-                    onSaveApps = { ctx, apps -> viewModel.island.saveIslandTimersSelectedApps(ctx, apps) },
-                    onAppToggle = { ctx, pkg, enabled -> viewModel.island.updateIslandTimersAppEnabled(ctx, pkg, enabled) },
-                    context = context,
+                appPicker(
+                    AppPickerRequest(
+                        title = stringResource(R.string.action_select_apps),
+                        onDismiss = onDismiss,
+                        onLoadApps = { state.loadIslandTimersSelectedApps(it) },
+                        onSaveApps = { ctx, apps -> state.saveIslandTimersSelectedApps(ctx, apps) },
+                        onAppToggle = { ctx, pkg, enabled -> state.updateIslandTimersAppEnabled(ctx, pkg, enabled) },
+                        headerContent = null,
+                    ),
                 )
             },
             onDismissRequest = { showTimerOptionsSheet = false },
@@ -846,45 +856,21 @@ fun IslandSettingsUI(
 
     if (showBatteryOptionsSheet) {
         IslandBatteryOptionsBottomSheet(
-            state = viewModel.island,
-            batteryColorOptions = {
-                BatteryColorOptions(
-                    state = viewModel.duo,
-                    isIslandBatteryIdleColorEnabled = viewModel.island.isIslandBatteryIdleColorEnabled.value,
-                    islandBatteryIdleColor = viewModel.island.islandBatteryIdleColor.value,
-                    onIslandBatteryIdleColorEnabledChange = { viewModel.island.setIslandBatteryIdleColorEnabled(it) },
-                    onIslandBatteryIdleColorChange = { viewModel.island.setIslandBatteryIdleColor(it) },
-                    showIdleColor = true,
-                    showLevels = true,
-                )
-            },
+            state = state,
+            batteryColorOptions = batteryColorOptions,
             onDismissRequest = { showBatteryOptionsSheet = false },
         )
     }
 
     if (showDevicesBatterySheet) {
         IslandDevicesBatteryBottomSheet(
-            state = viewModel.island,
-            batteryColorOptions = {
-                BatteryColorOptions(
-                    state = viewModel.duo,
-                    isIslandBatteryIdleColorEnabled = viewModel.island.isIslandBatteryIdleColorEnabled.value,
-                    islandBatteryIdleColor = viewModel.island.islandBatteryIdleColor.value,
-                    onIslandBatteryIdleColorEnabledChange = { viewModel.island.setIslandBatteryIdleColorEnabled(it) },
-                    onIslandBatteryIdleColorChange = { viewModel.island.setIslandBatteryIdleColor(it) },
-                    showIdleColor = true,
-                    showLevels = true,
-                )
-            },
+            state = state,
+            batteryColorOptions = batteryColorOptions,
             onDismissRequest = { showDevicesBatterySheet = false },
         )
     }
 
     if (showCalendarOptionsSheet) {
-        StatusGlanceCalendarOptionsBottomSheet(
-            viewModel = viewModel,
-            onDismissRequest = { showCalendarOptionsSheet = false },
-            allowIconEdit = true,
-        )
+        calendarOptionsSheet { showCalendarOptionsSheet = false }
     }
 }
