@@ -35,6 +35,7 @@ import com.jawzf.pixeltoolkit.core.data.notifications.NavigationNotificationData
 import com.jawzf.pixeltoolkit.core.data.notifications.NavigationParser
 import com.jawzf.pixeltoolkit.core.data.notifications.NotificationActionItem
 import com.jawzf.pixeltoolkit.core.data.notifications.NotificationHub
+import com.jawzf.pixeltoolkit.core.data.power.MapsChannel
 import com.jawzf.pixeltoolkit.core.data.prefs.AppSelection
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticFeedbackType
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
@@ -57,7 +58,6 @@ import com.jawzf.pixeltoolkit.feature.notifications.lighting.RippleConfig
 import com.jawzf.pixeltoolkit.feature.notifications.lighting.overlay.fromPrefs
 import com.jawzf.pixeltoolkit.feature.notifications.lighting.overlay.writeTo
 import com.jawzf.pixeltoolkit.feature.notifications.snooze.SnoozeChannel
-import com.jawzf.pixeltoolkit.feature.power.maps.MapsChannel
 import com.jawzf.pixeltoolkit.feature.power.maps.MapsState
 import com.jawzf.pixeltoolkit.feature.sound.SoundSettings
 import com.jawzf.pixeltoolkit.island.plugins.notifications.OtpExtractor

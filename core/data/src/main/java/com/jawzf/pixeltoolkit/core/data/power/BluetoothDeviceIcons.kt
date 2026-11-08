@@ -1,11 +1,11 @@
-package com.jawzf.pixeltoolkit.feature.power.bluetooth
+package com.jawzf.pixeltoolkit.core.data.power
 
 import android.content.Context
 import androidx.annotation.DrawableRes
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.jawzf.pixeltoolkit.core.data.power.PowerSettings
 import com.jawzf.pixeltoolkit.core.design.R
-import com.jawzf.pixeltoolkit.feature.power.PowerSettings
 
 data class BluetoothDeviceIcon(val id: String, val label: String, @DrawableRes val res: Int)
 

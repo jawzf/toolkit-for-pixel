@@ -1,6 +1,6 @@
 package com.jawzf.pixeltoolkit
 
-import com.jawzf.pixeltoolkit.feature.power.PowerSettings
+import com.jawzf.pixeltoolkit.core.data.power.PowerSettings
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

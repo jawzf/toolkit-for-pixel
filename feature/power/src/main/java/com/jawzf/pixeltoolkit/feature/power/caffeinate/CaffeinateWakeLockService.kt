@@ -15,6 +15,7 @@ import android.os.IBinder
 import android.os.PowerManager
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
+import com.jawzf.pixeltoolkit.core.data.power.CaffeinateController
 import com.jawzf.pixeltoolkit.core.design.R
 
 class CaffeinateWakeLockService : Service() {

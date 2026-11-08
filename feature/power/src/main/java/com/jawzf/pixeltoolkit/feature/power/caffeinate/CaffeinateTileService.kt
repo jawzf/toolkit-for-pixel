@@ -3,6 +3,7 @@ package com.jawzf.pixeltoolkit.feature.power.caffeinate
 import android.app.ActivityManager
 import android.provider.Settings
 import android.service.quicksettings.Tile
+import com.jawzf.pixeltoolkit.core.data.power.CaffeinateController
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.platform.tiles.BaseTileService
 

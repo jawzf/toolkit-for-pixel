@@ -29,7 +29,9 @@ import com.jawzf.pixeltoolkit.core.data.action.ActionExecutor
 import com.jawzf.pixeltoolkit.core.data.action.NotificationLightingStyle
 import com.jawzf.pixeltoolkit.core.data.duo.DuoSettings
 import com.jawzf.pixeltoolkit.core.data.glance.StatusGlanceSettings
+import com.jawzf.pixeltoolkit.core.data.power.CaffeinateController
 import com.jawzf.pixeltoolkit.core.data.power.ChargingModeUtil
+import com.jawzf.pixeltoolkit.core.data.power.PowerSettings
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticFeedbackType
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
@@ -53,8 +55,6 @@ import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightin
 import com.jawzf.pixeltoolkit.feature.notifications.lighting.RippleConfig
 import com.jawzf.pixeltoolkit.feature.notifications.lighting.overlay.fromPrefs
 import com.jawzf.pixeltoolkit.feature.notifications.lighting.overlay.writeTo
-import com.jawzf.pixeltoolkit.feature.power.PowerSettings
-import com.jawzf.pixeltoolkit.feature.power.caffeinate.CaffeinateController
 import com.jawzf.pixeltoolkit.feature.sound.mode.SoundModeHandler
 import com.jawzf.pixeltoolkit.services.NotificationListener
 import com.jawzf.pixeltoolkit.services.tiles.ScreenOffAccessibilityService

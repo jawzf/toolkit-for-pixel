@@ -16,10 +16,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.core.data.duo.DuoSettings
+import com.jawzf.pixeltoolkit.core.data.power.BluetoothDeviceIcons
+import com.jawzf.pixeltoolkit.core.data.power.BluetoothDeviceOrder
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.feature.power.bluetooth.BluetoothDeviceIcons
-import com.jawzf.pixeltoolkit.feature.power.bluetooth.BluetoothDeviceOrder
 import com.jawzf.pixeltoolkit.island.model.CompactCell
 import com.jawzf.pixeltoolkit.island.model.CompactPlacement
 import com.jawzf.pixeltoolkit.island.model.IslandItem

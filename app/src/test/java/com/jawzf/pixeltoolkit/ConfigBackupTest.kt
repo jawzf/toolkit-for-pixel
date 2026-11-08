@@ -1,11 +1,11 @@
 package com.jawzf.pixeltoolkit
 
 import com.jawzf.pixeltoolkit.core.data.backup.ConfigBackup
+import com.jawzf.pixeltoolkit.core.data.power.PowerSettings
 import com.jawzf.pixeltoolkit.core.platform.PlatformPrefs
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.feature.apps.AppsSettings
 import com.jawzf.pixeltoolkit.feature.notifications.NotificationSettings
-import com.jawzf.pixeltoolkit.feature.power.PowerSettings
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

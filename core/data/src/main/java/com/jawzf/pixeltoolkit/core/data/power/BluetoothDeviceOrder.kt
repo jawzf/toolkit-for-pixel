@@ -1,7 +1,7 @@
-package com.jawzf.pixeltoolkit.feature.power.bluetooth
+package com.jawzf.pixeltoolkit.core.data.power
 
 import android.content.Context
-import com.jawzf.pixeltoolkit.feature.power.PowerSettings
+import com.jawzf.pixeltoolkit.core.data.power.PowerSettings
 
 object BluetoothDeviceOrder {
     const val SEPARATOR = "|"

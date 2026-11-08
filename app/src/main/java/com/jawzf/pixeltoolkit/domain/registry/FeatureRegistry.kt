@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Build
 import com.jawzf.pixeltoolkit.FeatureSettingsActivity
 import com.jawzf.pixeltoolkit.ToolkitApp
+import com.jawzf.pixeltoolkit.core.data.power.CaffeinateController
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.platform.device.DeviceUtils
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
@@ -15,7 +16,6 @@ import com.jawzf.pixeltoolkit.domain.model.SystemShortcutsState
 import com.jawzf.pixeltoolkit.feature.apps.consciousgate.ui.CONSCIOUS_GATE_FEATURE_ID
 import com.jawzf.pixeltoolkit.feature.input.gesture.ui.BACK_GESTURE_FEATURE_ID
 import com.jawzf.pixeltoolkit.feature.notifications.hilight.HilightLights
-import com.jawzf.pixeltoolkit.feature.power.caffeinate.CaffeinateController
 import com.jawzf.pixeltoolkit.ui.activities.PixelSearchbarSettingsActivity
 import com.jawzf.pixeltoolkit.ui.features.display.ISLAND_BEHAVIOR_FEATURE_ID
 import com.jawzf.pixeltoolkit.ui.features.display.ISLAND_DURATION_FEATURE_ID

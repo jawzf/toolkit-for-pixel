@@ -1,11 +1,12 @@
-package com.jawzf.pixeltoolkit.feature.power.bluetooth
+package com.jawzf.pixeltoolkit.core.data.power
 
 import android.annotation.SuppressLint
 import android.bluetooth.BluetoothManager
 import android.content.Context
+import android.os.Build
 import androidx.annotation.Keep
+import com.jawzf.pixeltoolkit.core.data.power.PowerSettings
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
-import com.jawzf.pixeltoolkit.feature.power.PowerSettings
 
 object BluetoothBatteryUtils {
     @Keep
@@ -120,7 +121,7 @@ object BluetoothBatteryUtils {
                 val case = if (separate) reader.read(device, KEY_CASE) else null
 
                 if (level != -1 || left != null || right != null || case != null) {
-                    val name = device.alias ?: device.name ?: "Unknown"
+                    val name = (if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) device.alias else null) ?: device.name ?: "Unknown"
                     val overall = if (level != -1) level else listOfNotNull(left, right).minOrNull() ?: case ?: -1
                     batteryList.add(BluetoothDeviceBattery(name, overall, device.address, left, right, case))
                 }

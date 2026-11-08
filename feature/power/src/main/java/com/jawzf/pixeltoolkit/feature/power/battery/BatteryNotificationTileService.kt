@@ -5,9 +5,9 @@ import android.graphics.drawable.Icon
 import android.os.Build
 import android.service.quicksettings.Tile
 import androidx.annotation.RequiresApi
+import com.jawzf.pixeltoolkit.core.data.power.PowerSettings
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.platform.tiles.BaseTileService
-import com.jawzf.pixeltoolkit.feature.power.PowerSettings
 
 @RequiresApi(Build.VERSION_CODES.N)
 class BatteryNotificationTileService : BaseTileService() {

@@ -3,7 +3,7 @@ package com.jawzf.pixeltoolkit.feature.power.battery
 import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.jawzf.pixeltoolkit.feature.power.PowerSettings
+import com.jawzf.pixeltoolkit.core.data.power.PowerSettings
 
 data class BatteryHistoryPoint(
     val timestamp: Long,

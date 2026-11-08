@@ -17,11 +17,11 @@ import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.ColorUtils
 import com.google.gson.Gson
+import com.jawzf.pixeltoolkit.core.data.power.BluetoothBatteryUtils
+import com.jawzf.pixeltoolkit.core.data.power.BluetoothDeviceIcons
+import com.jawzf.pixeltoolkit.core.data.power.BluetoothDeviceOrder
+import com.jawzf.pixeltoolkit.core.data.power.PowerSettings
 import com.jawzf.pixeltoolkit.core.design.R
-import com.jawzf.pixeltoolkit.feature.power.PowerSettings
-import com.jawzf.pixeltoolkit.feature.power.bluetooth.BluetoothBatteryUtils
-import com.jawzf.pixeltoolkit.feature.power.bluetooth.BluetoothDeviceIcons
-import com.jawzf.pixeltoolkit.feature.power.bluetooth.BluetoothDeviceOrder
 
 class BatteryNotificationService : Service() {
     private lateinit var settingsRepository: PowerSettings

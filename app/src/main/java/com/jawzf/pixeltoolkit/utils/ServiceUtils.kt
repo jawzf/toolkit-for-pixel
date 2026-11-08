@@ -3,6 +3,7 @@ package com.jawzf.pixeltoolkit.utils
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import com.jawzf.pixeltoolkit.core.data.power.PowerSettings
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuUtils
 import com.jawzf.pixeltoolkit.core.platform.statusbar.StatusBarManager
@@ -14,7 +15,6 @@ import com.jawzf.pixeltoolkit.feature.connectivity.ConnectivitySettings
 import com.jawzf.pixeltoolkit.feature.connectivity.sim.SimCarrierUtil
 import com.jawzf.pixeltoolkit.feature.display.DisplaySettings
 import com.jawzf.pixeltoolkit.feature.input.InputSettings
-import com.jawzf.pixeltoolkit.feature.power.PowerSettings
 import com.jawzf.pixeltoolkit.feature.power.battery.BatteryNotificationService
 import com.jawzf.pixeltoolkit.feature.widgets.stack.StackHost
 import com.jawzf.pixeltoolkit.services.AppDetectionService

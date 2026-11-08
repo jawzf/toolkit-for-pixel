@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Build
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
+import com.jawzf.pixeltoolkit.core.data.power.PowerSettings
 import com.jawzf.pixeltoolkit.feature.power.battery.BatteryNotificationService
 import com.jawzf.pixeltoolkit.feature.power.widget.BatteriesWidgetReceiver
 

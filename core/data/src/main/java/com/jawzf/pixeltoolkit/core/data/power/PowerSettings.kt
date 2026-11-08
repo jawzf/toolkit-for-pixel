@@ -1,10 +1,10 @@
-package com.jawzf.pixeltoolkit.feature.power
+package com.jawzf.pixeltoolkit.core.data.power
 
 import android.content.Context
 import com.google.gson.Gson
+import com.jawzf.pixeltoolkit.core.data.power.BluetoothBatteryUtils
+import com.jawzf.pixeltoolkit.core.data.power.MapsChannel
 import com.jawzf.pixeltoolkit.core.data.prefs.PrefsStore
-import com.jawzf.pixeltoolkit.feature.power.bluetooth.BluetoothBatteryUtils
-import com.jawzf.pixeltoolkit.feature.power.maps.MapsChannel
 
 class PowerSettings(
     context: Context,
