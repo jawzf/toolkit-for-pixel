@@ -7,10 +7,10 @@ import android.provider.Settings
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import com.jawzf.pixeltoolkit.core.data.power.CaffeinateController
+import com.jawzf.pixeltoolkit.core.data.power.MapsChannel
 import com.jawzf.pixeltoolkit.core.data.power.PowerSettings
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.feature.power.caffeinate.CaffeinateWakeLockService
-import com.jawzf.pixeltoolkit.feature.power.maps.MapsChannel
 import com.jawzf.pixeltoolkit.feature.power.maps.MapsState
 import com.jawzf.pixeltoolkit.feature.power.standby.AppStandbyInfo
 import kotlinx.coroutines.CoroutineScope
