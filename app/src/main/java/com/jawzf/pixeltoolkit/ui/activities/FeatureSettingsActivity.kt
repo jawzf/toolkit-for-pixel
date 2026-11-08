@@ -917,8 +917,10 @@ class FeatureSettingsActivity : AppCompatActivity() {
                                         StatusBarIconSettingsUI(
                                             viewModel = statusBarViewModel,
                                             controlState = viewModel.statusBarControl,
-                                            isIslandHideStatusBarInsets = viewModel.isIslandHideStatusBarInsets.value,
-                                            onIslandHideStatusBarInsetsChange = { viewModel.setIslandHideStatusBarInsets(it, context) },
+                                            isIslandHideStatusBarInsets = viewModel.island.isIslandHideStatusBarInsets.value,
+                                            onIslandHideStatusBarInsetsChange = {
+                                                viewModel.island.setIslandHideStatusBarInsets(it, context)
+                                            },
                                             modifier = Modifier.padding(top = 16.dp),
                                             highlightSetting = highlightSetting,
                                         )
@@ -1312,11 +1314,13 @@ class FeatureSettingsActivity : AppCompatActivity() {
                                             isUnsupportedFeaturesEnabled = viewModel.isEnableUnsupportedFeatures.value,
                                             isAccessibilityEnabled = viewModel.isAccessibilityEnabled.value,
                                             isNotificationListenerEnabled = viewModel.isNotificationListenerEnabled.value,
-                                            isIslandEnabled = viewModel.isIslandEnabled.value,
-                                            isIslandBatteryIdleColorEnabled = viewModel.isIslandBatteryIdleColorEnabled.value,
-                                            islandBatteryIdleColor = viewModel.islandBatteryIdleColor.value,
-                                            onIslandBatteryIdleColorEnabledChange = { viewModel.setIslandBatteryIdleColorEnabled(it) },
-                                            onIslandBatteryIdleColorChange = { viewModel.setIslandBatteryIdleColor(it) },
+                                            isIslandEnabled = viewModel.island.isIslandEnabled.value,
+                                            isIslandBatteryIdleColorEnabled = viewModel.island.isIslandBatteryIdleColorEnabled.value,
+                                            islandBatteryIdleColor = viewModel.island.islandBatteryIdleColor.value,
+                                            onIslandBatteryIdleColorEnabledChange = {
+                                                viewModel.island.setIslandBatteryIdleColorEnabled(it)
+                                            },
+                                            onIslandBatteryIdleColorChange = { viewModel.island.setIslandBatteryIdleColor(it) },
                                             permissionItemsFor = { keys ->
                                                 PermissionUIHelper.getPermissionItems(keys, context, viewModel)
                                             },

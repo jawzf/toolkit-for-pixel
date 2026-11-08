@@ -55,10 +55,10 @@ fun IslandBriefOptionsBottomSheet(
                 IconToggleItem(
                     iconRes = R.drawable.rounded_alarm_24,
                     title = stringResource(R.string.island_brief_show_alarm_title),
-                    isChecked = viewModel.isIslandBriefShowAlarm.value,
+                    isChecked = viewModel.island.isIslandBriefShowAlarm.value,
                     onCheckedChange = { checked ->
                         HapticUtil.performVirtualKeyHaptic(view)
-                        viewModel.setIslandBriefShowAlarm(checked)
+                        viewModel.island.setIslandBriefShowAlarm(checked)
                     },
                     modifier = Modifier.highlight(highlightSetting == "island_brief_show_alarm"),
                 )

@@ -60,19 +60,19 @@ fun IslandTimerOptionsBottomSheet(
                 IconToggleItem(
                     iconRes = R.drawable.rounded_fiber_smart_record_24,
                     title = stringResource(R.string.island_timers_show_screen_recorder_title),
-                    isChecked = viewModel.isIslandTimersShowScreenRecorder.value,
+                    isChecked = viewModel.island.isIslandTimersShowScreenRecorder.value,
                     onCheckedChange = { checked ->
                         HapticUtil.performVirtualKeyHaptic(view)
-                        viewModel.setIslandTimersShowScreenRecorder(checked)
+                        viewModel.island.setIslandTimersShowScreenRecorder(checked)
                     },
                 )
                 IconToggleItem(
                     iconRes = R.drawable.rounded_apps_24,
                     title = stringResource(R.string.island_timers_filter_apps_title),
-                    isChecked = viewModel.isIslandTimersFilterApps.value,
+                    isChecked = viewModel.island.isIslandTimersFilterApps.value,
                     onCheckedChange = { checked ->
                         HapticUtil.performVirtualKeyHaptic(view)
-                        viewModel.setIslandTimersFilterApps(checked)
+                        viewModel.island.setIslandTimersFilterApps(checked)
                     },
                 )
                 IconToggleItem(
@@ -91,9 +91,9 @@ fun IslandTimerOptionsBottomSheet(
     if (showAppSelectionSheet) {
         AppSelectionSheet(
             onDismissRequest = { showAppSelectionSheet = false },
-            onLoadApps = { viewModel.loadIslandTimersSelectedApps(it) },
-            onSaveApps = { ctx, apps -> viewModel.saveIslandTimersSelectedApps(ctx, apps) },
-            onAppToggle = { ctx, pkg, enabled -> viewModel.updateIslandTimersAppEnabled(ctx, pkg, enabled) },
+            onLoadApps = { viewModel.island.loadIslandTimersSelectedApps(it) },
+            onSaveApps = { ctx, apps -> viewModel.island.saveIslandTimersSelectedApps(ctx, apps) },
+            onAppToggle = { ctx, pkg, enabled -> viewModel.island.updateIslandTimersAppEnabled(ctx, pkg, enabled) },
             context = context,
         )
     }

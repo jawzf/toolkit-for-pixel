@@ -159,8 +159,10 @@ fun IslandBatteryOptions(
     devices: Boolean = false,
 ) {
     val view = LocalView.current
-    val currentStyle = if (devices) viewModel.islandDevicesBatteryStyle.value else viewModel.islandBatteryStyle.value
-    val setStyle: (String) -> Unit = if (devices) viewModel::setIslandDevicesBatteryStyle else viewModel::setIslandBatteryStyle
+    val currentStyle =
+        if (devices) viewModel.island.islandDevicesBatteryStyle.value else viewModel.island.islandBatteryStyle.value
+    val setStyle: (String) -> Unit =
+        if (devices) viewModel.island::setIslandDevicesBatteryStyle else viewModel.island::setIslandBatteryStyle
     val styleLabel = if (currentStyle == SettingsRepository.ISLAND_BATTERY_STYLE_ICON) {
         stringResource(R.string.island_battery_style_icon)
     } else {
@@ -203,10 +205,10 @@ fun IslandBatteryOptions(
                 IconToggleItem(
                     iconRes = R.drawable.rounded_filter_alt_24,
                     title = stringResource(R.string.island_battery_icon_conditional_title),
-                    isChecked = viewModel.isIslandBatteryIconConditional.value,
+                    isChecked = viewModel.island.isIslandBatteryIconConditional.value,
                     onCheckedChange = { checked ->
                         HapticUtil.performVirtualKeyHaptic(view)
-                        viewModel.setIslandBatteryIconConditional(checked)
+                        viewModel.island.setIslandBatteryIconConditional(checked)
                     },
                 )
             }
@@ -216,24 +218,24 @@ fun IslandBatteryOptions(
             IconToggleItem(
                 iconRes = R.drawable.rounded_percent_24,
                 title = stringResource(R.string.island_battery_percentage_title),
-                isChecked = viewModel.isIslandBatteryPercentageEnabled.value,
+                isChecked = viewModel.island.isIslandBatteryPercentageEnabled.value,
                 onCheckedChange = { checked ->
                     HapticUtil.performVirtualKeyHaptic(view)
-                    viewModel.setIslandBatteryPercentageEnabled(checked)
+                    viewModel.island.setIslandBatteryPercentageEnabled(checked)
                 },
             )
             AnimatedVisibility(
-                visible = viewModel.isIslandBatteryPercentageEnabled.value,
+                visible = viewModel.island.isIslandBatteryPercentageEnabled.value,
                 enter = expandVertically() + fadeIn(),
                 exit = shrinkVertically() + fadeOut(),
             ) {
                 IconToggleItem(
                     iconRes = R.drawable.rounded_filter_alt_24,
                     title = stringResource(R.string.island_battery_percentage_conditional_title),
-                    isChecked = viewModel.isIslandBatteryPercentageConditional.value,
+                    isChecked = viewModel.island.isIslandBatteryPercentageConditional.value,
                     onCheckedChange = { checked ->
                         HapticUtil.performVirtualKeyHaptic(view)
-                        viewModel.setIslandBatteryPercentageConditional(checked)
+                        viewModel.island.setIslandBatteryPercentageConditional(checked)
                     },
                 )
             }
@@ -241,10 +243,10 @@ fun IslandBatteryOptions(
 
         BatteryColorOptions(
             state = viewModel.duo,
-            isIslandBatteryIdleColorEnabled = viewModel.isIslandBatteryIdleColorEnabled.value,
-            islandBatteryIdleColor = viewModel.islandBatteryIdleColor.value,
-            onIslandBatteryIdleColorEnabledChange = { viewModel.setIslandBatteryIdleColorEnabled(it) },
-            onIslandBatteryIdleColorChange = { viewModel.setIslandBatteryIdleColor(it) },
+            isIslandBatteryIdleColorEnabled = viewModel.island.isIslandBatteryIdleColorEnabled.value,
+            islandBatteryIdleColor = viewModel.island.islandBatteryIdleColor.value,
+            onIslandBatteryIdleColorEnabledChange = { viewModel.island.setIslandBatteryIdleColorEnabled(it) },
+            onIslandBatteryIdleColorChange = { viewModel.island.setIslandBatteryIdleColor(it) },
             showIdleColor = true,
             showLevels = true,
         )

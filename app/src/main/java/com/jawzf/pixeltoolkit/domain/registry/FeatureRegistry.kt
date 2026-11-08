@@ -872,7 +872,7 @@ object FeatureRegistry {
                     ),
                 parentFeatureId = "Display",
             ) {
-                override fun isEnabled(viewModel: MainViewModel) = viewModel.isIslandEnabled.value
+                override fun isEnabled(viewModel: MainViewModel) = viewModel.island.isIslandEnabled.value
 
                 override fun isToggleEnabled(
                     viewModel: MainViewModel,
@@ -883,7 +883,7 @@ object FeatureRegistry {
                     viewModel: MainViewModel,
                     context: Context,
                     enabled: Boolean,
-                ) = viewModel.setIslandEnabled(enabled)
+                ) = viewModel.island.setIslandEnabled(enabled)
             },
             object : Feature(
                 id = ISLAND_PLACEMENT_FEATURE_ID,
@@ -1089,7 +1089,7 @@ object FeatureRegistry {
                         ),
                     ),
             ) {
-                override fun isEnabled(viewModel: MainViewModel) = viewModel.isIslandEnabled.value
+                override fun isEnabled(viewModel: MainViewModel) = viewModel.island.isIslandEnabled.value
 
                 override fun onToggle(
                     viewModel: MainViewModel,

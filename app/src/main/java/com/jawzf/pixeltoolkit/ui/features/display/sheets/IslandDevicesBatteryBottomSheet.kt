@@ -57,8 +57,8 @@ fun IslandDevicesBatteryBottomSheet(
 
             IslandBatteryOptions(
                 viewModel = viewModel,
-                onlyLow = viewModel.isIslandDevicesBatteryOnlyLow.value,
-                onOnlyLowChange = viewModel::setIslandDevicesBatteryOnlyLow,
+                onlyLow = viewModel.island.isIslandDevicesBatteryOnlyLow.value,
+                onOnlyLowChange = viewModel.island::setIslandDevicesBatteryOnlyLow,
                 devices = true,
             )
 

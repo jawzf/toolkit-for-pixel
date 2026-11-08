@@ -56,8 +56,8 @@ fun IslandNotificationHubOptionsBottomSheet(
                         SettingsRepository.ISLAND_NOTIF_HUB_ORDER_PRIORITY,
                         SettingsRepository.ISLAND_NOTIF_HUB_ORDER_RECENT,
                     ),
-                    selectedItem = viewModel.islandNotifHubOrder.value,
-                    onItemSelected = { viewModel.setIslandNotifHubOrder(it) },
+                    selectedItem = viewModel.island.islandNotifHubOrder.value,
+                    onItemSelected = { viewModel.island.setIslandNotifHubOrder(it) },
                     labelProvider = {
                         when (it) {
                             SettingsRepository.ISLAND_NOTIF_HUB_ORDER_PRIORITY -> priorityLabel
@@ -71,27 +71,29 @@ fun IslandNotificationHubOptionsBottomSheet(
                 IconToggleItem(
                     iconRes = R.drawable.rounded_notifications_off_24,
                     title = stringResource(R.string.island_notif_hub_include_silent),
-                    isChecked = viewModel.isIslandNotifHubIncludeSilent.value,
+                    isChecked = viewModel.island.isIslandNotifHubIncludeSilent.value,
                     onCheckedChange = {
                         HapticUtil.performVirtualKeyHaptic(view)
-                        viewModel.setIslandNotifHubIncludeSilent(it)
+                        viewModel.island.setIslandNotifHubIncludeSilent(it)
                     },
                 )
                 IconToggleItem(
                     iconRes = R.drawable.rounded_apps_24,
                     title = stringResource(R.string.island_notif_hub_group_apps),
-                    isChecked = viewModel.isIslandNotifHubGroupByApps.value,
+                    isChecked = viewModel.island.isIslandNotifHubGroupByApps.value,
                     onCheckedChange = {
                         HapticUtil.performVirtualKeyHaptic(view)
-                        viewModel.setIslandNotifHubGroupByApps(it)
+                        viewModel.island.setIslandNotifHubGroupByApps(it)
                     },
                 )
                 ConfigSliderItem(
                     title = stringResource(R.string.island_hide_icon_notifications),
-                    value = viewModel.islandNotifHubIcons.intValue.toFloat(),
+                    value =
+                        viewModel.island.islandNotifHubIcons.intValue
+                            .toFloat(),
                     onValueChange = {
                         HapticUtil.performUIHaptic(view)
-                        viewModel.setIslandNotifHubIcons(it.toInt())
+                        viewModel.island.setIslandNotifHubIcons(it.toInt())
                     },
                     valueRange = 0f..8f,
                     increment = 1f,

@@ -46,10 +46,10 @@ fun IslandPulseShadowOptionsBottomSheet(
             RoundedCardContainer(spacing = 2.dp, cornerRadius = 24.dp) {
                 ConfigSliderItem(
                     title = stringResource(R.string.island_pulse_shadow_size_title),
-                    value = viewModel.islandPulseShadowSize.floatValue,
+                    value = viewModel.island.islandPulseShadowSize.floatValue,
                     onValueChange = {
                         HapticUtil.performUIHaptic(view)
-                        viewModel.setIslandPulseShadowSize(it)
+                        viewModel.island.setIslandPulseShadowSize(it)
                     },
                     valueRange = 0.2f..1f,
                     increment = 0.05f,
@@ -59,10 +59,10 @@ fun IslandPulseShadowOptionsBottomSheet(
 
                 ConfigSliderItem(
                     title = stringResource(R.string.island_pulse_shadow_y_shift_title),
-                    value = viewModel.islandPulseShadowYShift.floatValue,
+                    value = viewModel.island.islandPulseShadowYShift.floatValue,
                     onValueChange = {
                         HapticUtil.performUIHaptic(view)
-                        viewModel.setIslandPulseShadowYShift(it)
+                        viewModel.island.setIslandPulseShadowYShift(it)
                     },
                     valueRange = 0f..1f,
                     increment = 0.05f,
@@ -72,10 +72,10 @@ fun IslandPulseShadowOptionsBottomSheet(
 
                 ConfigSliderItem(
                     title = stringResource(R.string.island_pulse_shadow_spread_title),
-                    value = viewModel.islandPulseShadowSpread.floatValue,
+                    value = viewModel.island.islandPulseShadowSpread.floatValue,
                     onValueChange = {
                         HapticUtil.performUIHaptic(view)
-                        viewModel.setIslandPulseShadowSpread(it)
+                        viewModel.island.setIslandPulseShadowSpread(it)
                     },
                     valueRange = 1f..4f,
                     increment = 0.1f,
@@ -85,10 +85,10 @@ fun IslandPulseShadowOptionsBottomSheet(
 
                 ConfigSliderItem(
                     title = stringResource(R.string.island_pulse_shadow_duration_title),
-                    value = viewModel.islandPulseShadowDurationMs.floatValue,
+                    value = viewModel.island.islandPulseShadowDurationMs.floatValue,
                     onValueChange = {
                         HapticUtil.performUIHaptic(view)
-                        viewModel.setIslandPulseShadowDurationMs(it)
+                        viewModel.island.setIslandPulseShadowDurationMs(it)
                     },
                     valueRange = 300f..4000f,
                     increment = 50f,
