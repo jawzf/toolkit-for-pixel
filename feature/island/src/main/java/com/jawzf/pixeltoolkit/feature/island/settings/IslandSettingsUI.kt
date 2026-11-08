@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.features.display
+package com.jawzf.pixeltoolkit.feature.island.settings
 
 import android.content.Intent
 import android.widget.Toast

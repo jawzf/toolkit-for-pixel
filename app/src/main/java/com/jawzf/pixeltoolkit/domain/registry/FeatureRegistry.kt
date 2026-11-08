@@ -15,13 +15,13 @@ import com.jawzf.pixeltoolkit.domain.model.SearchSetting
 import com.jawzf.pixeltoolkit.domain.model.SystemShortcutsState
 import com.jawzf.pixeltoolkit.feature.apps.consciousgate.ui.CONSCIOUS_GATE_FEATURE_ID
 import com.jawzf.pixeltoolkit.feature.input.gesture.ui.BACK_GESTURE_FEATURE_ID
+import com.jawzf.pixeltoolkit.feature.island.settings.ISLAND_BEHAVIOR_FEATURE_ID
+import com.jawzf.pixeltoolkit.feature.island.settings.ISLAND_DURATION_FEATURE_ID
+import com.jawzf.pixeltoolkit.feature.island.settings.ISLAND_NOTIFICATIONS_FEATURE_ID
+import com.jawzf.pixeltoolkit.feature.island.settings.ISLAND_PLACEMENT_FEATURE_ID
+import com.jawzf.pixeltoolkit.feature.island.settings.ISLAND_VISUALS_FEATURE_ID
 import com.jawzf.pixeltoolkit.feature.notifications.hilight.HilightLights
 import com.jawzf.pixeltoolkit.ui.activities.PixelSearchbarSettingsActivity
-import com.jawzf.pixeltoolkit.ui.features.display.ISLAND_BEHAVIOR_FEATURE_ID
-import com.jawzf.pixeltoolkit.ui.features.display.ISLAND_DURATION_FEATURE_ID
-import com.jawzf.pixeltoolkit.ui.features.display.ISLAND_NOTIFICATIONS_FEATURE_ID
-import com.jawzf.pixeltoolkit.ui.features.display.ISLAND_PLACEMENT_FEATURE_ID
-import com.jawzf.pixeltoolkit.ui.features.display.ISLAND_VISUALS_FEATURE_ID
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 
 object FeatureRegistry {
