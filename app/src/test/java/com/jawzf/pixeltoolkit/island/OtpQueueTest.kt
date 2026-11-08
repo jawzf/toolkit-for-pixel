@@ -1,6 +1,6 @@
 package com.jawzf.pixeltoolkit.island
 
-import com.jawzf.pixeltoolkit.island.plugins.notifications.removeKeepingCurrent
+import com.jawzf.pixeltoolkit.feature.island.plugins.notifications.removeKeepingCurrent
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

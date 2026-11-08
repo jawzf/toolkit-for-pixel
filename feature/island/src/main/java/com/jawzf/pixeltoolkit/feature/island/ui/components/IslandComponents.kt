@@ -1,0 +1,181 @@
+package com.jawzf.pixeltoolkit.feature.island.ui.components
+
+import android.graphics.Bitmap
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.sizeIn
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.compositionLocalOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.drawscope.clipRect
+import androidx.compose.ui.graphics.luminance
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.jawzf.pixeltoolkit.feature.island.ui.IslandMotion
+import com.jawzf.pixeltoolkit.feature.island.ui.IslandTextStyles
+import com.jawzf.pixeltoolkit.feature.island.ui.squareFit
+
+@Composable
+fun IslandBitmap(
+    bitmap: Bitmap?,
+    size: Dp,
+    modifier: Modifier = Modifier,
+    circle: Boolean = false,
+    fallbackRes: Int? = null,
+) {
+    val shape = if (circle) CircleShape else RoundedCornerShape(percent = 28)
+    AnimatedContent(
+        targetState = bitmap,
+        transitionSpec = { fadeIn(IslandMotion.contentIn()) togetherWith fadeOut(IslandMotion.contentOut()) },
+        label = "islandBitmap",
+        modifier = modifier
+            .sizeIn(maxWidth = size, maxHeight = size)
+            .aspectRatio(1f, matchHeightConstraintsFirst = true)
+            .clip(shape),
+    ) { bmp ->
+        when {
+            bmp != null -> Image(
+                bitmap = remember(bmp) { bmp.asImageBitmap() },
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxSize(),
+            )
+            fallbackRes != null -> Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                Icon(painterResource(fallbackRes), null, tint = Color.White, modifier = Modifier.fillMaxSize(0.8f))
+            }
+            else -> Box(Modifier.fillMaxSize())
+        }
+    }
+}
+
+val LocalIslandIconColor = compositionLocalOf<Color?> { null }
+
+@Composable
+fun resolveIconTint(tint: Color): Color {
+    val override = LocalIslandIconColor.current ?: return tint
+    if (tint.red == 0f && tint.green == 0f && tint.blue == 0f) return tint
+    return override.copy(alpha = override.alpha * tint.alpha)
+}
+
+@Composable
+fun IslandIcon(res: Int, tint: Color = Color.White, size: Dp = 20.dp, modifier: Modifier = Modifier) {
+    Icon(painterResource(res), contentDescription = null, tint = resolveIconTint(tint), modifier = modifier.squareFit(size))
+}
+
+@Composable
+fun BatteryRing(level: Int, color: Color, modifier: Modifier = Modifier, showLevel: Boolean = false, size: Dp = if (showLevel) 24.dp else 18.dp) {
+    val sweep by animateFloatAsState(360f * level.coerceIn(0, 100) / 100f, IslandMotion.float(), label = "batterySweep")
+    val ringColor by animateColorAsState(resolveIconTint(color), label = "batteryColor")
+    var ringPx by remember { mutableStateOf(0) }
+    val density = LocalDensity.current
+    Box(modifier.squareFit(size).onSizeChanged { ringPx = minOf(it.width, it.height) }, contentAlignment = Alignment.Center) {
+        Canvas(Modifier.matchParentSize()) {
+            val diameter = this.size.minDimension
+            val stroke = diameter * (if (showLevel) 0.12f else 0.16f)
+            val topLeft = Offset((this.size.width - diameter + stroke) / 2f, (this.size.height - diameter + stroke) / 2f)
+            val arcSize = Size(diameter - stroke, diameter - stroke)
+            drawArc(Color.White.copy(alpha = 0.25f), 0f, 360f, false, topLeft, arcSize, style = Stroke(stroke * 0.5f))
+            if (sweep > 0.5f) {
+                drawArc(ringColor, -90f, sweep, false, topLeft, arcSize, style = Stroke(stroke, cap = StrokeCap.Round))
+            }
+        }
+        if (showLevel && ringPx > 0) {
+            val label = level.coerceIn(0, 100).toString()
+            val innerPx = ringPx * (1f - 2f * 0.12f) * 0.8f
+            val fontPx = minOf(innerPx / (label.length * 0.62f), innerPx * 0.75f)
+            val fontSp = with(density) { fontPx.toSp() }
+            Text(
+                text = label,
+                style = IslandTextStyles.compact.copy(fontSize = fontSp, lineHeight = fontSp, fontWeight = FontWeight.Bold),
+                maxLines = 1,
+                softWrap = false,
+            )
+        }
+    }
+}
+
+@Composable
+fun BatteryGlyph(level: Int, color: Color, modifier: Modifier = Modifier, showLevel: Boolean = true) {
+    val fraction by animateFloatAsState(level.coerceIn(0, 100) / 100f, IslandMotion.float(), label = "batteryFill")
+    val fillColor by animateColorAsState(color, label = "batteryGlyphColor")
+    val onFill = if (fillColor.luminance() > 0.5f) Color.Black else Color.White
+    val textStyle = IslandTextStyles.compact.copy(fontSize = 11.sp, lineHeight = 11.sp, fontWeight = FontWeight.Bold)
+    val label = level.coerceIn(0, 100).toString()
+    Row(modifier, verticalAlignment = Alignment.CenterVertically) {
+        Box(
+            Modifier
+                .sizeIn(maxWidth = 28.dp, maxHeight = 15.dp)
+                .aspectRatio(28f / 15f, matchHeightConstraintsFirst = true)
+                .clip(RoundedCornerShape(30))
+                .drawBehind {
+                    drawRect(Color.White.copy(alpha = 0.3f))
+                    drawRect(fillColor, size = Size(size.width * fraction, size.height))
+                },
+            contentAlignment = Alignment.Center,
+        ) {
+            if (showLevel) Text(
+                label,
+                style = textStyle.copy(color = Color.White),
+                maxLines = 1,
+                modifier = Modifier.drawWithContent {
+                    val split = (size.width / 2f) + (fraction - 0.5f) * 28.dp.toPx()
+                    clipRect(left = split) { this@drawWithContent.drawContent() }
+                },
+            )
+            if (showLevel) Text(
+                label,
+                style = textStyle.copy(color = onFill),
+                maxLines = 1,
+                modifier = Modifier.drawWithContent {
+                    val split = (size.width / 2f) + (fraction - 0.5f) * 28.dp.toPx()
+                    clipRect(right = split) { this@drawWithContent.drawContent() }
+                },
+            )
+        }
+        Canvas(Modifier.size(width = 2.5.dp, height = 6.dp)) {
+            drawRoundRect(
+                color = if (fraction >= 0.99f) fillColor else Color.White.copy(alpha = 0.3f),
+                topLeft = Offset(size.width * 0.2f, 0f),
+                size = Size(size.width * 0.8f, size.height),
+                cornerRadius = CornerRadius(size.width, size.width),
+            )
+        }
+    }
+}

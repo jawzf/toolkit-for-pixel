@@ -1,8 +1,8 @@
 package com.jawzf.pixeltoolkit.island
 
-import com.jawzf.pixeltoolkit.island.state.CameraAnchor
-import com.jawzf.pixeltoolkit.island.state.CompactEntry
-import com.jawzf.pixeltoolkit.island.state.CompactLayoutEngine
+import com.jawzf.pixeltoolkit.feature.island.state.CameraAnchor
+import com.jawzf.pixeltoolkit.feature.island.state.CompactEntry
+import com.jawzf.pixeltoolkit.feature.island.state.CompactLayoutEngine
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

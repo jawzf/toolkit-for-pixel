@@ -1,6 +1,6 @@
 package com.jawzf.pixeltoolkit.island
 
-import com.jawzf.pixeltoolkit.island.plugins.hotspot.TetheringDump
+import com.jawzf.pixeltoolkit.feature.island.plugins.hotspot.TetheringDump
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test

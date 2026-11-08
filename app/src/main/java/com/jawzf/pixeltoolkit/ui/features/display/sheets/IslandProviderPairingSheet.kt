@@ -37,7 +37,7 @@ import androidx.core.graphics.drawable.toBitmap
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
-import com.jawzf.pixeltoolkit.island.remote.ProviderInfo
+import com.jawzf.pixeltoolkit.feature.island.remote.ProviderInfo
 import com.jawzf.pixeltoolkit.island.sdk.IslandIdentity
 
 @OptIn(ExperimentalMaterial3Api::class)

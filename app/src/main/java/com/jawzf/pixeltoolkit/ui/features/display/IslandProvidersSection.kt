@@ -22,10 +22,10 @@ import com.jawzf.pixeltoolkit.core.design.cards.IconToggleItem
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.island.remote.ProviderDiscovery
-import com.jawzf.pixeltoolkit.island.remote.ProviderInfo
-import com.jawzf.pixeltoolkit.island.remote.ProviderPairing
-import com.jawzf.pixeltoolkit.island.remote.ProviderTrustStore
+import com.jawzf.pixeltoolkit.feature.island.remote.ProviderDiscovery
+import com.jawzf.pixeltoolkit.feature.island.remote.ProviderInfo
+import com.jawzf.pixeltoolkit.feature.island.remote.ProviderPairing
+import com.jawzf.pixeltoolkit.feature.island.remote.ProviderTrustStore
 import com.jawzf.pixeltoolkit.ui.features.display.sheets.IslandProviderPairingSheet
 import kotlinx.coroutines.launch
 

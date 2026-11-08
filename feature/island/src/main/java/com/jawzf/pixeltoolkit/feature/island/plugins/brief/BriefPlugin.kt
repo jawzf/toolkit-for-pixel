@@ -1,0 +1,823 @@
+package com.jawzf.pixeltoolkit.feature.island.plugins.brief
+
+import android.Manifest
+import android.content.ContentUris
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
+import android.content.pm.PackageManager
+import android.os.BatteryManager
+import android.os.Build
+import android.provider.CalendarContract
+import android.text.format.DateFormat
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.EnterExitState
+import androidx.compose.animation.SizeTransform
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.awaitEachGesture
+import androidx.compose.foundation.gestures.awaitFirstDown
+import androidx.compose.foundation.gestures.awaitHorizontalTouchSlopOrCancellation
+import androidx.compose.foundation.gestures.horizontalDrag
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableLongStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.produceState
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.luminance
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.input.pointer.positionChange
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.Layout
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Constraints
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.jawzf.pixeltoolkit.core.data.glance.StatusGlanceSettings
+import com.jawzf.pixeltoolkit.core.data.power.BluetoothBatteryUtils
+import com.jawzf.pixeltoolkit.core.data.power.BluetoothDeviceIcons
+import com.jawzf.pixeltoolkit.core.data.power.BluetoothDeviceOrder
+import com.jawzf.pixeltoolkit.core.data.power.PowerSettings
+import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.platform.device.CalendarEventUtil
+import com.jawzf.pixeltoolkit.core.platform.device.UpcomingCalendarEvent
+import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
+import com.jawzf.pixeltoolkit.feature.island.model.CompactCell
+import com.jawzf.pixeltoolkit.feature.island.model.CompactPlacement
+import com.jawzf.pixeltoolkit.feature.island.model.ExpandedContent
+import com.jawzf.pixeltoolkit.feature.island.model.IslandExpandedScope
+import com.jawzf.pixeltoolkit.feature.island.model.IslandItem
+import com.jawzf.pixeltoolkit.feature.island.model.IslandPriority
+import com.jawzf.pixeltoolkit.feature.island.plugins.BaseIslandPlugin
+import com.jawzf.pixeltoolkit.feature.island.plugins.alarm.NextAlarm
+import com.jawzf.pixeltoolkit.feature.island.plugins.calendar.CalendarExpanded
+import com.jawzf.pixeltoolkit.feature.island.plugins.media.IslandMediaState
+import com.jawzf.pixeltoolkit.feature.island.plugins.media.MediaExpanded
+import com.jawzf.pixeltoolkit.feature.island.plugins.media.MediaSnapshot
+import com.jawzf.pixeltoolkit.feature.island.plugins.soften
+import com.jawzf.pixeltoolkit.feature.island.remote.LocalRemotePaused
+import com.jawzf.pixeltoolkit.feature.island.remote.RemoteBriefCardRow
+import com.jawzf.pixeltoolkit.feature.island.remote.RemoteBriefCards
+import com.jawzf.pixeltoolkit.feature.island.remote.RemoteExpanded
+import com.jawzf.pixeltoolkit.feature.island.ui.IslandHaptics
+import com.jawzf.pixeltoolkit.feature.island.ui.IslandMotion
+import com.jawzf.pixeltoolkit.feature.island.ui.IslandTextStyles
+import com.jawzf.pixeltoolkit.feature.island.ui.SurfaceBackdrop
+import com.jawzf.pixeltoolkit.feature.island.ui.components.ArtworkBackdrop
+import com.jawzf.pixeltoolkit.feature.island.ui.components.BatteryGlyph
+import com.jawzf.pixeltoolkit.feature.island.ui.components.BatteryRing
+import com.jawzf.pixeltoolkit.feature.island.ui.components.CameraRow
+import com.jawzf.pixeltoolkit.feature.island.ui.components.IslandIcon
+import com.jawzf.pixeltoolkit.feature.island.ui.components.MarqueeText
+import com.jawzf.pixeltoolkit.feature.island.ui.components.accentGlow
+import com.jawzf.pixeltoolkit.feature.island.ui.components.cameraClearance
+import com.jawzf.pixeltoolkit.feature.island.ui.islandTextColor
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+
+
+class BriefPlugin : BaseIslandPlugin() {
+    override val id = "brief"
+
+    private var pageOpen: (() -> Unit)? = null
+
+    override val settingKeys = setOf(
+        SettingsRepository.KEY_ISLAND_BRIEF_ENABLED,
+        SettingsRepository.KEY_ISLAND_BATTERY_STYLE,
+        SettingsRepository.KEY_ISLAND_DEVICES_BATTERY_STYLE,
+        StatusGlanceSettings.KEY_STATUS_GLANCE_CALENDAR_SHOW_ALL_DAY,
+        SettingsRepository.KEY_ISLAND_BRIEF_SHOW_ALARM,
+        SettingsRepository.KEY_ISLAND_BRIEF_TWO_LINE_HEADER,
+        SettingsRepository.KEY_ISLAND_ALARM_WINDOW_HOURS,
+    )
+
+    override fun refresh() {
+        if (ctx == null || !settings.isIslandBriefEnabled()) {
+            publish(null)
+            return
+        }
+        val iconStyle = settings.getIslandBatteryStyle() == SettingsRepository.ISLAND_BATTERY_STYLE_ICON
+        val devicesIconStyle = settings.getIslandDevicesBatteryStyle() == SettingsRepository.ISLAND_BATTERY_STYLE_ICON
+        val alarmHours = if (settings.isIslandBriefShowAlarmEnabled()) settings.getIslandAlarmWindowHours() else null
+        val glanceSettings = StatusGlanceSettings(context)
+        val calendarIds = glanceSettings.getStatusGlanceCalendarSelectedCalendars().mapNotNull { it.toLongOrNull() }.toSet()
+        val showAllDay = glanceSettings.isStatusGlanceCalendarShowAllDayEnabled()
+        val showGlow = settings.isIslandShowGlowEnabled()
+        val calendarEnabled = context.checkSelfPermission(Manifest.permission.READ_CALENDAR) == PackageManager.PERMISSION_GRANTED
+        val twoLineHeader = settings.getBoolean(SettingsRepository.KEY_ISLAND_BRIEF_TWO_LINE_HEADER, false)
+        ctx?.scope?.launch(Dispatchers.IO) { BriefDevicesCache.devices = readDevices(context) }
+        publish(
+            IslandItem(
+                key = ITEM_KEY,
+                priority = IslandPriority.DEFAULT,
+                placement = CompactPlacement.Dynamic,
+                compact = listOf(CompactCell("brief.placeholder") {}),
+                expanded = ExpandedContent { scope ->
+                    BriefExpanded(scope, iconStyle, devicesIconStyle, alarmHours, calendarEnabled, calendarIds, showAllDay, showGlow, twoLineHeader) { open ->
+                        pageOpen = open
+                    }
+                },
+                onOpen = { pageOpen?.invoke() },
+                compactVisible = false,
+            ),
+        )
+    }
+
+    companion object {
+        const val ITEM_KEY = "brief"
+    }
+}
+
+@Composable
+private fun BriefExpanded(
+    scope: IslandExpandedScope,
+    iconStyle: Boolean,
+    devicesIconStyle: Boolean,
+    alarmHours: Int?,
+    calendarEnabled: Boolean,
+    calendarIds: Set<Long>,
+    showAllDay: Boolean,
+    showGlow: Boolean,
+    twoLineHeader: Boolean,
+    onPageOpenChanged: ((() -> Unit)?) -> Unit,
+) {
+    val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
+    var page by remember { mutableStateOf<BriefPage>(BriefPage.Overview) }
+    val media by IslandMediaState.current.collectAsState()
+    val current = page
+    SideEffect {
+        onPageOpenChanged(
+            when (current) {
+                BriefPage.Overview -> null
+                BriefPage.Player -> media?.open
+                is BriefPage.Event -> ({ openEvent(context, current.event) })
+                is BriefPage.Remote -> null
+            },
+        )
+    }
+    LaunchedEffect(media == null) {
+        if (media == null && page == BriefPage.Player) page = BriefPage.Overview
+    }
+    
+    val pageShape = RoundedCornerShape(scope.spec.expandedCorner)
+    Box(propagateMinConstraints = true) {
+        if (!SurfaceBackdrop { BriefBackground(page, media, showGlow, scope, Modifier.fillMaxSize()) }) {
+            BriefBackground(page, media, showGlow, scope, Modifier.matchParentSize())
+        }
+        AnimatedContent(
+            targetState = page,
+            transitionSpec = {
+                val forward = targetState != BriefPage.Overview
+                (slideInHorizontally { if (forward) it / 3 else -it / 3 } + fadeIn()) togetherWith
+                    (slideOutHorizontally { if (forward) -it / 3 else it / 3 } + fadeOut()) using
+                    SizeTransform(clip = false) { _, _ -> spring(stiffness = IslandMotion.STIFFNESS, dampingRatio = IslandMotion.DAMPING) }
+            },
+            label = "brief",
+        ) { target ->
+            Box(propagateMinConstraints = true, modifier = Modifier.clip(pageShape)) {
+                when (target) {
+                    BriefPage.Overview -> BriefOverview(
+                        scope = scope,
+                        iconStyle = iconStyle,
+                        devicesIconStyle = devicesIconStyle,
+                        alarmHours = alarmHours,
+                        calendarEnabled = calendarEnabled,
+                        calendarIds = calendarIds,
+                        showAllDay = showAllDay,
+                        media = media,
+                        twoLineHeader = twoLineHeader,
+                        onEventClick = { page = BriefPage.Event(it) },
+                        onPlayerClick = { page = BriefPage.Player },
+                        onCardClick = { page = BriefPage.Remote(it) },
+                    )
+                    is BriefPage.Event -> SwipeBackPage(scope, onBack = { page = BriefPage.Overview }) {
+                        BriefEventDetail(target.event, showGlow, scope)
+                    }
+                    is BriefPage.Remote -> CompositionLocalProvider(
+                        LocalRemotePaused provides { !(transition.currentState == EnterExitState.Visible && transition.targetState == EnterExitState.Visible) },
+                    ) {
+                        SwipeBackPage(scope, onBack = { page = BriefPage.Overview }) {
+                        val card = RemoteBriefCards.all().firstOrNull { it.key == target.cardKey }
+                        val height = card?.payload?.pageHeightDp
+                        if (card != null && height != null) {
+                            RemoteExpanded(
+                                session = card.handler.surfaceSession(card.surfaceKey),
+                                scope = scope,
+                                heightDp = height,
+                                reportedHeightPx = card.handler.reportedHeightPx(card.surfaceKey),
+                                snapshot = card.handler.snapshot(card.surfaceKey),
+                                onScope = { card.handler.bindScope(card.surfaceKey, it) },
+                                onLayout = card.handler::onLayout,
+                            )
+                        }
+                        }
+                    }
+                    BriefPage.Player -> SwipeBackPage(scope, onBack = { page = BriefPage.Overview }) {
+                        media?.let { m ->
+                            MediaExpanded(m.title, m.artist, m.artwork, m.accent, m.playing, m.liked, m.actions, scope, drawBackground = false, canSkipBack = m.canSkipBack, canSkipForward = m.canSkipForward)
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun BriefBackground(
+    page: BriefPage,
+    media: MediaSnapshot?,
+    showGlow: Boolean,
+    scope: IslandExpandedScope,
+    modifier: Modifier,
+) {
+    val artwork = remember(media?.artwork) { media?.artwork?.asImageBitmap() }
+    val artAlpha by animateFloatAsState(
+        when (page) {
+            BriefPage.Player -> 1f
+            BriefPage.Overview -> if (media?.playing == true) 1f else 0f
+            is BriefPage.Event -> 0f
+            is BriefPage.Remote -> 0f
+        },
+        tween(400),
+        label = "briefArt",
+    )
+    val event = (page as? BriefPage.Event)?.event
+    val glowColor = event?.calendarColor?.let { Color(soften(it)) } ?: MaterialTheme.colorScheme.primary
+    val glowAlpha by animateFloatAsState(if (event != null) 1f else 0f, tween(400), label = "briefGlow")
+    Box(modifier) {
+        if (artAlpha > 0f) {
+            scope.ArtworkBackdrop(artwork, Modifier.matchParentSize().graphicsLayer { alpha = artAlpha })
+        }
+        if (glowAlpha > 0f) {
+            Box(
+                Modifier
+                    .matchParentSize()
+                    .graphicsLayer { alpha = glowAlpha }
+                    .accentGlow(glowColor, showGlow, scope.cameraClearance),
+            )
+        }
+    }
+}
+
+private sealed interface BriefPage {
+    data object Overview : BriefPage
+    data class Event(val event: UpcomingCalendarEvent) : BriefPage
+    data object Player : BriefPage
+    data class Remote(val cardKey: String) : BriefPage
+}
+
+@Composable
+private fun SwipeBackPage(scope: IslandExpandedScope, onBack: () -> Unit, content: @Composable () -> Unit) {
+    val context = LocalContext.current
+    val density = LocalDensity.current
+    val backThreshold = with(density) { 64.dp.toPx() }
+    val offset = remember { Animatable(0f) }
+    val coroutineScope = rememberCoroutineScope()
+    val outerPaused = LocalRemotePaused.current
+    CompositionLocalProvider(LocalRemotePaused provides { outerPaused() || offset.value > 0.5f }) {
+    Box(
+        propagateMinConstraints = true,
+        modifier = Modifier
+            .graphicsLayer {
+                translationX = offset.value
+            }
+            .pointerInput(Unit) {
+                awaitEachGesture {
+                    val down = awaitFirstDown(requireUnconsumed = false)
+                    val start = awaitHorizontalTouchSlopOrCancellation(down.id) { change, over ->
+                        if (over > 0f) {
+                            change.consume()
+                            coroutineScope.launch { offset.snapTo(over) }
+                        }
+                    } ?: return@awaitEachGesture
+                    scope.keepAlive()
+                    val completed = horizontalDrag(start.id) { change ->
+                        val amount = change.positionChange().x
+                        change.consume()
+                        coroutineScope.launch { offset.snapTo((offset.value + amount).coerceAtLeast(0f)) }
+                    }
+                    if (completed && offset.value > backThreshold) {
+                        IslandHaptics.commit(context)
+                        onBack()
+                    } else {
+                        coroutineScope.launch { offset.animateTo(0f) }
+                    }
+                }
+            },
+    ) {
+        content()
+    }
+    }
+}
+
+@Composable
+private fun BriefEventDetail(event: UpcomingCalendarEvent, showGlow: Boolean, scope: IslandExpandedScope) {
+    val context = LocalContext.current
+    val now = System.currentTimeMillis()
+    Box(propagateMinConstraints = true) {
+        CalendarExpanded(
+            event = event,
+            relative = CalendarEventUtil.formatRelativeTime(context, event.startTimeMillis, now),
+            countdown = CalendarEventUtil.formatRelativeTimeCompact(event.startTimeMillis, now),
+            showGlow = showGlow,
+            onView = {
+                openEvent(context, event)
+                scope.collapse()
+            },
+            scope = scope,
+            emoji = remember(event.calendarId) {
+                SettingsRepository(context).getIslandCalendarEmojis()[event.calendarId]
+            },
+            drawBackground = false,
+        )
+    }
+}
+
+private fun openEvent(context: Context, event: UpcomingCalendarEvent) {
+    val intent = if (event.eventId >= 0) {
+        Intent(Intent.ACTION_VIEW, ContentUris.withAppendedId(CalendarContract.Events.CONTENT_URI, event.eventId))
+            .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, event.startTimeMillis)
+            .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, event.endTimeMillis)
+    } else {
+        Intent(Intent.ACTION_VIEW, CalendarContract.CONTENT_URI.buildUpon().appendPath("time").appendPath(event.startTimeMillis.toString()).build())
+    }
+    try {
+        context.startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+    } catch (_: Exception) {
+    }
+}
+
+@Composable
+private fun BriefOverview(
+    scope: IslandExpandedScope,
+    iconStyle: Boolean,
+    devicesIconStyle: Boolean,
+    alarmHours: Int?,
+    calendarEnabled: Boolean,
+    calendarIds: Set<Long>,
+    showAllDay: Boolean,
+    media: MediaSnapshot?,
+    twoLineHeader: Boolean,
+    onEventClick: (UpcomingCalendarEvent) -> Unit,
+    onPlayerClick: () -> Unit,
+    onCardClick: (String) -> Unit,
+) {
+    val context = LocalContext.current
+    val spec = scope.spec
+    val sidePadding = spec.expandedPadding * 0.6f + spec.expandedCorner * 0.25f
+    val accent = MaterialTheme.colorScheme.primary
+    val cardsByPackage by RemoteBriefCards.cards.collectAsState()
+    val remoteCards = remember(cardsByPackage) { cardsByPackage.values.flatten() }
+
+    var now by remember { mutableLongStateOf(System.currentTimeMillis()) }
+    LaunchedEffect(Unit) {
+        while (true) {
+            delay(60_000L - now % 60_000L)
+            now = System.currentTimeMillis()
+        }
+    }
+    val battery = remember(now) { readBattery(context) }
+    val alarm = remember(now, alarmHours) { alarmHours?.let { NextAlarm.within(context, it) } }
+    val devices by produceState(BriefDevicesCache.devices, now) {
+        val fresh = withContext(Dispatchers.IO) { readDevices(context) }
+        BriefDevicesCache.devices = fresh
+        if (fresh != value) value = fresh
+    }
+    val events by produceState<List<UpcomingCalendarEvent>?>(null, calendarEnabled) {
+        value = if (calendarEnabled) {
+            withContext(Dispatchers.IO) { CalendarEventUtil.queryBriefEvents(context, calendarIds, showAllDay) }
+        } else {
+            emptyList()
+        }
+    }
+
+    val timePattern = if (DateFormat.is24HourFormat(context)) "HH:mm" else "h:mm"
+    val time = SimpleDateFormat(timePattern, Locale.getDefault()).format(Date(now))
+    val date = SimpleDateFormat(DateFormat.getBestDateTimePattern(Locale.getDefault(), "EEEMMMd"), Locale.getDefault()).format(Date(now))
+
+    val artwork = remember(media?.artwork) { media?.artwork?.asImageBitmap() }
+    Box(propagateMinConstraints = true) {
+        
+        Column(Modifier.fillMaxWidth().padding(spec.expandedOutset).padding(bottom = spec.expandedBottomPadding)) {
+            Spacer(Modifier.height(spec.expandedTopPadding))
+            val headerPadding = spec.cameraGap + spec.expandedCorner * 0.35f
+            scope.CameraRow(
+                horizontalPadding = headerPadding,
+                start = {
+                    Text(time, style = IslandTextStyles.title.copy(fontSize = 20.sp))
+                    if (!twoLineHeader) {
+                        Spacer(Modifier.width(8.dp))
+                        Text(date, style = IslandTextStyles.body, maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.weight(1f, fill = false))
+                    }
+                },
+                end = {
+                    if (!twoLineHeader) {
+                        alarm?.let {
+                            BriefAlarmChip(NextAlarm.format(context, it.triggerTime, withPeriod = false), accent)
+                            Spacer(Modifier.width(8.dp))
+                        }
+                    }
+                    if (battery >= 0) {
+                        if (iconStyle) {
+                            BatteryGlyph(battery, accent, showLevel = true)
+                        } else {
+                            BatteryRing(battery, accent, showLevel = true)
+                        }
+                    }
+                },
+            )
+
+            if (twoLineHeader) {
+                Row(
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = headerPadding).padding(top = 2.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Text(date, style = IslandTextStyles.body, maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.weight(1f))
+                    alarm?.let { BriefAlarmChip(NextAlarm.format(context, it.triggerTime, withPeriod = false), accent) }
+                }
+            }
+
+            val blockPadding = sidePadding
+            val cardsBlock: @Composable () -> Unit = {
+                remoteCards.forEach { card ->
+                    Spacer(Modifier.height(12.dp))
+                    RemoteBriefCardRow(card, { if (card.hasPage) onCardClick(card.key) }, Modifier.padding(horizontal = blockPadding))
+                }
+            }
+            val devicesBlock: @Composable () -> Unit = {
+                if (devices.isNotEmpty()) {
+                    Spacer(Modifier.height(12.dp))
+                    BriefDeviceRows(devices, devicesIconStyle, accent, Modifier.fillMaxWidth().padding(horizontal = blockPadding))
+                }
+            }
+            val calendarBlock: @Composable () -> Unit = {
+                if (calendarEnabled) {
+                    Spacer(Modifier.height(12.dp))
+                    val list = events
+                    Column(
+                        modifier = Modifier.fillMaxWidth().padding(horizontal = blockPadding),
+                        verticalArrangement = Arrangement.spacedBy(6.dp),
+                    ) {
+                        when {
+                            list == null -> Unit
+                            list.isEmpty() -> Text(
+                                text = stringResource(R.string.island_brief_no_events),
+                                style = IslandTextStyles.body,
+                            )
+                            else -> list.forEach { event -> BriefEventRow(event, now, accent) { onEventClick(event) } }
+                        }
+                    }
+                }
+            }
+            val playerBlock: @Composable () -> Unit = {
+                if (media != null) {
+                    Spacer(Modifier.height(8.dp))
+                    BriefPlayer(media, artwork, onPlayerClick, Modifier.padding(horizontal = blockPadding))
+                }
+            }
+            if (spec.landscape) {
+                val landscapeItems = buildList<@Composable () -> Unit> {
+                    remoteCards.forEach { card ->
+                        add { RemoteBriefCardRow(card, { if (card.hasPage) onCardClick(card.key) }) }
+                    }
+                    if (devices.isNotEmpty()) {
+                        add {
+                            BriefDeviceRows(devices, devicesIconStyle, accent, Modifier.fillMaxWidth())
+                        }
+                    }
+                    if (calendarEnabled) {
+                        val list = events
+                        when {
+                            list == null -> Unit
+                            list.isEmpty() -> add { Text(stringResource(R.string.island_brief_no_events), style = IslandTextStyles.body) }
+                            else -> list.forEach { event -> add { BriefEventRow(event, now, accent) { onEventClick(event) } } }
+                        }
+                    }
+                }
+                if (landscapeItems.isNotEmpty()) {
+                    Spacer(Modifier.height(12.dp))
+                    BalancedColumns(
+                        modifier = Modifier.fillMaxWidth().padding(horizontal = blockPadding),
+                        rowGap = 6.dp,
+                        columnGap = 8.dp,
+                    ) { landscapeItems.forEach { it() } }
+                }
+                playerBlock()
+            } else {
+                cardsBlock()
+                devicesBlock()
+                calendarBlock()
+                playerBlock()
+            }
+        }
+    }
+}
+
+@Composable
+private fun BriefEventRow(event: UpcomingCalendarEvent, now: Long, accent: Color, onClick: () -> Unit) {
+    val context = LocalContext.current
+    val whenText = remember(event, now) { briefWhen(context, event, now) }
+    val color = event.calendarColor?.let { Color(soften(it)) } ?: accent
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(16.dp))
+            .background(Color.White.copy(alpha = 0.1f))
+            .clickable(onClick = onClick)
+            .padding(horizontal = 12.dp, vertical = 10.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Box(
+            Modifier
+                .width(4.dp)
+                .height(32.dp)
+                .background(color, RoundedCornerShape(2.dp)),
+        )
+        Spacer(Modifier.width(12.dp))
+        Column(Modifier.weight(1f)) {
+            Text(
+                text = event.title,
+                style = IslandTextStyles.body.copy(color = islandTextColor(), fontSize = 15.sp),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+            Text(
+                text = listOfNotNull(whenText, event.location).joinToString(" · "),
+                style = IslandTextStyles.body,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+        }
+    }
+}
+
+private fun readBattery(context: Context): Int {
+    val intent = context.registerReceiver(null, IntentFilter(Intent.ACTION_BATTERY_CHANGED)) ?: return -1
+    val level = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1)
+    val scale = intent.getIntExtra(BatteryManager.EXTRA_SCALE, 100)
+    return if (level < 0 || scale <= 0) -1 else level * 100 / scale
+}
+
+@Composable
+private fun BriefPlayer(media: MediaSnapshot, artwork: ImageBitmap?, onClick: () -> Unit, modifier: Modifier = Modifier) {
+    val context = LocalContext.current
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(16.dp))
+            .clickable(onClick = onClick)
+            .padding(vertical = 10.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Box(
+            Modifier
+                .size(56.dp)
+                .clip(RoundedCornerShape(14.dp))
+                .background(Color.White.copy(alpha = 0.1f)),
+        ) {
+            if (artwork != null) {
+                Image(artwork, null, contentScale = ContentScale.Crop, modifier = Modifier.matchParentSize())
+            }
+        }
+        Spacer(Modifier.width(12.dp))
+        Column(Modifier.weight(1f)) {
+            MarqueeText(text = media.title, style = IslandTextStyles.body.copy(color = islandTextColor(), fontSize = 15.sp))
+            MarqueeText(text = media.artist, style = IslandTextStyles.body)
+        }
+        media.actions.like?.let {
+            BriefPlayerButton(
+                icon = if (media.liked) R.drawable.round_favorite_24 else R.drawable.rounded_favorite_24,
+                tint = if (media.liked) media.accent else Color.White,
+            ) {
+                IslandHaptics.button(context)
+                it()
+            }
+        }
+        BriefPlayerButton(
+            icon = if (media.playing) R.drawable.rounded_pause_24 else R.drawable.rounded_play_arrow_24,
+            tint = if (media.accent.luminance() > 0.5f) Color.Black else Color.White,
+            container = media.accent,
+            width = 64.dp,
+            iconSize = 26.dp,
+        ) {
+            IslandHaptics.button(context)
+            media.actions.playPause()
+        }
+        BriefPlayerButton(R.drawable.rounded_skip_next_24) {
+            IslandHaptics.button(context)
+            media.actions.next()
+        }
+    }
+}
+
+@Composable
+private fun BriefPlayerButton(
+    icon: Int,
+    tint: Color = Color.White,
+    container: Color? = null,
+    width: Dp = 44.dp,
+    iconSize: Dp = 24.dp,
+    onClick: () -> Unit,
+) {
+    val background by animateColorAsState(container ?: Color.Transparent, label = "briefButton")
+    Box(
+        Modifier
+            .padding(horizontal = 2.dp)
+            .size(width = width, height = 44.dp)
+            .clip(CircleShape)
+            .background(background)
+            .clickable(onClick = onClick),
+        contentAlignment = Alignment.Center,
+    ) {
+        IslandIcon(icon, tint = tint, size = iconSize)
+    }
+}
+
+private fun briefWhen(context: Context, event: UpcomingCalendarEvent, now: Long): String {
+    val timeFormat = DateFormat.getTimeFormat(context)
+    val start = event.startTimeMillis
+    val tomorrow = !isSameDay(start, now) && start > now
+    if (event.allDay) {
+        val all = context.getString(R.string.island_brief_all_day)
+        return if (tomorrow) context.getString(R.string.island_brief_tomorrow, all) else all
+    }
+    if (start <= now) {
+        return context.getString(R.string.island_brief_now_until, timeFormat.format(Date(event.endTimeMillis)))
+    }
+    val minutes = ((start - now + 59_999L) / 60_000L).toInt()
+    val hours = minutes / 60
+    val rest = minutes % 60
+    return when {
+        minutes < 60 -> context.getString(R.string.island_brief_in_minutes, minutes)
+        minutes < 3 * 60 -> if (rest == 0) {
+            context.getString(R.string.island_brief_in_hours, hours)
+        } else {
+            context.getString(R.string.island_brief_in_hours_minutes, hours, rest)
+        }
+        minutes < 12 * 60 -> context.getString(R.string.island_brief_in_hours, if (rest >= 30) hours + 1 else hours)
+        tomorrow -> context.getString(R.string.island_brief_tomorrow, timeFormat.format(Date(start)))
+        else -> context.getString(R.string.island_brief_today, timeFormat.format(Date(start)))
+    }
+}
+
+private fun isSameDay(a: Long, b: Long): Boolean {
+    val ca = java.util.Calendar.getInstance().apply { timeInMillis = a }
+    val cb = java.util.Calendar.getInstance().apply { timeInMillis = b }
+    return ca.get(java.util.Calendar.YEAR) == cb.get(java.util.Calendar.YEAR) &&
+        ca.get(java.util.Calendar.DAY_OF_YEAR) == cb.get(java.util.Calendar.DAY_OF_YEAR)
+}
+
+private data class BriefDevice(val key: String, val iconRes: Int, val level: Int)
+
+private object BriefDevicesCache {
+    @Volatile
+    var devices: List<BriefDevice> = emptyList()
+}
+
+private fun readDevices(context: Context): List<BriefDevice> {
+    val settings = PowerSettings(context)
+    val devices = mutableListOf<BriefDevice>()
+    val hasPermission = Build.VERSION.SDK_INT < Build.VERSION_CODES.S ||
+        context.checkSelfPermission(Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_GRANTED
+    if (hasPermission && settings.isBluetoothDevicesEnabled()) {
+        BluetoothBatteryUtils.getPairedDevicesBattery(context).forEach { device ->
+            if (device.hasParts) {
+                device.left?.let { devices += BriefDevice(device.address, R.drawable.rounded_earbud_left_24, it) }
+                device.right?.let { devices += BriefDevice(device.address, R.drawable.rounded_earbud_right_24, it) }
+                device.case?.let { devices += BriefDevice(device.address, R.drawable.rounded_earbud_case_24, it) }
+            } else {
+                devices += BriefDevice(device.address, BluetoothDeviceIcons.resolve(context, device.address, device.name), device.level)
+            }
+        }
+    }
+    return BluetoothDeviceOrder.apply(context, devices) { it.key }.take(settings.getBatteryWidgetMaxDevices())
+}
+
+@Composable
+private fun BriefAlarmChip(time: String, accent: Color) {
+    Row(
+        modifier = Modifier
+            .clip(RoundedCornerShape(50))
+            .background(Color.White.copy(alpha = 0.1f))
+            .padding(horizontal = 8.dp, vertical = 4.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        IslandIcon(R.drawable.rounded_alarm_24, tint = accent, size = 16.dp)
+        Spacer(Modifier.width(4.dp))
+        Text(time, style = IslandTextStyles.compact.copy(fontSize = 13.sp))
+    }
+}
+
+@Composable
+private fun BriefDeviceRows(devices: List<BriefDevice>, iconStyle: Boolean, accent: Color, modifier: Modifier = Modifier) {
+    val rows = if (devices.size > 4) devices.chunked((devices.size + 1) / 2) else listOf(devices)
+    Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(6.dp)) {
+        rows.forEach { row ->
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(6.dp, Alignment.CenterHorizontally),
+            ) {
+                val single = row.size == 1
+                row.forEach { device -> BriefDeviceChip(device, iconStyle, accent, if (single) Modifier else Modifier.weight(1f)) }
+            }
+        }
+    }
+}
+
+@Composable
+private fun BriefDeviceChip(device: BriefDevice, iconStyle: Boolean, accent: Color, modifier: Modifier = Modifier) {
+    Row(
+        modifier = modifier
+            .clip(RoundedCornerShape(50))
+            .background(Color.White.copy(alpha = 0.1f))
+            .padding(horizontal = 10.dp, vertical = 8.dp),
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        IslandIcon(device.iconRes, tint = accent, size = 18.dp)
+        Spacer(Modifier.width(6.dp))
+        if (iconStyle) {
+            BatteryGlyph(device.level, accent, showLevel = true)
+        } else {
+            BatteryRing(device.level, accent, showLevel = true)
+        }
+    }
+}
+
+@Composable
+private fun BalancedColumns(modifier: Modifier = Modifier, rowGap: Dp, columnGap: Dp, content: @Composable () -> Unit) {
+    Layout(content = content, modifier = modifier) { measurables, constraints ->
+        val gapX = columnGap.roundToPx()
+        val gapY = rowGap.roundToPx()
+        val columnWidth = ((constraints.maxWidth - gapX) / 2).coerceAtLeast(0)
+        val childConstraints = Constraints(minWidth = columnWidth, maxWidth = columnWidth)
+        val placeables = measurables.map { it.measure(childConstraints) }
+        val heights = IntArray(2)
+        val counts = IntArray(2)
+        val columnOf = placeables.map { placeable ->
+            val column = if (heights[1] < heights[0]) 1 else 0
+            heights[column] += placeable.height + if (counts[column] > 0) gapY else 0
+            counts[column]++
+            column
+        }
+        layout(constraints.maxWidth, maxOf(heights[0], heights[1])) {
+            val y = IntArray(2)
+            placeables.forEachIndexed { index, placeable ->
+                val column = columnOf[index]
+                placeable.placeRelative(column * (columnWidth + gapX), y[column])
+                y[column] += placeable.height + gapY
+            }
+        }
+    }
+}
