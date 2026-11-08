@@ -15,6 +15,9 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 object CaffeinateController {
+    const val TILE_SERVICE = "com.jawzf.pixeltoolkit.feature.power.caffeinate.CaffeinateTileService"
+    const val WAKE_LOCK_SERVICE = "com.jawzf.pixeltoolkit.feature.power.caffeinate.CaffeinateWakeLockService"
+
     val isActive = mutableStateOf(false)
     val isStarting = mutableStateOf(false)
     val startingTimeLeft = mutableStateOf(0)
@@ -52,7 +55,7 @@ object CaffeinateController {
     private fun refreshTile(context: Context) {
         TileService.requestListeningState(
             context,
-            ComponentName(context, CaffeinateTileService::class.java),
+            ComponentName(context, TILE_SERVICE),
         )
     }
 
@@ -147,7 +150,7 @@ object CaffeinateController {
         unregisterScreenOffReceiver(context)
         isStarting.value = false
         val intent =
-            Intent(context, CaffeinateWakeLockService::class.java).apply {
+            Intent().setClassName(context, WAKE_LOCK_SERVICE).apply {
                 putExtra("timeout_minutes", selectedTimeout.value)
             }
         ContextCompat.startForegroundService(context, intent)
@@ -160,7 +163,7 @@ object CaffeinateController {
         startingJob?.cancel()
         isStarting.value = false
         isActive.value = false
-        context.stopService(Intent(context, CaffeinateWakeLockService::class.java))
+        context.stopService(Intent().setClassName(context, WAKE_LOCK_SERVICE))
         refreshTile(context)
     }
 
@@ -180,7 +183,7 @@ object CaffeinateController {
     private fun isWakeLockServiceRunning(context: Context): Boolean {
         val manager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
         for (service in manager.getRunningServices(Int.MAX_VALUE)) {
-            if (CaffeinateWakeLockService::class.java.name == service.service.className) {
+            if (WAKE_LOCK_SERVICE == service.service.className) {
                 return true
             }
         }

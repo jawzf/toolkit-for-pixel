@@ -1,8 +1,11 @@
 package com.jawzf.pixeltoolkit
 
+import com.jawzf.pixeltoolkit.core.data.power.CaffeinateController
 import com.jawzf.pixeltoolkit.core.platform.AppComponents
 import com.jawzf.pixeltoolkit.core.platform.PlatformPrefs
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
+import com.jawzf.pixeltoolkit.feature.power.caffeinate.CaffeinateTileService
+import com.jawzf.pixeltoolkit.feature.power.caffeinate.CaffeinateWakeLockService
 import com.jawzf.pixeltoolkit.services.AccessibilityShortcutService1
 import com.jawzf.pixeltoolkit.services.AccessibilityShortcutService2
 import com.jawzf.pixeltoolkit.services.AccessibilityShortcutService3
@@ -36,6 +39,12 @@ class AppContractTest {
         assertEquals(RipplePositionPickerActivity::class.java.name, AppComponents.RIPPLE_POSITION_PICKER_ACTIVITY)
         assertEquals(WidgetStackConfigureActivity::class.java.name, AppComponents.WIDGET_STACK_CONFIGURE_ACTIVITY)
         assertEquals(ColorPickerActivity::class.java.name, AppComponents.COLOR_PICKER_ACTIVITY)
+    }
+
+    @Test
+    fun caffeinateComponentNamesMatchClasses() {
+        assertEquals(CaffeinateTileService::class.java.name, CaffeinateController.TILE_SERVICE)
+        assertEquals(CaffeinateWakeLockService::class.java.name, CaffeinateController.WAKE_LOCK_SERVICE)
     }
 
     @Test
