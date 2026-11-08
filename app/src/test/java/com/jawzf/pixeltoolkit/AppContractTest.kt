@@ -39,6 +39,7 @@ class AppContractTest {
         assertEquals(RipplePositionPickerActivity::class.java.name, AppComponents.RIPPLE_POSITION_PICKER_ACTIVITY)
         assertEquals(WidgetStackConfigureActivity::class.java.name, AppComponents.WIDGET_STACK_CONFIGURE_ACTIVITY)
         assertEquals(ColorPickerActivity::class.java.name, AppComponents.COLOR_PICKER_ACTIVITY)
+        assertEquals("Conscious gate", AppComponents.CONSCIOUS_GATE_FEATURE_ID)
     }
 
     @Test
