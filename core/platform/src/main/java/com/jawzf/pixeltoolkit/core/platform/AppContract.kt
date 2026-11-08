@@ -23,6 +23,7 @@ object AppComponents {
     const val RIPPLE_POSITION_PICKER_ACTIVITY = "com.jawzf.pixeltoolkit.ui.activities.RipplePositionPickerActivity"
     const val WIDGET_STACK_CONFIGURE_ACTIVITY = "com.jawzf.pixeltoolkit.ui.activities.WidgetStackConfigureActivity"
     const val COLOR_PICKER_ACTIVITY = "com.jawzf.pixeltoolkit.ui.activities.ColorPickerActivity"
+    const val ACTION_LIKE_CURRENT_SONG = "com.jawzf.pixeltoolkit.ACTION_LIKE_CURRENT_SONG"
 
     /** The app's launch intent, or MainActivity when the launcher alias is disabled. */
     fun mainIntent(context: Context): Intent =

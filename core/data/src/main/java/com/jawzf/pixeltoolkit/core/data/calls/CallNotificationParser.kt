@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.utils.call
+package com.jawzf.pixeltoolkit.core.data.calls
 
 import android.app.Notification
 import android.app.PendingIntent
@@ -83,7 +83,7 @@ object CallNotificationParser {
         } else {
             null
         }
-        val caller = person?.name?.toString()?.takeIf { it.isNotBlank() }
+        val caller = (if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) person?.name else null)?.toString()?.takeIf { it.isNotBlank() }
             ?: extras.getCharSequence(Notification.EXTRA_TITLE)?.toString()?.takeIf { it.isNotBlank() }
 
         val photo = (if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) person?.icon else null)?.let { iconBitmap(context, it) }

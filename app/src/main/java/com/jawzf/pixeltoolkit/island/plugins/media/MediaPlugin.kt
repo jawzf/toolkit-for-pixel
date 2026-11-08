@@ -11,6 +11,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.core.data.media.MediaSessionSource
 import com.jawzf.pixeltoolkit.core.design.components.EqualizerBars
+import com.jawzf.pixeltoolkit.core.platform.AppComponents
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.island.gestures.IslandSlideFeedback
 import com.jawzf.pixeltoolkit.island.gestures.SlideFeedback
@@ -28,7 +29,6 @@ import com.jawzf.pixeltoolkit.island.plugins.sendPendingIntent
 import com.jawzf.pixeltoolkit.island.ui.components.IslandBitmap
 import com.jawzf.pixeltoolkit.island.ui.components.MediaArtCue
 import com.jawzf.pixeltoolkit.island.ui.components.TrackSkipPill
-import com.jawzf.pixeltoolkit.services.NotificationListener
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -285,7 +285,7 @@ class MediaPlugin : BaseIslandPlugin() {
     }
 
     private fun like() {
-        context.sendBroadcast(Intent(NotificationListener.ACTION_LIKE_CURRENT_SONG).setPackage(context.packageName))
+        context.sendBroadcast(Intent(AppComponents.ACTION_LIKE_CURRENT_SONG).setPackage(context.packageName))
         ctx?.mainHandler?.postDelayed({
             active?.let { liked = MediaSessionSource.isLiked(it) }
             render()

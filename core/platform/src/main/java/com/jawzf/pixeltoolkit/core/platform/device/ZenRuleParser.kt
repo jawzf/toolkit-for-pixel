@@ -1,7 +1,7 @@
-package com.jawzf.pixeltoolkit.domain.controller
+package com.jawzf.pixeltoolkit.core.platform.device
 
 @Suppress("UNCHECKED_CAST")
-internal fun <T> parseZenRules(result: Any?): Map<String, T> =
+fun <T> parseZenRules(result: Any?): Map<String, T> =
     when (result) {
         null -> emptyMap()
         is Map<*, *> -> result as Map<String, T>

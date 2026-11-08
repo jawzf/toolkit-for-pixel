@@ -43,7 +43,7 @@ import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.cards.SelectionCardItem
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
-import com.jawzf.pixeltoolkit.utils.WifiUtil
+import com.jawzf.pixeltoolkit.core.platform.device.WifiUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 

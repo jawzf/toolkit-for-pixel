@@ -4,6 +4,13 @@ import android.telecom.TelecomManager
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.dp
+import com.jawzf.pixeltoolkit.core.data.calls.CallActionRole
+import com.jawzf.pixeltoolkit.core.data.calls.CallControlUtil
+import com.jawzf.pixeltoolkit.core.data.calls.CallNotificationAction
+import com.jawzf.pixeltoolkit.core.data.calls.CallPhase
+import com.jawzf.pixeltoolkit.core.data.calls.CallSnapshot
+import com.jawzf.pixeltoolkit.core.data.calls.CallStateRepository
+import com.jawzf.pixeltoolkit.core.data.notifications.NotificationHub
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
@@ -19,14 +26,6 @@ import com.jawzf.pixeltoolkit.island.plugins.sendPendingIntent
 import com.jawzf.pixeltoolkit.island.ui.components.IslandBitmap
 import com.jawzf.pixeltoolkit.island.ui.components.IslandIcon
 import com.jawzf.pixeltoolkit.island.ui.components.RollingText
-import com.jawzf.pixeltoolkit.services.LiveUpdateSnoozer
-import com.jawzf.pixeltoolkit.services.NotificationListener
-import com.jawzf.pixeltoolkit.utils.CallControlUtil
-import com.jawzf.pixeltoolkit.utils.call.CallActionRole
-import com.jawzf.pixeltoolkit.utils.call.CallNotificationAction
-import com.jawzf.pixeltoolkit.utils.call.CallPhase
-import com.jawzf.pixeltoolkit.utils.call.CallSnapshot
-import com.jawzf.pixeltoolkit.utils.call.CallStateRepository
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
@@ -119,14 +118,7 @@ class CallPlugin : BaseIslandPlugin() {
         }
     }
 
-    private fun activeNotificationKeys(): Set<String>? = try {
-        val listener = NotificationListener.instance ?: return null
-        val keys = listener.activeNotifications.orEmpty().map { it.key }.toMutableSet()
-        LiveUpdateSnoozer.snoozedNotifications().forEach { keys += it.key }
-        keys
-    } catch (_: Exception) {
-        null
-    }
+    private fun activeNotificationKeys(): Set<String>? = NotificationHub.activeNotificationKeys()
 
     private fun render() {
         val snap = call

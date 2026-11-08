@@ -5,10 +5,10 @@ import android.media.AudioManager
 import android.provider.Settings
 import android.view.KeyEvent
 import com.jawzf.pixeltoolkit.core.data.action.Action
+import com.jawzf.pixeltoolkit.core.data.action.ActionRunner
 import com.jawzf.pixeltoolkit.core.platform.device.LinearBrightness
 import com.jawzf.pixeltoolkit.core.platform.media.MusicSessionUtil
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.services.automation.executors.CombinedActionExecutor
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -131,7 +131,7 @@ class CompactGestureController(
     private fun execute(action: Action) {
         scope()?.launch {
             try {
-                CombinedActionExecutor.execute(context, action)
+                ActionRunner.execute(context, action)
             } catch (_: Exception) {
             }
         }

@@ -6,10 +6,10 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import com.jawzf.pixeltoolkit.core.data.action.Action
+import com.jawzf.pixeltoolkit.core.data.notifications.ActiveNotificationAlert
+import com.jawzf.pixeltoolkit.core.data.notifications.NotificationHub
 import com.jawzf.pixeltoolkit.domain.diy.Automation
 import com.jawzf.pixeltoolkit.domain.diy.Trigger
-import com.jawzf.pixeltoolkit.domain.model.ActiveNotificationAlert
-import com.jawzf.pixeltoolkit.services.NotificationListener
 import com.jawzf.pixeltoolkit.services.automation.executors.CombinedActionExecutor
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -33,7 +33,7 @@ class NotificationModule : AutomationModule {
     private val stateEntries = StateEntries()
 
     private val alertListener =
-        object : NotificationListener.NotificationAlertListener {
+        object : NotificationHub.AlertListener {
             override fun onNotificationAlertPosted(alert: ActiveNotificationAlert) {
                 val context = appContext ?: return
                 run(context) { trigger ->
@@ -64,7 +64,7 @@ class NotificationModule : AutomationModule {
         appContext = context.applicationContext
         dndOn = isDndOn(context)
         context.registerReceiver(dndReceiver, IntentFilter(NotificationManager.ACTION_INTERRUPTION_FILTER_CHANGED))
-        NotificationListener.addNotificationAlertListener(alertListener)
+        NotificationHub.addAlertListener(alertListener)
     }
 
     override fun stop(context: Context) {
@@ -73,7 +73,7 @@ class NotificationModule : AutomationModule {
                 CombinedActionExecutor.executeAll(context, actions)
             }
         }
-        NotificationListener.removeNotificationAlertListener(alertListener)
+        NotificationHub.removeAlertListener(alertListener)
         try {
             context.unregisterReceiver(dndReceiver)
         } catch (e: Exception) { }

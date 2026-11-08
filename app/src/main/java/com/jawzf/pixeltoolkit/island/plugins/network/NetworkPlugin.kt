@@ -16,6 +16,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.platform.device.WifiUtil
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.island.model.CompactCell
 import com.jawzf.pixeltoolkit.island.model.CompactPlacement
@@ -25,7 +26,6 @@ import com.jawzf.pixeltoolkit.island.model.LineContent
 import com.jawzf.pixeltoolkit.island.model.PluginRequest
 import com.jawzf.pixeltoolkit.island.plugins.BaseIslandPlugin
 import com.jawzf.pixeltoolkit.island.ui.components.IslandIcon
-import com.jawzf.pixeltoolkit.utils.WifiUtil
 
 class NetworkPlugin : BaseIslandPlugin() {
     override val id = "network"

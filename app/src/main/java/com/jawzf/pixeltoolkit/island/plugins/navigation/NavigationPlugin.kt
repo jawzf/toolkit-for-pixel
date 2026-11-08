@@ -3,10 +3,11 @@ package com.jawzf.pixeltoolkit.island.plugins.navigation
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.dp
+import com.jawzf.pixeltoolkit.core.data.notifications.NavigationNotificationData
+import com.jawzf.pixeltoolkit.core.data.notifications.NavigationParser
+import com.jawzf.pixeltoolkit.core.data.notifications.NotificationHub
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.domain.model.NavigationNotificationData
-import com.jawzf.pixeltoolkit.domain.model.NavigationParser
 import com.jawzf.pixeltoolkit.island.model.CompactCell
 import com.jawzf.pixeltoolkit.island.model.CompactPlacement
 import com.jawzf.pixeltoolkit.island.model.ExpandedContent
@@ -22,7 +23,6 @@ import com.jawzf.pixeltoolkit.island.plugins.sendPendingIntent
 import com.jawzf.pixeltoolkit.island.ui.components.IslandBitmap
 import com.jawzf.pixeltoolkit.island.ui.components.IslandIcon
 import com.jawzf.pixeltoolkit.island.ui.components.RollingText
-import com.jawzf.pixeltoolkit.services.NotificationListener
 
 class NavigationPlugin : BaseIslandPlugin() {
     override val id = "navigation"
@@ -53,18 +53,16 @@ class NavigationPlugin : BaseIslandPlugin() {
         ctx?.request?.invoke(PluginRequest.Peek(ITEM_KEY, settings.getIslandPeekDurationMs()))
     }
 
-    private val listener = object : NotificationListener.NavigationNotificationListener {
-        override fun onNavigationNotificationUpdated(data: NavigationNotificationData?) {
-            ctx?.mainHandler?.post { update(data) }
-        }
+    private val listener = NotificationHub.NavigationListener { data ->
+        ctx?.mainHandler?.post { update(data) }
     }
 
     override fun onStart() {
-        NotificationListener.addNavigationNotificationListener(listener)
+        NotificationHub.addNavigationListener(listener)
     }
 
     override fun onStop() {
-        NotificationListener.removeNavigationNotificationListener(listener)
+        NotificationHub.removeNavigationListener(listener)
         ctx?.mainHandler?.removeCallbacks(endExpand)
         ctx?.mainHandler?.removeCallbacks(peekAfterCollapse)
         ctx?.mainHandler?.removeCallbacks(endRoute)
@@ -74,7 +72,7 @@ class NavigationPlugin : BaseIslandPlugin() {
 
     override fun refresh() {
         ctx ?: return
-        data = NotificationListener.getLatestNavigationNotification()
+        data = NotificationHub.latestNavigation()
         render()
     }
 

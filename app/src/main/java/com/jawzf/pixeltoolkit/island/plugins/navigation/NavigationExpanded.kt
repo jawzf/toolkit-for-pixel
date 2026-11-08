@@ -16,9 +16,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.jawzf.pixeltoolkit.core.data.notifications.NavigationNotificationData
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.theme.ToolkitTheme
-import com.jawzf.pixeltoolkit.domain.model.NavigationNotificationData
 import com.jawzf.pixeltoolkit.island.model.IslandExpandedScope
 import com.jawzf.pixeltoolkit.island.ui.IslandLayoutSpec
 import com.jawzf.pixeltoolkit.island.ui.IslandTextStyles
@@ -50,20 +50,22 @@ fun NavigationExpanded(
                     }
                 },
             )
-            if (!data.instruction.isNullOrBlank()) {
+            val instruction = data.instruction
+            if (!instruction.isNullOrBlank()) {
                 Spacer(Modifier.height(8.dp))
                 Text(
-                    text = data.instruction,
+                    text = instruction,
                     style = IslandTextStyles.title.copy(color = islandTextColor(), fontSize = 20.sp, lineHeight = 25.sp),
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
                     modifier = Modifier.fillMaxWidth().padding(horizontal = sidePadding),
                 )
             }
-            if (!data.eta.isNullOrBlank()) {
+            val eta = data.eta
+            if (!eta.isNullOrBlank()) {
                 Spacer(Modifier.height(2.dp))
                 Text(
-                    text = data.eta,
+                    text = eta,
                     style = IslandTextStyles.body.copy(color = islandTextColor(0.7f)),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,

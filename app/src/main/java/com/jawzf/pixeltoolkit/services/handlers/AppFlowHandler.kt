@@ -16,6 +16,7 @@ import android.provider.Settings
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.google.gson.Gson
+import com.jawzf.pixeltoolkit.core.data.notifications.ConsciousGateSession
 import com.jawzf.pixeltoolkit.core.data.prefs.AppSelection
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticFeedbackType
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
@@ -125,12 +126,6 @@ class AppFlowHandler(
     private var currentUsageStatsPackage: String? = null
 
     // Conscious Gate State
-    data class ConsciousGateSession(
-        val packageName: String,
-        val startTimeMillis: Long,
-        val durationMillis: Long,
-    )
-
     var currentConsciousGateSession: ConsciousGateSession? = null
         private set
 
