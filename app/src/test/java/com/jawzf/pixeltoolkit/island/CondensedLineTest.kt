@@ -2,7 +2,7 @@ package com.jawzf.pixeltoolkit.island
 
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.jawzf.pixeltoolkit.island.ui.condensedTitleWidth
+import com.jawzf.pixeltoolkit.feature.island.ui.condensedTitleWidth
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test

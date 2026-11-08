@@ -18,6 +18,7 @@ import com.jawzf.pixeltoolkit.feature.display.ondisplay.ToolkitOnDisplayTileServ
 import com.jawzf.pixeltoolkit.feature.display.pixels.SmartPixelsTileService
 import com.jawzf.pixeltoolkit.feature.display.refresh.RefreshRateTileService
 import com.jawzf.pixeltoolkit.feature.input.links.UrlShortenerTileService
+import com.jawzf.pixeltoolkit.feature.island.IslandTileService
 import com.jawzf.pixeltoolkit.feature.notifications.flashlight.FlashlightPulseTileService
 import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingTileService
 import com.jawzf.pixeltoolkit.feature.power.caffeinate.CaffeinateTileService
@@ -40,7 +41,6 @@ import com.jawzf.pixeltoolkit.feature.tiles.UiBlurTileService
 import com.jawzf.pixeltoolkit.feature.tiles.UsbDebuggingTileService
 import com.jawzf.pixeltoolkit.services.tiles.DefaultLauncherTileService
 import com.jawzf.pixeltoolkit.services.tiles.FlashlightTileService
-import com.jawzf.pixeltoolkit.services.tiles.IslandTileService
 import com.jawzf.pixeltoolkit.services.tiles.LockdownTileService
 import com.jawzf.pixeltoolkit.services.tiles.ScaleAnimationsTileService
 

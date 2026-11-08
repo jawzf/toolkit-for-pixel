@@ -1,6 +1,6 @@
 package com.jawzf.pixeltoolkit.island
 
-import com.jawzf.pixeltoolkit.island.plugins.notifications.OtpExtractor
+import com.jawzf.pixeltoolkit.feature.island.plugins.notifications.OtpExtractor
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test

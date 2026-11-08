@@ -79,6 +79,7 @@ import com.jawzf.pixeltoolkit.feature.display.pixels.SmartPixelsState
 import com.jawzf.pixeltoolkit.feature.display.refresh.RefreshRatePanelState
 import com.jawzf.pixeltoolkit.feature.display.statusbar.StatusBarControlState
 import com.jawzf.pixeltoolkit.feature.input.InputState
+import com.jawzf.pixeltoolkit.feature.island.service.IslandStatusBarHider
 import com.jawzf.pixeltoolkit.feature.notifications.NotificationSettings
 import com.jawzf.pixeltoolkit.feature.notifications.NotificationState
 import com.jawzf.pixeltoolkit.feature.notifications.autodismiss.NotificationAutoDismisser
@@ -91,7 +92,6 @@ import com.jawzf.pixeltoolkit.feature.security.SecuritySettings
 import com.jawzf.pixeltoolkit.feature.security.SecurityState
 import com.jawzf.pixeltoolkit.feature.sound.SoundSettings
 import com.jawzf.pixeltoolkit.feature.sound.SoundState
-import com.jawzf.pixeltoolkit.island.service.IslandStatusBarHider
 import com.jawzf.pixeltoolkit.services.LiveUpdateSnoozer
 import com.jawzf.pixeltoolkit.services.NotificationListener
 import com.jawzf.pixeltoolkit.services.receivers.FlashlightActionReceiver

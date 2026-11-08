@@ -1,7 +1,8 @@
 package com.jawzf.pixeltoolkit.island.plugins.navigation
 
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.island.plugins.navigation.NavigationTrigger.Action
+import com.jawzf.pixeltoolkit.feature.island.plugins.navigation.NavigationTrigger
+import com.jawzf.pixeltoolkit.feature.island.plugins.navigation.NavigationTrigger.Action
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

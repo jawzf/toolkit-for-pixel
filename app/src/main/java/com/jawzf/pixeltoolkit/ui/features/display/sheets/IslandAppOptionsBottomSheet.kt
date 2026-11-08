@@ -23,7 +23,7 @@ import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.island.remote.ProviderTrustStore
+import com.jawzf.pixeltoolkit.feature.island.remote.ProviderTrustStore
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

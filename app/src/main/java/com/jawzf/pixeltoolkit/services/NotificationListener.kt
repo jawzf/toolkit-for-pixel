@@ -48,6 +48,7 @@ import com.jawzf.pixeltoolkit.core.platform.device.ProgressNotificationHub
 import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.feature.display.DisplaySettings
+import com.jawzf.pixeltoolkit.feature.island.plugins.notifications.OtpExtractor
 import com.jawzf.pixeltoolkit.feature.notifications.NotificationSettings
 import com.jawzf.pixeltoolkit.feature.notifications.autodismiss.NotificationAutoDismisser
 import com.jawzf.pixeltoolkit.feature.notifications.hilight.HilightController
@@ -60,7 +61,6 @@ import com.jawzf.pixeltoolkit.feature.notifications.lighting.overlay.writeTo
 import com.jawzf.pixeltoolkit.feature.notifications.snooze.SnoozeChannel
 import com.jawzf.pixeltoolkit.feature.power.maps.MapsState
 import com.jawzf.pixeltoolkit.feature.sound.SoundSettings
-import com.jawzf.pixeltoolkit.island.plugins.notifications.OtpExtractor
 import com.jawzf.pixeltoolkit.services.receivers.FlashlightActionReceiver
 import com.jawzf.pixeltoolkit.services.tiles.ScreenOffAccessibilityService
 import com.jawzf.pixeltoolkit.services.widgets.PixelSearchbarWidget

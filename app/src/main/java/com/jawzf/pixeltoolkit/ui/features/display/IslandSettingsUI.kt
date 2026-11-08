@@ -59,10 +59,10 @@ import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.domain.diy.displayName
 import com.jawzf.pixeltoolkit.feature.apps.consciousgate.ui.CONSCIOUS_GATE_FEATURE_ID
-import com.jawzf.pixeltoolkit.island.model.IslandPriorityEntries
-import com.jawzf.pixeltoolkit.island.remote.ProviderDiscovery
-import com.jawzf.pixeltoolkit.island.remote.ProviderPriorities
-import com.jawzf.pixeltoolkit.island.remote.ProviderTrustStore
+import com.jawzf.pixeltoolkit.feature.island.model.IslandPriorityEntries
+import com.jawzf.pixeltoolkit.feature.island.remote.ProviderDiscovery
+import com.jawzf.pixeltoolkit.feature.island.remote.ProviderPriorities
+import com.jawzf.pixeltoolkit.feature.island.remote.ProviderTrustStore
 import com.jawzf.pixeltoolkit.ui.core.sheets.AppSelectionSheet
 import com.jawzf.pixeltoolkit.ui.features.display.actions.GestureActionPickerSheet
 import com.jawzf.pixeltoolkit.ui.features.display.actions.HorizontalSlideModeSheet

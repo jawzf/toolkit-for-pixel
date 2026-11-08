@@ -18,6 +18,7 @@ import com.jawzf.pixeltoolkit.feature.display.ondisplay.ToolkitOnDisplayTileServ
 import com.jawzf.pixeltoolkit.feature.display.pixels.SmartPixelsTileService
 import com.jawzf.pixeltoolkit.feature.display.refresh.RefreshRateTileService
 import com.jawzf.pixeltoolkit.feature.input.links.UrlShortenerTileService
+import com.jawzf.pixeltoolkit.feature.island.IslandTileService
 import com.jawzf.pixeltoolkit.feature.notifications.flashlight.FlashlightPulseTileService
 import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingTileService
 import com.jawzf.pixeltoolkit.feature.power.caffeinate.CaffeinateTileService

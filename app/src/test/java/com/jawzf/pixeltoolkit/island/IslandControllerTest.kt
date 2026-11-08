@@ -1,15 +1,15 @@
 package com.jawzf.pixeltoolkit.island
 
-import com.jawzf.pixeltoolkit.island.model.CompactCell
-import com.jawzf.pixeltoolkit.island.model.CompactPlacement
-import com.jawzf.pixeltoolkit.island.model.ExpandedContent
-import com.jawzf.pixeltoolkit.island.model.IslandItem
-import com.jawzf.pixeltoolkit.island.model.IslandStage
-import com.jawzf.pixeltoolkit.island.model.LineContent
-import com.jawzf.pixeltoolkit.island.model.QueueInfo
-import com.jawzf.pixeltoolkit.island.state.Cancellable
-import com.jawzf.pixeltoolkit.island.state.DelayScheduler
-import com.jawzf.pixeltoolkit.island.state.IslandController
+import com.jawzf.pixeltoolkit.feature.island.model.CompactCell
+import com.jawzf.pixeltoolkit.feature.island.model.CompactPlacement
+import com.jawzf.pixeltoolkit.feature.island.model.ExpandedContent
+import com.jawzf.pixeltoolkit.feature.island.model.IslandItem
+import com.jawzf.pixeltoolkit.feature.island.model.IslandStage
+import com.jawzf.pixeltoolkit.feature.island.model.LineContent
+import com.jawzf.pixeltoolkit.feature.island.model.QueueInfo
+import com.jawzf.pixeltoolkit.feature.island.state.Cancellable
+import com.jawzf.pixeltoolkit.feature.island.state.DelayScheduler
+import com.jawzf.pixeltoolkit.feature.island.state.IslandController
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test
