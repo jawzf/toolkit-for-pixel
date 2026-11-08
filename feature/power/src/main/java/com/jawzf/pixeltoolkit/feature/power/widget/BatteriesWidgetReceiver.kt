@@ -4,9 +4,9 @@ import android.content.Context
 import android.content.Intent
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.GlanceAppWidgetReceiver
+import com.jawzf.pixeltoolkit.core.data.power.BluetoothBatteryUtils
+import com.jawzf.pixeltoolkit.core.data.power.PowerSettings
 import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
-import com.jawzf.pixeltoolkit.feature.power.PowerSettings
-import com.jawzf.pixeltoolkit.feature.power.bluetooth.BluetoothBatteryUtils
 import kotlinx.coroutines.launch
 
 class BatteriesWidgetReceiver : GlanceAppWidgetReceiver() {

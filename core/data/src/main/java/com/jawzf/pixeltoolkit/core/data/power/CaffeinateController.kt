@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.feature.power.caffeinate
+package com.jawzf.pixeltoolkit.core.data.power
 
 import android.app.ActivityManager
 import android.content.ComponentName

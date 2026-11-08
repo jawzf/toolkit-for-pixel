@@ -3,8 +3,8 @@ package com.jawzf.pixeltoolkit.feature.power.battery
 import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
+import com.jawzf.pixeltoolkit.core.data.power.PowerSettings
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
-import com.jawzf.pixeltoolkit.feature.power.PowerSettings
 
 data class BatteryUsageApp(
     val uid: Int,

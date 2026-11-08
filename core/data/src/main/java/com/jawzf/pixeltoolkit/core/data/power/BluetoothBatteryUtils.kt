@@ -1,11 +1,11 @@
-package com.jawzf.pixeltoolkit.feature.power.bluetooth
+package com.jawzf.pixeltoolkit.core.data.power
 
 import android.annotation.SuppressLint
 import android.bluetooth.BluetoothManager
 import android.content.Context
 import androidx.annotation.Keep
+import com.jawzf.pixeltoolkit.core.data.power.PowerSettings
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
-import com.jawzf.pixeltoolkit.feature.power.PowerSettings
 
 object BluetoothBatteryUtils {
     @Keep

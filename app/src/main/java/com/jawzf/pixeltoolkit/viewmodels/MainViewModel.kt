@@ -39,6 +39,7 @@ import com.jawzf.pixeltoolkit.core.data.apps.AppUtil
 import com.jawzf.pixeltoolkit.core.data.backup.ConfigBackup
 import com.jawzf.pixeltoolkit.core.data.duo.DuoSettings
 import com.jawzf.pixeltoolkit.core.data.log.LogManager
+import com.jawzf.pixeltoolkit.core.data.power.PowerSettings
 import com.jawzf.pixeltoolkit.core.data.prefs.AppSelection
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticFeedbackType
@@ -85,7 +86,6 @@ import com.jawzf.pixeltoolkit.feature.notifications.flashlight.FlashlightPulseSt
 import com.jawzf.pixeltoolkit.feature.notifications.hilight.HilightState
 import com.jawzf.pixeltoolkit.feature.notifications.lighting.LightingState
 import com.jawzf.pixeltoolkit.feature.power.BatteryState
-import com.jawzf.pixeltoolkit.feature.power.PowerSettings
 import com.jawzf.pixeltoolkit.feature.power.PowerState
 import com.jawzf.pixeltoolkit.feature.security.SecuritySettings
 import com.jawzf.pixeltoolkit.feature.security.SecurityState
