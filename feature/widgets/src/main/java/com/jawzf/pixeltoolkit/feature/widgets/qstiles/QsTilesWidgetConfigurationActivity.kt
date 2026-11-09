@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.activities
+package com.jawzf.pixeltoolkit.feature.widgets.qstiles
 
 import android.app.Activity
 import android.appwidget.AppWidgetManager
