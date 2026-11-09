@@ -1,5 +1,6 @@
 package com.jawzf.pixeltoolkit.feature.automation.ui.sheets
 
+import android.content.Context
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -34,7 +35,7 @@ import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
+import com.jawzf.pixeltoolkit.core.platform.PlatformPrefs
 import com.jawzf.pixeltoolkit.feature.automation.diy.Automation
 import com.jawzf.pixeltoolkit.feature.automation.diy.DIYRepository
 
@@ -49,7 +50,11 @@ fun NewAutomationSheet(
 
     val isPixelSearchbarEnabled =
         remember(context) {
-            SettingsRepository(context).getBoolean(SettingsRepository.KEY_PIXEL_SEARCHBAR, false)
+            context
+                .getSharedPreferences(
+                    PlatformPrefs.PREFS_NAME,
+                    Context.MODE_PRIVATE,
+                ).getBoolean(PlatformPrefs.KEY_PIXEL_SEARCHBAR, false)
         }
 
     val hasActionShortcut =

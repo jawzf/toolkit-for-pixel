@@ -1,6 +1,7 @@
 package com.jawzf.pixeltoolkit.feature.automation.ui
 
 import android.content.Context
+import android.content.Intent
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
@@ -70,14 +71,12 @@ import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.modifiers.scrollMotionBlur
+import com.jawzf.pixeltoolkit.core.platform.AppComponents
 import com.jawzf.pixeltoolkit.feature.automation.diy.Automation
 import com.jawzf.pixeltoolkit.feature.automation.diy.Macro
-import com.jawzf.pixeltoolkit.feature.automation.ui.DIYViewModel
 import com.jawzf.pixeltoolkit.feature.automation.ui.components.AutomationItem
 import com.jawzf.pixeltoolkit.feature.automation.ui.components.MacroItem
 import com.jawzf.pixeltoolkit.feature.automation.ui.sheets.NewAutomationSheet
-import com.jawzf.pixeltoolkit.ui.activities.AutomationEditorActivity
-import com.jawzf.pixeltoolkit.ui.activities.MacroEditorActivity
 
 @Composable
 fun DIYScreen(
@@ -162,10 +161,24 @@ fun DIYScreen(
                         macros = macros,
                         contentPadding = contentPadding,
                         onNewMacro = {
-                            context.startActivity(MacroEditorActivity.createIntent(context, null))
+                            context.startActivity(
+                                editorIntent(
+                                    context,
+                                    AppComponents.MACRO_EDITOR_ACTIVITY,
+                                    AppComponents.EXTRA_MACRO_ID,
+                                    null,
+                                ),
+                            )
                         },
                         onOpen = { macro ->
-                            context.startActivity(MacroEditorActivity.createIntent(context, macro.id))
+                            context.startActivity(
+                                editorIntent(
+                                    context,
+                                    AppComponents.MACRO_EDITOR_ACTIVITY,
+                                    AppComponents.EXTRA_MACRO_ID,
+                                    macro.id,
+                                ),
+                            )
                         },
                         onTest = { macro ->
                             viewModel.testMacro(macro)
@@ -217,8 +230,10 @@ fun DIYScreen(
                             automation = automation,
                             onClick = {
                                 context.startActivity(
-                                    AutomationEditorActivity.createIntent(
+                                    editorIntent(
                                         context,
+                                        AppComponents.AUTOMATION_EDITOR_ACTIVITY,
+                                        AppComponents.EXTRA_AUTOMATION_ID,
                                         automation.id,
                                     ),
                                 )
@@ -362,7 +377,14 @@ fun DIYScreen(
         if (showNewAutomationSheet && showMacros) {
             // The FAB in MainActivity always requests a new automation; redirect to the macro editor when in the Macros tab
             LaunchedEffect(showNewAutomationSheet) {
-                context.startActivity(MacroEditorActivity.createIntent(context, null))
+                context.startActivity(
+                    editorIntent(
+                        context,
+                        AppComponents.MACRO_EDITOR_ACTIVITY,
+                        AppComponents.EXTRA_MACRO_ID,
+                        null,
+                    ),
+                )
                 onDismissNewAutomationSheet()
             }
         }
@@ -372,7 +394,14 @@ fun DIYScreen(
                 onDismiss = onDismissNewAutomationSheet,
                 onOptionSelected = { type ->
                     onDismissNewAutomationSheet()
-                    context.startActivity(AutomationEditorActivity.createIntent(context, type))
+                    context.startActivity(
+                        editorIntent(
+                            context,
+                            AppComponents.AUTOMATION_EDITOR_ACTIVITY,
+                            AppComponents.EXTRA_AUTOMATION_TYPE,
+                            type.name,
+                        ),
+                    )
                 },
             )
         }
@@ -571,3 +600,10 @@ private fun DIYSectionSwitch(
         }
     }
 }
+
+private fun editorIntent(
+    context: Context,
+    activity: String,
+    extra: String,
+    value: String?,
+): Intent = Intent().setClassName(context, activity).putExtra(extra, value)

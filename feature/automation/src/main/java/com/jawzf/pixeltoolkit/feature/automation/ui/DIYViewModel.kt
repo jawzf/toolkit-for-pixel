@@ -5,12 +5,12 @@ import android.content.Context
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.jawzf.pixeltoolkit.core.data.action.Action
+import com.jawzf.pixeltoolkit.core.data.action.ActionRunner
 import com.jawzf.pixeltoolkit.feature.automation.diy.Automation
 import com.jawzf.pixeltoolkit.feature.automation.diy.DIYRepository
 import com.jawzf.pixeltoolkit.feature.automation.diy.Macro
 import com.jawzf.pixeltoolkit.feature.automation.diy.State
 import com.jawzf.pixeltoolkit.feature.automation.diy.Trigger
-import com.jawzf.pixeltoolkit.services.automation.executors.CombinedActionExecutor
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -100,7 +100,7 @@ class DIYViewModel(
                 automation.actionList
             }
         viewModelScope.launch {
-            CombinedActionExecutor.executeAll(context, actionsToTest)
+            ActionRunner.executeAll(context, actionsToTest)
         }
     }
 
@@ -112,7 +112,7 @@ class DIYViewModel(
     fun testMacro(macro: Macro) {
         val context = getApplication<Application>().applicationContext
         viewModelScope.launch {
-            CombinedActionExecutor.executeAll(context, macro.actionList)
+            ActionRunner.executeAll(context, macro.actionList)
         }
     }
 }

@@ -46,6 +46,7 @@ import com.jawzf.pixeltoolkit.core.design.components.ToolkitFloatingToolbar
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.theme.ToolkitTheme
+import com.jawzf.pixeltoolkit.core.platform.AppComponents
 import com.jawzf.pixeltoolkit.feature.automation.diy.ActionRegistry
 import com.jawzf.pixeltoolkit.feature.automation.diy.DIYRepository
 import com.jawzf.pixeltoolkit.feature.automation.diy.Macro
@@ -55,14 +56,12 @@ import java.util.UUID
 
 class MacroEditorActivity : ComponentActivity() {
     companion object {
-        private const val EXTRA_MACRO_ID = "macro_id"
-
         fun createIntent(
             context: Context,
             macroId: String?,
         ): Intent =
             Intent(context, MacroEditorActivity::class.java).apply {
-                putExtra(EXTRA_MACRO_ID, macroId)
+                putExtra(AppComponents.EXTRA_MACRO_ID, macroId)
             }
     }
 
@@ -71,7 +70,7 @@ class MacroEditorActivity : ComponentActivity() {
         enableEdgeToEdge()
         DIYRepository.init(applicationContext)
 
-        val macroId = intent.getStringExtra(EXTRA_MACRO_ID)
+        val macroId = intent.getStringExtra(AppComponents.EXTRA_MACRO_ID)
         val existing = macroId?.let { DIYRepository.getMacro(it) }
         val isEditMode = existing != null
 

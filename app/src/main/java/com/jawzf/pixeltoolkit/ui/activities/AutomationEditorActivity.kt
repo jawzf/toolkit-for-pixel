@@ -89,6 +89,7 @@ import com.jawzf.pixeltoolkit.core.design.modifiers.scrollMotionBlur
 import com.jawzf.pixeltoolkit.core.design.pickers.SegmentedPicker
 import com.jawzf.pixeltoolkit.core.design.sheets.PermissionsBottomSheet
 import com.jawzf.pixeltoolkit.core.design.theme.ToolkitTheme
+import com.jawzf.pixeltoolkit.core.platform.AppComponents
 import com.jawzf.pixeltoolkit.core.platform.permissions.AppPermission
 import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
@@ -113,15 +114,12 @@ import com.jawzf.pixeltoolkit.feature.automation.diy.State as DIYState
 
 class AutomationEditorActivity : ComponentActivity() {
     companion object {
-        private const val EXTRA_AUTOMATION_ID = "automation_id"
-        private const val EXTRA_AUTOMATION_TYPE = "automation_type"
-
         fun createIntent(
             context: Context,
             automationId: String,
         ): Intent =
             Intent(context, AutomationEditorActivity::class.java).apply {
-                putExtra(EXTRA_AUTOMATION_ID, automationId)
+                putExtra(AppComponents.EXTRA_AUTOMATION_ID, automationId)
             }
 
         fun createIntent(
@@ -129,7 +127,7 @@ class AutomationEditorActivity : ComponentActivity() {
             type: Automation.Type,
         ): Intent =
             Intent(context, AutomationEditorActivity::class.java).apply {
-                putExtra(EXTRA_AUTOMATION_TYPE, type.name)
+                putExtra(AppComponents.EXTRA_AUTOMATION_TYPE, type.name)
             }
     }
 
@@ -140,8 +138,8 @@ class AutomationEditorActivity : ComponentActivity() {
         // Init repository
         DIYRepository.init(applicationContext)
 
-        val automationId = intent.getStringExtra(EXTRA_AUTOMATION_ID)
-        val automationTypeStr = intent.getStringExtra(EXTRA_AUTOMATION_TYPE)
+        val automationId = intent.getStringExtra(AppComponents.EXTRA_AUTOMATION_ID)
+        val automationTypeStr = intent.getStringExtra(AppComponents.EXTRA_AUTOMATION_TYPE)
 
         val existingAutomation =
             if (automationId != null) DIYRepository.getAutomation(automationId) else null
