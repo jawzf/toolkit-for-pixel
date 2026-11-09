@@ -99,10 +99,10 @@ import com.jawzf.pixeltoolkit.feature.automation.diy.Comparison
 import com.jawzf.pixeltoolkit.feature.automation.diy.DIYRepository
 import com.jawzf.pixeltoolkit.feature.automation.diy.Metric
 import com.jawzf.pixeltoolkit.feature.automation.diy.Trigger
+import com.jawzf.pixeltoolkit.feature.automation.ui.sheets.SystemMetricSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.BluetoothDeviceSelectionSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.NotificationTriggerSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.SoundModeSettingsSheet
-import com.jawzf.pixeltoolkit.ui.core.sheets.SystemMetricSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.WifiNetworkSelectionSheet
 import com.jawzf.pixeltoolkit.ui.features.location.sheets.LocationTriggerSheet
 import com.jawzf.pixeltoolkit.ui.features.system.ActionSequenceEditor

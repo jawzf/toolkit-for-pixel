@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.composables
+package com.jawzf.pixeltoolkit.feature.automation.ui
 
 import android.content.Context
 import androidx.activity.compose.BackHandler
@@ -72,12 +72,12 @@ import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.modifiers.scrollMotionBlur
 import com.jawzf.pixeltoolkit.feature.automation.diy.Automation
 import com.jawzf.pixeltoolkit.feature.automation.diy.Macro
+import com.jawzf.pixeltoolkit.feature.automation.ui.DIYViewModel
+import com.jawzf.pixeltoolkit.feature.automation.ui.components.AutomationItem
+import com.jawzf.pixeltoolkit.feature.automation.ui.components.MacroItem
+import com.jawzf.pixeltoolkit.feature.automation.ui.sheets.NewAutomationSheet
 import com.jawzf.pixeltoolkit.ui.activities.AutomationEditorActivity
 import com.jawzf.pixeltoolkit.ui.activities.MacroEditorActivity
-import com.jawzf.pixeltoolkit.ui.components.diy.AutomationItem
-import com.jawzf.pixeltoolkit.ui.components.diy.MacroItem
-import com.jawzf.pixeltoolkit.ui.core.sheets.NewAutomationSheet
-import com.jawzf.pixeltoolkit.viewmodels.DIYViewModel
 
 @Composable
 fun DIYScreen(

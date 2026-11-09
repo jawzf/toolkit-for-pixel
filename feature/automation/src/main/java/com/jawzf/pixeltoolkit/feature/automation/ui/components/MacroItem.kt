@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.components.diy
+package com.jawzf.pixeltoolkit.feature.automation.ui.components
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable

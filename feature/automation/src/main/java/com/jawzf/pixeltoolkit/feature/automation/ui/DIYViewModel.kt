@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.viewmodels
+package com.jawzf.pixeltoolkit.feature.automation.ui
 
 import android.app.Application
 import android.content.Context
