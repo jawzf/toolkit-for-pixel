@@ -4,7 +4,7 @@ import android.app.Activity
 import android.appwidget.AppWidgetManager
 import android.content.Intent
 import android.os.Bundle
-import com.jawzf.pixeltoolkit.FeatureSettingsActivity
+import com.jawzf.pixeltoolkit.core.platform.AppComponents
 
 class QsTilesWidgetConfigurationActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,7 +23,7 @@ class QsTilesWidgetConfigurationActivity : Activity() {
         setResult(RESULT_OK, resultValue)
 
         val settingsIntent =
-            Intent(this, FeatureSettingsActivity::class.java).apply {
+            Intent().setClassName(this, AppComponents.FEATURE_SETTINGS_ACTIVITY).apply {
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
                 putExtra("feature", "Quick settings tiles")
             }
