@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.core.sheets
+package com.jawzf.pixeltoolkit.feature.automation.ui.sheets
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -30,7 +30,7 @@ import androidx.core.content.ContextCompat
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.cards.SelectionCardItem
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
-import com.jawzf.pixeltoolkit.utils.BluetoothPairedDevicesUtil
+import com.jawzf.pixeltoolkit.feature.automation.util.BluetoothPairedDevicesUtil
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

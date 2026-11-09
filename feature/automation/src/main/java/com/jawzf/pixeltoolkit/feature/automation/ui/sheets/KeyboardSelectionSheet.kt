@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.features.apps.sheets
+package com.jawzf.pixeltoolkit.feature.automation.ui.sheets
 
 import android.content.Context
 import android.os.Build

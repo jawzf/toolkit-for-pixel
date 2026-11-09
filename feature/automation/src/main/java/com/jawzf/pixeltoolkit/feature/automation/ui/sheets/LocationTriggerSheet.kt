@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.features.location.sheets
+package com.jawzf.pixeltoolkit.feature.automation.ui.sheets
 
 import android.content.ClipboardManager
 import android.content.Context
@@ -46,7 +46,7 @@ import com.jawzf.pixeltoolkit.core.design.components.ConfigSliderItem
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.feature.automation.diy.Trigger
-import com.jawzf.pixeltoolkit.utils.MapsLinkParser
+import com.jawzf.pixeltoolkit.feature.automation.util.MapsLinkParser
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch

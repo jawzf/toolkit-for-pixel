@@ -1,5 +1,7 @@
-package com.jawzf.pixeltoolkit.ui.core.sheets
+package com.jawzf.pixeltoolkit.feature.automation.ui.sheets
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -7,42 +9,48 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.core.data.action.Action
+import com.jawzf.pixeltoolkit.core.data.action.ChargingMode
 import com.jawzf.pixeltoolkit.core.design.R
-import com.jawzf.pixeltoolkit.core.design.cards.IconToggleItem
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DeviceCareSettingsSheet(
-    initialAction: Action.DeviceCare,
+fun ChargingModeSettingsSheet(
+    initialAction: Action.SetChargingMode,
     onDismiss: () -> Unit,
-    onSave: (Action.DeviceCare) -> Unit,
+    onSave: (Action.SetChargingMode) -> Unit,
 ) {
     val view = LocalView.current
-    var clearCache by remember { mutableStateOf(initialAction.clearCache) }
-    var closeApps by remember { mutableStateOf(initialAction.closeApps) }
 
-    ToolkitBottomSheet(onDismissRequest = onDismiss) {
+    var selectedMode by remember { mutableStateOf(initialAction.mode) }
+
+    ToolkitBottomSheet(
+        onDismissRequest = onDismiss,
+    ) {
         Column(
             modifier =
                 Modifier
@@ -51,33 +59,68 @@ fun DeviceCareSettingsSheet(
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             Text(
-                text = stringResource(R.string.diy_action_device_care),
-                style = MaterialTheme.typography.titleLarge,
+                text = stringResource(R.string.diy_action_set_charging_mode),
+                style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onSurface,
             )
 
             Text(
-                text = stringResource(R.string.diy_device_care_desc),
+                text = stringResource(R.string.diy_charging_mode_desc),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
 
-            RoundedCardContainer(spacing = 2.dp, cornerRadius = 24.dp) {
-                IconToggleItem(
-                    iconRes = R.drawable.rounded_cleaning_services_24,
-                    title = stringResource(R.string.diy_device_care_clear_cache),
-                    description = stringResource(R.string.diy_device_care_clear_cache_desc),
-                    isChecked = clearCache,
-                    onCheckedChange = { clearCache = it },
-                )
-                IconToggleItem(
-                    iconRes = R.drawable.rounded_memory_24,
-                    title = stringResource(R.string.diy_device_care_close_apps),
-                    description = stringResource(R.string.diy_device_care_close_apps_desc),
-                    isChecked = closeApps,
-                    onCheckedChange = { closeApps = it },
-                )
+            RoundedCardContainer(spacing = 2.dp) {
+                ChargingMode.entries.forEach { mode ->
+                    val isSelected = selectedMode == mode
+                    val title =
+                        when (mode) {
+                            ChargingMode.OFF -> stringResource(R.string.label_charging_mode_off)
+                            ChargingMode.ADAPTIVE -> stringResource(R.string.adaptive_charging)
+                            ChargingMode.LIMITED -> stringResource(R.string.label_charging_mode_limited)
+                        }
+                    val icon =
+                        when (mode) {
+                            ChargingMode.OFF -> R.drawable.outline_battery_android_frame_bolt_24
+                            ChargingMode.ADAPTIVE -> R.drawable.rounded_battery_android_frame_plus_24
+                            ChargingMode.LIMITED -> R.drawable.rounded_battery_android_frame_shield_24
+                        }
+
+                    Row(
+                        modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .clip(RoundedCornerShape(8.dp))
+                                .clickable {
+                                    HapticUtil.performUIHaptic(view)
+                                    selectedMode = mode
+                                }.background(MaterialTheme.colorScheme.surfaceBright)
+                                .padding(16.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    ) {
+                        RadioButton(
+                            selected = isSelected,
+                            onClick = {
+                                HapticUtil.performUIHaptic(view)
+                                selectedMode = mode
+                            },
+                        )
+                        Icon(
+                            painter = painterResource(id = icon),
+                            contentDescription = null,
+                            modifier = Modifier.size(24.dp),
+                            tint = MaterialTheme.colorScheme.primary,
+                        )
+                        Text(
+                            text = title,
+                            style = MaterialTheme.typography.bodyLarge,
+                            modifier = Modifier.weight(1f),
+                            color = if (isSelected) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+                }
             }
 
             Row(
@@ -108,15 +151,9 @@ fun DeviceCareSettingsSheet(
                 Button(
                     onClick = {
                         HapticUtil.performVirtualKeyHaptic(view)
-                        onSave(
-                            Action.DeviceCare(
-                                clearCache = clearCache,
-                                closeApps = closeApps,
-                            ),
-                        )
+                        onSave(initialAction.copy(mode = selectedMode))
                     },
                     modifier = Modifier.weight(1f),
-                    enabled = clearCache || closeApps,
                 ) {
                     Icon(
                         painter = painterResource(id = R.drawable.rounded_check_24),

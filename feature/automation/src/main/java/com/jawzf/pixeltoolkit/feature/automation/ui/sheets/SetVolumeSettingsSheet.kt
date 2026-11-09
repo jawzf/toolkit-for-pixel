@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.features.audio.sheets
+package com.jawzf.pixeltoolkit.feature.automation.ui.sheets
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

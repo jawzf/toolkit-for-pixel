@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.utils
+package com.jawzf.pixeltoolkit.feature.automation.util
 
 import android.content.Context
 import android.net.Uri

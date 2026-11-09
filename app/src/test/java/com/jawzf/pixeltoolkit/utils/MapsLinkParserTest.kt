@@ -1,5 +1,6 @@
 package com.jawzf.pixeltoolkit.utils
 
+import com.jawzf.pixeltoolkit.feature.automation.util.MapsLinkParser
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
