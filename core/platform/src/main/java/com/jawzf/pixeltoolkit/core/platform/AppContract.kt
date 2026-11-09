@@ -23,8 +23,6 @@ object AppComponents {
     const val RIPPLE_POSITION_PICKER_ACTIVITY = "com.jawzf.pixeltoolkit.ui.activities.RipplePositionPickerActivity"
     const val WIDGET_STACK_CONFIGURE_ACTIVITY = "com.jawzf.pixeltoolkit.ui.activities.WidgetStackConfigureActivity"
     const val COLOR_PICKER_ACTIVITY = "com.jawzf.pixeltoolkit.ui.activities.ColorPickerActivity"
-    const val AUTOMATION_EDITOR_ACTIVITY = "com.jawzf.pixeltoolkit.feature.automation.ui.editor.AutomationEditorActivity"
-    const val MACRO_EDITOR_ACTIVITY = "com.jawzf.pixeltoolkit.feature.automation.ui.editor.MacroEditorActivity"
     const val EXTRA_AUTOMATION_ID = "automation_id"
     const val EXTRA_AUTOMATION_TYPE = "automation_type"
     const val EXTRA_MACRO_ID = "macro_id"
