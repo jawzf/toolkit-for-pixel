@@ -48,6 +48,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.jawzf.pixeltoolkit.core.data.apps.ui.SingleAppSelectionSheet
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
@@ -59,7 +60,6 @@ import com.jawzf.pixeltoolkit.feature.apps.updates.ui.AddRepoBottomSheet
 import com.jawzf.pixeltoolkit.feature.apps.updates.ui.ReusableTopAppBar
 import com.jawzf.pixeltoolkit.feature.apps.updates.ui.TrackedRepoCard
 import com.jawzf.pixeltoolkit.feature.apps.updates.ui.UpdateBottomSheet
-import com.jawzf.pixeltoolkit.ui.core.sheets.SingleAppSelectionSheet
 import com.jawzf.pixeltoolkit.utils.AutoUpdateManagerHelper
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 import java.text.SimpleDateFormat

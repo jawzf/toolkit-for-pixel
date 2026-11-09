@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.core.sheets
+package com.jawzf.pixeltoolkit.core.data.apps.ui
 
 import android.content.Context
 import androidx.compose.foundation.Image
@@ -113,10 +113,7 @@ fun AppSelectionSheet(
                         merged.filter { it.isEnabled }.map { it.packageName }.toSet()
                 }
             } catch (e: Exception) {
-                android.util.Log.e(
-                    "AppSelectionSheet",
-                    context.getString(R.string.error_loading_apps, e.message ?: ""),
-                )
+                android.util.Log.e("AppSelectionSheet", "Error loading apps", e)
             } finally {
                 withContext(Dispatchers.Main) {
                     isLoadingApps = false
