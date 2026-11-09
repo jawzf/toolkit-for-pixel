@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.activities
+package com.jawzf.pixeltoolkit.feature.automation.ui.editor
 
 import android.content.Context
 import android.content.Intent
@@ -102,6 +102,8 @@ import com.jawzf.pixeltoolkit.feature.automation.diy.DIYRepository
 import com.jawzf.pixeltoolkit.feature.automation.diy.Metric
 import com.jawzf.pixeltoolkit.feature.automation.diy.Trigger
 import com.jawzf.pixeltoolkit.feature.automation.ui.editor.ActionEditors
+import com.jawzf.pixeltoolkit.feature.automation.ui.editor.ActionSequenceEditor
+import com.jawzf.pixeltoolkit.feature.automation.ui.editor.NotificationTriggerSheet
 import com.jawzf.pixeltoolkit.feature.automation.ui.sheets.BluetoothDeviceSelectionSheet
 import com.jawzf.pixeltoolkit.feature.automation.ui.sheets.CalendarStateSheet
 import com.jawzf.pixeltoolkit.feature.automation.ui.sheets.LocationTriggerSheet
@@ -109,8 +111,6 @@ import com.jawzf.pixeltoolkit.feature.automation.ui.sheets.SoundModeSettingsShee
 import com.jawzf.pixeltoolkit.feature.automation.ui.sheets.SystemMetricSheet
 import com.jawzf.pixeltoolkit.feature.automation.ui.sheets.TimeSelectionSheet
 import com.jawzf.pixeltoolkit.feature.automation.ui.sheets.WifiNetworkSelectionSheet
-import com.jawzf.pixeltoolkit.ui.core.sheets.NotificationTriggerSheet
-import com.jawzf.pixeltoolkit.ui.features.system.ActionSequenceEditor
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

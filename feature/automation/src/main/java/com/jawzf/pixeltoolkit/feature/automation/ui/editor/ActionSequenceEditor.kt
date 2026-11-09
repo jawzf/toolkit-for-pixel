@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.features.system
+package com.jawzf.pixeltoolkit.feature.automation.ui.editor
 
 import android.os.Build
 import androidx.compose.foundation.background

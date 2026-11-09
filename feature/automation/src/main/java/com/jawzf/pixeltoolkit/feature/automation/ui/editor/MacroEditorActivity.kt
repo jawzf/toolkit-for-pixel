@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.activities
+package com.jawzf.pixeltoolkit.feature.automation.ui.editor
 
 import android.content.Context
 import android.content.Intent
@@ -50,7 +50,7 @@ import com.jawzf.pixeltoolkit.core.platform.PlatformPrefs
 import com.jawzf.pixeltoolkit.feature.automation.diy.ActionRegistry
 import com.jawzf.pixeltoolkit.feature.automation.diy.DIYRepository
 import com.jawzf.pixeltoolkit.feature.automation.diy.Macro
-import com.jawzf.pixeltoolkit.ui.features.system.ActionSequenceEditor
+import com.jawzf.pixeltoolkit.feature.automation.ui.editor.ActionSequenceEditor
 import java.util.UUID
 
 class MacroEditorActivity : ComponentActivity() {
