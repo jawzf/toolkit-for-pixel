@@ -1,16 +1,16 @@
 package com.jawzf.pixeltoolkit.domain
 
 import com.jawzf.pixeltoolkit.core.data.action.Action
-import com.jawzf.pixeltoolkit.domain.diy.Automation
-import com.jawzf.pixeltoolkit.domain.diy.Comparison
-import com.jawzf.pixeltoolkit.domain.diy.Metric
-import com.jawzf.pixeltoolkit.domain.diy.SystemMetricTracker
-import com.jawzf.pixeltoolkit.domain.diy.Trigger
+import com.jawzf.pixeltoolkit.feature.automation.diy.Automation
+import com.jawzf.pixeltoolkit.feature.automation.diy.Comparison
+import com.jawzf.pixeltoolkit.feature.automation.diy.Metric
+import com.jawzf.pixeltoolkit.feature.automation.diy.SystemMetricTracker
+import com.jawzf.pixeltoolkit.feature.automation.diy.Trigger
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import com.jawzf.pixeltoolkit.domain.diy.State as DIYState
+import com.jawzf.pixeltoolkit.feature.automation.diy.State as DIYState
 
 class SystemMetricTrackerTest {
     private class FakeClock(

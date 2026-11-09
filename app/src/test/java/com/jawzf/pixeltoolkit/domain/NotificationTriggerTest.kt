@@ -2,7 +2,7 @@ package com.jawzf.pixeltoolkit.domain
 
 import com.jawzf.pixeltoolkit.core.data.action.Action
 import com.jawzf.pixeltoolkit.core.data.action.ActionGsonAdapter
-import com.jawzf.pixeltoolkit.domain.diy.Trigger
+import com.jawzf.pixeltoolkit.feature.automation.diy.Trigger
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue

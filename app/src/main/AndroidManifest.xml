@@ -742,16 +742,6 @@
         </receiver>
 
         <service
-            android:name=".services.automation.AutomationService"
-            android:enabled="true"
-            android:exported="false"
-            android:foregroundServiceType="specialUse">
-            <property
-                android:name="android.app.property.FOREGROUND_SERVICE_TYPE_SPECIAL_USE_DESCRIPTION"
-                android:value="Automation Service" />
-        </service>
-
-        <service
             android:name=".services.AppDetectionService"
             android:enabled="true"
             android:exported="false"
@@ -820,10 +810,6 @@
         </receiver>
 
         <receiver
-            android:name=".services.receivers.LoopBreakerReceiver"
-            android:exported="false" />
-
-        <receiver
             android:name=".services.receivers.AppBootReceiver"
             android:exported="true">
             <intent-filter>
@@ -839,18 +825,6 @@
                 <action android:name="com.jawzf.pixeltoolkit.ACTION_RESTART_SHIZUKU" />
             </intent-filter>
         </receiver>
-
-        <receiver
-            android:name=".services.automation.receivers.TimeAutomationReceiver"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.jawzf.pixeltoolkit.ACTION_TIME_AUTOMATION_TRIGGER" />
-            </intent-filter>
-        </receiver>
-        <receiver
-            android:name=".services.automation.receivers.GeofenceReceiver"
-            android:exported="false" />
-
 
         <service
             android:name=".services.dreams.AmbientDreamService"

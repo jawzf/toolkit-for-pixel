@@ -2,7 +2,7 @@ package com.jawzf.pixeltoolkit.services
 
 import android.media.AudioManager
 import com.jawzf.pixeltoolkit.core.data.action.Action
-import com.jawzf.pixeltoolkit.services.automation.modules.SoundModule
+import com.jawzf.pixeltoolkit.feature.automation.engine.modules.SoundModule
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test

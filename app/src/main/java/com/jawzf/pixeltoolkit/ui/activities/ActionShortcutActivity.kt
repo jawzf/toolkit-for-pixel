@@ -4,8 +4,8 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.lifecycle.lifecycleScope
-import com.jawzf.pixeltoolkit.domain.diy.Automation
-import com.jawzf.pixeltoolkit.domain.diy.DIYRepository
+import com.jawzf.pixeltoolkit.feature.automation.diy.Automation
+import com.jawzf.pixeltoolkit.feature.automation.diy.DIYRepository
 import com.jawzf.pixeltoolkit.services.automation.executors.CombinedActionExecutor
 import kotlinx.coroutines.launch
 

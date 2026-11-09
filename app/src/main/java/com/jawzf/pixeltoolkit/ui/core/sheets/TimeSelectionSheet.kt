@@ -38,9 +38,9 @@ import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.pickers.MultiSegmentedPicker
 import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
-import com.jawzf.pixeltoolkit.domain.diy.Trigger
+import com.jawzf.pixeltoolkit.feature.automation.diy.Trigger
 import java.util.Calendar
-import com.jawzf.pixeltoolkit.domain.diy.State as DIYState
+import com.jawzf.pixeltoolkit.feature.automation.diy.State as DIYState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

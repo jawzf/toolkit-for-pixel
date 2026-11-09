@@ -2,8 +2,8 @@ package com.jawzf.pixeltoolkit.domain
 
 import com.jawzf.pixeltoolkit.core.data.action.Action
 import com.jawzf.pixeltoolkit.core.data.action.ActionGsonAdapter
-import com.jawzf.pixeltoolkit.domain.diy.DIYRepository
-import com.jawzf.pixeltoolkit.domain.diy.Macro
+import com.jawzf.pixeltoolkit.feature.automation.diy.DIYRepository
+import com.jawzf.pixeltoolkit.feature.automation.diy.Macro
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

@@ -70,8 +70,8 @@ import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.modifiers.scrollMotionBlur
-import com.jawzf.pixeltoolkit.domain.diy.Automation
-import com.jawzf.pixeltoolkit.domain.diy.Macro
+import com.jawzf.pixeltoolkit.feature.automation.diy.Automation
+import com.jawzf.pixeltoolkit.feature.automation.diy.Macro
 import com.jawzf.pixeltoolkit.ui.activities.AutomationEditorActivity
 import com.jawzf.pixeltoolkit.ui.activities.MacroEditorActivity
 import com.jawzf.pixeltoolkit.ui.components.diy.AutomationItem

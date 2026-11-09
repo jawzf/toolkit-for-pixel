@@ -1,9 +1,9 @@
 package com.jawzf.pixeltoolkit.services
 
 import com.jawzf.pixeltoolkit.core.data.action.Action
-import com.jawzf.pixeltoolkit.domain.diy.Automation
-import com.jawzf.pixeltoolkit.domain.diy.State
-import com.jawzf.pixeltoolkit.services.automation.modules.StateEntries
+import com.jawzf.pixeltoolkit.feature.automation.diy.Automation
+import com.jawzf.pixeltoolkit.feature.automation.diy.State
+import com.jawzf.pixeltoolkit.feature.automation.engine.modules.StateEntries
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test

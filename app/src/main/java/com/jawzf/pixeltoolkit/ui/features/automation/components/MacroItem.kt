@@ -34,7 +34,7 @@ import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.components.SegmentedDropdownMenu
 import com.jawzf.pixeltoolkit.core.design.components.SegmentedDropdownMenuItem
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
-import com.jawzf.pixeltoolkit.domain.diy.Macro
+import com.jawzf.pixeltoolkit.feature.automation.diy.Macro
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable

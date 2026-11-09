@@ -89,16 +89,16 @@ import com.jawzf.pixeltoolkit.core.design.modifiers.scrollMotionBlur
 import com.jawzf.pixeltoolkit.core.design.pickers.SegmentedPicker
 import com.jawzf.pixeltoolkit.core.design.sheets.PermissionsBottomSheet
 import com.jawzf.pixeltoolkit.core.design.theme.ToolkitTheme
+import com.jawzf.pixeltoolkit.core.platform.permissions.AppPermission
 import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.domain.diy.ActionRegistry
-import com.jawzf.pixeltoolkit.domain.diy.Automation
-import com.jawzf.pixeltoolkit.domain.diy.Comparison
-import com.jawzf.pixeltoolkit.domain.diy.DIYRepository
-import com.jawzf.pixeltoolkit.domain.diy.Metric
-import com.jawzf.pixeltoolkit.domain.diy.Trigger
-import com.jawzf.pixeltoolkit.domain.model.AppPermission
+import com.jawzf.pixeltoolkit.feature.automation.diy.ActionRegistry
+import com.jawzf.pixeltoolkit.feature.automation.diy.Automation
+import com.jawzf.pixeltoolkit.feature.automation.diy.Comparison
+import com.jawzf.pixeltoolkit.feature.automation.diy.DIYRepository
+import com.jawzf.pixeltoolkit.feature.automation.diy.Metric
+import com.jawzf.pixeltoolkit.feature.automation.diy.Trigger
 import com.jawzf.pixeltoolkit.ui.core.sheets.BluetoothDeviceSelectionSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.NotificationTriggerSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.SoundModeSettingsSheet
@@ -109,7 +109,7 @@ import com.jawzf.pixeltoolkit.ui.features.system.ActionSequenceEditor
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import com.jawzf.pixeltoolkit.domain.diy.State as DIYState
+import com.jawzf.pixeltoolkit.feature.automation.diy.State as DIYState
 
 class AutomationEditorActivity : ComponentActivity() {
     companion object {

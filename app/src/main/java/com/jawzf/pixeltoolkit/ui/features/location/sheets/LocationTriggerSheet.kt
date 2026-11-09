@@ -45,7 +45,7 @@ import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.components.ConfigSliderItem
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
-import com.jawzf.pixeltoolkit.domain.diy.Trigger
+import com.jawzf.pixeltoolkit.feature.automation.diy.Trigger
 import com.jawzf.pixeltoolkit.utils.MapsLinkParser
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay

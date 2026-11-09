@@ -1,0 +1,18 @@
+plugins {
+    id("toolkit.android.library")
+}
+
+android {
+    namespace = "com.jawzf.pixeltoolkit.feature.automation"
+}
+
+dependencies {
+    implementation(project(":core:design"))
+    implementation(project(":core:platform"))
+    implementation(project(":core:data"))
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.gson)
+    implementation(libs.play.services.location)
+    implementation(libs.androidx.work.runtime.ktx)
+}
