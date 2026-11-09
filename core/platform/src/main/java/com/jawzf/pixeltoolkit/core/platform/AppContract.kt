@@ -55,4 +55,6 @@ object PlatformPrefs {
     const val KEY_HIDDEN_DEBUGGING_SUPPORT = "hidden_debugging_support"
     const val KEY_PINNED_FEATURES = "pinned_features"
     const val KEY_PIXEL_SEARCHBAR = "pixel_searchbar"
+    const val KEY_USE_BLUR = "use_blur"
+    const val KEY_MOTION_BLUR = "motion_blur"
 }

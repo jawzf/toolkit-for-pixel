@@ -27,7 +27,6 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -40,18 +39,18 @@ import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
-import androidx.lifecycle.viewmodel.compose.viewModel
+import com.jawzf.pixeltoolkit.core.data.prefs.PrefsStore
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.components.ToolkitFloatingToolbar
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.theme.ToolkitTheme
 import com.jawzf.pixeltoolkit.core.platform.AppComponents
+import com.jawzf.pixeltoolkit.core.platform.PlatformPrefs
 import com.jawzf.pixeltoolkit.feature.automation.diy.ActionRegistry
 import com.jawzf.pixeltoolkit.feature.automation.diy.DIYRepository
 import com.jawzf.pixeltoolkit.feature.automation.diy.Macro
 import com.jawzf.pixeltoolkit.ui.features.system.ActionSequenceEditor
-import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 import java.util.UUID
 
 class MacroEditorActivity : ComponentActivity() {
@@ -75,15 +74,9 @@ class MacroEditorActivity : ComponentActivity() {
         val isEditMode = existing != null
 
         setContent {
-            val viewModel: MainViewModel = viewModel()
             val context = LocalContext.current
             val view = LocalView.current
-
-            LaunchedEffect(Unit) {
-                viewModel.check(context)
-            }
-
-            val isPitchBlackThemeEnabled by viewModel.isPitchBlackThemeEnabled
+            val isPitchBlackThemeEnabled = remember { PrefsStore(context).getBoolean(PlatformPrefs.KEY_PITCH_BLACK_THEME_ENABLED) }
             ToolkitTheme(pitchBlackTheme = isPitchBlackThemeEnabled) {
                 var name by rememberSaveable { mutableStateOf(existing?.name.orEmpty()) }
                 var actions by remember { mutableStateOf(existing?.actionList.orEmpty()) }
@@ -159,7 +152,6 @@ class MacroEditorActivity : ComponentActivity() {
                             }
 
                             ActionSequenceEditor(
-                                viewModel = viewModel,
                                 actions = actions,
                                 onActionsChange = { actions = it },
                                 screenOnOnly = false,

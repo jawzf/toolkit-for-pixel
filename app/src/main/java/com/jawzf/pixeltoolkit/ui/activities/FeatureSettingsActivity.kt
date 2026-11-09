@@ -1007,7 +1007,6 @@ class FeatureSettingsActivity : AppCompatActivity() {
                                             canWriteSecureSettings = { viewModel.canWriteSecureSettings(context) },
                                             actionEditor = { actions, onChange, screenOnOnly, listKey, emptyText ->
                                                 ActionSequenceEditor(
-                                                    viewModel = viewModel,
                                                     actions = actions,
                                                     onActionsChange = onChange,
                                                     screenOnOnly = screenOnOnly,
@@ -1032,7 +1031,6 @@ class FeatureSettingsActivity : AppCompatActivity() {
                                             state = viewModel.shortcuts,
                                             actionEditor = { actions, onChange, listKey, emptyText ->
                                                 ActionSequenceEditor(
-                                                    viewModel = viewModel,
                                                     actions = actions,
                                                     onActionsChange = onChange,
                                                     screenOnOnly = true,
