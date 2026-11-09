@@ -79,7 +79,7 @@ import com.jawzf.pixeltoolkit.feature.apps.updates.github.GitHubAuthViewModel
 import com.jawzf.pixeltoolkit.feature.apps.updates.ui.AddRepoBottomSheet
 import com.jawzf.pixeltoolkit.feature.apps.updates.ui.GitHubAuthSheet
 import com.jawzf.pixeltoolkit.feature.apps.updates.ui.UpdateBottomSheet
-import com.jawzf.pixeltoolkit.ui.composables.DIYScreen
+import com.jawzf.pixeltoolkit.feature.automation.ui.DIYScreen
 import com.jawzf.pixeltoolkit.ui.composables.SetupFeatures
 import com.jawzf.pixeltoolkit.ui.composables.WelcomeScreen
 import com.jawzf.pixeltoolkit.ui.core.sheets.ShakeForHelp

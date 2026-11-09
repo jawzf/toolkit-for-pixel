@@ -23,6 +23,11 @@ object AppComponents {
     const val RIPPLE_POSITION_PICKER_ACTIVITY = "com.jawzf.pixeltoolkit.ui.activities.RipplePositionPickerActivity"
     const val WIDGET_STACK_CONFIGURE_ACTIVITY = "com.jawzf.pixeltoolkit.ui.activities.WidgetStackConfigureActivity"
     const val COLOR_PICKER_ACTIVITY = "com.jawzf.pixeltoolkit.ui.activities.ColorPickerActivity"
+    const val AUTOMATION_EDITOR_ACTIVITY = "com.jawzf.pixeltoolkit.ui.activities.AutomationEditorActivity"
+    const val MACRO_EDITOR_ACTIVITY = "com.jawzf.pixeltoolkit.ui.activities.MacroEditorActivity"
+    const val EXTRA_AUTOMATION_ID = "automation_id"
+    const val EXTRA_AUTOMATION_TYPE = "automation_type"
+    const val EXTRA_MACRO_ID = "macro_id"
     const val CONSCIOUS_GATE_FEATURE_ID = "Conscious gate"
     const val ACTION_LIKE_CURRENT_SONG = "com.jawzf.pixeltoolkit.ACTION_LIKE_CURRENT_SONG"
 
@@ -49,4 +54,5 @@ object PlatformPrefs {
     const val KEY_STATUS_BAR_ICON_CONTROL_ENABLED = "status_bar_icon_control_enabled"
     const val KEY_HIDDEN_DEBUGGING_SUPPORT = "hidden_debugging_support"
     const val KEY_PINNED_FEATURES = "pinned_features"
+    const val KEY_PIXEL_SEARCHBAR = "pixel_searchbar"
 }
