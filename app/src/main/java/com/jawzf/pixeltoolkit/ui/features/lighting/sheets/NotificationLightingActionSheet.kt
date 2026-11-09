@@ -38,11 +38,11 @@ import com.jawzf.pixeltoolkit.core.design.components.ConfigSliderItem
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
+import com.jawzf.pixeltoolkit.feature.notifications.NotificationsActionHandler
 import com.jawzf.pixeltoolkit.feature.notifications.lighting.ui.GlowSidesPicker
 import com.jawzf.pixeltoolkit.feature.notifications.lighting.ui.NotificationLightingColorModePicker
 import com.jawzf.pixeltoolkit.feature.notifications.lighting.ui.NotificationLightingStylePicker
 import com.jawzf.pixeltoolkit.feature.notifications.lighting.ui.NotificationLightingSystemModePicker
-import com.jawzf.pixeltoolkit.services.automation.executors.CombinedActionExecutor
 
 private val presetColors =
     listOf(
@@ -202,7 +202,7 @@ fun NotificationLightingActionSheet(
             Button(
                 onClick = {
                     HapticUtil.performVirtualKeyHaptic(view)
-                    CombinedActionExecutor.triggerNotificationLighting(context, draft)
+                    NotificationsActionHandler.triggerNotificationLighting(context, draft)
                 },
                 modifier = Modifier.fillMaxWidth(),
                 colors =

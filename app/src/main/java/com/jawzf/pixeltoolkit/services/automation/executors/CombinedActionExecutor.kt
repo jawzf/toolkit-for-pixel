@@ -9,9 +9,6 @@ import android.content.Intent
 import android.content.res.Resources
 import android.hardware.camera2.CameraManager
 import android.media.AudioManager
-import android.media.session.MediaController
-import android.media.session.MediaSessionManager
-import android.media.session.PlaybackState
 import android.net.wifi.WifiManager
 import android.os.Build
 import android.os.Handler
@@ -26,14 +23,12 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.jawzf.pixeltoolkit.core.data.action.Action
 import com.jawzf.pixeltoolkit.core.data.action.ActionExecutor
+import com.jawzf.pixeltoolkit.core.data.action.ActionHandlers
 import com.jawzf.pixeltoolkit.core.data.action.ActionRunner
-import com.jawzf.pixeltoolkit.core.data.action.NotificationLightingStyle
-import com.jawzf.pixeltoolkit.core.data.display.TextAnimationsSettings
 import com.jawzf.pixeltoolkit.core.data.duo.DuoSettings
 import com.jawzf.pixeltoolkit.core.data.glance.StatusGlanceSettings
 import com.jawzf.pixeltoolkit.core.data.power.CaffeinateController
 import com.jawzf.pixeltoolkit.core.data.power.ChargingModeUtil
-import com.jawzf.pixeltoolkit.core.data.power.PowerSettings
 import com.jawzf.pixeltoolkit.core.data.security.DeviceLockUtils
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticFeedbackType
@@ -43,30 +38,9 @@ import com.jawzf.pixeltoolkit.core.platform.device.ZenModeController
 import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuUtils
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.feature.apps.AppsSettings
-import com.jawzf.pixeltoolkit.feature.apps.freeze.FreezeManager
 import com.jawzf.pixeltoolkit.feature.automation.diy.DIYRepository
 import com.jawzf.pixeltoolkit.feature.automation.diy.displayName
 import com.jawzf.pixeltoolkit.feature.automation.engine.AutomationFailureNotifier
-import com.jawzf.pixeltoolkit.feature.connectivity.hotspot.HotspotController
-import com.jawzf.pixeltoolkit.feature.display.DisplaySettings
-import com.jawzf.pixeltoolkit.feature.input.InputSettings
-import com.jawzf.pixeltoolkit.feature.input.gesture.OmniTriggerUtil
-import com.jawzf.pixeltoolkit.feature.notifications.NotificationSettings
-import com.jawzf.pixeltoolkit.feature.notifications.hilight.HilightController
-import com.jawzf.pixeltoolkit.feature.notifications.lighting.DashConfig
-import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingService
-import com.jawzf.pixeltoolkit.feature.notifications.lighting.RippleConfig
-import com.jawzf.pixeltoolkit.feature.notifications.lighting.overlay.fromPrefs
-import com.jawzf.pixeltoolkit.feature.notifications.lighting.overlay.writeTo
-import com.jawzf.pixeltoolkit.feature.sound.mode.SoundModeHandler
-import com.jawzf.pixeltoolkit.services.NotificationListener
-import com.jawzf.pixeltoolkit.services.tiles.ScreenOffAccessibilityService
-import com.jawzf.pixeltoolkit.ui.activities.PixelSearchResultsActivity
-import com.jawzf.pixeltoolkit.utils.AutomationNotificationPoster
-import com.jawzf.pixeltoolkit.utils.DeviceCare
-import com.jawzf.pixeltoolkit.utils.SplitScreenUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
@@ -82,72 +56,6 @@ object CombinedActionExecutor : ActionExecutor {
     private suspend fun vibrateModeHaptic(context: Context) {
         kotlinx.coroutines.delay(350)
         HapticUtil.performStrongDoubleHaptic(context)
-    }
-
-    private fun prefFloat(
-        prefs: android.content.SharedPreferences,
-        key: String,
-        default: Float,
-    ): Float =
-        try {
-            prefs.getFloat(key, default)
-        } catch (_: ClassCastException) {
-            prefs.getInt(key, default.toInt()).toFloat()
-        }
-
-    fun triggerNotificationLighting(
-        context: Context,
-        action: Action.TriggerNotificationLighting,
-    ) {
-        val prefs = context.getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE)
-        if (action.style == NotificationLightingStyle.SYSTEM) {
-            if (!ShellUtils.hasPermission(context)) return
-            val metrics = context.resources.displayMetrics
-            val centerX = metrics.widthPixels / 2
-            val centerY = metrics.heightPixels / 2
-            val command =
-                when (action.systemMode) {
-                    0 -> "cmd statusbar charging-ripple"
-                    1 -> "cmd statusbar auth-ripple custom $centerX $centerY"
-                    else -> {
-                        val posX = (prefFloat(prefs, "edge_lighting_indicator_x", 50f) / 100f * metrics.widthPixels).toInt()
-                        val posY = (prefFloat(prefs, "edge_lighting_indicator_y", 2f) / 100f * metrics.heightPixels).toInt()
-                        "cmd statusbar auth-ripple custom $posX $posY"
-                    }
-                }
-            ShellUtils.runCommand(context, command, featureName = context.getString(action.title))
-            return
-        }
-
-        val intent =
-            Intent(context, NotificationLightingService::class.java).apply {
-                putExtra("corner_radius_dp", prefFloat(prefs, "edge_lighting_corner_radius", 20f))
-                putExtra("stroke_thickness_dp", prefFloat(prefs, "edge_lighting_stroke_thickness", 8f))
-                putExtra("ignore_screen_state", true)
-                putExtra("style", action.style.name)
-                putExtra("color_mode", action.colorMode.name)
-                putExtra("custom_color", action.customColor)
-                putExtra("pulse_count", action.pulseCount)
-                putExtra("pulse_duration", action.pulseDuration)
-                putExtra("glow_sides", action.glowSides.map { it.name }.toTypedArray())
-                putExtra("indicator_x", prefFloat(prefs, "edge_lighting_indicator_x", 50f))
-                putExtra("indicator_y", prefFloat(prefs, "edge_lighting_indicator_y", 2f))
-                putExtra("indicator_scale", prefFloat(prefs, "edge_lighting_indicator_scale", 1.0f))
-                putExtra("sweep_position", prefs.getString("edge_lighting_sweep_position", "CENTER") ?: "CENTER")
-                putExtra("sweep_thickness", prefFloat(prefs, "edge_lighting_sweep_thickness", 8f))
-                putExtra("random_shapes", prefs.getBoolean("edge_lighting_sweep_random_shapes", true))
-                RippleConfig.fromPrefs(prefs).writeTo(this)
-                DashConfig.fromPrefs(prefs).writeTo(this)
-            }
-        try {
-            if (PermissionUtils.isAccessibilityServiceEnabled(context)) {
-                context.startService(intent)
-            } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
-                intent.putExtra("is_foreground_start", true)
-                context.startForegroundService(intent)
-            }
-        } catch (_: Exception) {
-        }
     }
 
     // Runs actions in order with a short gap, as Button remap does, so each can take effect
@@ -179,25 +87,22 @@ object CombinedActionExecutor : ActionExecutor {
         action: Action,
         fromAutomation: Boolean,
     ) {
-        kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Main) {
+        withContext(Dispatchers.Main) {
+            if (ActionHandlers.handle(context, action)) return@withContext
             when (action) {
                 is Action.TurnOnLowPower -> setLowPowerMode(context, true)
                 is Action.TurnOnCaffeinate -> CaffeinateController.start(context)
                 is Action.TurnOffCaffeinate -> CaffeinateController.cancelAll(context)
                 is Action.Wait -> delay(action.seconds * 1000L)
-                is Action.SendNotification -> AutomationNotificationPoster.post(context, action)
                 is Action.RunMacro -> runMacro(context, action)
-                is Action.DeviceCare -> withContext(Dispatchers.IO) { DeviceCare.run(context, action) }
                 is Action.TurnOffLowPower -> setLowPowerMode(context, false)
                 is Action.SetChargingMode ->
                     ChargingModeUtil
                         .setMode(context, action.mode)
-                is Action.TriggerNotificationLighting -> triggerNotificationLighting(context, action)
                 is Action.HapticVibration -> {
                     HapticUtil.performCustomHaptic(context, 0.6f)
                 }
 
-                is Action.Hilight -> HilightController.play(action.toEffect())
                 is Action.TurnOnFlashlight -> toggleFlashlight(context, true)
                 is Action.TurnOffFlashlight -> toggleFlashlight(context, false)
                 is Action.ToggleFlashlight -> {
@@ -442,22 +347,6 @@ object CombinedActionExecutor : ActionExecutor {
                     }
                 }
 
-                is Action.TakeScreenshot -> {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                        val serviceInst = ScreenOffAccessibilityService.instance
-                        if (serviceInst != null) {
-                            serviceInst.performGlobalAction(android.accessibilityservice.AccessibilityService.GLOBAL_ACTION_TAKE_SCREENSHOT)
-                        } else {
-                            Toast
-                                .makeText(
-                                    context,
-                                    "Accessibility service is not running",
-                                    Toast.LENGTH_SHORT,
-                                ).show()
-                        }
-                    }
-                }
-
                 is Action.ToggleMediaVolume -> {
                     val am = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
                     val currentVolume = am.getStreamVolume(AudioManager.STREAM_MUSIC)
@@ -495,11 +384,6 @@ object CombinedActionExecutor : ActionExecutor {
                     val max = am.getStreamMaxVolume(streamType)
                     val target = (action.level / 100f * max).toInt().coerceIn(0, max)
                     am.setStreamVolume(streamType, target, AudioManager.FLAG_SHOW_UI)
-                }
-
-                is Action.CycleSoundModes -> {
-                    SoundModeHandler(context)
-                        .cycleNextMode()
                 }
 
                 is Action.SetMode -> {
@@ -597,28 +481,6 @@ object CombinedActionExecutor : ActionExecutor {
                     )
                 }
 
-                is Action.OpenNowPlayingApp -> {
-                    openNowPlayingApp(context)
-                }
-
-                is Action.CircleToSearch -> {
-                    OmniTriggerUtil
-                        .trigger(context)
-                }
-
-                is Action.SplitScreen -> SplitScreenUtil.toggle(context)
-
-                is Action.EssentialSearch -> {
-                    try {
-                        val intent = Intent(context, PixelSearchResultsActivity::class.java).apply {
-                            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
-                        }
-                        context.startActivity(intent)
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                    }
-                }
-
                 is Action.OpenApp -> {
                     try {
                         val launchIntent =
@@ -634,200 +496,12 @@ object CombinedActionExecutor : ActionExecutor {
 
                 is Action.OpenActivity -> openActivity(context, action)
 
-                is Action.TurnOnHotspot -> setHotspotEnabled(context, true)
-                is Action.TurnOffHotspot -> setHotspotEnabled(context, false)
-                is Action.ToggleHotspot -> setHotspotEnabled(context, !isHotspotEnabled(context))
-
-                is Action.OverlayControl -> {
-                    val settings = SettingsRepository(context)
-                    val duo = DuoSettings(context)
-                    val glance = StatusGlanceSettings(context)
-                    fun resolve(mode: Action.OverlayMode, current: Boolean): Boolean? =
-                        when (mode) {
-                            Action.OverlayMode.SKIP -> null
-                            Action.OverlayMode.OFF -> false
-                            Action.OverlayMode.ON -> true
-                            Action.OverlayMode.TOGGLE -> !current
-                        }
-                    resolve(action.duo, duo.isDuoEnabled())?.let(duo::setDuoEnabled)
-                    resolve(action.island, settings.isIslandEnabled())?.let(settings::setIslandEnabled)
-                    resolve(action.statusGlance, glance.isStatusGlanceEnabled())?.let(glance::setStatusGlanceEnabled)
-                }
-                is Action.TurnOffBackGesture -> withContext(Dispatchers.IO) { InputSettings(context).backGesture.turnOff() }
-                is Action.TurnOnBackGesture -> withContext(Dispatchers.IO) { InputSettings(context).backGesture.turnOn() }
                 is Action.TurnOnDuo -> DuoSettings(context).setDuoEnabled(true)
                 is Action.TurnOffDuo -> DuoSettings(context).setDuoEnabled(false)
                 is Action.ToggleDuo -> DuoSettings(context).let { it.setDuoEnabled(!it.isDuoEnabled()) }
-                is Action.TurnOnIsland -> SettingsRepository(context).setIslandEnabled(true)
-                is Action.TurnOffIsland -> SettingsRepository(context).setIslandEnabled(false)
-                is Action.ToggleIsland -> SettingsRepository(context).let { it.setIslandEnabled(!it.isIslandEnabled()) }
                 is Action.TurnOnStatusGlance -> StatusGlanceSettings(context).setStatusGlanceEnabled(true)
                 is Action.TurnOffStatusGlance -> StatusGlanceSettings(context).setStatusGlanceEnabled(false)
                 is Action.ToggleStatusGlance -> StatusGlanceSettings(context).let { it.setStatusGlanceEnabled(!it.isStatusGlanceEnabled()) }
-
-                is Action.SometimesEssentials -> {
-                    val repository =
-                        com.jawzf.pixeltoolkit.data.repository
-                            .SettingsRepository(context)
-
-                    if (action.changeNotificationLighting) {
-                        repository.putBoolean(
-                            NotificationSettings.KEY_EDGE_LIGHTING_ENABLED,
-                            action.notificationLightingEnabled,
-                        )
-                    }
-
-                    if (action.changeFlashlightPulse) {
-                        repository.putBoolean(
-                            NotificationSettings.KEY_FLASHLIGHT_PULSE_ENABLED,
-                            action.flashlightPulseEnabled,
-                        )
-                    }
-
-                    if (action.changeBatteryNotification) {
-                        PowerSettings(context).setBatteryNotificationEnabled(action.batteryNotificationEnabled)
-                    }
-
-                    if (action.changeSmartPixels) {
-                        repository.putBoolean(
-                            DisplaySettings.KEY_SMART_PIXELS_ENABLED,
-                            action.smartPixelsEnabled,
-                        )
-                    }
-
-                    if (action.changeToolkitOnDisplay) {
-                        when (action.toolkitOnDisplayMode) {
-                            "Off" -> {
-                                repository.putBoolean(
-                                    DisplaySettings.KEY_AMBIENT_MUSIC_GLANCE_ENABLED,
-                                    false,
-                                )
-                                repository.putBoolean(
-                                    DisplaySettings.KEY_AMBIENT_MUSIC_GLANCE_DOCKED_MODE,
-                                    false,
-                                )
-                            }
-
-                            "On" -> {
-                                repository.putBoolean(
-                                    DisplaySettings.KEY_AMBIENT_MUSIC_GLANCE_ENABLED,
-                                    true,
-                                )
-                                repository.putBoolean(
-                                    DisplaySettings.KEY_AMBIENT_MUSIC_GLANCE_DOCKED_MODE,
-                                    false,
-                                )
-                            }
-
-                            "Docked" -> {
-                                repository.putBoolean(
-                                    DisplaySettings.KEY_AMBIENT_MUSIC_GLANCE_ENABLED,
-                                    true,
-                                )
-                                repository.putBoolean(
-                                    DisplaySettings.KEY_AMBIENT_MUSIC_GLANCE_DOCKED_MODE,
-                                    true,
-                                )
-                            }
-                        }
-                    }
-
-                    if (action.changeAlwaysOnDisplay) {
-                        val displaySettings = DisplaySettings(context)
-                        when (action.alwaysOnDisplayMode) {
-                            "Off" -> {
-                                displaySettings.setAodEnabled(false)
-                                repository.putBoolean(
-                                    DisplaySettings.KEY_AOD_FORCE_TURN_OFF_ENABLED,
-                                    false,
-                                )
-                            }
-
-                            "On" -> {
-                                displaySettings.setAodEnabled(true)
-                                repository.putBoolean(
-                                    DisplaySettings.KEY_AOD_FORCE_TURN_OFF_ENABLED,
-                                    false,
-                                )
-                            }
-
-                            "Dynamic" -> {
-                                displaySettings.setAodEnabled(true)
-                                repository.putBoolean(
-                                    DisplaySettings.KEY_AOD_FORCE_TURN_OFF_ENABLED,
-                                    true,
-                                )
-                            }
-                        }
-                    }
-
-                    if (action.changeGloveMode) {
-                        val textAnimations = TextAnimationsSettings(context)
-                        val newMode = if (action.gloveModeEnabled) "glove" else "default"
-                        val currentMode = textAnimations.getScaleAnimationsMode()
-                        if (currentMode != newMode) {
-                            val profile = textAnimations.getScaleAnimationsProfile(newMode)
-                            textAnimations.setScaleAnimationsMode(newMode)
-                            textAnimations.applyProfile(profile)
-                        }
-                    }
-
-                    if (action.changeLockScreenClock) {
-                        val key = "lock_screen_custom_clock_face"
-                        val value = "{\"clockId\":\"${action.lockScreenClockStyle}\"}"
-                        val success =
-                            try {
-                                android.provider.Settings.Secure.putString(
-                                    context.contentResolver,
-                                    key,
-                                    value,
-                                )
-                            } catch (e: Exception) {
-                                false
-                            }
-                        if (!success) {
-                            val command = "settings put secure $key $value"
-                            ShellUtils
-                                .runCommand(context, command)
-                        }
-                    }
-
-                    if (action.changeSyncSoundModeWatch) {
-                        val prefs =
-                            context.getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE)
-                        prefs
-                            .edit()
-                            .putBoolean(
-                                "watch_sync_sound_mode_enabled",
-                                action.syncSoundModeWatchEnabled,
-                            ).apply()
-                    }
-                }
-
-                is Action.FreezeTag -> {
-                    val appTagMap = AppsSettings(context).getFreezeAppTagMap()
-                    val selectedTags = action.tagIds.toSet()
-
-                    if (selectedTags.isNotEmpty()) {
-                        val matchingPackages =
-                            appTagMap
-                                .filterValues { tags ->
-                                    tags.any { selectedTags.contains(it) }
-                                }.keys
-
-                        matchingPackages.forEach { pkg ->
-                            if (action.mode == "Freeze") {
-                                FreezeManager
-                                    .freezeApp(context, pkg)
-                            } else {
-                                FreezeManager.unfreezeApp(
-                                    context,
-                                    pkg,
-                                )
-                            }
-                        }
-                    }
-                }
 
                 is Action.PinApp -> {
                     try {
@@ -952,23 +626,6 @@ object CombinedActionExecutor : ActionExecutor {
                 is Action.TurnOnAutoBrightness -> setAutoBrightnessEnabled(context, true)
                 is Action.TurnOffAutoBrightness -> setAutoBrightnessEnabled(context, false)
                 is Action.ToggleAutoBrightness -> setAutoBrightnessEnabled(context, !isAutoBrightnessEnabled(context))
-                is Action.FreezeApps -> {
-                    val failed =
-                        action.packageNames.filterNot { pkg ->
-                            FreezeManager
-                                .freezeApp(context, pkg)
-                        }
-                    if (failed.isNotEmpty()) error(context.getString(R.string.automation_failed_apps, failed.joinToString()))
-                }
-                is Action.UnfreezeApps -> {
-                    val failed =
-                        action.packageNames.filterNot { pkg ->
-                            FreezeManager
-                                .unfreezeApp(context, pkg)
-                        }
-                    if (failed.isNotEmpty()) error(context.getString(R.string.automation_failed_apps, failed.joinToString()))
-                }
-
                 is Action.Keyboard -> {
                     try {
                         if (PermissionUtils.canWriteSecureSettings(context)) {
@@ -1029,6 +686,7 @@ object CombinedActionExecutor : ActionExecutor {
                         }
                     }
                 }
+                else -> Unit // Feature-owned actions run in ActionHandlers above.
             }
         }
     }
@@ -1060,27 +718,6 @@ object CombinedActionExecutor : ActionExecutor {
         }
     }
 
-    private fun isHotspotEnabled(context: Context): Boolean =
-        try {
-            val wifiManager =
-                context.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
-            val result =
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                    org.lsposed.hiddenapibypass.HiddenApiBypass.invoke(
-                        WifiManager::class.java,
-                        wifiManager,
-                        "isWifiApEnabled",
-                    )
-                } else {
-                    @Suppress("DEPRECATION")
-                    WifiManager::class.java.getMethod("isWifiApEnabled").invoke(wifiManager)
-                }
-            result as? Boolean ?: false
-        } catch (e: Exception) {
-            e.printStackTrace()
-            false
-        }
-
     @RequiresApi(Build.VERSION_CODES.VANILLA_ICE_CREAM)
     private suspend fun setMode(
         context: Context,
@@ -1101,26 +738,6 @@ object CombinedActionExecutor : ActionExecutor {
             ZenModeController.Result.NOT_FOUND -> error(context.getString(R.string.diy_set_mode_not_found, action.modeName))
             ZenModeController.Result.NO_CONDITION -> error(context.getString(R.string.diy_set_mode_no_condition, action.modeName))
         }
-    }
-
-    private fun setHotspotEnabled(
-        context: Context,
-        enabled: Boolean,
-    ) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && ShellUtils.usesShizukuBinder(context) && ShizukuUtils.hasPermission()) {
-            try {
-                HotspotController.setEnabled(context, enabled)
-                return
-            } catch (e: Exception) {
-                Log.e("CombinedActionExecutor", "Tethering via Shizuku failed, falling back to shell", e)
-            }
-        }
-        val command = if (enabled) "cmd wifi start-softap" else "cmd wifi stop-softap"
-        ShellUtils.runCommand(
-            context,
-            command,
-            featureName = context.getString(if (enabled) R.string.diy_action_hotspot_on else R.string.diy_action_hotspot_off),
-        )
     }
 
     private fun setLowPowerMode(
@@ -1239,36 +856,6 @@ object CombinedActionExecutor : ActionExecutor {
                 "settings put system screen_brightness_mode $value",
                 featureName = context.getString(if (enabled) R.string.diy_action_auto_brightness_on else R.string.diy_action_auto_brightness_off),
             )
-        }
-    }
-
-    private fun openNowPlayingApp(context: Context) {
-        try {
-            val manager =
-                context.getSystemService(Context.MEDIA_SESSION_SERVICE) as? MediaSessionManager ?: return
-            val componentName = ComponentName(context, NotificationListener::class.java)
-            val sessions = manager.getActiveSessions(componentName)
-            val activeSession =
-                sessions
-                    .sortedWith(
-                        compareByDescending<MediaController> {
-                            val state = it.playbackState?.state
-                            state == PlaybackState.STATE_PLAYING || state == PlaybackState.STATE_BUFFERING
-                        }.thenByDescending {
-                            val state = it.playbackState?.state
-                            state == PlaybackState.STATE_PAUSED
-                        },
-                    ).firstOrNull()
-
-            val packageName = activeSession?.packageName
-            if (!packageName.isNullOrEmpty()) {
-                val launchIntent = context.packageManager.getLaunchIntentForPackage(packageName)
-                if (launchIntent != null) {
-                    launchIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    context.startActivity(launchIntent)
-                }
-            }
-        } catch (_: Exception) {
         }
     }
 
