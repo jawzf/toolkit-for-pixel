@@ -348,7 +348,7 @@ class ScreenOffAccessibilityService :
         }
         duoOverlayHandler.openBrief = { islandOverlayHandler.openBrief() }
         statusGlanceHandler = StatusGlanceHandler(this)
-        lockscreenShortcutsHandler = LockscreenShortcutsHandler(this, flashlightHandler)
+        lockscreenShortcutsHandler = LockscreenShortcutsHandler(this, torch = flashlightHandler)
         appVolumeOverlayHandler = AppVolumeOverlayHandler(this)
         screenshotShareCleanupHandler = ScreenshotShareCleanupHandler(this, serviceScope)
         screenshotAutoCleanHandler = ScreenshotAutoCleanHandler(this, serviceScope)

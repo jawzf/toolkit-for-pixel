@@ -10,7 +10,7 @@ import androidx.activity.ComponentActivity
 import androidx.lifecycle.lifecycleScope
 import com.jawzf.pixeltoolkit.core.data.action.Action
 import com.jawzf.pixeltoolkit.core.data.action.ActionGsonAdapter
-import com.jawzf.pixeltoolkit.services.automation.executors.CombinedActionExecutor
+import com.jawzf.pixeltoolkit.core.data.action.ActionRunner
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeoutOrNull
@@ -58,7 +58,7 @@ class LockscreenActionActivity : ComponentActivity() {
             withTimeoutOrNull(KEYGUARD_GONE_TIMEOUT_MS) {
                 while (keyguardManager?.isKeyguardLocked == true) delay(KEYGUARD_POLL_MS)
             }
-            CombinedActionExecutor.execute(this@LockscreenActionActivity, action)
+            ActionRunner.execute(this@LockscreenActionActivity, action)
             finish()
         }
     }

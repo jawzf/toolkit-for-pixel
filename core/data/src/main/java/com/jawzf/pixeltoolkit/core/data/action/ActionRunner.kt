@@ -14,6 +14,12 @@ interface ActionExecutor {
         action: Action,
         fromAutomation: Boolean = false,
     )
+
+    /** The action's label as the user sees it; macros show their name. */
+    fun displayName(
+        context: Context,
+        action: Action,
+    ): String
 }
 
 /** Holds the app's [ActionExecutor]. Set once in ToolkitApp.onCreate. */
@@ -37,4 +43,9 @@ object ActionRunner : ActionExecutor {
         action: Action,
         fromAutomation: Boolean,
     ) = executor.execute(context, action, fromAutomation)
+
+    override fun displayName(
+        context: Context,
+        action: Action,
+    ) = executor.displayName(context, action)
 }

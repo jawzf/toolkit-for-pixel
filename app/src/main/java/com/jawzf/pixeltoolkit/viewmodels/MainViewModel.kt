@@ -78,6 +78,7 @@ import com.jawzf.pixeltoolkit.feature.input.InputState
 import com.jawzf.pixeltoolkit.feature.input.remap.RemapSettings
 import com.jawzf.pixeltoolkit.feature.input.remap.RemapState
 import com.jawzf.pixeltoolkit.feature.input.shortcuts.LockscreenShortcutSide
+import com.jawzf.pixeltoolkit.feature.input.shortcuts.ShortcutsSettings
 import com.jawzf.pixeltoolkit.feature.input.shortcuts.SystemShortcutsState
 import com.jawzf.pixeltoolkit.feature.island.IslandDuoLink
 import com.jawzf.pixeltoolkit.feature.island.IslandState
@@ -342,6 +343,7 @@ class MainViewModel : ViewModel() {
     val hasShizukuPermission = mutableStateOf(false)
 
     lateinit var settingsRepository: SettingsRepository
+    private lateinit var shortcutsSettings: ShortcutsSettings
     private lateinit var textAnimations: TextAnimationsSettings
     private lateinit var duoSettings: DuoSettings
     private var appContext: Context? = null
@@ -441,7 +443,7 @@ class MainViewModel : ViewModel() {
 
                     SettingsRepository.KEY_LOCKSCREEN_SYSTEM_SHORTCUTS_STATE ->
                         lockscreenSystemShortcutsState.value =
-                            settingsRepository.getLockscreenSystemShortcutsState()
+                            shortcutsSettings.getLockscreenSystemShortcutsState()
 
                     AppsSettings.KEY_APP_LOCK_ENABLED -> appLock.onPreferenceChanged(key)
 
@@ -855,6 +857,7 @@ class MainViewModel : ViewModel() {
     fun check(context: Context) {
         appContext = context.applicationContext
         settingsRepository = SettingsRepository(context)
+        shortcutsSettings = ShortcutsSettings(context)
         textAnimations = TextAnimationsSettings(context)
         duoSettings = DuoSettings(context)
         NotificationAutoDismisser.isSnoozedByUs = { LiveUpdateSnoozer.isSnoozedByUs(it) }
@@ -1245,12 +1248,12 @@ class MainViewModel : ViewModel() {
         remap.load(context)
 
         hilight.load(context)
-        isLockscreenShortcutsEnabled.value = settingsRepository.isLockscreenShortcutsEnabled()
+        isLockscreenShortcutsEnabled.value = shortcutsSettings.isLockscreenShortcutsEnabled()
         sound.load(context)
         LockscreenShortcutSide.entries.forEach { side ->
             lockscreenShortcutActions[side] = settingsRepository.getRemapActions(side.prefKey)
         }
-        lockscreenSystemShortcutsState.value = settingsRepository.getLockscreenSystemShortcutsState()
+        lockscreenSystemShortcutsState.value = shortcutsSettings.getLockscreenSystemShortcutsState()
 
         smartPixels.load(context)
         duo.load(context)
@@ -2447,7 +2450,7 @@ class MainViewModel : ViewModel() {
 
     fun setLockscreenShortcutsEnabled(enabled: Boolean) {
         isLockscreenShortcutsEnabled.value = enabled
-        settingsRepository.setLockscreenShortcutsEnabled(enabled)
+        shortcutsSettings.setLockscreenShortcutsEnabled(enabled)
     }
 
     fun setLockscreenShortcutActions(
