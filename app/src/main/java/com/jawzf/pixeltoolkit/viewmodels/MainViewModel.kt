@@ -62,6 +62,7 @@ import com.jawzf.pixeltoolkit.feature.apps.applock.AppLockState
 import com.jawzf.pixeltoolkit.feature.apps.consciousgate.ConsciousGateState
 import com.jawzf.pixeltoolkit.feature.apps.freeze.FreezeState
 import com.jawzf.pixeltoolkit.feature.apps.updates.github.GitHubUser
+import com.jawzf.pixeltoolkit.feature.automation.diy.DIYRepository
 import com.jawzf.pixeltoolkit.feature.connectivity.ConnectivitySettings
 import com.jawzf.pixeltoolkit.feature.connectivity.ConnectivityState
 import com.jawzf.pixeltoolkit.feature.display.aod.AodState
@@ -3104,7 +3105,7 @@ class MainViewModel : ViewModel() {
         val success = ConfigBackup(context).importConfigs(inputStream, keepPrefs)
         if (success) {
             settingsRepository.syncSystemSettingsWithSaved()
-            com.jawzf.pixeltoolkit.domain.diy.DIYRepository
+            DIYRepository
                 .reloadAutomations()
             freeze.refreshFreezePickedApps(context, silent = true)
             check(context)

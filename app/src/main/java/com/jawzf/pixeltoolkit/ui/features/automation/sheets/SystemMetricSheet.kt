@@ -39,11 +39,11 @@ import com.jawzf.pixeltoolkit.core.design.components.CategoryExpandableSection
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
-import com.jawzf.pixeltoolkit.domain.diy.Comparison
-import com.jawzf.pixeltoolkit.domain.diy.Metric
-import com.jawzf.pixeltoolkit.domain.diy.Trigger
+import com.jawzf.pixeltoolkit.feature.automation.diy.Comparison
+import com.jawzf.pixeltoolkit.feature.automation.diy.Metric
+import com.jawzf.pixeltoolkit.feature.automation.diy.Trigger
 import kotlin.math.roundToInt
-import com.jawzf.pixeltoolkit.domain.diy.State as DIYState
+import com.jawzf.pixeltoolkit.feature.automation.diy.State as DIYState
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable

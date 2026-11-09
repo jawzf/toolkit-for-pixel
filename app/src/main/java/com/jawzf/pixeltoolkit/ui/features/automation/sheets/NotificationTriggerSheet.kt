@@ -31,7 +31,7 @@ import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.cards.IconToggleItem
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
-import com.jawzf.pixeltoolkit.domain.diy.Trigger
+import com.jawzf.pixeltoolkit.feature.automation.diy.Trigger
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

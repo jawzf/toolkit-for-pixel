@@ -1,7 +1,7 @@
 package com.jawzf.pixeltoolkit.domain.registry
 
 import com.jawzf.pixeltoolkit.core.design.R
-import com.jawzf.pixeltoolkit.domain.model.AppPermission
+import com.jawzf.pixeltoolkit.core.platform.permissions.AppPermission
 
 object PermissionRegistry {
     private val registry = mutableMapOf<String, MutableList<Int>>()

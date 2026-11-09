@@ -34,7 +34,7 @@ import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import com.jawzf.pixeltoolkit.domain.diy.State as DIYState
+import com.jawzf.pixeltoolkit.feature.automation.diy.State as DIYState
 
 private class CalendarEntry(val id: Long, val name: String, val account: String)
 

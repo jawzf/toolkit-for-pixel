@@ -69,13 +69,13 @@ import com.jawzf.pixeltoolkit.core.platform.AppComponents.CONSCIOUS_GATE_FEATURE
 import com.jawzf.pixeltoolkit.core.platform.device.DeviceUtils
 import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
-import com.jawzf.pixeltoolkit.domain.diy.ActionRegistry
-import com.jawzf.pixeltoolkit.domain.diy.displayName
 import com.jawzf.pixeltoolkit.domain.registry.FeatureRegistry
 import com.jawzf.pixeltoolkit.domain.registry.PermissionRegistry
 import com.jawzf.pixeltoolkit.feature.apps.applock.ui.AppLockSettingsUI
 import com.jawzf.pixeltoolkit.feature.apps.consciousgate.ui.ConsciousGateSettingsUI
 import com.jawzf.pixeltoolkit.feature.apps.freeze.ui.FreezeSettingsUI
+import com.jawzf.pixeltoolkit.feature.automation.diy.ActionRegistry
+import com.jawzf.pixeltoolkit.feature.automation.diy.displayName
 import com.jawzf.pixeltoolkit.feature.connectivity.ui.NetworksSettingsUI
 import com.jawzf.pixeltoolkit.feature.display.aod.ui.AlwaysOnDisplaySettingsUI
 import com.jawzf.pixeltoolkit.feature.display.aod.ui.AodWallpaperPreviewCard

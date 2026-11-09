@@ -19,6 +19,8 @@ import com.jawzf.pixeltoolkit.core.platform.media.MediaArtBridge
 import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuUtils
 import com.jawzf.pixeltoolkit.core.platform.statusbar.StatusBarManager
 import com.jawzf.pixeltoolkit.domain.registry.FeatureRegistry
+import com.jawzf.pixeltoolkit.feature.automation.diy.DIYRepository
+import com.jawzf.pixeltoolkit.feature.automation.engine.AutomationManager
 import com.jawzf.pixeltoolkit.services.LiveUpdateSnoozer
 import com.jawzf.pixeltoolkit.services.NotificationListener
 import com.jawzf.pixeltoolkit.services.automation.executors.CombinedActionExecutor
@@ -99,9 +101,9 @@ class ToolkitApp : Application() {
         LogManager.init(this)
 
         // Init Automation
-        com.jawzf.pixeltoolkit.domain.diy.DIYRepository
+        DIYRepository
             .init(this)
-        com.jawzf.pixeltoolkit.services.automation.AutomationManager
+        AutomationManager
             .init(this)
         com.jawzf.pixeltoolkit.utils.ServiceUtils
             .startRequiredServices(this)

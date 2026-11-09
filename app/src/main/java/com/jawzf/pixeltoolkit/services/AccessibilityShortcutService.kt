@@ -4,7 +4,7 @@ import android.accessibilityservice.AccessibilityButtonController
 import android.accessibilityservice.AccessibilityService
 import android.os.Build
 import android.view.accessibility.AccessibilityEvent
-import com.jawzf.pixeltoolkit.services.automation.AutomationManager
+import com.jawzf.pixeltoolkit.feature.automation.engine.AutomationManager
 import com.jawzf.pixeltoolkit.utils.SplitScreenUtil
 
 abstract class BaseAccessibilityShortcutService(private val slot: Int) : AccessibilityService() {

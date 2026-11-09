@@ -5,11 +5,11 @@ import android.content.Context
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.jawzf.pixeltoolkit.core.data.action.Action
-import com.jawzf.pixeltoolkit.domain.diy.Automation
-import com.jawzf.pixeltoolkit.domain.diy.DIYRepository
-import com.jawzf.pixeltoolkit.domain.diy.Macro
-import com.jawzf.pixeltoolkit.domain.diy.State
-import com.jawzf.pixeltoolkit.domain.diy.Trigger
+import com.jawzf.pixeltoolkit.feature.automation.diy.Automation
+import com.jawzf.pixeltoolkit.feature.automation.diy.DIYRepository
+import com.jawzf.pixeltoolkit.feature.automation.diy.Macro
+import com.jawzf.pixeltoolkit.feature.automation.diy.State
+import com.jawzf.pixeltoolkit.feature.automation.diy.Trigger
 import com.jawzf.pixeltoolkit.services.automation.executors.CombinedActionExecutor
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted

@@ -44,10 +44,11 @@ import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuUtils
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.domain.diy.DIYRepository
-import com.jawzf.pixeltoolkit.domain.diy.displayName
 import com.jawzf.pixeltoolkit.feature.apps.AppsSettings
 import com.jawzf.pixeltoolkit.feature.apps.freeze.FreezeManager
+import com.jawzf.pixeltoolkit.feature.automation.diy.DIYRepository
+import com.jawzf.pixeltoolkit.feature.automation.diy.displayName
+import com.jawzf.pixeltoolkit.feature.automation.engine.AutomationFailureNotifier
 import com.jawzf.pixeltoolkit.feature.connectivity.hotspot.HotspotController
 import com.jawzf.pixeltoolkit.feature.display.DisplaySettings
 import com.jawzf.pixeltoolkit.feature.input.InputSettings
@@ -63,7 +64,6 @@ import com.jawzf.pixeltoolkit.feature.sound.mode.SoundModeHandler
 import com.jawzf.pixeltoolkit.services.NotificationListener
 import com.jawzf.pixeltoolkit.services.tiles.ScreenOffAccessibilityService
 import com.jawzf.pixeltoolkit.ui.activities.PixelSearchResultsActivity
-import com.jawzf.pixeltoolkit.utils.AutomationFailureNotifier
 import com.jawzf.pixeltoolkit.utils.AutomationNotificationPoster
 import com.jawzf.pixeltoolkit.utils.DeviceCare
 import com.jawzf.pixeltoolkit.utils.SplitScreenUtil

@@ -58,14 +58,14 @@ import com.jawzf.pixeltoolkit.core.design.components.SegmentedDropdownMenuItem
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.theme.ToolkitTheme
-import com.jawzf.pixeltoolkit.domain.diy.Automation
-import com.jawzf.pixeltoolkit.domain.diy.DIYRuntimeStore
-import com.jawzf.pixeltoolkit.domain.diy.Trigger
-import com.jawzf.pixeltoolkit.domain.diy.displayName
-import com.jawzf.pixeltoolkit.domain.diy.systemMetricText
+import com.jawzf.pixeltoolkit.feature.automation.diy.Automation
+import com.jawzf.pixeltoolkit.feature.automation.diy.DIYRuntimeStore
+import com.jawzf.pixeltoolkit.feature.automation.diy.Trigger
+import com.jawzf.pixeltoolkit.feature.automation.diy.displayName
+import com.jawzf.pixeltoolkit.feature.automation.diy.systemMetricText
 import java.text.DateFormatSymbols
 import java.util.Calendar
-import com.jawzf.pixeltoolkit.domain.diy.State as DIYState
+import com.jawzf.pixeltoolkit.feature.automation.diy.State as DIYState
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable

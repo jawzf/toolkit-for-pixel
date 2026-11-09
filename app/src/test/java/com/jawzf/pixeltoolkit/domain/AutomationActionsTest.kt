@@ -2,7 +2,7 @@ package com.jawzf.pixeltoolkit.domain
 
 import com.google.gson.Gson
 import com.jawzf.pixeltoolkit.core.data.action.Action
-import com.jawzf.pixeltoolkit.domain.diy.Automation
+import com.jawzf.pixeltoolkit.feature.automation.diy.Automation
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
