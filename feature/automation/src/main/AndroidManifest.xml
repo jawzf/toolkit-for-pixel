@@ -39,6 +39,16 @@
             android:exported="false"
             android:label="@string/diy_new_macro"
             android:theme="@style/Theme.Toolkit" />
+
+        <service
+            android:name="com.jawzf.pixeltoolkit.feature.automation.engine.ToolkitConditionProvider"
+            android:exported="true"
+            android:label="Toolkit Focus"
+            android:permission="android.permission.BIND_CONDITION_PROVIDER_SERVICE">
+            <intent-filter>
+                <action android:name="android.service.notification.ConditionProviderService" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

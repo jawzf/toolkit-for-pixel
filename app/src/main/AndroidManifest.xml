@@ -738,16 +738,6 @@
         </service>
 
         <service
-            android:name=".services.ToolkitConditionProvider"
-            android:exported="true"
-            android:label="Toolkit Focus"
-            android:permission="android.permission.BIND_CONDITION_PROVIDER_SERVICE">
-            <intent-filter>
-                <action android:name="android.service.notification.ConditionProviderService" />
-            </intent-filter>
-        </service>
-
-        <service
             android:name=".services.tiles.FlashlightTileService"
             android:exported="true"
             android:icon="@drawable/rounded_flashlight_on_24"

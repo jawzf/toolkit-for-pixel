@@ -34,6 +34,7 @@ import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticFeedbackType
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.haptics.performHapticFeedback
+import com.jawzf.pixeltoolkit.core.platform.AppComponents
 import com.jawzf.pixeltoolkit.core.platform.device.ZenModeController
 import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
@@ -205,8 +206,8 @@ object CombinedActionExecutor : ActionExecutor {
                                             ).setConditionId(conditionUri)
                                             .setConfigurationActivity(
                                                 android.content.ComponentName(
-                                                    context,
-                                                    com.jawzf.pixeltoolkit.MainActivity::class.java,
+                                                    context.packageName,
+                                                    AppComponents.MAIN_ACTIVITY,
                                                 ),
                                             )
 
