@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Build
+import com.jawzf.pixeltoolkit.core.data.action.ActionHandlers
 import com.jawzf.pixeltoolkit.core.data.action.ActionRunner
 import com.jawzf.pixeltoolkit.core.data.log.LogManager
 import com.jawzf.pixeltoolkit.core.data.notifications.NotificationActionItem
@@ -19,11 +20,17 @@ import com.jawzf.pixeltoolkit.core.platform.media.MediaArtBridge
 import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuUtils
 import com.jawzf.pixeltoolkit.core.platform.statusbar.StatusBarManager
 import com.jawzf.pixeltoolkit.domain.registry.FeatureRegistry
+import com.jawzf.pixeltoolkit.feature.apps.AppsActionHandler
 import com.jawzf.pixeltoolkit.feature.automation.diy.DIYRepository
 import com.jawzf.pixeltoolkit.feature.automation.engine.AutomationManager
 import com.jawzf.pixeltoolkit.feature.automation.ui.editor.ActionEditors
+import com.jawzf.pixeltoolkit.feature.connectivity.ConnectivityActionHandler
+import com.jawzf.pixeltoolkit.feature.input.InputActionHandler
+import com.jawzf.pixeltoolkit.feature.notifications.NotificationsActionHandler
+import com.jawzf.pixeltoolkit.feature.sound.SoundActionHandler
 import com.jawzf.pixeltoolkit.services.LiveUpdateSnoozer
 import com.jawzf.pixeltoolkit.services.NotificationListener
+import com.jawzf.pixeltoolkit.services.automation.executors.AppActionHandler
 import com.jawzf.pixeltoolkit.services.automation.executors.CombinedActionExecutor
 import com.jawzf.pixeltoolkit.services.receivers.SecurityReceiver
 import com.jawzf.pixeltoolkit.services.tiles.ScreenOffAccessibilityService
@@ -47,6 +54,14 @@ class ToolkitApp : Application() {
         context = applicationContext
         AppGlobals.init(this)
         ActionRunner.init(CombinedActionExecutor)
+        ActionHandlers.register(
+            NotificationsActionHandler,
+            AppsActionHandler,
+            ConnectivityActionHandler,
+            InputActionHandler,
+            SoundActionHandler,
+            AppActionHandler,
+        )
         ActionEditors.init(AppActionEditorHost)
         FeatureCatalog.init { FeatureRegistry.ALL_FEATURES.map { FeatureSummary(it.id, it.title, it.iconRes) } }
         MediaArtBridge.init(NotificationListener::getCachedBitmap, NotificationListener::getLatestArtBitmap)
