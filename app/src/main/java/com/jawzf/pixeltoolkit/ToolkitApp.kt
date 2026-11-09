@@ -21,11 +21,13 @@ import com.jawzf.pixeltoolkit.core.platform.statusbar.StatusBarManager
 import com.jawzf.pixeltoolkit.domain.registry.FeatureRegistry
 import com.jawzf.pixeltoolkit.feature.automation.diy.DIYRepository
 import com.jawzf.pixeltoolkit.feature.automation.engine.AutomationManager
+import com.jawzf.pixeltoolkit.feature.automation.ui.editor.ActionEditors
 import com.jawzf.pixeltoolkit.services.LiveUpdateSnoozer
 import com.jawzf.pixeltoolkit.services.NotificationListener
 import com.jawzf.pixeltoolkit.services.automation.executors.CombinedActionExecutor
 import com.jawzf.pixeltoolkit.services.receivers.SecurityReceiver
 import com.jawzf.pixeltoolkit.services.tiles.ScreenOffAccessibilityService
+import com.jawzf.pixeltoolkit.ui.features.system.AppActionEditorHost
 import eu.darken.porter.bridge.PorterShizukuBridge
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -45,6 +47,7 @@ class ToolkitApp : Application() {
         context = applicationContext
         AppGlobals.init(this)
         ActionRunner.init(CombinedActionExecutor)
+        ActionEditors.init(AppActionEditorHost)
         FeatureCatalog.init { FeatureRegistry.ALL_FEATURES.map { FeatureSummary(it.id, it.title, it.iconRes) } }
         MediaArtBridge.init(NotificationListener::getCachedBitmap, NotificationListener::getLatestArtBitmap)
         ProgressNotificationHub.init(NotificationListener::getLatestProgressNotification)

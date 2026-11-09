@@ -18,7 +18,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -38,17 +37,19 @@ import com.jawzf.pixeltoolkit.core.data.action.Action
 import com.jawzf.pixeltoolkit.core.data.apps.ui.AppSelectionSheet
 import com.jawzf.pixeltoolkit.core.data.apps.ui.SingleAppSelectionSheet
 import com.jawzf.pixeltoolkit.core.data.prefs.AppSelection
+import com.jawzf.pixeltoolkit.core.data.prefs.PrefsStore
 import com.jawzf.pixeltoolkit.core.design.R
-import com.jawzf.pixeltoolkit.core.design.cards.IconToggleItem
 import com.jawzf.pixeltoolkit.core.design.components.CategoryExpandableSection
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.sheets.PermissionsBottomSheet
 import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
+import com.jawzf.pixeltoolkit.core.platform.PlatformPrefs
+import com.jawzf.pixeltoolkit.core.platform.permissions.AppPermission
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
-import com.jawzf.pixeltoolkit.feature.apps.AppsSettings
 import com.jawzf.pixeltoolkit.feature.automation.diy.ActionRegistry
 import com.jawzf.pixeltoolkit.feature.automation.diy.displayName
+import com.jawzf.pixeltoolkit.feature.automation.ui.editor.ActionEditors
 import com.jawzf.pixeltoolkit.feature.automation.ui.sheets.ChargingModeSettingsSheet
 import com.jawzf.pixeltoolkit.feature.automation.ui.sheets.CustomSettingsSheet
 import com.jawzf.pixeltoolkit.feature.automation.ui.sheets.DeviceCareSettingsSheet
@@ -63,18 +64,12 @@ import com.jawzf.pixeltoolkit.feature.automation.ui.sheets.SometimesEssentialsSe
 import com.jawzf.pixeltoolkit.feature.automation.ui.sheets.SoundModeSettingsSheet
 import com.jawzf.pixeltoolkit.feature.automation.ui.sheets.WaitSettingsSheet
 import com.jawzf.pixeltoolkit.feature.automation.ui.sheets.formatWait
-import com.jawzf.pixeltoolkit.ui.core.sheets.HilightEffectSettingsSheet
-import com.jawzf.pixeltoolkit.ui.core.sheets.NotificationLightingActionSheet
-import com.jawzf.pixeltoolkit.ui.core.sheets.OpenActivityPicker
-import com.jawzf.pixeltoolkit.ui.core.sheets.ScreenOffSettingsSheet
-import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 import sh.calvin.reorderable.ReorderableColumn
 import java.util.concurrent.atomic.AtomicLong
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ActionSequenceEditor(
-    viewModel: MainViewModel,
     actions: List<Action>,
     onActionsChange: (List<Action>) -> Unit,
     screenOnOnly: Boolean,
@@ -85,31 +80,26 @@ fun ActionSequenceEditor(
     categories: List<ActionRegistry.ActionCategory>? = null,
     showMacros: Boolean = true,
 ) {
+    val host = ActionEditors.host
     val context = LocalContext.current
     val view = LocalView.current
 
-    var showFlashlightOptions by remember { mutableStateOf(false) }
-    val showLikeSongOptions = remember { mutableStateOf(false) }
+    var hostSheetAction by remember { mutableStateOf<Action?>(null) }
 
     // Action Config Sheets State
     var showDimSettings by remember { mutableStateOf(false) }
-    var showScreenOffSettings by remember { mutableStateOf(false) }
     var showDeviceEffectsSettings by remember { mutableStateOf(false) }
     var showSoundModeSettings by remember { mutableStateOf(false) }
     var showChargingModeSettings by remember { mutableStateOf(false) }
     var showSetModeSettings by remember { mutableStateOf(false) }
-    var showNotificationLightingSettings by remember { mutableStateOf(false) }
     var showOverlayControlSettings by remember { mutableStateOf(false) }
     var showSometimesEssentialsSettings by remember { mutableStateOf(false) }
-    var showFreezeTagSettings by remember { mutableStateOf(false) }
     var showOpenAppSettings by remember { mutableStateOf(false) }
-    var showOpenActivitySettings by remember { mutableStateOf(false) }
     var showFreezeAppsSettings by remember { mutableStateOf(false) }
     var temporarySelectedAppsForAction by remember { mutableStateOf<List<String>>(emptyList()) }
     var showSetKeyboardSheet by remember { mutableStateOf(false) }
     var showCustomSettingsSettings by remember { mutableStateOf(false) }
     var showSetVolumeSettings by remember { mutableStateOf(false) }
-    var showHilightSettings by remember { mutableStateOf(false) }
     var showWaitSettings by remember { mutableStateOf(false) }
     var showSendNotificationSettings by remember { mutableStateOf(false) }
     var showDeviceCareSettings by remember { mutableStateOf(false) }
@@ -141,17 +131,7 @@ fun ActionSequenceEditor(
                 }.distinct()
 
         return resolvedPermissions.filter { permKey ->
-            when (permKey) {
-                "SHIZUKU" -> !viewModel.isShizukuPermissionGranted.value
-                "ROOT" -> !viewModel.isRootPermissionGranted.value
-                "WRITE_SETTINGS" -> !viewModel.isWriteSettingsEnabled.value
-                "NOTIFICATION_POLICY" -> !viewModel.isNotificationPolicyAccessGranted.value
-                "WRITE_SECURE_SETTINGS" -> !viewModel.isWriteSecureSettingsEnabled.value
-                "DRAW_OVERLAYS" -> !viewModel.isOverlayPermissionGranted.value
-                "ACCESSIBILITY" -> !viewModel.isAccessibilityEnabled.value
-                "POST_NOTIFICATIONS" -> !viewModel.isPostNotificationsEnabled.value
-                else -> false
-            }
+            AppPermission.fromKey(permKey)?.isGranted(context) == false
         }
     }
 
@@ -184,12 +164,8 @@ fun ActionSequenceEditor(
         index: Int,
         action: Action,
     ) {
-        if (action is Action.ToggleFlashlight) {
-            showFlashlightOptions = true
-            return
-        }
-        if (action is Action.LikeCurrentSong) {
-            showLikeSongOptions.value = true
+        if (action is Action.ToggleFlashlight || action is Action.LikeCurrentSong) {
+            hostSheetAction = action
             return
         }
         val missing = getMissingPermissionsHelper(action)
@@ -200,19 +176,19 @@ fun ActionSequenceEditor(
 
         configIndex = index
         configAction = action
+        if (host.ownsSettings(action)) {
+            hostSheetAction = action
+            return
+        }
         when (action) {
             is Action.DimWallpaper -> showDimSettings = true
-            is Action.ScreenOff -> showScreenOffSettings = true
             is Action.DeviceEffects -> showDeviceEffectsSettings = true
             is Action.SoundMode -> showSoundModeSettings = true
             is Action.SetChargingMode -> showChargingModeSettings = true
             is Action.SetMode -> showSetModeSettings = true
-            is Action.TriggerNotificationLighting -> showNotificationLightingSettings = true
             is Action.OverlayControl -> showOverlayControlSettings = true
             is Action.SometimesEssentials -> showSometimesEssentialsSettings = true
-            is Action.FreezeTag -> showFreezeTagSettings = true
             is Action.OpenApp -> showOpenAppSettings = true
-            is Action.OpenActivity -> showOpenActivitySettings = true
             is Action.FreezeApps -> {
                 temporarySelectedAppsForAction = action.packageNames
                 showFreezeAppsSettings = true
@@ -223,7 +199,6 @@ fun ActionSequenceEditor(
             }
             is Action.Keyboard -> showSetKeyboardSheet = true
             is Action.SetVolume -> showSetVolumeSettings = true
-            is Action.Hilight -> showHilightSettings = true
             is Action.CustomSettings -> showCustomSettingsSettings = true
             is Action.Wait -> showWaitSettings = true
             is Action.SendNotification -> showSendNotificationSettings = true
@@ -331,68 +306,16 @@ fun ActionSequenceEditor(
     }
 
     // Config Bottom Sheets
-    if (showLikeSongOptions.value) {
-        LikeSongSettingsSheet(
-            onDismiss = { showLikeSongOptions.value = false },
-            viewModel = viewModel,
-            context = context,
+    hostSheetAction?.let { sheetAction ->
+        host.ActionSettingsSheet(
+            action = sheetAction,
+            onDismiss = { hostSheetAction = null },
+            onSave = { newAction ->
+                hostSheetAction = null
+                onActionSelected(newAction)
+                configAction = null
+            },
         )
-    }
-
-    if (showFlashlightOptions) {
-        ModalBottomSheet(
-            onDismissRequest = { showFlashlightOptions = false },
-            containerColor = MaterialTheme.colorScheme.surfaceContainer,
-        ) {
-            Column(
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 32.dp, start = 16.dp, end = 16.dp, top = 8.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-            ) {
-                Text(
-                    text = stringResource(R.string.flashlight_options_title),
-                    style = MaterialTheme.typography.titleMedium,
-                    modifier = Modifier.padding(start = 16.dp, top = 8.dp, bottom = 8.dp),
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-
-                RoundedCardContainer(spacing = 2.dp) {
-                    IconToggleItem(
-                        iconRes = R.drawable.rounded_blur_on_24,
-                        title = stringResource(R.string.flashlight_fade_title),
-                        description = stringResource(R.string.flashlight_fade_desc),
-                        isChecked = viewModel.isFlashlightFadeEnabled.value,
-                        onCheckedChange = { viewModel.setFlashlightFadeEnabled(it, context) },
-                    )
-
-                    IconToggleItem(
-                        iconRes = R.drawable.rounded_flashlight_on_24,
-                        title = stringResource(R.string.flashlight_always_off_title),
-                        description = stringResource(R.string.flashlight_always_off_desc),
-                        isChecked = viewModel.isFlashlightAlwaysTurnOffEnabled.value,
-                        onCheckedChange = {
-                            viewModel.setFlashlightAlwaysTurnOffEnabled(it, context)
-                        },
-                    )
-                }
-
-                Button(
-                    onClick = {
-                        HapticUtil.performVirtualKeyHaptic(view)
-                        showFlashlightOptions = false
-                    },
-                    modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(top = 8.dp),
-                    shape = MaterialTheme.shapes.extraLarge,
-                ) {
-                    Text(stringResource(R.string.action_done))
-                }
-            }
-        }
     }
 
     if (showDimSettings && configAction is Action.DimWallpaper) {
@@ -401,18 +324,6 @@ fun ActionSequenceEditor(
             onDismiss = { showDimSettings = false },
             onSave = { newAction ->
                 showDimSettings = false
-                onActionSelected(newAction)
-                configAction = null
-            },
-        )
-    }
-
-    if (showScreenOffSettings && configAction is Action.ScreenOff) {
-        ScreenOffSettingsSheet(
-            initialAction = configAction as Action.ScreenOff,
-            onDismiss = { showScreenOffSettings = false },
-            onSave = { newAction ->
-                showScreenOffSettings = false
                 onActionSelected(newAction)
                 configAction = null
             },
@@ -467,18 +378,6 @@ fun ActionSequenceEditor(
         )
     }
 
-    if (showNotificationLightingSettings && configAction is Action.TriggerNotificationLighting) {
-        NotificationLightingActionSheet(
-            initialAction = configAction as Action.TriggerNotificationLighting,
-            onDismiss = { showNotificationLightingSettings = false },
-            onSave = { newAction ->
-                showNotificationLightingSettings = false
-                onActionSelected(newAction)
-                configAction = null
-            },
-        )
-    }
-
     if (showOverlayControlSettings && configAction is Action.OverlayControl) {
         OverlayControlSettingsSheet(
             initialAction = configAction as Action.OverlayControl,
@@ -503,41 +402,12 @@ fun ActionSequenceEditor(
         )
     }
 
-    if (showHilightSettings && configAction is Action.Hilight) {
-        HilightEffectSettingsSheet(
-            initialAction = configAction as Action.Hilight,
-            onDismiss = { showHilightSettings = false },
-            onSave = { newAction ->
-                showHilightSettings = false
-                onActionSelected(newAction)
-                configAction = null
-            },
-        )
-    }
-
     if (showSometimesEssentialsSettings && configAction is Action.SometimesEssentials) {
         SometimesEssentialsSettingsSheet(
             initialAction = configAction as Action.SometimesEssentials,
             onDismiss = { showSometimesEssentialsSettings = false },
             onSave = { newAction ->
                 showSometimesEssentialsSettings = false
-                onActionSelected(newAction)
-                configAction = null
-            },
-        )
-    }
-
-    if (showFreezeTagSettings && configAction is Action.FreezeTag) {
-        val availableTags =
-            remember {
-                AppsSettings(context).getFreezeTags()
-            }
-        com.jawzf.pixeltoolkit.ui.core.sheets.FreezeTagSettingsSheet(
-            initialAction = configAction as Action.FreezeTag,
-            availableTags = availableTags,
-            onDismiss = { showFreezeTagSettings = false },
-            onSave = { newAction ->
-                showFreezeTagSettings = false
                 onActionSelected(newAction)
                 configAction = null
             },
@@ -556,19 +426,9 @@ fun ActionSequenceEditor(
         )
     }
 
-    if (showOpenActivitySettings) {
-        OpenActivityPicker(
-            onDismiss = { showOpenActivitySettings = false },
-            onActivitySelected = { newAction ->
-                onActionSelected(newAction)
-                configAction = null
-            },
-        )
-    }
-
     if (showFreezeAppsSettings && (configAction is Action.FreezeApps || configAction is Action.UnfreezeApps)) {
         AppSelectionSheet(
-            restrictSystemApps = !viewModel.isEnableUnsupportedFeatures.value,
+            restrictSystemApps = !remember { PrefsStore(context).getBoolean(PlatformPrefs.KEY_ENABLE_UNSUPPORTED_FEATURES) },
             showInvertSelection = false,
             onDismissRequest = {
                 val finalAction =
@@ -653,12 +513,7 @@ fun ActionSequenceEditor(
     }
 
     if (showPermissionSheet) {
-        val permissionItems =
-            com.jawzf.pixeltoolkit.utils.PermissionUIHelper.getPermissionItems(
-                permissionKeysToShow,
-                context,
-                viewModel,
-            )
+        val permissionItems = host.permissionItems(permissionKeysToShow, null)
         if (permissionItems.isNotEmpty()) {
             PermissionsBottomSheet(
                 onDismissRequest = {

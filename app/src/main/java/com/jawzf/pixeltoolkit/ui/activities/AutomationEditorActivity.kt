@@ -64,6 +64,7 @@ import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
@@ -71,12 +72,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
 import com.jawzf.pixeltoolkit.core.data.action.Action
 import com.jawzf.pixeltoolkit.core.data.apps.AppUtil
 import com.jawzf.pixeltoolkit.core.data.apps.NotificationApp
 import com.jawzf.pixeltoolkit.core.data.prefs.AppSelection
+import com.jawzf.pixeltoolkit.core.data.prefs.PrefsStore
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.cards.AppToggleItem
 import com.jawzf.pixeltoolkit.core.design.components.CategoryExpandableSection
@@ -90,16 +90,18 @@ import com.jawzf.pixeltoolkit.core.design.pickers.SegmentedPicker
 import com.jawzf.pixeltoolkit.core.design.sheets.PermissionsBottomSheet
 import com.jawzf.pixeltoolkit.core.design.theme.ToolkitTheme
 import com.jawzf.pixeltoolkit.core.platform.AppComponents
+import com.jawzf.pixeltoolkit.core.platform.PlatformPrefs
+import com.jawzf.pixeltoolkit.core.platform.device.DeviceUtils
 import com.jawzf.pixeltoolkit.core.platform.permissions.AppPermission
 import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.feature.automation.diy.ActionRegistry
 import com.jawzf.pixeltoolkit.feature.automation.diy.Automation
 import com.jawzf.pixeltoolkit.feature.automation.diy.Comparison
 import com.jawzf.pixeltoolkit.feature.automation.diy.DIYRepository
 import com.jawzf.pixeltoolkit.feature.automation.diy.Metric
 import com.jawzf.pixeltoolkit.feature.automation.diy.Trigger
+import com.jawzf.pixeltoolkit.feature.automation.ui.editor.ActionEditors
 import com.jawzf.pixeltoolkit.feature.automation.ui.sheets.BluetoothDeviceSelectionSheet
 import com.jawzf.pixeltoolkit.feature.automation.ui.sheets.CalendarStateSheet
 import com.jawzf.pixeltoolkit.feature.automation.ui.sheets.LocationTriggerSheet
@@ -172,15 +174,11 @@ class AutomationEditorActivity : ComponentActivity() {
             }
 
         setContent {
-            val viewModel: com.jawzf.pixeltoolkit.viewmodels.MainViewModel =
-                androidx.lifecycle.viewmodel.compose
-                    .viewModel()
-            val context = androidx.compose.ui.platform.LocalContext.current
-            androidx.compose.runtime.LaunchedEffect(Unit) {
-                viewModel.check(context)
-            }
-            val isPitchBlackThemeEnabled by viewModel.isPitchBlackThemeEnabled
-            val isMotionBlurEnabled by viewModel.isMotionBlurEnabled
+            val context = LocalContext.current
+            val prefs = remember { PrefsStore(context) }
+            val isPitchBlackThemeEnabled = remember { prefs.getBoolean(PlatformPrefs.KEY_PITCH_BLACK_THEME_ENABLED) }
+            val isPowerSave = remember { DeviceUtils.isPowerSaveMode(context) }
+            val isMotionBlurEnabled = remember { prefs.getBoolean(PlatformPrefs.KEY_MOTION_BLUR) && !isPowerSave }
             ToolkitTheme(pitchBlackTheme = isPitchBlackThemeEnabled) {
                 val view = LocalView.current
                 val coroutineScope = rememberCoroutineScope()
@@ -260,7 +258,7 @@ class AutomationEditorActivity : ComponentActivity() {
                 }
 
                 val otherAutomations = remember { DIYRepository.automations.value.filter { it.id != existingAutomation?.id } }
-                val isPixelSearchbarEnabled = remember { SettingsRepository(context).getBoolean(SettingsRepository.KEY_PIXEL_SEARCHBAR, false) }
+                val isPixelSearchbarEnabled = remember { PrefsStore(context).getBoolean(PlatformPrefs.KEY_PIXEL_SEARCHBAR) }
                 val availableTypes =
                     remember(usedAccessibilitySlots) {
                         buildList {
@@ -396,21 +394,6 @@ class AutomationEditorActivity : ComponentActivity() {
                 var permissionKeysToShow by remember { mutableStateOf<List<String>>(emptyList()) }
                 var permissionFeatureTitle by remember { mutableStateOf<Any>("") }
 
-                // Automatic refresh on resume
-                val lifecycleOwner = androidx.lifecycle.compose.LocalLifecycleOwner.current
-                DisposableEffect(lifecycleOwner) {
-                    val observer =
-                        LifecycleEventObserver { _, event ->
-                            if (event == Lifecycle.Event.ON_RESUME) {
-                                viewModel.check(context)
-                            }
-                        }
-                    lifecycleOwner.lifecycle.addObserver(observer)
-                    onDispose {
-                        lifecycleOwner.lifecycle.removeObserver(observer)
-                    }
-                }
-
                 fun isActionConfigured(action: Action): Boolean =
                     when (action) {
                         is Action.OpenApp -> action.packageName.isNotBlank()
@@ -448,7 +431,7 @@ class AutomationEditorActivity : ComponentActivity() {
                     }
 
                 var showDiscardDialog by remember { mutableStateOf(false) }
-                val isBlurEnabled by viewModel.isBlurEnabled
+                val isBlurEnabled = remember { prefs.getBoolean(PlatformPrefs.KEY_USE_BLUR, true) && !isPowerSave }
 
                 val handleBackClick = {
                     showDiscardDialog = true
@@ -1340,7 +1323,6 @@ class AutomationEditorActivity : ComponentActivity() {
 
                                             val isInOut = automationType == Automation.Type.STATE || automationType == Automation.Type.APP
                                             ActionSequenceEditor(
-                                                viewModel = viewModel,
                                                 actions =
                                                     when {
                                                         !isInOut -> selectedActions
@@ -1545,10 +1527,8 @@ class AutomationEditorActivity : ComponentActivity() {
 
                         if (showPermissionSheet) {
                             val permissionItems =
-                                com.jawzf.pixeltoolkit.utils.PermissionUIHelper.getPermissionItems(
+                                ActionEditors.host.permissionItems(
                                     permissionKeysToShow,
-                                    context,
-                                    viewModel,
                                     this@AutomationEditorActivity,
                                 )
                             if (permissionItems.isNotEmpty()) {
