@@ -1862,7 +1862,7 @@ object FeatureRegistry {
                     ),
                 parentFeatureId = "Input",
             ) {
-                override fun isEnabled(viewModel: MainViewModel) = viewModel.isLockscreenShortcutsEnabled.value
+                override fun isEnabled(viewModel: MainViewModel) = viewModel.shortcuts.isLockscreenShortcutsEnabled.value
 
                 // Only blocked once system shortcuts are found; until the lock screen is checked the buttons just stay hidden
                 override fun isToggleEnabled(
@@ -1870,15 +1870,15 @@ object FeatureRegistry {
                     context: Context,
                 ) = viewModel.isAccessibilityEnabled.value &&
                     (
-                        viewModel.isLockscreenShortcutsEnabled.value ||
-                            viewModel.lockscreenSystemShortcutsState.value != SystemShortcutsState.PRESENT
+                        viewModel.shortcuts.isLockscreenShortcutsEnabled.value ||
+                            viewModel.shortcuts.lockscreenSystemShortcutsState.value != SystemShortcutsState.PRESENT
                     )
 
                 override fun onToggle(
                     viewModel: MainViewModel,
                     context: Context,
                     enabled: Boolean,
-                ) = viewModel.setLockscreenShortcutsEnabled(enabled)
+                ) = viewModel.shortcuts.setLockscreenShortcutsEnabled(enabled)
             },
             object : Feature(
                 id = "Volume steps",

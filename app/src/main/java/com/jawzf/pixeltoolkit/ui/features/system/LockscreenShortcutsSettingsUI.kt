@@ -1,6 +1,7 @@
 package com.jawzf.pixeltoolkit.ui.features.system
 
 import android.content.Intent
+import android.graphics.Bitmap
 import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
@@ -35,15 +36,15 @@ import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.modifiers.highlight
 import com.jawzf.pixeltoolkit.core.design.pickers.SegmentedPicker
-import com.jawzf.pixeltoolkit.domain.diy.ActionRegistry
 import com.jawzf.pixeltoolkit.feature.input.shortcuts.LockscreenShortcutSide
+import com.jawzf.pixeltoolkit.feature.input.shortcuts.ShortcutsState
 import com.jawzf.pixeltoolkit.feature.input.shortcuts.SystemShortcutsState
-import com.jawzf.pixeltoolkit.ui.core.sheets.ActivityIconSheet
-import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 
 @Composable
 fun LockscreenShortcutsSettingsUI(
-    viewModel: MainViewModel,
+    state: ShortcutsState,
+    actionEditor: @Composable (actions: List<Action>, onActionsChange: (List<Action>) -> Unit, listKey: Any, emptyText: String) -> Unit,
+    iconSheet: @Composable (action: Action.OpenActivity, onDismiss: () -> Unit, onConfirm: (ActivityIconSource, Bitmap) -> Unit) -> Unit,
     modifier: Modifier = Modifier,
     highlightSetting: String? = null,
 ) {
@@ -52,8 +53,8 @@ fun LockscreenShortcutsSettingsUI(
     var selectedSide by remember { mutableStateOf(LockscreenShortcutSide.LEFT) }
     var showIconSheet by remember { mutableStateOf(false) }
 
-    val systemState = viewModel.lockscreenSystemShortcutsState.value
-    val isEnabled = viewModel.isLockscreenShortcutsEnabled.value
+    val systemState = state.lockscreenSystemShortcutsState.value
+    val isEnabled = state.isLockscreenShortcutsEnabled.value
     val statusText =
         stringResource(
             when (systemState) {
@@ -113,7 +114,7 @@ fun LockscreenShortcutsSettingsUI(
                 iconRes = R.drawable.rounded_mobile_lock_portrait_24,
                 title = stringResource(R.string.lockscreen_shortcuts_enable_title),
                 isChecked = isEnabled,
-                onCheckedChange = { viewModel.setLockscreenShortcutsEnabled(it) },
+                onCheckedChange = { state.setLockscreenShortcutsEnabled(it) },
                 enabled = isEnabled || systemState != SystemShortcutsState.PRESENT,
                 onDisabledClick = { Toast.makeText(context, statusText, Toast.LENGTH_LONG).show() },
                 modifier = Modifier.highlight(highlightSetting == "enable_lockscreen_shortcuts"),
@@ -143,24 +144,20 @@ fun LockscreenShortcutsSettingsUI(
                     )
                 }
 
-                ActionSequenceEditor(
-                    viewModel = viewModel,
-                    actions = viewModel.lockscreenShortcutActions[selectedSide].orEmpty().take(1),
-                    onActionsChange = { actions ->
+                actionEditor(
+                    state.lockscreenShortcutActions[selectedSide].orEmpty().take(1),
+                    { actions ->
                         // Drop the side's saved image once it's no longer used
-                        val oldPath = (viewModel.lockscreenShortcutActions[selectedSide]?.firstOrNull() as? Action.OpenActivity)?.customIconPath
+                        val oldPath = (state.lockscreenShortcutActions[selectedSide]?.firstOrNull() as? Action.OpenActivity)?.customIconPath
                         val newPath = (actions.firstOrNull() as? Action.OpenActivity)?.customIconPath
                         if (oldPath != null && oldPath != newPath) ActivityLauncherUtil.deleteCustomIcon(oldPath)
-                        viewModel.setLockscreenShortcutActions(selectedSide, actions)
+                        state.setLockscreenShortcutActions(selectedSide, actions)
                     },
-                    screenOnOnly = true,
-                    listKey = selectedSide,
-                    emptyText = stringResource(R.string.lockscreen_shortcuts_no_actions),
-                    maxActions = 1,
-                    categories = remember { ActionRegistry.getLockscreenCategories() },
+                    selectedSide,
+                    stringResource(R.string.lockscreen_shortcuts_no_actions),
                 )
 
-                (viewModel.lockscreenShortcutActions[selectedSide]?.firstOrNull() as? Action.OpenActivity)?.let { action ->
+                (state.lockscreenShortcutActions[selectedSide]?.firstOrNull() as? Action.OpenActivity)?.let { action ->
                     RoundedCardContainer {
                         SelectionCardItem(
                             title = stringResource(R.string.activity_icon_title),
@@ -183,33 +180,28 @@ fun LockscreenShortcutsSettingsUI(
         }
     }
 
-    val iconAction = viewModel.lockscreenShortcutActions[selectedSide]?.firstOrNull() as? Action.OpenActivity
+    val iconAction = state.lockscreenShortcutActions[selectedSide]?.firstOrNull() as? Action.OpenActivity
     if (showIconSheet && iconAction != null) {
         val side = selectedSide
-        ActivityIconSheet(
-            action = iconAction,
-            confirmLabel = stringResource(R.string.action_save),
-            onDismiss = { showIconSheet = false },
-            onConfirm = { source, icon ->
-                // A new file name each time, so the lock screen notices the change and reloads the icon
-                val path =
-                    if (source == ActivityIconSource.CUSTOM) {
-                        ActivityLauncherUtil.saveCustomIcon(context, icon, "lockscreen_${side.name.lowercase()}_${System.currentTimeMillis()}")
-                    } else {
-                        null
-                    }
-                if (source == ActivityIconSource.CUSTOM && path == null) {
-                    Toast.makeText(context, R.string.activity_icon_load_failed, Toast.LENGTH_SHORT).show()
-                    return@ActivityIconSheet
+        iconSheet(iconAction, { showIconSheet = false }) { source, icon ->
+            // A new file name each time, so the lock screen notices the change and reloads the icon
+            val path =
+                if (source == ActivityIconSource.CUSTOM) {
+                    ActivityLauncherUtil.saveCustomIcon(context, icon, "lockscreen_${side.name.lowercase()}_${System.currentTimeMillis()}")
+                } else {
+                    null
                 }
-                if (path != iconAction.customIconPath) ActivityLauncherUtil.deleteCustomIcon(iconAction.customIconPath)
-                viewModel.setLockscreenShortcutActions(
-                    side,
-                    listOf(iconAction.copy(iconSource = source, customIconPath = path.orEmpty())),
-                )
-                showIconSheet = false
-            },
-        )
+            if (source == ActivityIconSource.CUSTOM && path == null) {
+                Toast.makeText(context, R.string.activity_icon_load_failed, Toast.LENGTH_SHORT).show()
+                return@iconSheet
+            }
+            if (path != iconAction.customIconPath) ActivityLauncherUtil.deleteCustomIcon(iconAction.customIconPath)
+            state.setLockscreenShortcutActions(
+                side,
+                listOf(iconAction.copy(iconSource = source, customIconPath = path.orEmpty())),
+            )
+            showIconSheet = false
+        }
     }
 }
 
