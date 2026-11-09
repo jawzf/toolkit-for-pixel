@@ -18,11 +18,11 @@ import com.jawzf.pixeltoolkit.core.platform.shell.RootUtils
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuUtils
 import com.jawzf.pixeltoolkit.domain.model.AppIcon
-import com.jawzf.pixeltoolkit.domain.model.SystemShortcutsState
 import com.jawzf.pixeltoolkit.feature.apps.AppsSettings
 import com.jawzf.pixeltoolkit.feature.display.DisplaySettings
 import com.jawzf.pixeltoolkit.feature.display.refresh.RefreshRateUtils
 import com.jawzf.pixeltoolkit.feature.input.remap.RemapSettings
+import com.jawzf.pixeltoolkit.feature.input.shortcuts.SystemShortcutsState
 import com.jawzf.pixeltoolkit.feature.notifications.NotificationSettings
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow

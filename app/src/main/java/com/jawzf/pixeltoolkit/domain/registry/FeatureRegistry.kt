@@ -13,8 +13,8 @@ import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.domain.model.Feature
 import com.jawzf.pixeltoolkit.domain.model.SearchSetting
-import com.jawzf.pixeltoolkit.domain.model.SystemShortcutsState
 import com.jawzf.pixeltoolkit.feature.input.gesture.ui.BACK_GESTURE_FEATURE_ID
+import com.jawzf.pixeltoolkit.feature.input.shortcuts.SystemShortcutsState
 import com.jawzf.pixeltoolkit.feature.island.settings.ISLAND_BEHAVIOR_FEATURE_ID
 import com.jawzf.pixeltoolkit.feature.island.settings.ISLAND_DURATION_FEATURE_ID
 import com.jawzf.pixeltoolkit.feature.island.settings.ISLAND_NOTIFICATIONS_FEATURE_ID

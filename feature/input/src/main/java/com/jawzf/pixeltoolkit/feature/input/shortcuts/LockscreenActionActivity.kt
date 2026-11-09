@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.activities
+package com.jawzf.pixeltoolkit.feature.input.shortcuts
 
 import android.app.KeyguardManager
 import android.content.Context

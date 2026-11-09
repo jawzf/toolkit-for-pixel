@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.domain.model
+package com.jawzf.pixeltoolkit.feature.input.shortcuts
 
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 

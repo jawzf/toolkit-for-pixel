@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.services.handlers
+package com.jawzf.pixeltoolkit.feature.input.shortcuts
 
 import android.accessibilityservice.AccessibilityService
 import android.annotation.SuppressLint
@@ -52,17 +52,17 @@ import androidx.lifecycle.setViewTreeLifecycleOwner
 import androidx.lifecycle.setViewTreeViewModelStoreOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 import com.jawzf.pixeltoolkit.core.data.action.Action
+import com.jawzf.pixeltoolkit.core.data.apps.ActivityLauncherUtil
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.overlay.OverlayLifecycleOwner
 import com.jawzf.pixeltoolkit.core.platform.device.LockscreenShortcutDetector
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.domain.diy.displayName
-import com.jawzf.pixeltoolkit.domain.model.LockscreenShortcutSide
-import com.jawzf.pixeltoolkit.domain.model.SystemShortcutsState
+import com.jawzf.pixeltoolkit.feature.input.shortcuts.LockscreenActionActivity
+import com.jawzf.pixeltoolkit.feature.input.shortcuts.LockscreenShortcutSide
+import com.jawzf.pixeltoolkit.feature.input.shortcuts.SystemShortcutsState
 import com.jawzf.pixeltoolkit.services.automation.executors.CombinedActionExecutor
-import com.jawzf.pixeltoolkit.ui.activities.LockscreenActionActivity
-import com.jawzf.pixeltoolkit.utils.ActivityLauncherUtil
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
