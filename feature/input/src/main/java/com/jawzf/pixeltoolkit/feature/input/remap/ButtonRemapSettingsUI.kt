@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.features.system
+package com.jawzf.pixeltoolkit.feature.input.remap
 
 import android.content.ActivityNotFoundException
 import android.content.Intent

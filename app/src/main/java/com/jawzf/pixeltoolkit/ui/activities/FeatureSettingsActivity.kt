@@ -95,6 +95,8 @@ import com.jawzf.pixeltoolkit.feature.input.gesture.ui.BACK_GESTURE_FEATURE_ID
 import com.jawzf.pixeltoolkit.feature.input.gesture.ui.BackGestureSettingsUI
 import com.jawzf.pixeltoolkit.feature.input.ime.ui.KeyboardSettingsUI
 import com.jawzf.pixeltoolkit.feature.input.links.ui.LinkPickerScreen
+import com.jawzf.pixeltoolkit.feature.input.remap.ButtonRemapSettingsUI
+import com.jawzf.pixeltoolkit.feature.input.shortcuts.LockscreenShortcutsSettingsUI
 import com.jawzf.pixeltoolkit.feature.island.settings.ISLAND_BEHAVIOR_FEATURE_ID
 import com.jawzf.pixeltoolkit.feature.island.settings.ISLAND_DURATION_FEATURE_ID
 import com.jawzf.pixeltoolkit.feature.island.settings.ISLAND_NOTIFICATIONS_FEATURE_ID
@@ -140,9 +142,7 @@ import com.jawzf.pixeltoolkit.ui.features.display.sheets.StatusGlanceCalendarOpt
 import com.jawzf.pixeltoolkit.ui.features.system.ActionSequenceEditor
 import com.jawzf.pixeltoolkit.ui.features.system.ActivityLauncherSearchBar
 import com.jawzf.pixeltoolkit.ui.features.system.ActivityLauncherSettingsUI
-import com.jawzf.pixeltoolkit.ui.features.system.ButtonRemapSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.FlashlightSettingsUI
-import com.jawzf.pixeltoolkit.ui.features.system.LockscreenShortcutsSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.NavigationSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.OtherCustomizationsSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.QuickSettingsTilesSettingsUI
