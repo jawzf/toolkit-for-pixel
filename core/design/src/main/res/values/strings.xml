@@ -1539,8 +1539,6 @@
     <string name="keyword_show">show</string>
     <string name="keyword_visibility">visibility</string>
 
-    <string name="error_loading_apps">Error loading apps: %1$s</string>
-
     <string-array name="keywords_haptic">
         <item>vibration</item>
         <item>touch</item>
