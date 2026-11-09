@@ -150,7 +150,7 @@ class SettingsRepository(
         const val KEY_ENABLE_UNSUPPORTED_FEATURES = "enable_unsupported_features"
         const val KEY_SHOW_LEGACY_FEATURES = "show_legacy_features"
 
-        const val KEY_PINNED_FEATURES = "pinned_features"
+        const val KEY_PINNED_FEATURES = PlatformPrefs.KEY_PINNED_FEATURES
         const val KEY_PINNED_QS_TILES = "pinned_qs_tiles"
         const val KEY_SECURE_SENSITIVE_TILES = "secure_sensitive_tiles"
         const val KEY_LIKE_SONG_TOAST_ENABLED = "like_song_toast_enabled"
@@ -388,33 +388,6 @@ class SettingsRepository(
             .filter { key -> key !in protected && prefixes.any { key.startsWith(it) } }
             .forEach { editor.remove(it) }
         editor.apply()
-    }
-
-    /**
-     * Executes the get pinned features operation.
-     * @return The resulting List<String> data.
-     */
-    fun getPinnedFeatures(): List<String> {
-        val json = prefs.getString(KEY_PINNED_FEATURES, null)
-        return if (json != null) {
-            try {
-                gson.fromJson(json, Array<String>::class.java).toList()
-            } catch (e: Exception) {
-                emptyList()
-            }
-        } else {
-            emptyList()
-        }
-    }
-
-    /**
-     * Executes the save pinned features operation.
-     *
-     * @param features [List<String>] Target features.
-     */
-    fun savePinnedFeatures(features: List<String>) {
-        val json = gson.toJson(features)
-        putString(KEY_PINNED_FEATURES, json)
     }
 
     /**
