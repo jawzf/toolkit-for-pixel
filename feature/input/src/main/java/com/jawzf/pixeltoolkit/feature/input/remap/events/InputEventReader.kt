@@ -1,5 +1,6 @@
-package com.jawzf.pixeltoolkit.input
+package com.jawzf.pixeltoolkit.feature.input.remap.events
 
+import com.jawzf.pixeltoolkit.core.platform.AppGlobals
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import java.io.InputStream
 import java.nio.ByteBuffer
@@ -24,7 +25,7 @@ class InputEventReader(
         try {
             process =
                 ShellUtils.newProcess(
-                    com.jawzf.pixeltoolkit.ToolkitApp.context,
+                    AppGlobals.context,
                     arrayOf("cat", devicePath),
                 )
             inputStream = process?.inputStream

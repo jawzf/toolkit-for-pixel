@@ -1,5 +1,8 @@
 package com.jawzf.pixeltoolkit.input
 
+import com.jawzf.pixeltoolkit.feature.input.remap.events.PowerGesture
+import com.jawzf.pixeltoolkit.feature.input.remap.events.PowerGestureTracker
+import com.jawzf.pixeltoolkit.feature.input.remap.events.PowerPressEvent
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue

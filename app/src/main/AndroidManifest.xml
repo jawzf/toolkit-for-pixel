@@ -652,12 +652,6 @@
             android:name="moe.shizuku.api.SystemServiceHelper$Receiver"
             android:exported="true" />
 
-        <service
-            android:name=".services.InputEventListenerService"
-            android:exported="false"
-            android:foregroundServiceType="specialUse" />
-
-
         <receiver
             android:name=".services.widgets.PixelSearchbarWidgetReceiver"
             android:exported="true"

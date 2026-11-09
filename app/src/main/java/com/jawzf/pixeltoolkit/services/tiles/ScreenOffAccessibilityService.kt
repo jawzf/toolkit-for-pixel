@@ -42,7 +42,9 @@ import com.jawzf.pixeltoolkit.feature.display.ondisplay.AmbientGlanceHandler
 import com.jawzf.pixeltoolkit.feature.display.pixels.SmartPixelsHandler
 import com.jawzf.pixeltoolkit.feature.display.statusbar.StatusBarIconHandler
 import com.jawzf.pixeltoolkit.feature.input.gesture.OmniGestureOverlayHandler
+import com.jawzf.pixeltoolkit.feature.input.remap.ButtonRemapHandler
 import com.jawzf.pixeltoolkit.feature.input.remap.CameraSession
+import com.jawzf.pixeltoolkit.feature.input.remap.InputEventListenerService
 import com.jawzf.pixeltoolkit.feature.input.remap.PowerButtonGestures
 import com.jawzf.pixeltoolkit.feature.input.remap.RemapSettings
 import com.jawzf.pixeltoolkit.feature.island.service.IslandCoordinator
@@ -55,11 +57,9 @@ import com.jawzf.pixeltoolkit.feature.sound.appvolume.AppVolumeController
 import com.jawzf.pixeltoolkit.feature.sound.appvolume.AppVolumeOverlayHandler
 import com.jawzf.pixeltoolkit.feature.sound.appvolume.VolumePanelDetector
 import com.jawzf.pixeltoolkit.feature.sound.volumesteps.VolumeStepsHandler
-import com.jawzf.pixeltoolkit.services.InputEventListenerService
 import com.jawzf.pixeltoolkit.services.LiveUpdateSnoozer
 import com.jawzf.pixeltoolkit.services.NotificationListener
 import com.jawzf.pixeltoolkit.services.handlers.AppFlowHandler
-import com.jawzf.pixeltoolkit.services.handlers.ButtonRemapHandler
 import com.jawzf.pixeltoolkit.services.handlers.FlashlightHandler
 import com.jawzf.pixeltoolkit.services.handlers.LockscreenShortcutsHandler
 import com.jawzf.pixeltoolkit.services.receivers.FlashlightActionReceiver
@@ -325,8 +325,8 @@ class ScreenOffAccessibilityService :
         buttonRemapHandler =
             ButtonRemapHandler(
                 this,
-                flashlightHandler,
-                volumeStepsHandler,
+                torch = flashlightHandler,
+                adjustVolumeStep = { volumeStepsHandler.adjustIfEnabled(it) },
                 cameraSessions = { cameraSessions },
             )
         appFlowHandler = AppFlowHandler(this, this)

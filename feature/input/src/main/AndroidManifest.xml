@@ -36,6 +36,11 @@
         <receiver
             android:name="com.jawzf.pixeltoolkit.feature.input.links.UrlShortenerActionReceiver"
             android:exported="false" />
+
+        <service
+            android:name="com.jawzf.pixeltoolkit.feature.input.remap.InputEventListenerService"
+            android:exported="false"
+            android:foregroundServiceType="specialUse" />
     </application>
 
 </manifest>

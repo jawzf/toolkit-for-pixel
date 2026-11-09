@@ -26,6 +26,7 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.jawzf.pixeltoolkit.core.data.action.Action
 import com.jawzf.pixeltoolkit.core.data.action.ActionExecutor
+import com.jawzf.pixeltoolkit.core.data.action.ActionRunner
 import com.jawzf.pixeltoolkit.core.data.action.NotificationLightingStyle
 import com.jawzf.pixeltoolkit.core.data.display.TextAnimationsSettings
 import com.jawzf.pixeltoolkit.core.data.duo.DuoSettings
@@ -165,7 +166,7 @@ object CombinedActionExecutor : ActionExecutor {
         }
     }
 
-    const val ACTION_SEQUENCE_GAP_MS = 150L
+    const val ACTION_SEQUENCE_GAP_MS = ActionRunner.ACTION_SEQUENCE_GAP_MS
 
     override suspend fun execute(
         context: Context,
