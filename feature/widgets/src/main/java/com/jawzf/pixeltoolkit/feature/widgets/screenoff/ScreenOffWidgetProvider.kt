@@ -1,20 +1,21 @@
-package com.jawzf.pixeltoolkit.services
+package com.jawzf.pixeltoolkit.feature.widgets.screenoff
 
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.SystemClock
 import android.os.Vibrator
 import android.os.VibratorManager
 import android.widget.RemoteViews
 import com.jawzf.pixeltoolkit.core.data.action.ScreenOffMethod
+import com.jawzf.pixeltoolkit.core.data.security.DeviceLockUtils
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticFeedbackType
 import com.jawzf.pixeltoolkit.core.design.haptics.performHapticFeedback
-import com.jawzf.pixeltoolkit.utils.DeviceLockUtils
 
 class ScreenOffWidgetProvider : AppWidgetProvider() {
     companion object {
@@ -31,7 +32,7 @@ class ScreenOffWidgetProvider : AppWidgetProvider() {
                 Intent(context, ScreenOffWidgetProvider::class.java).apply {
                     action = "WIDGET_CLICK"
                     putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
-                    data = android.net.Uri.parse("custom://widget/$appWidgetId")
+                    data = Uri.parse("custom://widget/$appWidgetId")
                 }
             val pendingIntent =
                 PendingIntent.getBroadcast(

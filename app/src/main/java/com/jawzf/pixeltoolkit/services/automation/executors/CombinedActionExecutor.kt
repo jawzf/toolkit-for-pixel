@@ -32,6 +32,7 @@ import com.jawzf.pixeltoolkit.core.data.glance.StatusGlanceSettings
 import com.jawzf.pixeltoolkit.core.data.power.CaffeinateController
 import com.jawzf.pixeltoolkit.core.data.power.ChargingModeUtil
 import com.jawzf.pixeltoolkit.core.data.power.PowerSettings
+import com.jawzf.pixeltoolkit.core.data.security.DeviceLockUtils
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticFeedbackType
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
@@ -62,7 +63,6 @@ import com.jawzf.pixeltoolkit.ui.activities.PixelSearchResultsActivity
 import com.jawzf.pixeltoolkit.utils.AutomationFailureNotifier
 import com.jawzf.pixeltoolkit.utils.AutomationNotificationPoster
 import com.jawzf.pixeltoolkit.utils.DeviceCare
-import com.jawzf.pixeltoolkit.utils.DeviceLockUtils
 import com.jawzf.pixeltoolkit.utils.SplitScreenUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay

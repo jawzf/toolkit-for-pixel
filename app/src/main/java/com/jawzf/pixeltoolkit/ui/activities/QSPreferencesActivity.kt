@@ -9,8 +9,11 @@ import android.provider.Settings
 import android.util.Log
 import androidx.activity.ComponentActivity
 import com.jawzf.pixeltoolkit.FeatureSettingsActivity
+import com.jawzf.pixeltoolkit.core.data.security.DeviceLockUtils
 import com.jawzf.pixeltoolkit.feature.apps.applock.AppLockTileService
 import com.jawzf.pixeltoolkit.feature.apps.freeze.AppFreezingTileService
+import com.jawzf.pixeltoolkit.feature.apps.launcher.DefaultLauncherSettingsActivity
+import com.jawzf.pixeltoolkit.feature.apps.launcher.DefaultLauncherTileService
 import com.jawzf.pixeltoolkit.feature.connectivity.dns.PrivateDnsSettingsActivity
 import com.jawzf.pixeltoolkit.feature.connectivity.dns.PrivateDnsTileService
 import com.jawzf.pixeltoolkit.feature.connectivity.nfc.NfcTileService
@@ -28,6 +31,7 @@ import com.jawzf.pixeltoolkit.feature.power.battery.BatteryNotificationTileServi
 import com.jawzf.pixeltoolkit.feature.power.caffeinate.CaffeinateTileService
 import com.jawzf.pixeltoolkit.feature.power.charging.ChargeQuickTileService
 import com.jawzf.pixeltoolkit.feature.power.maps.MapsPowerSavingTileService
+import com.jawzf.pixeltoolkit.feature.security.lockdown.LockdownTileService
 import com.jawzf.pixeltoolkit.feature.security.lockscreen.ScreenLockedSecurityTileService
 import com.jawzf.pixeltoolkit.feature.sound.mode.SoundModeTileService
 import com.jawzf.pixeltoolkit.feature.tiles.AdaptiveBrightnessTileService
@@ -35,7 +39,6 @@ import com.jawzf.pixeltoolkit.feature.tiles.DeveloperOptionsTileService
 import com.jawzf.pixeltoolkit.feature.tiles.HapticsTileService
 import com.jawzf.pixeltoolkit.feature.tiles.StayAwakeTileService
 import com.jawzf.pixeltoolkit.feature.tiles.UsbDebuggingTileService
-import com.jawzf.pixeltoolkit.utils.DeviceLockUtils
 
 class QSPreferencesActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,7 +55,7 @@ class QSPreferencesActivity : ComponentActivity() {
         Log.d("QSPreferences", "Received long-press for: ${componentName?.className}")
 
         if (componentName != null) {
-            if (componentName.className == "com.jawzf.pixeltoolkit.services.tiles.LockdownTileService") {
+            if (componentName.className == LockdownTileService::class.java.name) {
                 DeviceLockUtils.performLockdownTileAction(this, isLongPress = true)
                 finish()
                 return
@@ -145,7 +148,7 @@ class QSPreferencesActivity : ComponentActivity() {
                 return
             }
 
-            if (componentName.className == "com.jawzf.pixeltoolkit.services.tiles.DefaultLauncherTileService") {
+            if (componentName.className == DefaultLauncherTileService::class.java.name) {
                 startActivity(Intent(this, DefaultLauncherSettingsActivity::class.java).apply { flags = Intent.FLAG_ACTIVITY_NEW_TASK })
                 finish()
                 return

@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.activities
+package com.jawzf.pixeltoolkit.feature.widgets.screenoff
 
 import android.appwidget.AppWidgetManager
 import android.content.Context
@@ -25,7 +25,6 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -38,12 +37,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.jawzf.pixeltoolkit.core.data.prefs.PrefsStore
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.cards.IconToggleItem
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.theme.ToolkitTheme
-import com.jawzf.pixeltoolkit.services.ScreenOffWidgetProvider
+import com.jawzf.pixeltoolkit.core.platform.PlatformPrefs
 
 class ScreenOffWidgetConfigureActivity : ComponentActivity() {
     private var appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID
@@ -74,14 +74,9 @@ class ScreenOffWidgetConfigureActivity : ComponentActivity() {
         enableEdgeToEdge()
 
         setContent {
-            val viewModel: com.jawzf.pixeltoolkit.viewmodels.MainViewModel =
-                androidx.lifecycle.viewmodel.compose
-                    .viewModel()
             val context = LocalContext.current
-            LaunchedEffect(Unit) {
-                viewModel.check(context)
-            }
-            val isPitchBlackThemeEnabled by viewModel.isPitchBlackThemeEnabled
+            val isPitchBlackThemeEnabled =
+                remember { PrefsStore(context).getBoolean(PlatformPrefs.KEY_PITCH_BLACK_THEME_ENABLED) }
             ToolkitTheme(pitchBlackTheme = isPitchBlackThemeEnabled) {
                 ScreenOffWidgetConfigureOverlay(
                     appWidgetId = appWidgetId,

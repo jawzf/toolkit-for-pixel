@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.utils
+package com.jawzf.pixeltoolkit.core.data.security
 
 import android.accessibilityservice.AccessibilityService
 import android.app.admin.DevicePolicyManager
@@ -9,18 +9,24 @@ import android.view.KeyEvent
 import android.widget.Toast
 import com.jawzf.pixeltoolkit.core.data.action.ScreenOffMethod
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.platform.AppComponents
 import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.services.tiles.ScreenOffAccessibilityService
 
 object DeviceLockUtils {
+    const val KEY_LOCKDOWN_MODE = "lockdown_mode"
+
+    /** The running screen-off accessibility service; set by the service itself. */
+    @Volatile var accessibilityService: AccessibilityService? = null
+
+    fun isLockdownEnabled(context: Context): Boolean =
+        context.getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE).getBoolean(KEY_LOCKDOWN_MODE, false)
+
     fun performLockdownTileAction(
         context: Context,
         isLongPress: Boolean,
     ): Boolean {
-        val isLockdownEnabled =
-            SettingsRepository(context).getBoolean(SettingsRepository.KEY_LOCKDOWN_MODE, false)
+        val isLockdownEnabled = isLockdownEnabled(context)
         val prefs = context.getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE)
 
         val selectedScreenOffMethod =
@@ -67,11 +73,12 @@ object DeviceLockUtils {
                         ).show()
                     return false
                 }
-                if (ScreenOffAccessibilityService.instance != null) {
-                    performAccessibilityLock(ScreenOffAccessibilityService.instance!!)
+                val service = accessibilityService
+                if (service != null) {
+                    performAccessibilityLock(service)
                 } else {
                     val serviceIntent =
-                        Intent(context, ScreenOffAccessibilityService::class.java).apply {
+                        Intent().setClassName(context, AppComponents.SCREEN_OFF_ACCESSIBILITY_SERVICE).apply {
                             action = "LOCK_SCREEN"
                         }
                     context.startService(serviceIntent)
