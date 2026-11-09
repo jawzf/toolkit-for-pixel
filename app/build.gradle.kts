@@ -93,6 +93,7 @@ dependencies {
     implementation(project(":feature:widgets"))
     implementation(project(":feature:tiles"))
     implementation(project(":feature:island"))
+    implementation(project(":feature:automation"))
     compileOnly(project(":stub"))
     implementation(libs.aboutlibraries.core)
     implementation(libs.aboutlibraries.compose.m3)

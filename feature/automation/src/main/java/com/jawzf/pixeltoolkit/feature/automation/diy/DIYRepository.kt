@@ -182,9 +182,9 @@ object DIYRepository {
 
     fun getMacro(id: String): Macro? = _macros.value.find { it.id == id }
 
-    internal fun macrosToJson(macros: List<Macro>): String = gson.toJson(macros)
+    fun macrosToJson(macros: List<Macro>): String = gson.toJson(macros)
 
-    internal fun macrosFromJson(json: String): List<Macro> =
+    fun macrosFromJson(json: String): List<Macro> =
         try {
             val type = object : TypeToken<List<Macro>>() {}.type
             val list: List<Macro> = gson.fromJson(json, type) ?: emptyList()
