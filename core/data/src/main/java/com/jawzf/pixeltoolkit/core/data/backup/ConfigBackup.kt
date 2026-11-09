@@ -1,6 +1,8 @@
 package com.jawzf.pixeltoolkit.core.data.backup
 
 import android.content.Context
+import android.content.SharedPreferences
+import androidx.core.content.edit
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
@@ -10,58 +12,17 @@ class ConfigBackup(
 ) {
     private val gson = Gson()
 
-    // Config Export/Import
-    @Suppress("CyclomaticComplexMethod", "NestedBlockDepth", "ComplexCondition") // moved unchanged in tk24; simplify later
-    fun getAllConfigsAsJsonString(): String {
-        return try {
-            val allConfigs = mutableMapOf<String, Map<String, Map<String, Any>>>()
-            val prefFiles =
-                listOf(
-                    "toolkit_prefs",
-                    "caffeinate_prefs",
-                    "link_prefs",
-                    "diy_automations_prefs",
-                    "live_wallpaper_prefs",
-                )
-
-            prefFiles.forEach { fileName ->
-                val p = context.getSharedPreferences(fileName, Context.MODE_PRIVATE)
-                val wrapperMap = mutableMapOf<String, Map<String, Any>>()
-
-                p.all.forEach { (key, value) ->
-                    if (key == KEY_GITHUB_ACCESS_TOKEN ||
-                        key == KEY_SHIZUKU_AUTH_TOKEN ||
-                        key.startsWith(LEGACY_WEATHER_API_KEY_PREFIX) ||
-                        key == KEY_SNOOZE_DISCOVERED_CHANNELS ||
-                        key == KEY_MAPS_DISCOVERED_CHANNELS ||
-                        key == KEY_SHUT_UP_ORIGINAL_SETTINGS ||
-                        key == "battery_history_points"
-                    ) {
-                        return@forEach
-                    }
-
-                    val type =
-                        when (value) {
-                            is Boolean -> "Boolean"
-                            is Int -> "Int"
-                            is Long -> "Long"
-                            is Float -> "Float"
-                            is String -> "String"
-                            is Set<*> -> "StringSet"
-                            else -> "Unknown"
-                        }
-                    if (value != null && type != "Unknown") {
-                        wrapperMap[key] = mapOf("type" to type, "value" to value)
-                    }
+    /** Serializes all tracked preference files into a single JSON backup string. */
+    fun getAllConfigsAsJsonString(): String =
+        try {
+            val allConfigs =
+                PREF_FILES.associateWith { fileName ->
+                    exportPrefFile(fileName)
                 }
-                allConfigs[fileName] = wrapperMap
-            }
-
             gson.toJson(allConfigs)
         } catch (e: Exception) {
             "{}"
         }
-    }
 
     /**
      * Executes the export configs operation.
@@ -86,89 +47,18 @@ class ConfigBackup(
      * @param keepPrefs [Boolean] Target keep prefs.
      * @return The resulting Boolean data.
      */
-    @Suppress("LongMethod", "CyclomaticComplexMethod", "NestedBlockDepth") // moved unchanged in tk24; simplify later
     fun importConfigs(
         inputStream: java.io.InputStream,
         keepPrefs: Boolean,
-    ): Boolean {
-        return try {
+    ): Boolean =
+        try {
             val json = inputStream.bufferedReader().use { it.readText() }
             val type = object : TypeToken<Map<String, Map<String, Map<String, Any>>>>() {}.type
             val allConfigs: Map<String, Map<String, Map<String, Any>>> =
                 gson.fromJson(json, type) ?: emptyMap()
 
             allConfigs.forEach { (fileName, prefWrapper) ->
-                val p = context.getSharedPreferences(fileName, Context.MODE_PRIVATE)
-
-                // Preserve sensitive or volatile local state not present in backups
-                val preservedValues = mutableMapOf<String, Any?>()
-                val keysToPreserve =
-                    listOf(
-                        KEY_GITHUB_ACCESS_TOKEN,
-                        KEY_SHIZUKU_AUTH_TOKEN,
-                        LEGACY_WEATHER_API_KEY_PREFIX,
-                        KEY_SNOOZE_DISCOVERED_CHANNELS,
-                        KEY_MAPS_DISCOVERED_CHANNELS,
-                        KEY_SHUT_UP_ORIGINAL_SETTINGS,
-                    )
-                keysToPreserve.forEach { key ->
-                    if (p.contains(key)) {
-                        preservedValues[key] = p.all[key]
-                    }
-                }
-
-                p
-                    .edit()
-                    .apply {
-                        if (!keepPrefs) clear()
-
-                        // Restore preserved values
-                        preservedValues.forEach { (key, value) ->
-                            if (value != null) {
-                                when (value) {
-                                    is Boolean -> putBoolean(key, value)
-                                    is Int -> putInt(key, value)
-                                    is Long -> putLong(key, value)
-                                    is Float -> putFloat(key, value)
-                                    is String -> putString(key, value)
-                                    is Set<*> -> {
-                                        @Suppress("UNCHECKED_CAST")
-                                        putStringSet(key, value as Set<String>)
-                                    }
-                                }
-                            }
-                        }
-
-                        prefWrapper.forEach { (key, item) ->
-                            // Do not import sensitive keys from the file even if they exist there
-                            if (key == KEY_GITHUB_ACCESS_TOKEN ||
-                                key == KEY_SHIZUKU_AUTH_TOKEN ||
-                                key.startsWith(LEGACY_WEATHER_API_KEY_PREFIX)
-                            ) {
-                                return@forEach
-                            }
-                            val itemType = item["type"] as? String
-                            val itemValue = item["value"]
-
-                            if (itemType != null && itemValue != null) {
-                                try {
-                                    when (itemType) {
-                                        "Boolean" -> putBoolean(key, itemValue as Boolean)
-                                        "Int" -> putInt(key, (itemValue as Double).toInt())
-                                        "Long" -> putLong(key, (itemValue as Double).toLong())
-                                        "Float" -> putFloat(key, (itemValue as Double).toFloat())
-                                        "String" -> putString(key, itemValue as String)
-                                        "StringSet" -> {
-                                            @Suppress("UNCHECKED_CAST")
-                                            putStringSet(key, (itemValue as List<String>).toSet())
-                                        }
-                                    }
-                                } catch (e: Exception) {
-                                    e.printStackTrace()
-                                }
-                            }
-                        }
-                    }.apply()
+                importPrefFile(fileName, prefWrapper, keepPrefs)
             }
             true
         } catch (e: Exception) {
@@ -180,6 +70,115 @@ class ConfigBackup(
             } catch (ignored: Exception) {
             }
         }
+
+    /** Dumps all preferences from one file into a JSON-compatible map. */
+    private fun exportPrefFile(fileName: String): Map<String, Map<String, Any>> {
+        val prefs = context.getSharedPreferences(fileName, Context.MODE_PRIVATE)
+        val entries = mutableMapOf<String, Map<String, Any>>()
+        for ((key, value) in prefs.all) {
+            if (isSkippedOnExport(key)) continue
+            val type = typeName(value) ?: continue
+            if (value != null) {
+                entries[key] = mapOf("type" to type, "value" to value)
+            }
+        }
+        return entries
+    }
+
+    /** Determines whether a preference key should be omitted during export. */
+    private fun isSkippedOnExport(key: String): Boolean = key in EXPORT_SKIPPED_KEYS || key.startsWith(LEGACY_WEATHER_API_KEY_PREFIX)
+
+    /** Maps a preference value to its serialized type name, or null if unsupported. */
+    private fun typeName(value: Any?): String? =
+        when (value) {
+            is Boolean -> "Boolean"
+            is Int -> "Int"
+            is Long -> "Long"
+            is Float -> "Float"
+            is String -> "String"
+            is Set<*> -> "StringSet"
+            else -> null
+        }
+
+    /** Imports backup entries into one preferences file, preserving sensitive keys. */
+    private fun importPrefFile(
+        fileName: String,
+        prefWrapper: Map<String, Map<String, Any>>,
+        keepPrefs: Boolean,
+    ) {
+        val prefs = context.getSharedPreferences(fileName, Context.MODE_PRIVATE)
+        val preserved =
+            PRESERVED_KEYS.mapNotNull { key ->
+                if (prefs.contains(key)) key to prefs.all[key] else null
+            }
+
+        prefs.edit {
+            if (!keepPrefs) clear()
+            for ((key, value) in preserved) {
+                if (value != null) putValue(key, value)
+            }
+            for ((key, item) in prefWrapper) {
+                importItem(key, item)
+            }
+        }
+    }
+
+    /** Inserts a JSON wrapper entry into the editor if not skipped. */
+    private fun SharedPreferences.Editor.importItem(
+        key: String,
+        item: Map<String, Any>,
+    ) {
+        if (isSkippedOnImport(key)) return
+        val type = item["type"] as? String ?: return
+        val value = item["value"] ?: return
+        putItem(key, type, value)
+    }
+
+    /** Determines whether a key from the backup file should be skipped during import. */
+    private fun isSkippedOnImport(key: String): Boolean =
+        key == KEY_GITHUB_ACCESS_TOKEN ||
+            key == KEY_SHIZUKU_AUTH_TOKEN ||
+            key.startsWith(LEGACY_WEATHER_API_KEY_PREFIX)
+
+    /** Restores a preserved preference value back into the editor. */
+    private fun SharedPreferences.Editor.putValue(
+        key: String,
+        value: Any,
+    ) {
+        when (value) {
+            is Boolean -> putBoolean(key, value)
+            is Int -> putInt(key, value)
+            is Long -> putLong(key, value)
+            is Float -> putFloat(key, value)
+            is String -> putString(key, value)
+            is Set<*> -> {
+                @Suppress("UNCHECKED_CAST")
+                putStringSet(key, value as Set<String>)
+            }
+        }
+    }
+
+    /** Inserts a typed preference item from the backup JSON into the editor. */
+    private fun SharedPreferences.Editor.putItem(
+        key: String,
+        type: String,
+        value: Any,
+    ) {
+        try {
+            when (type) {
+                "Boolean" -> putBoolean(key, value as Boolean)
+                "Int" -> putInt(key, (value as Double).toInt())
+                "Long" -> putLong(key, (value as Double).toLong())
+                "Float" -> putFloat(key, (value as Double).toFloat())
+                "String" -> putString(key, value as String)
+                "StringSet" -> {
+                    @Suppress("UNCHECKED_CAST")
+                    putStringSet(key, (value as List<String>).toSet())
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     companion object {
@@ -189,5 +188,34 @@ class ConfigBackup(
         const val KEY_MAPS_DISCOVERED_CHANNELS = "maps_discovered_channels"
         const val KEY_SHUT_UP_ORIGINAL_SETTINGS = "shut_up_original_settings"
         const val LEGACY_WEATHER_API_KEY_PREFIX = "weather_api_key"
+
+        private val PREF_FILES =
+            listOf(
+                "toolkit_prefs",
+                "caffeinate_prefs",
+                "link_prefs",
+                "diy_automations_prefs",
+                "live_wallpaper_prefs",
+            )
+
+        private val EXPORT_SKIPPED_KEYS =
+            setOf(
+                KEY_GITHUB_ACCESS_TOKEN,
+                KEY_SHIZUKU_AUTH_TOKEN,
+                KEY_SNOOZE_DISCOVERED_CHANNELS,
+                KEY_MAPS_DISCOVERED_CHANNELS,
+                KEY_SHUT_UP_ORIGINAL_SETTINGS,
+                "battery_history_points",
+            )
+
+        private val PRESERVED_KEYS =
+            setOf(
+                KEY_GITHUB_ACCESS_TOKEN,
+                KEY_SHIZUKU_AUTH_TOKEN,
+                LEGACY_WEATHER_API_KEY_PREFIX,
+                KEY_SNOOZE_DISCOVERED_CHANNELS,
+                KEY_MAPS_DISCOVERED_CHANNELS,
+                KEY_SHUT_UP_ORIGINAL_SETTINGS,
+            )
     }
 }
