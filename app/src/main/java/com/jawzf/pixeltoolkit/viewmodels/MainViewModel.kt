@@ -77,9 +77,8 @@ import com.jawzf.pixeltoolkit.feature.display.statusbar.StatusBarControlState
 import com.jawzf.pixeltoolkit.feature.input.InputState
 import com.jawzf.pixeltoolkit.feature.input.remap.RemapSettings
 import com.jawzf.pixeltoolkit.feature.input.remap.RemapState
-import com.jawzf.pixeltoolkit.feature.input.shortcuts.LockscreenShortcutSide
 import com.jawzf.pixeltoolkit.feature.input.shortcuts.ShortcutsSettings
-import com.jawzf.pixeltoolkit.feature.input.shortcuts.SystemShortcutsState
+import com.jawzf.pixeltoolkit.feature.input.shortcuts.ShortcutsState
 import com.jawzf.pixeltoolkit.feature.island.IslandDuoLink
 import com.jawzf.pixeltoolkit.feature.island.IslandState
 import com.jawzf.pixeltoolkit.feature.notifications.NotificationSettings
@@ -131,9 +130,6 @@ class MainViewModel : ViewModel() {
     val defaultTab = mutableStateOf(com.jawzf.pixeltoolkit.domain.DIYTabs.TOOLKIT)
     val selectedAppIcon = mutableStateOf(AppIcon.DEFAULT)
     val isDefaultBrowserSet = mutableStateOf(false)
-    val isLockscreenShortcutsEnabled = mutableStateOf(false)
-    val lockscreenShortcutActions = mutableStateMapOf<LockscreenShortcutSide, List<Action>>()
-    val lockscreenSystemShortcutsState = mutableStateOf(SystemShortcutsState.UNKNOWN)
 
     val isFoldableCameraDevice = mutableStateOf(false)
 
@@ -161,6 +157,7 @@ class MainViewModel : ViewModel() {
     val battery = BatteryState()
     val power = PowerState(viewModelScope)
     val remap = RemapState()
+    val shortcuts = ShortcutsState()
     val security =
         SecurityState(viewModelScope) { context, requesterId ->
             StatusBarManager.requestRestore(context, requesterId)
@@ -343,7 +340,6 @@ class MainViewModel : ViewModel() {
     val hasShizukuPermission = mutableStateOf(false)
 
     lateinit var settingsRepository: SettingsRepository
-    private lateinit var shortcutsSettings: ShortcutsSettings
     private lateinit var textAnimations: TextAnimationsSettings
     private lateinit var duoSettings: DuoSettings
     private var appContext: Context? = null
@@ -441,9 +437,8 @@ class MainViewModel : ViewModel() {
 
                     RemapSettings.KEY_BUTTON_REMAP_ENABLED -> remap.onPreferenceChanged(key)
 
-                    SettingsRepository.KEY_LOCKSCREEN_SYSTEM_SHORTCUTS_STATE ->
-                        lockscreenSystemShortcutsState.value =
-                            shortcutsSettings.getLockscreenSystemShortcutsState()
+                    ShortcutsSettings.KEY_LOCKSCREEN_SYSTEM_SHORTCUTS_STATE ->
+                        shortcuts.onPreferenceChanged(key)
 
                     AppsSettings.KEY_APP_LOCK_ENABLED -> appLock.onPreferenceChanged(key)
 
@@ -857,7 +852,6 @@ class MainViewModel : ViewModel() {
     fun check(context: Context) {
         appContext = context.applicationContext
         settingsRepository = SettingsRepository(context)
-        shortcutsSettings = ShortcutsSettings(context)
         textAnimations = TextAnimationsSettings(context)
         duoSettings = DuoSettings(context)
         NotificationAutoDismisser.isSnoozedByUs = { LiveUpdateSnoozer.isSnoozedByUs(it) }
@@ -1248,12 +1242,8 @@ class MainViewModel : ViewModel() {
         remap.load(context)
 
         hilight.load(context)
-        isLockscreenShortcutsEnabled.value = shortcutsSettings.isLockscreenShortcutsEnabled()
+        shortcuts.load(context)
         sound.load(context)
-        LockscreenShortcutSide.entries.forEach { side ->
-            lockscreenShortcutActions[side] = settingsRepository.getRemapActions(side.prefKey)
-        }
-        lockscreenSystemShortcutsState.value = shortcutsSettings.getLockscreenSystemShortcutsState()
 
         smartPixels.load(context)
         duo.load(context)
@@ -2446,19 +2436,6 @@ class MainViewModel : ViewModel() {
                 "HideGestureBar",
             )
         }
-    }
-
-    fun setLockscreenShortcutsEnabled(enabled: Boolean) {
-        isLockscreenShortcutsEnabled.value = enabled
-        shortcutsSettings.setLockscreenShortcutsEnabled(enabled)
-    }
-
-    fun setLockscreenShortcutActions(
-        side: LockscreenShortcutSide,
-        actions: List<Action>,
-    ) {
-        lockscreenShortcutActions[side] = actions
-        settingsRepository.setRemapActions(side.prefKey, actions)
     }
 
     fun triggerIslandPreview(context: Context) {

@@ -69,6 +69,7 @@ import com.jawzf.pixeltoolkit.core.platform.AppComponents.CONSCIOUS_GATE_FEATURE
 import com.jawzf.pixeltoolkit.core.platform.device.DeviceUtils
 import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
+import com.jawzf.pixeltoolkit.domain.diy.ActionRegistry
 import com.jawzf.pixeltoolkit.domain.diy.displayName
 import com.jawzf.pixeltoolkit.domain.registry.FeatureRegistry
 import com.jawzf.pixeltoolkit.domain.registry.PermissionRegistry
@@ -130,6 +131,7 @@ import com.jawzf.pixeltoolkit.feature.sound.ui.SoundModeTileSettingsUI
 import com.jawzf.pixeltoolkit.feature.sound.ui.VolumeStepsSettingsUI
 import com.jawzf.pixeltoolkit.feature.widgets.screenoff.ScreenOffWidgetSettingsUI
 import com.jawzf.pixeltoolkit.feature.widgets.stack.ui.WidgetStackSettingsUI
+import com.jawzf.pixeltoolkit.ui.core.sheets.ActivityIconSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.AppSelectionSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.ShakeForHelp
 import com.jawzf.pixeltoolkit.ui.core.sheets.SingleAppSelectionSheet
@@ -1027,7 +1029,27 @@ class FeatureSettingsActivity : AppCompatActivity() {
 
                                     "Lock screen shortcuts" -> {
                                         LockscreenShortcutsSettingsUI(
-                                            viewModel = viewModel,
+                                            state = viewModel.shortcuts,
+                                            actionEditor = { actions, onChange, listKey, emptyText ->
+                                                ActionSequenceEditor(
+                                                    viewModel = viewModel,
+                                                    actions = actions,
+                                                    onActionsChange = onChange,
+                                                    screenOnOnly = true,
+                                                    listKey = listKey,
+                                                    emptyText = emptyText,
+                                                    maxActions = 1,
+                                                    categories = remember { ActionRegistry.getLockscreenCategories() },
+                                                )
+                                            },
+                                            iconSheet = { action, onDismiss, onConfirm ->
+                                                ActivityIconSheet(
+                                                    action = action,
+                                                    confirmLabel = stringResource(R.string.action_save),
+                                                    onDismiss = onDismiss,
+                                                    onConfirm = onConfirm,
+                                                )
+                                            },
                                             modifier = Modifier.padding(top = 16.dp),
                                             highlightSetting = highlightSetting,
                                         )
