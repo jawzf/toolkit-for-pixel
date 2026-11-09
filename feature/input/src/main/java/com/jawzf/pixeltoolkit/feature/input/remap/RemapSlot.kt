@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.domain.model
+package com.jawzf.pixeltoolkit.feature.input.remap
 
 import android.view.KeyEvent
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository

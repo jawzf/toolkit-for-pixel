@@ -15,7 +15,7 @@ import androidx.core.app.NotificationCompat
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuPermissionHelper
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.domain.model.RemapSlot
+import com.jawzf.pixeltoolkit.feature.input.remap.RemapSlot
 import com.jawzf.pixeltoolkit.input.InputDeviceScanner
 import com.jawzf.pixeltoolkit.input.PowerPressDetector
 import com.jawzf.pixeltoolkit.input.VolumeLongPressDetector

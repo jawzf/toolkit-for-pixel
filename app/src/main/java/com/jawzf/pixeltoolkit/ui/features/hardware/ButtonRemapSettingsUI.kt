@@ -56,12 +56,12 @@ import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuPermissionHelper
 import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuStatus
 import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuUtils
-import com.jawzf.pixeltoolkit.domain.model.PowerChoice
-import com.jawzf.pixeltoolkit.domain.model.RemapInput
-import com.jawzf.pixeltoolkit.domain.model.RemapScreenState
-import com.jawzf.pixeltoolkit.domain.model.RemapSlot
+import com.jawzf.pixeltoolkit.feature.input.remap.PowerButtonGestures
+import com.jawzf.pixeltoolkit.feature.input.remap.PowerChoice
+import com.jawzf.pixeltoolkit.feature.input.remap.RemapInput
+import com.jawzf.pixeltoolkit.feature.input.remap.RemapScreenState
+import com.jawzf.pixeltoolkit.feature.input.remap.RemapSlot
 import com.jawzf.pixeltoolkit.utils.PermissionUIHelper
-import com.jawzf.pixeltoolkit.utils.PowerButtonGestures
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)

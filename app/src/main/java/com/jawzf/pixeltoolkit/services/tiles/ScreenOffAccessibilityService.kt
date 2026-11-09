@@ -42,6 +42,8 @@ import com.jawzf.pixeltoolkit.feature.display.ondisplay.AmbientGlanceHandler
 import com.jawzf.pixeltoolkit.feature.display.pixels.SmartPixelsHandler
 import com.jawzf.pixeltoolkit.feature.display.statusbar.StatusBarIconHandler
 import com.jawzf.pixeltoolkit.feature.input.gesture.OmniGestureOverlayHandler
+import com.jawzf.pixeltoolkit.feature.input.remap.CameraSession
+import com.jawzf.pixeltoolkit.feature.input.remap.PowerButtonGestures
 import com.jawzf.pixeltoolkit.feature.island.service.IslandCoordinator
 import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingHandler
 import com.jawzf.pixeltoolkit.feature.security.faceunlock.FaceUnlockBrightnessHandler
@@ -60,8 +62,6 @@ import com.jawzf.pixeltoolkit.services.handlers.ButtonRemapHandler
 import com.jawzf.pixeltoolkit.services.handlers.FlashlightHandler
 import com.jawzf.pixeltoolkit.services.handlers.LockscreenShortcutsHandler
 import com.jawzf.pixeltoolkit.services.receivers.FlashlightActionReceiver
-import com.jawzf.pixeltoolkit.utils.CameraSession
-import com.jawzf.pixeltoolkit.utils.PowerButtonGestures
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob

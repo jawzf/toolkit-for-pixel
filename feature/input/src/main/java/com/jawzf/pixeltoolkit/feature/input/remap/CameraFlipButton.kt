@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.utils
+package com.jawzf.pixeltoolkit.feature.input.remap
 
 import android.accessibilityservice.AccessibilityService
 import android.view.accessibility.AccessibilityNodeInfo

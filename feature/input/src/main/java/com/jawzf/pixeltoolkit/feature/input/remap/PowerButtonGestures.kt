@@ -1,13 +1,13 @@
-package com.jawzf.pixeltoolkit.utils
+package com.jawzf.pixeltoolkit.feature.input.remap
 
 import android.content.Context
 import android.provider.Settings
 import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.domain.model.PowerChoice
-import com.jawzf.pixeltoolkit.domain.model.RemapInput
-import com.jawzf.pixeltoolkit.domain.model.RemapScreenState
-import com.jawzf.pixeltoolkit.domain.model.RemapSlot
+import com.jawzf.pixeltoolkit.feature.input.remap.PowerChoice
+import com.jawzf.pixeltoolkit.feature.input.remap.RemapInput
+import com.jawzf.pixeltoolkit.feature.input.remap.RemapScreenState
+import com.jawzf.pixeltoolkit.feature.input.remap.RemapSlot
 
 object PowerButtonGestures {
     private const val SETTING_POWER_BUTTON_LONG_PRESS = "power_button_long_press"

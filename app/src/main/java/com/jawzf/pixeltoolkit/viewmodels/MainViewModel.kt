@@ -56,8 +56,6 @@ import com.jawzf.pixeltoolkit.core.platform.statusbar.StatusBarManager
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.domain.model.AppIcon
 import com.jawzf.pixeltoolkit.domain.model.LockscreenShortcutSide
-import com.jawzf.pixeltoolkit.domain.model.PowerChoice
-import com.jawzf.pixeltoolkit.domain.model.RemapSlot
 import com.jawzf.pixeltoolkit.domain.model.SearchableItem
 import com.jawzf.pixeltoolkit.domain.model.SystemShortcutsState
 import com.jawzf.pixeltoolkit.domain.registry.SearchRegistry
@@ -79,6 +77,9 @@ import com.jawzf.pixeltoolkit.feature.display.pixels.SmartPixelsState
 import com.jawzf.pixeltoolkit.feature.display.refresh.RefreshRatePanelState
 import com.jawzf.pixeltoolkit.feature.display.statusbar.StatusBarControlState
 import com.jawzf.pixeltoolkit.feature.input.InputState
+import com.jawzf.pixeltoolkit.feature.input.remap.PowerButtonGestures
+import com.jawzf.pixeltoolkit.feature.input.remap.PowerChoice
+import com.jawzf.pixeltoolkit.feature.input.remap.RemapSlot
 import com.jawzf.pixeltoolkit.feature.island.IslandDuoLink
 import com.jawzf.pixeltoolkit.feature.island.IslandState
 import com.jawzf.pixeltoolkit.feature.notifications.NotificationSettings
@@ -100,7 +101,6 @@ import com.jawzf.pixeltoolkit.services.receivers.SecurityDeviceAdminReceiver
 import com.jawzf.pixeltoolkit.services.receivers.SecurityReceiver
 import com.jawzf.pixeltoolkit.services.tiles.ScreenOffAccessibilityService
 import com.jawzf.pixeltoolkit.utils.AppIconUtil
-import com.jawzf.pixeltoolkit.utils.PowerButtonGestures
 import com.jawzf.pixeltoolkit.utils.SplitScreenUtil
 import com.jawzf.pixeltoolkit.utils.SurfaceFlingerControl
 import com.jawzf.pixeltoolkit.utils.TestNotificationUtil
