@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.services.widgets
+package com.jawzf.pixeltoolkit.feature.widgets.favorites
 
 import android.content.Context
 import android.content.Intent
