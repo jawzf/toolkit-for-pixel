@@ -1,4 +1,10 @@
-package com.jawzf.pixeltoolkit.ui.activities
+@file:OptIn(
+    ExperimentalMaterial3Api::class,
+    ExperimentalMaterial3ExpressiveApi::class,
+    ExperimentalLayoutApi::class,
+)
+
+package com.jawzf.pixeltoolkit.feature.automation.ui.editor
 
 import android.content.Context
 import android.content.Intent
@@ -14,6 +20,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -33,6 +40,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -102,6 +111,8 @@ import com.jawzf.pixeltoolkit.feature.automation.diy.DIYRepository
 import com.jawzf.pixeltoolkit.feature.automation.diy.Metric
 import com.jawzf.pixeltoolkit.feature.automation.diy.Trigger
 import com.jawzf.pixeltoolkit.feature.automation.ui.editor.ActionEditors
+import com.jawzf.pixeltoolkit.feature.automation.ui.editor.ActionSequenceEditor
+import com.jawzf.pixeltoolkit.feature.automation.ui.editor.NotificationTriggerSheet
 import com.jawzf.pixeltoolkit.feature.automation.ui.sheets.BluetoothDeviceSelectionSheet
 import com.jawzf.pixeltoolkit.feature.automation.ui.sheets.CalendarStateSheet
 import com.jawzf.pixeltoolkit.feature.automation.ui.sheets.LocationTriggerSheet
@@ -109,8 +120,6 @@ import com.jawzf.pixeltoolkit.feature.automation.ui.sheets.SoundModeSettingsShee
 import com.jawzf.pixeltoolkit.feature.automation.ui.sheets.SystemMetricSheet
 import com.jawzf.pixeltoolkit.feature.automation.ui.sheets.TimeSelectionSheet
 import com.jawzf.pixeltoolkit.feature.automation.ui.sheets.WifiNetworkSelectionSheet
-import com.jawzf.pixeltoolkit.ui.core.sheets.NotificationTriggerSheet
-import com.jawzf.pixeltoolkit.ui.features.system.ActionSequenceEditor
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

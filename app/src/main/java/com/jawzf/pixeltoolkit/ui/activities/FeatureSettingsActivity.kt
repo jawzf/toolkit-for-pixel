@@ -78,6 +78,7 @@ import com.jawzf.pixeltoolkit.feature.apps.consciousgate.ui.ConsciousGateSetting
 import com.jawzf.pixeltoolkit.feature.apps.freeze.ui.FreezeSettingsUI
 import com.jawzf.pixeltoolkit.feature.automation.diy.ActionRegistry
 import com.jawzf.pixeltoolkit.feature.automation.diy.displayName
+import com.jawzf.pixeltoolkit.feature.automation.ui.editor.ActionSequenceEditor
 import com.jawzf.pixeltoolkit.feature.connectivity.ui.NetworksSettingsUI
 import com.jawzf.pixeltoolkit.feature.display.aod.ui.AlwaysOnDisplaySettingsUI
 import com.jawzf.pixeltoolkit.feature.display.aod.ui.AodWallpaperPreviewCard
@@ -139,7 +140,6 @@ import com.jawzf.pixeltoolkit.ui.core.sheets.ActivityIconSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.ShakeForHelp
 import com.jawzf.pixeltoolkit.ui.features.display.actions.GestureActionPickerSheet
 import com.jawzf.pixeltoolkit.ui.features.display.sheets.StatusGlanceCalendarOptionsBottomSheet
-import com.jawzf.pixeltoolkit.ui.features.system.ActionSequenceEditor
 import com.jawzf.pixeltoolkit.ui.features.system.ActivityLauncherSearchBar
 import com.jawzf.pixeltoolkit.ui.features.system.ActivityLauncherSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.FlashlightSettingsUI

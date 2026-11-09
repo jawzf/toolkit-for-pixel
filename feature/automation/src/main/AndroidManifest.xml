@@ -27,6 +27,18 @@
         <receiver
             android:name="com.jawzf.pixeltoolkit.feature.automation.engine.receivers.GeofenceReceiver"
             android:exported="false" />
+
+        <activity
+            android:name="com.jawzf.pixeltoolkit.feature.automation.ui.editor.AutomationEditorActivity"
+            android:exported="false"
+            android:label="@string/diy_editor_new_title"
+            android:theme="@style/Theme.Toolkit" />
+
+        <activity
+            android:name="com.jawzf.pixeltoolkit.feature.automation.ui.editor.MacroEditorActivity"
+            android:exported="false"
+            android:label="@string/diy_new_macro"
+            android:theme="@style/Theme.Toolkit" />
     </application>
 
 </manifest>

@@ -22,4 +22,5 @@ dependencies {
     implementation(libs.androidx.compose.material3.v150alpha24)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.reorderable)
 }

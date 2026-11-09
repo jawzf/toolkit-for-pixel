@@ -340,20 +340,6 @@
         </activity>
 
         <activity
-            android:name=".ui.activities.AutomationEditorActivity"
-            android:exported="false"
-            android:label="@string/diy_editor_new_title"
-            android:theme="@style/Theme.Toolkit" />
-
-        <activity
-            android:name=".ui.activities.MacroEditorActivity"
-            android:exported="false"
-            android:label="@string/diy_new_macro"
-            android:theme="@style/Theme.Toolkit" />
-
-
-
-        <activity
             android:name=".ui.activities.AppFreezingActivity"
             android:exported="true"
             android:icon="@drawable/rounded_mode_cool_24"
