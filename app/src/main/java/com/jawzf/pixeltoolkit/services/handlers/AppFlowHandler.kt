@@ -29,9 +29,9 @@ import com.jawzf.pixeltoolkit.feature.apps.consciousgate.ConsciousGateActivity
 import com.jawzf.pixeltoolkit.feature.apps.freeze.FreezeManager
 import com.jawzf.pixeltoolkit.feature.automation.diy.Automation
 import com.jawzf.pixeltoolkit.feature.automation.diy.DIYRepository
+import com.jawzf.pixeltoolkit.feature.automation.engine.CombinedActionExecutor
 import com.jawzf.pixeltoolkit.feature.input.InputSettings
 import com.jawzf.pixeltoolkit.feature.input.gesture.BackGestureAppConfig
-import com.jawzf.pixeltoolkit.services.automation.executors.CombinedActionExecutor
 import com.jawzf.pixeltoolkit.services.tiles.ScreenOffAccessibilityService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

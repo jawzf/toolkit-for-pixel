@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.services.automation.executors
+package com.jawzf.pixeltoolkit.feature.automation.engine
 
 import android.app.ActivityManager
 import android.app.KeyguardManager
@@ -34,6 +34,7 @@ import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticFeedbackType
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.haptics.performHapticFeedback
+import com.jawzf.pixeltoolkit.core.platform.AppComponents
 import com.jawzf.pixeltoolkit.core.platform.device.ZenModeController
 import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
@@ -184,10 +185,10 @@ object CombinedActionExecutor : ActionExecutor {
                                     val componentName =
                                         android.content.ComponentName(
                                             context,
-                                            com.jawzf.pixeltoolkit.services.ToolkitConditionProvider::class.java,
+                                            ToolkitConditionProvider::class.java,
                                         )
                                     val conditionUri =
-                                        com.jawzf.pixeltoolkit.services.ToolkitConditionProvider.CONDITION_URI
+                                        ToolkitConditionProvider.CONDITION_URI
 
                                     val ruleBuilder =
                                         android.app.AutomaticZenRule
@@ -205,8 +206,8 @@ object CombinedActionExecutor : ActionExecutor {
                                             ).setConditionId(conditionUri)
                                             .setConfigurationActivity(
                                                 android.content.ComponentName(
-                                                    context,
-                                                    com.jawzf.pixeltoolkit.MainActivity::class.java,
+                                                    context.packageName,
+                                                    AppComponents.MAIN_ACTIVITY,
                                                 ),
                                             )
 
@@ -217,7 +218,7 @@ object CombinedActionExecutor : ActionExecutor {
                                     }
 
                                     // Trigger the condition to be TRUE
-                                    com.jawzf.pixeltoolkit.services.ToolkitConditionProvider.setConditionState(
+                                    ToolkitConditionProvider.setConditionState(
                                         context,
                                         true,
                                     )
@@ -236,7 +237,7 @@ object CombinedActionExecutor : ActionExecutor {
                                         nm.updateAutomaticZenRule(entry.key, rule)
                                     }
                                     // Also notify condition false just in case
-                                    com.jawzf.pixeltoolkit.services.ToolkitConditionProvider.setConditionState(
+                                    ToolkitConditionProvider.setConditionState(
                                         context,
                                         false,
                                     )

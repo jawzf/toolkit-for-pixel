@@ -23,4 +23,6 @@ dependencies {
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.reorderable)
+    implementation(libs.shizuku.api)
+    implementation(libs.hiddenapibypass)
 }

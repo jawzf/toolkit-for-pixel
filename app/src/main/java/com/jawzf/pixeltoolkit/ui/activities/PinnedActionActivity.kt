@@ -6,7 +6,7 @@ import androidx.activity.ComponentActivity
 import androidx.lifecycle.lifecycleScope
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.services.automation.executors.CombinedActionExecutor
+import com.jawzf.pixeltoolkit.feature.automation.engine.CombinedActionExecutor
 import kotlinx.coroutines.launch
 
 // Exported for launchers, so intents carry only an id and the action is read from app storage
