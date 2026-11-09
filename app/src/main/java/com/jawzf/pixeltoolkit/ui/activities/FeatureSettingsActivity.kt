@@ -128,6 +128,7 @@ import com.jawzf.pixeltoolkit.feature.security.screenshots.ui.ScreenshotsSetting
 import com.jawzf.pixeltoolkit.feature.sound.ui.AppVolumeSettingsUI
 import com.jawzf.pixeltoolkit.feature.sound.ui.SoundModeTileSettingsUI
 import com.jawzf.pixeltoolkit.feature.sound.ui.VolumeStepsSettingsUI
+import com.jawzf.pixeltoolkit.feature.widgets.screenoff.ScreenOffWidgetSettingsUI
 import com.jawzf.pixeltoolkit.feature.widgets.stack.ui.WidgetStackSettingsUI
 import com.jawzf.pixeltoolkit.ui.core.sheets.AppSelectionSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.ShakeForHelp
@@ -142,7 +143,6 @@ import com.jawzf.pixeltoolkit.ui.features.system.LockscreenShortcutsSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.NavigationSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.OtherCustomizationsSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.QuickSettingsTilesSettingsUI
-import com.jawzf.pixeltoolkit.ui.features.system.ScreenOffWidgetSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.ShutUpSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.TextAnimationsSettingsUI
 import com.jawzf.pixeltoolkit.utils.BiometricSecurityHelper

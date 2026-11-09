@@ -9,8 +9,10 @@ import android.provider.Settings
 import android.util.Log
 import androidx.activity.ComponentActivity
 import com.jawzf.pixeltoolkit.FeatureSettingsActivity
+import com.jawzf.pixeltoolkit.core.data.security.DeviceLockUtils
 import com.jawzf.pixeltoolkit.feature.apps.applock.AppLockTileService
 import com.jawzf.pixeltoolkit.feature.apps.freeze.AppFreezingTileService
+import com.jawzf.pixeltoolkit.feature.apps.launcher.DefaultLauncherSettingsActivity
 import com.jawzf.pixeltoolkit.feature.connectivity.dns.PrivateDnsSettingsActivity
 import com.jawzf.pixeltoolkit.feature.connectivity.dns.PrivateDnsTileService
 import com.jawzf.pixeltoolkit.feature.connectivity.nfc.NfcTileService
@@ -35,7 +37,6 @@ import com.jawzf.pixeltoolkit.feature.tiles.DeveloperOptionsTileService
 import com.jawzf.pixeltoolkit.feature.tiles.HapticsTileService
 import com.jawzf.pixeltoolkit.feature.tiles.StayAwakeTileService
 import com.jawzf.pixeltoolkit.feature.tiles.UsbDebuggingTileService
-import com.jawzf.pixeltoolkit.utils.DeviceLockUtils
 
 class QSPreferencesActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

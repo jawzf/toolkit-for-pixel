@@ -27,6 +27,7 @@ import com.jawzf.pixeltoolkit.core.data.duo.DuoSettings
 import com.jawzf.pixeltoolkit.core.data.glance.StatusGlanceSettings
 import com.jawzf.pixeltoolkit.core.data.island.IslandSettings
 import com.jawzf.pixeltoolkit.core.data.notifications.ConsciousGateSession
+import com.jawzf.pixeltoolkit.core.data.security.DeviceLockUtils
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticFeedbackType
 import com.jawzf.pixeltoolkit.core.design.haptics.performHapticFeedback
 import com.jawzf.pixeltoolkit.core.platform.device.CarConnectionMonitor
@@ -60,7 +61,6 @@ import com.jawzf.pixeltoolkit.services.handlers.FlashlightHandler
 import com.jawzf.pixeltoolkit.services.handlers.LockscreenShortcutsHandler
 import com.jawzf.pixeltoolkit.services.receivers.FlashlightActionReceiver
 import com.jawzf.pixeltoolkit.utils.CameraSession
-import com.jawzf.pixeltoolkit.utils.DeviceLockUtils
 import com.jawzf.pixeltoolkit.utils.PowerButtonGestures
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

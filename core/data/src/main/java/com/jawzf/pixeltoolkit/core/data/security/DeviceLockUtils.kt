@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.utils
+package com.jawzf.pixeltoolkit.core.data.security
 
 import android.accessibilityservice.AccessibilityService
 import android.app.admin.DevicePolicyManager

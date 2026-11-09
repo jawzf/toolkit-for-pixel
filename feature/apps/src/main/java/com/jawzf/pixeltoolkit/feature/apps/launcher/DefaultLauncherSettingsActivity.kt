@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.activities
+package com.jawzf.pixeltoolkit.feature.apps.launcher
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -35,7 +35,7 @@ import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.theme.ToolkitTheme
-import com.jawzf.pixeltoolkit.utils.LauncherUtils
+import com.jawzf.pixeltoolkit.feature.apps.launcher.LauncherUtils
 
 class DefaultLauncherSettingsActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

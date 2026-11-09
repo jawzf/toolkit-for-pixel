@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.services.tiles
+package com.jawzf.pixeltoolkit.feature.apps.launcher
 
 import android.app.PendingIntent
 import android.content.Intent
@@ -9,7 +9,7 @@ import android.service.quicksettings.Tile
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.core.platform.tiles.BaseTileService
-import com.jawzf.pixeltoolkit.utils.LauncherUtils
+import com.jawzf.pixeltoolkit.feature.apps.launcher.LauncherUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch

@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.activities
+package com.jawzf.pixeltoolkit.feature.widgets.screenoff
 
 import android.appwidget.AppWidgetManager
 import android.content.Context
@@ -43,7 +43,7 @@ import com.jawzf.pixeltoolkit.core.design.cards.IconToggleItem
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.theme.ToolkitTheme
-import com.jawzf.pixeltoolkit.services.ScreenOffWidgetProvider
+import com.jawzf.pixeltoolkit.feature.widgets.screenoff.ScreenOffWidgetProvider
 
 class ScreenOffWidgetConfigureActivity : ComponentActivity() {
     private var appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID

@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.features.system
+package com.jawzf.pixeltoolkit.feature.widgets.screenoff
 
 import android.content.SharedPreferences
 import android.os.Vibrator
@@ -25,7 +25,7 @@ import com.jawzf.pixeltoolkit.core.design.haptics.HapticFeedbackType
 import com.jawzf.pixeltoolkit.core.design.haptics.performHapticFeedback
 import com.jawzf.pixeltoolkit.core.design.modifiers.highlight
 import com.jawzf.pixeltoolkit.core.design.pickers.HapticFeedbackPicker
-import com.jawzf.pixeltoolkit.ui.core.pickers.ScreenOffMethodPicker
+import com.jawzf.pixeltoolkit.feature.widgets.screenoff.ScreenOffMethodPicker
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 
 @Composable
