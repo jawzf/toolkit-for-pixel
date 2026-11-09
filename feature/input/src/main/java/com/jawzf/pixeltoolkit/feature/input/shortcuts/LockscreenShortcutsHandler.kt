@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.services.handlers
+package com.jawzf.pixeltoolkit.feature.input.shortcuts
 
 import android.accessibilityservice.AccessibilityService
 import android.annotation.SuppressLint
@@ -52,17 +52,13 @@ import androidx.lifecycle.setViewTreeLifecycleOwner
 import androidx.lifecycle.setViewTreeViewModelStoreOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 import com.jawzf.pixeltoolkit.core.data.action.Action
+import com.jawzf.pixeltoolkit.core.data.action.ActionRunner
+import com.jawzf.pixeltoolkit.core.data.apps.ActivityLauncherUtil
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.overlay.OverlayLifecycleOwner
 import com.jawzf.pixeltoolkit.core.platform.device.LockscreenShortcutDetector
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.domain.diy.displayName
-import com.jawzf.pixeltoolkit.domain.model.LockscreenShortcutSide
-import com.jawzf.pixeltoolkit.domain.model.SystemShortcutsState
-import com.jawzf.pixeltoolkit.services.automation.executors.CombinedActionExecutor
-import com.jawzf.pixeltoolkit.ui.activities.LockscreenActionActivity
-import com.jawzf.pixeltoolkit.utils.ActivityLauncherUtil
+import com.jawzf.pixeltoolkit.core.platform.device.TorchControl
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -73,9 +69,9 @@ import kotlinx.coroutines.withContext
 
 class LockscreenShortcutsHandler(
     private val service: AccessibilityService,
-    private val flashlightHandler: FlashlightHandler,
+    private val torch: TorchControl,
 ) {
-    private val settings = SettingsRepository(service)
+    private val settings = ShortcutsSettings(service)
     private val handler = Handler(Looper.getMainLooper())
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
     private val windowManager = service.getSystemService(WindowManager::class.java)
@@ -251,7 +247,7 @@ class LockscreenShortcutsHandler(
                 else -> null
             }
         val label =
-            service.getString(R.string.lockscreen_shortcut_content_desc, app?.label ?: action.displayName(service))
+            service.getString(R.string.lockscreen_shortcut_content_desc, app?.label ?: ActionRunner.displayName(service, action))
         container.addView(
             ComposeView(service).apply {
                 setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnDetachedFromWindow)
@@ -297,9 +293,9 @@ class LockscreenShortcutsHandler(
                 HapticUtil.performHapticForService(service)
                 try {
                     when {
-                        action is Action.ToggleFlashlight -> flashlightHandler.toggleFlashlight()
+                        action is Action.ToggleFlashlight -> torch.toggleFlashlight()
                         opensUi(action) -> LockscreenActionActivity.start(service, action)
-                        else -> CombinedActionExecutor.execute(service, action)
+                        else -> ActionRunner.execute(service, action)
                     }
                 } catch (e: Exception) {
                     e.printStackTrace()

@@ -47,6 +47,7 @@ import com.jawzf.pixeltoolkit.feature.input.remap.CameraSession
 import com.jawzf.pixeltoolkit.feature.input.remap.InputEventListenerService
 import com.jawzf.pixeltoolkit.feature.input.remap.PowerButtonGestures
 import com.jawzf.pixeltoolkit.feature.input.remap.RemapSettings
+import com.jawzf.pixeltoolkit.feature.input.shortcuts.LockscreenShortcutsHandler
 import com.jawzf.pixeltoolkit.feature.island.service.IslandCoordinator
 import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingHandler
 import com.jawzf.pixeltoolkit.feature.security.faceunlock.FaceUnlockBrightnessHandler
@@ -61,7 +62,6 @@ import com.jawzf.pixeltoolkit.services.LiveUpdateSnoozer
 import com.jawzf.pixeltoolkit.services.NotificationListener
 import com.jawzf.pixeltoolkit.services.handlers.AppFlowHandler
 import com.jawzf.pixeltoolkit.services.handlers.FlashlightHandler
-import com.jawzf.pixeltoolkit.services.handlers.LockscreenShortcutsHandler
 import com.jawzf.pixeltoolkit.services.receivers.FlashlightActionReceiver
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -348,7 +348,7 @@ class ScreenOffAccessibilityService :
         }
         duoOverlayHandler.openBrief = { islandOverlayHandler.openBrief() }
         statusGlanceHandler = StatusGlanceHandler(this)
-        lockscreenShortcutsHandler = LockscreenShortcutsHandler(this, flashlightHandler)
+        lockscreenShortcutsHandler = LockscreenShortcutsHandler(this, torch = flashlightHandler)
         appVolumeOverlayHandler = AppVolumeOverlayHandler(this)
         screenshotShareCleanupHandler = ScreenshotShareCleanupHandler(this, serviceScope)
         screenshotAutoCleanHandler = ScreenshotAutoCleanHandler(this, serviceScope)

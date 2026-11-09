@@ -490,14 +490,6 @@
             android:theme="@style/Theme.Toolkit.Translucent" />
 
         <activity
-            android:name=".ui.activities.LockscreenActionActivity"
-            android:excludeFromRecents="true"
-            android:exported="false"
-            android:noHistory="true"
-            android:taskAffinity=""
-            android:theme="@style/Theme.Toolkit.Translucent" />
-
-        <activity
             android:name=".ui.activities.QSPreferencesActivity"
             android:excludeFromRecents="true"
             android:exported="true"

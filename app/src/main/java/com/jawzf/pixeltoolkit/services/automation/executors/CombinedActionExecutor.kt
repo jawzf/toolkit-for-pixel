@@ -45,6 +45,7 @@ import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuUtils
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.domain.diy.DIYRepository
+import com.jawzf.pixeltoolkit.domain.diy.displayName
 import com.jawzf.pixeltoolkit.feature.apps.AppsSettings
 import com.jawzf.pixeltoolkit.feature.apps.freeze.FreezeManager
 import com.jawzf.pixeltoolkit.feature.connectivity.hotspot.HotspotController
@@ -73,6 +74,11 @@ import rikka.shizuku.ShizukuBinderWrapper
 import rikka.shizuku.SystemServiceHelper
 
 object CombinedActionExecutor : ActionExecutor {
+    override fun displayName(
+        context: Context,
+        action: Action,
+    ): String = action.displayName(context)
+
     private suspend fun vibrateModeHaptic(context: Context) {
         kotlinx.coroutines.delay(350)
         HapticUtil.performStrongDoubleHaptic(context)
