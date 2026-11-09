@@ -12,6 +12,7 @@ import com.jawzf.pixeltoolkit.feature.apps.launcher.DefaultLauncherTileService
 import com.jawzf.pixeltoolkit.feature.connectivity.dns.PrivateDnsTileService
 import com.jawzf.pixeltoolkit.feature.connectivity.nfc.NfcTileService
 import com.jawzf.pixeltoolkit.feature.connectivity.sim.DataSimTileService
+import com.jawzf.pixeltoolkit.feature.display.animations.ScaleAnimationsTileService
 import com.jawzf.pixeltoolkit.feature.display.aod.AlwaysOnDisplayTileService
 import com.jawzf.pixeltoolkit.feature.display.duo.DuoTileService
 import com.jawzf.pixeltoolkit.feature.display.nightlight.DynamicNightLightTileService
@@ -42,7 +43,6 @@ import com.jawzf.pixeltoolkit.feature.tiles.TapToWakeTileService
 import com.jawzf.pixeltoolkit.feature.tiles.UiBlurTileService
 import com.jawzf.pixeltoolkit.feature.tiles.UsbDebuggingTileService
 import com.jawzf.pixeltoolkit.services.tiles.FlashlightTileService
-import com.jawzf.pixeltoolkit.services.tiles.ScaleAnimationsTileService
 
 data class QSTileInfo(
     @StringRes val titleRes: Int,

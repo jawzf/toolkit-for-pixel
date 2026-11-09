@@ -27,6 +27,7 @@ import androidx.annotation.RequiresApi
 import com.jawzf.pixeltoolkit.core.data.action.Action
 import com.jawzf.pixeltoolkit.core.data.action.ActionExecutor
 import com.jawzf.pixeltoolkit.core.data.action.NotificationLightingStyle
+import com.jawzf.pixeltoolkit.core.data.display.TextAnimationsSettings
 import com.jawzf.pixeltoolkit.core.data.duo.DuoSettings
 import com.jawzf.pixeltoolkit.core.data.glance.StatusGlanceSettings
 import com.jawzf.pixeltoolkit.core.data.power.CaffeinateController
@@ -754,29 +755,13 @@ object CombinedActionExecutor : ActionExecutor {
                     }
 
                     if (action.changeGloveMode) {
+                        val textAnimations = TextAnimationsSettings(context)
                         val newMode = if (action.gloveModeEnabled) "glove" else "default"
-                        val currentMode = repository.getScaleAnimationsMode()
+                        val currentMode = textAnimations.getScaleAnimationsMode()
                         if (currentMode != newMode) {
-                            val profile = repository.getScaleAnimationsProfile(newMode)
-                            repository.setScaleAnimationsMode(newMode)
-                            repository.setFontScale(profile.fontScale)
-                            repository.setFontWeight(profile.fontWeight)
-                            repository.setAnimationScale(
-                                android.provider.Settings.Global.ANIMATOR_DURATION_SCALE,
-                                profile.animatorDurationScale,
-                            )
-                            repository.setAnimationScale(
-                                android.provider.Settings.Global.TRANSITION_ANIMATION_SCALE,
-                                profile.transitionAnimationScale,
-                            )
-                            repository.setAnimationScale(
-                                android.provider.Settings.Global.WINDOW_ANIMATION_SCALE,
-                                profile.windowAnimationScale,
-                            )
-                            repository.setSmallestWidth(profile.smallestWidth)
-                            repository.setTouchSensitivityEnabled(profile.touchSensitivityEnabled)
-                            repository.setAutoRotateEnabled(profile.autoRotateEnabled)
-                            repository.setScreenTimeout(profile.screenTimeout)
+                            val profile = textAnimations.getScaleAnimationsProfile(newMode)
+                            textAnimations.setScaleAnimationsMode(newMode)
+                            textAnimations.applyProfile(profile)
                         }
                     }
 

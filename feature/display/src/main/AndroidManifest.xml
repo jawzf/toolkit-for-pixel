@@ -108,6 +108,17 @@
                 android:name="android.service.quicksettings.TILE_CATEGORY"
                 android:value="android.service.quicksettings.CATEGORY_DISPLAY" />
         </service>
+
+        <service
+            android:name="com.jawzf.pixeltoolkit.feature.display.animations.ScaleAnimationsTileService"
+            android:exported="true"
+            android:icon="@drawable/rounded_settings_24"
+            android:label="@string/tile_scale_animations"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

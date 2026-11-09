@@ -37,6 +37,8 @@ import com.jawzf.pixeltoolkit.ToolkitApp
 import com.jawzf.pixeltoolkit.core.data.action.Action
 import com.jawzf.pixeltoolkit.core.data.apps.AppUtil
 import com.jawzf.pixeltoolkit.core.data.backup.ConfigBackup
+import com.jawzf.pixeltoolkit.core.data.display.ScaleAnimationsProfile
+import com.jawzf.pixeltoolkit.core.data.display.TextAnimationsSettings
 import com.jawzf.pixeltoolkit.core.data.duo.DuoSettings
 import com.jawzf.pixeltoolkit.core.data.log.LogManager
 import com.jawzf.pixeltoolkit.core.data.power.PowerSettings
@@ -56,7 +58,6 @@ import com.jawzf.pixeltoolkit.domain.model.AppIcon
 import com.jawzf.pixeltoolkit.domain.model.LockscreenShortcutSide
 import com.jawzf.pixeltoolkit.domain.model.PowerChoice
 import com.jawzf.pixeltoolkit.domain.model.RemapSlot
-import com.jawzf.pixeltoolkit.domain.model.ScaleAnimationsProfile
 import com.jawzf.pixeltoolkit.domain.model.SearchableItem
 import com.jawzf.pixeltoolkit.domain.model.SystemShortcutsState
 import com.jawzf.pixeltoolkit.domain.registry.SearchRegistry
@@ -349,6 +350,7 @@ class MainViewModel : ViewModel() {
     val hasShizukuPermission = mutableStateOf(false)
 
     lateinit var settingsRepository: SettingsRepository
+    private lateinit var textAnimations: TextAnimationsSettings
     private lateinit var duoSettings: DuoSettings
     private var appContext: Context? = null
 
@@ -364,30 +366,30 @@ class MainViewModel : ViewModel() {
                 uri?.let {
                     when (it) {
                         Settings.System.getUriFor(Settings.System.FONT_SCALE) -> {
-                            fontScale.floatValue = settingsRepository.getFontScale()
+                            fontScale.floatValue = textAnimations.getFontScale()
                         }
 
                         Settings.Secure.getUriFor("font_weight_adjustment") -> {
-                            fontWeight.intValue = settingsRepository.getFontWeight()
+                            fontWeight.intValue = textAnimations.getFontWeight()
                         }
 
                         Settings.Global.getUriFor(Settings.Global.ANIMATOR_DURATION_SCALE) -> {
                             animatorDurationScale.floatValue =
-                                settingsRepository.getAnimationScale(Settings.Global.ANIMATOR_DURATION_SCALE)
+                                textAnimations.getAnimationScale(Settings.Global.ANIMATOR_DURATION_SCALE)
                         }
 
                         Settings.Global.getUriFor(Settings.Global.TRANSITION_ANIMATION_SCALE) -> {
                             transitionAnimationScale.floatValue =
-                                settingsRepository.getAnimationScale(Settings.Global.TRANSITION_ANIMATION_SCALE)
+                                textAnimations.getAnimationScale(Settings.Global.TRANSITION_ANIMATION_SCALE)
                         }
 
                         Settings.Global.getUriFor(Settings.Global.WINDOW_ANIMATION_SCALE) -> {
                             windowAnimationScale.floatValue =
-                                settingsRepository.getAnimationScale(Settings.Global.WINDOW_ANIMATION_SCALE)
+                                textAnimations.getAnimationScale(Settings.Global.WINDOW_ANIMATION_SCALE)
                         }
 
                         Settings.Secure.getUriFor("display_density_forced") -> {
-                            smallestWidth.intValue = settingsRepository.getSmallestWidth()
+                            smallestWidth.intValue = textAnimations.getSmallestWidth()
                         }
 
                         Settings.Secure.getUriFor("doze_always_on") -> {
@@ -524,29 +526,29 @@ class MainViewModel : ViewModel() {
                         appContext?.let { refreshTrackedUpdates(it) }
                     }
 
-                    SettingsRepository.KEY_FONT_SCALE ->
+                    TextAnimationsSettings.KEY_FONT_SCALE ->
                         fontScale.floatValue =
-                            settingsRepository.getFontScale()
+                            textAnimations.getFontScale()
 
-                    SettingsRepository.KEY_FONT_WEIGHT ->
+                    TextAnimationsSettings.KEY_FONT_WEIGHT ->
                         fontWeight.intValue =
-                            settingsRepository.getFontWeight()
+                            textAnimations.getFontWeight()
 
-                    SettingsRepository.KEY_ANIMATOR_DURATION_SCALE ->
+                    TextAnimationsSettings.KEY_ANIMATOR_DURATION_SCALE ->
                         animatorDurationScale.floatValue =
-                            settingsRepository.getAnimationScale(Settings.Global.ANIMATOR_DURATION_SCALE)
+                            textAnimations.getAnimationScale(Settings.Global.ANIMATOR_DURATION_SCALE)
 
-                    SettingsRepository.KEY_TRANSITION_ANIMATION_SCALE ->
+                    TextAnimationsSettings.KEY_TRANSITION_ANIMATION_SCALE ->
                         transitionAnimationScale.floatValue =
-                            settingsRepository.getAnimationScale(Settings.Global.TRANSITION_ANIMATION_SCALE)
+                            textAnimations.getAnimationScale(Settings.Global.TRANSITION_ANIMATION_SCALE)
 
-                    SettingsRepository.KEY_WINDOW_ANIMATION_SCALE ->
+                    TextAnimationsSettings.KEY_WINDOW_ANIMATION_SCALE ->
                         windowAnimationScale.floatValue =
-                            settingsRepository.getAnimationScale(Settings.Global.WINDOW_ANIMATION_SCALE)
+                            textAnimations.getAnimationScale(Settings.Global.WINDOW_ANIMATION_SCALE)
 
-                    SettingsRepository.KEY_SMALLEST_WIDTH ->
+                    TextAnimationsSettings.KEY_SMALLEST_WIDTH ->
                         smallestWidth.intValue =
-                            settingsRepository.getSmallestWidth()
+                            textAnimations.getSmallestWidth()
 
                     SecuritySettings.KEY_FACE_UNLOCK_BRIGHTNESS_ENABLED,
                     SecuritySettings.KEY_FACE_UNLOCK_MAX_BRIGHTNESS,
@@ -863,6 +865,7 @@ class MainViewModel : ViewModel() {
     fun check(context: Context) {
         appContext = context.applicationContext
         settingsRepository = SettingsRepository(context)
+        textAnimations = TextAnimationsSettings(context)
         duoSettings = DuoSettings(context)
         NotificationAutoDismisser.isSnoozedByUs = { LiveUpdateSnoozer.isSnoozedByUs(it) }
         notifications.load(context)
@@ -1209,15 +1212,15 @@ class MainViewModel : ViewModel() {
 
         isWidgetEnabled.value = settingsRepository.getBoolean(SettingsRepository.KEY_WIDGET_ENABLED)
 
-        fontScale.floatValue = settingsRepository.getFontScale()
-        fontWeight.intValue = settingsRepository.getFontWeight()
+        fontScale.floatValue = textAnimations.getFontScale()
+        fontWeight.intValue = textAnimations.getFontWeight()
         animatorDurationScale.floatValue =
-            settingsRepository.getAnimationScale(Settings.Global.ANIMATOR_DURATION_SCALE)
+            textAnimations.getAnimationScale(Settings.Global.ANIMATOR_DURATION_SCALE)
         transitionAnimationScale.floatValue =
-            settingsRepository.getAnimationScale(Settings.Global.TRANSITION_ANIMATION_SCALE)
+            textAnimations.getAnimationScale(Settings.Global.TRANSITION_ANIMATION_SCALE)
         windowAnimationScale.floatValue =
-            settingsRepository.getAnimationScale(Settings.Global.WINDOW_ANIMATION_SCALE)
-        smallestWidth.intValue = settingsRepository.getSmallestWidth()
+            textAnimations.getAnimationScale(Settings.Global.WINDOW_ANIMATION_SCALE)
+        smallestWidth.intValue = textAnimations.getSmallestWidth()
         refreshRate.load(context)
         aod.load(context)
         toolkitOnDisplay.load(context)
@@ -1375,10 +1378,10 @@ class MainViewModel : ViewModel() {
         pixelSearchBubblesWeb.value = settingsRepository.isPixelSearchBubblesWebEnabled()
         pixelSearchEngine.value = settingsRepository.getPixelSearchEngine()
         security.load(context)
-        scaleAnimationsMode.value = settingsRepository.getScaleAnimationsMode()
-        isTouchSensitivityEnabled.value = settingsRepository.getTouchSensitivityEnabled()
-        isAutoRotateEnabled.value = settingsRepository.getAutoRotateEnabled()
-        screenTimeout.value = settingsRepository.getScreenTimeout()
+        scaleAnimationsMode.value = textAnimations.getScaleAnimationsMode()
+        isTouchSensitivityEnabled.value = textAnimations.getTouchSensitivityEnabled()
+        isAutoRotateEnabled.value = textAnimations.getAutoRotateEnabled()
+        screenTimeout.value = textAnimations.getScreenTimeout()
         isPowerSaveModeEnabled.value = DeviceUtils.isPowerSaveMode(context)
         updateBlurState(context)
         updateRippleState(context)
@@ -2680,14 +2683,14 @@ class MainViewModel : ViewModel() {
                 autoRotateEnabled = isAutoRotateEnabled.value,
                 screenTimeout = screenTimeout.value,
             )
-        settingsRepository.saveScaleAnimationsProfile(oldMode, currentProfile)
+        textAnimations.saveScaleAnimationsProfile(oldMode, currentProfile)
 
         // 2. Load new profile
-        val newProfile = settingsRepository.getScaleAnimationsProfile(mode)
+        val newProfile = textAnimations.getScaleAnimationsProfile(mode)
 
         // 3. Update mode
         scaleAnimationsMode.value = mode
-        settingsRepository.setScaleAnimationsMode(mode)
+        textAnimations.setScaleAnimationsMode(mode)
 
         // 4. Apply new profile
         setFontScale(newProfile.fontScale)
@@ -2717,7 +2720,7 @@ class MainViewModel : ViewModel() {
      */
     fun setTouchSensitivityEnabled(enabled: Boolean) {
         isTouchSensitivityEnabled.value = enabled
-        settingsRepository.setTouchSensitivityEnabled(enabled)
+        textAnimations.setTouchSensitivityEnabled(enabled)
     }
 
     /**
@@ -2727,7 +2730,7 @@ class MainViewModel : ViewModel() {
      */
     fun setAutoRotateEnabled(enabled: Boolean) {
         isAutoRotateEnabled.value = enabled
-        settingsRepository.setAutoRotateEnabled(enabled)
+        textAnimations.setAutoRotateEnabled(enabled)
     }
 
     /**
@@ -2752,7 +2755,7 @@ class MainViewModel : ViewModel() {
      */
     fun setScreenTimeout(timeoutMs: Long) {
         screenTimeout.value = timeoutMs
-        settingsRepository.setScreenTimeout(timeoutMs)
+        textAnimations.setScreenTimeout(timeoutMs)
     }
 
     /**
@@ -2768,7 +2771,7 @@ class MainViewModel : ViewModel() {
      * Executes the save font scale operation.
      */
     fun saveFontScale() {
-        settingsRepository.setFontScale(fontScale.floatValue)
+        textAnimations.setFontScale(fontScale.floatValue)
     }
 
     /**
@@ -2778,7 +2781,7 @@ class MainViewModel : ViewModel() {
      */
     fun setFontScale(scale: Float) {
         fontScale.floatValue = scale
-        settingsRepository.setFontScale(scale)
+        textAnimations.setFontScale(scale)
     }
 
     /**
@@ -2788,7 +2791,7 @@ class MainViewModel : ViewModel() {
      */
     fun setFontWeight(weight: Int) {
         fontWeight.intValue = weight
-        settingsRepository.setFontWeight(weight)
+        textAnimations.setFontWeight(weight)
     }
 
     /**
@@ -2814,7 +2817,7 @@ class MainViewModel : ViewModel() {
                 windowAnimationScale.floatValue =
                     scale
         }
-        settingsRepository.setAnimationScale(key, scale)
+        textAnimations.setAnimationScale(key, scale)
     }
 
     /**
@@ -2847,7 +2850,7 @@ class MainViewModel : ViewModel() {
      * Executes the save smallest width operation.
      */
     fun saveSmallestWidth() {
-        settingsRepository.setSmallestWidth(smallestWidth.intValue)
+        textAnimations.setSmallestWidth(smallestWidth.intValue)
     }
 
     /**
@@ -2857,15 +2860,15 @@ class MainViewModel : ViewModel() {
      */
     fun setSmallestWidth(width: Int) {
         smallestWidth.intValue = width
-        settingsRepository.setSmallestWidth(width)
+        textAnimations.setSmallestWidth(width)
     }
 
     /**
      * Executes the reset scale to default operation.
      */
     fun resetScaleToDefault() {
-        settingsRepository.resetSmallestWidth()
-        smallestWidth.intValue = settingsRepository.getSmallestWidth()
+        textAnimations.resetSmallestWidth()
+        smallestWidth.intValue = textAnimations.getSmallestWidth()
     }
 
     /**
