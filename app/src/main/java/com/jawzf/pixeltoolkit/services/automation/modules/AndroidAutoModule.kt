@@ -1,10 +1,10 @@
 package com.jawzf.pixeltoolkit.services.automation.modules
 
 import android.content.Context
+import com.jawzf.pixeltoolkit.core.data.action.ActionRunner
 import com.jawzf.pixeltoolkit.core.platform.device.CarConnectionMonitor
 import com.jawzf.pixeltoolkit.domain.diy.Automation
 import com.jawzf.pixeltoolkit.domain.diy.Trigger
-import com.jawzf.pixeltoolkit.services.automation.executors.CombinedActionExecutor
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancelChildren
@@ -54,7 +54,7 @@ class AndroidAutoModule : AutomationModule {
             automations
                 .filter { it.type == Automation.Type.TRIGGER && it.trigger == trigger }
                 .forEach { automation ->
-                    CombinedActionExecutor.executeAll(context, automation.actionList)
+                    ActionRunner.executeAll(context, automation.actionList)
                 }
         }
     }

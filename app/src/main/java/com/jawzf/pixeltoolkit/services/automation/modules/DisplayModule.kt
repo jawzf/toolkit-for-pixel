@@ -4,9 +4,9 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import com.jawzf.pixeltoolkit.core.data.action.ActionRunner
 import com.jawzf.pixeltoolkit.domain.diy.Automation
 import com.jawzf.pixeltoolkit.domain.diy.Trigger
-import com.jawzf.pixeltoolkit.services.automation.executors.CombinedActionExecutor
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -75,7 +75,7 @@ class DisplayModule : AutomationModule {
             automations
                 .filter { it.type == Automation.Type.TRIGGER && it.trigger == trigger }
                 .forEach { automation ->
-                    CombinedActionExecutor.executeAll(context, automation.actionList)
+                    ActionRunner.executeAll(context, automation.actionList)
                 }
         }
     }
@@ -91,10 +91,10 @@ class DisplayModule : AutomationModule {
                     if (automation.state is DIYState.ScreenOn) {
                         if (isActive) {
                             // Entry
-                            CombinedActionExecutor.executeAll(context, automation.entryActionList)
+                            ActionRunner.executeAll(context, automation.entryActionList)
                         } else {
                             // Exit
-                            CombinedActionExecutor.executeAll(context, automation.exitActionList)
+                            ActionRunner.executeAll(context, automation.exitActionList)
                         }
                     }
                 }

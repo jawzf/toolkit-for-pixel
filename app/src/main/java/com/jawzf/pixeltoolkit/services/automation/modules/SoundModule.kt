@@ -6,9 +6,9 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.media.AudioManager
 import com.jawzf.pixeltoolkit.core.data.action.Action
+import com.jawzf.pixeltoolkit.core.data.action.ActionRunner
 import com.jawzf.pixeltoolkit.domain.diy.Automation
 import com.jawzf.pixeltoolkit.domain.diy.Trigger
-import com.jawzf.pixeltoolkit.services.automation.executors.CombinedActionExecutor
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.NonCancellable
@@ -64,7 +64,7 @@ class SoundModule : AutomationModule {
     override fun stop(context: Context) {
         stateEntries.closeAll().forEach { actions ->
             scope.launch(NonCancellable) {
-                CombinedActionExecutor.executeAll(context, actions)
+                ActionRunner.executeAll(context, actions)
             }
         }
         try {
@@ -91,7 +91,7 @@ class SoundModule : AutomationModule {
                         it.trigger is Trigger.SoundModeChanged &&
                         (it.trigger as Trigger.SoundModeChanged).mode == mode
                 }.forEach { automation ->
-                    CombinedActionExecutor.executeAll(context, automation.actionList)
+                    ActionRunner.executeAll(context, automation.actionList)
                 }
         }
     }
@@ -105,7 +105,7 @@ class SoundModule : AutomationModule {
     ) {
         actionLists.forEach { actions ->
             scope.launch {
-                CombinedActionExecutor.executeAll(context, actions)
+                ActionRunner.executeAll(context, actions)
             }
         }
     }

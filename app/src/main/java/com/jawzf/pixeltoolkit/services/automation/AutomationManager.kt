@@ -2,10 +2,10 @@ package com.jawzf.pixeltoolkit.services.automation
 
 import android.content.Context
 import android.content.Intent
+import com.jawzf.pixeltoolkit.core.data.action.ActionRunner
 import com.jawzf.pixeltoolkit.domain.diy.Automation
 import com.jawzf.pixeltoolkit.domain.diy.DIYRepository
 import com.jawzf.pixeltoolkit.domain.diy.Trigger
-import com.jawzf.pixeltoolkit.services.automation.executors.CombinedActionExecutor
 import com.jawzf.pixeltoolkit.services.automation.modules.AndroidAutoModule
 import com.jawzf.pixeltoolkit.services.automation.modules.AutomationModule
 import com.jawzf.pixeltoolkit.services.automation.modules.BluetoothModule
@@ -62,7 +62,7 @@ object AutomationManager {
             automations
                 .filter { it.isEnabled && it.type == Automation.Type.TRIGGER && it.trigger == trigger }
                 .forEach { automation ->
-                    CombinedActionExecutor.executeAll(context, automation.actionList)
+                    ActionRunner.executeAll(context, automation.actionList)
                 }
         }
     }
@@ -84,7 +84,7 @@ object AutomationManager {
                     )
                 }
                 .forEach { automation ->
-                    CombinedActionExecutor.executeAll(context, automation.actionList)
+                    ActionRunner.executeAll(context, automation.actionList)
                 }
         }
     }

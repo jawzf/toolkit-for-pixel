@@ -9,8 +9,8 @@ import android.os.Handler
 import android.os.Looper
 import android.provider.CalendarContract
 import android.util.Log
+import com.jawzf.pixeltoolkit.core.data.action.ActionRunner
 import com.jawzf.pixeltoolkit.domain.diy.Automation
-import com.jawzf.pixeltoolkit.services.automation.executors.CombinedActionExecutor
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -93,11 +93,11 @@ class CalendarModule : AutomationModule {
                     if (isActive && !wasActive) {
                         Log.d(ID, "State ${automation.id} became active")
                         activeStateAutomations.add(automation.id)
-                        CombinedActionExecutor.executeAll(context, automation.entryActionList)
+                        ActionRunner.executeAll(context, automation.entryActionList)
                     } else if (!isActive && wasActive) {
                         Log.d(ID, "State ${automation.id} became inactive")
                         activeStateAutomations.remove(automation.id)
-                        CombinedActionExecutor.executeAll(context, automation.exitActionList)
+                        ActionRunner.executeAll(context, automation.exitActionList)
                     }
                 }
 
