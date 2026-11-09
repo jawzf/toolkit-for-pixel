@@ -30,6 +30,7 @@ import com.jawzf.pixeltoolkit.core.data.apps.AppUtil
 import com.jawzf.pixeltoolkit.core.data.calls.CallNotificationParser
 import com.jawzf.pixeltoolkit.core.data.calls.CallStateRepository
 import com.jawzf.pixeltoolkit.core.data.calls.ChronometerRepository
+import com.jawzf.pixeltoolkit.core.data.island.IslandSettings
 import com.jawzf.pixeltoolkit.core.data.notifications.ActiveNotificationAlert
 import com.jawzf.pixeltoolkit.core.data.notifications.NavigationNotificationData
 import com.jawzf.pixeltoolkit.core.data.notifications.NavigationParser
@@ -1939,8 +1940,8 @@ class NotificationListener : NotificationListenerService() {
 
     private val islandShowsNavigation: Boolean
         get() = getSharedPreferences(SettingsRepository.PREFS_NAME, MODE_PRIVATE).let {
-            it.getBoolean(SettingsRepository.KEY_ISLAND_ENABLED, false) &&
-                it.getBoolean(SettingsRepository.KEY_ISLAND_SHOW_NAVIGATION, true)
+            it.getBoolean(IslandSettings.KEY_ISLAND_ENABLED, false) &&
+                it.getBoolean(IslandSettings.KEY_ISLAND_SHOW_NAVIGATION, true)
         }
 
     @Volatile

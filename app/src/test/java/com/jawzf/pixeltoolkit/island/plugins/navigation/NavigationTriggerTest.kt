@@ -1,6 +1,6 @@
 package com.jawzf.pixeltoolkit.island.plugins.navigation
 
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
+import com.jawzf.pixeltoolkit.core.data.island.IslandSettings
 import com.jawzf.pixeltoolkit.feature.island.plugins.navigation.NavigationTrigger
 import com.jawzf.pixeltoolkit.feature.island.plugins.navigation.NavigationTrigger.Action
 import org.junit.Assert.assertEquals
@@ -13,7 +13,7 @@ class NavigationTriggerTest {
         instruction: String = "Turn right",
         turned: Boolean = false,
         meters: Double? = null,
-        onNew: String = SettingsRepository.ISLAND_NAVIGATION_ON_NEW_PEEK,
+        onNew: String = IslandSettings.ISLAND_NAVIGATION_ON_NEW_PEEK,
         canExpand: Boolean = true,
         now: Long = 100_000L,
     ) = trigger.decide(instruction, turned, meters, 200, onNew, canPeek = true, canExpand = canExpand, now = now)
@@ -25,12 +25,12 @@ class NavigationTriggerTest {
 
     @Test
     fun newInstructionExpandsWhenSetToExpand() {
-        assertEquals(Action.Expand, decide(turned = true, meters = 1000.0, onNew = SettingsRepository.ISLAND_NAVIGATION_ON_NEW_EXPAND))
+        assertEquals(Action.Expand, decide(turned = true, meters = 1000.0, onNew = IslandSettings.ISLAND_NAVIGATION_ON_NEW_EXPAND))
     }
 
     @Test
     fun offDoesNothingOnNewInstruction() {
-        assertEquals(Action.None, decide(turned = true, meters = 1000.0, onNew = SettingsRepository.ISLAND_NAVIGATION_ON_NEW_OFF))
+        assertEquals(Action.None, decide(turned = true, meters = 1000.0, onNew = IslandSettings.ISLAND_NAVIGATION_ON_NEW_OFF))
     }
 
     @Test

@@ -25,6 +25,7 @@ import android.view.accessibility.AccessibilityEvent
 import androidx.core.content.ContextCompat
 import com.jawzf.pixeltoolkit.core.data.duo.DuoSettings
 import com.jawzf.pixeltoolkit.core.data.glance.StatusGlanceSettings
+import com.jawzf.pixeltoolkit.core.data.island.IslandSettings
 import com.jawzf.pixeltoolkit.core.data.notifications.ConsciousGateSession
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticFeedbackType
 import com.jawzf.pixeltoolkit.core.design.haptics.performHapticFeedback
@@ -222,7 +223,7 @@ class ScreenOffAccessibilityService :
 
     private val preferenceChangeListener =
         android.content.SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
-            if (key == SettingsRepository.KEY_ISLAND_HIDE_LIVE_UPDATES) {
+            if (key == IslandSettings.KEY_ISLAND_HIDE_LIVE_UPDATES) {
                 LiveUpdateSnoozer.onSettingChanged()
             } else if (key == "circle_to_search_gesture_enabled" ||
                 key == "circle_to_search_gesture_height" ||
@@ -271,7 +272,7 @@ class ScreenOffAccessibilityService :
                 key == SettingsRepository.KEY_ENABLE_UNSUPPORTED_FEATURES
             ) {
                 duoOverlayHandler.updateState()
-            } else if (key == SettingsRepository.KEY_ISLAND_SUPPRESS_SYSTEM_HEADS_UP) {
+            } else if (key == IslandSettings.KEY_ISLAND_SUPPRESS_SYSTEM_HEADS_UP) {
                 SettingsRepository(this).applyHeadsUpSuppression()
             } else if (key?.startsWith("status_glance_") == true ||
                 key == StatusGlanceSettings.KEY_STATUS_GLANCE_ENABLED ||
