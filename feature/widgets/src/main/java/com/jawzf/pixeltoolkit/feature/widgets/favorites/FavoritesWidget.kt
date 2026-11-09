@@ -40,11 +40,11 @@ import androidx.glance.text.Text
 import androidx.glance.text.TextAlign
 import androidx.glance.text.TextStyle
 import androidx.glance.unit.ColorProvider
-import com.jawzf.pixeltoolkit.FeatureSettingsActivity
+import com.jawzf.pixeltoolkit.core.data.prefs.PrefsStore
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.color.ColorUtil
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.domain.registry.FeatureRegistry
+import com.jawzf.pixeltoolkit.core.platform.AppComponents
+import com.jawzf.pixeltoolkit.core.platform.features.FeatureCatalog
 
 class FavoritesWidget : GlanceAppWidget() {
     override val sizeMode = androidx.glance.appwidget.SizeMode.Exact
@@ -56,10 +56,10 @@ class FavoritesWidget : GlanceAppWidget() {
     ) {
         provideContent {
             GlanceTheme {
-                val repository = SettingsRepository(context)
+                val repository = PrefsStore(context)
                 val pinnedKeys = repository.getPinnedFeatures()
 
-                val featuresMap = FeatureRegistry.ALL_FEATURES.associateBy { it.id }
+                val featuresMap = FeatureCatalog.all().associateBy { it.id }
                 val pinnedFeatures = pinnedKeys.mapNotNull { featuresMap[it] }
                 val width = LocalSize.current.width
                 val height = LocalSize.current.height
@@ -150,10 +150,7 @@ class FavoritesWidget : GlanceAppWidget() {
                                                             )
 
                                                         val intent =
-                                                            Intent(
-                                                                context,
-                                                                FeatureSettingsActivity::class.java,
-                                                            ).apply {
+                                                            Intent().setClassName(context, AppComponents.FEATURE_SETTINGS_ACTIVITY).apply {
                                                                 putExtra("feature", feature.id)
                                                                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                                                             }

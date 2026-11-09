@@ -13,9 +13,12 @@ import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.platform.AppGlobals
 import com.jawzf.pixeltoolkit.core.platform.device.CarConnectionMonitor
 import com.jawzf.pixeltoolkit.core.platform.device.ProgressNotificationHub
+import com.jawzf.pixeltoolkit.core.platform.features.FeatureCatalog
+import com.jawzf.pixeltoolkit.core.platform.features.FeatureSummary
 import com.jawzf.pixeltoolkit.core.platform.media.MediaArtBridge
 import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuUtils
 import com.jawzf.pixeltoolkit.core.platform.statusbar.StatusBarManager
+import com.jawzf.pixeltoolkit.domain.registry.FeatureRegistry
 import com.jawzf.pixeltoolkit.services.LiveUpdateSnoozer
 import com.jawzf.pixeltoolkit.services.NotificationListener
 import com.jawzf.pixeltoolkit.services.automation.executors.CombinedActionExecutor
@@ -40,6 +43,7 @@ class ToolkitApp : Application() {
         context = applicationContext
         AppGlobals.init(this)
         ActionRunner.init(CombinedActionExecutor)
+        FeatureCatalog.init { FeatureRegistry.ALL_FEATURES.map { FeatureSummary(it.id, it.title, it.iconRes) } }
         MediaArtBridge.init(NotificationListener::getCachedBitmap, NotificationListener::getLatestArtBitmap)
         ProgressNotificationHub.init(NotificationListener::getLatestProgressNotification)
         NotificationHub.init(

@@ -38,6 +38,20 @@
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
         </activity>
+
+        <receiver
+            android:name="com.jawzf.pixeltoolkit.feature.widgets.favorites.FavoritesWidgetReceiver"
+            android:exported="true"
+            android:label="@string/favorites_widget_name">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="android.intent.action.CONFIGURATION_CHANGED" />
+                <action android:name="com.jawzf.pixeltoolkit.action.FAVORITES_WIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/favorites_widget_info" />
+        </receiver>
     </application>
 
 </manifest>

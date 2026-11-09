@@ -57,5 +57,6 @@ class AppContractTest {
         assertEquals(SettingsRepository.KEY_SECURE_SENSITIVE_TILES, PlatformPrefs.KEY_SECURE_SENSITIVE_TILES)
         assertEquals(SettingsRepository.KEY_ENABLE_UNSUPPORTED_FEATURES, PlatformPrefs.KEY_ENABLE_UNSUPPORTED_FEATURES)
         assertEquals(SettingsRepository.KEY_HIDDEN_DEBUGGING_SUPPORT, PlatformPrefs.KEY_HIDDEN_DEBUGGING_SUPPORT)
+        assertEquals(SettingsRepository.KEY_PINNED_FEATURES, PlatformPrefs.KEY_PINNED_FEATURES)
     }
 }

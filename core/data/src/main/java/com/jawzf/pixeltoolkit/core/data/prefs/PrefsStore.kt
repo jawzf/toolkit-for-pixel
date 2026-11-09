@@ -246,4 +246,31 @@ open class PrefsStore(
             else -> prefs.edit().putString(key, ActionGsonAdapter.listToJson(actions)).apply()
         }
     }
+
+    /**
+     * Executes the get pinned features operation.
+     * @return The resulting List<String> data.
+     */
+    fun getPinnedFeatures(): List<String> {
+        val json = prefs.getString(PlatformPrefs.KEY_PINNED_FEATURES, null)
+        return if (json != null) {
+            try {
+                gson.fromJson(json, Array<String>::class.java).toList()
+            } catch (e: Exception) {
+                emptyList()
+            }
+        } else {
+            emptyList()
+        }
+    }
+
+    /**
+     * Executes the save pinned features operation.
+     *
+     * @param features [List<String>] Target features.
+     */
+    fun savePinnedFeatures(features: List<String>) {
+        val json = gson.toJson(features)
+        putString(PlatformPrefs.KEY_PINNED_FEATURES, json)
+    }
 }
