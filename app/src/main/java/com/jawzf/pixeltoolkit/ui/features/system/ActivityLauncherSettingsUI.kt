@@ -43,7 +43,7 @@ import com.jawzf.pixeltoolkit.core.data.apps.AppUtil
 import com.jawzf.pixeltoolkit.core.data.apps.NotificationApp
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
-import com.jawzf.pixeltoolkit.services.automation.executors.CombinedActionExecutor
+import com.jawzf.pixeltoolkit.feature.automation.engine.CombinedActionExecutor
 import com.jawzf.pixeltoolkit.ui.core.sheets.ActivityPickerSheet
 import kotlinx.coroutines.launch
 

@@ -23,6 +23,7 @@ import com.jawzf.pixeltoolkit.domain.registry.FeatureRegistry
 import com.jawzf.pixeltoolkit.feature.apps.AppsActionHandler
 import com.jawzf.pixeltoolkit.feature.automation.diy.DIYRepository
 import com.jawzf.pixeltoolkit.feature.automation.engine.AutomationManager
+import com.jawzf.pixeltoolkit.feature.automation.engine.CombinedActionExecutor
 import com.jawzf.pixeltoolkit.feature.automation.ui.editor.ActionEditors
 import com.jawzf.pixeltoolkit.feature.connectivity.ConnectivityActionHandler
 import com.jawzf.pixeltoolkit.feature.input.InputActionHandler
@@ -31,7 +32,6 @@ import com.jawzf.pixeltoolkit.feature.sound.SoundActionHandler
 import com.jawzf.pixeltoolkit.services.LiveUpdateSnoozer
 import com.jawzf.pixeltoolkit.services.NotificationListener
 import com.jawzf.pixeltoolkit.services.automation.executors.AppActionHandler
-import com.jawzf.pixeltoolkit.services.automation.executors.CombinedActionExecutor
 import com.jawzf.pixeltoolkit.services.receivers.SecurityReceiver
 import com.jawzf.pixeltoolkit.services.tiles.ScreenOffAccessibilityService
 import com.jawzf.pixeltoolkit.ui.features.system.AppActionEditorHost

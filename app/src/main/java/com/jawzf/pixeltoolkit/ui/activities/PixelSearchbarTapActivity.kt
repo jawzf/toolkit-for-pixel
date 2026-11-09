@@ -6,7 +6,7 @@ import androidx.activity.ComponentActivity
 import androidx.lifecycle.lifecycleScope
 import com.jawzf.pixeltoolkit.feature.automation.diy.Automation
 import com.jawzf.pixeltoolkit.feature.automation.diy.DIYRepository
-import com.jawzf.pixeltoolkit.services.automation.executors.CombinedActionExecutor
+import com.jawzf.pixeltoolkit.feature.automation.engine.CombinedActionExecutor
 import kotlinx.coroutines.launch
 
 class PixelSearchbarTapActivity : ComponentActivity() {

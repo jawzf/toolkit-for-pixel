@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.services.automation.executors
+package com.jawzf.pixeltoolkit.feature.automation.engine
 
 import android.app.ActivityManager
 import android.app.KeyguardManager
@@ -184,10 +184,10 @@ object CombinedActionExecutor : ActionExecutor {
                                     val componentName =
                                         android.content.ComponentName(
                                             context,
-                                            com.jawzf.pixeltoolkit.services.ToolkitConditionProvider::class.java,
+                                            ToolkitConditionProvider::class.java,
                                         )
                                     val conditionUri =
-                                        com.jawzf.pixeltoolkit.services.ToolkitConditionProvider.CONDITION_URI
+                                        ToolkitConditionProvider.CONDITION_URI
 
                                     val ruleBuilder =
                                         android.app.AutomaticZenRule
@@ -217,7 +217,7 @@ object CombinedActionExecutor : ActionExecutor {
                                     }
 
                                     // Trigger the condition to be TRUE
-                                    com.jawzf.pixeltoolkit.services.ToolkitConditionProvider.setConditionState(
+                                    ToolkitConditionProvider.setConditionState(
                                         context,
                                         true,
                                     )
@@ -236,7 +236,7 @@ object CombinedActionExecutor : ActionExecutor {
                                         nm.updateAutomaticZenRule(entry.key, rule)
                                     }
                                     // Also notify condition false just in case
-                                    com.jawzf.pixeltoolkit.services.ToolkitConditionProvider.setConditionState(
+                                    ToolkitConditionProvider.setConditionState(
                                         context,
                                         false,
                                     )
