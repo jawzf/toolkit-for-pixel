@@ -1,5 +1,9 @@
 package com.jawzf.pixeltoolkit.utils
 
+import com.jawzf.pixeltoolkit.feature.input.remap.CameraFlipButton
+import com.jawzf.pixeltoolkit.feature.input.remap.CameraSession
+import com.jawzf.pixeltoolkit.feature.input.remap.lensInUseAt
+import com.jawzf.pixeltoolkit.feature.input.remap.openLens
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull

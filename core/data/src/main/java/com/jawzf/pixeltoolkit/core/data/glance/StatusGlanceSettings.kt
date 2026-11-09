@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.res.Configuration
 import com.google.gson.Gson
 import com.jawzf.pixeltoolkit.core.data.action.Action
-import com.jawzf.pixeltoolkit.core.data.action.ActionGsonAdapter
 import com.jawzf.pixeltoolkit.core.data.duo.DuoSettings
 import com.jawzf.pixeltoolkit.core.data.prefs.PrefsStore
 
@@ -96,26 +95,6 @@ class StatusGlanceSettings(
         baseKey: String,
         hidden: Boolean,
     ) = putBoolean("$baseKey@${DuoSettings(context).getDisplayProfileId()}", hidden)
-
-    private fun getRemapAction(key: String): Action? {
-        val json = prefs.getString(key, null) ?: return null
-        return try {
-            ActionGsonAdapter.fromJson(json)
-        } catch (_: Exception) {
-            null
-        }
-    }
-
-    private fun setRemapAction(
-        key: String,
-        action: Action?,
-    ) {
-        if (action == null) {
-            prefs.edit().remove(key).apply()
-        } else {
-            prefs.edit().putString(key, ActionGsonAdapter.toJson(action)).apply()
-        }
-    }
 
     fun isStatusGlanceOrientationProfilesEnabled(): Boolean = getBoolean(KEY_STATUS_GLANCE_ORIENTATION_PROFILES, false)
 

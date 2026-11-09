@@ -1,9 +1,10 @@
 package com.jawzf.pixeltoolkit.utils
 
-import com.jawzf.pixeltoolkit.domain.model.PowerChoice
-import com.jawzf.pixeltoolkit.domain.model.RemapInput
-import com.jawzf.pixeltoolkit.domain.model.RemapScreenState
-import com.jawzf.pixeltoolkit.domain.model.RemapSlot
+import com.jawzf.pixeltoolkit.feature.input.remap.PowerButtonGestures
+import com.jawzf.pixeltoolkit.feature.input.remap.PowerChoice
+import com.jawzf.pixeltoolkit.feature.input.remap.RemapInput
+import com.jawzf.pixeltoolkit.feature.input.remap.RemapScreenState
+import com.jawzf.pixeltoolkit.feature.input.remap.RemapSlot
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull

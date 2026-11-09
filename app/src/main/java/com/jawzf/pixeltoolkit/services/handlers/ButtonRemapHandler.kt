@@ -18,18 +18,20 @@ import com.jawzf.pixeltoolkit.core.design.haptics.HapticFeedbackType
 import com.jawzf.pixeltoolkit.core.design.haptics.performHapticFeedback
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.domain.model.PowerChoice
-import com.jawzf.pixeltoolkit.domain.model.RemapInput
-import com.jawzf.pixeltoolkit.domain.model.RemapScreenState
-import com.jawzf.pixeltoolkit.domain.model.RemapSlot
+import com.jawzf.pixeltoolkit.feature.input.remap.CameraFlipButton
+import com.jawzf.pixeltoolkit.feature.input.remap.CameraSession
+import com.jawzf.pixeltoolkit.feature.input.remap.PowerButtonGestures
+import com.jawzf.pixeltoolkit.feature.input.remap.PowerChoice
+import com.jawzf.pixeltoolkit.feature.input.remap.RemapInput
+import com.jawzf.pixeltoolkit.feature.input.remap.RemapScreenState
+import com.jawzf.pixeltoolkit.feature.input.remap.RemapSettings
+import com.jawzf.pixeltoolkit.feature.input.remap.RemapSlot
+import com.jawzf.pixeltoolkit.feature.input.remap.getPowerChoice
+import com.jawzf.pixeltoolkit.feature.input.remap.lensInUseAt
+import com.jawzf.pixeltoolkit.feature.input.remap.openLens
 import com.jawzf.pixeltoolkit.feature.sound.volumesteps.VolumeStepsHandler
 import com.jawzf.pixeltoolkit.services.InputEventListenerService
 import com.jawzf.pixeltoolkit.services.automation.executors.CombinedActionExecutor
-import com.jawzf.pixeltoolkit.utils.CameraFlipButton
-import com.jawzf.pixeltoolkit.utils.CameraSession
-import com.jawzf.pixeltoolkit.utils.PowerButtonGestures
-import com.jawzf.pixeltoolkit.utils.lensInUseAt
-import com.jawzf.pixeltoolkit.utils.openLens
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -220,7 +222,7 @@ class ButtonRemapHandler(
                 val lensBefore = if (firstPressAt > 0) lensInUseAt(cameraSessions(), firstPressAt) else null
                 val flip =
                     screenOn &&
-                        settingsRepository.getBoolean(SettingsRepository.KEY_BUTTON_REMAP_POWER_CAMERA_FLIP, false) &&
+                        settingsRepository.getBoolean(RemapSettings.KEY_BUTTON_REMAP_POWER_CAMERA_FLIP, false) &&
                         lensBefore != null
                 if (flip) {
                     scope.launch {

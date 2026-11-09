@@ -1,7 +1,6 @@
-package com.jawzf.pixeltoolkit.domain.model
+package com.jawzf.pixeltoolkit.feature.input.remap
 
 import android.view.KeyEvent
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 
 enum class RemapInput {
     VOLUME_UP,
@@ -29,23 +28,23 @@ data class RemapSlot(
             when (input) {
                 RemapInput.VOLUME_UP ->
                     if (screenState == RemapScreenState.ON) {
-                        SettingsRepository.KEY_BUTTON_REMAP_VOL_UP_ACTION_ON
+                        RemapSettings.KEY_BUTTON_REMAP_VOL_UP_ACTION_ON
                     } else {
-                        SettingsRepository.KEY_BUTTON_REMAP_VOL_UP_ACTION_OFF
+                        RemapSettings.KEY_BUTTON_REMAP_VOL_UP_ACTION_OFF
                     }
 
                 RemapInput.VOLUME_DOWN ->
                     if (screenState == RemapScreenState.ON) {
-                        SettingsRepository.KEY_BUTTON_REMAP_VOL_DOWN_ACTION_ON
+                        RemapSettings.KEY_BUTTON_REMAP_VOL_DOWN_ACTION_ON
                     } else {
-                        SettingsRepository.KEY_BUTTON_REMAP_VOL_DOWN_ACTION_OFF
+                        RemapSettings.KEY_BUTTON_REMAP_VOL_DOWN_ACTION_OFF
                     }
 
                 RemapInput.POWER_HOLD ->
                     if (screenState == RemapScreenState.ON) {
-                        SettingsRepository.KEY_BUTTON_REMAP_POWER_HOLD_ACTION_ON
+                        RemapSettings.KEY_BUTTON_REMAP_POWER_HOLD_ACTION_ON
                     } else {
-                        SettingsRepository.KEY_BUTTON_REMAP_POWER_HOLD_ACTION_OFF
+                        RemapSettings.KEY_BUTTON_REMAP_POWER_HOLD_ACTION_OFF
                     }
             }
 
@@ -54,9 +53,9 @@ data class RemapSlot(
             when (input) {
                 RemapInput.POWER_HOLD ->
                     if (screenState == RemapScreenState.ON) {
-                        SettingsRepository.KEY_BUTTON_REMAP_POWER_HOLD_CHOICE_ON
+                        RemapSettings.KEY_BUTTON_REMAP_POWER_HOLD_CHOICE_ON
                     } else {
-                        SettingsRepository.KEY_BUTTON_REMAP_POWER_HOLD_CHOICE_OFF
+                        RemapSettings.KEY_BUTTON_REMAP_POWER_HOLD_CHOICE_OFF
                     }
 
                 RemapInput.VOLUME_UP,

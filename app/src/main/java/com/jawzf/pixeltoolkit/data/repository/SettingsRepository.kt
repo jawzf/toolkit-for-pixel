@@ -18,12 +18,11 @@ import com.jawzf.pixeltoolkit.core.platform.shell.RootUtils
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuUtils
 import com.jawzf.pixeltoolkit.domain.model.AppIcon
-import com.jawzf.pixeltoolkit.domain.model.PowerChoice
-import com.jawzf.pixeltoolkit.domain.model.RemapSlot
 import com.jawzf.pixeltoolkit.domain.model.SystemShortcutsState
 import com.jawzf.pixeltoolkit.feature.apps.AppsSettings
 import com.jawzf.pixeltoolkit.feature.display.DisplaySettings
 import com.jawzf.pixeltoolkit.feature.display.refresh.RefreshRateUtils
+import com.jawzf.pixeltoolkit.feature.input.remap.RemapSettings
 import com.jawzf.pixeltoolkit.feature.notifications.NotificationSettings
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -52,14 +51,14 @@ class SettingsRepository(
     }
 
     private fun migrateRemapStringToAction() {
-        if (getBoolean(KEY_BUTTON_REMAP_MIGRATION_DONE)) return
+        if (getBoolean(RemapSettings.KEY_BUTTON_REMAP_MIGRATION_DONE)) return
 
         val remapKeys =
             listOf(
-                KEY_BUTTON_REMAP_VOL_UP_ACTION_OFF,
-                KEY_BUTTON_REMAP_VOL_DOWN_ACTION_OFF,
-                KEY_BUTTON_REMAP_VOL_UP_ACTION_ON,
-                KEY_BUTTON_REMAP_VOL_DOWN_ACTION_ON,
+                RemapSettings.KEY_BUTTON_REMAP_VOL_UP_ACTION_OFF,
+                RemapSettings.KEY_BUTTON_REMAP_VOL_DOWN_ACTION_OFF,
+                RemapSettings.KEY_BUTTON_REMAP_VOL_UP_ACTION_ON,
+                RemapSettings.KEY_BUTTON_REMAP_VOL_DOWN_ACTION_ON,
             )
         for (key in remapKeys) {
             val raw = prefs.getString(key, null) ?: continue
@@ -83,7 +82,7 @@ class SettingsRepository(
             setRemapAction(key, action)
         }
 
-        putBoolean(KEY_BUTTON_REMAP_MIGRATION_DONE, true)
+        putBoolean(RemapSettings.KEY_BUTTON_REMAP_MIGRATION_DONE, true)
     }
 
     private fun migratePixelSearchbarType() {
@@ -94,65 +93,6 @@ class SettingsRepository(
                 putString(KEY_PIXEL_SEARCHBAR_TYPE, "searchbar")
             }
         }
-    }
-
-    fun getRemapAction(key: String): Action? {
-        val json = prefs.getString(key, null) ?: return null
-        return try {
-            ActionGsonAdapter.fromJson(json)
-        } catch (_: Exception) {
-            null
-        }
-    }
-
-    fun setRemapAction(
-        key: String,
-        action: Action?,
-    ) {
-        if (action == null) {
-            prefs.edit().remove(key).apply()
-        } else {
-            prefs.edit().putString(key, ActionGsonAdapter.toJson(action)).apply()
-        }
-    }
-
-    fun getRemapActions(key: String): List<Action> {
-        val json = prefs.getString(key, null) ?: return emptyList()
-        return if (json.trimStart().startsWith("[")) {
-            ActionGsonAdapter.listFromJson(json)
-        } else {
-            listOfNotNull(ActionGsonAdapter.fromJson(json))
-        }
-    }
-
-    fun setRemapActions(
-        key: String,
-        actions: List<Action>,
-    ) {
-        when (actions.size) {
-            0 -> prefs.edit().remove(key).apply()
-            1 -> setRemapAction(key, actions.first())
-            else -> prefs.edit().putString(key, ActionGsonAdapter.listToJson(actions)).apply()
-        }
-    }
-
-    fun getPowerChoice(slot: RemapSlot): PowerChoice {
-        val defaultChoice = slot.defaultChoice ?: PowerChoice.ASSISTANT
-        val key = slot.choicePrefKey ?: return defaultChoice
-        val value = prefs.getString(key, null) ?: return defaultChoice
-        return try {
-            PowerChoice.valueOf(value)
-        } catch (_: IllegalArgumentException) {
-            defaultChoice
-        }
-    }
-
-    fun setPowerChoice(
-        slot: RemapSlot,
-        choice: PowerChoice,
-    ) {
-        val key = slot.choicePrefKey ?: return
-        prefs.edit().putString(key, choice.name).apply()
     }
 
     companion object {
@@ -166,28 +106,11 @@ class SettingsRepository(
 
         const val KEY_LAST_CALL_STATE = "last_call_state"
 
-        const val KEY_BUTTON_REMAP_ENABLED = "button_remap_enabled"
         const val KEY_FLASHLIGHT_VOLUME_TOGGLE_ENABLED =
             "flashlight_volume_toggle_enabled" // Legacy
-        const val KEY_BUTTON_REMAP_USE_SHIZUKU = "button_remap_use_shizuku"
         const val KEY_SHIZUKU_DETECTED_DEVICE_PATH = "shizuku_detected_device_path"
         const val KEY_FLASHLIGHT_TRIGGER_BUTTON = "flashlight_trigger_button" // Legacy
-        const val KEY_BUTTON_REMAP_VOL_UP_ACTION_OFF = "button_remap_vol_up_action_off"
-        const val KEY_BUTTON_REMAP_VOL_UP_ACTION = "button_remap_vol_up_action" // Legacy
-        const val KEY_BUTTON_REMAP_VOL_DOWN_ACTION_OFF = "button_remap_vol_down_action_off"
-        const val KEY_BUTTON_REMAP_VOL_DOWN_ACTION = "button_remap_vol_down_action" // Legacy
-        const val KEY_BUTTON_REMAP_VOL_UP_ACTION_ON = "button_remap_vol_up_action_on"
-        const val KEY_BUTTON_REMAP_VOL_DOWN_ACTION_ON = "button_remap_vol_down_action_on"
-        const val KEY_BUTTON_REMAP_POWER_HOLD_ACTION_OFF = "button_remap_power_hold_action_off"
-        const val KEY_BUTTON_REMAP_POWER_HOLD_ACTION_ON = "button_remap_power_hold_action_on"
-        const val KEY_BUTTON_REMAP_POWER_HOLD_CHOICE_OFF = "button_remap_power_hold_choice_off"
-        const val KEY_BUTTON_REMAP_POWER_HOLD_CHOICE_ON = "button_remap_power_hold_choice_on"
-        const val KEY_BUTTON_REMAP_POWER_OVERRIDDEN = "button_remap_power_overridden"
-        const val KEY_BUTTON_REMAP_POWER_CAMERA_FLIP = "button_remap_power_camera_flip"
-        const val KEY_BUTTON_REMAP_HAPTIC_TYPE = "button_remap_haptic_type"
         const val KEY_FLASHLIGHT_HAPTIC_TYPE = "flashlight_haptic_type" // Legacy
-        const val KEY_BUTTON_REMAP_MIGRATION_DONE = "button_remap_action_migration_done"
-        const val KEY_BUTTON_REMAP_PAUSE_ON_VOLUME_DIALOG = "button_remap_pause_on_volume_dialog"
         const val KEY_PINNED_ACTION_PREFIX = "pinned_action_"
         const val KEY_LOCKSCREEN_SHORTCUTS_ENABLED = "lockscreen_shortcuts_enabled"
         const val KEY_LOCKSCREEN_SHORTCUT_LEFT_ACTIONS = "lockscreen_shortcut_left_actions"

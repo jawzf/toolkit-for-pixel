@@ -56,8 +56,6 @@ import com.jawzf.pixeltoolkit.core.platform.statusbar.StatusBarManager
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.domain.model.AppIcon
 import com.jawzf.pixeltoolkit.domain.model.LockscreenShortcutSide
-import com.jawzf.pixeltoolkit.domain.model.PowerChoice
-import com.jawzf.pixeltoolkit.domain.model.RemapSlot
 import com.jawzf.pixeltoolkit.domain.model.SearchableItem
 import com.jawzf.pixeltoolkit.domain.model.SystemShortcutsState
 import com.jawzf.pixeltoolkit.domain.registry.SearchRegistry
@@ -79,6 +77,12 @@ import com.jawzf.pixeltoolkit.feature.display.pixels.SmartPixelsState
 import com.jawzf.pixeltoolkit.feature.display.refresh.RefreshRatePanelState
 import com.jawzf.pixeltoolkit.feature.display.statusbar.StatusBarControlState
 import com.jawzf.pixeltoolkit.feature.input.InputState
+import com.jawzf.pixeltoolkit.feature.input.remap.PowerButtonGestures
+import com.jawzf.pixeltoolkit.feature.input.remap.PowerChoice
+import com.jawzf.pixeltoolkit.feature.input.remap.RemapSettings
+import com.jawzf.pixeltoolkit.feature.input.remap.RemapSlot
+import com.jawzf.pixeltoolkit.feature.input.remap.getPowerChoice
+import com.jawzf.pixeltoolkit.feature.input.remap.setPowerChoice
 import com.jawzf.pixeltoolkit.feature.island.IslandDuoLink
 import com.jawzf.pixeltoolkit.feature.island.IslandState
 import com.jawzf.pixeltoolkit.feature.notifications.NotificationSettings
@@ -100,7 +104,6 @@ import com.jawzf.pixeltoolkit.services.receivers.SecurityDeviceAdminReceiver
 import com.jawzf.pixeltoolkit.services.receivers.SecurityReceiver
 import com.jawzf.pixeltoolkit.services.tiles.ScreenOffAccessibilityService
 import com.jawzf.pixeltoolkit.utils.AppIconUtil
-import com.jawzf.pixeltoolkit.utils.PowerButtonGestures
 import com.jawzf.pixeltoolkit.utils.SplitScreenUtil
 import com.jawzf.pixeltoolkit.utils.SurfaceFlingerControl
 import com.jawzf.pixeltoolkit.utils.TestNotificationUtil
@@ -445,7 +448,7 @@ class MainViewModel : ViewModel() {
 
                     PowerSettings.KEY_MAPS_POWER_SAVING_ENABLED -> power.onPreferenceChanged(key)
 
-                    SettingsRepository.KEY_BUTTON_REMAP_ENABLED ->
+                    RemapSettings.KEY_BUTTON_REMAP_ENABLED ->
                         isButtonRemapEnabled.value =
                             settingsRepository.getBoolean(key)
 
@@ -1256,13 +1259,13 @@ class MainViewModel : ViewModel() {
         // Button Remap & Migration
         isButtonRemapEnabled.value =
             settingsRepository.getBoolean(
-                SettingsRepository.KEY_BUTTON_REMAP_ENABLED,
+                RemapSettings.KEY_BUTTON_REMAP_ENABLED,
                 settingsRepository.getBoolean(SettingsRepository.KEY_FLASHLIGHT_VOLUME_TOGGLE_ENABLED),
             )
         isButtonRemapUseShizuku.value =
-            settingsRepository.getBoolean(SettingsRepository.KEY_BUTTON_REMAP_USE_SHIZUKU)
+            settingsRepository.getBoolean(RemapSettings.KEY_BUTTON_REMAP_USE_SHIZUKU)
         isButtonRemapPauseOnVolumeDialog.value =
-            settingsRepository.getBoolean(SettingsRepository.KEY_BUTTON_REMAP_PAUSE_ON_VOLUME_DIALOG, true)
+            settingsRepository.getBoolean(RemapSettings.KEY_BUTTON_REMAP_PAUSE_ON_VOLUME_DIALOG, true)
         shizukuDetectedDevicePath.value =
             settingsRepository.getString(SettingsRepository.KEY_SHIZUKU_DETECTED_DEVICE_PATH)
 
@@ -1285,7 +1288,7 @@ class MainViewModel : ViewModel() {
             }
         }
         isPowerCameraFlipEnabled.value =
-            settingsRepository.getBoolean(SettingsRepository.KEY_BUTTON_REMAP_POWER_CAMERA_FLIP, false)
+            settingsRepository.getBoolean(RemapSettings.KEY_BUTTON_REMAP_POWER_CAMERA_FLIP, false)
 
         hilight.load(context)
         isLockscreenShortcutsEnabled.value = settingsRepository.isLockscreenShortcutsEnabled()
@@ -1297,7 +1300,7 @@ class MainViewModel : ViewModel() {
 
         val hapticName =
             settingsRepository.getString(
-                SettingsRepository.KEY_BUTTON_REMAP_HAPTIC_TYPE,
+                RemapSettings.KEY_BUTTON_REMAP_HAPTIC_TYPE,
                 settingsRepository.getString(
                     SettingsRepository.KEY_FLASHLIGHT_HAPTIC_TYPE,
                     HapticFeedbackType.DOUBLE.name,
@@ -2516,7 +2519,7 @@ class MainViewModel : ViewModel() {
         context: Context,
     ) {
         isButtonRemapEnabled.value = enabled
-        settingsRepository.putBoolean(SettingsRepository.KEY_BUTTON_REMAP_ENABLED, enabled)
+        settingsRepository.putBoolean(RemapSettings.KEY_BUTTON_REMAP_ENABLED, enabled)
         if (!enabled) {
             PowerButtonGestures.restoreDefaults(context, settingsRepository)
         } else {
@@ -2537,7 +2540,7 @@ class MainViewModel : ViewModel() {
         context: Context,
     ) {
         isButtonRemapPauseOnVolumeDialog.value = enabled
-        settingsRepository.putBoolean(SettingsRepository.KEY_BUTTON_REMAP_PAUSE_ON_VOLUME_DIALOG, enabled)
+        settingsRepository.putBoolean(RemapSettings.KEY_BUTTON_REMAP_PAUSE_ON_VOLUME_DIALOG, enabled)
     }
 
     /**
@@ -2551,7 +2554,7 @@ class MainViewModel : ViewModel() {
         context: Context,
     ) {
         isButtonRemapUseShizuku.value = enabled
-        settingsRepository.putBoolean(SettingsRepository.KEY_BUTTON_REMAP_USE_SHIZUKU, enabled)
+        settingsRepository.putBoolean(RemapSettings.KEY_BUTTON_REMAP_USE_SHIZUKU, enabled)
     }
 
     /**
@@ -2577,7 +2580,7 @@ class MainViewModel : ViewModel() {
 
     fun setPowerCameraFlipEnabled(enabled: Boolean) {
         isPowerCameraFlipEnabled.value = enabled
-        settingsRepository.putBoolean(SettingsRepository.KEY_BUTTON_REMAP_POWER_CAMERA_FLIP, enabled)
+        settingsRepository.putBoolean(RemapSettings.KEY_BUTTON_REMAP_POWER_CAMERA_FLIP, enabled)
     }
 
     fun setLockscreenShortcutsEnabled(enabled: Boolean) {
@@ -2604,7 +2607,7 @@ class MainViewModel : ViewModel() {
         context: Context,
     ) {
         remapHapticType.value = type
-        settingsRepository.putString(SettingsRepository.KEY_BUTTON_REMAP_HAPTIC_TYPE, type.name)
+        settingsRepository.putString(RemapSettings.KEY_BUTTON_REMAP_HAPTIC_TYPE, type.name)
     }
 
     fun triggerIslandPreview(context: Context) {

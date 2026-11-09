@@ -6,7 +6,6 @@ import android.graphics.Point
 import android.hardware.display.DisplayManager
 import android.view.Display
 import com.jawzf.pixeltoolkit.core.data.action.Action
-import com.jawzf.pixeltoolkit.core.data.action.ActionGsonAdapter
 import com.jawzf.pixeltoolkit.core.data.prefs.PrefsStore
 
 class DuoSettings(
@@ -339,26 +338,6 @@ class DuoSettings(
     fun getDuoCustomColor(): String = getString(KEY_DUO_CUSTOM_COLOR, "#FFFFFF") ?: "#FFFFFF"
 
     fun setDuoCustomColor(colorHex: String) = putString(KEY_DUO_CUSTOM_COLOR, colorHex)
-
-    private fun getRemapAction(key: String): Action? {
-        val json = prefs.getString(key, null) ?: return null
-        return try {
-            ActionGsonAdapter.fromJson(json)
-        } catch (_: Exception) {
-            null
-        }
-    }
-
-    private fun setRemapAction(
-        key: String,
-        action: Action?,
-    ) {
-        if (action == null) {
-            prefs.edit().remove(key).apply()
-        } else {
-            prefs.edit().putString(key, ActionGsonAdapter.toJson(action)).apply()
-        }
-    }
 
     fun getDuoTapAction(): Action? = getRemapAction(KEY_DUO_TAP_ACTION)
 
