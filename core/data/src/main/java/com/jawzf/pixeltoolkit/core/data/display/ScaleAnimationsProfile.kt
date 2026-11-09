@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.domain.model
+package com.jawzf.pixeltoolkit.core.data.display
 
 data class ScaleAnimationsProfile(
     val fontScale: Float = 1.0f,
