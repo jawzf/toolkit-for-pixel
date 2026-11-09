@@ -1,11 +1,10 @@
 package com.jawzf.pixeltoolkit.services.widgets
 
 import android.content.Context
-import android.content.Intent
 import androidx.glance.GlanceId
 import androidx.glance.action.ActionParameters
 import androidx.glance.appwidget.action.ActionCallback
-import com.jawzf.pixeltoolkit.services.receivers.QsTileActionRouter
+import com.jawzf.pixeltoolkit.core.platform.tiles.QsTileCatalog
 
 class QsTileClickActionCallback : ActionCallback {
     override suspend fun onAction(
@@ -14,13 +13,7 @@ class QsTileClickActionCallback : ActionCallback {
         parameters: ActionParameters,
     ) {
         val serviceClassName = parameters[SERVICE_CLASS_KEY] ?: return
-        // action
-        val intent =
-            Intent(context, QsTileActionRouter::class.java).apply {
-                action = QsTileActionRouter.ACTION_TRIGGER_TILE
-                putExtra(QsTileActionRouter.EXTRA_SERVICE_CLASS_NAME, serviceClassName)
-            }
-        context.sendBroadcast(intent)
+        QsTileCatalog.trigger(context, serviceClassName)
     }
 
     companion object {

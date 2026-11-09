@@ -19,6 +19,7 @@ import com.jawzf.pixeltoolkit.core.platform.features.FeatureSummary
 import com.jawzf.pixeltoolkit.core.platform.media.MediaArtBridge
 import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuUtils
 import com.jawzf.pixeltoolkit.core.platform.statusbar.StatusBarManager
+import com.jawzf.pixeltoolkit.core.platform.tiles.QsTileCatalog
 import com.jawzf.pixeltoolkit.domain.registry.FeatureRegistry
 import com.jawzf.pixeltoolkit.feature.apps.AppsActionHandler
 import com.jawzf.pixeltoolkit.feature.automation.diy.DIYRepository
@@ -33,6 +34,7 @@ import com.jawzf.pixeltoolkit.services.LiveUpdateSnoozer
 import com.jawzf.pixeltoolkit.services.NotificationListener
 import com.jawzf.pixeltoolkit.services.automation.executors.AppActionHandler
 import com.jawzf.pixeltoolkit.services.receivers.SecurityReceiver
+import com.jawzf.pixeltoolkit.services.tiles.AppQsTileSource
 import com.jawzf.pixeltoolkit.services.tiles.ScreenOffAccessibilityService
 import com.jawzf.pixeltoolkit.ui.features.system.AppActionEditorHost
 import eu.darken.porter.bridge.PorterShizukuBridge
@@ -64,6 +66,7 @@ class ToolkitApp : Application() {
         )
         ActionEditors.init(AppActionEditorHost)
         FeatureCatalog.init { FeatureRegistry.ALL_FEATURES.map { FeatureSummary(it.id, it.title, it.iconRes) } }
+        QsTileCatalog.init(AppQsTileSource)
         MediaArtBridge.init(NotificationListener::getCachedBitmap, NotificationListener::getLatestArtBitmap)
         ProgressNotificationHub.init(NotificationListener::getLatestProgressNotification)
         NotificationHub.init(

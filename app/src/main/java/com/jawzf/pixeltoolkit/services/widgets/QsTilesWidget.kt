@@ -2,7 +2,6 @@ package com.jawzf.pixeltoolkit.services.widgets
 
 import android.content.Context
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -43,13 +42,7 @@ import androidx.glance.text.TextStyle
 import androidx.glance.unit.ColorProvider
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.color.ColorUtil
-import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.feature.connectivity.sim.DataSimController
-import com.jawzf.pixeltoolkit.feature.connectivity.sim.DataSimTileService
-import com.jawzf.pixeltoolkit.services.tiles.QsTileRegistry
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import com.jawzf.pixeltoolkit.core.platform.tiles.QsTileCatalog
 
 class QsTilesWidget : GlanceAppWidget() {
     override val sizeMode = androidx.glance.appwidget.SizeMode.Exact
@@ -59,18 +52,7 @@ class QsTilesWidget : GlanceAppWidget() {
         context: Context,
         id: GlanceId,
     ) {
-        if (
-            DataSimTileService::class.java.name in SettingsRepository(context).getPinnedQsTiles() &&
-            PermissionUtils.hasReadPhoneStatePermission(context)
-        ) {
-            withContext(Dispatchers.IO) {
-                try {
-                    DataSimController.read(context)
-                } catch (e: Exception) {
-                    Log.w("QsTilesWidget", "Cannot refresh data SIM state", e)
-                }
-            }
-        }
+        QsTileCatalog.prepare(context)
         provideContent {
             GlanceTheme {
                 val prefs =
@@ -82,11 +64,7 @@ class QsTilesWidget : GlanceAppWidget() {
                 @Suppress("UNUSED_VARIABLE")
                 val lastUpdate = prefs[KEY_UPDATE] ?: 0L
 
-                val repository = SettingsRepository(context)
-                val pinnedClassNames = repository.getPinnedQsTiles()
-
-                val pinnedTiles =
-                    pinnedClassNames.mapNotNull { QsTileRegistry.getTileByClassName(it) }
+                val pinnedTiles = QsTileCatalog.pinned(context)
                 val width = LocalSize.current.width
                 val height = LocalSize.current.height
 
@@ -162,9 +140,9 @@ class QsTilesWidget : GlanceAppWidget() {
                                                 for (colIndex in 0 until columnsCount) {
                                                     val tile = rowTiles.getOrNull(colIndex)
                                                     if (tile != null) {
-                                                        val resolvedTitle = QsTileRegistry.getTileLabel(
+                                                        val resolvedTitle = QsTileCatalog.label(
                                                             context,
-                                                            tile.serviceClass.name
+                                                            tile.className,
                                                         )
                                                         val pastelColor =
                                                             ColorUtil.getPastelColorFor(
@@ -176,9 +154,9 @@ class QsTilesWidget : GlanceAppWidget() {
                                                             )
 
                                                         val isActive =
-                                                            QsTileRegistry.isTileActive(
+                                                            QsTileCatalog.isActive(
                                                                 context,
-                                                                tile.serviceClass.name,
+                                                                tile.className,
                                                             )
 
                                                         val tileBg =
@@ -226,15 +204,15 @@ class QsTilesWidget : GlanceAppWidget() {
                                                                         actionRunCallback<QsTileClickActionCallback>(
                                                                             actionParametersOf(
                                                                                 QsTileClickActionCallback.SERVICE_CLASS_KEY to
-                                                                                    tile.serviceClass.name,
+                                                                                    tile.className,
                                                                             ),
                                                                         ),
                                                                     )
 
                                                             val activeIconRes =
-                                                                QsTileRegistry.getTileIcon(
+                                                                QsTileCatalog.icon(
                                                                     context,
-                                                                    tile.serviceClass.name,
+                                                                    tile.className,
                                                                     tile.iconRes,
                                                                 )
 
@@ -287,9 +265,9 @@ class QsTilesWidget : GlanceAppWidget() {
                                                                 )
 
                                                                 val subtitle =
-                                                                    QsTileRegistry.getTileSubtitle(
+                                                                    QsTileCatalog.subtitle(
                                                                         context,
-                                                                        tile.serviceClass.name,
+                                                                        tile.className,
                                                                     )
 
                                                                 Column(
