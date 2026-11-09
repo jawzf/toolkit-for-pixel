@@ -6,7 +6,6 @@ import com.jawzf.pixeltoolkit.core.data.security.DeviceLockUtils
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.platform.tiles.BaseTileService
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 
 class LockdownTileService : BaseTileService() {
     override fun onClick() {
@@ -34,5 +33,5 @@ class LockdownTileService : BaseTileService() {
 
     override fun getTileState(): Int = Tile.STATE_INACTIVE
 
-    private fun lockdownModeStatus(): Boolean = SettingsRepository(this).getBoolean(SettingsRepository.KEY_LOCKDOWN_MODE, false)
+    private fun lockdownModeStatus(): Boolean = DeviceLockUtils.isLockdownEnabled(this)
 }

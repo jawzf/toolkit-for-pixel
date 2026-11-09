@@ -3,7 +3,7 @@ package com.jawzf.pixeltoolkit.feature.apps.launcher
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
+import androidx.core.content.edit
 
 object LauncherUtils {
     const val KEY_CYCLE_LAUNCHERS = "default_launcher_cycle_packages"
@@ -36,7 +36,8 @@ object LauncherUtils {
     fun cycleLaunchers(context: Context): List<String> {
         val installed = installedLaunchers(context)
         val saved =
-            SettingsRepository(context)
+            context
+                .getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE)
                 .getString(KEY_CYCLE_LAUNCHERS, null)
                 ?.split(",")
                 ?.filter { it.isNotBlank() && it in installed }
@@ -44,6 +45,8 @@ object LauncherUtils {
     }
 
     fun saveCycleLaunchers(context: Context, packages: List<String>) {
-        SettingsRepository(context).putString(KEY_CYCLE_LAUNCHERS, packages.joinToString(","))
+        context
+            .getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE)
+            .edit { putString(KEY_CYCLE_LAUNCHERS, packages.joinToString(",")) }
     }
 }

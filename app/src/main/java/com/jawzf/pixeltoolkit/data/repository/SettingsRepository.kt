@@ -10,6 +10,7 @@ import com.jawzf.pixeltoolkit.core.data.action.Action
 import com.jawzf.pixeltoolkit.core.data.action.ActionGsonAdapter
 import com.jawzf.pixeltoolkit.core.data.island.IslandSettings
 import com.jawzf.pixeltoolkit.core.data.power.PowerSettings
+import com.jawzf.pixeltoolkit.core.data.security.DeviceLockUtils
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticFeedbackType
 import com.jawzf.pixeltoolkit.core.platform.PlatformPrefs
 import com.jawzf.pixeltoolkit.core.platform.shell.RootUtils
@@ -290,7 +291,7 @@ class SettingsRepository(
         const val KEY_RECENT_SEARCHES = "recent_searches"
         const val KEY_KEEP_PREFS = "keep_prefs"
 
-        const val KEY_LOCKDOWN_MODE = "lockdown_mode"
+        const val KEY_LOCKDOWN_MODE = DeviceLockUtils.KEY_LOCKDOWN_MODE
         const val KEY_BUBBLE_WEB_FULLSCREEN = "bubble_web_fullscreen"
         const val KEY_UNSPLASH_ACCESS_KEY = "unsplash_access_key"
         const val KEY_EXTERNAL_CONTROL_TOKEN = "external_control_token"

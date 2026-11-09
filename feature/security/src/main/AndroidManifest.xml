@@ -19,6 +19,24 @@
                 android:name="android.service.quicksettings.TILE_CATEGORY"
                 android:value="android.service.quicksettings.CATEGORY_PRIVACY" />
         </service>
+
+        <service
+            android:name="com.jawzf.pixeltoolkit.feature.security.lockdown.LockdownTileService"
+            android:exported="true"
+            android:icon="@drawable/rounded_lock_24"
+            android:label="@string/tile_lock"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.service.quicksettings.ACTION_QS_TILE_PREFERENCES"
+                android:value="com.jawzf.pixeltoolkit.ui.activities.QSPreferencesActivity" />
+            <meta-data
+                android:name="android.service.quicksettings.TILE_CATEGORY"
+                android:value="android.service.quicksettings.CATEGORY_UTILITIES" />
+        </service>
     </application>
 
 </manifest>

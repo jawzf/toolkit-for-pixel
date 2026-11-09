@@ -315,6 +315,7 @@ class ScreenOffAccessibilityService :
     override fun onCreate() {
         super.onCreate()
         instance = this
+        DeviceLockUtils.accessibilityService = this
 
         // Initialize Handlers
         flashlightHandler = FlashlightHandler(this, serviceScope)
@@ -596,6 +597,7 @@ class ScreenOffAccessibilityService :
         getSharedPreferences("toolkit_prefs", MODE_PRIVATE)
             .unregisterOnSharedPreferenceChangeListener(preferenceChangeListener)
         instance = null
+        DeviceLockUtils.accessibilityService = null
         super.onDestroy()
     }
 

@@ -5,6 +5,7 @@ import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.SystemClock
 import android.os.Vibrator
@@ -31,7 +32,7 @@ class ScreenOffWidgetProvider : AppWidgetProvider() {
                 Intent(context, ScreenOffWidgetProvider::class.java).apply {
                     action = "WIDGET_CLICK"
                     putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
-                    data = android.net.Uri.parse("custom://widget/$appWidgetId")
+                    data = Uri.parse("custom://widget/$appWidgetId")
                 }
             val pendingIntent =
                 PendingIntent.getBroadcast(

@@ -25,12 +25,11 @@ import com.jawzf.pixeltoolkit.core.design.haptics.HapticFeedbackType
 import com.jawzf.pixeltoolkit.core.design.haptics.performHapticFeedback
 import com.jawzf.pixeltoolkit.core.design.modifiers.highlight
 import com.jawzf.pixeltoolkit.core.design.pickers.HapticFeedbackPicker
-import com.jawzf.pixeltoolkit.feature.widgets.screenoff.ScreenOffMethodPicker
-import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 
 @Composable
 fun ScreenOffWidgetSettingsUI(
-    viewModel: MainViewModel,
+    isShizukuPermissionGranted: Boolean,
+    onSetHapticFeedback: (HapticFeedbackType) -> Unit,
     selectedHaptic: HapticFeedbackType,
     onHapticSelected: (HapticFeedbackType) -> Unit,
     vibrator: Vibrator?,
@@ -41,7 +40,6 @@ fun ScreenOffWidgetSettingsUI(
     onSetChildFeatureForPermissions: (String?) -> Unit,
 ) {
     val context = LocalContext.current
-    val isShizukuPermissionGranted by viewModel.isShizukuPermissionGranted
 
     var selectedScreenOffMethod by remember {
         val name =
@@ -114,7 +112,7 @@ fun ScreenOffWidgetSettingsUI(
                         putString("haptic_feedback_type", type.name)
                     }
                     onHapticSelected(type)
-                    viewModel.setHapticFeedback(type, context)
+                    onSetHapticFeedback(type)
                     if (vibrator != null) {
                         performHapticFeedback(vibrator, type)
                     }

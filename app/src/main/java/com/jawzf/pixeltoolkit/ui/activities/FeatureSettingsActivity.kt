@@ -900,7 +900,8 @@ class FeatureSettingsActivity : AppCompatActivity() {
                                 when (featureId) {
                                     "Screen off widget" -> {
                                         ScreenOffWidgetSettingsUI(
-                                            viewModel = viewModel,
+                                            isShizukuPermissionGranted = viewModel.isShizukuPermissionGranted.value,
+                                            onSetHapticFeedback = { viewModel.setHapticFeedback(it, context) },
                                             selectedHaptic = selectedHaptic,
                                             onHapticSelected = { type -> selectedHaptic = type },
                                             vibrator = vibrator,
