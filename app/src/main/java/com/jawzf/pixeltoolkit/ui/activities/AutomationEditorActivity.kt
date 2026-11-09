@@ -100,12 +100,14 @@ import com.jawzf.pixeltoolkit.feature.automation.diy.Comparison
 import com.jawzf.pixeltoolkit.feature.automation.diy.DIYRepository
 import com.jawzf.pixeltoolkit.feature.automation.diy.Metric
 import com.jawzf.pixeltoolkit.feature.automation.diy.Trigger
+import com.jawzf.pixeltoolkit.feature.automation.ui.sheets.BluetoothDeviceSelectionSheet
+import com.jawzf.pixeltoolkit.feature.automation.ui.sheets.CalendarStateSheet
+import com.jawzf.pixeltoolkit.feature.automation.ui.sheets.LocationTriggerSheet
+import com.jawzf.pixeltoolkit.feature.automation.ui.sheets.SoundModeSettingsSheet
 import com.jawzf.pixeltoolkit.feature.automation.ui.sheets.SystemMetricSheet
-import com.jawzf.pixeltoolkit.ui.core.sheets.BluetoothDeviceSelectionSheet
+import com.jawzf.pixeltoolkit.feature.automation.ui.sheets.TimeSelectionSheet
+import com.jawzf.pixeltoolkit.feature.automation.ui.sheets.WifiNetworkSelectionSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.NotificationTriggerSheet
-import com.jawzf.pixeltoolkit.ui.core.sheets.SoundModeSettingsSheet
-import com.jawzf.pixeltoolkit.ui.core.sheets.WifiNetworkSelectionSheet
-import com.jawzf.pixeltoolkit.ui.features.location.sheets.LocationTriggerSheet
 import com.jawzf.pixeltoolkit.ui.features.system.ActionSequenceEditor
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -1435,7 +1437,7 @@ class AutomationEditorActivity : ComponentActivity() {
                             }
 
                             if (showCalendarStateSettings) {
-                                com.jawzf.pixeltoolkit.ui.core.sheets.CalendarStateSheet(
+                                CalendarStateSheet(
                                     initialState = selectedState as? DIYState.CalendarEvent,
                                     onDismiss = { showCalendarStateSettings = false },
                                     onStateChange = { selectedState = it },
@@ -1443,7 +1445,7 @@ class AutomationEditorActivity : ComponentActivity() {
                             }
 
                             if (showTimeSettings) {
-                                com.jawzf.pixeltoolkit.ui.core.sheets.TimeSelectionSheet(
+                                TimeSelectionSheet(
                                     initialTrigger = selectedTrigger as? Trigger.Schedule,
                                     initialState = selectedState as? DIYState.TimePeriod,
                                     onDismiss = { showTimeSettings = false },

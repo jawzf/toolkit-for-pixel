@@ -47,24 +47,26 @@ import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.feature.apps.AppsSettings
 import com.jawzf.pixeltoolkit.feature.automation.diy.ActionRegistry
 import com.jawzf.pixeltoolkit.feature.automation.diy.displayName
+import com.jawzf.pixeltoolkit.feature.automation.ui.sheets.ChargingModeSettingsSheet
+import com.jawzf.pixeltoolkit.feature.automation.ui.sheets.CustomSettingsSheet
+import com.jawzf.pixeltoolkit.feature.automation.ui.sheets.DeviceCareSettingsSheet
+import com.jawzf.pixeltoolkit.feature.automation.ui.sheets.DeviceEffectsSettingsSheet
+import com.jawzf.pixeltoolkit.feature.automation.ui.sheets.DimWallpaperSettingsSheet
+import com.jawzf.pixeltoolkit.feature.automation.ui.sheets.KeyboardSelectionSheet
+import com.jawzf.pixeltoolkit.feature.automation.ui.sheets.OverlayControlSettingsSheet
 import com.jawzf.pixeltoolkit.feature.automation.ui.sheets.SendNotificationSettingsSheet
+import com.jawzf.pixeltoolkit.feature.automation.ui.sheets.SetModeSettingsSheet
+import com.jawzf.pixeltoolkit.feature.automation.ui.sheets.SetVolumeSettingsSheet
+import com.jawzf.pixeltoolkit.feature.automation.ui.sheets.SometimesEssentialsSettingsSheet
+import com.jawzf.pixeltoolkit.feature.automation.ui.sheets.SoundModeSettingsSheet
 import com.jawzf.pixeltoolkit.feature.automation.ui.sheets.WaitSettingsSheet
 import com.jawzf.pixeltoolkit.feature.automation.ui.sheets.formatWait
 import com.jawzf.pixeltoolkit.ui.core.sheets.AppSelectionSheet
-import com.jawzf.pixeltoolkit.ui.core.sheets.ChargingModeSettingsSheet
-import com.jawzf.pixeltoolkit.ui.core.sheets.CustomSettingsSheet
-import com.jawzf.pixeltoolkit.ui.core.sheets.DeviceCareSettingsSheet
-import com.jawzf.pixeltoolkit.ui.core.sheets.DimWallpaperSettingsSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.HilightEffectSettingsSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.NotificationLightingActionSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.OpenActivityPicker
-import com.jawzf.pixeltoolkit.ui.core.sheets.OverlayControlSettingsSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.ScreenOffSettingsSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.SingleAppSelectionSheet
-import com.jawzf.pixeltoolkit.ui.core.sheets.SoundModeSettingsSheet
-import com.jawzf.pixeltoolkit.ui.features.apps.sheets.KeyboardSelectionSheet
-import com.jawzf.pixeltoolkit.ui.features.audio.sheets.SetModeSettingsSheet
-import com.jawzf.pixeltoolkit.ui.features.audio.sheets.SetVolumeSettingsSheet
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 import sh.calvin.reorderable.ReorderableColumn
 import java.util.concurrent.atomic.AtomicLong
@@ -418,7 +420,7 @@ fun ActionSequenceEditor(
     }
 
     if (showDeviceEffectsSettings && configAction is Action.DeviceEffects) {
-        com.jawzf.pixeltoolkit.ui.core.sheets.DeviceEffectsSettingsSheet(
+        DeviceEffectsSettingsSheet(
             initialAction = configAction as Action.DeviceEffects,
             onDismiss = { showDeviceEffectsSettings = false },
             onSave = { newAction ->
@@ -514,7 +516,7 @@ fun ActionSequenceEditor(
     }
 
     if (showSometimesEssentialsSettings && configAction is Action.SometimesEssentials) {
-        com.jawzf.pixeltoolkit.ui.core.sheets.SometimesEssentialsSettingsSheet(
+        SometimesEssentialsSettingsSheet(
             initialAction = configAction as Action.SometimesEssentials,
             onDismiss = { showSometimesEssentialsSettings = false },
             onSave = { newAction ->

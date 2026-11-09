@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.utils
+package com.jawzf.pixeltoolkit.feature.automation.util
 
 import android.annotation.SuppressLint
 import android.bluetooth.BluetoothManager
