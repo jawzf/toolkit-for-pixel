@@ -135,6 +135,7 @@ import com.jawzf.pixeltoolkit.ui.core.sheets.ShakeForHelp
 import com.jawzf.pixeltoolkit.ui.core.sheets.SingleAppSelectionSheet
 import com.jawzf.pixeltoolkit.ui.features.display.actions.GestureActionPickerSheet
 import com.jawzf.pixeltoolkit.ui.features.display.sheets.StatusGlanceCalendarOptionsBottomSheet
+import com.jawzf.pixeltoolkit.ui.features.system.ActionSequenceEditor
 import com.jawzf.pixeltoolkit.ui.features.system.ActivityLauncherSearchBar
 import com.jawzf.pixeltoolkit.ui.features.system.ActivityLauncherSettingsUI
 import com.jawzf.pixeltoolkit.ui.features.system.ButtonRemapSettingsUI
@@ -996,7 +997,22 @@ class FeatureSettingsActivity : AppCompatActivity() {
 
                                     "Button remap" -> {
                                         ButtonRemapSettingsUI(
-                                            viewModel = viewModel,
+                                            state = viewModel.remap,
+                                            permissionItemsFor = { keys ->
+                                                PermissionUIHelper.getPermissionItems(keys, context, viewModel)
+                                            },
+                                            onRefreshPermissions = { viewModel.check(context) },
+                                            canWriteSecureSettings = { viewModel.canWriteSecureSettings(context) },
+                                            actionEditor = { actions, onChange, screenOnOnly, listKey, emptyText ->
+                                                ActionSequenceEditor(
+                                                    viewModel = viewModel,
+                                                    actions = actions,
+                                                    onActionsChange = onChange,
+                                                    screenOnOnly = screenOnOnly,
+                                                    listKey = listKey,
+                                                    emptyText = emptyText,
+                                                )
+                                            },
                                             modifier = Modifier.padding(top = 16.dp),
                                             highlightSetting = highlightSetting,
                                         )

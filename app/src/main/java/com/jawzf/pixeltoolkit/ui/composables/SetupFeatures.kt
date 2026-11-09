@@ -134,7 +134,7 @@ fun SetupFeatures(
     val isRootEnabled by viewModel.isRootEnabled
     val isRootPermissionGranted by viewModel.isRootPermissionGranted
     val isReadPhoneStateEnabled by viewModel.isReadPhoneStateEnabled
-    viewModel.isButtonRemapEnabled.value
+    viewModel.remap.isButtonRemapEnabled.value
     viewModel.nightLight.isDynamicNightLightEnabled.value
 
     viewModel.security.isScreenLockedSecurityEnabled.value
