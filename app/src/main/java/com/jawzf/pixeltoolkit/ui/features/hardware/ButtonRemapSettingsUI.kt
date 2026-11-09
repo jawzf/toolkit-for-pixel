@@ -51,6 +51,7 @@ import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.modifiers.highlight
 import com.jawzf.pixeltoolkit.core.design.pickers.HapticFeedbackPicker
 import com.jawzf.pixeltoolkit.core.design.pickers.SegmentedPicker
+import com.jawzf.pixeltoolkit.core.design.sheets.PermissionItem
 import com.jawzf.pixeltoolkit.core.design.sheets.PermissionsBottomSheet
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuPermissionHelper
@@ -61,13 +62,22 @@ import com.jawzf.pixeltoolkit.feature.input.remap.PowerChoice
 import com.jawzf.pixeltoolkit.feature.input.remap.RemapInput
 import com.jawzf.pixeltoolkit.feature.input.remap.RemapScreenState
 import com.jawzf.pixeltoolkit.feature.input.remap.RemapSlot
-import com.jawzf.pixeltoolkit.utils.PermissionUIHelper
-import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
+import com.jawzf.pixeltoolkit.feature.input.remap.RemapState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ButtonRemapSettingsUI(
-    viewModel: MainViewModel,
+    state: RemapState,
+    permissionItemsFor: (List<String>) -> List<PermissionItem>,
+    onRefreshPermissions: () -> Unit,
+    canWriteSecureSettings: () -> Boolean,
+    actionEditor: @Composable (
+        actions: List<Action>,
+        onActionsChange: (List<Action>) -> Unit,
+        screenOnOnly: Boolean,
+        listKey: Any,
+        emptyText: String,
+    ) -> Unit,
     modifier: Modifier = Modifier,
     highlightSetting: String? = null,
 ) {
@@ -109,10 +119,10 @@ fun ButtonRemapSettingsUI(
         PermissionsBottomSheet(
             onDismissRequest = {
                 requestingPermissionsFor = null
-                viewModel.check(context)
+                onRefreshPermissions()
             },
             featureTitle = stringResource(titleRes),
-            permissions = PermissionUIHelper.getPermissionItems(permKeys, context, viewModel),
+            permissions = permissionItemsFor(permKeys),
         )
     }
 
@@ -126,7 +136,7 @@ fun ButtonRemapSettingsUI(
                 },
             screenState = if (selectedScreenTab == 0) RemapScreenState.OFF else RemapScreenState.ON,
         )
-    val currentActions: List<Action> = viewModel.remapActions[currentSlot].orEmpty()
+    val currentActions: List<Action> = state.remapActions[currentSlot].orEmpty()
 
     Column(
         modifier =
@@ -140,13 +150,13 @@ fun ButtonRemapSettingsUI(
             IconToggleItem(
                 iconRes = R.drawable.rounded_switch_access_3_24,
                 title = stringResource(R.string.button_remap_enable_title),
-                isChecked = viewModel.isButtonRemapEnabled.value,
-                onCheckedChange = { viewModel.setButtonRemapEnabled(it, context) },
+                isChecked = state.isButtonRemapEnabled.value,
+                onCheckedChange = { state.setButtonRemapEnabled(it, context) },
                 modifier = Modifier.highlight(highlightSetting == "enable_remap"),
             )
 
             AnimatedVisibility(
-                visible = viewModel.isButtonRemapEnabled.value,
+                visible = state.isButtonRemapEnabled.value,
                 enter = expandVertically() + fadeIn(),
                 exit = shrinkVertically() + fadeOut(),
             ) {
@@ -154,8 +164,8 @@ fun ButtonRemapSettingsUI(
                     IconToggleItem(
                         iconRes = R.drawable.rounded_volume_up_24,
                         title = stringResource(R.string.button_remap_pause_on_volume_dialog_title),
-                        isChecked = viewModel.isButtonRemapPauseOnVolumeDialog.value,
-                        onCheckedChange = { viewModel.setButtonRemapPauseOnVolumeDialog(it, context) },
+                        isChecked = state.isButtonRemapPauseOnVolumeDialog.value,
+                        onCheckedChange = { state.setButtonRemapPauseOnVolumeDialog(it) },
                         modifier = Modifier.highlight(highlightSetting == "pause_on_volume_dialog"),
                     )
 
@@ -166,7 +176,7 @@ fun ButtonRemapSettingsUI(
                         iconRes = if (isRootEnabled) R.drawable.rounded_numbers_24 else R.drawable.rounded_adb_24,
                         title = stringResource(R.string.button_remap_use_shizuku_title),
                         description = stringResource(R.string.button_remap_use_shizuku_desc),
-                        isChecked = viewModel.isButtonRemapUseShizuku.value,
+                        isChecked = state.isButtonRemapUseShizuku.value,
                         onCheckedChange = { enabled ->
                             if (enabled) {
                                 val shellHasPermission =
@@ -177,21 +187,21 @@ fun ButtonRemapSettingsUI(
                                         .isAvailable(context)
 
                                 if (shellHasPermission) {
-                                    viewModel.setButtonRemapUseShizuku(true, context)
+                                    state.setButtonRemapUseShizuku(true)
                                 } else if (shellIsAvailable && !isRootEnabled) {
                                     shizukuHelper.requestPermission { _, grantResult ->
                                         if (grantResult == android.content.pm.PackageManager.PERMISSION_GRANTED) {
-                                            viewModel.setButtonRemapUseShizuku(true, context)
+                                            state.setButtonRemapUseShizuku(true)
                                         }
                                     }
                                 } else if (isRootEnabled && !shellHasPermission) {
-                                    viewModel.setButtonRemapUseShizuku(true, context)
+                                    state.setButtonRemapUseShizuku(true)
                                     ShellUtils.runCommand(
                                         context,
                                         "id",
                                     )
                                 } else {
-                                    viewModel.setButtonRemapUseShizuku(true, context)
+                                    state.setButtonRemapUseShizuku(true)
                                     val toastRes =
                                         if (isRootEnabled) R.string.root_not_available_toast else R.string.shizuku_not_running_toast
                                     android.widget.Toast
@@ -202,14 +212,14 @@ fun ButtonRemapSettingsUI(
                                         ).show()
                                 }
                             } else {
-                                viewModel.setButtonRemapUseShizuku(false, context)
+                                state.setButtonRemapUseShizuku(false)
                             }
                         },
                         modifier = Modifier.highlight(highlightSetting == "shizuku_remap"),
                     )
 
                     AnimatedVisibility(
-                        visible = viewModel.isButtonRemapUseShizuku.value,
+                        visible = state.isButtonRemapUseShizuku.value,
                         enter = expandVertically() + fadeIn(),
                         exit = shrinkVertically() + fadeOut(),
                     ) {
@@ -232,10 +242,10 @@ fun ButtonRemapSettingsUI(
                                     .hasPermission(context)
 
                             val statusText =
-                                if (shellPermission && viewModel.shizukuDetectedDevicePath.value != null) {
+                                if (shellPermission && state.shizukuDetectedDevicePath.value != null) {
                                     stringResource(
                                         R.string.shizuku_detected_prefix,
-                                        viewModel.shizukuDetectedDevicePath.value ?: "",
+                                        state.shizukuDetectedDevicePath.value ?: "",
                                     )
                                 } else if (isRootEnabled) {
                                     if (shellPermission) {
@@ -298,7 +308,7 @@ fun ButtonRemapSettingsUI(
         }
 
         AnimatedVisibility(
-            visible = viewModel.isButtonRemapEnabled.value,
+            visible = state.isButtonRemapEnabled.value,
             enter = expandVertically() + fadeIn(),
             exit = shrinkVertically() + fadeOut(),
         ) {
@@ -312,8 +322,8 @@ fun ButtonRemapSettingsUI(
                 )
                 RoundedCardContainer(spacing = 0.dp) {
                     HapticFeedbackPicker(
-                        selectedFeedback = viewModel.remapHapticType.value,
-                        onFeedbackSelected = { viewModel.setRemapHapticType(it, context) },
+                        selectedFeedback = state.remapHapticType.value,
+                        onFeedbackSelected = { state.setRemapHapticType(it) },
                         options =
                             listOf(
                                 R.string.haptic_none to HapticFeedbackType.NONE,
@@ -372,13 +382,12 @@ fun ButtonRemapSettingsUI(
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
 
-                    ActionSequenceEditor(
-                        viewModel = viewModel,
-                        actions = currentActions,
-                        onActionsChange = { viewModel.setRemapActions(currentSlot, it) },
-                        screenOnOnly = selectedScreenTab == 1,
-                        listKey = currentSlot,
-                        emptyText = stringResource(R.string.button_remap_no_actions),
+                    actionEditor(
+                        currentActions,
+                        { state.setRemapActions(currentSlot, it) },
+                        selectedScreenTab == 1,
+                        currentSlot,
+                        stringResource(R.string.button_remap_no_actions),
                     )
                 } else {
                     val screenState =
@@ -399,9 +408,9 @@ fun ButtonRemapSettingsUI(
                                     R.string.button_remap_power_camera_flip_desc,
                                     stringResource(R.string.button_remap_use_shizuku_title),
                                 ),
-                            isChecked = viewModel.isPowerCameraFlipEnabled.value,
+                            isChecked = state.isPowerCameraFlipEnabled.value,
                             onCheckedChange = { enabled ->
-                                viewModel.setPowerCameraFlipEnabled(enabled)
+                                state.setPowerCameraFlipEnabled(enabled)
                             },
                             modifier = Modifier.highlight(highlightSetting == "power_camera_flip"),
                         )
@@ -416,7 +425,9 @@ fun ButtonRemapSettingsUI(
                                 PowerChoice.POWER_MENU,
                                 PowerChoice.ACTIONS,
                             ),
-                        viewModel = viewModel,
+                        state = state,
+                        canWriteSecureSettings = canWriteSecureSettings,
+                        actionEditor = actionEditor,
                         onRequestPermission = {
                             requestingPermissionsFor =
                                 Pair(R.string.button_remap_press_and_hold, listOf("WRITE_SECURE_SETTINGS"))
@@ -451,16 +462,24 @@ private fun PowerGestureSection(
     slot: RemapSlot,
     titleRes: Int,
     options: List<PowerChoice>,
-    viewModel: MainViewModel,
+    state: RemapState,
+    canWriteSecureSettings: () -> Boolean,
+    actionEditor: @Composable (
+        actions: List<Action>,
+        onActionsChange: (List<Action>) -> Unit,
+        screenOnOnly: Boolean,
+        listKey: Any,
+        emptyText: String,
+    ) -> Unit,
     onRequestPermission: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
     val offSlot = RemapSlot(slot.input, RemapScreenState.OFF)
     val onSlot = RemapSlot(slot.input, RemapScreenState.ON)
-    val offChoice = viewModel.powerChoices[offSlot] ?: offSlot.defaultChoice ?: PowerChoice.ASSISTANT
-    val onChoice = viewModel.powerChoices[onSlot] ?: onSlot.defaultChoice ?: PowerChoice.ASSISTANT
-    val selectedChoice = viewModel.powerChoices[slot] ?: slot.defaultChoice ?: PowerChoice.ASSISTANT
+    val offChoice = state.powerChoices[offSlot] ?: offSlot.defaultChoice ?: PowerChoice.ASSISTANT
+    val onChoice = state.powerChoices[onSlot] ?: onSlot.defaultChoice ?: PowerChoice.ASSISTANT
+    val selectedChoice = state.powerChoices[slot] ?: slot.defaultChoice ?: PowerChoice.ASSISTANT
 
     Column(
         modifier = modifier,
@@ -496,10 +515,10 @@ private fun PowerGestureSection(
                     iconRes = iconRes,
                     isSelected = selectedChoice == option,
                     onClick = {
-                        if (option != slot.defaultChoice && !viewModel.canWriteSecureSettings(context)) {
+                        if (option != slot.defaultChoice && !canWriteSecureSettings()) {
                             onRequestPermission()
                         } else {
-                            viewModel.setPowerChoice(slot, option, context)
+                            state.setPowerChoice(slot, option, context)
                         }
                     },
                     hasSettings = option == PowerChoice.ASSISTANT,
@@ -514,13 +533,12 @@ private fun PowerGestureSection(
         }
 
         if (selectedChoice == PowerChoice.ACTIONS) {
-            ActionSequenceEditor(
-                viewModel = viewModel,
-                actions = viewModel.remapActions[slot].orEmpty(),
-                onActionsChange = { viewModel.setRemapActions(slot, it) },
-                screenOnOnly = slot.screenState == RemapScreenState.ON,
-                listKey = slot,
-                emptyText = stringResource(R.string.button_remap_power_no_actions),
+            actionEditor(
+                state.remapActions[slot].orEmpty(),
+                { state.setRemapActions(slot, it) },
+                slot.screenState == RemapScreenState.ON,
+                slot,
+                stringResource(R.string.button_remap_power_no_actions),
             )
         }
 

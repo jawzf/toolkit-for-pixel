@@ -77,12 +77,8 @@ import com.jawzf.pixeltoolkit.feature.display.pixels.SmartPixelsState
 import com.jawzf.pixeltoolkit.feature.display.refresh.RefreshRatePanelState
 import com.jawzf.pixeltoolkit.feature.display.statusbar.StatusBarControlState
 import com.jawzf.pixeltoolkit.feature.input.InputState
-import com.jawzf.pixeltoolkit.feature.input.remap.PowerButtonGestures
-import com.jawzf.pixeltoolkit.feature.input.remap.PowerChoice
 import com.jawzf.pixeltoolkit.feature.input.remap.RemapSettings
-import com.jawzf.pixeltoolkit.feature.input.remap.RemapSlot
-import com.jawzf.pixeltoolkit.feature.input.remap.getPowerChoice
-import com.jawzf.pixeltoolkit.feature.input.remap.setPowerChoice
+import com.jawzf.pixeltoolkit.feature.input.remap.RemapState
 import com.jawzf.pixeltoolkit.feature.island.IslandDuoLink
 import com.jawzf.pixeltoolkit.feature.island.IslandState
 import com.jawzf.pixeltoolkit.feature.notifications.NotificationSettings
@@ -134,17 +130,9 @@ class MainViewModel : ViewModel() {
     val defaultTab = mutableStateOf(com.jawzf.pixeltoolkit.domain.DIYTabs.TOOLKIT)
     val selectedAppIcon = mutableStateOf(AppIcon.DEFAULT)
     val isDefaultBrowserSet = mutableStateOf(false)
-    val isButtonRemapEnabled = mutableStateOf(false)
-    val isButtonRemapUseShizuku = mutableStateOf(false)
-    val isButtonRemapPauseOnVolumeDialog = mutableStateOf(true)
-    val shizukuDetectedDevicePath = mutableStateOf<String?>(null)
-    val remapActions = mutableStateMapOf<RemapSlot, List<Action>>()
-    val powerChoices = mutableStateMapOf<RemapSlot, PowerChoice>()
-    val isPowerCameraFlipEnabled = mutableStateOf(false)
     val isLockscreenShortcutsEnabled = mutableStateOf(false)
     val lockscreenShortcutActions = mutableStateMapOf<LockscreenShortcutSide, List<Action>>()
     val lockscreenSystemShortcutsState = mutableStateOf(SystemShortcutsState.UNKNOWN)
-    val remapHapticType = mutableStateOf(HapticFeedbackType.DOUBLE)
 
     val isFoldableCameraDevice = mutableStateOf(false)
 
@@ -171,6 +159,7 @@ class MainViewModel : ViewModel() {
     val sound = SoundState()
     val battery = BatteryState()
     val power = PowerState(viewModelScope)
+    val remap = RemapState()
     val security =
         SecurityState(viewModelScope) { context, requesterId ->
             StatusBarManager.requestRestore(context, requesterId)
@@ -448,9 +437,7 @@ class MainViewModel : ViewModel() {
 
                     PowerSettings.KEY_MAPS_POWER_SAVING_ENABLED -> power.onPreferenceChanged(key)
 
-                    RemapSettings.KEY_BUTTON_REMAP_ENABLED ->
-                        isButtonRemapEnabled.value =
-                            settingsRepository.getBoolean(key)
+                    RemapSettings.KEY_BUTTON_REMAP_ENABLED -> remap.onPreferenceChanged(key)
 
                     SettingsRepository.KEY_LOCKSCREEN_SYSTEM_SHORTCUTS_STATE ->
                         lockscreenSystemShortcutsState.value =
@@ -1255,40 +1242,7 @@ class MainViewModel : ViewModel() {
         isShakeForHelpEnabled.value = settingsRepository.isShakeForHelpEnabled()
 
         power.load(context)
-
-        // Button Remap & Migration
-        isButtonRemapEnabled.value =
-            settingsRepository.getBoolean(
-                RemapSettings.KEY_BUTTON_REMAP_ENABLED,
-                settingsRepository.getBoolean(SettingsRepository.KEY_FLASHLIGHT_VOLUME_TOGGLE_ENABLED),
-            )
-        isButtonRemapUseShizuku.value =
-            settingsRepository.getBoolean(RemapSettings.KEY_BUTTON_REMAP_USE_SHIZUKU)
-        isButtonRemapPauseOnVolumeDialog.value =
-            settingsRepository.getBoolean(RemapSettings.KEY_BUTTON_REMAP_PAUSE_ON_VOLUME_DIALOG, true)
-        shizukuDetectedDevicePath.value =
-            settingsRepository.getString(SettingsRepository.KEY_SHIZUKU_DETECTED_DEVICE_PATH)
-
-        val oldTrigger =
-            settingsRepository.getString(
-                SettingsRepository.KEY_FLASHLIGHT_TRIGGER_BUTTON,
-                "Volume Up",
-            )
-
-        val hasLegacyToggle =
-            settingsRepository.getBoolean(
-                SettingsRepository.KEY_FLASHLIGHT_VOLUME_TOGGLE_ENABLED,
-                false,
-            ) // Default false here as key check logic
-
-        RemapSlot.ALL.forEach { slot ->
-            remapActions[slot] = settingsRepository.getRemapActions(slot.prefKey)
-            if (slot.choicePrefKey != null) {
-                powerChoices[slot] = settingsRepository.getPowerChoice(slot)
-            }
-        }
-        isPowerCameraFlipEnabled.value =
-            settingsRepository.getBoolean(RemapSettings.KEY_BUTTON_REMAP_POWER_CAMERA_FLIP, false)
+        remap.load(context)
 
         hilight.load(context)
         isLockscreenShortcutsEnabled.value = settingsRepository.isLockscreenShortcutsEnabled()
@@ -1297,23 +1251,6 @@ class MainViewModel : ViewModel() {
             lockscreenShortcutActions[side] = settingsRepository.getRemapActions(side.prefKey)
         }
         lockscreenSystemShortcutsState.value = settingsRepository.getLockscreenSystemShortcutsState()
-
-        val hapticName =
-            settingsRepository.getString(
-                RemapSettings.KEY_BUTTON_REMAP_HAPTIC_TYPE,
-                settingsRepository.getString(
-                    SettingsRepository.KEY_FLASHLIGHT_HAPTIC_TYPE,
-                    HapticFeedbackType.DOUBLE.name,
-                ),
-            )
-
-        remapHapticType.value =
-            try {
-                val type = HapticFeedbackType.valueOf(hapticName ?: HapticFeedbackType.DOUBLE.name)
-                if (type.name == "LONG") HapticFeedbackType.DOUBLE else type
-            } catch (e: Exception) {
-                HapticFeedbackType.DOUBLE
-            }
 
         smartPixels.load(context)
         duo.load(context)
@@ -2508,81 +2445,6 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    /**
-     * Executes the set button remap enabled operation.
-     *
-     * @param enabled [Boolean] Target enabled.
-     * @param context [Context] Target context.
-     */
-    fun setButtonRemapEnabled(
-        enabled: Boolean,
-        context: Context,
-    ) {
-        isButtonRemapEnabled.value = enabled
-        settingsRepository.putBoolean(RemapSettings.KEY_BUTTON_REMAP_ENABLED, enabled)
-        if (!enabled) {
-            PowerButtonGestures.restoreDefaults(context, settingsRepository)
-        } else {
-            val hasNonDefaultChoice =
-                RemapSlot.ALL.any { slot ->
-                    slot.choicePrefKey != null &&
-                        (powerChoices[slot] ?: slot.defaultChoice) != slot.defaultChoice
-                }
-            if (hasNonDefaultChoice || isPowerCameraFlipEnabled.value) {
-                PowerButtonGestures.sync(context, settingsRepository)
-            }
-        }
-    }
-
-    // Pause remap while the system volume dialog is visible
-    fun setButtonRemapPauseOnVolumeDialog(
-        enabled: Boolean,
-        context: Context,
-    ) {
-        isButtonRemapPauseOnVolumeDialog.value = enabled
-        settingsRepository.putBoolean(RemapSettings.KEY_BUTTON_REMAP_PAUSE_ON_VOLUME_DIALOG, enabled)
-    }
-
-    /**
-     * Executes the set button remap use shizuku operation.
-     *
-     * @param enabled [Boolean] Target enabled.
-     * @param context [Context] Target context.
-     */
-    fun setButtonRemapUseShizuku(
-        enabled: Boolean,
-        context: Context,
-    ) {
-        isButtonRemapUseShizuku.value = enabled
-        settingsRepository.putBoolean(RemapSettings.KEY_BUTTON_REMAP_USE_SHIZUKU, enabled)
-    }
-
-    /**
-     * Sets the ordered actions for a Button Remap slot.
-     */
-    fun setRemapActions(
-        slot: RemapSlot,
-        actions: List<Action>,
-    ) {
-        remapActions[slot] = actions
-        settingsRepository.setRemapActions(slot.prefKey, actions)
-    }
-
-    fun setPowerChoice(
-        slot: RemapSlot,
-        choice: PowerChoice,
-        context: Context,
-    ) {
-        powerChoices[slot] = choice
-        settingsRepository.setPowerChoice(slot, choice)
-        PowerButtonGestures.sync(context, settingsRepository)
-    }
-
-    fun setPowerCameraFlipEnabled(enabled: Boolean) {
-        isPowerCameraFlipEnabled.value = enabled
-        settingsRepository.putBoolean(RemapSettings.KEY_BUTTON_REMAP_POWER_CAMERA_FLIP, enabled)
-    }
-
     fun setLockscreenShortcutsEnabled(enabled: Boolean) {
         isLockscreenShortcutsEnabled.value = enabled
         settingsRepository.setLockscreenShortcutsEnabled(enabled)
@@ -2594,20 +2456,6 @@ class MainViewModel : ViewModel() {
     ) {
         lockscreenShortcutActions[side] = actions
         settingsRepository.setRemapActions(side.prefKey, actions)
-    }
-
-    /**
-     * Executes the set remap haptic type operation.
-     *
-     * @param type [HapticFeedbackType] Target type.
-     * @param context [Context] Target context.
-     */
-    fun setRemapHapticType(
-        type: HapticFeedbackType,
-        context: Context,
-    ) {
-        remapHapticType.value = type
-        settingsRepository.putString(RemapSettings.KEY_BUTTON_REMAP_HAPTIC_TYPE, type.name)
     }
 
     fun triggerIslandPreview(context: Context) {

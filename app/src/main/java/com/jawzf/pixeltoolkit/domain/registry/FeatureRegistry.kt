@@ -1829,7 +1829,7 @@ object FeatureRegistry {
                 parentFeatureId = "Input",
                 animationRes = R.raw.button_animation,
             ) {
-                override fun isEnabled(viewModel: MainViewModel) = viewModel.isButtonRemapEnabled.value
+                override fun isEnabled(viewModel: MainViewModel) = viewModel.remap.isButtonRemapEnabled.value
 
                 override fun isToggleEnabled(
                     viewModel: MainViewModel,
@@ -1840,7 +1840,7 @@ object FeatureRegistry {
                     viewModel: MainViewModel,
                     context: Context,
                     enabled: Boolean,
-                ) = viewModel.setButtonRemapEnabled(enabled, context)
+                ) = viewModel.remap.setButtonRemapEnabled(enabled, context)
             },
             object : Feature(
                 id = "Lock screen shortcuts",

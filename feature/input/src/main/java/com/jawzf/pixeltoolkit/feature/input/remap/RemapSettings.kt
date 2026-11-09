@@ -20,6 +20,9 @@ object RemapSettings {
     const val KEY_BUTTON_REMAP_HAPTIC_TYPE = "button_remap_haptic_type"
     const val KEY_BUTTON_REMAP_MIGRATION_DONE = "button_remap_action_migration_done"
     const val KEY_BUTTON_REMAP_PAUSE_ON_VOLUME_DIALOG = "button_remap_pause_on_volume_dialog"
+    const val KEY_FLASHLIGHT_VOLUME_TOGGLE_ENABLED = "flashlight_volume_toggle_enabled"
+    const val KEY_SHIZUKU_DETECTED_DEVICE_PATH = "shizuku_detected_device_path"
+    const val KEY_FLASHLIGHT_HAPTIC_TYPE = "flashlight_haptic_type"
 }
 
 fun PrefsStore.getPowerChoice(slot: RemapSlot): PowerChoice {

@@ -106,11 +106,10 @@ class SettingsRepository(
 
         const val KEY_LAST_CALL_STATE = "last_call_state"
 
-        const val KEY_FLASHLIGHT_VOLUME_TOGGLE_ENABLED =
-            "flashlight_volume_toggle_enabled" // Legacy
-        const val KEY_SHIZUKU_DETECTED_DEVICE_PATH = "shizuku_detected_device_path"
+        const val KEY_FLASHLIGHT_VOLUME_TOGGLE_ENABLED = RemapSettings.KEY_FLASHLIGHT_VOLUME_TOGGLE_ENABLED
+        const val KEY_SHIZUKU_DETECTED_DEVICE_PATH = RemapSettings.KEY_SHIZUKU_DETECTED_DEVICE_PATH
         const val KEY_FLASHLIGHT_TRIGGER_BUTTON = "flashlight_trigger_button" // Legacy
-        const val KEY_FLASHLIGHT_HAPTIC_TYPE = "flashlight_haptic_type" // Legacy
+        const val KEY_FLASHLIGHT_HAPTIC_TYPE = RemapSettings.KEY_FLASHLIGHT_HAPTIC_TYPE
         const val KEY_PINNED_ACTION_PREFIX = "pinned_action_"
         const val KEY_LOCKSCREEN_SHORTCUTS_ENABLED = "lockscreen_shortcuts_enabled"
         const val KEY_LOCKSCREEN_SHORTCUT_LEFT_ACTIONS = "lockscreen_shortcut_left_actions"

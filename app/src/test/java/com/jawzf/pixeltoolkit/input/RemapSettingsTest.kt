@@ -24,5 +24,8 @@ class RemapSettingsTest {
         assertEquals("button_remap_haptic_type", RemapSettings.KEY_BUTTON_REMAP_HAPTIC_TYPE)
         assertEquals("button_remap_action_migration_done", RemapSettings.KEY_BUTTON_REMAP_MIGRATION_DONE)
         assertEquals("button_remap_pause_on_volume_dialog", RemapSettings.KEY_BUTTON_REMAP_PAUSE_ON_VOLUME_DIALOG)
+        assertEquals("flashlight_volume_toggle_enabled", RemapSettings.KEY_FLASHLIGHT_VOLUME_TOGGLE_ENABLED)
+        assertEquals("shizuku_detected_device_path", RemapSettings.KEY_SHIZUKU_DETECTED_DEVICE_PATH)
+        assertEquals("flashlight_haptic_type", RemapSettings.KEY_FLASHLIGHT_HAPTIC_TYPE)
     }
 }
