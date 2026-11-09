@@ -325,8 +325,8 @@ class ScreenOffAccessibilityService :
         buttonRemapHandler =
             ButtonRemapHandler(
                 this,
-                flashlightHandler,
-                volumeStepsHandler,
+                torch = flashlightHandler,
+                adjustVolumeStep = { volumeStepsHandler.adjustIfEnabled(it) },
                 cameraSessions = { cameraSessions },
             )
         appFlowHandler = AppFlowHandler(this, this)

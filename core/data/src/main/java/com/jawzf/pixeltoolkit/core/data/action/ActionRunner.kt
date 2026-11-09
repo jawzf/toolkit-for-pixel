@@ -18,6 +18,9 @@ interface ActionExecutor {
 
 /** Holds the app's [ActionExecutor]. Set once in ToolkitApp.onCreate. */
 object ActionRunner : ActionExecutor {
+    /** Pause between actions of one sequence. */
+    const val ACTION_SEQUENCE_GAP_MS = 150L
+
     private lateinit var executor: ActionExecutor
 
     fun init(actionExecutor: ActionExecutor) {

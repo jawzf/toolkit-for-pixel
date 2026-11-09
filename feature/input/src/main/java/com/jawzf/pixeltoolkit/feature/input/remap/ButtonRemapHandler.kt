@@ -14,10 +14,12 @@ import android.os.VibratorManager
 import android.view.Display
 import android.view.KeyEvent
 import com.jawzf.pixeltoolkit.core.data.action.Action
+import com.jawzf.pixeltoolkit.core.data.action.ActionRunner
+import com.jawzf.pixeltoolkit.core.data.prefs.PrefsStore
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticFeedbackType
 import com.jawzf.pixeltoolkit.core.design.haptics.performHapticFeedback
+import com.jawzf.pixeltoolkit.core.platform.device.TorchControl
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.feature.input.remap.CameraFlipButton
 import com.jawzf.pixeltoolkit.feature.input.remap.CameraSession
 import com.jawzf.pixeltoolkit.feature.input.remap.InputEventListenerService
@@ -30,8 +32,6 @@ import com.jawzf.pixeltoolkit.feature.input.remap.RemapSlot
 import com.jawzf.pixeltoolkit.feature.input.remap.getPowerChoice
 import com.jawzf.pixeltoolkit.feature.input.remap.lensInUseAt
 import com.jawzf.pixeltoolkit.feature.input.remap.openLens
-import com.jawzf.pixeltoolkit.feature.sound.volumesteps.VolumeStepsHandler
-import com.jawzf.pixeltoolkit.services.automation.executors.CombinedActionExecutor
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -42,11 +42,11 @@ import kotlinx.coroutines.withContext
 
 class ButtonRemapHandler(
     private val service: AccessibilityService,
-    private val flashlightHandler: FlashlightHandler,
-    private val volumeStepsHandler: VolumeStepsHandler,
+    private val torch: TorchControl,
+    private val adjustVolumeStep: (raise: Boolean) -> Boolean,
     private val cameraSessions: () -> List<CameraSession> = { emptyList() },
 ) {
-    private val settingsRepository = SettingsRepository(service)
+    private val settingsRepository = PrefsStore(service)
     private val handler = Handler(Looper.getMainLooper())
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
     private var isLongPressTriggered: Boolean = false
@@ -105,7 +105,7 @@ class ButtonRemapHandler(
 
         if (useShell && isButtonRemapEnabled && shellReady && devicePathDetected && !isScreenInteractive && !isAod) {
             val isTorchControl =
-                flashlightHandler.isTorchOn && (isAdjustEnabled || isGlobalEnabled) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
+                torch.isTorchOn && (isAdjustEnabled || isGlobalEnabled) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
 
             val slot = RemapSlot.forKeyCode(keyCode, isScreenOn = false)
             val isMapped = slot != null && settingsRepository.getRemapActions(slot.prefKey).isNotEmpty()
@@ -116,7 +116,7 @@ class ButtonRemapHandler(
         }
 
         // Flashlight Brightness Control (Volume Keys + Torch On)
-        if (flashlightHandler.isTorchOn && (isAdjustEnabled || isGlobalEnabled) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        if (torch.isTorchOn && (isAdjustEnabled || isGlobalEnabled) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             val isAlwaysTurnOffEnabled =
                 prefs.getBoolean("flashlight_always_turn_off_enabled", false)
             val isFlashlightCapableButton = isFlashlightMapped(keyCode)
@@ -144,7 +144,7 @@ class ButtonRemapHandler(
             } else if (event.action == KeyEvent.ACTION_UP) {
                 handler.removeCallbacks(longPressRunnable)
                 if (!isLongPressTriggered) {
-                    flashlightHandler.adjustFlashlightIntensity(keyCode == KeyEvent.KEYCODE_VOLUME_UP)
+                    torch.adjustFlashlightIntensity(keyCode == KeyEvent.KEYCODE_VOLUME_UP)
                 }
                 return true
             }
@@ -157,7 +157,7 @@ class ButtonRemapHandler(
         val isAlwaysTurnOffEnabled = prefs.getBoolean("flashlight_always_turn_off_enabled", false)
 
         val finalActions =
-            if (flashlightHandler.isTorchOn && isAlwaysTurnOffEnabled && isFlashlightMapped(keyCode)) {
+            if (torch.isTorchOn && isAlwaysTurnOffEnabled && isFlashlightMapped(keyCode)) {
                 listOf(Action.ToggleFlashlight)
             } else {
                 actions
@@ -175,7 +175,7 @@ class ButtonRemapHandler(
             return true
         } else if (event.action == KeyEvent.ACTION_UP) {
             handler.removeCallbacks(longPressRunnable)
-            if (!isLongPressTriggered && !volumeStepsHandler.adjustIfEnabled(keyCode == KeyEvent.KEYCODE_VOLUME_UP)) {
+            if (!isLongPressTriggered && !adjustVolumeStep(keyCode == KeyEvent.KEYCODE_VOLUME_UP)) {
                 // Short press - re-simulate volume behavior
                 val am = service.getSystemService(Context.AUDIO_SERVICE) as AudioManager
                 val direction =
@@ -297,12 +297,12 @@ class ButtonRemapHandler(
                 triggerHapticFeedback()
             }
             actions.forEachIndexed { index, action ->
-                if (index > 0) delay(CombinedActionExecutor.ACTION_SEQUENCE_GAP_MS)
+                if (index > 0) delay(ActionRunner.ACTION_SEQUENCE_GAP_MS)
                 try {
                     if (action is Action.ToggleFlashlight) {
-                        flashlightHandler.toggleFlashlight()
+                        torch.toggleFlashlight()
                     } else {
-                        CombinedActionExecutor.execute(service, action)
+                        ActionRunner.execute(service, action)
                     }
                 } catch (e: Exception) {
                     e.printStackTrace()

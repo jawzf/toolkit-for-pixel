@@ -12,9 +12,9 @@ import android.os.PowerManager
 import android.util.Log
 import android.view.Display
 import androidx.core.app.NotificationCompat
+import com.jawzf.pixeltoolkit.core.data.prefs.PrefsStore
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuPermissionHelper
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.feature.input.remap.RemapSlot
 import com.jawzf.pixeltoolkit.feature.input.remap.events.InputDeviceScanner
 import com.jawzf.pixeltoolkit.feature.input.remap.events.PowerPressDetector
@@ -248,7 +248,7 @@ class InputEventListenerService : Service() {
                                         isScreenOn = isScreenOn,
                                     )
                                 val isMapped =
-                                    SettingsRepository(this@InputEventListenerService)
+                                    PrefsStore(this@InputEventListenerService)
                                         .getRemapActions(slot.prefKey)
                                         .isNotEmpty()
                                 if (isMapped) {
@@ -277,7 +277,7 @@ class InputEventListenerService : Service() {
                                     isScreenOn = isScreenOn,
                                 )
                             val isMapped =
-                                SettingsRepository(this@InputEventListenerService)
+                                PrefsStore(this@InputEventListenerService)
                                     .getRemapActions(slot.prefKey)
                                     .isNotEmpty()
 

@@ -27,6 +27,7 @@ import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticFeedbackType
 import com.jawzf.pixeltoolkit.core.design.haptics.performHapticFeedback
 import com.jawzf.pixeltoolkit.core.platform.device.FlashlightUtil
+import com.jawzf.pixeltoolkit.core.platform.device.TorchControl
 import com.jawzf.pixeltoolkit.services.receivers.FlashlightActionReceiver
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -40,11 +41,11 @@ import kotlin.time.Duration.Companion.milliseconds
 class FlashlightHandler(
     private val service: AccessibilityService,
     private val scope: CoroutineScope,
-) {
+) : TorchControl {
     private val cameraManager by lazy { service.getSystemService(Context.CAMERA_SERVICE) as CameraManager }
     private val handler = Handler(Looper.getMainLooper())
 
-    var isTorchOn = false
+    override var isTorchOn = false
         private set
 
     var isProximityBlocked = false
@@ -522,7 +523,7 @@ class FlashlightHandler(
         notificationManager.cancel(NOTIFICATION_ID_FLASHLIGHT)
     }
 
-    fun adjustFlashlightIntensity(increase: Boolean) {
+    override fun adjustFlashlightIntensity(increase: Boolean) {
         val cameraId = getCameraId() ?: return
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) return
 
@@ -580,7 +581,7 @@ class FlashlightHandler(
         }
     }
 
-    fun toggleFlashlight(overrideIntensity: Int? = null) {
+    override fun toggleFlashlight(overrideIntensity: Int?) {
         val prefs = service.getSharedPreferences("toolkit_prefs", Context.MODE_PRIVATE)
         val isFadeEnabled = prefs.getBoolean("flashlight_fade_enabled", false)
 
