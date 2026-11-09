@@ -3,6 +3,8 @@ package com.jawzf.pixeltoolkit.core.data.prefs
 import android.content.Context
 import android.content.SharedPreferences
 import com.google.gson.Gson
+import com.jawzf.pixeltoolkit.core.data.action.Action
+import com.jawzf.pixeltoolkit.core.data.action.ActionGsonAdapter
 import com.jawzf.pixeltoolkit.core.platform.PlatformPrefs
 
 /** Generic access to the app's main preference file. Feature settings classes build on this. */
@@ -203,5 +205,45 @@ open class PrefsStore(
     ) {
         val json = gson.toJson(apps)
         putString(key, json)
+    }
+
+    fun getRemapAction(key: String): Action? {
+        val json = prefs.getString(key, null) ?: return null
+        return try {
+            ActionGsonAdapter.fromJson(json)
+        } catch (_: Exception) {
+            null
+        }
+    }
+
+    fun setRemapAction(
+        key: String,
+        action: Action?,
+    ) {
+        if (action == null) {
+            prefs.edit().remove(key).apply()
+        } else {
+            prefs.edit().putString(key, ActionGsonAdapter.toJson(action)).apply()
+        }
+    }
+
+    fun getRemapActions(key: String): List<Action> {
+        val json = prefs.getString(key, null) ?: return emptyList()
+        return if (json.trimStart().startsWith("[")) {
+            ActionGsonAdapter.listFromJson(json)
+        } else {
+            listOfNotNull(ActionGsonAdapter.fromJson(json))
+        }
+    }
+
+    fun setRemapActions(
+        key: String,
+        actions: List<Action>,
+    ) {
+        when (actions.size) {
+            0 -> prefs.edit().remove(key).apply()
+            1 -> setRemapAction(key, actions.first())
+            else -> prefs.edit().putString(key, ActionGsonAdapter.listToJson(actions)).apply()
+        }
     }
 }

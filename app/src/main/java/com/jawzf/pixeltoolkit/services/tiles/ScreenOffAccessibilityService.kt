@@ -44,6 +44,7 @@ import com.jawzf.pixeltoolkit.feature.display.statusbar.StatusBarIconHandler
 import com.jawzf.pixeltoolkit.feature.input.gesture.OmniGestureOverlayHandler
 import com.jawzf.pixeltoolkit.feature.input.remap.CameraSession
 import com.jawzf.pixeltoolkit.feature.input.remap.PowerButtonGestures
+import com.jawzf.pixeltoolkit.feature.input.remap.RemapSettings
 import com.jawzf.pixeltoolkit.feature.island.service.IslandCoordinator
 import com.jawzf.pixeltoolkit.feature.notifications.lighting.NotificationLightingHandler
 import com.jawzf.pixeltoolkit.feature.security.faceunlock.FaceUnlockBrightnessHandler
@@ -139,7 +140,7 @@ class ScreenOffAccessibilityService :
 
     private fun updateCameraLensTracking() {
         val prefs = getSharedPreferences("toolkit_prefs", MODE_PRIVATE)
-        val shouldTrack = prefs.getBoolean(SettingsRepository.KEY_BUTTON_REMAP_POWER_CAMERA_FLIP, false)
+        val shouldTrack = prefs.getBoolean(RemapSettings.KEY_BUTTON_REMAP_POWER_CAMERA_FLIP, false)
         val cameraManager = getSystemService(CameraManager::class.java) ?: return
         if (shouldTrack && !isCameraCallbackRegistered) {
             try {
@@ -303,9 +304,9 @@ class ScreenOffAccessibilityService :
                 AppVolumeController.updateState(this)
             } else if (key == "button_remap_enabled" ||
                 key == "button_remap_use_shizuku" ||
-                key == SettingsRepository.KEY_BUTTON_REMAP_POWER_HOLD_CHOICE_OFF ||
-                key == SettingsRepository.KEY_BUTTON_REMAP_POWER_HOLD_CHOICE_ON ||
-                key == SettingsRepository.KEY_BUTTON_REMAP_POWER_CAMERA_FLIP
+                key == RemapSettings.KEY_BUTTON_REMAP_POWER_HOLD_CHOICE_OFF ||
+                key == RemapSettings.KEY_BUTTON_REMAP_POWER_HOLD_CHOICE_ON ||
+                key == RemapSettings.KEY_BUTTON_REMAP_POWER_CAMERA_FLIP
             ) {
                 updateCameraLensTracking()
                 updateInputEventListener()

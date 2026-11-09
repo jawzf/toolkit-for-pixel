@@ -2,12 +2,8 @@ package com.jawzf.pixeltoolkit.feature.input.remap
 
 import android.content.Context
 import android.provider.Settings
+import com.jawzf.pixeltoolkit.core.data.prefs.PrefsStore
 import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
-import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.feature.input.remap.PowerChoice
-import com.jawzf.pixeltoolkit.feature.input.remap.RemapInput
-import com.jawzf.pixeltoolkit.feature.input.remap.RemapScreenState
-import com.jawzf.pixeltoolkit.feature.input.remap.RemapSlot
 
 object PowerButtonGestures {
     private const val SETTING_POWER_BUTTON_LONG_PRESS = "power_button_long_press"
@@ -29,18 +25,18 @@ object PowerButtonGestures {
         on: PowerChoice,
     ): Boolean = off != on || off == PowerChoice.ACTIONS || on == PowerChoice.ACTIONS
 
-    fun isHoldHandled(repo: SettingsRepository): Boolean =
+    fun isHoldHandled(repo: PrefsStore): Boolean =
         isHandledByToolkit(
             repo.getPowerChoice(RemapSlot(RemapInput.POWER_HOLD, RemapScreenState.OFF)),
             repo.getPowerChoice(RemapSlot(RemapInput.POWER_HOLD, RemapScreenState.ON)),
         )
 
-    fun isListenerNeeded(repo: SettingsRepository): Boolean =
-        isHoldHandled(repo) || repo.getBoolean(SettingsRepository.KEY_BUTTON_REMAP_POWER_CAMERA_FLIP, false)
+    fun isListenerNeeded(repo: PrefsStore): Boolean =
+        isHoldHandled(repo) || repo.getBoolean(RemapSettings.KEY_BUTTON_REMAP_POWER_CAMERA_FLIP, false)
 
     fun sync(
         context: Context,
-        repo: SettingsRepository,
+        repo: PrefsStore,
     ) {
         if (!PermissionUtils.canWriteSecureSettings(context)) return
 
@@ -51,22 +47,22 @@ object PowerButtonGestures {
         try {
             val cr = context.contentResolver
             Settings.Global.putInt(cr, SETTING_POWER_BUTTON_LONG_PRESS, holdVal)
-            repo.putBoolean(SettingsRepository.KEY_BUTTON_REMAP_POWER_OVERRIDDEN, true)
+            repo.putBoolean(RemapSettings.KEY_BUTTON_REMAP_POWER_OVERRIDDEN, true)
         } catch (_: SecurityException) {
         }
     }
 
     fun restoreDefaults(
         context: Context,
-        repo: SettingsRepository,
+        repo: PrefsStore,
     ) {
-        if (!repo.getBoolean(SettingsRepository.KEY_BUTTON_REMAP_POWER_OVERRIDDEN, false)) return
+        if (!repo.getBoolean(RemapSettings.KEY_BUTTON_REMAP_POWER_OVERRIDDEN, false)) return
         if (!PermissionUtils.canWriteSecureSettings(context)) return
 
         try {
             val cr = context.contentResolver
             Settings.Global.putInt(cr, SETTING_POWER_BUTTON_LONG_PRESS, 5)
-            repo.putBoolean(SettingsRepository.KEY_BUTTON_REMAP_POWER_OVERRIDDEN, false)
+            repo.putBoolean(RemapSettings.KEY_BUTTON_REMAP_POWER_OVERRIDDEN, false)
         } catch (_: SecurityException) {
         }
     }

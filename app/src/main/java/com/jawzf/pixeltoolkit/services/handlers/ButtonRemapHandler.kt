@@ -24,7 +24,9 @@ import com.jawzf.pixeltoolkit.feature.input.remap.PowerButtonGestures
 import com.jawzf.pixeltoolkit.feature.input.remap.PowerChoice
 import com.jawzf.pixeltoolkit.feature.input.remap.RemapInput
 import com.jawzf.pixeltoolkit.feature.input.remap.RemapScreenState
+import com.jawzf.pixeltoolkit.feature.input.remap.RemapSettings
 import com.jawzf.pixeltoolkit.feature.input.remap.RemapSlot
+import com.jawzf.pixeltoolkit.feature.input.remap.getPowerChoice
 import com.jawzf.pixeltoolkit.feature.input.remap.lensInUseAt
 import com.jawzf.pixeltoolkit.feature.input.remap.openLens
 import com.jawzf.pixeltoolkit.feature.sound.volumesteps.VolumeStepsHandler
@@ -220,7 +222,7 @@ class ButtonRemapHandler(
                 val lensBefore = if (firstPressAt > 0) lensInUseAt(cameraSessions(), firstPressAt) else null
                 val flip =
                     screenOn &&
-                        settingsRepository.getBoolean(SettingsRepository.KEY_BUTTON_REMAP_POWER_CAMERA_FLIP, false) &&
+                        settingsRepository.getBoolean(RemapSettings.KEY_BUTTON_REMAP_POWER_CAMERA_FLIP, false) &&
                         lensBefore != null
                 if (flip) {
                     scope.launch {
