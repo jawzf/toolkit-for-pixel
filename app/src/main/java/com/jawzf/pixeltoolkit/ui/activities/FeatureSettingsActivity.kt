@@ -47,6 +47,8 @@ import androidx.core.net.toUri
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.jawzf.pixeltoolkit.core.data.apps.ui.AppSelectionSheet
+import com.jawzf.pixeltoolkit.core.data.apps.ui.SingleAppSelectionSheet
 import com.jawzf.pixeltoolkit.core.data.prefs.AppSelection
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.cards.FeatureCard
@@ -134,9 +136,7 @@ import com.jawzf.pixeltoolkit.feature.sound.ui.VolumeStepsSettingsUI
 import com.jawzf.pixeltoolkit.feature.widgets.screenoff.ScreenOffWidgetSettingsUI
 import com.jawzf.pixeltoolkit.feature.widgets.stack.ui.WidgetStackSettingsUI
 import com.jawzf.pixeltoolkit.ui.core.sheets.ActivityIconSheet
-import com.jawzf.pixeltoolkit.ui.core.sheets.AppSelectionSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.ShakeForHelp
-import com.jawzf.pixeltoolkit.ui.core.sheets.SingleAppSelectionSheet
 import com.jawzf.pixeltoolkit.ui.features.display.actions.GestureActionPickerSheet
 import com.jawzf.pixeltoolkit.ui.features.display.sheets.StatusGlanceCalendarOptionsBottomSheet
 import com.jawzf.pixeltoolkit.ui.features.system.ActionSequenceEditor

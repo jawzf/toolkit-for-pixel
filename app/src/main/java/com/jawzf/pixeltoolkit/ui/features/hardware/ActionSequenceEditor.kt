@@ -35,6 +35,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.core.data.action.Action
+import com.jawzf.pixeltoolkit.core.data.apps.ui.AppSelectionSheet
+import com.jawzf.pixeltoolkit.core.data.apps.ui.SingleAppSelectionSheet
 import com.jawzf.pixeltoolkit.core.data.prefs.AppSelection
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.cards.IconToggleItem
@@ -61,12 +63,10 @@ import com.jawzf.pixeltoolkit.feature.automation.ui.sheets.SometimesEssentialsSe
 import com.jawzf.pixeltoolkit.feature.automation.ui.sheets.SoundModeSettingsSheet
 import com.jawzf.pixeltoolkit.feature.automation.ui.sheets.WaitSettingsSheet
 import com.jawzf.pixeltoolkit.feature.automation.ui.sheets.formatWait
-import com.jawzf.pixeltoolkit.ui.core.sheets.AppSelectionSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.HilightEffectSettingsSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.NotificationLightingActionSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.OpenActivityPicker
 import com.jawzf.pixeltoolkit.ui.core.sheets.ScreenOffSettingsSheet
-import com.jawzf.pixeltoolkit.ui.core.sheets.SingleAppSelectionSheet
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 import sh.calvin.reorderable.ReorderableColumn
 import java.util.concurrent.atomic.AtomicLong

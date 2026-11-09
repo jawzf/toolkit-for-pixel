@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.ui.core.sheets
+package com.jawzf.pixeltoolkit.core.data.apps.ui
 
 import android.content.Context
 import androidx.compose.foundation.Image

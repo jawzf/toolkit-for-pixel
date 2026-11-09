@@ -72,6 +72,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import coil.compose.AsyncImage
 import com.google.gson.GsonBuilder
+import com.jawzf.pixeltoolkit.core.data.apps.ui.SingleAppSelectionSheet
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.components.SegmentedDropdownMenu
 import com.jawzf.pixeltoolkit.core.design.components.SegmentedDropdownMenuItem
@@ -99,7 +100,6 @@ import com.jawzf.pixeltoolkit.feature.apps.updates.ui.UpdateBottomSheet
 import com.jawzf.pixeltoolkit.ui.components.AppsActionButtons
 import com.jawzf.pixeltoolkit.ui.components.DeviceHeroCard
 import com.jawzf.pixeltoolkit.ui.components.ImportExportButtons
-import com.jawzf.pixeltoolkit.ui.core.sheets.SingleAppSelectionSheet
 import com.jawzf.pixeltoolkit.utils.AutoUpdateManagerHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

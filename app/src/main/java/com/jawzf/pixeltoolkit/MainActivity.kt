@@ -57,6 +57,7 @@ import androidx.compose.ui.zIndex
 import androidx.core.animation.doOnEnd
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
+import com.jawzf.pixeltoolkit.core.data.apps.ui.SingleAppSelectionSheet
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.components.SegmentedDropdownMenu
 import com.jawzf.pixeltoolkit.core.design.components.SegmentedDropdownMenuItem
@@ -83,7 +84,6 @@ import com.jawzf.pixeltoolkit.feature.automation.ui.DIYScreen
 import com.jawzf.pixeltoolkit.ui.composables.SetupFeatures
 import com.jawzf.pixeltoolkit.ui.composables.WelcomeScreen
 import com.jawzf.pixeltoolkit.ui.core.sheets.ShakeForHelp
-import com.jawzf.pixeltoolkit.ui.core.sheets.SingleAppSelectionSheet
 import com.jawzf.pixeltoolkit.utils.AutoUpdateManagerHelper
 import com.jawzf.pixeltoolkit.utils.ShortcutUtil
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel

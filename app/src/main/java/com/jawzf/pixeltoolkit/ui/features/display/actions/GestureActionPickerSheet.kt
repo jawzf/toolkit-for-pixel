@@ -25,6 +25,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.core.data.action.Action
+import com.jawzf.pixeltoolkit.core.data.apps.ui.AppSelectionSheet
+import com.jawzf.pixeltoolkit.core.data.apps.ui.SingleAppSelectionSheet
 import com.jawzf.pixeltoolkit.core.data.prefs.AppSelection
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.cards.IconToggleItem
@@ -47,12 +49,10 @@ import com.jawzf.pixeltoolkit.feature.automation.ui.sheets.SetModeSettingsSheet
 import com.jawzf.pixeltoolkit.feature.automation.ui.sheets.SetVolumeSettingsSheet
 import com.jawzf.pixeltoolkit.feature.automation.ui.sheets.SometimesEssentialsSettingsSheet
 import com.jawzf.pixeltoolkit.feature.automation.ui.sheets.SoundModeSettingsSheet
-import com.jawzf.pixeltoolkit.ui.core.sheets.AppSelectionSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.FreezeTagSettingsSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.HilightEffectSettingsSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.OpenActivityPicker
 import com.jawzf.pixeltoolkit.ui.core.sheets.ScreenOffSettingsSheet
-import com.jawzf.pixeltoolkit.ui.core.sheets.SingleAppSelectionSheet
 import com.jawzf.pixeltoolkit.ui.features.system.LikeSongSettingsSheet
 import com.jawzf.pixeltoolkit.utils.PermissionUIHelper
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
