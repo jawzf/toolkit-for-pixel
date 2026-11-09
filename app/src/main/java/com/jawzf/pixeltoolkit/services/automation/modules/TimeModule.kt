@@ -6,9 +6,9 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.util.Log
+import com.jawzf.pixeltoolkit.core.data.action.ActionRunner
 import com.jawzf.pixeltoolkit.domain.diy.Automation
 import com.jawzf.pixeltoolkit.domain.diy.Trigger
-import com.jawzf.pixeltoolkit.services.automation.executors.CombinedActionExecutor
 import com.jawzf.pixeltoolkit.services.automation.receivers.TimeAutomationReceiver
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -278,14 +278,14 @@ class TimeModule : AutomationModule {
                                     "State ${automation.id} became active. Executing entry actions.",
                                 )
                                 activeStateAutomations.add(automation.id)
-                                CombinedActionExecutor.executeAll(context, automation.entryActionList)
+                                ActionRunner.executeAll(context, automation.entryActionList)
                             } else if (!isActive && wasActive) {
                                 Log.d(
                                     ID,
                                     "State ${automation.id} became inactive. Executing exit actions.",
                                 )
                                 activeStateAutomations.remove(automation.id)
-                                CombinedActionExecutor.executeAll(context, automation.exitActionList)
+                                ActionRunner.executeAll(context, automation.exitActionList)
                             }
                         }
                     }

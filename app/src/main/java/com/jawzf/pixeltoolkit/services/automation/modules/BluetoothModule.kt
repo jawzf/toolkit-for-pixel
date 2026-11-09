@@ -6,9 +6,9 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import com.jawzf.pixeltoolkit.core.data.action.ActionRunner
 import com.jawzf.pixeltoolkit.domain.diy.Automation
 import com.jawzf.pixeltoolkit.domain.diy.Trigger
-import com.jawzf.pixeltoolkit.services.automation.executors.CombinedActionExecutor
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -92,7 +92,7 @@ class BluetoothModule : AutomationModule {
             automations
                 .filter { it.type == Automation.Type.TRIGGER && it.trigger?.let(matches) == true }
                 .forEach { automation ->
-                    CombinedActionExecutor.executeAll(context, automation.actionList)
+                    ActionRunner.executeAll(context, automation.actionList)
                 }
         }
     }

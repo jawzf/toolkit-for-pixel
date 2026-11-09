@@ -4,10 +4,10 @@ import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.google.android.gms.location.Geofence
+import com.jawzf.pixeltoolkit.core.data.action.ActionRunner
 import com.jawzf.pixeltoolkit.domain.diy.Automation
 import com.jawzf.pixeltoolkit.domain.diy.DIYRepository
 import com.jawzf.pixeltoolkit.domain.diy.Trigger
-import com.jawzf.pixeltoolkit.services.automation.executors.CombinedActionExecutor
 
 class LocationAutomationWorker(
     appContext: Context,
@@ -28,7 +28,7 @@ class LocationAutomationWorker(
                         is Trigger.LeaveLocation -> transition == Geofence.GEOFENCE_TRANSITION_EXIT
                         else -> false
                     }
-            }.forEach { CombinedActionExecutor.executeAll(applicationContext, it.actionList) }
+            }.forEach { ActionRunner.executeAll(applicationContext, it.actionList) }
         return Result.success()
     }
 

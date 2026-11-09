@@ -3,9 +3,9 @@ package com.jawzf.pixeltoolkit.services.automation.receivers
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import com.jawzf.pixeltoolkit.core.data.action.ActionRunner
 import com.jawzf.pixeltoolkit.domain.diy.Automation
 import com.jawzf.pixeltoolkit.domain.diy.DIYRepository
-import com.jawzf.pixeltoolkit.services.automation.executors.CombinedActionExecutor
 import com.jawzf.pixeltoolkit.services.automation.modules.TimeModule
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -42,11 +42,11 @@ class TimeAutomationReceiver : BroadcastReceiver() {
 
                 when (automation.type) {
                     Automation.Type.TRIGGER -> {
-                        CombinedActionExecutor.executeAll(context, automation.actionList)
+                        ActionRunner.executeAll(context, automation.actionList)
                     }
 
                     Automation.Type.STATE -> {
-                        CombinedActionExecutor.executeAll(context, if (isEntry) automation.entryActionList else automation.exitActionList)
+                        ActionRunner.executeAll(context, if (isEntry) automation.entryActionList else automation.exitActionList)
                     }
 
                     else -> {}

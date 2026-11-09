@@ -10,13 +10,13 @@ import android.os.Looper
 import android.os.PowerManager
 import android.os.SystemClock
 import com.jawzf.pixeltoolkit.core.data.action.Action
+import com.jawzf.pixeltoolkit.core.data.action.ActionRunner
 import com.jawzf.pixeltoolkit.domain.diy.Automation
 import com.jawzf.pixeltoolkit.domain.diy.DIYRepository
 import com.jawzf.pixeltoolkit.domain.diy.DIYRuntimeStore
 import com.jawzf.pixeltoolkit.domain.diy.Metric
 import com.jawzf.pixeltoolkit.domain.diy.SystemMetricTracker
 import com.jawzf.pixeltoolkit.domain.diy.Trigger
-import com.jawzf.pixeltoolkit.services.automation.executors.CombinedActionExecutor
 import com.jawzf.pixeltoolkit.utils.AutomationFailureNotifier
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
@@ -55,7 +55,7 @@ class PowerModule : AutomationModule {
         val mutex = getMutex(automation.id)
         scope.launch(start = CoroutineStart.UNDISPATCHED) {
             mutex.withLock {
-                CombinedActionExecutor.executeAll(context, actions)
+                ActionRunner.executeAll(context, actions)
             }
         }
     }
@@ -210,7 +210,7 @@ class PowerModule : AutomationModule {
             automations
                 .filter { it.type == Automation.Type.TRIGGER && it.trigger == trigger }
                 .forEach { automation ->
-                    CombinedActionExecutor.executeAll(context, automation.actionList)
+                    ActionRunner.executeAll(context, automation.actionList)
                 }
         }
     }
@@ -226,10 +226,10 @@ class PowerModule : AutomationModule {
                     if (automation.state is DIYState.Charging) {
                         if (isActive) {
                             // Entry
-                            CombinedActionExecutor.executeAll(context, automation.entryActionList)
+                            ActionRunner.executeAll(context, automation.entryActionList)
                         } else {
                             // Exit
-                            CombinedActionExecutor.executeAll(context, automation.exitActionList)
+                            ActionRunner.executeAll(context, automation.exitActionList)
                         }
                     }
                 }
@@ -247,10 +247,10 @@ class PowerModule : AutomationModule {
                     if (automation.state is DIYState.PowerSaving) {
                         if (isActive) {
                             // Entry
-                            CombinedActionExecutor.executeAll(context, automation.entryActionList)
+                            ActionRunner.executeAll(context, automation.entryActionList)
                         } else {
                             // Exit
-                            CombinedActionExecutor.executeAll(context, automation.exitActionList)
+                            ActionRunner.executeAll(context, automation.exitActionList)
                         }
                     }
                 }
