@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.services
+package com.jawzf.pixeltoolkit.feature.input.remap
 
 import android.app.Service
 import android.content.BroadcastReceiver
@@ -16,10 +16,11 @@ import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuPermissionHelper
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.feature.input.remap.RemapSlot
-import com.jawzf.pixeltoolkit.input.InputDeviceScanner
-import com.jawzf.pixeltoolkit.input.PowerPressDetector
-import com.jawzf.pixeltoolkit.input.VolumeLongPressDetector
-import com.jawzf.pixeltoolkit.input.VolumePressEvent
+import com.jawzf.pixeltoolkit.feature.input.remap.events.InputDeviceScanner
+import com.jawzf.pixeltoolkit.feature.input.remap.events.PowerPressDetector
+import com.jawzf.pixeltoolkit.feature.input.remap.events.VolumeDirection
+import com.jawzf.pixeltoolkit.feature.input.remap.events.VolumeLongPressDetector
+import com.jawzf.pixeltoolkit.feature.input.remap.events.VolumePressEvent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -231,7 +232,7 @@ class InputEventListenerService : Service() {
 
                             if (isAdjustEnabled || isGlobalEnabled) {
                                 val action =
-                                    if (event.direction == com.jawzf.pixeltoolkit.input.VolumeDirection.UP) {
+                                    if (event.direction == VolumeDirection.UP) {
                                         "com.jawzf.pixeltoolkit.ACTION_FLASHLIGHT_INCREASE"
                                     } else {
                                         "com.jawzf.pixeltoolkit.ACTION_FLASHLIGHT_DECREASE"
@@ -243,7 +244,7 @@ class InputEventListenerService : Service() {
                                 val isScreenOn = pm.isInteractive
                                 val slot =
                                     RemapSlot.forVolume(
-                                        isUp = event.direction == com.jawzf.pixeltoolkit.input.VolumeDirection.UP,
+                                        isUp = event.direction == VolumeDirection.UP,
                                         isScreenOn = isScreenOn,
                                     )
                                 val isMapped =
@@ -254,7 +255,7 @@ class InputEventListenerService : Service() {
                                     val am =
                                         getSystemService(AUDIO_SERVICE) as android.media.AudioManager
                                     val direction =
-                                        if (event.direction == com.jawzf.pixeltoolkit.input.VolumeDirection.UP) {
+                                        if (event.direction == VolumeDirection.UP) {
                                             android.media.AudioManager.ADJUST_RAISE
                                         } else {
                                             android.media.AudioManager.ADJUST_LOWER
@@ -272,7 +273,7 @@ class InputEventListenerService : Service() {
                             val isScreenOn = pm.isInteractive
                             val slot =
                                 RemapSlot.forVolume(
-                                    isUp = event.direction == com.jawzf.pixeltoolkit.input.VolumeDirection.UP,
+                                    isUp = event.direction == VolumeDirection.UP,
                                     isScreenOn = isScreenOn,
                                 )
                             val isMapped =
@@ -284,7 +285,7 @@ class InputEventListenerService : Service() {
                                 val am =
                                     getSystemService(AUDIO_SERVICE) as android.media.AudioManager
                                 val dirKey =
-                                    if (event.direction == com.jawzf.pixeltoolkit.input.VolumeDirection.UP) {
+                                    if (event.direction == VolumeDirection.UP) {
                                         android.media.AudioManager.ADJUST_RAISE
                                     } else {
                                         android.media.AudioManager.ADJUST_LOWER

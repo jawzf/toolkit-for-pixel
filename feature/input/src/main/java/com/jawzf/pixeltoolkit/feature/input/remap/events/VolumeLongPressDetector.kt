@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.input
+package com.jawzf.pixeltoolkit.feature.input.remap.events
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.services.handlers
+package com.jawzf.pixeltoolkit.feature.input.remap
 
 import android.accessibilityservice.AccessibilityService
 import android.content.Context
@@ -20,6 +20,7 @@ import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
 import com.jawzf.pixeltoolkit.feature.input.remap.CameraFlipButton
 import com.jawzf.pixeltoolkit.feature.input.remap.CameraSession
+import com.jawzf.pixeltoolkit.feature.input.remap.InputEventListenerService
 import com.jawzf.pixeltoolkit.feature.input.remap.PowerButtonGestures
 import com.jawzf.pixeltoolkit.feature.input.remap.PowerChoice
 import com.jawzf.pixeltoolkit.feature.input.remap.RemapInput
@@ -30,7 +31,6 @@ import com.jawzf.pixeltoolkit.feature.input.remap.getPowerChoice
 import com.jawzf.pixeltoolkit.feature.input.remap.lensInUseAt
 import com.jawzf.pixeltoolkit.feature.input.remap.openLens
 import com.jawzf.pixeltoolkit.feature.sound.volumesteps.VolumeStepsHandler
-import com.jawzf.pixeltoolkit.services.InputEventListenerService
 import com.jawzf.pixeltoolkit.services.automation.executors.CombinedActionExecutor
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

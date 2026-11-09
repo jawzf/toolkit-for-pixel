@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.input
+package com.jawzf.pixeltoolkit.feature.input.remap.events
 
 import android.os.SystemClock
 import kotlinx.coroutines.CoroutineScope

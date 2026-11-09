@@ -1,5 +1,6 @@
 package com.jawzf.pixeltoolkit.input
 
+import com.jawzf.pixeltoolkit.feature.input.remap.events.InputDeviceScanner
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

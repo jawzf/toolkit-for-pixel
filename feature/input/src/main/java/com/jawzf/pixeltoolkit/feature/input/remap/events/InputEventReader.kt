@@ -1,4 +1,4 @@
-package com.jawzf.pixeltoolkit.input
+package com.jawzf.pixeltoolkit.feature.input.remap.events
 
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import java.io.InputStream
