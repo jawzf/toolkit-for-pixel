@@ -40,8 +40,6 @@ import com.jawzf.pixeltoolkit.feature.apps.consciousgate.ConsciousGateState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-const val CONSCIOUS_GATE_FEATURE_ID = "Conscious gate"
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ConsciousGateSettingsUI(
