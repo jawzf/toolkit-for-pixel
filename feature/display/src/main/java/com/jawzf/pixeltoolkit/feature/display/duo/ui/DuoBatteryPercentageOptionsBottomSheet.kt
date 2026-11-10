@@ -45,10 +45,7 @@ fun DuoBatteryPercentageOptionsBottomSheet(
                 modifier = Modifier.padding(start = 8.dp, bottom = 4.dp),
             )
 
-            RoundedCardContainer(
-                spacing = 2.dp,
-                cornerRadius = 24.dp,
-            ) {
+            RoundedCardContainer {
                 IconToggleItem(
                     iconRes = R.drawable.rounded_palette_24,
                     title = stringResource(R.string.duo_battery_percentage_only_colored_title),

@@ -1,13 +1,10 @@
 package com.jawzf.pixeltoolkit.core.design.cards
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -19,10 +16,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.jawzf.pixeltoolkit.core.design.color.ColorUtil
+import com.jawzf.pixeltoolkit.core.design.components.IconTile
+import com.jawzf.pixeltoolkit.core.design.components.toolkitSwitchColors
+import com.jawzf.pixeltoolkit.core.design.theme.ToolkitTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -48,18 +46,11 @@ fun FeatureToggleRow(
                     checked = isChecked,
                     onCheckedChange = onCheckedChange,
                 )
-                Box(
-                    modifier =
-                        Modifier
-                            .size(36.dp)
-                            .clip(CircleShape)
-                            .background(ColorUtil.getPastelColorFor(title)),
-                    contentAlignment = Alignment.Center,
-                ) {
+                IconTile {
                     Icon(
                         painter = painterResource(iconRes),
                         contentDescription = null,
-                        tint = ColorUtil.getVibrantColorFor(title),
+                        tint = ToolkitTheme.colors.accent,
                         modifier = Modifier.size(20.dp),
                     )
                 }
@@ -70,17 +61,18 @@ fun FeatureToggleRow(
                 checked = switchValue,
                 onCheckedChange = onSwitchChange,
                 enabled = isChecked,
+                colors = toolkitSwitchColors(),
             )
         },
         colors =
             ListItemDefaults.colors(
                 containerColor = MaterialTheme.colorScheme.surfaceBright,
             ),
-        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 12.dp),
         content = {
             Text(
                 text = title,
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.titleSmall,
                 color = MaterialTheme.colorScheme.onSurface,
             )
         },

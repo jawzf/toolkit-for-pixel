@@ -115,10 +115,7 @@ fun DuoSettingsUI(
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-        RoundedCardContainer(
-            spacing = 2.dp,
-            cornerRadius = 24.dp,
-        ) {
+        RoundedCardContainer {
             IconToggleItem(
                 iconRes = R.drawable.rounded_motion_play_24,
                 title = stringResource(R.string.duo_enable_title),
@@ -143,10 +140,7 @@ fun DuoSettingsUI(
             modifier = Modifier.padding(start = 8.dp),
         )
 
-        RoundedCardContainer(
-            spacing = 2.dp,
-            cornerRadius = 24.dp,
-        ) {
+        RoundedCardContainer {
             if (isFoldableCameraDevice) {
                 Text(
                     text = stringResource(R.string.foldable_camera_profile_hint),
@@ -246,10 +240,7 @@ fun DuoSettingsUI(
             modifier = Modifier.padding(start = 8.dp),
         )
 
-        RoundedCardContainer(
-            spacing = 2.dp,
-            cornerRadius = 24.dp,
-        ) {
+        RoundedCardContainer {
             ConfigSliderItem(
                 title = stringResource(R.string.duo_ring_radius_title),
                 value = state.duoRingRadius.floatValue,
@@ -295,10 +286,7 @@ fun DuoSettingsUI(
             modifier = Modifier.padding(start = 8.dp),
         )
 
-        RoundedCardContainer(
-            spacing = 2.dp,
-            cornerRadius = 24.dp,
-        ) {
+        RoundedCardContainer {
             IconToggleItem(
                 iconRes = R.drawable.rounded_battery_charging_60_24,
                 title = stringResource(R.string.duo_show_battery_title),
@@ -420,10 +408,7 @@ fun DuoSettingsUI(
             modifier = Modifier.padding(start = 8.dp),
         )
 
-        RoundedCardContainer(
-            spacing = 2.dp,
-            cornerRadius = 24.dp,
-        ) {
+        RoundedCardContainer {
             IconToggleItem(
                 iconRes = R.drawable.rounded_palette_24,
                 title = stringResource(R.string.duo_material_you_title),
@@ -533,10 +518,7 @@ fun DuoSettingsUI(
             modifier = Modifier.padding(start = 8.dp),
         )
 
-        RoundedCardContainer(
-            spacing = 2.dp,
-            cornerRadius = 24.dp,
-        ) {
+        RoundedCardContainer {
             val tapAction = state.duoTapAction.value
             val tapForBriefActive = state.isDuoIslandCombined.value && state.isDuoTapForBrief.value
             IconToggleItem(
@@ -659,10 +641,7 @@ fun DuoSettingsUI(
             enter = expandVertically() + fadeIn(),
             exit = shrinkVertically() + fadeOut(),
         ) {
-            RoundedCardContainer(
-                spacing = 2.dp,
-                cornerRadius = 24.dp,
-            ) {
+            RoundedCardContainer {
                 IconToggleItem(
                     iconRes = R.drawable.rounded_link_24,
                     title = stringResource(R.string.duo_combine_with_island),
@@ -694,7 +673,7 @@ fun DuoSettingsUI(
                     color = MaterialTheme.colorScheme.onSurface,
                 )
 
-                RoundedCardContainer(spacing = 2.dp) {
+                RoundedCardContainer {
                     val modes = listOf(
                         Triple("none", R.string.duo_action_horizontal_slide_none, R.drawable.rounded_do_not_disturb_on_24),
                         Triple("volume", R.string.duo_action_horizontal_slide_volume, R.drawable.rounded_volume_up_24),
@@ -715,7 +694,7 @@ fun DuoSettingsUI(
                     }
                 }
 
-                RoundedCardContainer(spacing = 2.dp) {
+                RoundedCardContainer {
                     IconToggleItem(
                         iconRes = R.drawable.rounded_skip_next_24,
                         title = stringResource(R.string.duo_action_horizontal_slide_track),

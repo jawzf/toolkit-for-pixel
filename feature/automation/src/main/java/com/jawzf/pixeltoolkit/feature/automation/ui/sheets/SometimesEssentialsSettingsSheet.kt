@@ -109,7 +109,7 @@ fun SometimesEssentialsSettingsSheet(
                         .weight(1f, fill = false)
                         .verticalScroll(rememberScrollState()),
             ) {
-                RoundedCardContainer(spacing = 2.dp) {
+                RoundedCardContainer {
                     FeatureToggleRow(
                         title = stringResource(R.string.feat_notification_lighting_title),
                         iconRes = R.drawable.rounded_magnify_fullscreen_24,

@@ -114,7 +114,6 @@ fun SetModeSettingsSheet(
                 )
             } else if (loadedModes != null) {
                 RoundedCardContainer(
-                    spacing = 2.dp,
                     modifier =
                         Modifier
                             .weight(1f, fill = false)

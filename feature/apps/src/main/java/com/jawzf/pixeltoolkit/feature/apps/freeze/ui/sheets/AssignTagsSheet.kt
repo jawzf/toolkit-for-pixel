@@ -86,7 +86,7 @@ fun AssignTagsSheet(
                     modifier = Modifier.padding(vertical = 16.dp),
                 )
             } else {
-                RoundedCardContainer(spacing = 2.dp) {
+                RoundedCardContainer {
                     availableTags.forEach { tag ->
                         val isChecked = selectedIds.contains(tag.id)
                         val color =

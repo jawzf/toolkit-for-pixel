@@ -302,7 +302,6 @@ fun ShortenUrlSheet(
                 if (selectedShortenTab == 0) {
                     RoundedCardContainer(
                         modifier = Modifier.fillMaxWidth(),
-                        spacing = 2.dp,
                     ) {
                         Box(
                             modifier =

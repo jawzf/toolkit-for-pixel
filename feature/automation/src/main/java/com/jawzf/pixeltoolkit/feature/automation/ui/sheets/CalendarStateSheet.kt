@@ -91,7 +91,7 @@ fun CalendarStateSheet(
             )
 
             SectionLabel(stringResource(R.string.diy_calendar_filters))
-            RoundedCardContainer(spacing = 2.dp, cornerRadius = 24.dp) {
+            RoundedCardContainer {
                 IconToggleItem(
                     iconRes = R.drawable.rounded_calendar_today_24,
                     title = stringResource(R.string.diy_calendar_include_all_day),
@@ -141,7 +141,7 @@ fun CalendarStateSheet(
                         color = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.padding(start = 8.dp),
                     )
-                    RoundedCardContainer(spacing = 2.dp, cornerRadius = 24.dp) {
+                    RoundedCardContainer {
                         entries.forEach { calendar ->
                             IconToggleItem(
                                 iconRes = R.drawable.rounded_calendar_today_24,

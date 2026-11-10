@@ -48,10 +48,7 @@ fun IslandBriefOptionsBottomSheet(
                 modifier = Modifier.padding(start = 8.dp, bottom = 4.dp),
             )
 
-            RoundedCardContainer(
-                spacing = 2.dp,
-                cornerRadius = 24.dp,
-            ) {
+            RoundedCardContainer {
                 IconToggleItem(
                     iconRes = R.drawable.rounded_alarm_24,
                     title = stringResource(R.string.island_brief_show_alarm_title),

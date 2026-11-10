@@ -210,7 +210,7 @@ fun ActionSequenceEditor(
     }
 
     Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(16.dp)) {
-        RoundedCardContainer(spacing = 2.dp) {
+        RoundedCardContainer {
             if (actions.isEmpty()) {
                 Text(
                     text = emptyText,

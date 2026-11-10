@@ -164,7 +164,7 @@ private fun FlashlightOptionsSheet(onDismiss: () -> Unit) {
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
 
-            RoundedCardContainer(spacing = 2.dp) {
+            RoundedCardContainer {
                 IconToggleItem(
                     iconRes = R.drawable.rounded_blur_on_24,
                     title = stringResource(R.string.flashlight_fade_title),

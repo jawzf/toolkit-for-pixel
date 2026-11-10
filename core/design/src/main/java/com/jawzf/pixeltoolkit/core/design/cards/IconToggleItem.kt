@@ -12,9 +12,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -23,7 +21,6 @@ import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
-import androidx.compose.material3.VerticalDivider
 import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -40,7 +37,10 @@ import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.design.components.IconTile
+import com.jawzf.pixeltoolkit.core.design.components.toolkitSwitchColors
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
+import com.jawzf.pixeltoolkit.core.design.theme.ToolkitTheme
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -115,12 +115,14 @@ fun IconToggleItem(
                             leadingIcon
                         } else if (finalIconRes != 0) {
                             {
-                                Icon(
-                                    painter = painterResource(id = finalIconRes),
-                                    contentDescription = title,
-                                    modifier = Modifier.size(24.dp),
-                                    tint = MaterialTheme.colorScheme.primary,
-                                )
+                                IconTile {
+                                    Icon(
+                                        painter = painterResource(id = finalIconRes),
+                                        contentDescription = null,
+                                        modifier = Modifier.size(20.dp),
+                                        tint = ToolkitTheme.colors.accent,
+                                    )
+                                }
                             }
                         } else {
                             null
@@ -130,7 +132,7 @@ fun IconToggleItem(
                             {
                                 Text(
                                     text = finalDescription,
-                                    style = MaterialTheme.typography.labelMedium,
+                                    style = MaterialTheme.typography.bodyMedium,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 )
                             }
@@ -143,53 +145,47 @@ fun IconToggleItem(
                             transitionSpec = { fadeIn(tween(140)) togetherWith fadeOut(tween(140)) },
                             label = "trailingSwap",
                         ) { dragging ->
-                        if (dragging) {
-                            dragHandle?.invoke()
-                        } else {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(16.dp),
-                        ) {
-                            if (infoText != null || onInfoClick != null) {
-                                IconButton(
-                                    onClick = {
-                                        HapticUtil.performVirtualKeyHaptic(view)
-                                        if (onInfoClick != null) {
-                                            onInfoClick()
-                                        } else {
-                                            Toast.makeText(context, infoText, Toast.LENGTH_LONG).show()
-                                        }
-                                    },
-                                    modifier = Modifier.size(36.dp),
+                            if (dragging) {
+                                dragHandle?.invoke()
+                            } else {
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.spacedBy(16.dp),
                                 ) {
-                                    Icon(
-                                        painter = painterResource(id = R.drawable.rounded_info_24),
-                                        contentDescription = infoText,
-                                        modifier = Modifier.size(20.dp),
-                                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    if (infoText != null || onInfoClick != null) {
+                                        IconButton(
+                                            onClick = {
+                                                HapticUtil.performVirtualKeyHaptic(view)
+                                                if (onInfoClick != null) {
+                                                    onInfoClick()
+                                                } else {
+                                                    Toast.makeText(context, infoText, Toast.LENGTH_LONG).show()
+                                                }
+                                            },
+                                            modifier = Modifier.size(36.dp),
+                                        ) {
+                                            Icon(
+                                                painter = painterResource(id = R.drawable.rounded_info_24),
+                                                contentDescription = infoText,
+                                                modifier = Modifier.size(20.dp),
+                                                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                                            )
+                                        }
+                                    }
+                                    Switch(
+                                        checked = finalIsChecked,
+                                        onCheckedChange = { c ->
+                                            if (enabled) {
+                                                HapticUtil.performVirtualKeyHaptic(view)
+                                                onCheckedChange(c)
+                                            }
+                                        },
+                                        enabled = enabled,
+                                        colors = toolkitSwitchColors(),
                                     )
                                 }
                             }
-                            VerticalDivider(
-                                modifier =
-                                    Modifier
-                                        .height(32.dp)
-                                        .width(1.dp),
-                                color = MaterialTheme.colorScheme.outlineVariant,
-                            )
-                            Switch(
-                                checked = finalIsChecked,
-                                onCheckedChange = { c ->
-                                    if (enabled) {
-                                        HapticUtil.performVirtualKeyHaptic(view)
-                                        onCheckedChange(c)
-                                    }
-                                },
-                                enabled = enabled,
-                            )
                         }
-                        }
-                    }
                     },
                     colors =
                         ListItemDefaults.colors(
@@ -198,7 +194,7 @@ fun IconToggleItem(
                     content = {
                         Text(
                             text = title,
-                            style = MaterialTheme.typography.bodyMedium,
+                            style = MaterialTheme.typography.titleSmall,
                             color = MaterialTheme.colorScheme.onSurface,
                         )
                     },
@@ -228,12 +224,14 @@ fun IconToggleItem(
                             leadingIcon
                         } else if (finalIconRes != 0) {
                             {
-                                Icon(
-                                    painter = painterResource(id = finalIconRes),
-                                    contentDescription = title,
-                                    modifier = Modifier.size(24.dp),
-                                    tint = MaterialTheme.colorScheme.primary,
-                                )
+                                IconTile {
+                                    Icon(
+                                        painter = painterResource(id = finalIconRes),
+                                        contentDescription = null,
+                                        modifier = Modifier.size(20.dp),
+                                        tint = ToolkitTheme.colors.accent,
+                                    )
+                                }
                             }
                         } else {
                             null
@@ -243,7 +241,7 @@ fun IconToggleItem(
                             {
                                 Text(
                                     text = finalDescription,
-                                    style = MaterialTheme.typography.labelMedium,
+                                    style = MaterialTheme.typography.bodyMedium,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 )
                             }
@@ -256,72 +254,68 @@ fun IconToggleItem(
                             transitionSpec = { fadeIn(tween(140)) togetherWith fadeOut(tween(140)) },
                             label = "trailingSwap",
                         ) { dragging ->
-                        if (dragging) {
-                            dragHandle?.invoke()
-                        } else {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        ) {
-                            if (infoText != null || onInfoClick != null) {
-                                IconButton(
-                                    onClick = {
-                                        HapticUtil.performVirtualKeyHaptic(view)
-                                        if (onInfoClick != null) {
-                                            onInfoClick()
-                                        } else {
-                                            Toast.makeText(context, infoText, Toast.LENGTH_LONG).show()
+                            if (dragging) {
+                                dragHandle?.invoke()
+                            } else {
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                                ) {
+                                    if (infoText != null || onInfoClick != null) {
+                                        IconButton(
+                                            onClick = {
+                                                HapticUtil.performVirtualKeyHaptic(view)
+                                                if (onInfoClick != null) {
+                                                    onInfoClick()
+                                                } else {
+                                                    Toast.makeText(context, infoText, Toast.LENGTH_LONG).show()
+                                                }
+                                            },
+                                            modifier = Modifier.size(36.dp),
+                                        ) {
+                                            Icon(
+                                                painter = painterResource(id = R.drawable.rounded_info_24),
+                                                contentDescription = infoText,
+                                                modifier = Modifier.size(20.dp),
+                                                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                                            )
                                         }
-                                    },
-                                    modifier = Modifier.size(36.dp),
-                                ) {
-                                    Icon(
-                                        painter = painterResource(id = R.drawable.rounded_info_24),
-                                        contentDescription = infoText,
-                                        modifier = Modifier.size(20.dp),
-                                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    }
+                                    if (onSettingsClick != null && enabled && finalIsChecked) {
+                                        IconButton(
+                                            onClick = {
+                                                HapticUtil.performVirtualKeyHaptic(view)
+                                                onSettingsClick()
+                                            },
+                                            modifier = Modifier.size(36.dp),
+                                        ) {
+                                            Icon(
+                                                painter = painterResource(id = settingsIconRes),
+                                                contentDescription = null,
+                                                modifier = Modifier.size(20.dp),
+                                                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                                            )
+                                        }
+                                    }
+                                    Switch(
+                                        checked = finalIsChecked,
+                                        onCheckedChange = null,
+                                        enabled = enabled,
+                                        colors = toolkitSwitchColors(),
+                                        modifier =
+                                            Modifier.onGloballyPositioned { coords ->
+                                                val pos = coords.positionInRoot()
+                                                val size = coords.size
+                                                switchCenterOffset =
+                                                    Offset(
+                                                        x = pos.x + (size.width / 2f),
+                                                        y = pos.y + (size.height / 2f),
+                                                    )
+                                            },
                                     )
                                 }
                             }
-                            if (onSettingsClick != null && enabled && finalIsChecked) {
-                                IconButton(
-                                    onClick = {
-                                        HapticUtil.performVirtualKeyHaptic(view)
-                                        onSettingsClick()
-                                    },
-                                    modifier = Modifier.size(36.dp),
-                                ) {
-                                    Icon(
-                                        painter = painterResource(id = settingsIconRes),
-                                        contentDescription = null,
-                                        modifier = Modifier.size(20.dp),
-                                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                                    )
-                                }
-                                VerticalDivider(
-                                    modifier =
-                                        Modifier
-                                            .height(28.dp)
-                                            .width(1.dp),
-                                    color = MaterialTheme.colorScheme.outlineVariant,
-                                )
-                            }
-                            Switch(
-                                checked = finalIsChecked,
-                                onCheckedChange = null,
-                                enabled = enabled,
-                                modifier = Modifier.onGloballyPositioned { coords ->
-                                    val pos = coords.positionInRoot()
-                                    val size = coords.size
-                                    switchCenterOffset = Offset(
-                                        x = pos.x + (size.width / 2f),
-                                        y = pos.y + (size.height / 2f)
-                                    )
-                                },
-                            )
                         }
-                        }
-                    }
                     },
                     colors =
                         ListItemDefaults.colors(
@@ -330,7 +324,7 @@ fun IconToggleItem(
                     content = {
                         Text(
                             text = title,
-                            style = MaterialTheme.typography.bodyMedium,
+                            style = MaterialTheme.typography.titleSmall,
                             color = MaterialTheme.colorScheme.onSurface,
                         )
                     },
@@ -345,15 +339,17 @@ fun IconToggleItem(
                 verticalAlignment = Alignment.CenterVertically,
                 leadingContent =
                     if (leadingIcon != null) {
-                            leadingIcon
-                        } else if (finalIconRes != 0) {
+                        leadingIcon
+                    } else if (finalIconRes != 0) {
                         {
-                            Icon(
-                                painter = painterResource(id = finalIconRes),
-                                contentDescription = title,
-                                modifier = Modifier.size(24.dp),
-                                tint = MaterialTheme.colorScheme.primary,
-                            )
+                            IconTile {
+                                Icon(
+                                    painter = painterResource(id = finalIconRes),
+                                    contentDescription = null,
+                                    modifier = Modifier.size(20.dp),
+                                    tint = ToolkitTheme.colors.accent,
+                                )
+                            }
                         }
                     } else {
                         null
@@ -363,7 +359,7 @@ fun IconToggleItem(
                         {
                             Text(
                                 text = finalDescription,
-                                style = MaterialTheme.typography.labelMedium,
+                                style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                             )
                         }
@@ -378,7 +374,7 @@ fun IconToggleItem(
                 content = {
                     Text(
                         text = title,
-                        style = MaterialTheme.typography.bodyMedium,
+                        style = MaterialTheme.typography.titleSmall,
                         color = MaterialTheme.colorScheme.onSurface,
                     )
                 },

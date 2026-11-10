@@ -47,7 +47,7 @@ fun IslandCaffeinateOptionsBottomSheet(onDismissRequest: () -> Unit) {
                 modifier = Modifier.padding(start = 8.dp, bottom = 4.dp),
             )
 
-            RoundedCardContainer(spacing = 2.dp, cornerRadius = 24.dp) {
+            RoundedCardContainer {
                 IconToggleItem(
                     iconRes = R.drawable.rounded_timer_24,
                     title = stringResource(R.string.island_caffeinate_show_time_title),

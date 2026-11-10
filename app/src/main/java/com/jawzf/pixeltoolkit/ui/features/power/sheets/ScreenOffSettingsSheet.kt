@@ -76,7 +76,7 @@ fun ScreenOffSettingsSheet(
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
 
-            RoundedCardContainer(spacing = 8.dp, cornerRadius = 24.dp) {
+            RoundedCardContainer(spacing = 8.dp) {
                 ScreenOffMethodPicker(
                     selectedMethod = selectedMethod,
                     onMethodSelected = { type ->
@@ -102,7 +102,7 @@ fun ScreenOffSettingsSheet(
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
 
-            RoundedCardContainer(spacing = 8.dp, cornerRadius = 24.dp) {
+            RoundedCardContainer(spacing = 8.dp) {
                 HapticFeedbackPicker(
                     selectedFeedback = selectedHaptic,
                     onFeedbackSelected = { type ->

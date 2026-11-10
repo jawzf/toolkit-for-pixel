@@ -155,8 +155,6 @@ fun FreezeSettingsUI(
 
         RoundedCardContainer(
             modifier = Modifier,
-            spacing = 2.dp,
-            cornerRadius = 24.dp,
         ) {
             Box(
                 modifier =
@@ -492,7 +490,7 @@ fun FreezeSettingsUI(
         }
 
         val tags by state.freezeTags
-        RoundedCardContainer(spacing = 2.dp) {
+        RoundedCardContainer {
             if (tags.isEmpty()) {
                 Text(
                     text = stringResource(R.string.freeze_tags_empty),
@@ -612,8 +610,6 @@ fun FreezeSettingsUI(
 
         RoundedCardContainer(
             modifier = Modifier,
-            spacing = 2.dp,
-            cornerRadius = 24.dp,
         ) {
             IconToggleItem(
                 iconRes = R.drawable.rounded_lock_clock_24,
@@ -808,8 +804,6 @@ fun FreezeSettingsUI(
         // Import & Export Buttons
         RoundedCardContainer(
             modifier = Modifier.fillMaxWidth(),
-            spacing = 2.dp,
-            cornerRadius = 24.dp,
         ) {
             Row(
                 modifier =

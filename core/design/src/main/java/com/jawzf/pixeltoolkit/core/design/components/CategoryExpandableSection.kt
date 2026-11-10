@@ -107,7 +107,7 @@ fun CategoryExpandableSection(
             enter = expandVertically() + fadeIn(),
             exit = shrinkVertically() + fadeOut(),
         ) {
-            RoundedCardContainer(spacing = 2.dp) {
+            RoundedCardContainer {
                 content()
             }
         }

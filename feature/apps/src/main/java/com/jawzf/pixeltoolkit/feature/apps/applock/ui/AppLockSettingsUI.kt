@@ -77,8 +77,6 @@ fun AppLockSettingsUI(
 
         RoundedCardContainer(
             modifier = Modifier,
-            spacing = 2.dp,
-            cornerRadius = 24.dp,
         ) {
             IconToggleItem(
                 iconRes = R.drawable.rounded_shield_lock_24,

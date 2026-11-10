@@ -113,7 +113,7 @@ fun StatusGlanceCalendarOptionsBottomSheet(
             if (allowIconEdit) {
                 IslandLauncherOnlyToggle(IslandSettings.KEY_ISLAND_CALENDAR_LAUNCHER_ONLY)
                 if (rememberIslandShowsWhileLocked()) {
-                    RoundedCardContainer(spacing = 2.dp, cornerRadius = 24.dp) {
+                    RoundedCardContainer {
                         IslandPrefToggle(
                             settingKey = IslandSettings.KEY_ISLAND_CALENDAR_HIDE_LOCKED,
                             iconRes = R.drawable.rounded_mobile_lock_portrait_24,
@@ -195,10 +195,7 @@ fun StatusGlanceCalendarOptionsBottomSheet(
                         color = MaterialTheme.colorScheme.primary,
                     )
 
-                    RoundedCardContainer(
-                        spacing = 2.dp,
-                        cornerRadius = 24.dp,
-                    ) {
+                    RoundedCardContainer {
                         accountCalendars.forEach { calendar ->
                             val emoji = if (allowIconEdit) viewModel.island.islandCalendarEmojis.value[calendar.id] else null
                             IconToggleItem(

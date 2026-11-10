@@ -116,10 +116,7 @@ fun IslandPlacementSettingsUI(
     ) {
         IslandPreviewControls()
 
-        RoundedCardContainer(
-            spacing = 2.dp,
-            cornerRadius = 24.dp,
-        ) {
+        RoundedCardContainer {
             if (isFoldableCameraDevice) {
                 Text(
                     text = stringResource(R.string.foldable_camera_profile_hint),
@@ -287,10 +284,7 @@ fun IslandPlacementSettingsUI(
             )
         }
 
-        RoundedCardContainer(
-            spacing = 2.dp,
-            cornerRadius = 24.dp,
-        ) {
+        RoundedCardContainer {
             IconToggleItem(
                 iconRes = R.drawable.rounded_mobile_rotate_24,
                 title = stringResource(R.string.island_keep_on_landscape_title),
@@ -352,10 +346,7 @@ fun IslandVisualsSettingsUI(
     ) {
         IslandPreviewControls()
 
-        RoundedCardContainer(
-            spacing = 2.dp,
-            cornerRadius = 24.dp,
-        ) {
+        RoundedCardContainer {
             ConfigSliderItem(
                 title = stringResource(R.string.island_expanded_scale_title),
                 description = stringResource(R.string.island_expanded_scale_desc),
@@ -442,10 +433,7 @@ fun IslandVisualsSettingsUI(
             )
         }
 
-        RoundedCardContainer(
-            spacing = 2.dp,
-            cornerRadius = 24.dp,
-        ) {
+        RoundedCardContainer {
             IconToggleItem(
                 iconRes = R.drawable.rounded_square_24,
                 title = stringResource(R.string.island_border_outline_title),
@@ -581,10 +569,7 @@ fun IslandDurationSettingsUI(
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-        RoundedCardContainer(
-            spacing = 2.dp,
-            cornerRadius = 24.dp,
-        ) {
+        RoundedCardContainer {
             ConfigSliderItem(
                 title = stringResource(R.string.island_timeout_title),
                 value = (state.islandTimeoutMs.longValue / 1000f),
@@ -662,10 +647,7 @@ fun IslandBehaviorSettingsUI(
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-        RoundedCardContainer(
-            spacing = 2.dp,
-            cornerRadius = 24.dp,
-        ) {
+        RoundedCardContainer {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -703,10 +685,7 @@ fun IslandBehaviorSettingsUI(
             }
         }
 
-        RoundedCardContainer(
-            spacing = 2.dp,
-            cornerRadius = 24.dp,
-        ) {
+        RoundedCardContainer {
             IconToggleItem(
                 iconRes = R.drawable.rounded_notifications_unread_24,
                 title = stringResource(R.string.island_secondary_bubble_title),
@@ -941,8 +920,6 @@ fun IslandPreviewControls(modifier: Modifier = Modifier) {
 
     RoundedCardContainer(
         modifier = modifier,
-        spacing = 2.dp,
-        cornerRadius = 24.dp,
     ) {
         IconToggleItem(
             iconRes = R.drawable.rounded_circle_24,
@@ -1027,10 +1004,7 @@ fun IslandNotificationSettingsUI(
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(24.dp),
     ) {
-        RoundedCardContainer(
-            spacing = 2.dp,
-            cornerRadius = 24.dp,
-        ) {
+        RoundedCardContainer {
             IconToggleItem(
                 iconRes = R.drawable.rounded_notifications_unread_24,
                 title = stringResource(R.string.island_notif_show_title),
@@ -1055,10 +1029,7 @@ fun IslandNotificationSettingsUI(
             )
         }
 
-        RoundedCardContainer(
-            spacing = 2.dp,
-            cornerRadius = 24.dp,
-        ) {
+        RoundedCardContainer {
             IconToggleItem(
                 iconRes = R.drawable.outline_circle_notifications_24,
                 title = stringResource(R.string.island_notif_hub_title),
@@ -1419,8 +1390,6 @@ private fun IslandSettingsSection(titleRes: Int, content: @Composable ColumnScop
             modifier = Modifier.padding(start = 8.dp),
         )
         RoundedCardContainer(
-            spacing = 2.dp,
-            cornerRadius = 24.dp,
             content = content,
         )
     }

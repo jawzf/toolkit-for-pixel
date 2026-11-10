@@ -95,8 +95,6 @@ fun ShutUpPerAppSettingsSheet(
 
             RoundedCardContainer(
                 modifier = Modifier,
-                spacing = 2.dp,
-                cornerRadius = 24.dp,
             ) {
                 IconToggleItem(
                     iconRes = R.drawable.rounded_settings_24,
@@ -162,8 +160,6 @@ fun ShutUpPerAppSettingsSheet(
 
             RoundedCardContainer(
                 modifier = Modifier,
-                spacing = 2.dp,
-                cornerRadius = 24.dp,
             ) {
                 IconToggleItem(
                     iconRes = R.drawable.rounded_keyboard_24,

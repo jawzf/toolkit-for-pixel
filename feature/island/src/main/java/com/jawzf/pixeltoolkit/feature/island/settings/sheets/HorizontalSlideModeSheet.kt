@@ -56,7 +56,7 @@ fun HorizontalSlideModeSheet(
                 color = MaterialTheme.colorScheme.onSurface,
             )
 
-            RoundedCardContainer(spacing = 2.dp) {
+            RoundedCardContainer {
                 HORIZONTAL_SLIDE_MODES.forEach { (modeKey, titleRes, iconRes) ->
                     RemapActionItem(
                         title = stringResource(titleRes),

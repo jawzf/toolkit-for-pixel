@@ -71,7 +71,7 @@ fun ChargingModeSettingsSheet(
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
 
-            RoundedCardContainer(spacing = 2.dp) {
+            RoundedCardContainer {
                 ChargingMode.entries.forEach { mode ->
                     val isSelected = selectedMode == mode
                     val title =

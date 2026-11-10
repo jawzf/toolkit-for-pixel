@@ -77,7 +77,7 @@ fun NotificationLightingActionSheet(
                 color = MaterialTheme.colorScheme.onSurface,
             )
 
-            RoundedCardContainer(spacing = 2.dp) {
+            RoundedCardContainer {
                 NotificationLightingStylePicker(
                     selectedStyle = draft.style,
                     onStyleSelected = { draft = draft.copy(style = it) },
@@ -104,7 +104,7 @@ fun NotificationLightingActionSheet(
             }
 
             if (draft.style != NotificationLightingStyle.SYSTEM) {
-                RoundedCardContainer(spacing = 2.dp) {
+                RoundedCardContainer {
                     NotificationLightingColorModePicker(
                         selectedMode = draft.colorMode,
                         onModeSelected = { draft = draft.copy(colorMode = it) },
@@ -135,7 +135,7 @@ fun NotificationLightingActionSheet(
                     }
                 }
 
-                RoundedCardContainer(spacing = 2.dp) {
+                RoundedCardContainer {
                     ConfigSliderItem(
                         title = stringResource(R.string.notification_lighting_pulse_count_title),
                         value = draft.pulseCount.toFloat(),

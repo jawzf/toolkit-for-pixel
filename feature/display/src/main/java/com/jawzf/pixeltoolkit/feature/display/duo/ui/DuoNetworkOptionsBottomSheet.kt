@@ -45,10 +45,7 @@ fun DuoNetworkOptionsBottomSheet(
                 modifier = Modifier.padding(start = 8.dp, bottom = 4.dp),
             )
 
-            RoundedCardContainer(
-                spacing = 2.dp,
-                cornerRadius = 24.dp,
-            ) {
+            RoundedCardContainer {
                 IconToggleItem(
                     iconRes = R.drawable.rounded_android_wifi_3_bar_24,
                     title = stringResource(R.string.duo_differentiate_wifi_title),

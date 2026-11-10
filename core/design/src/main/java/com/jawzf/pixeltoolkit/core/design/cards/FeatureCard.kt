@@ -1,28 +1,31 @@
 package com.jawzf.pixeltoolkit.core.design.cards
 
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffColorFilter
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Badge
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
+import androidx.compose.material3.ListItem
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
-import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -31,26 +34,39 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.blur
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
+import com.airbnb.lottie.LottieProperty
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.LottieConstants
+import com.airbnb.lottie.compose.animateLottieCompositionAsState
+import com.airbnb.lottie.compose.rememberLottieComposition
+import com.airbnb.lottie.compose.rememberLottieDynamicProperties
+import com.airbnb.lottie.compose.rememberLottieDynamicProperty
 import com.jawzf.pixeltoolkit.core.design.R
-import com.jawzf.pixeltoolkit.core.design.color.ColorUtil
+import com.jawzf.pixeltoolkit.core.design.components.IconTile
 import com.jawzf.pixeltoolkit.core.design.components.SegmentedDropdownMenu
 import com.jawzf.pixeltoolkit.core.design.components.SegmentedDropdownMenuItem
+import com.jawzf.pixeltoolkit.core.design.components.toolkitSwitchColors
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.state.LocalMenuStateManager
+import com.jawzf.pixeltoolkit.core.design.theme.ToolkitTheme
 
-@OptIn(androidx.compose.material3.ExperimentalMaterial3ExpressiveApi::class)
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun FeatureCard(
     title: Any, // Can be Int (Resource ID) or String
@@ -74,18 +90,18 @@ fun FeatureCard(
     onLongClick: (() -> Unit)? = null,
     additionalMenuItems: (@Composable (onDismiss: () -> Unit) -> Unit)? = null,
     customTrailingContent: (@Composable () -> Unit)? = null,
-    iconPainter: androidx.compose.ui.graphics.painter.Painter? = null,
+    iconPainter: Painter? = null,
     hasBadge: Boolean = false,
-    containerColor: androidx.compose.ui.graphics.Color? = null,
-    iconSize: androidx.compose.ui.unit.Dp = 24.dp,
+    containerColor: Color? = null,
+    iconSize: Dp = 20.dp,
     hasIconBackground: Boolean = true,
-    iconTint: androidx.compose.ui.graphics.Color? = null,
+    iconTint: Color? = null,
 ) {
     val view = LocalView.current
     var showMenu by remember { mutableStateOf(false) }
 
     val menuState = LocalMenuStateManager.current
-    androidx.compose.runtime.DisposableEffect(showMenu) {
+    DisposableEffect(showMenu) {
         if (showMenu) {
             menuState.activeId = title
         } else {
@@ -119,7 +135,7 @@ fun FeatureCard(
             else -> ""
         }
 
-    androidx.compose.material3.ListItem(
+    ListItem(
         onClick = {
             HapticUtil.performVirtualKeyHaptic(view)
             if (!isToggleEnabled && !hasMoreSettings && onDisabledToggleClick != null) {
@@ -145,23 +161,9 @@ fun FeatureCard(
             if (iconPainter != null || iconRes != null) {
                 {
                     Box {
-                        val containerModifier =
-                            if (hasIconBackground) {
-                                Modifier
-                                    .size(40.dp)
-                                    .background(
-                                        color = ColorUtil.getPastelColorFor(resolvedTitle),
-                                        shape = CircleShape,
-                                    )
-                            } else {
-                                Modifier.size(40.dp)
-                            }
-                        Box(
-                            modifier = containerModifier,
-                            contentAlignment = Alignment.Center,
-                        ) {
+                        IconTile(showBackground = hasIconBackground) {
                             if (iconPainter != null) {
-                                androidx.compose.foundation.Image(
+                                Image(
                                     painter = iconPainter,
                                     contentDescription = resolvedTitle,
                                     modifier = Modifier.size(iconSize),
@@ -187,7 +189,7 @@ fun FeatureCard(
                                         contentDescription = resolvedTitle,
                                         modifier = Modifier.size(iconSize),
                                         colorFilter = ColorFilter.tint(
-                                            iconTint ?: ColorUtil.getVibrantColorFor(resolvedTitle)
+                                            iconTint ?: ToolkitTheme.colors.accent
                                         ),
                                     )
                                 } else {
@@ -195,14 +197,14 @@ fun FeatureCard(
                                         painter = painterResource(id = R.drawable.rounded_settings_24),
                                         contentDescription = resolvedTitle,
                                         modifier = Modifier.size(iconSize),
-                                        tint = iconTint ?: ColorUtil.getVibrantColorFor(resolvedTitle),
+                                        tint = iconTint ?: ToolkitTheme.colors.accent,
                                     )
                                 }
                             }
                         }
 
                         if (hasBadge) {
-                            androidx.compose.material3.Badge(
+                            Badge(
                                 modifier =
                                     Modifier
                                         .align(Alignment.TopEnd)
@@ -211,29 +213,28 @@ fun FeatureCard(
                                 containerColor = MaterialTheme.colorScheme.error,
                                 contentColor = MaterialTheme.colorScheme.onError,
                             ) {
-                                val composition by com.airbnb.lottie.compose.rememberLottieComposition(
-                                    com.airbnb.lottie.compose.LottieCompositionSpec
-                                        .RawRes(R.raw.update_motion),
+                                val composition by rememberLottieComposition(
+                                    LottieCompositionSpec.RawRes(R.raw.update_motion),
                                 )
-                                val progress by com.airbnb.lottie.compose.animateLottieCompositionAsState(
+                                val progress by animateLottieCompositionAsState(
                                     composition = composition,
-                                    iterations = com.airbnb.lottie.compose.LottieConstants.IterateForever,
+                                    iterations = LottieConstants.IterateForever,
                                 )
                                 val onErrorColor = MaterialTheme.colorScheme.onError
                                 val dynamicProperties =
-                                    com.airbnb.lottie.compose.rememberLottieDynamicProperties(
-                                        com.airbnb.lottie.compose.rememberLottieDynamicProperty(
-                                            property = com.airbnb.lottie.LottieProperty.COLOR_FILTER,
+                                    rememberLottieDynamicProperties(
+                                        rememberLottieDynamicProperty(
+                                            property = LottieProperty.COLOR_FILTER,
                                             value =
-                                                android.graphics.PorterDuffColorFilter(
+                                                PorterDuffColorFilter(
                                                     onErrorColor.toArgb(),
-                                                    android.graphics.PorterDuff.Mode.SRC_ATOP,
+                                                    PorterDuff.Mode.SRC_ATOP,
                                                 ),
                                             keyPath = arrayOf("**"),
                                         ),
                                     )
 
-                                com.airbnb.lottie.compose.LottieAnimation(
+                                LottieAnimation(
                                     composition = composition,
                                     progress = { progress },
                                     dynamicProperties = dynamicProperties,
@@ -273,17 +274,6 @@ fun FeatureCard(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.End,
             ) {
-                if (showToggle && hasMoreSettings) {
-                    VerticalDivider(
-                        modifier =
-                            Modifier
-                                .height(32.dp)
-                                .width(1.dp),
-                        color = MaterialTheme.colorScheme.outlineVariant,
-                    )
-                    Spacer(modifier = Modifier.width(16.dp))
-                }
-
                 if (showToggle) {
                     Box {
                         Switch(
@@ -295,6 +285,7 @@ fun FeatureCard(
                                 }
                             },
                             enabled = isToggleEnabled,
+                            colors = toolkitSwitchColors(),
                         )
 
                         if (!isToggleEnabled && onDisabledToggleClick != null) {
@@ -304,11 +295,7 @@ fun FeatureCard(
                                         .matchParentSize()
                                         .zIndex(1f)
                                         .clickable(
-                                            interactionSource =
-                                                remember {
-                                                    androidx.compose.foundation.interaction
-                                                        .MutableInteractionSource()
-                                                },
+                                            interactionSource = remember { MutableInteractionSource() },
                                             indication = null,
                                         ) {
                                             HapticUtil.performVirtualKeyHaptic(view)
@@ -325,11 +312,11 @@ fun FeatureCard(
             }
         },
         colors =
-            androidx.compose.material3.ListItemDefaults.colors(
+            ListItemDefaults.colors(
                 containerColor = containerColor ?: MaterialTheme.colorScheme.surfaceBright,
             ),
         contentPadding =
-            androidx.compose.foundation.layout.PaddingValues(
+            PaddingValues(
                 horizontal = 16.dp,
                 vertical = 16.dp,
             ),
@@ -340,6 +327,7 @@ fun FeatureCard(
             ) {
                 Text(
                     text = resolvedTitle,
+                    style = MaterialTheme.typography.titleSmall,
                     color = MaterialTheme.colorScheme.onSurface,
                     modifier = Modifier.weight(1f, fill = false),
                     maxLines = 1,

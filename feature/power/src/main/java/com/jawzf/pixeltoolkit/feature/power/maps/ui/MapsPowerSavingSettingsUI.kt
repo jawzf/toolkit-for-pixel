@@ -41,8 +41,6 @@ fun MapsPowerSavingSettingsUI(
 
         RoundedCardContainer(
             modifier = Modifier,
-            spacing = 2.dp,
-            cornerRadius = 24.dp,
         ) {
             state.mapsChannels.value.forEach { channel ->
                 IconToggleItem(

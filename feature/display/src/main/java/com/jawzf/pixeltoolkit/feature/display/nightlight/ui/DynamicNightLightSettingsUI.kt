@@ -42,8 +42,6 @@ fun DynamicNightLightSettingsUI(
     Column(modifier = modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
         RoundedCardContainer(
             modifier = Modifier.padding(top = 8.dp),
-            spacing = 2.dp,
-            cornerRadius = 24.dp,
         ) {
             IconToggleItem(
                 iconRes = R.drawable.rounded_nightlight_24,

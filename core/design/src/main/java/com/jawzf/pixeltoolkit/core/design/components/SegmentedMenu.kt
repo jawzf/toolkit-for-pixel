@@ -37,7 +37,6 @@ fun SegmentedDropdownMenu(
     ) {
         RoundedCardContainer(
             cornerRadius = 16.dp,
-            spacing = 2.dp,
             content = content,
         )
     }

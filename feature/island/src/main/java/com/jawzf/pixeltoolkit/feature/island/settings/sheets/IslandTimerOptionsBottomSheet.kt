@@ -52,10 +52,7 @@ fun IslandTimerOptionsBottomSheet(
                 modifier = Modifier.padding(start = 8.dp, bottom = 4.dp),
             )
 
-            RoundedCardContainer(
-                spacing = 2.dp,
-                cornerRadius = 24.dp,
-            ) {
+            RoundedCardContainer {
                 IconToggleItem(
                     iconRes = R.drawable.rounded_fiber_smart_record_24,
                     title = stringResource(R.string.island_timers_show_screen_recorder_title),

@@ -107,7 +107,7 @@ fun FreezeTagSettingsSheet(
                     modifier = Modifier.padding(vertical = 8.dp),
                 )
             } else {
-                RoundedCardContainer(spacing = 2.dp) {
+                RoundedCardContainer {
                     availableTags.forEach { tag ->
                         val isChecked = selectedTagIds.contains(tag.id)
                         val color =

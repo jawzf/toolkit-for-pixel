@@ -50,7 +50,7 @@ fun IslandProvidersSection(onChanged: () -> Unit = {}) {
         color = MaterialTheme.colorScheme.onSurfaceVariant,
         modifier = Modifier.padding(start = 8.dp),
     )
-    RoundedCardContainer(spacing = 2.dp, cornerRadius = 24.dp) {
+    RoundedCardContainer {
         providers.forEach { provider ->
             IconToggleItem(
                 leadingIcon = ProviderAppIcon(provider.packageName),

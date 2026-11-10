@@ -185,8 +185,6 @@ fun StatusBarIconSettingsUI(
 
                     RoundedCardContainer(
                         modifier = Modifier,
-                        spacing = 2.dp,
-                        cornerRadius = 24.dp,
                     ) {
                         iconsInCat.forEach { icon ->
                             val isChecked =
@@ -226,8 +224,6 @@ fun StatusBarIconSettingsUI(
 
             RoundedCardContainer(
                 modifier = Modifier,
-                spacing = 2.dp,
-                cornerRadius = 24.dp,
             ) {
                 IconToggleItem(
                     iconRes = R.drawable.rounded_cell_wifi_24,
@@ -361,8 +357,6 @@ fun StatusBarIconSettingsUI(
 
             RoundedCardContainer(
                 modifier = Modifier,
-                spacing = 2.dp,
-                cornerRadius = 24.dp,
             ) {
                 IconToggleItem(
                     iconRes = R.drawable.rounded_nest_clock_farsight_analog_24,
@@ -546,8 +540,6 @@ fun StatusBarIconSettingsUI(
 
         RoundedCardContainer(
             modifier = Modifier,
-            spacing = 2.dp,
-            cornerRadius = 24.dp,
         ) {
             IconToggleItem(
                 iconRes = R.drawable.rounded_android_24,
@@ -662,8 +654,6 @@ fun StatusBarIconSettingsUI(
 
         RoundedCardContainer(
             modifier = Modifier,
-            spacing = 2.dp,
-            cornerRadius = 24.dp,
         ) {
             IconToggleItem(
                 iconRes = R.drawable.rounded_visibility_off_24,

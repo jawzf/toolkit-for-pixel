@@ -73,7 +73,6 @@ fun ScreenOffWidgetSettingsUI(
         RoundedCardContainer(
             modifier = Modifier,
             spacing = 8.dp,
-            cornerRadius = 24.dp,
         ) {
             ScreenOffMethodPicker(
                 selectedMethod = selectedScreenOffMethod,
@@ -103,7 +102,6 @@ fun ScreenOffWidgetSettingsUI(
         RoundedCardContainer(
             modifier = Modifier,
             spacing = 8.dp,
-            cornerRadius = 24.dp,
         ) {
             HapticFeedbackPicker(
                 selectedFeedback = selectedHaptic,

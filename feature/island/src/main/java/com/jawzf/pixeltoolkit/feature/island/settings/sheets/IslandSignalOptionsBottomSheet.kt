@@ -62,7 +62,7 @@ fun IslandSignalOptionsBottomSheet(onDismissRequest: () -> Unit) {
                 modifier = Modifier.padding(start = 8.dp, bottom = 4.dp),
             )
 
-            RoundedCardContainer(spacing = 2.dp, cornerRadius = 24.dp) {
+            RoundedCardContainer {
                 IconToggleItem(
                     iconRes = R.drawable.rounded_android_wifi_3_bar_24,
                     title = stringResource(R.string.island_network_activity_title),
@@ -116,7 +116,7 @@ fun IslandSignalOptionsBottomSheet(onDismissRequest: () -> Unit) {
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.padding(start = 8.dp),
                 )
-                RoundedCardContainer(spacing = 2.dp, cornerRadius = 24.dp) {
+                RoundedCardContainer {
                     NetworkTypePicker(
                         selectedTypes = types,
                         onTypesSelected = {

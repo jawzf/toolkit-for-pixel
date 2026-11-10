@@ -166,8 +166,6 @@ fun NavigationSettingsUI(
 
         RoundedCardContainer(
             modifier = Modifier,
-            spacing = 2.dp,
-            cornerRadius = 24.dp,
         ) {
             val lifecycleOwner = LocalLifecycleOwner.current
             DisposableEffect(lifecycleOwner, viewModel.isCircleToSearchGestureEnabled.value) {
@@ -330,10 +328,7 @@ fun NavigationSettingsUI(
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        RoundedCardContainer(
-            spacing = 2.dp,
-            cornerRadius = 24.dp,
-        ) {
+        RoundedCardContainer {
             FeatureCard(
                 title = R.string.feat_back_gesture_title,
                 description = R.string.feat_back_gesture_desc,

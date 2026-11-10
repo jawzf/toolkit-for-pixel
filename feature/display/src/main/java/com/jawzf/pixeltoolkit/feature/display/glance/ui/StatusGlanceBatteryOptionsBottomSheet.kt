@@ -138,10 +138,7 @@ fun StatusGlanceBatteryOptionsBottomSheet(
                 enter = fadeIn() + expandVertically(),
                 exit = fadeOut() + shrinkVertically(),
             ) {
-                RoundedCardContainer(
-                    spacing = 2.dp,
-                    cornerRadius = 24.dp,
-                ) {
+                RoundedCardContainer {
                     ConfigSliderItem(
                         title = stringResource(R.string.status_glance_battery_icon_size_title),
                         value = state.statusGlanceBatteryIconSize.floatValue,
@@ -161,10 +158,7 @@ fun StatusGlanceBatteryOptionsBottomSheet(
                 modifier = Modifier.padding(start = 8.dp),
             )
 
-            RoundedCardContainer(
-                spacing = 2.dp,
-                cornerRadius = 24.dp,
-            ) {
+            RoundedCardContainer {
                 IconToggleItem(
                     iconRes = R.drawable.battery_android_frame_alert_24px,
                     title = stringResource(R.string.status_glance_battery_show_low_title),

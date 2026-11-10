@@ -154,10 +154,7 @@ fun IslandSettingsUI(
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-        RoundedCardContainer(
-            spacing = 2.dp,
-            cornerRadius = 24.dp,
-        ) {
+        RoundedCardContainer {
             IconToggleItem(
                 iconRes = R.drawable.rounded_notifications_unread_24,
                 title = stringResource(R.string.island_enable_title),
@@ -186,10 +183,7 @@ fun IslandSettingsUI(
             )
         }
 
-        RoundedCardContainer(
-            spacing = 2.dp,
-            cornerRadius = 24.dp,
-        ) {
+        RoundedCardContainer {
             ISLAND_SUB_PAGES.forEach { (featureId, titleRes, iconRes) ->
                 FeatureCard(
                     title = titleRes,
@@ -216,10 +210,7 @@ fun IslandSettingsUI(
             modifier = Modifier.padding(start = 8.dp),
         )
 
-        RoundedCardContainer(
-            spacing = 2.dp,
-            cornerRadius = 24.dp,
-        ) {
+        RoundedCardContainer {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -247,10 +238,7 @@ fun IslandSettingsUI(
             }
         }
 
-        RoundedCardContainer(
-            spacing = 2.dp,
-            cornerRadius = 24.dp,
-        ) {
+        RoundedCardContainer {
             val renderEntry: @Composable (String, (@Composable () -> Unit)?) -> Unit = { entryId, handle ->
                 when (entryId) {
                     "calls" -> IconToggleItem(
@@ -543,10 +531,7 @@ fun IslandSettingsUI(
             onReset = { workingOrder = IslandPriorityEntries.defaultOrder(providerEntries) },
         )
 
-        RoundedCardContainer(
-            spacing = 2.dp,
-            cornerRadius = 24.dp,
-        ) {
+        RoundedCardContainer {
             IconToggleItem(
                 iconRes = R.drawable.rounded_calendar_today_24,
                 title = stringResource(R.string.island_brief_title),
@@ -570,10 +555,7 @@ fun IslandSettingsUI(
             modifier = Modifier.padding(start = 8.dp),
         )
 
-        RoundedCardContainer(
-            spacing = 2.dp,
-            cornerRadius = 24.dp,
-        ) {
+        RoundedCardContainer {
             IconToggleItem(
                 iconRes = R.drawable.rounded_front_hand_24,
                 title = stringResource(R.string.duo_action_long_press_title),
@@ -605,10 +587,7 @@ fun IslandSettingsUI(
             )
         }
 
-        RoundedCardContainer(
-            spacing = 2.dp,
-            cornerRadius = 24.dp,
-        ) {
+        RoundedCardContainer {
             IconToggleItem(
                 iconRes = R.drawable.rounded_compare_arrows_24,
                 title = stringResource(R.string.duo_action_horizontal_slide_title),
@@ -651,10 +630,7 @@ fun IslandSettingsUI(
             }
         }
 
-        RoundedCardContainer(
-            spacing = 2.dp,
-            cornerRadius = 24.dp,
-        ) {
+        RoundedCardContainer {
             IconToggleItem(
                 iconRes = R.drawable.rounded_touch_app_24,
                 title = stringResource(R.string.island_always_gestures_title),
@@ -686,10 +662,7 @@ fun IslandSettingsUI(
             enter = expandVertically() + fadeIn(),
             exit = shrinkVertically() + fadeOut(),
         ) {
-            RoundedCardContainer(
-                spacing = 2.dp,
-                cornerRadius = 24.dp,
-            ) {
+            RoundedCardContainer {
                 IconToggleItem(
                     iconRes = R.drawable.rounded_link_24,
                     title = stringResource(R.string.island_combine_with_duo),
@@ -728,7 +701,7 @@ fun IslandSettingsUI(
                 onAppToggle = { ctx, pkg, enabled -> state.updateIslandMediaAppEnabled(ctx, pkg, enabled) },
                 headerContent = {
                     Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
-                        RoundedCardContainer(spacing = 2.dp, cornerRadius = 24.dp) {
+                        RoundedCardContainer {
                             if (state.isIslandLineStageEnabled.value) {
                                 IconToggleItem(
                                     iconRes = R.drawable.rounded_music_note_24,

@@ -63,7 +63,7 @@ fun SendNotificationSettingsSheet(
                 color = MaterialTheme.colorScheme.onSurface,
             )
 
-            RoundedCardContainer(spacing = 2.dp, cornerRadius = 24.dp) {
+            RoundedCardContainer {
                 NotificationField(
                     value = title,
                     onValueChange = { title = it },

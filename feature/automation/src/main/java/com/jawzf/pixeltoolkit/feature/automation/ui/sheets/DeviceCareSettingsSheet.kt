@@ -63,7 +63,7 @@ fun DeviceCareSettingsSheet(
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
 
-            RoundedCardContainer(spacing = 2.dp, cornerRadius = 24.dp) {
+            RoundedCardContainer {
                 IconToggleItem(
                     iconRes = R.drawable.rounded_cleaning_services_24,
                     title = stringResource(R.string.diy_device_care_clear_cache),

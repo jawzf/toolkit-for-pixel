@@ -38,7 +38,7 @@ fun IslandBatteryOptionsBottomSheet(
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            RoundedCardContainer(spacing = 2.dp, cornerRadius = 24.dp) {
+            RoundedCardContainer {
                 IconToggleItem(
                     iconRes = R.drawable.rounded_battery_alert_24,
                     title = stringResource(R.string.island_battery_peek_alerts_title),
@@ -51,7 +51,7 @@ fun IslandBatteryOptionsBottomSheet(
             }
 
             if (rememberIslandShowsWhileLocked()) {
-                RoundedCardContainer(spacing = 2.dp, cornerRadius = 24.dp) {
+                RoundedCardContainer {
                     IslandPrefToggle(
                         settingKey = IslandSettings.KEY_ISLAND_BATTERY_HIDE_LOCKED,
                         iconRes = R.drawable.rounded_mobile_lock_portrait_24,

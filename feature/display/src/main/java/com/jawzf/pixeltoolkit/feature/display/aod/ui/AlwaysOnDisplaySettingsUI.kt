@@ -72,8 +72,6 @@ fun AlwaysOnDisplaySettingsUI(
     ) {
         RoundedCardContainer(
             modifier = Modifier,
-            spacing = 2.dp,
-            cornerRadius = 24.dp,
         ) {
             IconToggleItem(
                 iconRes = R.drawable.rounded_mobile_text_2_24,

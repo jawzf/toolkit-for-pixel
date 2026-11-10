@@ -53,8 +53,6 @@ fun SnoozeNotificationsSettingsUI(
 
         RoundedCardContainer(
             modifier = Modifier,
-            spacing = 2.dp,
-            cornerRadius = 24.dp,
         ) {
             state.snoozeChannels.value.forEach { channel ->
                 IconToggleItem(

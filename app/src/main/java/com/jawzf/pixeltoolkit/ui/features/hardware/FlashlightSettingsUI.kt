@@ -39,7 +39,7 @@ fun FlashlightSettingsUI(
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
 
-        RoundedCardContainer(spacing = 2.dp) {
+        RoundedCardContainer {
             IconToggleItem(
                 iconRes = R.drawable.rounded_globe_24,
                 title = stringResource(R.string.flashlight_global_title),

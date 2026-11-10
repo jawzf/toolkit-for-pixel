@@ -112,9 +112,7 @@ fun UserDictionaryBottomSheet(
                 val view = androidx.compose.ui.platform.LocalView.current
                 LazyColumn {
                     item {
-                        RoundedCardContainer(
-                            spacing = 2.dp,
-                        ) {
+                        RoundedCardContainer {
                             Row(
                                 modifier =
                                     Modifier
@@ -150,9 +148,7 @@ fun UserDictionaryBottomSheet(
                     }
 
                     item {
-                        RoundedCardContainer(
-                            spacing = 2.dp,
-                        ) {
+                        RoundedCardContainer {
                             words.entries
                                 .toList()
                                 .sortedByDescending { it.value }

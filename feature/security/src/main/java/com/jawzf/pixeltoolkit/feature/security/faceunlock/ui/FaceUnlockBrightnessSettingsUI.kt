@@ -124,10 +124,7 @@ fun FaceUnlockBrightnessSettingsUI(
                 .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-        RoundedCardContainer(
-            spacing = 2.dp,
-            cornerRadius = 24.dp,
-        ) {
+        RoundedCardContainer {
             IconToggleItem(
                 iconRes = R.drawable.rounded_face_24,
                 title = stringResource(R.string.feat_face_unlock_brightness_title),
@@ -149,10 +146,7 @@ fun FaceUnlockBrightnessSettingsUI(
             enter = fadeIn() + expandVertically(),
             exit = fadeOut() + shrinkVertically(),
         ) {
-            RoundedCardContainer(
-                spacing = 2.dp,
-                cornerRadius = 24.dp,
-            ) {
+            RoundedCardContainer {
                 Column(
                     modifier =
                         Modifier

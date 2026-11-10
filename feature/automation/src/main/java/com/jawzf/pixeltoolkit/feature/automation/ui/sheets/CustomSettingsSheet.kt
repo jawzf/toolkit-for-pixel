@@ -439,10 +439,7 @@ fun CustomSettingsSheet(
                         )
                     }
 
-                    RoundedCardContainer(
-                        spacing = 2.dp,
-                        cornerRadius = 24.dp,
-                    ) {
+                    RoundedCardContainer {
                         val count = entries.size
                         entries.forEachIndexed { index, entry ->
                             CustomSettingEntryRow(

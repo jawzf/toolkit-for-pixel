@@ -178,7 +178,7 @@ fun DebuggingSettingsOverlay(onDismiss: () -> Unit) {
                 )
             }
 
-            RoundedCardContainer(spacing = 2.dp) {
+            RoundedCardContainer {
                 IconToggleItem(
                     iconRes = R.drawable.usb_debugging_24,
                     title = stringResource(R.string.usb_debugging_title),

@@ -863,7 +863,7 @@ class AutomationEditorActivity : ComponentActivity() {
                                                     onSelected = ::selectAutomationType,
                                                 )
 
-                                                RoundedCardContainer(spacing = 2.dp) {
+                                                RoundedCardContainer {
                                                     val slots = listOf(1, 2, 3)
                                                     slots.forEach { slot ->
                                                         val title = when (slot) {
@@ -943,7 +943,7 @@ class AutomationEditorActivity : ComponentActivity() {
                                                     onSelected = ::selectAutomationType,
                                                 )
 
-                                                RoundedCardContainer(spacing = 2.dp) {
+                                                RoundedCardContainer {
                                                     val editorTitle =
                                                         when (automationType) {
                                                             Automation.Type.PIXEL_SEARCHBAR -> stringResource(R.string.diy_create_pixel_searchbar_title)

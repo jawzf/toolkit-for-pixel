@@ -61,10 +61,7 @@ fun AppVolumeSettingsUI(
                 .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
-        RoundedCardContainer(
-            spacing = 2.dp,
-            cornerRadius = 24.dp,
-        ) {
+        RoundedCardContainer {
             IconToggleItem(
                 iconRes = R.drawable.rounded_speaker_group_24,
                 title = stringResource(R.string.app_volume_enable_title),
@@ -91,8 +88,6 @@ fun AppVolumeSettingsUI(
         )
 
         RoundedCardContainer(
-            spacing = 2.dp,
-            cornerRadius = 24.dp,
             modifier = Modifier.highlight(highlightSetting == "app_volume_apps"),
         ) {
             (playing + levels.keys).distinct().forEach { packageName ->
@@ -209,10 +204,7 @@ private fun AppVolumeSheet(
                 style = MaterialTheme.typography.headlineSmall,
                 modifier = Modifier.padding(horizontal = 16.dp),
             )
-            RoundedCardContainer(
-                spacing = 2.dp,
-                cornerRadius = 24.dp,
-            ) {
+            RoundedCardContainer {
                 ConfigSliderItem(
                     title = stringResource(R.string.app_volume_level_title),
                     value = current,
