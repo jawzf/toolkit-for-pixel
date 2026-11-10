@@ -10,12 +10,13 @@ import androidx.compose.material3.MenuItemColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
+import com.jawzf.pixeltoolkit.core.design.theme.ToolkitShapes
 
 @Composable
 fun SegmentedDropdownMenu(
@@ -31,9 +32,10 @@ fun SegmentedDropdownMenu(
         onDismissRequest = onDismissRequest,
         modifier = modifier,
         offset = offset,
+        shape = ToolkitShapes.group,
         containerColor = containerColor,
         tonalElevation = 0.dp,
-        shadowElevation = 0.dp,
+        shadowElevation = 6.dp,
     ) {
         RoundedCardContainer(
             cornerRadius = 16.dp,
@@ -50,7 +52,7 @@ fun SegmentedDropdownMenuItem(
     leadingIcon: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
     enabled: Boolean = true,
-    itemContainerColor: Color = MaterialTheme.colorScheme.surfaceContainerHigh,
+    itemContainerColor: Color = MaterialTheme.colorScheme.surfaceBright,
     colors: MenuItemColors =
         MenuDefaults.itemColors(
             textColor = MaterialTheme.colorScheme.onSurface,
@@ -61,7 +63,7 @@ fun SegmentedDropdownMenuItem(
             disabledTrailingIconColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f),
         ),
 ) {
-    val view = androidx.compose.ui.platform.LocalView.current
+    val view = LocalView.current
     val dismiss = LocalDropdownMenuDismiss.current
     DropdownMenuItem(
         text = text,
@@ -73,7 +75,6 @@ fun SegmentedDropdownMenuItem(
         },
         modifier =
             modifier
-                .clip(MaterialTheme.shapes.extraSmall)
                 .background(itemContainerColor),
         leadingIcon = leadingIcon,
         trailingIcon = trailingIcon,
