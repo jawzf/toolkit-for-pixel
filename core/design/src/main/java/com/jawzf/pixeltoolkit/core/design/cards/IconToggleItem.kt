@@ -320,6 +320,7 @@ fun IconToggleItem(
                     colors =
                         ListItemDefaults.colors(
                             containerColor = MaterialTheme.colorScheme.surfaceBright,
+                            selectedContainerColor = MaterialTheme.colorScheme.surfaceBright,
                         ),
                     content = {
                         Text(

@@ -9,7 +9,9 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -17,12 +19,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.core.design.theme.ToolkitTheme
 
+/** Neutral track hosting segmented picker options. */
 @Composable
-internal fun SegmentedTrack(
+fun SegmentedTrack(
     count: Int,
     modifier: Modifier = Modifier,
     segment: @Composable RowScope.(index: Int) -> Unit,
@@ -42,8 +46,9 @@ internal fun SegmentedTrack(
     }
 }
 
+/** Single segment slot within a [SegmentedTrack]. */
 @Composable
-internal fun RowScope.Segment(
+fun RowScope.Segment(
     selected: Boolean,
     selectionModifier: Modifier,
     content: @Composable () -> Unit,
@@ -62,8 +67,9 @@ internal fun RowScope.Segment(
     }
 }
 
+/** Text label for a segment: primary text when selected, secondary otherwise. */
 @Composable
-internal fun SegmentLabel(
+fun SegmentLabel(
     text: String,
     selected: Boolean,
     modifier: Modifier = Modifier,
@@ -76,5 +82,21 @@ internal fun SegmentLabel(
         color = if (selected) ToolkitTheme.colors.text else ToolkitTheme.colors.textSecondary,
         maxLines = 1,
         modifier = modifier.basicMarquee(),
+    )
+}
+
+/** Icon for a segment: accent when selected, secondary text colour otherwise. */
+@Composable
+fun SegmentIcon(
+    painter: Painter,
+    contentDescription: String?,
+    selected: Boolean,
+    modifier: Modifier = Modifier,
+) {
+    Icon(
+        painter = painter,
+        contentDescription = contentDescription,
+        modifier = modifier.size(20.dp),
+        tint = if (selected) ToolkitTheme.colors.accent else ToolkitTheme.colors.textSecondary,
     )
 }

@@ -1,29 +1,23 @@
 package com.jawzf.pixeltoolkit.feature.notifications.lighting.ui
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.ButtonGroupDefaults
-import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ToggleButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.semantics.role
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
+import com.jawzf.pixeltoolkit.core.design.pickers.Segment
+import com.jawzf.pixeltoolkit.core.design.pickers.SegmentIcon
+import com.jawzf.pixeltoolkit.core.design.pickers.SegmentedTrack
 
-@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun NotificationLightingSystemModePicker(
     selectedMode: Int,
@@ -42,38 +36,34 @@ fun NotificationLightingSystemModePicker(
     val view = LocalView.current
 
     RoundedCardContainer(modifier = Modifier) {
-        Row(
+        SegmentedTrack(
+            count = modes.size,
             modifier =
                 modifier
                     .background(
                         color = MaterialTheme.colorScheme.surfaceBright,
                         shape = RoundedCornerShape(MaterialTheme.shapes.extraSmall.bottomEnd),
-                    ).padding(10.dp),
-            horizontalArrangement = Arrangement.spacedBy(ButtonGroupDefaults.ConnectedSpaceBetween),
-        ) {
-            val modifiers = List(modes.size) { Modifier.weight(1f) }
-
-            modes.forEachIndexed { index, mode ->
-                ToggleButton(
-                    checked = selectedMode == mode,
-                    onCheckedChange = {
-                        HapticUtil.performVirtualKeyHaptic(view)
-                        onModeSelected(mode)
-                    },
-                    modifier = modifiers[index].semantics { role = Role.RadioButton },
-                    shapes =
-                        when (index) {
-                            0 -> ButtonGroupDefaults.connectedLeadingButtonShapes()
-                            modes.lastIndex -> ButtonGroupDefaults.connectedTrailingButtonShapes()
-                            else -> ButtonGroupDefaults.connectedMiddleButtonShapes()
+                    ).padding(horizontal = 16.dp, vertical = 12.dp),
+        ) { index ->
+            val mode = modes[index]
+            val selected = selectedMode == mode
+            Segment(
+                selected = selected,
+                selectionModifier =
+                    Modifier.selectable(
+                        selected = selected,
+                        role = Role.RadioButton,
+                        onClick = {
+                            HapticUtil.performVirtualKeyHaptic(view)
+                            onModeSelected(mode)
                         },
-                ) {
-                    Icon(
-                        painter = painterResource(id = icons[index]),
-                        contentDescription = labels[index],
-                        modifier = Modifier.size(24.dp),
-                    )
-                }
+                    ),
+            ) {
+                SegmentIcon(
+                    painter = painterResource(id = icons[index]),
+                    contentDescription = labels[index],
+                    selected = selected,
+                )
             }
         }
     }

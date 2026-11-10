@@ -15,15 +15,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonGroupDefaults
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.ToggleButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
@@ -55,6 +54,9 @@ import com.jawzf.pixeltoolkit.core.design.components.ConfigSliderItem
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.modifiers.highlight
+import com.jawzf.pixeltoolkit.core.design.pickers.Segment
+import com.jawzf.pixeltoolkit.core.design.pickers.SegmentLabel
+import com.jawzf.pixeltoolkit.core.design.pickers.SegmentedTrack
 import com.jawzf.pixeltoolkit.core.design.sheets.PermissionItem
 import com.jawzf.pixeltoolkit.core.design.sheets.PermissionsBottomSheet
 import com.jawzf.pixeltoolkit.core.platform.AppComponents
@@ -1215,7 +1217,6 @@ fun NotificationLightingSettingsUI(
     }
 }
 
-@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 private fun RipplePositionPicker(
     selectedPosition: NotificationLightingRipplePosition,
@@ -1238,41 +1239,36 @@ private fun RipplePositionPicker(
 
     val selectedIndex = positions.indexOf(selectedPosition).coerceAtLeast(0)
 
-    Row(
+    SegmentedTrack(
+        count = positions.size,
         modifier =
             modifier
                 .background(
                     color = MaterialTheme.colorScheme.surfaceBright,
-                ).padding(10.dp),
-        horizontalArrangement = Arrangement.spacedBy(ButtonGroupDefaults.ConnectedSpaceBetween),
-    ) {
-        val modifiers = List(positions.size) { Modifier.weight(1f) }
-
-        positions.forEachIndexed { index, pos ->
-            ToggleButton(
-                checked = selectedIndex == index,
-                onCheckedChange = {
-                    HapticUtil.performVirtualKeyHaptic(view)
-                    onPositionSelected(pos)
-                },
-                modifier = modifiers[index].semantics { role = Role.RadioButton },
-                shapes =
-                    when (index) {
-                        0 -> ButtonGroupDefaults.connectedLeadingButtonShapes()
-                        positions.lastIndex -> ButtonGroupDefaults.connectedTrailingButtonShapes()
-                        else -> ButtonGroupDefaults.connectedMiddleButtonShapes()
+                ).padding(horizontal = 16.dp, vertical = 12.dp),
+    ) { index ->
+        val pos = positions[index]
+        val selected = selectedIndex == index
+        Segment(
+            selected = selected,
+            selectionModifier =
+                Modifier.selectable(
+                    selected = selected,
+                    role = Role.RadioButton,
+                    onClick = {
+                        HapticUtil.performVirtualKeyHaptic(view)
+                        onPositionSelected(pos)
                     },
-            ) {
-                Text(
-                    text = labels[index],
-                    style = MaterialTheme.typography.labelLarge,
-                )
-            }
+                ),
+        ) {
+            SegmentLabel(
+                text = labels[index],
+                selected = selected,
+            )
         }
     }
 }
 
-@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 private fun SweepPositionPicker(
     selectedPosition: NotificationLightingSweepPosition,
@@ -1295,36 +1291,32 @@ private fun SweepPositionPicker(
 
     val selectedIndex = positions.indexOf(selectedPosition).coerceAtLeast(0)
 
-    Row(
+    SegmentedTrack(
+        count = positions.size,
         modifier =
             modifier
                 .background(
                     color = MaterialTheme.colorScheme.surfaceBright,
-                ).padding(10.dp),
-        horizontalArrangement = Arrangement.spacedBy(ButtonGroupDefaults.ConnectedSpaceBetween),
-    ) {
-        val modifiers = List(positions.size) { Modifier.weight(1f) }
-
-        positions.forEachIndexed { index, pos ->
-            ToggleButton(
-                checked = selectedIndex == index,
-                onCheckedChange = {
-                    HapticUtil.performVirtualKeyHaptic(view)
-                    onPositionSelected(pos)
-                },
-                modifier = modifiers[index].semantics { role = Role.RadioButton },
-                shapes =
-                    when (index) {
-                        0 -> ButtonGroupDefaults.connectedLeadingButtonShapes()
-                        positions.lastIndex -> ButtonGroupDefaults.connectedTrailingButtonShapes()
-                        else -> ButtonGroupDefaults.connectedMiddleButtonShapes()
+                ).padding(horizontal = 16.dp, vertical = 12.dp),
+    ) { index ->
+        val pos = positions[index]
+        val selected = selectedIndex == index
+        Segment(
+            selected = selected,
+            selectionModifier =
+                Modifier.selectable(
+                    selected = selected,
+                    role = Role.RadioButton,
+                    onClick = {
+                        HapticUtil.performVirtualKeyHaptic(view)
+                        onPositionSelected(pos)
                     },
-            ) {
-                Text(
-                    text = labels[index],
-                    style = MaterialTheme.typography.labelLarge,
-                )
-            }
+                ),
+        ) {
+            SegmentLabel(
+                text = labels[index],
+                selected = selected,
+            )
         }
     }
 }

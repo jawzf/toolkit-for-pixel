@@ -176,6 +176,7 @@ fun KeyboardSelectionSheet(
                                 colors =
                                     ListItemDefaults.colors(
                                         containerColor = MaterialTheme.colorScheme.surfaceBright,
+                                        selectedContainerColor = MaterialTheme.colorScheme.surfaceBright,
                                     ),
                                 contentPadding =
                                     PaddingValues(

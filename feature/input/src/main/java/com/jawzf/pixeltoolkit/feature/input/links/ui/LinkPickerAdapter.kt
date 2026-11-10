@@ -48,10 +48,10 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.BottomSheetDefaults
-import androidx.compose.material3.ButtonGroupDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -69,7 +69,6 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
-import androidx.compose.material3.ToggleButton
 import androidx.compose.material3.carousel.HorizontalMultiBrowseCarousel
 import androidx.compose.material3.carousel.rememberCarouselState
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -101,6 +100,7 @@ import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -116,7 +116,10 @@ import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.modifiers.BlurDirection
 import com.jawzf.pixeltoolkit.core.design.modifiers.progressiveBlur
 import com.jawzf.pixeltoolkit.core.design.modifiers.scrollMotionBlur
+import com.jawzf.pixeltoolkit.core.design.pickers.Segment
+import com.jawzf.pixeltoolkit.core.design.pickers.SegmentIcon
 import com.jawzf.pixeltoolkit.core.design.pickers.SegmentedPicker
+import com.jawzf.pixeltoolkit.core.design.pickers.SegmentedTrack
 import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
 import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.feature.input.InputSettings
@@ -783,40 +786,43 @@ fun LinkPickerScreen(
 
                         Spacer(modifier = Modifier.weight(1f))
 
-                        Row(
-                            horizontalArrangement = Arrangement.spacedBy(ButtonGroupDefaults.ConnectedSpaceBetween),
-                            verticalAlignment = Alignment.CenterVertically,
-                        ) {
-                            ToggleButton(
-                                checked = !isGridView,
-                                onCheckedChange = {
-                                    HapticUtil.performUIHaptic(view)
-                                    isGridView = false
-                                    setShareViewModeGrid(context, false)
-                                },
-                                shapes = ButtonGroupDefaults.connectedLeadingButtonShapes(),
+                        SegmentedTrack(
+                            count = 2,
+                            modifier = Modifier.width(112.dp),
+                        ) { index ->
+                            val isList = index == 0
+                            val selected = if (isList) !isGridView else isGridView
+                            Segment(
+                                selected = selected,
+                                selectionModifier =
+                                    Modifier.selectable(
+                                        selected = selected,
+                                        role = Role.RadioButton,
+                                        onClick = {
+                                            HapticUtil.performUIHaptic(view)
+                                            if (isList) {
+                                                isGridView = false
+                                                setShareViewModeGrid(context, false)
+                                            } else {
+                                                isGridView = true
+                                                setShareViewModeGrid(context, true)
+                                            }
+                                        },
+                                    ),
                             ) {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.rounded_view_headline_24),
-                                    contentDescription = stringResource(R.string.label_view_list),
-                                    modifier = Modifier.size(18.dp),
-                                )
-                            }
-
-                            ToggleButton(
-                                checked = isGridView,
-                                onCheckedChange = {
-                                    HapticUtil.performUIHaptic(view)
-                                    isGridView = true
-                                    setShareViewModeGrid(context, true)
-                                },
-                                shapes = ButtonGroupDefaults.connectedTrailingButtonShapes(),
-                            ) {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.rounded_grid_view_24),
-                                    contentDescription = stringResource(R.string.label_view_grid),
-                                    modifier = Modifier.size(18.dp),
-                                )
+                                if (isList) {
+                                    SegmentIcon(
+                                        painter = painterResource(id = R.drawable.rounded_view_headline_24),
+                                        contentDescription = stringResource(R.string.label_view_list),
+                                        selected = selected,
+                                    )
+                                } else {
+                                    SegmentIcon(
+                                        painter = painterResource(id = R.drawable.rounded_grid_view_24),
+                                        contentDescription = stringResource(R.string.label_view_grid),
+                                        selected = selected,
+                                    )
+                                }
                             }
                         }
                     }

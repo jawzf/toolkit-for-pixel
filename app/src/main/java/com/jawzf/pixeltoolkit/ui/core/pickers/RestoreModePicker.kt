@@ -8,27 +8,24 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.ButtonGroupDefaults
-import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.foundation.selection.selectable
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.ToggleButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.semantics.role
-import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.design.pickers.Segment
+import com.jawzf.pixeltoolkit.core.design.pickers.SegmentLabel
+import com.jawzf.pixeltoolkit.core.design.pickers.SegmentedTrack
 
-@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun RestoreModePicker(
     selectedMode: String,
@@ -73,40 +70,25 @@ fun RestoreModePicker(
             },
         )
 
-        Row(
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
-                    .padding(bottom = 16.dp),
-            horizontalArrangement = Arrangement.spacedBy(ButtonGroupDefaults.ConnectedSpaceBetween),
-        ) {
-            options.forEachIndexed { index, mode ->
-                val isChecked = selectedMode == mode
-
-                ToggleButton(
-                    checked = isChecked,
-                    onCheckedChange = {
-                        onModeSelected(mode)
-                    },
-                    modifier =
-                        Modifier
-                            .weight(1f)
-                            .semantics { role = Role.RadioButton },
-                    shapes =
-                        when {
-                            index == 0 -> ButtonGroupDefaults.connectedLeadingButtonShapes()
-                            index == options.lastIndex -> ButtonGroupDefaults.connectedTrailingButtonShapes()
-                            else -> ButtonGroupDefaults.connectedMiddleButtonShapes()
-                        },
-                ) {
-                    Text(
-                        text = mode,
-                        style = MaterialTheme.typography.labelLarge,
-                        fontWeight = if (isChecked) FontWeight.Bold else FontWeight.Normal,
-                        maxLines = 1,
-                    )
-                }
+        SegmentedTrack(
+            count = options.size,
+            modifier = Modifier.padding(horizontal = 16.dp).padding(bottom = 16.dp),
+        ) { index ->
+            val mode = options[index]
+            val selected = selectedMode == mode
+            Segment(
+                selected = selected,
+                selectionModifier =
+                    Modifier.selectable(
+                        selected = selected,
+                        role = Role.RadioButton,
+                        onClick = { onModeSelected(mode) },
+                    ),
+            ) {
+                SegmentLabel(
+                    text = mode,
+                    selected = selected,
+                )
             }
         }
     }
