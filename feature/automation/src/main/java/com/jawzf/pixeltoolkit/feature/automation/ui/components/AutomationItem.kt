@@ -639,7 +639,7 @@ private fun AutomationItemSummariesPreview() {
             Automation("12", Automation.Type.TRIGGER, trigger = Trigger.ChargerConnected, actions = actions),
         )
 
-    ToolkitTheme(dynamicColor = false) {
+    ToolkitTheme {
         Column(
             modifier = Modifier.padding(8.dp),
             verticalArrangement = Arrangement.spacedBy(4.dp),

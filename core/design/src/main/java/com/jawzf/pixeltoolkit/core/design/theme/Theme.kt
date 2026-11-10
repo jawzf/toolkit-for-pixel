@@ -3,81 +3,52 @@ package com.jawzf.pixeltoolkit.core.design.theme
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
-import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.ReadOnlyComposable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
-
-private val DarkColorScheme =
-    darkColorScheme(
-        primary = Purple80,
-        secondary = PurpleGrey80,
-        tertiary = Pink80,
-    )
-
-private val LightColorScheme =
-    lightColorScheme(
-        primary = Purple40,
-        secondary = PurpleGrey40,
-        tertiary = Pink40,
-    )
 
 @Composable
 fun ToolkitTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     pitchBlackTheme: Boolean = false,
-    // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
+    accent: Accent = Accent.Blue,
     content: @Composable () -> Unit,
 ) {
-    val colorScheme =
-        when {
-            dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-                val context = LocalContext.current
-                val dynamicScheme =
-                    if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-                if (darkTheme && pitchBlackTheme) {
-                    dynamicScheme.copy(
-                        background = androidx.compose.ui.graphics.Color.Black,
-                        surface = androidx.compose.ui.graphics.Color.Black,
-                        surfaceContainer = androidx.compose.ui.graphics.Color.Black,
-                        surfaceContainerLowest = androidx.compose.ui.graphics.Color.Black,
-                        surfaceContainerLow = androidx.compose.ui.graphics.Color.Black,
-                    )
-                } else {
-                    dynamicScheme
-                }
-            }
-
-            darkTheme -> {
-                if (pitchBlackTheme) {
-                    DarkColorScheme.copy(
-                        background = androidx.compose.ui.graphics.Color.Black,
-                        surface = androidx.compose.ui.graphics.Color.Black,
-                        surfaceContainer = androidx.compose.ui.graphics.Color.Black,
-                        surfaceContainerLowest = androidx.compose.ui.graphics.Color.Black,
-                        surfaceContainerLow = androidx.compose.ui.graphics.Color.Black,
-                    )
-                } else {
-                    DarkColorScheme
-                }
-            }
-
-            else -> LightColorScheme
+    val context = LocalContext.current
+    val accentColor =
+        if (accent == Accent.Wallpaper && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            (if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)).primary
+        } else {
+            accentColor(accent, darkTheme)
+        }
+    val colors =
+        remember(accentColor, darkTheme, pitchBlackTheme) {
+            toolkitColors(accentColor, darkTheme, pitchBlackTheme)
         }
 
-    val gatedHaptics = HapticUtil.gate(LocalContext.current, LocalHapticFeedback.current)
-    CompositionLocalProvider(LocalHapticFeedback provides gatedHaptics) {
+    val gatedHaptics = HapticUtil.gate(context, LocalHapticFeedback.current)
+    CompositionLocalProvider(
+        LocalHapticFeedback provides gatedHaptics,
+        LocalToolkitColors provides colors,
+    ) {
         MaterialTheme(
-            colorScheme = colorScheme,
+            colorScheme = colors.toColorScheme(),
             typography = Typography,
             shapes = Shapes,
             content = content,
         )
     }
+}
+
+object ToolkitTheme {
+    val colors: ToolkitColors
+        @Composable
+        @ReadOnlyComposable
+        get() = LocalToolkitColors.current
 }
