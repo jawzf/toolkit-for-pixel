@@ -45,7 +45,7 @@ object AppActionEditorHost : ActionEditorHost {
         activity: Activity?,
     ): List<PermissionItem> {
         val context = LocalContext.current
-        val viewModel: MainViewModel = viewModel()
+        val viewModel = checkedMainViewModel()
         val lifecycleOwner = LocalLifecycleOwner.current
         DisposableEffect(lifecycleOwner) {
             val observer =
@@ -87,7 +87,7 @@ object AppActionEditorHost : ActionEditorHost {
             is Action.LikeCurrentSong -> {
                 LikeSongSettingsSheet(
                     onDismiss = onDismiss,
-                    viewModel = viewModel(),
+                    viewModel = checkedMainViewModel(),
                     context = LocalContext.current,
                 )
             }
@@ -145,7 +145,7 @@ object AppActionEditorHost : ActionEditorHost {
 private fun FlashlightOptionsSheet(onDismiss: () -> Unit) {
     val context = LocalContext.current
     val view = LocalView.current
-    val viewModel: MainViewModel = viewModel()
+    val viewModel = checkedMainViewModel()
     ModalBottomSheet(
         onDismissRequest = onDismiss,
         containerColor = MaterialTheme.colorScheme.surfaceContainer,
@@ -199,4 +199,12 @@ private fun FlashlightOptionsSheet(onDismiss: () -> Unit) {
             }
         }
     }
+}
+
+/** The activity's [MainViewModel], checked once so its settings are loaded; the editor activities no longer check it. */
+@Composable
+private fun checkedMainViewModel(): MainViewModel {
+    val context = LocalContext.current
+    val viewModel: MainViewModel = viewModel()
+    return remember(viewModel) { viewModel.also { it.check(context) } }
 }
