@@ -65,7 +65,7 @@ fun IslandTimeOptionsBottomSheet(
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            RoundedCardContainer(spacing = 2.dp, cornerRadius = 24.dp) {
+            RoundedCardContainer {
                 val formatLabels = mapOf(
                     IslandSettings.ISLAND_TIME_FORMAT_SYSTEM to stringResource(R.string.island_time_format_system),
                     IslandSettings.ISLAND_TIME_FORMAT_12H to stringResource(R.string.island_time_format_12h),
@@ -136,7 +136,7 @@ fun IslandTimeOptionsBottomSheet(
             }
             IslandLauncherOnlyToggle(IslandSettings.KEY_ISLAND_TIME_BATTERY_LAUNCHER_ONLY)
             if (rememberIslandShowsWhileLocked()) {
-                RoundedCardContainer(spacing = 2.dp, cornerRadius = 24.dp) {
+                RoundedCardContainer {
                     IslandPrefToggle(
                         settingKey = IslandSettings.KEY_ISLAND_TIME_HIDE_LOCKED,
                         iconRes = R.drawable.rounded_mobile_lock_portrait_24,

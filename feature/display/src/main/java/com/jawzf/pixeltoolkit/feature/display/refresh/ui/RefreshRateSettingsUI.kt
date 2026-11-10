@@ -59,7 +59,7 @@ fun RefreshRateSettingsUI(
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
 
-        RoundedCardContainer(spacing = 2.dp) {
+        RoundedCardContainer {
             SegmentedPicker(
                 items = listOf(RefreshRateUtils.MODE_FIXED, RefreshRateUtils.MODE_RANGE),
                 selectedItem = state.refreshRateMode.value,
@@ -81,7 +81,7 @@ fun RefreshRateSettingsUI(
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
 
-        RoundedCardContainer(spacing = 2.dp) {
+        RoundedCardContainer {
             if (isFixedMode) {
                 ConfigSliderItem(
                     title = stringResource(R.string.refresh_rate_fixed_title),

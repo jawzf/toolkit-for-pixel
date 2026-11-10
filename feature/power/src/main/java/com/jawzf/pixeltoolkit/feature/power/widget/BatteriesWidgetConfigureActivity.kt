@@ -104,7 +104,7 @@ private fun BatteriesWidgetConfigureSheet(
                 style = MaterialTheme.typography.headlineSmall,
                 modifier = Modifier.padding(start = 8.dp),
             )
-            RoundedCardContainer(spacing = 2.dp, cornerRadius = 24.dp) {
+            RoundedCardContainer {
                 IconToggleItem(
                     iconRes = R.drawable.rounded_circles_24,
                     title = stringResource(R.string.widget_background_title),

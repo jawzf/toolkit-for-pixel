@@ -55,7 +55,7 @@ fun IslandCallOptionsBottomSheet(onDismissRequest: () -> Unit) {
                 modifier = Modifier.padding(start = 8.dp, bottom = 4.dp),
             )
 
-            RoundedCardContainer(spacing = 2.dp, cornerRadius = 24.dp) {
+            RoundedCardContainer {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()

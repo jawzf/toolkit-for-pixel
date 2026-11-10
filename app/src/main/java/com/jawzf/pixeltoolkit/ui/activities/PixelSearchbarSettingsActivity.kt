@@ -486,7 +486,7 @@ fun PixelSearchbarSettingsUI(
                         modifier = Modifier.fillMaxWidth(),
                         verticalArrangement = Arrangement.spacedBy(4.dp),
                     ) {
-                        RoundedCardContainer(spacing = 2.dp) {
+                        RoundedCardContainer {
                             ListItem(
                                 onClick = {
                                     HapticUtil.performVirtualKeyHaptic(view)
@@ -585,7 +585,7 @@ fun PixelSearchbarSettingsUI(
                         }
 
                         // Horizontal and Vertical Padding sliders
-                        RoundedCardContainer(spacing = 2.dp) {
+                        RoundedCardContainer {
                             ConfigSliderItem(
                                 title = stringResource(R.string.pixel_searchbar_widget_padding_h),
                                 value = viewModel.pixelSearchbarWidgetPaddingH.intValue.toFloat(),
@@ -670,7 +670,7 @@ fun PixelSearchbarSettingsUI(
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
 
-                        RoundedCardContainer(spacing = 2.dp) {
+                        RoundedCardContainer {
                             dateFormats.forEach { format ->
                                 val isSelected = currentDateFormat == format
                                 val formattedDate =

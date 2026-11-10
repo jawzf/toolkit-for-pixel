@@ -49,10 +49,7 @@ fun IslandAlarmOptionsBottomSheet(
                 modifier = Modifier.padding(start = 8.dp, bottom = 4.dp),
             )
 
-            RoundedCardContainer(
-                spacing = 2.dp,
-                cornerRadius = 24.dp,
-            ) {
+            RoundedCardContainer {
                 ConfigPickerItem(
                     title = stringResource(R.string.island_alarm_window_title),
                     selectedValue = stringResource(R.string.island_alarm_window_hours, state.islandAlarmWindowHours.intValue),

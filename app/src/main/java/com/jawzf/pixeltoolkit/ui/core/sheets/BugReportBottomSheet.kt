@@ -177,7 +177,7 @@ fun BugReportBottomSheet(
                 style = MaterialTheme.typography.headlineMedium,
             )
 
-            RoundedCardContainer(spacing = 2.dp) {
+            RoundedCardContainer {
                 Box(
                     modifier =
                         Modifier
@@ -198,7 +198,7 @@ fun BugReportBottomSheet(
                 }
             }
 
-            RoundedCardContainer(spacing = 2.dp) {
+            RoundedCardContainer {
                 val deviceInfoRotation by animateFloatAsState(
                     targetValue = if (isDeviceInfoExpanded) 180f else 0f,
                     label = "DeviceInfoChevronRotation",
@@ -273,7 +273,7 @@ fun BugReportBottomSheet(
                 }
             }
 
-            RoundedCardContainer(spacing = 2.dp) {
+            RoundedCardContainer {
                 val crashReportsRotation by animateFloatAsState(
                     targetValue = if (isCrashReportsExpanded) 180f else 0f,
                     label = "CrashReportsChevronRotation",

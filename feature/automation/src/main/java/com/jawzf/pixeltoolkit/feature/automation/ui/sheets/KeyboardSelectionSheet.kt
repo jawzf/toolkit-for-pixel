@@ -122,10 +122,7 @@ fun KeyboardSelectionSheet(
                     LoadingIndicator()
                 }
             } else {
-                RoundedCardContainer(
-                    spacing = 2.dp,
-                    cornerRadius = 24.dp,
-                ) {
+                RoundedCardContainer {
                     LazyColumn(
                         modifier =
                             Modifier

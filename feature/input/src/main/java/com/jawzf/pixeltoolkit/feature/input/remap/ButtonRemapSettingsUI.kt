@@ -146,7 +146,7 @@ fun ButtonRemapSettingsUI(
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         // Master Toggle
-        RoundedCardContainer(spacing = 2.dp) {
+        RoundedCardContainer {
             IconToggleItem(
                 iconRes = R.drawable.rounded_switch_access_3_24,
                 title = stringResource(R.string.button_remap_enable_title),
@@ -342,7 +342,7 @@ fun ButtonRemapSettingsUI(
                 )
 
                 // Button Picker & Tabs
-                RoundedCardContainer(spacing = 2.dp) {
+                RoundedCardContainer {
                     val buttonOptions =
                         listOf(
                             stringResource(R.string.volume_up),
@@ -399,7 +399,7 @@ fun ButtonRemapSettingsUI(
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
 
-                    RoundedCardContainer(spacing = 2.dp) {
+                    RoundedCardContainer {
                         IconToggleItem(
                             iconRes = R.drawable.rounded_photo_camera_24,
                             title = stringResource(R.string.button_remap_power_camera_flip_title),
@@ -492,7 +492,7 @@ private fun PowerGestureSection(
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
 
-        RoundedCardContainer(spacing = 2.dp) {
+        RoundedCardContainer {
             options.forEach { option ->
                 val iconRes =
                     when (option) {

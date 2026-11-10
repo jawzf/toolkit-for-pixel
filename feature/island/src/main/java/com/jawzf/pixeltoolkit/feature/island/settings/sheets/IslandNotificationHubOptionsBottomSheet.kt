@@ -45,7 +45,7 @@ fun IslandNotificationHubOptionsBottomSheet(
                 modifier = Modifier.padding(start = 8.dp, bottom = 4.dp),
             )
 
-            RoundedCardContainer(spacing = 2.dp, cornerRadius = 24.dp) {
+            RoundedCardContainer {
                 val autoLabel = stringResource(R.string.island_notif_hub_icons_auto)
                 val dynamicLabel = stringResource(R.string.island_notif_hub_order_dynamic)
                 val priorityLabel = stringResource(R.string.island_notif_hub_order_priority)

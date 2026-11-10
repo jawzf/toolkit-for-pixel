@@ -65,7 +65,7 @@ fun SetVolumeSettingsSheet(
                 color = MaterialTheme.colorScheme.onSurface,
             )
 
-            RoundedCardContainer(spacing = 2.dp) {
+            RoundedCardContainer {
                 SegmentedPicker(
                     items = channels,
                     selectedItem = selectedChannel,

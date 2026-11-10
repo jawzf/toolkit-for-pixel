@@ -85,7 +85,7 @@ fun PowerAndBatterySettingsUI(
             modifier = Modifier.padding(start = 16.dp),
         )
 
-        RoundedCardContainer(spacing = 2.dp) {
+        RoundedCardContainer {
             ConfigSliderItem(
                 title = stringResource(R.string.label_low_power_trigger_level),
                 description = stringResource(R.string.desc_low_power_trigger_level),
@@ -165,7 +165,7 @@ fun PowerAndBatterySettingsUI(
             modifier = Modifier.padding(start = 16.dp),
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
-        RoundedCardContainer(spacing = 2.dp) {
+        RoundedCardContainer {
             val brightnessAdjust = getBool("enable_brightness_adjustment", true)
             IconToggleItem(
                 title = stringResource(R.string.label_enable_brightness_adjustment),
@@ -256,7 +256,7 @@ fun PowerAndBatterySettingsUI(
             modifier = Modifier.padding(start = 16.dp),
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
-        RoundedCardContainer(spacing = 2.dp) {
+        RoundedCardContainer {
             IconToggleItem(
                 title = stringResource(R.string.label_disable_launch_boost),
                 description = stringResource(R.string.desc_disable_launch_boost),
@@ -311,7 +311,7 @@ fun PowerAndBatterySettingsUI(
             modifier = Modifier.padding(start = 16.dp),
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
-        RoundedCardContainer(spacing = 2.dp) {
+        RoundedCardContainer {
             IconToggleItem(
                 title = stringResource(R.string.label_enable_datasaver),
                 description = stringResource(R.string.desc_enable_datasaver),
@@ -362,7 +362,7 @@ fun PowerAndBatterySettingsUI(
             modifier = Modifier.padding(start = 16.dp),
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
-        RoundedCardContainer(spacing = 2.dp) {
+        RoundedCardContainer {
             IconToggleItem(
                 title = stringResource(R.string.label_disable_vibration),
                 description = stringResource(R.string.desc_disable_vibration),
@@ -422,7 +422,7 @@ fun PowerAndBatterySettingsUI(
             modifier = Modifier.padding(start = 16.dp),
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
-        RoundedCardContainer(spacing = 2.dp) {
+        RoundedCardContainer {
             val locationModeValue = getInt("location_mode", 3)
             val selectedLabel =
                 when (locationModeValue) {

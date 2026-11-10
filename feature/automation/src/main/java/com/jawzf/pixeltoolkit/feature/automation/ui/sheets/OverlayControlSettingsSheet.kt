@@ -108,7 +108,7 @@ fun OverlayControlSettingsSheet(
                 }
             }
 
-            RoundedCardContainer(spacing = 2.dp) {
+            RoundedCardContainer {
                 val current = tabs[tab].second
                 modes.forEach { (mode, labelRes) ->
                     val isSelected = current == mode

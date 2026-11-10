@@ -22,7 +22,7 @@ fun IslandLauncherOnlyToggle(settingKey: String, modifier: Modifier = Modifier) 
     val view = LocalView.current
     val settings = remember { IslandSettings(context) }
     var checked by remember { mutableStateOf(settings.getBoolean(settingKey, false)) }
-    RoundedCardContainer(spacing = 2.dp, cornerRadius = 24.dp, modifier = modifier) {
+    RoundedCardContainer(modifier = modifier) {
         IconToggleItem(
             iconRes = R.drawable.rounded_home_24,
             title = stringResource(R.string.island_launcher_only_title),

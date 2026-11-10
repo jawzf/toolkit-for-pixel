@@ -115,10 +115,7 @@ fun BackGestureSettingsUI(
                 .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
-        RoundedCardContainer(
-            spacing = 2.dp,
-            cornerRadius = 24.dp,
-        ) {
+        RoundedCardContainer {
             EdgeWidthSlider(
                 left = true,
                 value = state.backGestureLeftScale.floatValue,
@@ -171,8 +168,6 @@ fun BackGestureSettingsUI(
         )
 
         RoundedCardContainer(
-            spacing = 2.dp,
-            cornerRadius = 24.dp,
             modifier = Modifier.highlight(highlightSetting == "back_gesture_apps"),
         ) {
             state.backGestureAppConfigs.value.forEach { config ->
@@ -298,10 +293,7 @@ private fun BackGestureAppSheet(
                 style = MaterialTheme.typography.headlineSmall,
                 modifier = Modifier.padding(horizontal = 16.dp),
             )
-            RoundedCardContainer(
-                spacing = 2.dp,
-                cornerRadius = 24.dp,
-            ) {
+            RoundedCardContainer {
                 EdgeWidthSlider(
                     left = true,
                     value = current.leftScale,
@@ -350,7 +342,6 @@ private fun BothEdgesOffNotice(modifier: Modifier = Modifier) {
     RoundedCardContainer(
         modifier = modifier.fillMaxWidth(),
         containerColor = MaterialTheme.colorScheme.errorContainer,
-        cornerRadius = 24.dp,
     ) {
         Row(
             modifier =

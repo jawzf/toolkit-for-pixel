@@ -54,10 +54,7 @@ fun SmartPixelsSettingsUI(
     }
 
     Column(modifier = modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
-        RoundedCardContainer(
-            spacing = 2.dp,
-            cornerRadius = 24.dp,
-        ) {
+        RoundedCardContainer {
             IconToggleItem(
                 iconRes = R.drawable.rounded_grain_24,
                 title = stringResource(R.string.smart_pixels_enable_title),
@@ -80,10 +77,7 @@ fun SmartPixelsSettingsUI(
             mutableStateOf(state.smartPixelsIntensity.floatValue)
         }
 
-        RoundedCardContainer(
-            spacing = 2.dp,
-            cornerRadius = 24.dp,
-        ) {
+        RoundedCardContainer {
             ConfigSliderItem(
                 title = stringResource(R.string.smart_pixels_intensity_title),
                 value = sliderValue,
@@ -102,10 +96,7 @@ fun SmartPixelsSettingsUI(
             )
         }
 
-        RoundedCardContainer(
-            spacing = 2.dp,
-            cornerRadius = 24.dp,
-        ) {
+        RoundedCardContainer {
             IconToggleItem(
                 iconRes = R.drawable.rounded_cast_24,
                 title = stringResource(R.string.smart_pixels_disable_on_cast_title),

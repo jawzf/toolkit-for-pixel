@@ -134,7 +134,7 @@ fun KeyboardSettingsUI(
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
 
-        RoundedCardContainer(spacing = 2.dp) {
+        RoundedCardContainer {
             ConfigSliderItem(
                 title = stringResource(R.string.label_keyboard_height),
                 value = state.keyboardHeight.floatValue,
@@ -175,7 +175,7 @@ fun KeyboardSettingsUI(
             )
         }
 
-        RoundedCardContainer(spacing = 2.dp) {
+        RoundedCardContainer {
             Column(
                 verticalArrangement = Arrangement.spacedBy(12.dp),
                 modifier =
@@ -232,7 +232,7 @@ fun KeyboardSettingsUI(
             }
         }
 
-        RoundedCardContainer(spacing = 2.dp) {
+        RoundedCardContainer {
             IconToggleItem(
                 iconRes = R.drawable.rounded_keyboard_arrow_down_24,
                 title = stringResource(R.string.label_keyboard_functions_bottom),
@@ -255,7 +255,7 @@ fun KeyboardSettingsUI(
             )
         }
 
-        RoundedCardContainer(spacing = 2.dp) {
+        RoundedCardContainer {
             IconToggleItem(
                 iconRes = R.drawable.rounded_mobile_vibrate_24,
                 title = stringResource(R.string.label_keyboard_haptics),

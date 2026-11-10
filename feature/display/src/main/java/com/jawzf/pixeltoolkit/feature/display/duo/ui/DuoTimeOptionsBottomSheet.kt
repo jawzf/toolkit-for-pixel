@@ -45,10 +45,7 @@ fun DuoTimeOptionsBottomSheet(
                 modifier = Modifier.padding(start = 8.dp, bottom = 4.dp),
             )
 
-            RoundedCardContainer(
-                spacing = 2.dp,
-                cornerRadius = 24.dp,
-            ) {
+            RoundedCardContainer {
                 ConfigSliderItem(
                     title = stringResource(R.string.island_font_scale_title),
                     value = state.duoTimeTextScale.floatValue,

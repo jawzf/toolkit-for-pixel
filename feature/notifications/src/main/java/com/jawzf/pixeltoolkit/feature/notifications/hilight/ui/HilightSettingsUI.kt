@@ -83,7 +83,7 @@ fun HilightSettingsUI(
                 .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-        RoundedCardContainer(spacing = 2.dp) {
+        RoundedCardContainer {
             IconToggleItem(
                 iconRes = R.drawable.rounded_mobile_lock_portrait_24,
                 title = stringResource(R.string.hilight_only_screen_off_title),
@@ -130,7 +130,7 @@ fun HilightNotificationsSettingsUI(
                 .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-        RoundedCardContainer(spacing = 2.dp) {
+        RoundedCardContainer {
             IconToggleItem(
                 iconRes = R.drawable.rounded_notifications_unread_24,
                 title = stringResource(R.string.hilight_notifications_title),
@@ -163,7 +163,7 @@ fun HilightNotificationsSettingsUI(
             modifier = Modifier.padding(start = 16.dp),
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
-        RoundedCardContainer(spacing = 2.dp) {
+        RoundedCardContainer {
             val apps = state.hilightAppEffects.entries.sortedBy { it.key }
             if (apps.isEmpty()) {
                 Text(
@@ -296,7 +296,7 @@ private fun HilightProgressSection(
     val mode = state.hilightProgressColorMode.value
     val color = state.hilightProgressColor.intValue
 
-    RoundedCardContainer(spacing = 2.dp) {
+    RoundedCardContainer {
         IconToggleItem(
             iconRes = R.drawable.rounded_downloading_24,
             title = stringResource(R.string.hilight_progress_toggle_title),

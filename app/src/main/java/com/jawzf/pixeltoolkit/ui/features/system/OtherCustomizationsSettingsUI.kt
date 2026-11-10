@@ -176,8 +176,6 @@ fun OtherCustomizationsSettingsUI(
 
         RoundedCardContainer(
             modifier = Modifier,
-            spacing = 2.dp,
-            cornerRadius = 24.dp,
         ) {
             val lifecycleOwner = LocalLifecycleOwner.current
             DisposableEffect(lifecycleOwner, viewModel.isCircleToSearchGestureEnabled.value) {
@@ -263,8 +261,6 @@ fun OtherCustomizationsSettingsUI(
 
         RoundedCardContainer(
             modifier = Modifier,
-            spacing = 2.dp,
-            cornerRadius = 24.dp,
         ) {
             IconToggleItem(
                 title = stringResource(R.string.feat_prefer_gpu_composing_title),

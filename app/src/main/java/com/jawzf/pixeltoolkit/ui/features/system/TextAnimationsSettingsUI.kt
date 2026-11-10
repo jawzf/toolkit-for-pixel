@@ -47,7 +47,7 @@ fun TextAnimationsSettingsUI(
                 .padding(horizontal = 16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-        RoundedCardContainer(spacing = 2.dp) {
+        RoundedCardContainer {
             SegmentedPicker(
                 items = listOf("default", "glove"),
                 selectedItem = viewModel.scaleAnimationsMode.value,
@@ -116,7 +116,7 @@ fun TextAnimationsSettingsUI(
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
 
-        RoundedCardContainer(spacing = 2.dp) {
+        RoundedCardContainer {
             ConfigSliderItem(
                 title = stringResource(R.string.label_font_scale),
                 value = viewModel.fontScale.floatValue,
@@ -180,7 +180,7 @@ fun TextAnimationsSettingsUI(
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
 
-        RoundedCardContainer(spacing = 2.dp) {
+        RoundedCardContainer {
             val isEnabled = viewModel.hasShizukuPermission.value
 
             ConfigSliderItem(
@@ -260,7 +260,7 @@ fun TextAnimationsSettingsUI(
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
 
-        RoundedCardContainer(spacing = 2.dp) {
+        RoundedCardContainer {
             ConfigSliderItem(
                 title = stringResource(R.string.label_animator_duration_scale),
                 value = viewModel.animatorDurationScale.floatValue,

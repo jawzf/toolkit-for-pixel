@@ -75,10 +75,7 @@ fun ScreenshotsSettingsUI(
                 .padding(16.dp),
     ) {
         SectionTitle(R.string.screenshots_section_after_sharing)
-        RoundedCardContainer(
-            spacing = 2.dp,
-            cornerRadius = 24.dp,
-        ) {
+        RoundedCardContainer {
             IconToggleItem(
                 iconRes = R.drawable.rounded_share_24,
                 title = stringResource(R.string.feat_screenshot_share_cleanup_title),
@@ -127,10 +124,7 @@ fun ScreenshotsSettingsUI(
         }
 
         SectionTitle(R.string.screenshots_section_auto_clean)
-        RoundedCardContainer(
-            spacing = 2.dp,
-            cornerRadius = 24.dp,
-        ) {
+        RoundedCardContainer {
             IconToggleItem(
                 iconRes = R.drawable.rounded_timer_24,
                 title = stringResource(R.string.screenshot_auto_clean_title),
@@ -173,10 +167,7 @@ fun ScreenshotsSettingsUI(
         }
 
         SectionTitle(R.string.screenshots_section_stats)
-        RoundedCardContainer(
-            spacing = 2.dp,
-            cornerRadius = 24.dp,
-        ) {
+        RoundedCardContainer {
             IconToggleItem(
                 iconRes = R.drawable.rounded_delete_24,
                 title = stringResource(R.string.screenshots_cleaned_count_title),

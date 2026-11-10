@@ -46,7 +46,7 @@ fun NotificationSnoozingSettingsUI(
                 .padding(horizontal = 16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-        RoundedCardContainer(spacing = 2.dp) {
+        RoundedCardContainer {
             IconToggleItem(
                 title = stringResource(R.string.feat_notification_snoozing_title),
                 description = stringResource(R.string.feat_notification_snoozing_desc),
@@ -75,7 +75,7 @@ fun NotificationSnoozingSettingsUI(
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
 
-                RoundedCardContainer(spacing = 2.dp) {
+                RoundedCardContainer {
                     ConfigSliderItem(
                         title = stringResource(R.string.label_snooze_default),
                         value = snoozeDefault.toFloat(),

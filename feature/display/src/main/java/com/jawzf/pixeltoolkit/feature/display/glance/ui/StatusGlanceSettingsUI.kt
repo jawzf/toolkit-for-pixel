@@ -101,10 +101,7 @@ fun StatusGlanceSettingsUI(
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-        RoundedCardContainer(
-            spacing = 2.dp,
-            cornerRadius = 24.dp,
-        ) {
+        RoundedCardContainer {
             IconToggleItem(
                 title = stringResource(R.string.status_glance_enable_title),
                 description = stringResource(R.string.status_glance_enable_desc),
@@ -140,10 +137,7 @@ fun StatusGlanceSettingsUI(
                     modifier = Modifier.padding(start = 8.dp),
                 )
 
-                RoundedCardContainer(
-                    spacing = 2.dp,
-                    cornerRadius = 24.dp,
-                ) {
+                RoundedCardContainer {
                     if (isFoldableCameraDevice) {
                         Text(
                             text = stringResource(R.string.foldable_camera_profile_hint),
@@ -236,10 +230,7 @@ fun StatusGlanceSettingsUI(
                     modifier = Modifier.padding(start = 8.dp),
                 )
 
-                RoundedCardContainer(
-                    spacing = 2.dp,
-                    cornerRadius = 24.dp,
-                ) {
+                RoundedCardContainer {
                     IconToggleItem(
                         title = stringResource(R.string.status_glance_show_flashlight_title),
                         iconRes = R.drawable.rounded_flashlight_on_24,
@@ -324,10 +315,7 @@ fun StatusGlanceSettingsUI(
                     modifier = Modifier.padding(start = 8.dp),
                 )
 
-                RoundedCardContainer(
-                    spacing = 2.dp,
-                    cornerRadius = 24.dp,
-                ) {
+                RoundedCardContainer {
                     val tapAction = state.statusGlanceTapAction.value
                     val tapDescription = if (tapAction != null) {
                         "${stringResource(R.string.status_glance_action_tap_media_desc)} • ${tapAction.let(actionLabel)}"
@@ -387,10 +375,7 @@ fun StatusGlanceSettingsUI(
                     modifier = Modifier.padding(start = 8.dp),
                 )
 
-                RoundedCardContainer(
-                    spacing = 2.dp,
-                    cornerRadius = 24.dp,
-                ) {
+                RoundedCardContainer {
                     IconToggleItem(
                         title = stringResource(R.string.status_glance_bold_text_title),
                         description = stringResource(R.string.status_glance_bold_text_desc),

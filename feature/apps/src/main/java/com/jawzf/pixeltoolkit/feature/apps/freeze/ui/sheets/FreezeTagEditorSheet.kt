@@ -123,7 +123,7 @@ fun FreezeTagEditorSheet(
                 }
             }
 
-            RoundedCardContainer(spacing = 2.dp) {
+            RoundedCardContainer {
                 // Name
                 Box(
                     modifier =

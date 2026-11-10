@@ -58,8 +58,6 @@ fun ShutUpSettingsUI(
     ) {
         RoundedCardContainer(
             modifier = Modifier,
-            spacing = 2.dp,
-            cornerRadius = 24.dp,
         ) {
             ConfigSliderItem(
                 title = stringResource(R.string.shut_up_restore_delay_title),
@@ -126,8 +124,6 @@ fun ShutUpSettingsUI(
 
         RoundedCardContainer(
             modifier = Modifier,
-            spacing = 2.dp,
-            cornerRadius = 24.dp,
         ) {
             configs.forEach { config ->
                 val appName =

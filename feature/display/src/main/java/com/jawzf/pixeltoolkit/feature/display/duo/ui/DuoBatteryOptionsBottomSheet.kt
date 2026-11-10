@@ -39,10 +39,7 @@ fun BatteryColorOptions(
 ) {
     val view = LocalView.current
     Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
-        RoundedCardContainer(
-            spacing = 2.dp,
-            cornerRadius = 24.dp,
-        ) {
+        RoundedCardContainer {
             IconToggleItem(
                 iconRes = R.drawable.rounded_battery_alert_24,
                 title = stringResource(R.string.duo_battery_low_color_title),
@@ -76,10 +73,7 @@ fun BatteryColorOptions(
             }
         }
 
-        RoundedCardContainer(
-            spacing = 2.dp,
-            cornerRadius = 24.dp,
-        ) {
+        RoundedCardContainer {
             IconToggleItem(
                 iconRes = R.drawable.rounded_battery_android_frame_alert_24,
                 title = stringResource(R.string.duo_battery_critical_color_title),
@@ -114,10 +108,7 @@ fun BatteryColorOptions(
         }
 
         // Battery Saver
-        RoundedCardContainer(
-            spacing = 2.dp,
-            cornerRadius = 24.dp,
-        ) {
+        RoundedCardContainer {
             IconToggleItem(
                 iconRes = R.drawable.rounded_battery_android_frame_plus_24,
                 title = stringResource(R.string.duo_battery_power_save_color_title),
@@ -142,10 +133,7 @@ fun BatteryColorOptions(
         }
 
         // Charging
-        RoundedCardContainer(
-            spacing = 2.dp,
-            cornerRadius = 24.dp,
-        ) {
+        RoundedCardContainer {
             IconToggleItem(
                 iconRes = R.drawable.rounded_bolt_24,
                 title = stringResource(R.string.duo_battery_charging_color_title),
@@ -171,10 +159,7 @@ fun BatteryColorOptions(
         }
 
         if (showIdleColor) {
-            RoundedCardContainer(
-                spacing = 2.dp,
-                cornerRadius = 24.dp,
-            ) {
+            RoundedCardContainer {
                 IconToggleItem(
                     iconRes = R.drawable.rounded_battery_android_frame_6_24,
                     title = stringResource(R.string.island_battery_idle_color_title),

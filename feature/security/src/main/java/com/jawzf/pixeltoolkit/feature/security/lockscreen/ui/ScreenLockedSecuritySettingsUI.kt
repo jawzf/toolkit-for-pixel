@@ -67,8 +67,6 @@ fun ScreenLockedSecuritySettingsUI(
 
         RoundedCardContainer(
             modifier = Modifier,
-            spacing = 2.dp,
-            cornerRadius = 24.dp,
         ) {
             IconToggleItem(
                 title = stringResource(R.string.screen_locked_security_title),

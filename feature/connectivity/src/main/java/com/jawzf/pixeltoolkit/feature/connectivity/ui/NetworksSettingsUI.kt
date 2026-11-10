@@ -223,8 +223,6 @@ fun NetworksSettingsUI(
     ) {
         RoundedCardContainer(
             modifier = Modifier,
-            spacing = 2.dp,
-            cornerRadius = 24.dp,
         ) {
             val currentRateLimit = state.networkDownloadRateLimit.intValue
             val currentIndex =

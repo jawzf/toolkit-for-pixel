@@ -142,7 +142,7 @@ fun GestureActionPickerSheet(
                     color = MaterialTheme.colorScheme.onSurface,
                 )
 
-                RoundedCardContainer(spacing = 2.dp) {
+                RoundedCardContainer {
                     RemapActionItem(
                         title = stringResource(R.string.duo_action_none),
                         isSelected = currentAction == null,
@@ -279,7 +279,7 @@ fun GestureActionPickerSheet(
                     color = MaterialTheme.colorScheme.onSurface,
                 )
 
-                RoundedCardContainer(spacing = 2.dp) {
+                RoundedCardContainer {
                     IconToggleItem(
                         iconRes = R.drawable.rounded_blur_on_24,
                         title = stringResource(R.string.flashlight_fade_title),

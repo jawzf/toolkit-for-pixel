@@ -173,7 +173,6 @@ fun ScreenOffWidgetConfigureOverlay(
             RoundedCardContainer(
                 modifier = Modifier.padding(top = 8.dp),
                 spacing = 8.dp,
-                cornerRadius = 24.dp,
             ) {
                 IconToggleItem(
                     title = stringResource(R.string.require_double_tap_title),

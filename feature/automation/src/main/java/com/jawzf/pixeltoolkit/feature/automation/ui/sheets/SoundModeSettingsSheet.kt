@@ -114,7 +114,7 @@ fun SoundModeSettingsSheet(
             }
 
             // Mode Selection
-            RoundedCardContainer(spacing = 2.dp) {
+            RoundedCardContainer {
                 Action.SoundModeType.entries.forEach { mode ->
                     val isSelected = selectedMode == mode
                     val title =

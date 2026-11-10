@@ -66,8 +66,6 @@ fun AutoDismissNotificationsSettingsUI(
     ) {
         RoundedCardContainer(
             modifier = Modifier,
-            spacing = 2.dp,
-            cornerRadius = 24.dp,
         ) {
             FeatureCard(
                 title = stringResource(R.string.auto_dismiss_select_apps_title),
@@ -83,8 +81,6 @@ fun AutoDismissNotificationsSettingsUI(
 
         RoundedCardContainer(
             modifier = Modifier,
-            spacing = 2.dp,
-            cornerRadius = 24.dp,
         ) {
             configs.forEach { config ->
                 val appName =
@@ -271,10 +267,7 @@ fun AutoDismissNotificationsSettingsUI(
                     val excludedChannels = currentConfig.excludedChannels.orEmpty()
 
                     if (appChannels.isNotEmpty()) {
-                        RoundedCardContainer(
-                            spacing = 2.dp,
-                            cornerRadius = 24.dp,
-                        ) {
+                        RoundedCardContainer {
                             appChannels.forEach { channel ->
                                 IconToggleItem(
                                     title = channel.name,
