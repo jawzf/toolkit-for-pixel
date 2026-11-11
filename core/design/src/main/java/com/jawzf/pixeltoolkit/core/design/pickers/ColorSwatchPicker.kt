@@ -1,21 +1,20 @@
 package com.jawzf.pixeltoolkit.core.design.pickers
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.carousel.HorizontalMultiBrowseCarousel
-import androidx.compose.material3.carousel.rememberCarouselState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -27,11 +26,14 @@ import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.selected
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
+import com.jawzf.pixeltoolkit.core.design.theme.ToolkitTheme
 
 val DUO_PRESET_COLORS =
     listOf(
@@ -71,7 +73,6 @@ val ISLAND_ICON_PASTEL_COLORS =
         "#FBE7C6",
     )
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ColorSwatchPicker(
     selectedColorHex: String,
@@ -81,123 +82,131 @@ fun ColorSwatchPicker(
     allowAuto: Boolean = false,
     autoColor: Color? = null,
 ) {
-    val effectiveColors = remember(colors, allowAuto) {
-        if (allowAuto) listOf("auto") + colors else colors
-    }
+    val effectiveColors =
+        remember(colors, allowAuto) {
+            if (allowAuto) listOf("auto") + colors else colors
+        }
     val view = LocalView.current
-    val carouselState = rememberCarouselState { effectiveColors.size }
 
     Box(
         modifier =
             modifier
                 .fillMaxWidth()
-                .clip(MaterialTheme.shapes.extraSmall)
                 .background(MaterialTheme.colorScheme.surfaceBright)
                 .padding(vertical = 8.dp),
     ) {
-        HorizontalMultiBrowseCarousel(
-            state = carouselState,
-            preferredItemWidth = 44.dp,
-            minSmallItemWidth = 10.dp,
-            maxSmallItemWidth = 40.dp,
-            itemSpacing = 6.dp,
-            contentPadding = PaddingValues(horizontal = 8.dp),
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .height(48.dp),
-        ) { index ->
-            val colorHex = effectiveColors[index]
-            val isAuto = colorHex.equals("auto", ignoreCase = true)
-            val isSelected = colorHex.equals(selectedColorHex, ignoreCase = true)
+        LazyRow(
+            modifier = Modifier.fillMaxWidth(),
+            contentPadding = PaddingValues(horizontal = 12.dp),
+            horizontalArrangement = Arrangement.spacedBy(4.dp),
+        ) {
+            items(effectiveColors) { colorHex ->
+                val isAuto = colorHex.equals("auto", ignoreCase = true)
+                val isSelected = colorHex.equals(selectedColorHex, ignoreCase = true)
 
-            if (isAuto) {
-                val autoGradient =
-                    Brush.linearGradient(
-                        colors =
+                Box(
+                    modifier =
+                        Modifier
+                            .size(44.dp)
+                            .semantics { selected = isSelected }
+                            .clickable {
+                                HapticUtil.performVirtualKeyHaptic(view)
+                                onColorSelected(if (isAuto) "auto" else colorHex)
+                            },
+                    contentAlignment = Alignment.Center,
+                ) {
+                    if (isSelected) {
+                        Box(
+                            modifier =
+                                Modifier
+                                    .size(40.dp)
+                                    .border(2.dp, ToolkitTheme.colors.text, CircleShape),
+                        )
+                    }
+
+                    if (isAuto) {
+                        val autoGradient =
+                            Brush.linearGradient(
+                                colors =
+                                    if (autoColor != null) {
+                                        listOf(autoColor, autoColor)
+                                    } else {
+                                        listOf(
+                                            Color(0xFF00E676),
+                                            Color(0xFF00E5FF),
+                                        )
+                                    },
+                            )
+
+                        val autoContentColor =
                             if (autoColor != null) {
-                                listOf(autoColor, autoColor)
+                                if (autoColor.luminance() > 0.5f) Color.Black else Color.White
                             } else {
-                                listOf(
-                                    Color(0xFF00E676), // Vibrant Spring Green (Standard)
-                                    Color(0xFF00E5FF), // Electric Cyan (Fast)
+                                Color(0xFF003822)
+                            }
+
+                        Box(
+                            modifier =
+                                Modifier
+                                    .size(32.dp)
+                                    .clip(CircleShape)
+                                    .background(autoGradient)
+                                    .border(1.dp, ToolkitTheme.colors.fieldBorder, CircleShape),
+                            contentAlignment = Alignment.Center,
+                        ) {
+                            if (isSelected) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.rounded_check_24),
+                                    contentDescription = stringResource(R.string.duo_battery_charging_color_auto),
+                                    tint = autoContentColor,
+                                    modifier = Modifier.size(16.dp),
                                 )
-                            },
-                    )
-
-                val autoContentColor =
-                    if (autoColor != null) {
-                        if (autoColor.luminance() > 0.5f) Color.Black else Color.White
+                            } else {
+                                Text(
+                                    text = "A",
+                                    color = autoContentColor,
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 16.sp,
+                                )
+                            }
+                        }
                     } else {
-                        Color(0xFF003822)
-                    }
+                        val parsedColor =
+                            try {
+                                Color(android.graphics.Color.parseColor(colorHex))
+                            } catch (_: Exception) {
+                                MaterialTheme.colorScheme.primary
+                            }
 
-                Box(
-                    modifier =
-                        Modifier
-                            .fillMaxSize()
-                            .maskClip(RoundedCornerShape(14.dp))
-                            .background(autoGradient)
-                            .clickable {
-                                HapticUtil.performVirtualKeyHaptic(view)
-                                onColorSelected("auto")
-                            },
-                    contentAlignment = Alignment.Center,
-                ) {
-                    if (isSelected) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.rounded_check_24),
-                            contentDescription = stringResource(R.string.duo_battery_charging_color_auto),
-                            tint = autoContentColor,
-                            modifier = Modifier.size(18.dp),
-                        )
-                    } else {
-                        Text(
-                            text = "A",
-                            color = autoContentColor,
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 16.sp,
-                        )
-                    }
-                }
-            } else {
-                val parsedColor =
-                    try {
-                        Color(android.graphics.Color.parseColor(colorHex))
-                    } catch (_: Exception) {
-                        MaterialTheme.colorScheme.primary
-                    }
+                        val isLightColor =
+                            try {
+                                val c = android.graphics.Color.parseColor(colorHex)
+                                val r = android.graphics.Color.red(c) / 255.0
+                                val g = android.graphics.Color.green(c) / 255.0
+                                val b = android.graphics.Color.blue(c) / 255.0
+                                (0.299 * r + 0.587 * g + 0.114 * b) > 0.5
+                            } catch (_: Exception) {
+                                false
+                            }
 
-                val isLightColor =
-                    try {
-                        val c = android.graphics.Color.parseColor(colorHex)
-                        val r = android.graphics.Color.red(c) / 255.0
-                        val g = android.graphics.Color.green(c) / 255.0
-                        val b = android.graphics.Color.blue(c) / 255.0
-                        (0.299 * r + 0.587 * g + 0.114 * b) > 0.5
-                    } catch (_: Exception) {
-                        false
-                    }
-
-                Box(
-                    modifier =
-                        Modifier
-                            .fillMaxSize()
-                            .maskClip(RoundedCornerShape(14.dp))
-                            .background(parsedColor)
-                            .clickable {
-                                HapticUtil.performVirtualKeyHaptic(view)
-                                onColorSelected(colorHex)
-                            },
-                    contentAlignment = Alignment.Center,
-                ) {
-                    if (isSelected) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.rounded_check_24),
-                            contentDescription = null,
-                            tint = if (isLightColor) Color.Black else Color.White,
-                            modifier = Modifier.size(18.dp),
-                        )
+                        Box(
+                            modifier =
+                                Modifier
+                                    .size(32.dp)
+                                    .clip(CircleShape)
+                                    .background(parsedColor)
+                                    .border(1.dp, ToolkitTheme.colors.fieldBorder, CircleShape),
+                            contentAlignment = Alignment.Center,
+                        ) {
+                            if (isSelected) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.rounded_check_24),
+                                    contentDescription = null,
+                                    tint = if (isLightColor) Color.Black else Color.White,
+                                    modifier = Modifier.size(16.dp),
+                                )
+                            }
+                        }
                     }
                 }
             }

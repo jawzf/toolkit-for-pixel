@@ -18,6 +18,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Slider
+import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -39,8 +40,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.core.design.R
-import com.jawzf.pixeltoolkit.core.design.components.SegmentedDropdownMenu
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
+import com.jawzf.pixeltoolkit.core.design.theme.ToolkitTheme
 import java.math.BigDecimal
 import java.math.RoundingMode
 
@@ -91,7 +92,7 @@ fun ConfigSliderItem(
                         } else {
                             null
                         },
-                ).padding(top = 16.dp, start = 16.dp, end = 16.dp, bottom = 8.dp),
+                ).padding(top = 12.dp, start = 16.dp, end = 16.dp, bottom = 4.dp),
     ) {
         Box {
             Row(
@@ -99,38 +100,45 @@ fun ConfigSliderItem(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 if (finalIconRes != 0) {
-                    Icon(
-                        painter = painterResource(id = finalIconRes),
-                        contentDescription = null,
-                        modifier =
-                            Modifier
-                                .padding(end = 12.dp)
-                                .size(24.dp),
-                        tint = MaterialTheme.colorScheme.primary,
-                    )
+                    IconTile(modifier = Modifier.padding(end = 12.dp)) {
+                        Icon(
+                            painter = painterResource(id = finalIconRes),
+                            contentDescription = null,
+                            modifier = Modifier.size(20.dp),
+                            tint = ToolkitTheme.colors.accent,
+                        )
+                    }
                 }
+                val titleColor =
+                    if (enabled) {
+                        MaterialTheme.colorScheme.onSurface
+                    } else {
+                        MaterialTheme.colorScheme.onSurfaceVariant.copy(
+                            alpha = 0.38f,
+                        )
+                    }
                 Column(modifier = Modifier.weight(1f)) {
-                    val formattedValue = if (showValue) valueFormatter(value) else ""
-                    val titleText = if (formattedValue.isNotBlank()) "$title: $formattedValue" else title
                     Text(
-                        text = titleText,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color =
-                            if (enabled) {
-                                MaterialTheme.colorScheme.onSurface
-                            } else {
-                                MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                                    alpha = 0.38f,
-                                )
-                            },
+                        text = title,
+                        style = MaterialTheme.typography.titleSmall,
+                        color = titleColor,
                     )
                     if (finalDescription != null) {
                         Text(
                             text = finalDescription,
-                            style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
                     }
+                }
+                val formattedValue = if (showValue) valueFormatter(value) else ""
+                if (showValue && formattedValue.isNotBlank()) {
+                    Text(
+                        text = formattedValue,
+                        style = MaterialTheme.typography.labelLarge,
+                        color = titleColor,
+                        modifier = Modifier.padding(start = 8.dp),
+                    )
                 }
                 trailingContent?.invoke()
             }
@@ -178,7 +186,7 @@ fun ConfigSliderItem(
                 Icon(
                     painter = painterResource(id = R.drawable.rounded_remove_24),
                     contentDescription = "Decrease",
-                    tint = MaterialTheme.colorScheme.primary,
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
 
@@ -195,6 +203,12 @@ fun ConfigSliderItem(
                 onValueChangeFinished = onValueChangeFinished,
                 modifier = Modifier.weight(1f),
                 enabled = enabled,
+                colors =
+                    SliderDefaults.colors(
+                        activeTrackColor = ToolkitTheme.colors.accent,
+                        inactiveTrackColor = ToolkitTheme.colors.fieldBorder,
+                        thumbColor = ToolkitTheme.colors.accent,
+                    ),
             )
 
             IconButton(
@@ -216,7 +230,7 @@ fun ConfigSliderItem(
                 Icon(
                     painter = painterResource(id = R.drawable.rounded_add_24),
                     contentDescription = "Increase",
-                    tint = MaterialTheme.colorScheme.primary,
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
         }
