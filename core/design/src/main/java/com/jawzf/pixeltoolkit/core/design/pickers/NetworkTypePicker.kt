@@ -1,22 +1,15 @@
 package com.jawzf.pixeltoolkit.core.design.pickers
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.ButtonGroupDefaults
-import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.material3.ToggleButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.semantics.role
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
@@ -28,7 +21,6 @@ enum class NetworkType {
     NETWORK_OTHER,
 }
 
-@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun NetworkTypePicker(
     selectedTypes: Set<NetworkType>,
@@ -51,44 +43,39 @@ fun NetworkTypePicker(
             NetworkType.NETWORK_OTHER,
         )
 
-    Row(
+    SegmentedTrack(
+        count = labels.size,
         modifier =
             modifier
                 .background(
                     color = MaterialTheme.colorScheme.surfaceBright,
                     shape = RoundedCornerShape(MaterialTheme.shapes.extraSmall.bottomEnd),
-                ).padding(8.dp),
-        horizontalArrangement = Arrangement.spacedBy(ButtonGroupDefaults.ConnectedSpaceBetween),
-    ) {
-        val modifiers = List(labels.size) { Modifier.weight(1f) }
-
-        labels.forEachIndexed { index, label ->
-            val type = types[index]
-            val isSelected = selectedTypes.contains(type)
-
-            ToggleButton(
-                checked = isSelected,
-                onCheckedChange = { checked ->
-                    HapticUtil.performUIHaptic(view)
-                    val newSelection =
-                        if (checked) {
-                            selectedTypes + type
-                        } else {
-                            selectedTypes - type
-                        }
-                    println("Selected Types: $newSelection , current mode: ")
-                    onTypesSelected(newSelection)
-                },
-                modifier = modifiers[index].semantics { role = Role.Checkbox },
-                shapes =
-                    when (index) {
-                        0 -> ButtonGroupDefaults.connectedLeadingButtonShapes()
-                        labels.lastIndex -> ButtonGroupDefaults.connectedTrailingButtonShapes()
-                        else -> ButtonGroupDefaults.connectedMiddleButtonShapes()
+                ).padding(horizontal = 16.dp, vertical = 12.dp),
+    ) { index ->
+        val type = types[index]
+        val selected = selectedTypes.contains(type)
+        Segment(
+            selected = selected,
+            selectionModifier =
+                Modifier.toggleable(
+                    value = selected,
+                    role = Role.Checkbox,
+                    onValueChange = { checked ->
+                        HapticUtil.performUIHaptic(view)
+                        val newSelection =
+                            if (checked) {
+                                selectedTypes + type
+                            } else {
+                                selectedTypes - type
+                            }
+                        onTypesSelected(newSelection)
                     },
-            ) {
-                Text(label)
-            }
+                ),
+        ) {
+            SegmentLabel(
+                text = labels[index],
+                selected = selected,
+            )
         }
     }
 }

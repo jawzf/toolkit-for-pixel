@@ -149,6 +149,7 @@ fun AppToggleItem(
             colors =
                 ListItemDefaults.colors(
                     containerColor = MaterialTheme.colorScheme.surfaceBright,
+                    selectedContainerColor = MaterialTheme.colorScheme.surfaceBright,
                 ),
             contentPadding =
                 androidx.compose.foundation.layout.PaddingValues(

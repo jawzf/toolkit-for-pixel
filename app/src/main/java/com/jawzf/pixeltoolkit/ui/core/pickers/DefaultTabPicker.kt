@@ -5,20 +5,18 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.ButtonGroupDefaults
-import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.selection.selectable
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.ToggleButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -26,15 +24,15 @@ import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.semantics.role
-import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
+import com.jawzf.pixeltoolkit.core.design.pickers.Segment
+import com.jawzf.pixeltoolkit.core.design.pickers.SegmentIcon
+import com.jawzf.pixeltoolkit.core.design.pickers.SegmentLabel
+import com.jawzf.pixeltoolkit.core.design.pickers.SegmentedTrack
 import com.jawzf.pixeltoolkit.domain.DIYTabs
 
-@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun DefaultTabPicker(
     selectedTab: DIYTabs,
@@ -82,57 +80,42 @@ fun DefaultTabPicker(
             },
         )
 
-        Row(
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
-                    .padding(bottom = 16.dp),
-            horizontalArrangement = Arrangement.spacedBy(ButtonGroupDefaults.ConnectedSpaceBetween),
-        ) {
-            options.forEachIndexed { index, tab ->
-                val isChecked = selectedTab == tab
-
-                ToggleButton(
-                    checked = isChecked,
-                    onCheckedChange = {
-                        HapticUtil.performUIHaptic(view)
-                        onTabSelected(tab)
-                    },
-                    modifier =
-                        Modifier
-                            .weight(1f)
-                            .semantics { role = Role.RadioButton },
-                    shapes =
-                        when {
-                            index == 0 -> ButtonGroupDefaults.connectedLeadingButtonShapes()
-                            index == options.lastIndex -> ButtonGroupDefaults.connectedTrailingButtonShapes()
-                            else -> ButtonGroupDefaults.connectedMiddleButtonShapes()
+        SegmentedTrack(
+            count = options.size,
+            modifier = Modifier.padding(horizontal = 16.dp).padding(bottom = 16.dp),
+        ) { index ->
+            val tab = options[index]
+            val selected = selectedTab == tab
+            Segment(
+                selected = selected,
+                selectionModifier =
+                    Modifier.selectable(
+                        selected = selected,
+                        role = Role.RadioButton,
+                        onClick = {
+                            HapticUtil.performUIHaptic(view)
+                            onTabSelected(tab)
                         },
-                ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(4.dp),
-                    ) {
-                        Icon(
-                            painter = painterResource(id = tab.iconRes),
-                            contentDescription = null,
-                            modifier = Modifier.size(18.dp),
-                        )
-                        Text(
-                            text =
-                                if (tab == DIYTabs.FREEZE) {
-                                    stringResource(R.string.tab_freeze_title)
-                                } else {
-                                    stringResource(
-                                        tab.title,
-                                    )
-                                },
-                            style = MaterialTheme.typography.labelLarge,
-                            fontWeight = if (isChecked) FontWeight.Bold else FontWeight.Normal,
-                            maxLines = 1,
-                        )
-                    }
+                    ),
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    SegmentIcon(
+                        painter = painterResource(id = tab.iconRes),
+                        contentDescription = null,
+                        selected = selected,
+                    )
+                    Spacer(Modifier.width(6.dp))
+                    SegmentLabel(
+                        text =
+                            if (tab == DIYTabs.FREEZE) {
+                                stringResource(R.string.tab_freeze_title)
+                            } else {
+                                stringResource(
+                                    tab.title,
+                                )
+                            },
+                        selected = selected,
+                    )
                 }
             }
         }

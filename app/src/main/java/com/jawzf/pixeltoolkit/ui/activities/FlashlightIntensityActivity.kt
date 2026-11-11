@@ -23,9 +23,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonGroupDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
@@ -35,7 +35,6 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedToggleButton
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
-import androidx.compose.material3.ToggleButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -52,11 +51,12 @@ import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.semantics.role
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
+import com.jawzf.pixeltoolkit.core.design.pickers.Segment
+import com.jawzf.pixeltoolkit.core.design.pickers.SegmentLabel
+import com.jawzf.pixeltoolkit.core.design.pickers.SegmentedTrack
 import com.jawzf.pixeltoolkit.core.design.theme.ToolkitTheme
 import com.jawzf.pixeltoolkit.core.platform.device.FlashlightUtil
 import com.jawzf.pixeltoolkit.services.receivers.FlashlightActionReceiver
@@ -272,89 +272,52 @@ fun FlashlightIntensityOverlay(onDismiss: () -> Unit) {
                             modifier = Modifier.fillMaxWidth(),
                         )
                     } else {
-                        Row(
+                        val modes =
+                            listOf(
+                                FlashlightSpecialMode.SOS,
+                                FlashlightSpecialMode.STROBE,
+                                FlashlightSpecialMode.FADE,
+                            )
+                        val labels =
+                            listOf(
+                                stringResource(R.string.flashlight_mode_sos),
+                                stringResource(R.string.flashlight_mode_strobe),
+                                stringResource(R.string.flashlight_fade_label),
+                            )
+
+                        SegmentedTrack(
+                            count = modes.size,
                             modifier =
                                 Modifier
-                                    .fillMaxWidth()
                                     .background(
                                         color = MaterialTheme.colorScheme.surfaceBright,
                                         shape = RoundedCornerShape(16.dp),
-                                    ).padding(6.dp),
-                            horizontalArrangement = Arrangement.spacedBy(ButtonGroupDefaults.ConnectedSpaceBetween),
-                        ) {
-                            // SOS
-                            ToggleButton(
-                                checked = selectedSpecialMode == FlashlightSpecialMode.SOS,
-                                onCheckedChange = {
-                                    HapticUtil.performUIHaptic(view)
-                                    val nextMode =
-                                        if (selectedSpecialMode ==
-                                            FlashlightSpecialMode.SOS
-                                        ) {
-                                            FlashlightSpecialMode.NONE
-                                        } else {
-                                            FlashlightSpecialMode.SOS
-                                        }
-                                    updateSpecialMode(nextMode)
-                                },
-                                modifier =
-                                    Modifier
-                                        .weight(1f)
-                                        .height(48.dp)
-                                        .semantics { role = Role.RadioButton },
-                                shapes = ButtonGroupDefaults.connectedLeadingButtonShapes(),
+                                    ).padding(horizontal = 16.dp, vertical = 12.dp),
+                        ) { index ->
+                            val mode = modes[index]
+                            val selected = selectedSpecialMode == mode
+                            Segment(
+                                selected = selected,
+                                selectionModifier =
+                                    Modifier.selectable(
+                                        selected = selected,
+                                        role = Role.RadioButton,
+                                        onClick = {
+                                            HapticUtil.performUIHaptic(view)
+                                            val nextMode =
+                                                if (selectedSpecialMode == mode) {
+                                                    FlashlightSpecialMode.NONE
+                                                } else {
+                                                    mode
+                                                }
+                                            updateSpecialMode(nextMode)
+                                        },
+                                    ),
                             ) {
-                                Text(stringResource(R.string.flashlight_mode_sos))
-                            }
-
-                            // Strobe
-                            ToggleButton(
-                                checked = selectedSpecialMode == FlashlightSpecialMode.STROBE,
-                                onCheckedChange = {
-                                    HapticUtil.performUIHaptic(view)
-                                    val nextMode =
-                                        if (selectedSpecialMode ==
-                                            FlashlightSpecialMode.STROBE
-                                        ) {
-                                            FlashlightSpecialMode.NONE
-                                        } else {
-                                            FlashlightSpecialMode.STROBE
-                                        }
-                                    updateSpecialMode(nextMode)
-                                },
-                                modifier =
-                                    Modifier
-                                        .weight(1f)
-                                        .height(48.dp)
-                                        .semantics { role = Role.RadioButton },
-                                shapes = ButtonGroupDefaults.connectedMiddleButtonShapes(),
-                            ) {
-                                Text(stringResource(R.string.flashlight_mode_strobe))
-                            }
-
-                            // Fade
-                            ToggleButton(
-                                checked = selectedSpecialMode == FlashlightSpecialMode.FADE,
-                                onCheckedChange = {
-                                    HapticUtil.performUIHaptic(view)
-                                    val nextMode =
-                                        if (selectedSpecialMode ==
-                                            FlashlightSpecialMode.FADE
-                                        ) {
-                                            FlashlightSpecialMode.NONE
-                                        } else {
-                                            FlashlightSpecialMode.FADE
-                                        }
-                                    updateSpecialMode(nextMode)
-                                },
-                                modifier =
-                                    Modifier
-                                        .weight(1f)
-                                        .height(48.dp)
-                                        .semantics { role = Role.RadioButton },
-                                shapes = ButtonGroupDefaults.connectedTrailingButtonShapes(),
-                            ) {
-                                Text(stringResource(R.string.flashlight_fade_label))
+                                SegmentLabel(
+                                    text = labels[index],
+                                    selected = selected,
+                                )
                             }
                         }
                     }

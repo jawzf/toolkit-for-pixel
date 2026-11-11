@@ -12,16 +12,12 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.ButtonGroupDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.ToggleButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,18 +25,20 @@ import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.semantics.role
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.cards.IconToggleItem
 import com.jawzf.pixeltoolkit.core.design.components.ConfigSliderItem
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
+import com.jawzf.pixeltoolkit.core.design.pickers.Segment
+import com.jawzf.pixeltoolkit.core.design.pickers.SegmentIcon
+import com.jawzf.pixeltoolkit.core.design.pickers.SegmentLabel
+import com.jawzf.pixeltoolkit.core.design.pickers.SegmentedTrack
 import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
 import com.jawzf.pixeltoolkit.feature.display.glance.StatusGlanceState
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StatusGlanceBatteryOptionsBottomSheet(
     state: StatusGlanceState,
@@ -85,49 +83,40 @@ fun StatusGlanceBatteryOptionsBottomSheet(
             )
 
             RoundedCardContainer {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(
-                            color = MaterialTheme.colorScheme.surfaceBright,
-                            shape = RoundedCornerShape(24.dp),
-                        )
-                        .padding(8.dp),
-                    horizontalArrangement = Arrangement.spacedBy(ButtonGroupDefaults.ConnectedSpaceBetween),
-                ) {
-                    modes.forEachIndexed { index, mode ->
-                        ToggleButton(
-                            checked = state.statusGlanceBatteryDisplayMode.value == mode,
-                            onCheckedChange = {
-                                HapticUtil.performVirtualKeyHaptic(view)
-                                state.setStatusGlanceBatteryDisplayMode(mode)
-                            },
-                            modifier = Modifier
-                                .weight(1f)
-                                .semantics { role = Role.RadioButton },
-                            shapes = when (index) {
-                                0 -> ButtonGroupDefaults.connectedLeadingButtonShapes()
-                                modes.lastIndex -> ButtonGroupDefaults.connectedTrailingButtonShapes()
-                                else -> ButtonGroupDefaults.connectedMiddleButtonShapes()
-                            },
-                        ) {
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.Center,
-                            ) {
-                                Icon(
-                                    painter = painterResource(id = icons[index]),
-                                    contentDescription = null,
-                                    modifier = Modifier.size(18.dp),
-                                )
-                                Spacer(modifier = Modifier.width(6.dp))
-                                Text(
-                                    text = labels[index],
-                                    style = MaterialTheme.typography.labelMedium,
-                                    maxLines = 1,
-                                    softWrap = false,
-                                )
-                            }
+                SegmentedTrack(
+                    count = modes.size,
+                    modifier =
+                        Modifier
+                            .background(
+                                color = MaterialTheme.colorScheme.surfaceBright,
+                                shape = RoundedCornerShape(24.dp),
+                            ).padding(horizontal = 16.dp, vertical = 12.dp),
+                ) { index ->
+                    val mode = modes[index]
+                    val selected = state.statusGlanceBatteryDisplayMode.value == mode
+                    Segment(
+                        selected = selected,
+                        selectionModifier =
+                            Modifier.selectable(
+                                selected = selected,
+                                role = Role.RadioButton,
+                                onClick = {
+                                    HapticUtil.performVirtualKeyHaptic(view)
+                                    state.setStatusGlanceBatteryDisplayMode(mode)
+                                },
+                            ),
+                    ) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            SegmentIcon(
+                                painter = painterResource(id = icons[index]),
+                                contentDescription = null,
+                                selected = selected,
+                            )
+                            Spacer(Modifier.width(6.dp))
+                            SegmentLabel(
+                                text = labels[index],
+                                selected = selected,
+                            )
                         }
                     }
                 }

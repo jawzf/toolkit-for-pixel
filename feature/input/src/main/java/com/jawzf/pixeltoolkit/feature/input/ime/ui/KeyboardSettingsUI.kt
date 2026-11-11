@@ -10,9 +10,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
-import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -29,6 +29,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.cards.IconToggleItem
@@ -36,10 +37,12 @@ import com.jawzf.pixeltoolkit.core.design.components.ConfigSliderItem
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.modifiers.highlight
+import com.jawzf.pixeltoolkit.core.design.pickers.Segment
+import com.jawzf.pixeltoolkit.core.design.pickers.SegmentLabel
+import com.jawzf.pixeltoolkit.core.design.pickers.SegmentedTrack
 import com.jawzf.pixeltoolkit.feature.input.InputState
 import kotlinx.coroutines.delay
 
-@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun KeyboardSettingsUI(
     state: InputState,
@@ -189,44 +192,29 @@ fun KeyboardSettingsUI(
                     color = MaterialTheme.colorScheme.onSurface,
                 )
 
-                Row(
-                    modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .background(
-                                color = MaterialTheme.colorScheme.surfaceBright,
-                                shape = RoundedCornerShape(24.dp),
-                            ).padding(4.dp),
-                    horizontalArrangement = Arrangement.spacedBy(4.dp),
-                ) {
-                    val shapes =
-                        listOf(
-                            R.string.shape_round to 0,
-                            R.string.shape_flat to 1,
-                            R.string.shape_inverse to 2,
-                        )
+                val shapes =
+                    listOf(
+                        R.string.shape_round to 0,
+                        R.string.shape_flat to 1,
+                        R.string.shape_inverse to 2,
+                    )
 
-                    shapes.forEach { (labelRes, value) ->
-                        val isSelected = state.keyboardShape.intValue == value
-                        androidx.compose.material3.ToggleButton(
-                            checked = isSelected,
-                            onCheckedChange = { state.setKeyboardShape(value, context) },
-                            modifier = Modifier.weight(1f),
-                            shapes =
-                                when (value) {
-                                    0 ->
-                                        androidx.compose.material3.ButtonGroupDefaults
-                                            .connectedLeadingButtonShapes()
-                                    2 ->
-                                        androidx.compose.material3.ButtonGroupDefaults
-                                            .connectedTrailingButtonShapes()
-                                    else ->
-                                        androidx.compose.material3.ButtonGroupDefaults
-                                            .connectedMiddleButtonShapes()
-                                },
-                        ) {
-                            Text(stringResource(labelRes))
-                        }
+                SegmentedTrack(count = shapes.size) { index ->
+                    val (labelRes, value) = shapes[index]
+                    val selected = state.keyboardShape.intValue == value
+                    Segment(
+                        selected = selected,
+                        selectionModifier =
+                            Modifier.selectable(
+                                selected = selected,
+                                role = Role.RadioButton,
+                                onClick = { state.setKeyboardShape(value, context) },
+                            ),
+                    ) {
+                        SegmentLabel(
+                            text = stringResource(labelRes),
+                            selected = selected,
+                        )
                     }
                 }
             }
