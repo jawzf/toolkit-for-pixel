@@ -1029,6 +1029,12 @@
     <string name="perm_device_admin_title">Device Administrator</string>
     <string name="perm_device_admin_desc">Required to hard-lock the device (disabling biometrics) on unauthorized access attempts</string>
     <string name="perm_action_grant">Grant Permission</string>
+    <string name="perm_action_grant_short">Grant</string>
+    <string name="perm_used_by">Used by %1$s</string>
+    <string name="perm_sheet_title">Turn on %1$s</string>
+    <string name="perm_sheet_intro">It needs these first.</string>
+    <string name="action_not_now">Not now</string>
+    <string name="action_turn_on">Turn on</string>
     <string name="perm_action_copy_adb">Copy ADB</string>
     <string name="perm_action_check">Check</string>
     <string name="perm_action_enable">Enable in Settings</string>
@@ -2486,8 +2492,6 @@
     <string name="settings_section_customizations">Customizations</string>
     <string name="settings_permissions_all">All permissions</string>
     <string name="settings_section_more">More</string>
-    <string name="action_show_granted">Show granted</string>
-    <string name="action_hide_granted">Hide granted</string>
     <string name="perm_local_network_title">Local network access</string>
     <string name="perm_local_network_desc">Android 17 blocks apps from talking to devices on your Wi-Fi network unless you allow it. Toolkit for Pixel needs this to work with your watch over the local network.</string>
     <string name="perm_bubbles_title">Floating Bubbles</string>

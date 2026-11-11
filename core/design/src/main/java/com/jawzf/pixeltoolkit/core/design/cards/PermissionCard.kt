@@ -1,40 +1,34 @@
 package com.jawzf.pixeltoolkit.core.design.cards
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.ListItem
-import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
-import com.jawzf.pixeltoolkit.core.design.theme.Shapes
+import com.jawzf.pixeltoolkit.core.design.sheets.stepActionLabel
+import com.jawzf.pixeltoolkit.core.design.theme.ToolkitShapes
+import com.jawzf.pixeltoolkit.core.design.theme.ToolkitTheme
 
-@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun PermissionCard(
     iconRes: Int,
@@ -52,229 +46,95 @@ fun PermissionCard(
     instructions: Any? = null,
     description: Any? = null,
 ) {
-    val grantedGreen = Color(0xFF4CAF50)
+    val colors = ToolkitTheme.colors
+    val container = if (isGranted) colors.successContainer else colors.warningContainer
+    val onColor = if (isGranted) colors.onSuccessContainer else colors.onWarningContainer
     val view = LocalView.current
 
-    val resolvedTitle =
-        when (title) {
-            is Int -> stringResource(id = title)
-            is String -> title
-            else -> ""
-        }
-
-    val resolvedDescription =
-        when (description) {
-            is Int -> stringResource(id = description)
-            is String -> description
-            else -> null
-        }
-
-    val resolvedActionLabel =
-        when (actionLabel) {
-            is Int -> stringResource(id = actionLabel)
-            is String -> actionLabel
-            else -> ""
-        }
-
-    val resolvedSecondaryLabel =
-        when (secondaryActionLabel) {
-            is Int -> stringResource(id = secondaryActionLabel)
-            is String -> secondaryActionLabel
-            else -> null
-        }
-
-    val resolvedShizukuLabel =
-        when (shizukuActionLabel) {
-            is Int -> stringResource(id = shizukuActionLabel)
-            is String -> shizukuActionLabel
-            else -> null
-        }
-
-    val resolvedInstructions =
-        when (instructions) {
-            is Int -> stringResource(id = instructions)
-            is String -> instructions
-            else -> null
-        }
-
-    Card(
-        modifier = modifier.fillMaxWidth(),
-        shape = Shapes.extraSmall,
-        colors =
-            CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.surfaceBright,
-            ),
+    Column(
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .background(container, ToolkitShapes.field)
+                .padding(start = 14.dp, end = 10.dp, top = 10.dp, bottom = 10.dp),
+        verticalArrangement = Arrangement.spacedBy(6.dp),
     ) {
-        Column(
-            modifier = Modifier.padding(bottom = 12.dp, start = 4.dp, end = 4.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
         ) {
-            Box {
-                ListItem(
-                    onClick = {},
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    colors =
-                        ListItemDefaults.colors(
-                            containerColor = Color.Transparent,
-                        ),
-                    leadingContent = {
-                        Icon(
-                            painter = painterResource(id = iconRes),
-                            contentDescription = null,
-                            tint = if (isGranted) grantedGreen else MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.size(36.dp),
-                        )
-                    },
-                    supportingContent =
-                        if (resolvedDescription != null || dependentFeatures.isNotEmpty()) {
-                            {
-                                Column {
-                                    if (resolvedDescription != null) {
-                                        Text(
-                                            text = resolvedDescription,
-                                            style = MaterialTheme.typography.bodyMedium,
-                                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                        )
-                                    }
-                                    if (dependentFeatures.isNotEmpty()) {
-                                        if (resolvedDescription != null) {
-                                            Spacer(modifier = Modifier.height(8.dp))
-                                        }
-                                        Text(text = "Required for:", style = MaterialTheme.typography.bodySmall)
-                                        Spacer(modifier = Modifier.height(4.dp))
-                                        dependentFeatures.forEach { f ->
-                                            val resolvedFeature =
-                                                when (f) {
-                                                    is Int -> stringResource(id = f)
-                                                    is String -> f
-                                                    else -> ""
-                                                }
-                                            Text(
-                                                text = "• $resolvedFeature",
-                                                style = MaterialTheme.typography.bodyMedium,
-                                            )
-                                        }
-                                    }
-                                }
-                            }
-                        } else {
-                            null
-                        },
-                    content = {
-                        Text(
-                            text = resolvedTitle,
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.Bold,
-                        )
-                    },
+            Icon(
+                painter = painterResource(if (isGranted) R.drawable.rounded_check_circle_24 else iconRes),
+                contentDescription = null,
+                tint = onColor,
+                modifier = Modifier.size(20.dp),
+            )
+            Column(modifier = Modifier.weight(1f)) {
+                val resolvedTitle = resolveText(title).orEmpty()
+                Text(
+                    text = resolvedTitle,
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontWeight = FontWeight.SemiBold,
+                    color = onColor,
                 )
-            }
-
-            Box(modifier = Modifier.padding(horizontal = 12.dp)) {
-                if (isGranted) {
-                    if (resolvedSecondaryLabel != null && onSecondaryActionClick != null) {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        ) {
-                            OutlinedButton(
-                                onClick = {
-                                    HapticUtil.performVirtualKeyHaptic(view)
-                                    onActionClick()
-                                },
-                                modifier = Modifier.weight(1f),
-                            ) {
-                                Text(resolvedActionLabel)
-                            }
-
-                            Button(
-                                onClick = {
-                                    HapticUtil.performVirtualKeyHaptic(view)
-                                    onSecondaryActionClick()
-                                },
-                                modifier = Modifier.weight(1f),
-                            ) {
-                                Text(resolvedSecondaryLabel)
-                            }
-                        }
-                    } else {
-                        OutlinedButton(
-                            onClick = {
-                                HapticUtil.performVirtualKeyHaptic(view)
-                                onActionClick()
-                            },
-                            modifier = Modifier.fillMaxWidth(),
-                        ) {
-                            Text(resolvedActionLabel)
-                        }
-                    }
-                } else {
-                    Column(
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalArrangement = Arrangement.spacedBy(8.dp),
-                    ) {
-                        if (resolvedInstructions != null) {
-                            Text(
-                                text = resolvedInstructions,
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                modifier = Modifier.padding(bottom = 4.dp),
-                            )
-                        }
-
-                        if (resolvedSecondaryLabel != null && onSecondaryActionClick != null) {
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                            ) {
-                                OutlinedButton(
-                                    onClick = {
-                                        HapticUtil.performVirtualKeyHaptic(view)
-                                        onActionClick()
-                                    },
-                                    modifier = Modifier.weight(1f),
-                                ) {
-                                    Text(resolvedActionLabel)
-                                }
-
-                                Button(
-                                    onClick = {
-                                        HapticUtil.performVirtualKeyHaptic(view)
-                                        onSecondaryActionClick()
-                                    },
-                                    modifier = Modifier.weight(1f),
-                                ) {
-                                    Text(resolvedSecondaryLabel)
-                                }
-                            }
-                        } else {
-                            Button(
-                                onClick = {
-                                    HapticUtil.performVirtualKeyHaptic(view)
-                                    onActionClick()
-                                },
-                                modifier = Modifier.fillMaxWidth(),
-                            ) {
-                                Text(resolvedActionLabel)
-                            }
-                        }
-
-                        if (resolvedShizukuLabel != null && onShizukuActionClick != null) {
-                            Button(
-                                onClick = {
-                                    HapticUtil.performVirtualKeyHaptic(view)
-                                    onShizukuActionClick()
-                                },
-                                enabled = shizukuActionEnabled,
-                                modifier = Modifier.fillMaxWidth(),
-                            ) {
-                                Text(resolvedShizukuLabel)
-                            }
-                        }
+                val resolvedDescription = resolveText(description)
+                if (!resolvedDescription.isNullOrEmpty()) {
+                    Text(
+                        text = resolvedDescription,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = onColor,
+                    )
+                }
+                if (dependentFeatures.isNotEmpty()) {
+                    val joined =
+                        dependentFeatures
+                            .mapNotNull { resolveText(it) }
+                            .filter { it.isNotEmpty() }
+                            .joinToString(", ")
+                    if (joined.isNotEmpty()) {
+                        Text(
+                            text = stringResource(R.string.perm_used_by, joined),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = onColor.copy(alpha = 0.8f),
+                            maxLines = 2,
+                            overflow = TextOverflow.Ellipsis,
+                        )
                     }
                 }
             }
+
+            if (!isGranted) {
+                val resolvedActionLabel = resolveText(stepActionLabel(actionLabel)).orEmpty()
+                Button(
+                    onClick = {
+                        HapticUtil.performVirtualKeyHaptic(view)
+                        onActionClick()
+                    },
+                    modifier = Modifier.heightIn(min = 36.dp),
+                    contentPadding = PaddingValues(horizontal = 14.dp),
+                    colors =
+                        ButtonDefaults.buttonColors(
+                            containerColor = colors.surface,
+                            contentColor = onColor,
+                        ),
+                ) {
+                    Text(resolvedActionLabel, style = MaterialTheme.typography.labelLarge)
+                }
+            }
+        }
+
+        if (!isGranted) {
+            PermissionExtras(
+                instructions,
+                secondaryActionLabel,
+                onSecondaryActionClick,
+                shizukuActionLabel,
+                shizukuActionEnabled,
+                onShizukuActionClick,
+                textColor = onColor,
+                linkColor = onColor,
+                startPadding = 32.dp,
+            )
         }
     }
 }
