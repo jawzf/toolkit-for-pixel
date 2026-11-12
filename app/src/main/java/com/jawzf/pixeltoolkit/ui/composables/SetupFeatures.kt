@@ -15,7 +15,6 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -36,17 +35,14 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Clear
 import androidx.compose.material.icons.rounded.KeyboardArrowDown
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.LoadingIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
@@ -85,6 +81,7 @@ import com.jawzf.pixeltoolkit.FeatureSettingsActivity
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.cards.FeatureCard
 import com.jawzf.pixeltoolkit.core.design.components.ListExpandToggleButton
+import com.jawzf.pixeltoolkit.core.design.components.ToolkitSearchField
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.modifiers.liquidRipple
@@ -1227,11 +1224,12 @@ fun SetupFeatures(
 
             item {
                 // Search Bar
-                OutlinedTextField(
-                    value = searchQuery,
-                    onValueChange = {
+                ToolkitSearchField(
+                    query = searchQuery,
+                    onQueryChange = {
                         viewModel.onSearchQueryChanged(it, context)
                     },
+                    placeholder = stringResource(R.string.search_placeholder),
                     modifier =
                         Modifier
                             .fillMaxWidth()
@@ -1248,64 +1246,37 @@ fun SetupFeatures(
                                     .size(40.dp),
                             contentAlignment = Alignment.Center,
                         ) {
-                            androidx.compose.animation.AnimatedVisibility(
+                            AnimatedVisibility(
                                 visible = isSearchingViewModel,
-                                enter = androidx.compose.animation.fadeIn(),
-                                exit = androidx.compose.animation.fadeOut(),
+                                enter = fadeIn(),
+                                exit = fadeOut(),
                             ) {
-                                androidx.compose.material3.CircularProgressIndicator(
+                                CircularProgressIndicator(
                                     modifier = Modifier.size(20.dp),
                                     strokeWidth = 2.dp,
                                     color = MaterialTheme.colorScheme.primary,
                                 )
                             }
 
-                            androidx.compose.animation.AnimatedVisibility(
+                            AnimatedVisibility(
                                 visible = !isSearchingViewModel,
-                                enter = androidx.compose.animation.fadeIn(),
-                                exit = androidx.compose.animation.fadeOut(),
+                                enter = fadeIn(),
+                                exit = fadeOut(),
                             ) {
                                 Icon(
                                     painter = painterResource(id = R.drawable.rounded_search_24),
                                     contentDescription = stringResource(R.string.label_search_content_description),
-                                    modifier = Modifier.size(24.dp),
+                                    modifier = Modifier.size(20.dp),
                                 )
                             }
                         }
                     },
-                    placeholder = {
-                        if (!isFocused && searchQuery.isEmpty()) {
-                            Text(
-                                text = stringResource(R.string.search_placeholder),
-                                style = MaterialTheme.typography.bodyLarge,
-                                maxLines = 1,
-                                modifier = Modifier.basicMarquee(),
-                            )
-                        }
-                    },
-                    shape = MaterialTheme.shapes.extraExtraLarge,
-                    singleLine = true,
-                    colors =
-                        OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = MaterialTheme.colorScheme.primary,
-                            unfocusedBorderColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                            focusedContainerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
-                            unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
-                        ),
-                    trailingIcon = {
-                        if (isFocused || searchQuery.isNotEmpty()) {
-                            IconButton(onClick = {
-                                if (searchQuery.isNotEmpty()) {
-                                    viewModel.onSearchQueryChanged("", context)
-                                } else {
-                                    focusManager.clearFocus()
-                                }
-                            }) {
-                                Icon(
-                                    imageVector = Icons.Rounded.Clear,
-                                    contentDescription = "Clear search",
-                                )
-                            }
+                    showClear = isFocused || searchQuery.isNotEmpty(),
+                    onClear = {
+                        if (searchQuery.isNotEmpty()) {
+                            viewModel.onSearchQueryChanged("", context)
+                        } else {
+                            focusManager.clearFocus()
                         }
                     },
                 )
@@ -1744,6 +1715,7 @@ private fun SearchResultsSection(
                             title = result.title,
                             isEnabled = true,
                             onToggle = {},
+                            highlightQuery = query,
                             onClick = {
                                 viewModel.addRecentSearch(result)
                                 val feature = allFeatures.find { it.id == result.featureKey }

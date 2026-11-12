@@ -47,7 +47,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LoadingIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
@@ -90,6 +89,7 @@ import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.cards.AppToggleItem
 import com.jawzf.pixeltoolkit.core.design.components.CategoryExpandableSection
 import com.jawzf.pixeltoolkit.core.design.components.ToolkitFloatingToolbar
+import com.jawzf.pixeltoolkit.core.design.components.ToolkitSearchField
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.modifiers.BlurDirection
@@ -737,19 +737,11 @@ class AutomationEditorActivity : ComponentActivity() {
                                                 )
 
                                                 // Search Bar
-                                                OutlinedTextField(
-                                                    value = searchQuery,
-                                                    onValueChange = { searchQuery = it },
+                                                ToolkitSearchField(
+                                                    query = searchQuery,
+                                                    onQueryChange = { searchQuery = it },
+                                                    placeholder = stringResource(R.string.label_search),
                                                     modifier = Modifier.fillMaxWidth(),
-                                                    placeholder = { Text(stringResource(R.string.label_search)) },
-                                                    leadingIcon = {
-                                                        Icon(
-                                                            painter = painterResource(id = R.drawable.rounded_search_24),
-                                                            contentDescription = stringResource(R.string.action_search),
-                                                        )
-                                                    },
-                                                    singleLine = true,
-                                                    shape = RoundedCornerShape(12.dp),
                                                 )
 
                                                 // System Apps Toggle

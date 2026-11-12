@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,9 +17,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
@@ -28,6 +27,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
+import com.jawzf.pixeltoolkit.core.design.theme.ToolkitTheme
 
 private val GOOGLE_SYSTEM_USER_APPS =
     setOf(
@@ -115,30 +115,9 @@ fun AppToggleItem(
             enabled = enabled,
             modifier = modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
-            leadingContent = {
-                if (icon != null) {
-                    Image(
-                        bitmap = icon,
-                        contentDescription = title,
-                        modifier = Modifier.size(24.dp),
-                        contentScale = ContentScale.Fit,
-                    )
-                } else {
-                    Spacer(modifier = Modifier.size(24.dp))
-                }
-            },
-            supportingContent =
-                if (description != null) {
-                    {
-                        Text(
-                            text = description,
-                            style = MaterialTheme.typography.labelMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        )
-                    }
-                } else {
-                    null
-                },
+            leadingContent = { AppIcon(icon, title) },
+            content = { AppTitle(title, shouldShowSystemTag) },
+            supportingContent = description?.let { { AppDescription(it) } },
             trailingContent = {
                 Switch(
                     checked = if (enabled) isChecked else false,
@@ -151,42 +130,7 @@ fun AppToggleItem(
                     containerColor = MaterialTheme.colorScheme.surfaceBright,
                     selectedContainerColor = MaterialTheme.colorScheme.surfaceBright,
                 ),
-            contentPadding =
-                androidx.compose.foundation.layout.PaddingValues(
-                    horizontal = 16.dp,
-                    vertical = 16.dp,
-                ),
-            content = {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(4.dp),
-                ) {
-                    Text(
-                        text = title,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurface,
-                    )
-                    if (shouldShowSystemTag) {
-                        Box(
-                            modifier =
-                                Modifier
-                                    .size(18.dp)
-                                    .background(
-                                        color = MaterialTheme.colorScheme.primary,
-                                        shape = CircleShape,
-                                    ),
-                            contentAlignment = Alignment.Center,
-                        ) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.round_android_24),
-                                contentDescription = null,
-                                modifier = Modifier.size(12.dp),
-                                tint = MaterialTheme.colorScheme.surfaceBright,
-                            )
-                        }
-                    }
-                }
-            },
+            contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 10.dp, bottom = 10.dp),
         )
     } else {
         ListItem(
@@ -195,70 +139,76 @@ fun AppToggleItem(
             enabled = enabled,
             modifier = modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
-            leadingContent = {
-                if (icon != null) {
-                    Image(
-                        bitmap = icon,
-                        contentDescription = title,
-                        modifier = Modifier.size(24.dp),
-                        contentScale = ContentScale.Fit,
-                    )
-                } else {
-                    Spacer(modifier = Modifier.size(24.dp))
-                }
-            },
-            supportingContent =
-                if (description != null) {
-                    {
-                        Text(
-                            text = description,
-                            style = MaterialTheme.typography.labelMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        )
-                    }
-                } else {
-                    null
-                },
+            leadingContent = { AppIcon(icon, title) },
+            content = { AppTitle(title, shouldShowSystemTag) },
+            supportingContent = description?.let { { AppDescription(it) } },
             colors =
                 ListItemDefaults.colors(
                     containerColor = MaterialTheme.colorScheme.surfaceBright,
                 ),
-            contentPadding =
-                androidx.compose.foundation.layout.PaddingValues(
-                    horizontal = 16.dp,
-                    vertical = 16.dp,
-                ),
-            content = {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(4.dp),
-                ) {
-                    Text(
-                        text = title,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurface,
-                    )
-                    if (shouldShowSystemTag) {
-                        Box(
-                            modifier =
-                                Modifier
-                                    .size(18.dp)
-                                    .background(
-                                        color = MaterialTheme.colorScheme.primary,
-                                        shape = CircleShape,
-                                    ),
-                            contentAlignment = Alignment.Center,
-                        ) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.round_android_24),
-                                contentDescription = null,
-                                modifier = Modifier.size(12.dp),
-                                tint = MaterialTheme.colorScheme.surfaceBright,
-                            )
-                        }
-                    }
-                }
-            },
+            contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 10.dp, bottom = 10.dp),
         )
     }
+}
+
+@Composable
+private fun AppIcon(
+    icon: ImageBitmap?,
+    title: String,
+) {
+    if (icon != null) {
+        Image(
+            bitmap = icon,
+            contentDescription = title,
+            modifier = Modifier.size(32.dp),
+            contentScale = ContentScale.Fit,
+        )
+    } else {
+        Spacer(modifier = Modifier.size(32.dp))
+    }
+}
+
+@Composable
+private fun AppTitle(
+    title: String,
+    showSystemTag: Boolean,
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(4.dp),
+    ) {
+        Text(
+            text = title,
+            style = MaterialTheme.typography.bodyLarge,
+            color = ToolkitTheme.colors.text,
+        )
+        if (showSystemTag) {
+            Box(
+                modifier =
+                    Modifier
+                        .size(18.dp)
+                        .background(
+                            color = ToolkitTheme.colors.accent,
+                            shape = CircleShape,
+                        ),
+                contentAlignment = Alignment.Center,
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.round_android_24),
+                    contentDescription = null,
+                    modifier = Modifier.size(12.dp),
+                    tint = ToolkitTheme.colors.onAccent,
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun AppDescription(description: String) {
+    Text(
+        text = description,
+        style = MaterialTheme.typography.bodySmall,
+        color = ToolkitTheme.colors.textSecondary,
+    )
 }

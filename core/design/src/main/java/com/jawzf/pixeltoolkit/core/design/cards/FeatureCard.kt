@@ -43,6 +43,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -61,6 +63,7 @@ import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.components.IconTile
 import com.jawzf.pixeltoolkit.core.design.components.SegmentedDropdownMenu
 import com.jawzf.pixeltoolkit.core.design.components.SegmentedDropdownMenuItem
+import com.jawzf.pixeltoolkit.core.design.components.highlightMatches
 import com.jawzf.pixeltoolkit.core.design.components.toolkitSwitchColors
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.state.LocalMenuStateManager
@@ -96,6 +99,7 @@ fun FeatureCard(
     iconSize: Dp = 20.dp,
     hasIconBackground: Boolean = true,
     iconTint: Color? = null,
+    highlightQuery: String = "",
 ) {
     val view = LocalView.current
     var showMenu by remember { mutableStateOf(false) }
@@ -326,7 +330,12 @@ fun FeatureCard(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 Text(
-                    text = resolvedTitle,
+                    text =
+                        highlightMatches(
+                            resolvedTitle,
+                            highlightQuery,
+                            SpanStyle(fontWeight = FontWeight.Bold, background = ToolkitTheme.colors.accentTint),
+                        ),
                     style = MaterialTheme.typography.titleSmall,
                     color = MaterialTheme.colorScheme.onSurface,
                     modifier = Modifier.weight(1f, fill = false),

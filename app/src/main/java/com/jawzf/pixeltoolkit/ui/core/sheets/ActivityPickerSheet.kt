@@ -22,7 +22,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LoadingIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -52,6 +51,7 @@ import com.jawzf.pixeltoolkit.core.data.action.ActivityIconSource
 import com.jawzf.pixeltoolkit.core.data.apps.ActivityLauncherUtil
 import com.jawzf.pixeltoolkit.core.data.apps.ui.SingleAppSelectionSheet
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.design.components.ToolkitSearchField
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
@@ -156,19 +156,11 @@ fun ActivityPickerSheet(
                 )
             }
 
-            OutlinedTextField(
-                value = query,
-                onValueChange = { query = it },
+            ToolkitSearchField(
+                query = query,
+                onQueryChange = { query = it },
+                placeholder = stringResource(R.string.activity_picker_search),
                 modifier = Modifier.fillMaxWidth(),
-                placeholder = { Text(stringResource(R.string.activity_picker_search)) },
-                leadingIcon = {
-                    Icon(
-                        painter = painterResource(id = R.drawable.rounded_search_24),
-                        contentDescription = stringResource(R.string.action_search),
-                    )
-                },
-                singleLine = true,
-                shape = RoundedCornerShape(12.dp),
             )
 
             when {
