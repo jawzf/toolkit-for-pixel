@@ -32,7 +32,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -59,6 +58,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.graphics.drawable.toBitmap
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.design.components.ToolkitSearchField
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.feature.widgets.stack.StackWidgetProvider
 import kotlinx.coroutines.Dispatchers
@@ -104,14 +104,11 @@ fun WidgetPickerSheet(
                 fontWeight = FontWeight.SemiBold,
                 modifier = Modifier.align(Alignment.CenterHorizontally),
             )
-            OutlinedTextField(
-                value = query,
-                onValueChange = { query = it },
+            ToolkitSearchField(
+                query = query,
+                onQueryChange = { query = it },
+                placeholder = stringResource(R.string.widget_picker_search),
                 modifier = Modifier.fillMaxWidth(),
-                placeholder = { Text(stringResource(R.string.widget_picker_search)) },
-                leadingIcon = { Icon(painterResource(R.drawable.rounded_search_24), contentDescription = null) },
-                singleLine = true,
-                shape = RoundedCornerShape(28.dp),
             )
 
             val loaded = apps

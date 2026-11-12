@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -33,6 +34,8 @@ import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
+import com.jawzf.pixeltoolkit.core.design.theme.ToolkitShapes
+import com.jawzf.pixeltoolkit.core.design.theme.ToolkitTheme
 
 @Composable
 fun CategoryExpandableSection(
@@ -57,11 +60,12 @@ fun CategoryExpandableSection(
             modifier =
                 Modifier
                     .fillMaxWidth()
-                    .clip(MaterialTheme.shapes.medium)
+                    .heightIn(min = 44.dp)
+                    .clip(ToolkitShapes.field)
                     .clickable {
                         HapticUtil.performUIHaptic(view)
                         onToggleExpand()
-                    }.padding(horizontal = 12.dp, vertical = 8.dp),
+                    }.padding(horizontal = 12.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
@@ -71,22 +75,22 @@ fun CategoryExpandableSection(
             ) {
                 Text(
                     text = title,
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onSurface,
+                    style = MaterialTheme.typography.labelLarge,
+                    fontWeight = FontWeight.SemiBold,
+                    color = ToolkitTheme.colors.textSecondary,
                 )
                 Box(
                     modifier =
                         Modifier
                             .clip(CircleShape)
-                            .background(MaterialTheme.colorScheme.surfaceContainerHighest)
+                            .background(ToolkitTheme.colors.neutralFill)
                             .padding(horizontal = 8.dp, vertical = 2.dp),
                 ) {
                     Text(
                         text = itemCount.toString(),
                         style = MaterialTheme.typography.labelSmall,
                         fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        color = ToolkitTheme.colors.textSecondary,
                     )
                 }
             }
@@ -94,10 +98,10 @@ fun CategoryExpandableSection(
             Icon(
                 painter = painterResource(id = R.drawable.rounded_keyboard_arrow_down_24),
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                tint = ToolkitTheme.colors.chevron,
                 modifier =
                     Modifier
-                        .size(24.dp)
+                        .size(20.dp)
                         .rotate(rotationAngle),
             )
         }

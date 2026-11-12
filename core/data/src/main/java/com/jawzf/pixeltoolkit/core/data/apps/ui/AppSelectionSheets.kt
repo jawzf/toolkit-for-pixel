@@ -19,9 +19,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.LoadingIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
@@ -48,6 +48,7 @@ import com.jawzf.pixeltoolkit.core.data.apps.NotificationApp
 import com.jawzf.pixeltoolkit.core.data.prefs.AppSelection
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.cards.AppToggleItem
+import com.jawzf.pixeltoolkit.core.design.components.ToolkitSearchField
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
 import kotlinx.coroutines.Dispatchers
@@ -172,21 +173,13 @@ fun AppSelectionSheet(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
-                    OutlinedTextField(
-                        value = searchQuery,
-                        onValueChange = { searchQuery = it },
+                    ToolkitSearchField(
+                        query = searchQuery,
+                        onQueryChange = { searchQuery = it },
+                        placeholder = stringResource(R.string.label_search),
                         modifier = Modifier.weight(1f),
-                        placeholder = { Text(stringResource(R.string.label_search)) },
-                        leadingIcon = {
-                            Icon(
-                                painter = painterResource(id = R.drawable.rounded_search_24),
-                                contentDescription = stringResource(R.string.action_search),
-                            )
-                        },
-                        singleLine = true,
-                        shape = RoundedCornerShape(12.dp),
                     )
-                    if (showInvertSelection) androidx.compose.material3.IconButton(
+                    if (showInvertSelection) IconButton(
                         onClick = {
                             HapticUtil.performVirtualKeyHaptic(view)
                             val updatedList =
@@ -361,19 +354,11 @@ fun SingleAppSelectionSheet(
                 style = MaterialTheme.typography.headlineSmall,
             )
 
-            OutlinedTextField(
-                value = searchQuery,
-                onValueChange = { searchQuery = it },
+            ToolkitSearchField(
+                query = searchQuery,
+                onQueryChange = { searchQuery = it },
+                placeholder = stringResource(R.string.label_search),
                 modifier = Modifier.fillMaxWidth(),
-                placeholder = { Text(stringResource(R.string.label_search)) },
-                leadingIcon = {
-                    Icon(
-                        painter = painterResource(id = R.drawable.rounded_search_24),
-                        contentDescription = stringResource(R.string.action_search),
-                    )
-                },
-                singleLine = true,
-                shape = RoundedCornerShape(12.dp),
             )
 
             if (isLoading) {

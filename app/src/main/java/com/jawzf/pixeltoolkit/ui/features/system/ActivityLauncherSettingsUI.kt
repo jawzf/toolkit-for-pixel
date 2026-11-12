@@ -19,8 +19,6 @@ import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LoadingIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -42,6 +40,7 @@ import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.core.data.apps.AppUtil
 import com.jawzf.pixeltoolkit.core.data.apps.NotificationApp
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.design.components.ToolkitSearchField
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.feature.automation.engine.CombinedActionExecutor
 import com.jawzf.pixeltoolkit.ui.core.sheets.ActivityPickerSheet
@@ -53,24 +52,11 @@ fun ActivityLauncherSearchBar(
     onQueryChange: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    OutlinedTextField(
-        value = query,
-        onValueChange = onQueryChange,
+    ToolkitSearchField(
+        query = query,
+        onQueryChange = onQueryChange,
+        placeholder = stringResource(R.string.label_search),
         modifier = modifier.fillMaxWidth(),
-        placeholder = { Text(stringResource(R.string.label_search)) },
-        leadingIcon = {
-            Icon(
-                painter = painterResource(id = R.drawable.rounded_search_24),
-                contentDescription = stringResource(R.string.action_search),
-            )
-        },
-        singleLine = true,
-        shape = RoundedCornerShape(28.dp),
-        colors =
-            OutlinedTextFieldDefaults.colors(
-                focusedContainerColor = MaterialTheme.colorScheme.surfaceBright,
-                unfocusedContainerColor = MaterialTheme.colorScheme.surfaceBright,
-            ),
     )
 }
 
