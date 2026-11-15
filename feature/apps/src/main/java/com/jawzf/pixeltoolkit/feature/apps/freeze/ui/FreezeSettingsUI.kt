@@ -19,8 +19,6 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ButtonGroupDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
@@ -46,15 +44,17 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.jawzf.pixeltoolkit.core.data.apps.NotificationApp
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.cards.AppToggleItem
 import com.jawzf.pixeltoolkit.core.design.cards.FeatureCard
 import com.jawzf.pixeltoolkit.core.design.cards.IconToggleItem
 import com.jawzf.pixeltoolkit.core.design.color.ColorUtil
+import com.jawzf.pixeltoolkit.core.design.components.PrimaryButton
+import com.jawzf.pixeltoolkit.core.design.components.SecondaryButton
 import com.jawzf.pixeltoolkit.core.design.components.SegmentedDropdownMenu
 import com.jawzf.pixeltoolkit.core.design.components.SegmentedDropdownMenuItem
+import com.jawzf.pixeltoolkit.core.design.components.ToolkitButtonDefaults
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.modifiers.highlight
@@ -170,18 +170,17 @@ fun FreezeSettingsUI(
                                 color = MaterialTheme.colorScheme.surfaceBright,
                                 shape = RoundedCornerShape(MaterialTheme.shapes.extraSmall.bottomEnd),
                             ).padding(12.dp),
-                    horizontalArrangement = Arrangement.spacedBy(ButtonGroupDefaults.ConnectedSpaceBetween),
+                    horizontalArrangement = Arrangement.spacedBy(ToolkitButtonDefaults.PairSpacing),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     // Freeze Button
-                    Button(
+                    PrimaryButton(
                         onClick = {
                             HapticUtil.performVirtualKeyHaptic(view)
                             state.freezeAllAuto(context)
                         },
                         modifier = Modifier.weight(1f),
                         enabled = isShizukuAvailable && isShizukuPermissionGranted,
-                        shape = ButtonDefaults.shape, // Keep default look
                     ) {
                         Icon(
                             painter = painterResource(id = R.drawable.rounded_mode_cool_24),
@@ -191,19 +190,17 @@ fun FreezeSettingsUI(
                         Spacer(Modifier.size(8.dp))
                         Text(
                             stringResource(R.string.action_freeze),
-                            fontSize = dimensionResource(R.dimen.font_small).value.sp,
                         )
                     }
 
                     // Unfreeze Button
-                    Button(
+                    SecondaryButton(
                         onClick = {
                             HapticUtil.performVirtualKeyHaptic(view)
                             state.unfreezeAllAuto(context)
                         },
                         modifier = Modifier.weight(1f),
                         enabled = isShizukuAvailable && isShizukuPermissionGranted,
-                        shape = ButtonDefaults.shape,
                     ) {
                         Icon(
                             painter = painterResource(id = R.drawable.rounded_mode_cool_off_24),
@@ -213,7 +210,6 @@ fun FreezeSettingsUI(
                         Spacer(Modifier.size(8.dp))
                         Text(
                             stringResource(R.string.action_unfreeze),
-                            fontSize = dimensionResource(R.dimen.font_small).value.sp,
                         )
                     }
 
@@ -813,10 +809,10 @@ fun FreezeSettingsUI(
                             color = MaterialTheme.colorScheme.surfaceBright,
                             shape = MaterialTheme.shapes.extraSmall,
                         ).padding(12.dp),
-                horizontalArrangement = Arrangement.spacedBy(ButtonGroupDefaults.ConnectedSpaceBetween),
+                horizontalArrangement = Arrangement.spacedBy(ToolkitButtonDefaults.PairSpacing),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                Button(
+                SecondaryButton(
                     onClick = {
                         HapticUtil.performVirtualKeyHaptic(view)
                         exportLauncher.launch("freeze_apps_backup.json")
@@ -836,9 +832,7 @@ fun FreezeSettingsUI(
                     )
                 }
 
-                Spacer(Modifier.size(ButtonGroupDefaults.ConnectedSpaceBetween))
-
-                Button(
+                SecondaryButton(
                     onClick = {
                         HapticUtil.performVirtualKeyHaptic(view)
                         importLauncher.launch(arrayOf("application/json"))

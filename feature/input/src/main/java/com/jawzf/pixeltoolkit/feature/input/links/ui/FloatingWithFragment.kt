@@ -38,8 +38,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ButtonGroupDefaults
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
@@ -87,10 +85,13 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.cards.IconToggleItem
+import com.jawzf.pixeltoolkit.core.design.components.ToolkitButtonDefaults
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.pickers.SegmentedPicker
 import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
+import com.jawzf.pixeltoolkit.core.design.theme.ToolkitShapes
+import com.jawzf.pixeltoolkit.core.design.theme.ToolkitTheme
 import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.feature.input.links.QrCodeGenerator
 import com.jawzf.pixeltoolkit.feature.input.links.UrlShortener
@@ -645,7 +646,7 @@ fun ShortenUrlSheet(
                                                 .clip(RoundedCornerShape(16.dp))
                                                 .background(MaterialTheme.colorScheme.surfaceContainerHigh)
                                                 .padding(4.dp),
-                                        horizontalArrangement = Arrangement.spacedBy(ButtonGroupDefaults.ConnectedSpaceBetween),
+                                        horizontalArrangement = Arrangement.spacedBy(ToolkitButtonDefaults.PairSpacing),
                                     ) {
                                         // 1. Copy
                                         FilledIconButton(
@@ -661,10 +662,10 @@ fun ShortenUrlSheet(
                                                 }
                                             },
                                             modifier = Modifier.weight(1f).height(44.dp),
-                                            shape = ButtonGroupDefaults.connectedLeadingButtonShapes().shape,
+                                            shape = ToolkitShapes.pill,
                                             colors = IconButtonDefaults.filledIconButtonColors(
-                                                containerColor = MaterialTheme.colorScheme.surfaceBright,
-                                                contentColor = MaterialTheme.colorScheme.onSurface,
+                                                containerColor = ToolkitTheme.colors.neutralFill,
+                                                contentColor = ToolkitTheme.colors.text,
                                             ),
                                         ) {
                                             Icon(
@@ -690,10 +691,10 @@ fun ShortenUrlSheet(
                                                 }
                                             },
                                             modifier = Modifier.weight(1f).height(44.dp),
-                                            shape = ButtonGroupDefaults.connectedMiddleButtonShapes().shape,
+                                            shape = ToolkitShapes.pill,
                                             colors = IconButtonDefaults.filledIconButtonColors(
-                                                containerColor = MaterialTheme.colorScheme.surfaceBright,
-                                                contentColor = MaterialTheme.colorScheme.onSurface,
+                                                containerColor = ToolkitTheme.colors.neutralFill,
+                                                contentColor = ToolkitTheme.colors.text,
                                             ),
                                         ) {
                                             Icon(
@@ -711,10 +712,10 @@ fun ShortenUrlSheet(
                                                 showQrSheet = true
                                             },
                                             modifier = Modifier.weight(1f).height(44.dp),
-                                            shape = ButtonGroupDefaults.connectedMiddleButtonShapes().shape,
+                                            shape = ToolkitShapes.pill,
                                             colors = IconButtonDefaults.filledIconButtonColors(
-                                                containerColor = MaterialTheme.colorScheme.surfaceBright,
-                                                contentColor = MaterialTheme.colorScheme.onSurface,
+                                                containerColor = ToolkitTheme.colors.neutralFill,
+                                                contentColor = ToolkitTheme.colors.text,
                                             ),
                                         ) {
                                             Icon(
@@ -743,10 +744,10 @@ fun ShortenUrlSheet(
                                                 }
                                             },
                                             modifier = Modifier.weight(1f).height(44.dp),
-                                            shape = ButtonGroupDefaults.connectedTrailingButtonShapes().shape,
+                                            shape = ToolkitShapes.pill,
                                             colors = IconButtonDefaults.filledIconButtonColors(
-                                                containerColor = MaterialTheme.colorScheme.surfaceBright,
-                                                contentColor = MaterialTheme.colorScheme.onSurface,
+                                                containerColor = ToolkitTheme.colors.neutralFill,
+                                                contentColor = ToolkitTheme.colors.text,
                                             ),
                                         ) {
                                             Icon(
@@ -919,7 +920,7 @@ fun ShortenUrlSheet(
                                                 .clip(RoundedCornerShape(12.dp))
                                                 .background(MaterialTheme.colorScheme.surfaceContainerHigh)
                                                 .padding(2.dp),
-                                        horizontalArrangement = Arrangement.spacedBy(ButtonGroupDefaults.ConnectedSpaceBetween),
+                                        horizontalArrangement = Arrangement.spacedBy(ToolkitButtonDefaults.PairSpacing),
                                     ) {
                                         FilledIconButton(
                                             onClick = {
@@ -933,11 +934,11 @@ fun ShortenUrlSheet(
                                                     Toast.makeText(context, context.getString(R.string.error_could_not_copy), Toast.LENGTH_SHORT).show()
                                                 }
                                             },
-                                            modifier = Modifier.weight(1f).height(36.dp),
-                                            shape = ButtonGroupDefaults.connectedLeadingButtonShapes().shape,
+                                            modifier = Modifier.weight(1f).height(44.dp),
+                                            shape = ToolkitShapes.pill,
                                             colors = IconButtonDefaults.filledIconButtonColors(
-                                                containerColor = MaterialTheme.colorScheme.surfaceBright,
-                                                contentColor = MaterialTheme.colorScheme.onSurface,
+                                                containerColor = ToolkitTheme.colors.neutralFill,
+                                                contentColor = ToolkitTheme.colors.text,
                                             ),
                                         ) {
                                             Icon(
@@ -961,11 +962,11 @@ fun ShortenUrlSheet(
                                                     Toast.makeText(context, context.getString(R.string.error_no_share_app), Toast.LENGTH_SHORT).show()
                                                 }
                                             },
-                                            modifier = Modifier.weight(1f).height(36.dp),
-                                            shape = ButtonGroupDefaults.connectedMiddleButtonShapes().shape,
+                                            modifier = Modifier.weight(1f).height(44.dp),
+                                            shape = ToolkitShapes.pill,
                                             colors = IconButtonDefaults.filledIconButtonColors(
-                                                containerColor = MaterialTheme.colorScheme.surfaceBright,
-                                                contentColor = MaterialTheme.colorScheme.onSurface,
+                                                containerColor = ToolkitTheme.colors.neutralFill,
+                                                contentColor = ToolkitTheme.colors.text,
                                             ),
                                         ) {
                                             Icon(
@@ -981,11 +982,11 @@ fun ShortenUrlSheet(
                                                 qrContentUri = item.shortUrl
                                                 showQrSheet = true
                                             },
-                                            modifier = Modifier.weight(1f).height(36.dp),
-                                            shape = ButtonGroupDefaults.connectedMiddleButtonShapes().shape,
+                                            modifier = Modifier.weight(1f).height(44.dp),
+                                            shape = ToolkitShapes.pill,
                                             colors = IconButtonDefaults.filledIconButtonColors(
-                                                containerColor = MaterialTheme.colorScheme.surfaceBright,
-                                                contentColor = MaterialTheme.colorScheme.onSurface,
+                                                containerColor = ToolkitTheme.colors.neutralFill,
+                                                contentColor = ToolkitTheme.colors.text,
                                             ),
                                         ) {
                                             Icon(
@@ -1012,11 +1013,11 @@ fun ShortenUrlSheet(
                                                     Toast.makeText(context, context.getString(R.string.error_open_link_inspector), Toast.LENGTH_SHORT).show()
                                                 }
                                             },
-                                            modifier = Modifier.weight(1f).height(36.dp),
-                                            shape = ButtonGroupDefaults.connectedTrailingButtonShapes().shape,
+                                            modifier = Modifier.weight(1f).height(44.dp),
+                                            shape = ToolkitShapes.pill,
                                             colors = IconButtonDefaults.filledIconButtonColors(
-                                                containerColor = MaterialTheme.colorScheme.surfaceBright,
-                                                contentColor = MaterialTheme.colorScheme.onSurface,
+                                                containerColor = ToolkitTheme.colors.neutralFill,
+                                                contentColor = ToolkitTheme.colors.text,
                                             ),
                                         ) {
                                             Icon(
@@ -1200,7 +1201,7 @@ fun QrCodeSheet(
                         .clip(RoundedCornerShape(20.dp))
                         .background(MaterialTheme.colorScheme.surfaceBright)
                         .padding(6.dp),
-                horizontalArrangement = Arrangement.spacedBy(ButtonGroupDefaults.ConnectedSpaceBetween),
+                horizontalArrangement = Arrangement.spacedBy(ToolkitButtonDefaults.PairSpacing),
             ) {
                 FilledIconButton(
                     onClick = {
@@ -1232,10 +1233,10 @@ fun QrCodeSheet(
                         }
                     },
                     modifier = Modifier.weight(1f).height(48.dp),
-                    shape = ButtonGroupDefaults.connectedLeadingButtonShapes().shape,
+                    shape = ToolkitShapes.pill,
                     colors = IconButtonDefaults.filledIconButtonColors(
-                        containerColor = MaterialTheme.colorScheme.primary,
-                        contentColor = MaterialTheme.colorScheme.onPrimary,
+                        containerColor = ToolkitTheme.colors.accent,
+                        contentColor = ToolkitTheme.colors.onAccent,
                     ),
                 ) {
                     Icon(
@@ -1263,10 +1264,10 @@ fun QrCodeSheet(
                         }
                     },
                     modifier = Modifier.weight(1f).height(48.dp),
-                    shape = ButtonGroupDefaults.connectedMiddleButtonShapes().shape,
+                    shape = ToolkitShapes.pill,
                     colors = IconButtonDefaults.filledIconButtonColors(
-                        containerColor = MaterialTheme.colorScheme.primary,
-                        contentColor = MaterialTheme.colorScheme.onPrimary,
+                        containerColor = ToolkitTheme.colors.accent,
+                        contentColor = ToolkitTheme.colors.onAccent,
                     ),
                 ) {
                     Icon(
@@ -1287,10 +1288,10 @@ fun QrCodeSheet(
                         }
                     },
                     modifier = Modifier.weight(1f).height(48.dp),
-                    shape = ButtonGroupDefaults.connectedTrailingButtonShapes().shape,
+                    shape = ToolkitShapes.pill,
                     colors = IconButtonDefaults.filledIconButtonColors(
-                        containerColor = MaterialTheme.colorScheme.primary,
-                        contentColor = MaterialTheme.colorScheme.onPrimary,
+                        containerColor = ToolkitTheme.colors.accent,
+                        contentColor = ToolkitTheme.colors.onAccent,
                     ),
                 ) {
                     Icon(
