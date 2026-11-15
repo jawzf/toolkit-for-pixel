@@ -5,13 +5,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticFeedbackType
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.domain.DIYTabs
 
 class SettingsViewModel : ViewModel() {
     val pinnedFeatureKeys = mutableStateOf<List<String>>(emptyList())
     val pinnedQsTileKeys = mutableStateOf<List<String>>(emptyList())
     val hapticFeedbackType = mutableStateOf(HapticFeedbackType.SUBTLE)
-    val defaultTab = mutableStateOf(DIYTabs.TOOLKIT)
 
     /**
      * Loads saved pinned features and user settings from repository.

@@ -128,7 +128,6 @@ class MainViewModel : ViewModel() {
     val isOverlayPermissionGranted = mutableStateOf(false)
     val isNotificationLightingAccessibilityEnabled = mutableStateOf(false)
     val hapticFeedbackType = mutableStateOf(HapticFeedbackType.SUBTLE)
-    val defaultTab = mutableStateOf(com.jawzf.pixeltoolkit.domain.DIYTabs.TOOLKIT)
     val selectedAppIcon = mutableStateOf(AppIcon.DEFAULT)
     val isDefaultBrowserSet = mutableStateOf(false)
 
@@ -316,7 +315,6 @@ class MainViewModel : ViewModel() {
     val isMotionBlurSettingEnabled = mutableStateOf(false)
     val motionBlurScale = mutableFloatStateOf(1.0f)
     val isShakeForHelpEnabled = mutableStateOf(true)
-    val isSwipeTabsEnabled = mutableStateOf(true)
     val isPowerSaveModeEnabled = mutableStateOf(false)
     private var powerSaveReceiver: BroadcastReceiver? = null
 
@@ -1233,10 +1231,7 @@ class MainViewModel : ViewModel() {
         }
 
         hapticFeedbackType.value = settingsRepository.getHapticFeedbackType()
-        defaultTab.value = settingsRepository.getDIYTab()
         selectedAppIcon.value = settingsRepository.getAppIcon()
-        isSwipeTabsEnabled.value =
-            settingsRepository.getBoolean(SettingsRepository.KEY_SWIPE_TABS, true)
         isShakeForHelpEnabled.value = settingsRepository.isShakeForHelpEnabled()
 
         power.load(context)
@@ -1599,16 +1594,6 @@ class MainViewModel : ViewModel() {
     ) {
         settingsRepository.setShakeForHelpEnabled(enabled)
         isShakeForHelpEnabled.value = enabled
-    }
-
-    /**
-     * Executes the set swipe tabs enabled operation.
-     *
-     * @param enabled [Boolean] Target enabled.
-     */
-    fun setSwipeTabsEnabled(enabled: Boolean) {
-        settingsRepository.putBoolean(SettingsRepository.KEY_SWIPE_TABS, enabled)
-        isSwipeTabsEnabled.value = enabled
     }
 
     private fun updateBlurState(context: Context) {
@@ -2763,20 +2748,6 @@ class MainViewModel : ViewModel() {
         settingsRepository.putString(SettingsRepository.KEY_HAPTIC_FEEDBACK_TYPE, type.name)
     }
 
-    /**
-     * Executes the set default tab operation.
-     *
-     * @param tab [com.jawzf.pixeltoolkit.domain.DIYTabs] Target tab.
-     * @param context [Context] Target context.
-     */
-    fun setDefaultTab(
-        tab: com.jawzf.pixeltoolkit.domain.DIYTabs,
-        context: Context,
-    ) {
-        defaultTab.value = tab
-        settingsRepository.saveDIYTab(tab)
-    }
-
     fun setAppIcon(
         appIcon: AppIcon,
         context: Context,
@@ -3175,8 +3146,6 @@ class MainViewModel : ViewModel() {
      */
     fun resetOnboarding(context: Context) {
         setOnboardingCompleted(false, context)
-        // Reset tab to TOOLKIT
-        setDefaultTab(com.jawzf.pixeltoolkit.domain.DIYTabs.TOOLKIT, context)
     }
 
     private fun updateAddedQSTiles(context: Context) {

@@ -33,16 +33,15 @@ import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.jawzf.pixeltoolkit.MainActivity
 import com.jawzf.pixeltoolkit.core.data.apps.NotificationApp
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.state.LocalMenuStateManager
-import com.jawzf.pixeltoolkit.domain.DIYTabs
 import com.jawzf.pixeltoolkit.feature.apps.freeze.FreezeManager
 import com.jawzf.pixeltoolkit.feature.apps.freeze.ui.AppGridItem
 import com.jawzf.pixeltoolkit.feature.apps.freeze.ui.sheets.AssignTagsSheet
+import com.jawzf.pixeltoolkit.ui.activities.AppFreezingActivity
 import com.jawzf.pixeltoolkit.utils.ShortcutUtil
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 import kotlinx.coroutines.Dispatchers
@@ -88,10 +87,7 @@ fun FrozenAppsSearchResultCard(
         if (onNavigateToFreezeTab != null) {
             onNavigateToFreezeTab()
         } else {
-            val intent = com.jawzf.pixeltoolkit.core.platform.AppComponents.mainIntent(context).apply {
-                putExtra("target_tab", DIYTabs.FREEZE.name)
-                flags = Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP
-            }
+            val intent = Intent(context, AppFreezingActivity::class.java)
             context.startActivity(intent)
         }
     }

@@ -7,15 +7,12 @@ import android.os.Bundle
 import android.util.Log
 import android.view.animation.AnticipateInterpolator
 import android.widget.Toast
-import androidx.activity.compose.PredictiveBackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
@@ -25,69 +22,45 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.statusBars
-import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.MenuDefaults
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshotFlow
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.zIndex
 import androidx.core.animation.doOnEnd
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
 import com.jawzf.pixeltoolkit.core.data.apps.ui.SingleAppSelectionSheet
 import com.jawzf.pixeltoolkit.core.design.R
-import com.jawzf.pixeltoolkit.core.design.components.SegmentedDropdownMenu
-import com.jawzf.pixeltoolkit.core.design.components.SegmentedDropdownMenuItem
-import com.jawzf.pixeltoolkit.core.design.components.ToolbarItem
-import com.jawzf.pixeltoolkit.core.design.components.ToolkitFloatingToolbar
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.modifiers.BlurDirection
 import com.jawzf.pixeltoolkit.core.design.modifiers.progressiveBlur
-import com.jawzf.pixeltoolkit.core.design.modifiers.scrollMotionBlur
 import com.jawzf.pixeltoolkit.core.design.sheets.InstructionsBottomSheet
 import com.jawzf.pixeltoolkit.core.design.state.LocalMenuStateManager
 import com.jawzf.pixeltoolkit.core.design.state.MenuStateManager
 import com.jawzf.pixeltoolkit.core.design.theme.ToolkitTheme
-import com.jawzf.pixeltoolkit.domain.DIYTabs
 import com.jawzf.pixeltoolkit.domain.registry.initPermissionRegistry
-import com.jawzf.pixeltoolkit.feature.apps.freeze.ui.FreezeGridUI
 import com.jawzf.pixeltoolkit.feature.apps.updates.AppUpdatesViewModel
 import com.jawzf.pixeltoolkit.feature.apps.updates.UpdateInfo
 import com.jawzf.pixeltoolkit.feature.apps.updates.github.GitHubAuthViewModel
 import com.jawzf.pixeltoolkit.feature.apps.updates.ui.AddRepoBottomSheet
 import com.jawzf.pixeltoolkit.feature.apps.updates.ui.GitHubAuthSheet
 import com.jawzf.pixeltoolkit.feature.apps.updates.ui.UpdateBottomSheet
-import com.jawzf.pixeltoolkit.feature.automation.ui.DIYScreen
 import com.jawzf.pixeltoolkit.ui.composables.SetupFeatures
 import com.jawzf.pixeltoolkit.ui.composables.WelcomeScreen
 import com.jawzf.pixeltoolkit.ui.core.sheets.ShakeForHelp
 import com.jawzf.pixeltoolkit.utils.AutoUpdateManagerHelper
 import com.jawzf.pixeltoolkit.utils.ShortcutUtil
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
-import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
     val viewModel: MainViewModel by viewModels()
@@ -225,7 +198,6 @@ class MainActivity : AppCompatActivity() {
         setContent {
             val isPitchBlackThemeEnabled by viewModel.isPitchBlackThemeEnabled
             val isBlurEnabled by viewModel.isBlurEnabled
-            val isSwipeTabsEnabled by viewModel.isSwipeTabsEnabled
             ToolkitTheme(pitchBlackTheme = isPitchBlackThemeEnabled) {
                 androidx.compose.runtime.CompositionLocalProvider(
                     LocalMenuStateManager provides
@@ -244,8 +216,6 @@ class MainActivity : AppCompatActivity() {
                     var showInstructionsSheet by remember { mutableStateOf(false) }
 
                     var showGitHubAuthSheet by remember { mutableStateOf(false) }
-                    var showNewAutomationSheet by remember { mutableStateOf(false) }
-                    var isDiyMacrosShown by remember { mutableStateOf(false) }
                     val gitHubToken by viewModel.gitHubToken
                     val gitHubUser by gitHubAuthViewModel.currentUser
                     val isOnboardingCompleted by viewModel.isOnboardingCompleted
@@ -267,100 +237,6 @@ class MainActivity : AppCompatActivity() {
                             viewModel.requestNotificationPermission(this@MainActivity)
                         }
                         updatesViewModel.loadTrackedRepos(context)
-                    }
-
-                    // Dynamic tabs configuration
-                    val tabs = remember { DIYTabs.entries }
-
-                    val defaultTab by viewModel.defaultTab
-                    val initialPage =
-                        remember(tabs, defaultTab) {
-                            val index = tabs.indexOf(defaultTab)
-                            if (index != -1) index else 0
-                        }
-                    val pagerState =
-                        rememberPagerState(
-                            initialPage = initialPage,
-                            pageCount = { tabs.size },
-                        )
-
-                    LaunchedEffect(intent) {
-                        intent?.getStringExtra("target_tab")?.let { tabName ->
-                            try {
-                                val tab = DIYTabs.valueOf(tabName)
-                                val index = tabs.indexOf(tab)
-                                if (index != -1) {
-                                    pagerState.scrollToPage(index)
-                                    intent.removeExtra("target_tab")
-                                }
-                            } catch (e: Exception) {
-                                // Ignore
-                            }
-                        }
-                    }
-
-                    // Haptic feedback on tab page change
-                    LaunchedEffect(pagerState) {
-                        var isFirst = true
-                        snapshotFlow { pagerState.currentPage }
-                            .collect {
-                                if (isFirst) {
-                                    isFirst = false
-                                } else if (isSwipeTabsEnabled) {
-                                    HapticUtil.performHeavyHaptic(view)
-                                }
-                            }
-                    }
-
-                    // Bucketed rumble haptic while swiping between tabs
-                    var lastSwipeHapticBucket by androidx.compose.runtime.mutableIntStateOf(0)
-                    LaunchedEffect(pagerState) {
-                        snapshotFlow { pagerState.currentPageOffsetFraction }
-                            .collect { offset ->
-                                if (!isSwipeTabsEnabled) return@collect
-                                val fraction = kotlin.math.abs(offset)
-                                val currentBucket = (fraction * 10).toInt()
-                                if (currentBucket != lastSwipeHapticBucket) {
-                                    if (fraction > 0f) {
-                                        HapticUtil.performSliderHaptic(view)
-                                    }
-                                    lastSwipeHapticBucket = currentBucket
-                                }
-                            }
-                    }
-                    val backProgress = remember { Animatable(0f) }
-                    val scope = rememberCoroutineScope()
-
-                    // Handle predictive back button for tab navigation
-                    PredictiveBackHandler(enabled = pagerState.currentPage != initialPage) { progress ->
-                        try {
-                            progress.collect { backEvent ->
-                                backProgress.snapTo(backEvent.progress)
-                            }
-                            scope.launch {
-                                pagerState.animateScrollToPage(initialPage)
-                            }
-                            scope.launch {
-                                backProgress.animateTo(
-                                    targetValue = 0f,
-                                    animationSpec = tween(durationMillis = 400),
-                                )
-                            }
-                        } catch (e: java.util.concurrent.CancellationException) {
-                            scope.launch {
-                                backProgress.animateTo(
-                                    targetValue = 0f,
-                                    animationSpec = tween(durationMillis = 300),
-                                )
-                            }
-                        }
-                    }
-
-                    // Gracefully handle tab removal (e.g. disabling Developer Mode)
-                    LaunchedEffect(tabs) {
-                        if (pagerState.currentPage >= tabs.size) {
-                            pagerState.scrollToPage(0)
-                        }
                     }
 
                     if (showInstructionsSheet) {
@@ -502,317 +378,18 @@ class MainActivity : AppCompatActivity() {
                                             direction = BlurDirection.TOP,
                                         ),
                             ) {
-                                val currentTab =
-                                    remember(tabs, pagerState.currentPage) {
-                                        tabs.getOrNull(pagerState.currentPage) ?: tabs.firstOrNull()
-                                            ?: DIYTabs.TOOLKIT
-                                    }
-
-                                ToolkitFloatingToolbar(
-                                    modifier =
-                                        Modifier
-                                            .align(Alignment.BottomCenter)
-                                            .zIndex(1f),
-                                    selectedIndex = pagerState.currentPage,
-                                    items =
-                                        tabs.mapIndexed { index, tab ->
-                                            ToolbarItem(
-                                                iconRes = tab.iconRes,
-                                                labelRes = tab.title,
-                                                onClick = {
-                                                    HapticUtil.performUIHaptic(view)
-                                                    scope.launch {
-                                                        pagerState.animateScrollToPage(index)
-                                                    }
-                                                },
-                                                hasBadge = false,
-                                            )
-                                        },
-                                    floatingActionButton = {
-                                        var isFreezeMenuExpanded by remember { mutableStateOf(false) }
-
-                                        Box {
-                                            // Menu anchor
-                                            FloatingActionButton(
-                                                onClick = {
-                                                    HapticUtil.performVirtualKeyHaptic(view)
-                                                    when (currentTab) {
-                                                        DIYTabs.TOOLKIT -> {
-                                                            startActivity(
-                                                                Intent(
-                                                                    context,
-                                                                    SettingsActivity::class.java,
-                                                                ),
-                                                            )
-                                                        }
-
-                                                        DIYTabs.FREEZE -> {
-                                                            isFreezeMenuExpanded =
-                                                                !isFreezeMenuExpanded
-                                                        }
-
-                                                        DIYTabs.DIY -> {
-                                                            showNewAutomationSheet = true
-                                                        }
-                                                    }
-                                                },
-                                                containerColor = MaterialTheme.colorScheme.primaryContainer,
-                                                contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                                                shape = MaterialTheme.shapes.large,
-                                                elevation =
-                                                    androidx.compose.material3.FloatingActionButtonDefaults.elevation(
-                                                        0.dp,
-                                                        0.dp,
-                                                        0.dp,
-                                                        0.dp,
-                                                    ),
-                                            ) {
-                                                when (currentTab) {
-                                                    DIYTabs.TOOLKIT -> {
-                                                        Icon(
-                                                            painter = painterResource(id = R.drawable.rounded_settings_heart_24),
-                                                            contentDescription = stringResource(R.string.content_desc_settings),
-                                                        )
-                                                    }
-
-                                                    DIYTabs.FREEZE -> {
-                                                        Icon(
-                                                            painter =
-                                                                painterResource(
-                                                                    id = if (isFreezeMenuExpanded) R.drawable.rounded_close_24 else R.drawable.rounded_more_vert_24,
-                                                                ),
-                                                            contentDescription = stringResource(R.string.content_desc_more_options),
-                                                        )
-                                                    }
-
-                                                    DIYTabs.DIY -> {
-                                                        Icon(
-                                                            painter = painterResource(id = R.drawable.rounded_add_24),
-                                                            contentDescription =
-                                                                stringResource(
-                                                                    if (isDiyMacrosShown) {
-                                                                        R.string.diy_new_macro
-                                                                    } else {
-                                                                        R.string.diy_editor_new_title
-                                                                    },
-                                                                ),
-                                                        )
-                                                    }
-                                                }
-                                            }
-
-                                            if (currentTab == DIYTabs.FREEZE) {
-                                                SegmentedDropdownMenu(
-                                                    expanded = isFreezeMenuExpanded,
-                                                    onDismissRequest = {
-                                                        isFreezeMenuExpanded = false
-                                                    },
-                                                    offset = DpOffset(0.dp, (-8).dp),
-                                                ) {
-                                                    val fabColors =
-                                                        MenuDefaults.itemColors(
-                                                            textColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                                                            leadingIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                                                            trailingIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                                                        )
-                                                    val itemBg =
-                                                        MaterialTheme.colorScheme.primaryContainer
-
-                                                    SegmentedDropdownMenuItem(
-                                                        text = { Text(stringResource(R.string.action_freeze)) },
-                                                        onClick = {
-                                                            HapticUtil.performVirtualKeyHaptic(view)
-                                                            isFreezeMenuExpanded = false
-                                                            viewModel.freeze.freezeAllAuto(context)
-                                                        },
-                                                        itemContainerColor = itemBg,
-                                                        colors = fabColors,
-                                                        leadingIcon = {
-                                                            Icon(
-                                                                painter = painterResource(id = R.drawable.rounded_mode_cool_24),
-                                                                contentDescription = null,
-                                                                modifier = Modifier.size(18.dp),
-                                                            )
-                                                        },
-                                                    )
-                                                    SegmentedDropdownMenuItem(
-                                                        text = { Text(stringResource(R.string.action_unfreeze)) },
-                                                        onClick = {
-                                                            HapticUtil.performVirtualKeyHaptic(view)
-                                                            isFreezeMenuExpanded = false
-                                                            viewModel.freeze.unfreezeAllAuto(context)
-                                                        },
-                                                        itemContainerColor = itemBg,
-                                                        colors = fabColors,
-                                                        leadingIcon = {
-                                                            Icon(
-                                                                painter = painterResource(id = R.drawable.rounded_mode_cool_off_24),
-                                                                contentDescription = null,
-                                                                modifier = Modifier.size(18.dp),
-                                                            )
-                                                        },
-                                                    )
-                                                    SegmentedDropdownMenuItem(
-                                                        text = { Text(stringResource(R.string.action_freeze_all)) },
-                                                        onClick = {
-                                                            HapticUtil.performVirtualKeyHaptic(view)
-                                                            isFreezeMenuExpanded = false
-                                                            viewModel.freeze.freezeAllManual(context)
-                                                        },
-                                                        itemContainerColor = itemBg,
-                                                        colors = fabColors,
-                                                        leadingIcon = {
-                                                            Icon(
-                                                                painter = painterResource(id = R.drawable.rounded_mode_cool_24),
-                                                                contentDescription = null,
-                                                                modifier = Modifier.size(18.dp),
-                                                            )
-                                                        },
-                                                    )
-                                                    SegmentedDropdownMenuItem(
-                                                        text = { Text(stringResource(R.string.action_unfreeze_all)) },
-                                                        onClick = {
-                                                            HapticUtil.performVirtualKeyHaptic(view)
-                                                            isFreezeMenuExpanded = false
-                                                            viewModel.freeze.unfreezeAllManual(context)
-                                                        },
-                                                        itemContainerColor = itemBg,
-                                                        colors = fabColors,
-                                                        leadingIcon = {
-                                                            Icon(
-                                                                painter = painterResource(id = R.drawable.rounded_mode_cool_off_24),
-                                                                contentDescription = null,
-                                                                modifier = Modifier.size(18.dp),
-                                                            )
-                                                        },
-                                                    )
-                                                    SegmentedDropdownMenuItem(
-                                                        text = { Text(stringResource(R.string.label_settings)) },
-                                                        onClick = {
-                                                            HapticUtil.performVirtualKeyHaptic(view)
-                                                            isFreezeMenuExpanded = false
-                                                            startActivity(
-                                                                Intent(
-                                                                    context,
-                                                                    FeatureSettingsActivity::class.java,
-                                                                ).apply {
-                                                                    putExtra("feature", "Freeze")
-                                                                },
-                                                            )
-                                                        },
-                                                        itemContainerColor = itemBg,
-                                                        colors = fabColors,
-                                                        leadingIcon = {
-                                                            Icon(
-                                                                painter = painterResource(id = R.drawable.rounded_settings_24),
-                                                                contentDescription = null,
-                                                                modifier = Modifier.size(18.dp),
-                                                            )
-                                                        },
-                                                    )
-                                                }
-                                            }
-                                        }
-                                    },
-                                )
-
-                                val isMotionBlurEnabled by viewModel.isMotionBlurEnabled
-
-                                HorizontalPager(
-                                    state = pagerState,
-                                    modifier =
-                                        Modifier
-                                            .scale(1f - (backProgress.value * 0.05f))
-                                            .alpha(1f - (backProgress.value * 0.3f))
-                                            .progressiveBlur(
-                                                blurRadius = if (isBlurEnabled) 40f else 0f,
-                                                height = with(androidx.compose.ui.platform.LocalDensity.current) { 130.dp.toPx() },
-                                                direction = BlurDirection.BOTTOM,
-                                            )
-                                            .scrollMotionBlur(pagerState, enabled = isMotionBlurEnabled),
-                                    userScrollEnabled = isSwipeTabsEnabled,
-                                ) { targetPage ->
-                                    val statusBarHeight =
-                                        WindowInsets.statusBars
-                                            .asPaddingValues()
-                                            .calculateTopPadding()
-                                    val topContentPadding = statusBarHeight
-                                    val bottomToolbarPadding = 150.dp
-                                    val contentPadding =
+                                SetupFeatures(
+                                    viewModel = viewModel,
+                                    modifier = Modifier.fillMaxSize(),
+                                    contentPadding =
                                         PaddingValues(
-                                            top = topContentPadding,
-                                            bottom = bottomToolbarPadding,
+                                            top = WindowInsets.statusBars.asPaddingValues().calculateTopPadding(),
+                                            bottom = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding() + 24.dp,
                                             start = 16.dp,
                                             end = 16.dp,
-                                        )
-
-                                    when (tabs[targetPage]) {
-                                        DIYTabs.TOOLKIT -> {
-                                            SetupFeatures(
-                                                viewModel = viewModel,
-                                                modifier = Modifier.fillMaxSize(),
-                                                contentPadding = contentPadding,
-                                                onHelpClick = { showInstructionsSheet = true },
-                                                onNavigateToTab = { targetTab ->
-                                                    val tabIndex = tabs.indexOf(targetTab)
-                                                    if (tabIndex != -1) {
-                                                        scope.launch {
-                                                            pagerState.animateScrollToPage(tabIndex)
-                                                        }
-                                                    }
-                                                },
-                                            )
-                                        }
-
-                                        DIYTabs.FREEZE -> {
-                                            FreezeGridUI(
-                                                state = viewModel.freeze,
-                                                isMotionBlurEnabled = viewModel.isMotionBlurEnabled.value,
-                                                onResume = { viewModel.check(context) },
-                                                onPinShortcut = { app -> ShortcutUtil.pinAppShortcut(context, app) },
-                                                modifier = Modifier.fillMaxSize(),
-                                                contentPadding = contentPadding,
-                                                onGetStartedClick = {
-                                                    startActivity(
-                                                        Intent(
-                                                            context,
-                                                            FeatureSettingsActivity::class.java,
-                                                        ).apply {
-                                                            putExtra("feature", "Freeze")
-                                                        },
-                                                    )
-                                                },
-                                                onSettingsClick = {
-                                                    startActivity(
-                                                        Intent(
-                                                            context,
-                                                            FeatureSettingsActivity::class.java,
-                                                        ).apply {
-                                                            putExtra("feature", "Freeze")
-                                                        },
-                                                    )
-                                                },
-                                            )
-                                        }
-
-                                        DIYTabs.DIY -> {
-                                            DIYScreen(
-                                                modifier = Modifier.fillMaxSize(),
-                                                contentPadding = contentPadding,
-                                                showNewAutomationSheet = showNewAutomationSheet,
-                                                onDismissNewAutomationSheet = {
-                                                    showNewAutomationSheet = false
-                                                },
-                                                onNewAutomationClick = {
-                                                    showNewAutomationSheet = true
-                                                },
-                                                onShowMacrosChange = {
-                                                    isDiyMacrosShown = it
-                                                },
-                                            )
-                                        }
-                                    }
-                                }
+                                        ),
+                                    onHelpClick = { showInstructionsSheet = true },
+                                )
                             }
                         }
 

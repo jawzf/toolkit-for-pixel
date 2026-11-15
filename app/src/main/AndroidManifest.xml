@@ -348,6 +348,11 @@
             android:taskAffinity="com.jawzf.pixeltoolkit.freezing"
             android:theme="@style/Theme.Toolkit" />
 
+        <activity
+            android:name=".ui.activities.AutomationsActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Toolkit" />
+
         <activity-alias
             android:name=".AppFreezingLauncher"
             android:enabled="true"
