@@ -10,10 +10,9 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -26,6 +25,7 @@ import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.isImeVisible
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -41,6 +41,7 @@ import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.LoadingIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -50,6 +51,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
@@ -59,6 +61,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -69,6 +72,7 @@ import com.jawzf.pixeltoolkit.SettingsActivity
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.cards.FeatureCard
 import com.jawzf.pixeltoolkit.core.design.components.ListExpandToggleButton
+import com.jawzf.pixeltoolkit.core.design.components.PrimaryButton
 import com.jawzf.pixeltoolkit.core.design.components.ToolkitSearchField
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
@@ -76,9 +80,11 @@ import com.jawzf.pixeltoolkit.core.design.modifiers.scrollMotionBlur
 import com.jawzf.pixeltoolkit.core.design.sheets.InstructionsBottomSheet
 import com.jawzf.pixeltoolkit.core.design.sheets.PermissionItem
 import com.jawzf.pixeltoolkit.core.design.sheets.PermissionsBottomSheet
+import com.jawzf.pixeltoolkit.core.design.theme.ToolkitShapes
 import com.jawzf.pixeltoolkit.core.design.theme.ToolkitTheme
 import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.core.platform.shell.RootUtils
+import com.jawzf.pixeltoolkit.domain.model.Feature
 import com.jawzf.pixeltoolkit.domain.registry.FeatureRegistry
 import com.jawzf.pixeltoolkit.domain.registry.PermissionRegistry
 import com.jawzf.pixeltoolkit.domain.registry.QSTileRegistry
@@ -88,7 +94,6 @@ import com.jawzf.pixeltoolkit.ui.activities.AutomationsActivity
 import com.jawzf.pixeltoolkit.ui.activities.PixelSearchbarSettingsActivity
 import com.jawzf.pixeltoolkit.ui.activities.WallpaperActivity
 import com.jawzf.pixeltoolkit.ui.activities.YourAndroidActivity
-import com.jawzf.pixeltoolkit.ui.components.FavoriteCarousel
 import com.jawzf.pixeltoolkit.ui.core.sheets.ReorderFavoritesBottomSheet
 import com.jawzf.pixeltoolkit.ui.features.freeze.FrozenAppsSearchResultCard
 import com.jawzf.pixeltoolkit.ui.features.permissions.PermissionsSearchResultCard
@@ -132,9 +137,7 @@ fun SetupFeatures(
     // Help Sheet State
     var showHelpSheet by remember { mutableStateOf(false) }
     var selectedHelpFeature by remember {
-        mutableStateOf<com.jawzf.pixeltoolkit.domain.model.Feature?>(
-            null,
-        )
+        mutableStateOf<Feature?>(null)
     }
 
     LaunchedEffect(Unit) {
@@ -947,6 +950,15 @@ fun SetupFeatures(
 
     val isMotionBlurEnabled by viewModel.isMotionBlurEnabled
 
+    val openPermissions: (Feature) -> Unit = {
+        currentFeature = it.title
+        showSheet = true
+    }
+    val openHelp: (Feature) -> Unit = {
+        selectedHelpFeature = it
+        showHelpSheet = true
+    }
+
     LazyColumn(
         state = lazyListState,
         modifier =
@@ -1023,35 +1035,6 @@ fun SetupFeatures(
                 )
             }
 
-            item {
-                // Favorites
-                AnimatedVisibility(
-                    visible = !isFocused && pinnedFeatureKeys.isNotEmpty() && searchQuery.isEmpty(),
-                    enter = fadeIn() + expandVertically(),
-                    exit = fadeOut() + shrinkVertically(),
-                ) {
-                    FavoriteCarousel(
-                        pinnedKeys = pinnedFeatureKeys,
-                        onFeatureClick = { feature ->
-                            BiometricSecurityHelper.runWithAuth(
-                                activity = context as FragmentActivity,
-                                feature = feature,
-                                action = {
-                                    feature.onClick(context, viewModel)
-                                },
-                            )
-                        },
-                        onFeatureLongClick = { feature ->
-                            viewModel.togglePinFeature(feature.id)
-                        },
-                        onReorderClick = {
-                            showReorderFavoritesSheet = true
-                        },
-                        modifier = Modifier.padding(bottom = 16.dp),
-                    )
-                }
-            }
-
             if (isFocused && searchQuery.isEmpty()) {
                 item {
                     RecentSearchesSection(
@@ -1106,6 +1089,41 @@ fun SetupFeatures(
                     }
                 }
             } else if (!isFocused) {
+                val isOn: (Feature) -> Boolean = { it.isEnabled(viewModel) }
+                val active = activeNowFeatures(allFeatures, pinnedFeatureKeys, isOn)
+                val needsFix = featuresNeedingFix(active, isOn) { it.isToggleEnabled(viewModel, context) }
+                if (needsFix.isNotEmpty()) {
+                    item {
+                        HomeFixBanner(
+                            count = needsFix.size,
+                            onFix = {
+                                val feature = needsFix.first()
+                                BiometricSecurityHelper.runWithAuth(
+                                    activity = context as FragmentActivity,
+                                    feature = feature,
+                                    action = { feature.onClick(context, viewModel) },
+                                )
+                            },
+                        )
+                    }
+                }
+                if (active.isNotEmpty()) {
+                    item {
+                        HomeSectionLabel(
+                            text = stringResource(R.string.home_active_now),
+                            action = if (pinnedFeatureKeys.size > 1) stringResource(R.string.home_edit_favorites) else null,
+                            onAction = { showReorderFavoritesSheet = true },
+                        )
+                    }
+                    item {
+                        RoundedCardContainer(Modifier.padding(horizontal = 16.dp).padding(bottom = 16.dp)) {
+                            active.forEach { feature ->
+                                HomeFeatureRow(feature, viewModel, feature.id in pinnedFeatureKeys, openPermissions, openHelp)
+                            }
+                        }
+                    }
+                }
+                item { HomeSectionLabel(text = stringResource(R.string.home_browse)) }
                 item { HomeToolsGroup(onOpen = { cls -> context.startActivity(Intent(context, cls)) }) }
 
                 val topLevelFeatures =
@@ -1161,59 +1179,12 @@ fun SetupFeatures(
                                     .padding(bottom = 12.dp),
                         ) {
                             sectionFeatures.forEach { feature ->
-                                FeatureCard(
-                                    title = feature.title,
-                                    isEnabled = feature.isEnabled(viewModel),
-                                    onToggle = { enabled ->
-                                        BiometricSecurityHelper.runWithAuth(
-                                            activity = context as FragmentActivity,
-                                            feature = feature,
-                                            isToggle = true,
-                                            action = {
-                                                feature.onToggle(viewModel, context, enabled)
-                                            },
-                                        )
-                                    },
-                                    onClick = {
-                                        BiometricSecurityHelper.runWithAuth(
-                                            activity = context as FragmentActivity,
-                                            feature = feature,
-                                            action = {
-                                                feature.onClick(context, viewModel)
-                                            },
-                                        )
-                                    },
-                                    iconRes = feature.iconRes,
-                                    modifier = Modifier.padding(horizontal = 0.dp, vertical = 0.dp),
-                                    isToggleEnabled = feature.isToggleEnabled(viewModel, context),
-                                    showToggle = feature.showToggle,
-                                    hasMoreSettings = feature.hasMoreSettings,
-                                    onDisabledToggleClick = {
-                                        if (feature.id == "Screen locked security") {
-                                            feature.onClick(context, viewModel)
-                                        } else {
-                                            currentFeature = feature.title
-                                            showSheet = true
-                                        }
-                                    },
-                                    description = feature.description,
-                                    isBeta = feature.isBeta,
-                                    isLegacy = feature.isLegacy,
-                                    isUnsupported = !feature.isDeviceSupported(context),
-                                    isPinned = pinnedFeatureKeys.contains(feature.id),
-                                    onPinToggle = {
-                                        viewModel.togglePinFeature(feature.id)
-                                    },
-                                    onHelpClick =
-                                        if (feature.aboutDescription != null) {
-                                            {
-                                                selectedHelpFeature = feature
-                                                showHelpSheet = true
-                                            }
-                                        } else {
-                                            null
-                                        },
-                                    hasBadge = false,
+                                HomeFeatureRow(
+                                    feature = feature,
+                                    viewModel = viewModel,
+                                    isPinned = feature.id in pinnedFeatureKeys,
+                                    onNeedsPermission = openPermissions,
+                                    onHelp = openHelp,
                                 )
                             }
                         }
@@ -1680,5 +1651,147 @@ private fun HomeToolsGroup(onOpen: (Class<*>) -> Unit) {
             onToggle = {},
             onClick = { onOpen(AutomationsActivity::class.java) },
         )
+    }
+}
+
+@Composable
+private fun HomeFeatureRow(
+    feature: Feature,
+    viewModel: MainViewModel,
+    isPinned: Boolean,
+    onNeedsPermission: (Feature) -> Unit,
+    onHelp: (Feature) -> Unit,
+) {
+    val context = LocalContext.current
+    FeatureCard(
+        title = feature.title,
+        isEnabled = feature.isEnabled(viewModel),
+        onToggle = { enabled ->
+            BiometricSecurityHelper.runWithAuth(
+                activity = context as FragmentActivity,
+                feature = feature,
+                isToggle = true,
+                action = {
+                    feature.onToggle(viewModel, context, enabled)
+                },
+            )
+        },
+        onClick = {
+            BiometricSecurityHelper.runWithAuth(
+                activity = context as FragmentActivity,
+                feature = feature,
+                action = {
+                    feature.onClick(context, viewModel)
+                },
+            )
+        },
+        iconRes = feature.iconRes,
+        modifier = Modifier.padding(horizontal = 0.dp, vertical = 0.dp),
+        isToggleEnabled = feature.isToggleEnabled(viewModel, context),
+        showToggle = feature.showToggle,
+        hasMoreSettings = feature.hasMoreSettings,
+        onDisabledToggleClick = {
+            if (feature.id == "Screen locked security") {
+                feature.onClick(context, viewModel)
+            } else {
+                onNeedsPermission(feature)
+            }
+        },
+        description = feature.description,
+        isBeta = feature.isBeta,
+        isLegacy = feature.isLegacy,
+        isUnsupported = !feature.isDeviceSupported(context),
+        isPinned = isPinned,
+        onPinToggle = {
+            viewModel.togglePinFeature(feature.id)
+        },
+        onHelpClick =
+            if (feature.aboutDescription != null) {
+                { onHelp(feature) }
+            } else {
+                null
+            },
+        hasBadge = false,
+    )
+}
+
+@Composable
+private fun HomeSectionLabel(
+    text: String,
+    action: String? = null,
+    onAction: () -> Unit = {},
+) {
+    val view = LocalView.current
+    Row(
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(start = 20.dp, end = 12.dp, top = 4.dp, bottom = 8.dp)
+                .heightIn(min = 32.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Text(
+            text = text,
+            style = MaterialTheme.typography.labelLarge,
+            fontWeight = FontWeight.SemiBold,
+            color = ToolkitTheme.colors.textSecondary,
+            modifier = Modifier.weight(1f),
+        )
+        if (action != null) {
+            TextButton(
+                onClick = {
+                    HapticUtil.performVirtualKeyHaptic(view)
+                    onAction()
+                },
+            ) {
+                Text(
+                    text = action,
+                    color = ToolkitTheme.colors.accent,
+                    style = MaterialTheme.typography.labelLarge,
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun HomeFixBanner(
+    count: Int,
+    onFix: () -> Unit,
+) {
+    val view = LocalView.current
+    Row(
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp)
+                .padding(bottom = 16.dp)
+                .clip(ToolkitShapes.field)
+                .background(ToolkitTheme.colors.warningContainer)
+                .padding(start = 14.dp, end = 10.dp, top = 10.dp, bottom = 10.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
+    ) {
+        Icon(
+            painter = painterResource(R.drawable.rounded_info_24),
+            contentDescription = null,
+            tint = ToolkitTheme.colors.onWarningContainer,
+            modifier = Modifier.size(20.dp),
+        )
+        Text(
+            text = pluralStringResource(R.plurals.home_fix_banner, count, count),
+            style = MaterialTheme.typography.bodyMedium,
+            color = ToolkitTheme.colors.onWarningContainer,
+            modifier = Modifier.weight(1f),
+        )
+        PrimaryButton(
+            onClick = {
+                HapticUtil.performVirtualKeyHaptic(view)
+                onFix()
+            },
+            modifier = Modifier.height(36.dp),
+        ) {
+            Text(stringResource(R.string.home_fix_action))
+        }
     }
 }
