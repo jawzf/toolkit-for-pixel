@@ -142,7 +142,6 @@ class SettingsRepository(
 
         const val KEY_DEVELOPER_MODE_ENABLED = "developer_mode_enabled"
         const val KEY_HAPTIC_FEEDBACK_TYPE = "haptic_feedback_type"
-        const val KEY_DEFAULT_TAB = "default_tab"
         const val KEY_APP_ICON = "app_icon_style"
         const val KEY_USE_ROOT = "use_root"
         const val KEY_PRIVILEGED_MODE = "privileged_mode"
@@ -170,7 +169,6 @@ class SettingsRepository(
         const val KEY_MOTION_BLUR = "motion_blur"
         const val KEY_MOTION_BLUR_SCALE = "motion_blur_scale"
         const val KEY_SHAKE_FOR_HELP = "shake_for_help"
-        const val KEY_SWIPE_TABS = "swipe_tabs"
         const val KEY_ONBOARDING_COMPLETED = "onboarding_completed"
 
         const val KEY_SHUT_UP_SELECTED_APPS = "shut_up_selected_apps"
@@ -261,34 +259,6 @@ class SettingsRepository(
         } catch (e: Exception) {
             HapticFeedbackType.SUBTLE
         }
-    }
-
-    /**
-     * Executes the get diy tab operation.
-     * @return The resulting com data.
-     */
-    fun getDIYTab(): com.jawzf.pixeltoolkit.domain.DIYTabs {
-        val tabName =
-            prefs.getString(
-                KEY_DEFAULT_TAB,
-                com.jawzf.pixeltoolkit.domain.DIYTabs.TOOLKIT.name,
-            )
-        return try {
-            com.jawzf.pixeltoolkit.domain.DIYTabs.valueOf(
-                tabName ?: com.jawzf.pixeltoolkit.domain.DIYTabs.TOOLKIT.name,
-            )
-        } catch (e: Exception) {
-            com.jawzf.pixeltoolkit.domain.DIYTabs.TOOLKIT
-        }
-    }
-
-    /**
-     * Executes the save diy tab operation.
-     *
-     * @param tab [com.jawzf.pixeltoolkit.domain.DIYTabs] Target tab.
-     */
-    fun saveDIYTab(tab: com.jawzf.pixeltoolkit.domain.DIYTabs) {
-        putString(KEY_DEFAULT_TAB, tab.name)
     }
 
     fun getAppIcon(): AppIcon {

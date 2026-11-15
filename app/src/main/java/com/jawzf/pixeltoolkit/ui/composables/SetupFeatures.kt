@@ -14,7 +14,6 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -33,25 +32,20 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.KeyboardArrowDown
 import androidx.compose.material.icons.rounded.Search
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.LoadingIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
-import androidx.compose.material3.pulltorefresh.PullToRefreshBox
-import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -59,43 +53,38 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.DeviceFontFamilyName
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontVariation
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import androidx.fragment.app.FragmentActivity
 import com.jawzf.pixeltoolkit.FeatureSettingsActivity
+import com.jawzf.pixeltoolkit.SettingsActivity
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.cards.FeatureCard
 import com.jawzf.pixeltoolkit.core.design.components.ListExpandToggleButton
 import com.jawzf.pixeltoolkit.core.design.components.ToolkitSearchField
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
-import com.jawzf.pixeltoolkit.core.design.modifiers.liquidRipple
 import com.jawzf.pixeltoolkit.core.design.modifiers.scrollMotionBlur
 import com.jawzf.pixeltoolkit.core.design.sheets.InstructionsBottomSheet
 import com.jawzf.pixeltoolkit.core.design.sheets.PermissionItem
 import com.jawzf.pixeltoolkit.core.design.sheets.PermissionsBottomSheet
-import com.jawzf.pixeltoolkit.core.platform.device.DeviceUtils
+import com.jawzf.pixeltoolkit.core.design.theme.ToolkitTheme
 import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.core.platform.shell.RootUtils
 import com.jawzf.pixeltoolkit.domain.registry.FeatureRegistry
 import com.jawzf.pixeltoolkit.domain.registry.PermissionRegistry
 import com.jawzf.pixeltoolkit.domain.registry.QSTileRegistry
 import com.jawzf.pixeltoolkit.feature.apps.freeze.FreezeManager
+import com.jawzf.pixeltoolkit.ui.activities.AppFreezingActivity
+import com.jawzf.pixeltoolkit.ui.activities.AutomationsActivity
 import com.jawzf.pixeltoolkit.ui.activities.PixelSearchbarSettingsActivity
 import com.jawzf.pixeltoolkit.ui.activities.WallpaperActivity
 import com.jawzf.pixeltoolkit.ui.activities.YourAndroidActivity
@@ -108,7 +97,6 @@ import com.jawzf.pixeltoolkit.utils.BiometricSecurityHelper
 import com.jawzf.pixeltoolkit.utils.PermissionUIHelper
 import com.jawzf.pixeltoolkit.viewmodels.MainViewModel
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 @Composable
 fun SetupFeatures(
@@ -118,7 +106,6 @@ fun SetupFeatures(
     searchRequested: Boolean = false,
     onSearchHandled: () -> Unit = {},
     onHelpClick: () -> Unit = {},
-    onNavigateToTab: ((com.jawzf.pixeltoolkit.domain.DIYTabs) -> Unit)? = null,
 ) {
     val isAccessibilityEnabled by viewModel.isAccessibilityEnabled
     val isWriteSecureSettingsEnabled by viewModel.isWriteSecureSettingsEnabled
@@ -135,7 +122,6 @@ fun SetupFeatures(
     viewModel.nightLight.isDynamicNightLightEnabled.value
 
     viewModel.security.isScreenLockedSecurityEnabled.value
-    val isRippleEnabled by viewModel.isRippleEnabled
     val pinnedFeatureKeys by viewModel.pinnedFeatureKeys
     val context = LocalContext.current
 
@@ -906,10 +892,6 @@ fun SetupFeatures(
     LocalSoftwareKeyboardController.current
     WindowInsets.isImeVisible
 
-    val pullRefreshState = rememberPullToRefreshState()
-    var isRefreshing by rememberSaveable { mutableStateOf(false) }
-    val scope = rememberCoroutineScope()
-
     val allFeatures =
         FeatureRegistry.getFilteredFeatures(
             context,
@@ -926,207 +908,42 @@ fun SetupFeatures(
         }
     }
 
-    val lifecycleOwner = androidx.lifecycle.compose.LocalLifecycleOwner.current
-    var shouldResetRefreshing by rememberSaveable { mutableStateOf(false) }
-
-    androidx.compose.runtime.DisposableEffect(lifecycleOwner) {
-        val observer =
-            androidx.lifecycle.LifecycleEventObserver { _, event ->
-                if (event == androidx.lifecycle.Lifecycle.Event.ON_RESUME) {
-                    if (shouldResetRefreshing) {
-                        scope.launch {
-                            delay(200)
-                            isRefreshing = false
-                            shouldResetRefreshing = false
-                        }
-                    }
+    val searchResults = viewModel.searchResults.value
+    val isSearchingViewModel = viewModel.isSearching.value
+    val recentSearches by viewModel.recentSearches
+    val matchingTiles =
+        remember(searchQuery, viewModel.isEnableUnsupportedFeatures.value, viewModel.isUseUsageAccess.value) {
+            QSTileRegistry.searchTiles(
+                context = context,
+                query = searchQuery,
+                includeUnsupported = viewModel.isEnableUnsupportedFeatures.value,
+                isUseUsageStats = viewModel.isUseUsageAccess.value,
+            )
+        }
+    val matchingPermissions =
+        remember(searchQuery, viewModel) {
+            PermissionUIHelper.searchPermissions(
+                context = context,
+                query = searchQuery,
+                viewModel = viewModel,
+                activity = context as? Activity,
+            )
+        }
+    val freezePickedApps by viewModel.freeze.freezePickedApps
+    val matchingFrozenApps =
+        remember(searchQuery, freezePickedApps) {
+            if (searchQuery.isBlank()) {
+                emptyList()
+            } else {
+                freezePickedApps.filter { app ->
+                    (
+                        app.appName.contains(searchQuery, ignoreCase = true) ||
+                            app.packageName.contains(searchQuery, ignoreCase = true)
+                    ) &&
+                        FreezeManager.isAppFrozen(context, app.packageName)
                 }
             }
-        lifecycleOwner.lifecycle.addObserver(observer)
-        onDispose {
-            lifecycleOwner.lifecycle.removeObserver(observer)
         }
-    }
-
-    LaunchedEffect(isRefreshing) {
-        if (isRefreshing) {
-            HapticUtil.performUIHaptic(view)
-            val intent = Intent(context, YourAndroidActivity::class.java)
-            val options =
-                androidx.core.app.ActivityOptionsCompat.makeCustomAnimation(
-                    context,
-                    R.anim.anim_slide_in_top,
-                    R.anim.anim_stay,
-                )
-            context.startActivity(intent, options.toBundle())
-            shouldResetRefreshing = true
-        }
-    }
-
-    var rippleTrigger by remember { mutableStateOf(0) }
-    var textCenterOffset by remember { mutableStateOf(Offset.Zero) }
-
-    var lastHapticBucket by remember { mutableStateOf(0) }
-    LaunchedEffect(pullRefreshState.distanceFraction) {
-        val fraction = pullRefreshState.distanceFraction
-        val currentBucket = (fraction * 10).toInt()
-
-        if (fraction >= 1f && lastHapticBucket < 10) {
-            HapticUtil.performUIHaptic(view)
-            rippleTrigger++
-            lastHapticBucket = 10
-        } else if (fraction < 1f && currentBucket != lastHapticBucket) {
-            if (currentBucket > lastHapticBucket) {
-                HapticUtil.performSliderHaptic(view)
-            }
-            lastHapticBucket = currentBucket
-        }
-
-        if (fraction == 0f) {
-            lastHapticBucket = 0
-        }
-    }
-
-    PullToRefreshBox(
-        isRefreshing = isRefreshing,
-        onRefresh = { isRefreshing = true },
-        state = pullRefreshState,
-        indicator = { },
-        modifier = modifier
-            .fillMaxSize()
-            .liquidRipple(
-                trigger = rippleTrigger,
-                origin = textCenterOffset,
-                enabled = isRippleEnabled,
-                durationMillis = 2800,
-                amplitudeDp = 34f,
-                frequency = 12f,
-                decay = 4.5f,
-                speedDp = 1400f,
-            ),
-    ) {
-        val deviceInfo = DeviceUtils.getDeviceInfo(context)
-        val displayFraction = if (isRefreshing) 1f else pullRefreshState.distanceFraction
-        val thresholdPassed = displayFraction >= 1f
-        val statusBarPadding = contentPadding.calculateTopPadding()
-
-        val cardExpansion by androidx.compose.animation.core.animateDpAsState(
-            targetValue = 120.dp * displayFraction.coerceIn(0f, 1f),
-            animationSpec =
-                androidx.compose.animation.core
-                    .spring(stiffness = androidx.compose.animation.core.Spring.StiffnessMediumLow),
-            label = "cardExpansion",
-        )
-
-        val containerColor by androidx.compose.animation.animateColorAsState(
-            targetValue = if (thresholdPassed) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceContainerLow,
-            animationSpec =
-                androidx.compose.animation.core
-                    .tween(durationMillis = 300),
-            label = "containerColor",
-        )
-
-        val contentColor by androidx.compose.animation.animateColorAsState(
-            targetValue = if (thresholdPassed) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.primary,
-            animationSpec =
-                androidx.compose.animation.core
-                    .tween(durationMillis = 300),
-            label = "contentColor",
-        )
-
-        val borderColor by androidx.compose.animation.animateColorAsState(
-            targetValue = if (thresholdPassed) Color.Transparent else MaterialTheme.colorScheme.outlineVariant,
-            animationSpec =
-                androidx.compose.animation.core
-                    .tween(durationMillis = 300),
-            label = "borderColor",
-        )
-
-        val chevronAlpha by androidx.compose.animation.core.animateFloatAsState(
-            targetValue = if (thresholdPassed) 0f else 1f,
-            animationSpec =
-                androidx.compose.animation.core
-                    .tween(durationMillis = 300),
-            label = "chevronAlpha",
-        )
-
-        val chevronWidth by androidx.compose.animation.core.animateDpAsState(
-            targetValue = if (thresholdPassed) 0.dp else 24.dp + 8.dp, // size + spacer
-            animationSpec =
-                androidx.compose.animation.core
-                    .tween(durationMillis = 300),
-            label = "chevronWidth",
-        )
-
-        val fontWeight by androidx.compose.animation.core.animateIntAsState(
-            targetValue = if (thresholdPassed) 700 else 500,
-            animationSpec =
-                androidx.compose.animation.core
-                    .tween(durationMillis = 100),
-            label = "fontWeight",
-        )
-
-        val textScale by androidx.compose.animation.core.animateFloatAsState(
-            targetValue = if (thresholdPassed) 1.5f else 1f,
-            animationSpec =
-                androidx.compose.animation.core
-                    .tween(durationMillis = 300),
-            label = "textScale",
-        )
-
-        val fontWidth =
-            remember(displayFraction) {
-                (100f + (displayFraction.coerceIn(0f, 1f) * 50f)).toInt().toFloat()
-            }
-        val fontFamily =
-            remember(fontWidth, fontWeight) {
-                FontFamily(
-                    Font(
-                        DeviceFontFamilyName("sans-serif"),
-                        variationSettings =
-                            FontVariation.Settings(
-                                FontVariation.width(fontWidth),
-                                FontVariation.weight(fontWeight),
-                            ),
-                    ),
-                )
-            }
-
-        val searchQuery = viewModel.searchQuery.value
-        val searchResults = viewModel.searchResults.value
-        val isSearchingViewModel = viewModel.isSearching.value
-        val recentSearches by viewModel.recentSearches
-        val matchingTiles =
-            remember(searchQuery, viewModel.isEnableUnsupportedFeatures.value, viewModel.isUseUsageAccess.value) {
-                QSTileRegistry.searchTiles(
-                    context = context,
-                    query = searchQuery,
-                    includeUnsupported = viewModel.isEnableUnsupportedFeatures.value,
-                    isUseUsageStats = viewModel.isUseUsageAccess.value,
-                )
-            }
-        val matchingPermissions =
-            remember(searchQuery, viewModel) {
-                PermissionUIHelper.searchPermissions(
-                    context = context,
-                    query = searchQuery,
-                    viewModel = viewModel,
-                    activity = context as? Activity,
-                )
-            }
-        val freezePickedApps by viewModel.freeze.freezePickedApps
-        val matchingFrozenApps =
-            remember(searchQuery, freezePickedApps) {
-                if (searchQuery.isBlank()) {
-                    emptyList()
-                } else {
-                    freezePickedApps.filter { app ->
-                        (app.appName.contains(searchQuery, ignoreCase = true) ||
-                            app.packageName.contains(searchQuery, ignoreCase = true)) &&
-                            FreezeManager.isAppFrozen(context, app.packageName)
-                    }
-                }
-            }
 
     val isMotionBlurEnabled by viewModel.isMotionBlurEnabled
 
@@ -1136,94 +953,18 @@ fun SetupFeatures(
             modifier
                 .fillMaxSize()
                 .scrollMotionBlur(lazyListState, enabled = isMotionBlurEnabled),
-        contentPadding = PaddingValues(bottom = contentPadding.calculateBottomPadding() + 64.dp),
+        contentPadding =
+            PaddingValues(
+                top = contentPadding.calculateTopPadding() + 8.dp,
+                bottom = contentPadding.calculateBottomPadding() + 64.dp,
+            ),
     ) {
-            item {
-                // My Android Hero Card
-                OutlinedCard(
-                    onClick = {
-                        HapticUtil.performUIHaptic(view)
-                        context.startActivity(Intent(context, YourAndroidActivity::class.java))
-                    },
-                    modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp)
-                            .padding(top = 0.dp, bottom = 0.dp)
-                            .height(64.dp + statusBarPadding + cardExpansion),
-                    shape =
-                        RoundedCornerShape(
-                            topStart = 0.dp,
-                            topEnd = 0.dp,
-                            bottomStart = 28.dp,
-                            bottomEnd = 28.dp,
-                        ),
-                    colors =
-                        CardDefaults.outlinedCardColors(
-                            containerColor = containerColor,
-                            contentColor = if (thresholdPassed) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface,
-                        ),
-                    border = BorderStroke(1.dp, borderColor),
-                ) {
-                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                        Column(
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.Center,
-                        ) {
-                            Spacer(modifier = Modifier.height(statusBarPadding))
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                Box(
-                                    modifier =
-                                        Modifier
-                                            .width(chevronWidth)
-                                            .graphicsLayer { alpha = chevronAlpha },
-                                ) {
-                                    Row(verticalAlignment = Alignment.CenterVertically) {
-                                        Icon(
-                                            imageVector = Icons.Rounded.KeyboardArrowDown,
-                                            contentDescription = null,
-                                            modifier =
-                                                Modifier
-                                                    .size(24.dp)
-                                                    .graphicsLayer {
-                                                        rotationZ =
-                                                            (displayFraction * 180f).coerceIn(0f, 180f)
-                                                    },
-                                            tint = contentColor,
-                                        )
-                                        Spacer(modifier = Modifier.width(8.dp))
-                                    }
-                                }
-                                Text(
-                                    text = deviceInfo.deviceName,
-                                    style =
-                                        MaterialTheme.typography.titleMedium.copy(
-                                            fontFamily = fontFamily,
-                                        ),
-                                    modifier =
-                                        Modifier
-                                            .onGloballyPositioned { coords ->
-                                                val pos = coords.positionInRoot()
-                                                val size = coords.size
-                                                textCenterOffset = Offset(
-                                                    x = pos.x + (size.width / 2f),
-                                                    y = pos.y + (size.height / 2f),
-                                                )
-                                            }
-                                            .graphicsLayer {
-                                                scaleX = textScale
-                                                scaleY = textScale
-                                            },
-                                    color = if (thresholdPassed) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface,
-                                )
-                            }
-                        }
-                    }
-                }
-            }
+        item {
+            HomeHeader(onSettingsClick = { context.startActivity(Intent(context, SettingsActivity::class.java)) })
+        }
 
-            item {
-                // Search Bar
+        item {
+            // Search Bar
                 ToolkitSearchField(
                     query = searchQuery,
                     onQueryChange = {
@@ -1361,11 +1102,12 @@ fun SetupFeatures(
                             pinnedFeatureKeys = pinnedFeatureKeys,
                             context = context,
                             viewModel = viewModel,
-                            onNavigateToTab = onNavigateToTab,
                         )
                     }
                 }
             } else if (!isFocused) {
+                item { HomeToolsGroup(onOpen = { cls -> context.startActivity(Intent(context, cls)) }) }
+
                 val topLevelFeatures =
                     allFeatures.filter { it.parentFeatureId == null && it.isVisibleInMain }
                 val featureMap = topLevelFeatures.associateBy { it.id }
@@ -1495,7 +1237,6 @@ fun SetupFeatures(
                 }
             }
         }
-    }
 }
 
 @Composable
@@ -1641,7 +1382,6 @@ private fun SearchResultsSection(
     pinnedFeatureKeys: List<String>,
     context: Context,
     viewModel: MainViewModel,
-    onNavigateToTab: ((com.jawzf.pixeltoolkit.domain.DIYTabs) -> Unit)? = null,
 ) {
     val query = viewModel.searchQuery.value
     val matchingTiles =
@@ -1841,7 +1581,7 @@ private fun SearchResultsSection(
                 apps = matchingFrozenApps,
                 viewModel = viewModel,
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp),
-                onNavigateToFreezeTab = onNavigateToTab?.let { nav -> { nav(com.jawzf.pixeltoolkit.domain.DIYTabs.FREEZE) } },
+                onNavigateToFreezeTab = null,
             )
         }
 
@@ -1860,5 +1600,85 @@ private fun SearchResultsSection(
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp),
             )
         }
+    }
+}
+
+@Composable
+private fun HomeHeader(onSettingsClick: () -> Unit) {
+    val view = LocalView.current
+    Row(
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp)
+                .height(56.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Text(
+            text = stringResource(R.string.tab_toolkit),
+            style = MaterialTheme.typography.headlineMedium,
+            fontWeight = FontWeight.Bold,
+            color = ToolkitTheme.colors.text,
+            modifier = Modifier.weight(1f),
+        )
+        IconButton(
+            onClick = {
+                HapticUtil.performVirtualKeyHaptic(view)
+                onSettingsClick()
+            },
+            modifier = Modifier.size(44.dp),
+            colors =
+                IconButtonDefaults.iconButtonColors(
+                    containerColor = ToolkitTheme.colors.surface,
+                    contentColor = ToolkitTheme.colors.text,
+                ),
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.rounded_settings_24),
+                contentDescription = stringResource(R.string.content_desc_settings),
+                modifier = Modifier.size(20.dp),
+            )
+        }
+    }
+}
+
+@Composable
+private fun HomeToolsGroup(onOpen: (Class<*>) -> Unit) {
+    RoundedCardContainer(
+        modifier =
+            Modifier
+                .padding(horizontal = 16.dp)
+                .padding(bottom = 12.dp),
+    ) {
+        FeatureCard(
+            title = R.string.tab_your_android,
+            description = R.string.home_your_android_desc,
+            iconRes = R.drawable.rounded_mobile_24,
+            showToggle = false,
+            hasMoreSettings = true,
+            isEnabled = false,
+            onToggle = {},
+            onClick = { onOpen(YourAndroidActivity::class.java) },
+        )
+        FeatureCard(
+            title = R.string.tab_freeze,
+            description = R.string.tab_freeze_subtitle,
+            iconRes = R.drawable.rounded_mode_cool_24,
+            showToggle = false,
+            hasMoreSettings = true,
+            isEnabled = false,
+            onToggle = {},
+            onClick = { onOpen(AppFreezingActivity::class.java) },
+        )
+        FeatureCard(
+            title = R.string.diy_tab_automations,
+            description = R.string.home_automations_desc,
+            iconRes = R.drawable.rounded_experiment_24,
+            showToggle = false,
+            hasMoreSettings = true,
+            isEnabled = false,
+            onToggle = {},
+            onClick = { onOpen(AutomationsActivity::class.java) },
+        )
     }
 }

@@ -104,7 +104,6 @@ import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
 import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.core.platform.shizuku.ShizukuUtils
 import com.jawzf.pixeltoolkit.data.repository.SettingsRepository
-import com.jawzf.pixeltoolkit.domain.DIYTabs
 import com.jawzf.pixeltoolkit.domain.registry.FeatureRegistry
 import com.jawzf.pixeltoolkit.domain.registry.PermissionRegistry
 import com.jawzf.pixeltoolkit.feature.apps.AppsSettings
@@ -112,7 +111,6 @@ import com.jawzf.pixeltoolkit.feature.apps.updates.github.GitHubAuthViewModel
 import com.jawzf.pixeltoolkit.feature.apps.updates.ui.GitHubAuthSheet
 import com.jawzf.pixeltoolkit.ui.components.dialogs.AboutSection
 import com.jawzf.pixeltoolkit.ui.core.pickers.AppIconPicker
-import com.jawzf.pixeltoolkit.ui.core.pickers.DefaultTabPicker
 import com.jawzf.pixeltoolkit.ui.core.pickers.PrivilegedModePicker
 import com.jawzf.pixeltoolkit.ui.core.sheets.BugReportBottomSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.ImportConfigConfirmationSheet
@@ -551,21 +549,6 @@ fun SettingsContent(
                 selectedIcon = selectedAppIcon,
                 onIconSelected = { viewModel.setAppIcon(it, context) },
                 onIconSelectedWithPosition = onAppIconSelectedWithPosition,
-            )
-
-            val defaultTab by viewModel.defaultTab
-            val availableTabs = remember { DIYTabs.entries }
-            DefaultTabPicker(
-                selectedTab = defaultTab,
-                onTabSelected = { viewModel.setDefaultTab(it, context) },
-                options = availableTabs,
-            )
-
-            IconToggleItem(
-                iconRes = R.drawable.rounded_touch_app_24,
-                title = stringResource(R.string.setting_swipe_tabs_title),
-                isChecked = viewModel.isSwipeTabsEnabled.value,
-                onCheckedChange = { viewModel.setSwipeTabsEnabled(it) },
             )
 
             val hapticModeLabels = mapOf(
