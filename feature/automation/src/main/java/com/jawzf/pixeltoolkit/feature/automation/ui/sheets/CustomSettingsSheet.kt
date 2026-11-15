@@ -29,7 +29,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ButtonGroupDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -64,9 +63,11 @@ import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.core.data.action.Action
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.color.ColorUtil
+import com.jawzf.pixeltoolkit.core.design.components.ToolkitButtonDefaults
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
+import com.jawzf.pixeltoolkit.core.design.theme.ToolkitShapes
 import com.jawzf.pixeltoolkit.feature.automation.util.SettingsRecorder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -308,7 +309,7 @@ fun CustomSettingsSheet(
 
                     Row(
                         modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(ButtonGroupDefaults.ConnectedSpaceBetween),
+                        horizontalArrangement = Arrangement.spacedBy(ToolkitButtonDefaults.PairSpacing),
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Button(
@@ -353,7 +354,7 @@ fun CustomSettingsSheet(
                                 Modifier
                                     .weight(1f)
                                     .height(56.dp),
-                            shape = ButtonGroupDefaults.connectedLeadingButtonShapes().shape,
+                            shape = ToolkitShapes.pill,
                             colors =
                                 ButtonDefaults.buttonColors(
                                     containerColor = MaterialTheme.colorScheme.error,
@@ -380,7 +381,7 @@ fun CustomSettingsSheet(
                                     .width(96.dp)
                                     .height(56.dp)
                                     .alpha(pulseAlpha),
-                            shape = ButtonGroupDefaults.connectedTrailingButtonShapes().shape,
+                            shape = ToolkitShapes.pill,
                             colors =
                                 ButtonDefaults.buttonColors(
                                     containerColor = MaterialTheme.colorScheme.errorContainer,

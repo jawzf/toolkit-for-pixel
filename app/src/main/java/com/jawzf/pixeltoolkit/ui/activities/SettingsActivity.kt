@@ -44,7 +44,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ButtonGroupDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
@@ -84,7 +83,9 @@ import com.jawzf.pixeltoolkit.core.design.cards.FeatureCard
 import com.jawzf.pixeltoolkit.core.design.cards.IconToggleItem
 import com.jawzf.pixeltoolkit.core.design.cards.PermissionCard
 import com.jawzf.pixeltoolkit.core.design.components.ConfigSliderItem
+import com.jawzf.pixeltoolkit.core.design.components.SecondaryButton
 import com.jawzf.pixeltoolkit.core.design.components.SegmentedDropdownMenuItem
+import com.jawzf.pixeltoolkit.core.design.components.ToolkitButtonDefaults
 import com.jawzf.pixeltoolkit.core.design.components.ToolkitFloatingToolbar
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.AppHapticMode
@@ -961,10 +962,10 @@ fun SettingsContent(
                             color = MaterialTheme.colorScheme.surfaceBright,
                             shape = Shapes.extraSmall,
                         ).padding(16.dp),
-                horizontalArrangement = Arrangement.spacedBy(ButtonGroupDefaults.ConnectedSpaceBetween),
+                horizontalArrangement = Arrangement.spacedBy(ToolkitButtonDefaults.PairSpacing),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                Button(
+                SecondaryButton(
                     onClick = {
                         HapticUtil.performVirtualKeyHaptic(view)
                         val timeStamp =
@@ -974,11 +975,7 @@ fun SettingsContent(
                             ).format(Date())
                         exportLauncher.launch("toolkit_config_$timeStamp.json")
                     },
-                    modifier =
-                        Modifier
-                            .weight(1f)
-                            .defaultMinSize(minHeight = 44.dp),
-                    shape = ButtonGroupDefaults.connectedLeadingButtonShapes().shape,
+                    modifier = Modifier.weight(1f),
                 ) {
                     Icon(
                         painter = painterResource(R.drawable.rounded_vertical_align_top_24),
@@ -988,7 +985,7 @@ fun SettingsContent(
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(stringResource(R.string.btn_export_config))
                 }
-                Button(
+                SecondaryButton(
                     onClick = {
                         HapticUtil.performVirtualKeyHaptic(view)
                         if (com.jawzf.pixeltoolkit.utils.AutoBackupManager.canListBackups(context)) {
@@ -997,11 +994,7 @@ fun SettingsContent(
                             importLauncher.launch(arrayOf("application/json"))
                         }
                     },
-                    modifier =
-                        Modifier
-                            .weight(1f)
-                            .defaultMinSize(minHeight = 44.dp),
-                    shape = ButtonGroupDefaults.connectedTrailingButtonShapes().shape,
+                    modifier = Modifier.weight(1f),
                 ) {
                     Icon(
                         painter = painterResource(R.drawable.rounded_vertical_align_bottom_24),

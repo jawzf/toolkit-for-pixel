@@ -19,7 +19,6 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -34,6 +33,9 @@ import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.cards.PermissionExtras
 import com.jawzf.pixeltoolkit.core.design.cards.resolveText
+import com.jawzf.pixeltoolkit.core.design.components.PrimaryButton
+import com.jawzf.pixeltoolkit.core.design.components.SecondaryButton
+import com.jawzf.pixeltoolkit.core.design.components.ToolkitButtonDefaults
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.theme.ToolkitShapes
 import com.jawzf.pixeltoolkit.core.design.theme.ToolkitTheme
@@ -160,23 +162,23 @@ private fun SheetButtons(
     onTurnOn: () -> Unit,
 ) {
     val view = LocalView.current
-    Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-        OutlinedButton(
+    Row(horizontalArrangement = Arrangement.spacedBy(ToolkitButtonDefaults.PairSpacing)) {
+        SecondaryButton(
             onClick = {
                 HapticUtil.performVirtualKeyHaptic(view)
                 onNotNow()
             },
-            modifier = Modifier.weight(1f).height(48.dp),
+            modifier = Modifier.weight(1f),
         ) {
             Text(stringResource(R.string.action_not_now))
         }
-        Button(
+        PrimaryButton(
             onClick = {
                 HapticUtil.performVirtualKeyHaptic(view)
                 onTurnOn()
             },
             enabled = turnOnEnabled,
-            modifier = Modifier.weight(1f).height(48.dp),
+            modifier = Modifier.weight(1f),
         ) {
             Text(stringResource(R.string.action_turn_on))
         }

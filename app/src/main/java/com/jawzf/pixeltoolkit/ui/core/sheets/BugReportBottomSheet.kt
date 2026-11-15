@@ -30,7 +30,6 @@ import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ButtonGroupDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
@@ -58,6 +57,8 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.FileProvider
 import com.jawzf.pixeltoolkit.core.data.log.LogManager
 import com.jawzf.pixeltoolkit.core.design.R
+import com.jawzf.pixeltoolkit.core.design.components.SecondaryButton
+import com.jawzf.pixeltoolkit.core.design.components.ToolkitButtonDefaults
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.sheets.ToolkitBottomSheet
@@ -466,9 +467,9 @@ fun BugReportBottomSheet(
             ) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(ButtonGroupDefaults.ConnectedSpaceBetween),
+                    horizontalArrangement = Arrangement.spacedBy(ToolkitButtonDefaults.PairSpacing),
                 ) {
-                    Button(
+                    SecondaryButton(
                         onClick = {
                             HapticUtil.performUIHaptic(view)
                             try {
@@ -506,16 +507,7 @@ fun BugReportBottomSheet(
                                     ).show()
                             }
                         },
-                        modifier =
-                            Modifier
-                                .weight(1f)
-                                .height(48.dp),
-                        shape = ButtonGroupDefaults.connectedLeadingButtonShapes().shape,
-                        colors =
-                            ButtonDefaults.buttonColors(
-                                containerColor = MaterialTheme.colorScheme.surfaceBright,
-                                contentColor = MaterialTheme.colorScheme.onSurface,
-                            ),
+                        modifier = Modifier.weight(1f),
                     ) {
                         Icon(
                             painter = painterResource(R.drawable.rounded_share_24),
@@ -524,23 +516,14 @@ fun BugReportBottomSheet(
                         )
                     }
 
-                    Button(
+                    SecondaryButton(
                         onClick = {
                             HapticUtil.performUIHaptic(view)
                             val timeStamp =
                                 SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(Date())
                             saveReportLauncher.launch("toolkit_report_$timeStamp.txt")
                         },
-                        modifier =
-                            Modifier
-                                .weight(1f)
-                                .height(48.dp),
-                        shape = ButtonGroupDefaults.connectedTrailingButtonShapes().shape,
-                        colors =
-                            ButtonDefaults.buttonColors(
-                                containerColor = MaterialTheme.colorScheme.surfaceBright,
-                                contentColor = MaterialTheme.colorScheme.onSurface,
-                            ),
+                        modifier = Modifier.weight(1f),
                     ) {
                         Icon(
                             painter = painterResource(R.drawable.rounded_download_24),
