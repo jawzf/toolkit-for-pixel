@@ -2115,6 +2115,14 @@
     <string name="tab_your_android">Your Android</string>
     <string name="home_your_android_desc">Device info and specs</string>
     <string name="home_automations_desc">Triggers, states and macros</string>
+    <string name="home_active_now">Active now</string>
+    <string name="home_browse">Browse</string>
+    <string name="home_edit_favorites">Edit</string>
+    <plurals name="home_fix_banner">
+        <item quantity="one">%1$d feature is paused until a permission is granted.</item>
+        <item quantity="other">%1$d features are paused until permissions are granted.</item>
+    </plurals>
+    <string name="home_fix_action">Fix</string>
     <string name="label_device_storage">Storage</string>
     <string name="label_device_ram">Memory</string>
     <string name="label_device_battery">Battery</string>
