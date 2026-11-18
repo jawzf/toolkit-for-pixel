@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.rememberScrollState
@@ -30,6 +31,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -136,6 +138,13 @@ import com.jawzf.pixeltoolkit.feature.sound.ui.SoundModeTileSettingsUI
 import com.jawzf.pixeltoolkit.feature.sound.ui.VolumeStepsSettingsUI
 import com.jawzf.pixeltoolkit.feature.widgets.screenoff.ScreenOffWidgetSettingsUI
 import com.jawzf.pixeltoolkit.feature.widgets.stack.ui.WidgetStackSettingsUI
+import com.jawzf.pixeltoolkit.ui.composables.CATEGORY_FEATURE_IDS
+import com.jawzf.pixeltoolkit.ui.composables.CategoryEmpty
+import com.jawzf.pixeltoolkit.ui.composables.CategoryFilter
+import com.jawzf.pixeltoolkit.ui.composables.CategoryFilterChips
+import com.jawzf.pixeltoolkit.ui.composables.CategoryHeader
+import com.jawzf.pixeltoolkit.ui.composables.CategoryTopBar
+import com.jawzf.pixeltoolkit.ui.composables.matches
 import com.jawzf.pixeltoolkit.ui.core.sheets.ActivityIconSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.ShakeForHelp
 import com.jawzf.pixeltoolkit.ui.features.display.actions.GestureActionPickerSheet
@@ -457,6 +466,16 @@ class FeatureSettingsActivity : AppCompatActivity() {
                     val pageTitle =
                         if (featureObj != null) stringResource(featureObj.title) else featureId
                     val hasMenu = featureObj != null && featureObj.aboutDescription != null
+                    val isCategory = featureId in CATEGORY_FEATURE_IDS
+                    var categoryFilter by rememberSaveable { mutableStateOf(CategoryFilter.All) }
+                    val openPageHelp: () -> Unit = {
+                        if (hasMenu) {
+                            selectedHelpFeature = featureObj
+                            showHelpSheet = true
+                        } else {
+                            showInstructionsSheet = true
+                        }
+                    }
                     val view = LocalView.current
 
                     val density = LocalDensity.current
@@ -566,6 +585,10 @@ class FeatureSettingsActivity : AppCompatActivity() {
                                         ),
                                 )
                             }
+
+                                if (isCategory) {
+                                    CategoryTopBar(onBack = { finish() }, onHelp = openPageHelp)
+                                }
 
                             if (featureId == "AOD wallpaper") {
                                 AodWallpaperPreviewCard(
@@ -723,7 +746,32 @@ class FeatureSettingsActivity : AppCompatActivity() {
                                         }
                                     }
 
-                                sectionChildLists.forEach { sectionChildren ->
+                                    val visibleSections =
+                                        if (isCategory) {
+                                            sectionChildLists
+                                                .map { section ->
+                                                    section.filter {
+                                                        categoryFilter.matches(
+                                                            it.showToggle,
+                                                            it.isEnabled(viewModel),
+                                                        )
+                                                    }
+                                                }.filter { it.isNotEmpty() }
+                                        } else {
+                                            sectionChildLists
+                                        }
+                                    if (isCategory && featureObj != null) {
+                                        CategoryHeader(
+                                            iconRes = featureObj.iconRes,
+                                            title = pageTitle,
+                                            total = children.size,
+                                            onCount = children.count { it.showToggle && it.isEnabled(viewModel) },
+                                        )
+                                        CategoryFilterChips(selected = categoryFilter, onSelect = { categoryFilter = it })
+                                        if (visibleSections.isEmpty()) CategoryEmpty()
+                                    }
+
+                                visibleSections.forEach { sectionChildren ->
                                     RoundedCardContainer(
                                         modifier =
                                             Modifier
@@ -1780,17 +1828,27 @@ class FeatureSettingsActivity : AppCompatActivity() {
                             }
                             // Bottom padding for toolbar
                             if (featureId != "Quick settings tiles" && featureId != "Location reached") {
-                                androidx.compose.foundation.layout.Spacer(
-                                    modifier =
-                                        Modifier.height(
-                                            150.dp,
-                                        ),
-                                )
+                                if (isCategory) {
+                                    androidx.compose.foundation.layout.Spacer(
+                                        modifier =
+                                            Modifier
+                                                .navigationBarsPadding()
+                                                .height(24.dp),
+                                    )
+                                } else {
+                                    androidx.compose.foundation.layout.Spacer(
+                                        modifier =
+                                            Modifier.height(
+                                                150.dp,
+                                            ),
+                                    )
+                                }
                             }
                         }
 
                         val isStandbyMultiSelecting = featureId == "Standby apps" && standbyAppsSelectedPackages.isNotEmpty()
 
+                        if (!isCategory) {
                         ToolkitFloatingToolbar(
                             title =
                                 if (isStandbyMultiSelecting) {
@@ -1836,16 +1894,10 @@ class FeatureSettingsActivity : AppCompatActivity() {
                                 if (isStandbyMultiSelecting || (featureId == "Island" || featureId in ISLAND_SUB_PAGE_IDS)) {
                                     null
                                 } else {
-                                    {
-                                        if (hasMenu) {
-                                            selectedHelpFeature = featureObj
-                                            showHelpSheet = true
-                                        } else {
-                                            showInstructionsSheet = true
-                                        }
-                                    }
+                                    openPageHelp
                                 },
                         )
+                        }
                     }
 
                     if (featureId == "Activity launcher") {
