@@ -71,8 +71,6 @@ import com.jawzf.pixeltoolkit.core.design.state.MenuStateManager
 import com.jawzf.pixeltoolkit.core.design.theme.ToolkitTheme
 import com.jawzf.pixeltoolkit.core.platform.AppComponents.CONSCIOUS_GATE_FEATURE_ID
 import com.jawzf.pixeltoolkit.core.platform.device.DeviceUtils
-import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
-import com.jawzf.pixeltoolkit.core.platform.shell.ShellUtils
 import com.jawzf.pixeltoolkit.domain.registry.FeatureRegistry
 import com.jawzf.pixeltoolkit.domain.registry.PermissionRegistry
 import com.jawzf.pixeltoolkit.feature.apps.applock.ui.AppLockSettingsUI
@@ -145,6 +143,7 @@ import com.jawzf.pixeltoolkit.ui.composables.CategoryFilterChips
 import com.jawzf.pixeltoolkit.ui.composables.CategoryHeader
 import com.jawzf.pixeltoolkit.ui.composables.CategoryTopBar
 import com.jawzf.pixeltoolkit.ui.composables.matches
+import com.jawzf.pixeltoolkit.ui.composables.missingPermissionItems
 import com.jawzf.pixeltoolkit.ui.core.sheets.ActivityIconSheet
 import com.jawzf.pixeltoolkit.ui.core.sheets.ShakeForHelp
 import com.jawzf.pixeltoolkit.ui.features.display.actions.GestureActionPickerSheet
@@ -327,81 +326,8 @@ class FeatureSettingsActivity : AppCompatActivity() {
                         isShizukuPermissionGranted,
                     ) {
                         val hasMissingPermissions =
-                            when (featureId) {
-                                "Screen off widget" -> !isAccessibilityEnabled
-                                "Widget stack" -> !isOverlayPermissionGranted
-                                "Statusbar icons" -> !isWriteSecureSettingsEnabled
-                                "Notification lighting" ->
-                                    !isOverlayPermissionGranted ||
-                                        !isNotificationLightingAccessibilityEnabled ||
-                                        !isNotificationListenerEnabled
-                                "Flashlight pulse" -> !isNotificationListenerEnabled
-                                "Hilight", "Hilight notifications", "Hilight live progress" -> !isNotificationListenerEnabled || !isShizukuPermissionGranted
-                                "Button remap" -> !isAccessibilityEnabled
-                                "Face unlock brightness" -> !isAccessibilityEnabled
-                                "Screenshots" -> !isAccessibilityEnabled || !viewModel.isStoragePermissionGranted.value
-                                "Lock screen shortcuts" -> !isAccessibilityEnabled
-                                "Volume steps" -> !isAccessibilityEnabled
-                                "App volume" -> !isAccessibilityEnabled || !isShizukuPermissionGranted
-                                "Dynamic night light" ->
-                                    (if (viewModel.isUseUsageAccess.value) !viewModel.isUsageStatsPermissionGranted.value else !isAccessibilityEnabled) ||
-                                        !isWriteSecureSettingsEnabled
-                                "Smart pixels" -> !isAccessibilityEnabled
-                                "Duo", "Status glance" -> !isAccessibilityEnabled
-                                "AOD wallpaper" -> !isAccessibilityEnabled || !viewModel.isStoragePermissionGranted.value
-                                "Snooze system notifications" -> !isNotificationListenerEnabled
-                                "Auto-dismiss notifications" -> !isNotificationListenerEnabled
-                                "Screen locked security" ->
-                                    !ShellUtils.hasPermission(
-                                        context,
-                                    )
-                                "App lock" ->
-                                    !isAccessibilityEnabled ||
-                                        (if (viewModel.isUseUsageAccess.value) !viewModel.isUsageStatsPermissionGranted.value else false)
-                                CONSCIOUS_GATE_FEATURE_ID ->
-                                    !isAccessibilityEnabled ||
-                                        (if (viewModel.isUseUsageAccess.value) !viewModel.isUsageStatsPermissionGranted.value else false)
-                                "Freeze" ->
-                                    !ShellUtils.hasPermission(
-                                        context,
-                                    )
-
-                                "Location reached" ->
-                                    !viewModel.isLocationPermissionGranted.value ||
-                                        !viewModel.isBackgroundLocationPermissionGranted.value
-                                "Quick settings tiles" -> !viewModel.isWriteSettingsEnabled.value
-                                "Screen refresh rate" ->
-                                    !ShellUtils.hasPermission(
-                                        context,
-                                    )
-                                // Top level checks for other features (rarely hit if they are children, but safe to add)
-                                "Toolkit On Display" -> !isAccessibilityEnabled || !isNotificationListenerEnabled
-                                "Call vibrations" -> !isReadPhoneStateEnabled || !isNotificationListenerEnabled
-                                "Maps power saving mode" ->
-                                    !isNotificationListenerEnabled ||
-                                        !ShellUtils.hasPermission(
-                                            context,
-                                        )
-
-                                "Caffeinate" -> !viewModel.isPostNotificationsEnabled.value
-                                "Text and animations" -> !viewModel.isWriteSettingsEnabled.value || !isWriteSecureSettingsEnabled
-                                "Always on Display" -> !isWriteSecureSettingsEnabled
-                                "Lock screen clock" -> !isWriteSecureSettingsEnabled
-                                "Other customizations" ->
-                                    !ShellUtils.hasPermission(
-                                        context,
-                                    )
-
-                                "Shut-Up!" -> !isWriteSecureSettingsEnabled || !viewModel.isUsageStatsPermissionGranted.value
-                                "Power and Battery" -> !isWriteSecureSettingsEnabled
-                                "Networks" ->
-                                    !isWriteSecureSettingsEnabled &&
-                                        !ShellUtils.hasPermission(
-                                            context,
-                                        )
-
-                                else -> false
-                            }
+                            featureObj != null &&
+                                missingPermissionItems(featureObj, context, viewModel, this@FeatureSettingsActivity).isNotEmpty()
                         if (hasMissingPermissions) {
                             showPermissionSheet = true
                         }
@@ -430,15 +356,21 @@ class FeatureSettingsActivity : AppCompatActivity() {
                                     showPermissionSheet = false
                                     childFeatureForPermissions = null
                                 },
-                                featureTitle =
-                                    if (featureObjForPermissions != null && childFeatureForPermissions == null) {
-                                        stringResource(
-                                            featureObjForPermissions.title,
-                                        )
-                                    } else {
-                                        featureIdForPermissions
-                                    },
+                                featureTitle = featureObjForPermissions?.let { stringResource(it.title) } ?: featureIdForPermissions,
                                 permissions = permissionItems,
+                                onTurnOn = {
+                                    showPermissionSheet = false
+                                    childFeatureForPermissions = null
+                                    val target = featureObjForPermissions
+                                    if (target != null && target.showToggle && !target.isEnabled(viewModel)) {
+                                        BiometricSecurityHelper.runWithAuth(
+                                            activity = this@FeatureSettingsActivity,
+                                            feature = target,
+                                            isToggle = true,
+                                            action = { target.onToggle(viewModel, context, true) },
+                                        )
+                                    }
+                                },
                             )
                         }
                     }
@@ -754,6 +686,12 @@ class FeatureSettingsActivity : AppCompatActivity() {
                                                         categoryFilter.matches(
                                                             it.showToggle,
                                                             it.isEnabled(viewModel),
+                                                            missingPermissionItems(
+                                                                it,
+                                                                context,
+                                                                viewModel,
+                                                                this@FeatureSettingsActivity,
+                                                            ).isNotEmpty(),
                                                         )
                                                     }
                                                 }.filter { it.isNotEmpty() }
@@ -782,96 +720,9 @@ class FeatureSettingsActivity : AppCompatActivity() {
                                             val permissionAwareToggle: (Boolean) -> Unit =
                                                 { enabled ->
                                                     val missingPermission =
-                                                        when (child.id) {
-                                                            "Screen off widget" -> !isAccessibilityEnabled
-                                                            "Statusbar icons" -> !isWriteSecureSettingsEnabled
-                                                            "Notification lighting" ->
-                                                                !isOverlayPermissionGranted ||
-                                                                    !isNotificationLightingAccessibilityEnabled ||
-                                                                    !isNotificationListenerEnabled
-                                                            "Flashlight pulse" -> !isNotificationListenerEnabled
-                                                            "Hilight", "Hilight notifications", "Hilight live progress" -> !isNotificationListenerEnabled || !isShizukuPermissionGranted
-                                                            "Button remap" -> !isAccessibilityEnabled
-                                                            "Face unlock brightness" -> !isAccessibilityEnabled
-                                                            "Screenshots" -> !isAccessibilityEnabled || !viewModel.isStoragePermissionGranted.value
-                                                            "Lock screen shortcuts" -> !isAccessibilityEnabled
-                                                            "Volume steps" -> !isAccessibilityEnabled
-                                                            "App volume" -> !isAccessibilityEnabled || !isShizukuPermissionGranted
-                                                            "Dynamic night light" ->
-                                                                (if (viewModel.isUseUsageAccess.value) !viewModel.isUsageStatsPermissionGranted.value else !isAccessibilityEnabled) ||
-                                                                    !isWriteSecureSettingsEnabled
-                                                            "Smart pixels" -> !isAccessibilityEnabled
-                                                            "Duo", "Status glance" -> !isAccessibilityEnabled
-                                                            "AOD wallpaper" -> !isAccessibilityEnabled || !viewModel.isStoragePermissionGranted.value
-                                                            "Snooze system notifications" -> !isNotificationListenerEnabled
-                                 "Auto-dismiss notifications" -> !isNotificationListenerEnabled
-                                                            "Screen locked security" ->
-                                                                !ShellUtils.hasPermission(
-                                                                    context,
-                                                                )
-                                                            "App lock" ->
-                                                                !isAccessibilityEnabled ||
-                                                                    (if (viewModel.isUseUsageAccess.value) !viewModel.isUsageStatsPermissionGranted.value else false)
-                                                            CONSCIOUS_GATE_FEATURE_ID ->
-                                                                !isAccessibilityEnabled ||
-                                                                    (if (viewModel.isUseUsageAccess.value) !viewModel.isUsageStatsPermissionGranted.value else false)
-                                                            "Freeze" ->
-                                                                !ShellUtils.hasPermission(
-                                                                    context,
-                                                                )
+                                                        missingPermissionItems(child, context, viewModel, this@FeatureSettingsActivity).isNotEmpty()
 
-                                                            "Toolkit On Display" ->
-                                                                !isAccessibilityEnabled ||
-                                                                    !isNotificationListenerEnabled
-                                                            "Call vibrations" -> !isReadPhoneStateEnabled || !isNotificationListenerEnabled
-
-                                                            "Batteries" -> (
-                                                                Build.VERSION.SDK_INT >= Build.VERSION_CODES.S &&
-                                                                    androidx.core.content.ContextCompat.checkSelfPermission(
-                                                                        context,
-                                                                        android.Manifest.permission.BLUETOOTH_CONNECT,
-                                                                    ) != android.content.pm.PackageManager.PERMISSION_GRANTED
-                                                            )
-
-                                                            "Maps power saving mode" ->
-                                                                !isNotificationListenerEnabled ||
-                                                                    !ShellUtils.hasPermission(
-                                                                        context,
-                                                                    )
-
-                                                            "Caffeinate" -> !viewModel.isPostNotificationsEnabled.value
-                                                            "Text and animations" ->
-                                                                !viewModel.isWriteSettingsEnabled.value ||
-                                                                    !isWriteSecureSettingsEnabled
-                                                            "Always on Display" -> !isWriteSecureSettingsEnabled
-                                                            "Lock screen clock" -> !isWriteSecureSettingsEnabled
-                                                            "Screen refresh rate" ->
-                                                                !ShellUtils.hasPermission(
-                                                                    context,
-                                                                )
-
-                                                            "Shut-Up!" ->
-                                                                !isWriteSecureSettingsEnabled ||
-                                                                    !viewModel.isUsageStatsPermissionGranted.value
-                                                            "Power and Battery" -> !isWriteSecureSettingsEnabled
-                                                            "Networks" ->
-                                                                !isWriteSecureSettingsEnabled &&
-                                                                    !ShellUtils.hasPermission(
-                                                                        context,
-                                                                    )
-
-                                                            "Call Sync" ->
-                                                                !PermissionUtils.hasCallPermissions(
-                                                                    context,
-                                                                )
-                                                            "Notification Sync" -> !viewModel.isNotificationListenerEnabled.value
-
-                                                            "Disable safe volume warning" -> !isWriteSecureSettingsEnabled
-                                                            "Notification snoozing" -> !isWriteSecureSettingsEnabled
-                                                            else -> false
-                                                        }
-
-                                                    if (missingPermission) {
+                                                    if (enabled && missingPermission) {
                                                         childFeatureForPermissions = child.id
                                                         showPermissionSheet = true
                                                     } else {

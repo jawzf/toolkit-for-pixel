@@ -46,15 +46,18 @@ val CATEGORY_FEATURE_IDS =
         "Security",
     )
 
-enum class CategoryFilter { All, On }
+enum class CategoryFilter { All, On, NeedsSetup }
 
+/** "On" only matches rows with a toggle, and "Needs setup" matches any row whose permission sheet has a step not done. */
 fun CategoryFilter.matches(
     showToggle: Boolean,
     isOn: Boolean,
+    needsSetup: Boolean,
 ): Boolean =
     when (this) {
         CategoryFilter.All -> true
         CategoryFilter.On -> showToggle && isOn
+        CategoryFilter.NeedsSetup -> needsSetup
     }
 
 @Composable
@@ -171,6 +174,7 @@ fun CategoryFilterChips(
                 when (filter) {
                     CategoryFilter.All -> R.string.category_filter_all
                     CategoryFilter.On -> R.string.category_filter_on
+                    CategoryFilter.NeedsSetup -> R.string.category_filter_needs_setup
                 }
             CategoryChip(
                 label = stringResource(labelRes),
