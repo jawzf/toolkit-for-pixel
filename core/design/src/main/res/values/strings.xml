@@ -2123,6 +2123,14 @@
         <item quantity="other">%1$d features are paused until permissions are granted.</item>
     </plurals>
     <string name="home_fix_action">Fix</string>
+    <plurals name="category_feature_count">
+        <item quantity="one">%1$d feature</item>
+        <item quantity="other">%1$d features</item>
+    </plurals>
+    <string name="category_summary">%1$s · %2$d on</string>
+    <string name="category_filter_all">All</string>
+    <string name="category_filter_on">On</string>
+    <string name="category_filter_empty">Nothing matches this filter.</string>
     <string name="label_device_storage">Storage</string>
     <string name="label_device_ram">Memory</string>
     <string name="label_device_battery">Battery</string>
