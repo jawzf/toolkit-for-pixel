@@ -14,22 +14,50 @@ class CategoryFilterTest {
         val booleans = listOf(true, false)
         for (showToggle in booleans) {
             for (isOn in booleans) {
-                assertTrue(
-                    CategoryFilter.All.matches(
-                        showToggle = showToggle,
-                        isOn = isOn,
-                    ),
-                )
+                for (needsSetup in booleans) {
+                    assertTrue(
+                        CategoryFilter.All.matches(
+                            showToggle = showToggle,
+                            isOn = isOn,
+                            needsSetup = needsSetup,
+                        ),
+                    )
+                }
             }
         }
     }
 
     @Test
     fun onMatchesOnlyWhenToggleShownAndIsOn() {
-        assertTrue(CategoryFilter.On.matches(showToggle = true, isOn = true))
-        assertFalse(CategoryFilter.On.matches(showToggle = true, isOn = false))
-        assertFalse(CategoryFilter.On.matches(showToggle = false, isOn = true))
-        assertFalse(CategoryFilter.On.matches(showToggle = false, isOn = false))
+        for (needsSetup in listOf(false, true)) {
+            assertTrue(CategoryFilter.On.matches(showToggle = true, isOn = true, needsSetup = needsSetup))
+            assertFalse(CategoryFilter.On.matches(showToggle = true, isOn = false, needsSetup = needsSetup))
+            assertFalse(CategoryFilter.On.matches(showToggle = false, isOn = true, needsSetup = needsSetup))
+            assertFalse(CategoryFilter.On.matches(showToggle = false, isOn = false, needsSetup = needsSetup))
+        }
+    }
+
+    @Test
+    fun needsSetupMatchesOnlyWhenSetupIsMissing() {
+        val booleans = listOf(true, false)
+        for (showToggle in booleans) {
+            for (isOn in booleans) {
+                assertTrue(
+                    CategoryFilter.NeedsSetup.matches(
+                        showToggle = showToggle,
+                        isOn = isOn,
+                        needsSetup = true,
+                    ),
+                )
+                assertFalse(
+                    CategoryFilter.NeedsSetup.matches(
+                        showToggle = showToggle,
+                        isOn = isOn,
+                        needsSetup = false,
+                    ),
+                )
+            }
+        }
     }
 
     @Test
