@@ -13,8 +13,9 @@ fun activeNowFeatures(
     return pinned + rest
 }
 
+/** Features in [active] that are on but whose permission sheet still has a step not done. */
 fun featuresNeedingFix(
     active: List<Feature>,
     isOn: (Feature) -> Boolean,
-    canToggle: (Feature) -> Boolean,
-): List<Feature> = active.filter { isOn(it) && !canToggle(it) }
+    hasMissingSteps: (Feature) -> Boolean,
+): List<Feature> = active.filter { isOn(it) && hasMissingSteps(it) }

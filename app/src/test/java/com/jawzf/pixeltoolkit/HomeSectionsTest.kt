@@ -84,7 +84,7 @@ class HomeSectionsTest {
     }
 
     @Test
-    fun featuresNeedingFixIncludesOnlyOnFeaturesThatCannotToggle() {
+    fun featuresNeedingFixIncludesOnlyOnFeaturesWithMissingSteps() {
         val onAndBlocked = FakeFeature("on_blocked")
         val onAndAllowed = FakeFeature("on_allowed")
         val offAndBlocked = FakeFeature("off_blocked")
@@ -92,13 +92,13 @@ class HomeSectionsTest {
 
         val active = listOf(onAndBlocked, onAndAllowed, offAndBlocked, offAndAllowed)
         val onSet = setOf("on_blocked", "on_allowed")
-        val canToggleSet = setOf("on_allowed", "off_allowed")
+        val missingSet = setOf("on_blocked", "off_blocked")
 
         val result =
             featuresNeedingFix(
                 active = active,
                 isOn = { it.id in onSet },
-                canToggle = { it.id in canToggleSet },
+                hasMissingSteps = { it.id in missingSet },
             )
 
         assertEquals(listOf(onAndBlocked), result)

@@ -1,11 +1,8 @@
 package com.jawzf.pixeltoolkit.ui.composables
 
 import android.app.Activity
-import android.content.ClipData
-import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
-import android.provider.Settings
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
@@ -65,7 +62,6 @@ import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.core.net.toUri
 import androidx.fragment.app.FragmentActivity
 import com.jawzf.pixeltoolkit.FeatureSettingsActivity
 import com.jawzf.pixeltoolkit.SettingsActivity
@@ -78,15 +74,11 @@ import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.modifiers.scrollMotionBlur
 import com.jawzf.pixeltoolkit.core.design.sheets.InstructionsBottomSheet
-import com.jawzf.pixeltoolkit.core.design.sheets.PermissionItem
 import com.jawzf.pixeltoolkit.core.design.sheets.PermissionsBottomSheet
 import com.jawzf.pixeltoolkit.core.design.theme.ToolkitShapes
 import com.jawzf.pixeltoolkit.core.design.theme.ToolkitTheme
-import com.jawzf.pixeltoolkit.core.platform.permissions.PermissionUtils
-import com.jawzf.pixeltoolkit.core.platform.shell.RootUtils
 import com.jawzf.pixeltoolkit.domain.model.Feature
 import com.jawzf.pixeltoolkit.domain.registry.FeatureRegistry
-import com.jawzf.pixeltoolkit.domain.registry.PermissionRegistry
 import com.jawzf.pixeltoolkit.domain.registry.QSTileRegistry
 import com.jawzf.pixeltoolkit.feature.apps.freeze.FreezeManager
 import com.jawzf.pixeltoolkit.ui.activities.AppFreezingActivity
@@ -112,17 +104,6 @@ fun SetupFeatures(
     onSearchHandled: () -> Unit = {},
     onHelpClick: () -> Unit = {},
 ) {
-    val isAccessibilityEnabled by viewModel.isAccessibilityEnabled
-    val isWriteSecureSettingsEnabled by viewModel.isWriteSecureSettingsEnabled
-    val isWriteSettingsEnabled by viewModel.isWriteSettingsEnabled
-    val isShizukuAvailable by viewModel.isShizukuAvailable
-    val isShizukuPermissionGranted by viewModel.isShizukuPermissionGranted
-    val isNotificationListenerEnabled by viewModel.isNotificationListenerEnabled
-    val isOverlayPermissionGranted by viewModel.isOverlayPermissionGranted
-    val isNotificationLightingAccessibilityEnabled by viewModel.isNotificationLightingAccessibilityEnabled
-    val isRootEnabled by viewModel.isRootEnabled
-    val isRootPermissionGranted by viewModel.isRootPermissionGranted
-    val isReadPhoneStateEnabled by viewModel.isReadPhoneStateEnabled
     viewModel.remap.isButtonRemapEnabled.value
     viewModel.nightLight.isDynamicNightLightEnabled.value
 
@@ -131,7 +112,7 @@ fun SetupFeatures(
     val context = LocalContext.current
 
     var showSheet by remember { mutableStateOf(false) }
-    var currentFeature by remember { mutableStateOf<Int?>(null) }
+    var currentFeature by remember { mutableStateOf<Feature?>(null) }
     var showReorderFavoritesSheet by remember { mutableStateOf(false) }
 
     // Help Sheet State
@@ -152,700 +133,26 @@ fun SetupFeatures(
         }
     }
 
-    LaunchedEffect(
-        showSheet,
-        isAccessibilityEnabled,
-        isWriteSecureSettingsEnabled,
-        isWriteSettingsEnabled,
-        isShizukuAvailable,
-        isShizukuPermissionGranted,
-        isRootEnabled,
-        isRootPermissionGranted,
-        isNotificationListenerEnabled,
-        isOverlayPermissionGranted,
-        isNotificationLightingAccessibilityEnabled,
-        isReadPhoneStateEnabled,
-        currentFeature,
-    ) {
-        if (showSheet && currentFeature != null) {
-            val missing = mutableListOf<PermissionItem>()
-            when (currentFeature) {
-                R.string.feat_screen_off_widget_title -> {
-                    if (!isAccessibilityEnabled) {
-                        missing.add(
-                            PermissionItem(
-                                iconRes = R.drawable.rounded_settings_accessibility_24,
-                                title = R.string.perm_accessibility_title,
-                                description = R.string.perm_accessibility_desc_common,
-                                dependentFeatures = PermissionRegistry.getFeatures("ACCESSIBILITY"),
-                                action = {
-                                    PermissionUtils.openAccessibilitySettings(context)
-                                },
-                                isGranted = isAccessibilityEnabled,
-                            ),
-                        )
-                    }
-                }
-
-                R.string.feat_statusbar_icons_title -> {
-                    if (!isWriteSecureSettingsEnabled) {
-                        missing.add(
-                            PermissionItem(
-                                iconRes = R.drawable.rounded_security_24,
-                                title = R.string.perm_write_secure_title,
-                                description = R.string.perm_write_secure_desc_common,
-                                dependentFeatures = PermissionRegistry.getFeatures("WRITE_SECURE_SETTINGS"),
-                                actionLabel = R.string.perm_action_copy_adb,
-                                action = {
-                                    val adbCommand =
-                                        "adb shell pm grant com.jawzf.pixeltoolkit android.permission.WRITE_SECURE_SETTINGS"
-                                    val clipboard =
-                                        context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                                    val clip = ClipData.newPlainText("adb_command", adbCommand)
-                                    clipboard.setPrimaryClip(clip)
-                                },
-                                secondaryActionLabel = R.string.perm_action_check,
-                                secondaryAction = {
-                                    viewModel.isWriteSecureSettingsEnabled.value =
-                                        viewModel.canWriteSecureSettings(context)
-                                },
-                                isGranted = isWriteSecureSettingsEnabled,
-                            ),
-                        )
-                    }
-                }
-
-                R.string.feat_notification_lighting_title -> {
-                    if (!isOverlayPermissionGranted) {
-                        missing.add(
-                            PermissionItem(
-                                iconRes = R.drawable.rounded_magnify_fullscreen_24,
-                                title = R.string.perm_overlay_title,
-                                description = R.string.perm_overlay_desc,
-                                dependentFeatures = PermissionRegistry.getFeatures("DRAW_OVERLAYS"),
-                                actionLabel = R.string.perm_action_grant,
-                                action = {
-                                    val intent =
-                                        Intent(
-                                            Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                                            "package:${context.packageName}".toUri(),
-                                        )
-                                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                                    context.startActivity(intent)
-                                },
-                                isGranted = isOverlayPermissionGranted,
-                            ),
-                        )
-                    }
-                    if (!isNotificationLightingAccessibilityEnabled) {
-                        missing.add(
-                            PermissionItem(
-                                iconRes = R.drawable.rounded_settings_accessibility_24,
-                                title = R.string.perm_accessibility_title,
-                                description = R.string.perm_accessibility_desc_lighting,
-                                dependentFeatures = PermissionRegistry.getFeatures("ACCESSIBILITY"),
-                                actionLabel = R.string.perm_action_enable,
-                                action = {
-                                    PermissionUtils.openAccessibilitySettings(context)
-                                },
-                                isGranted = isNotificationLightingAccessibilityEnabled,
-                            ),
-                        )
-                    }
-                    if (!isNotificationListenerEnabled) {
-                        missing.add(
-                            PermissionItem(
-                                iconRes = R.drawable.rounded_notifications_unread_24,
-                                title = R.string.perm_notif_listener_title,
-                                description = R.string.perm_notif_listener_desc_lighting,
-                                dependentFeatures = PermissionRegistry.getFeatures("NOTIFICATION_LISTENER"),
-                                actionLabel = R.string.perm_action_grant,
-                                action = { viewModel.requestNotificationListenerPermission(context) },
-                                isGranted = isNotificationListenerEnabled,
-                            ),
-                        )
-                    }
-                }
-
-                R.string.feat_button_remap_title -> {
-                    if (!isAccessibilityEnabled) {
-                        missing.add(
-                            PermissionItem(
-                                iconRes = R.drawable.rounded_settings_accessibility_24,
-                                title = R.string.perm_accessibility_title,
-                                description = R.string.perm_accessibility_desc_remap,
-                                dependentFeatures = PermissionRegistry.getFeatures("ACCESSIBILITY"),
-                                actionLabel = R.string.perm_action_enable,
-                                action = {
-                                    PermissionUtils.openAccessibilitySettings(context)
-                                },
-                                isGranted = isAccessibilityEnabled,
-                            ),
-                        )
-                    }
-                }
-
-                R.string.feat_dynamic_night_light_title -> {
-                    if (!isAccessibilityEnabled) {
-                        missing.add(
-                            PermissionItem(
-                                iconRes = R.drawable.rounded_settings_accessibility_24,
-                                title = R.string.perm_accessibility_title,
-                                description = R.string.perm_accessibility_desc_night_light,
-                                dependentFeatures = PermissionRegistry.getFeatures("ACCESSIBILITY"),
-                                actionLabel = R.string.perm_action_enable,
-                                action = {
-                                    PermissionUtils.openAccessibilitySettings(context)
-                                },
-                                isGranted = isAccessibilityEnabled,
-                            ),
-                        )
-                    }
-                    if (!isWriteSecureSettingsEnabled) {
-                        missing.add(
-                            PermissionItem(
-                                iconRes = R.drawable.rounded_security_24,
-                                title = R.string.perm_write_secure_title,
-                                description = R.string.perm_write_secure_desc_night_light,
-                                dependentFeatures = PermissionRegistry.getFeatures("WRITE_SECURE_SETTINGS"),
-                                actionLabel = R.string.perm_action_how_to,
-                                action = {
-                                    // instructions
-                                },
-                                isGranted = isWriteSecureSettingsEnabled,
-                            ),
-                        )
-                    }
-                }
-
-                R.string.feat_shut_up_title -> {
-                    if (!isWriteSecureSettingsEnabled) {
-                        missing.add(
-                            PermissionItem(
-                                iconRes = R.drawable.rounded_security_24,
-                                title = R.string.perm_write_secure_title,
-                                description = R.string.perm_write_secure_desc_common,
-                                dependentFeatures = PermissionRegistry.getFeatures("WRITE_SECURE_SETTINGS"),
-                                actionLabel = R.string.perm_action_grant,
-                                action = { viewModel.requestWriteSecureSettingsPermission(context) },
-                                isGranted = isWriteSecureSettingsEnabled,
-                            ),
-                        )
-                    }
-                    if (!isWriteSettingsEnabled) {
-                        missing.add(
-                            PermissionItem(
-                                iconRes = R.drawable.rounded_settings_24,
-                                title = R.string.perm_write_settings_title,
-                                description = R.string.perm_write_settings_desc,
-                                dependentFeatures = PermissionRegistry.getFeatures("WRITE_SETTINGS"),
-                                actionLabel = R.string.perm_action_grant,
-                                action = { viewModel.requestWriteSettingsPermission(context) },
-                                isGranted = isWriteSettingsEnabled,
-                            ),
-                        )
-                    }
-                    if (!viewModel.isUsageStatsPermissionGranted.value) {
-                        missing.add(
-                            PermissionItem(
-                                iconRes = R.drawable.rounded_app_registration_24,
-                                title = R.string.perm_usage_stats_title,
-                                description = R.string.perm_usage_stats_desc,
-                                dependentFeatures = PermissionRegistry.getFeatures("USAGE_STATS"),
-                                actionLabel = R.string.perm_action_grant,
-                                action = { viewModel.requestUsageStatsPermission(context) },
-                                isGranted = viewModel.isUsageStatsPermissionGranted.value,
-                            ),
-                        )
-                    }
-                }
-
-                R.string.feat_screen_locked_security_title -> {
-                    if (isRootEnabled) {
-                        if (!isRootPermissionGranted) {
-                            missing.add(
-                                PermissionItem(
-                                    iconRes = R.drawable.rounded_security_24,
-                                    title = R.string.perm_root_title,
-                                    description = R.string.perm_root_desc,
-                                    dependentFeatures = listOf(R.string.feat_screen_locked_security_title),
-                                    action = {
-                                        viewModel.isRootPermissionGranted.value =
-                                            RootUtils
-                                                .isRootPermissionGranted()
-                                    },
-                                    isGranted = isRootPermissionGranted,
-                                ),
-                            )
-                        }
-                    } else {
-                        if (!isShizukuAvailable) {
-                            missing.add(
-                                PermissionItem(
-                                    iconRes = R.drawable.rounded_adb_24,
-                                    title = R.string.perm_shizuku_title,
-                                    description = R.string.perm_shizuku_desc,
-                                    dependentFeatures = listOf(R.string.feat_screen_locked_security_title),
-                                    action = {
-                                        val intent =
-                                            Intent(
-                                                Intent.ACTION_VIEW,
-                                                "https://github.com/rushiranpise/Shizuku-Next".toUri(),
-                                            )
-                                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                                        context.startActivity(intent)
-                                    },
-                                    secondaryActionLabel = R.string.perm_porter_install_action,
-                                    secondaryAction = {
-                                        val intent =
-                                            Intent(
-                                                Intent.ACTION_VIEW,
-                                                "https://github.com/d4rken-org/porter".toUri(),
-                                            )
-                                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                                        context.startActivity(intent)
-                                    },
-                                    isGranted = isShizukuAvailable,
-                                ),
-                            )
-                        } else if (!isShizukuPermissionGranted) {
-                            missing.add(
-                                PermissionItem(
-                                    iconRes = R.drawable.rounded_adb_24,
-                                    title = R.string.perm_shizuku_grant_title,
-                                    description = R.string.perm_shizuku_grant_desc,
-                                    dependentFeatures = listOf(R.string.feat_screen_locked_security_title),
-                                    action = { viewModel.requestShizukuPermission() },
-                                    isGranted = isShizukuPermissionGranted,
-                                ),
-                            )
-                        }
-                    }
-                }
-
-                R.string.feat_app_lock_title -> {
-                    if (!isAccessibilityEnabled) {
-                        missing.add(
-                            PermissionItem(
-                                iconRes = R.drawable.rounded_settings_accessibility_24,
-                                title = R.string.perm_accessibility_title,
-                                description = R.string.perm_accessibility_desc_common,
-                                dependentFeatures = PermissionRegistry.getFeatures("ACCESSIBILITY"),
-                                actionLabel = R.string.perm_action_enable,
-                                action = {
-                                    PermissionUtils.openAccessibilitySettings(context)
-                                },
-                                isGranted = isAccessibilityEnabled,
-                            ),
-                        )
-                    }
-                }
-
-                R.string.feat_smart_pixels_title -> {
-                    if (!isAccessibilityEnabled) {
-                        missing.add(
-                            PermissionItem(
-                                iconRes = R.drawable.rounded_settings_accessibility_24,
-                                title = R.string.perm_accessibility_title,
-                                description = R.string.perm_accessibility_desc_common,
-                                dependentFeatures = PermissionRegistry.getFeatures("ACCESSIBILITY"),
-                                actionLabel = R.string.perm_action_enable,
-                                action = {
-                                    val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
-                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                                    context.startActivity(intent)
-                                },
-                                isGranted = isAccessibilityEnabled,
-                            ),
-                        )
-                    }
-                }
-
-                R.string.feat_call_vibrations_title -> {
-                    if (!viewModel.isReadPhoneStateEnabled.value) {
-                        missing.add(
-                            PermissionItem(
-                                iconRes = R.drawable.rounded_mobile_24,
-                                title = R.string.permission_read_phone_state_title,
-                                description = R.string.permission_read_phone_state_desc_call_vibrations,
-                                dependentFeatures = PermissionRegistry.getFeatures("READ_PHONE_STATE"),
-                                actionLabel = R.string.perm_action_grant,
-                                action = { viewModel.requestReadPhoneStatePermission(context as Activity) },
-                                isGranted = isReadPhoneStateEnabled,
-                            ),
-                        )
-                    }
-                    if (!isNotificationListenerEnabled) {
-                        missing.add(
-                            PermissionItem(
-                                iconRes = R.drawable.rounded_notifications_unread_24,
-                                title = R.string.perm_notif_listener_title,
-                                description = R.string.perm_notif_listener_desc_lighting,
-                                dependentFeatures = PermissionRegistry.getFeatures("NOTIFICATION_LISTENER"),
-                                actionLabel = R.string.perm_action_grant,
-                                action = { viewModel.requestNotificationListenerPermission(context) },
-                                isGranted = isNotificationListenerEnabled,
-                            ),
-                        )
-                    }
-                }
-
-                R.string.flashlight_pulse_title -> {
-                    if (!isNotificationListenerEnabled) {
-                        missing.add(
-                            PermissionItem(
-                                iconRes = R.drawable.rounded_notifications_unread_24,
-                                title = R.string.perm_notif_listener_title,
-                                description = R.string.perm_notif_listener_desc_lighting,
-                                dependentFeatures = PermissionRegistry.getFeatures("NOTIFICATION_LISTENER"),
-                                actionLabel = R.string.perm_action_grant,
-                                action = { viewModel.requestNotificationListenerPermission(context) },
-                                isGranted = isNotificationListenerEnabled,
-                            ),
-                        )
-                    }
-                }
-
-                R.string.feat_toolkit_on_display_title -> {
-                    if (!isAccessibilityEnabled) {
-                        missing.add(
-                            PermissionItem(
-                                iconRes = R.drawable.rounded_settings_accessibility_24,
-                                title = R.string.perm_accessibility_title,
-                                description = R.string.perm_accessibility_desc_toolkit_on_display,
-                                dependentFeatures = PermissionRegistry.getFeatures("ACCESSIBILITY"),
-                                actionLabel = R.string.perm_action_enable,
-                                action = {
-                                    PermissionUtils.openAccessibilitySettings(context)
-                                },
-                                isGranted = isAccessibilityEnabled,
-                            ),
-                        )
-                    }
-                    if (!isNotificationListenerEnabled) {
-                        missing.add(
-                            PermissionItem(
-                                iconRes = R.drawable.rounded_notifications_unread_24,
-                                title = R.string.perm_notif_listener_title,
-                                description = R.string.perm_notif_listener_desc_lighting,
-                                dependentFeatures = PermissionRegistry.getFeatures("NOTIFICATION_LISTENER"),
-                                actionLabel = R.string.perm_action_grant,
-                                action = { viewModel.requestNotificationListenerPermission(context) },
-                                isGranted = isNotificationListenerEnabled,
-                            ),
-                        )
-                    }
-                }
-            }
-
-            if (missing.isEmpty()) {
-                showSheet = false
-            }
-        }
-    }
-
-    if (showSheet && currentFeature != null) {
+    val sheetFeature = currentFeature
+    if (showSheet && sheetFeature != null) {
         val permissionItems =
-            when (currentFeature) {
-                R.string.feat_screen_off_widget_title ->
-                    listOf(
-                        PermissionItem(
-                            iconRes = R.drawable.rounded_settings_accessibility_24,
-                            title = R.string.perm_accessibility_title,
-                            description = R.string.perm_accessibility_desc_common,
-                            dependentFeatures = PermissionRegistry.getFeatures("ACCESSIBILITY"),
-                            actionLabel = R.string.perm_action_grant,
-                            action = {
-                                PermissionUtils.openAccessibilitySettings(context)
-                            },
-                            isGranted = isAccessibilityEnabled,
-                        ),
-                    )
-
-                R.string.feat_statusbar_icons_title ->
-                    listOf(
-                        PermissionItem(
-                            iconRes = R.drawable.rounded_security_24,
-                            title = R.string.perm_write_secure_title,
-                            description = R.string.perm_write_secure_desc_common,
-                            dependentFeatures = PermissionRegistry.getFeatures("WRITE_SECURE_SETTINGS"),
-                            actionLabel = R.string.perm_action_copy_adb,
-                            action = {
-                                val adbCommand =
-                                    "adb shell pm grant com.jawzf.pixeltoolkit android.permission.WRITE_SECURE_SETTINGS"
-                                val clipboard =
-                                    context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                                val clip = ClipData.newPlainText("adb_command", adbCommand)
-                                clipboard.setPrimaryClip(clip)
-                            },
-                            secondaryActionLabel = R.string.perm_action_check,
-                            secondaryAction = {
-                                viewModel.isWriteSecureSettingsEnabled.value =
-                                    viewModel.canWriteSecureSettings(context)
-                            },
-                            isGranted = isWriteSecureSettingsEnabled,
-                        ),
-                    )
-
-                R.string.feat_notification_lighting_title ->
-                    listOf(
-                        PermissionItem(
-                            iconRes = R.drawable.rounded_magnify_fullscreen_24,
-                            title = R.string.perm_overlay_title,
-                            description = R.string.perm_overlay_desc,
-                            dependentFeatures = PermissionRegistry.getFeatures("DRAW_OVERLAYS"),
-                            actionLabel = R.string.perm_action_grant,
-                            action = {
-                                val intent =
-                                    Intent(
-                                        Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                                        "package:${context.packageName}".toUri(),
-                                    )
-                                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                                context.startActivity(intent)
-                            },
-                            isGranted = isOverlayPermissionGranted,
-                        ),
-                        PermissionItem(
-                            iconRes = R.drawable.rounded_settings_accessibility_24,
-                            title = R.string.perm_accessibility_title,
-                            description = R.string.perm_accessibility_desc_lighting,
-                            dependentFeatures = PermissionRegistry.getFeatures("ACCESSIBILITY"),
-                            actionLabel = R.string.perm_action_enable,
-                            action = {
-                                PermissionUtils.openAccessibilitySettings(context)
-                            },
-                            isGranted = isNotificationLightingAccessibilityEnabled,
-                        ),
-                        PermissionItem(
-                            iconRes = R.drawable.rounded_notifications_unread_24,
-                            title = R.string.perm_notif_listener_title,
-                            description = R.string.perm_notif_listener_desc_lighting,
-                            dependentFeatures = PermissionRegistry.getFeatures("NOTIFICATION_LISTENER"),
-                            actionLabel = R.string.perm_action_grant,
-                            action = { viewModel.requestNotificationListenerPermission(context) },
-                            isGranted = isNotificationListenerEnabled,
-                        ),
-                    )
-
-                R.string.feat_button_remap_title ->
-                    listOf(
-                        PermissionItem(
-                            iconRes = R.drawable.rounded_settings_accessibility_24,
-                            title = R.string.perm_accessibility_title,
-                            description = R.string.perm_accessibility_desc_remap,
-                            dependentFeatures = PermissionRegistry.getFeatures("ACCESSIBILITY"),
-                            actionLabel = R.string.perm_action_enable,
-                            action = {
-                                PermissionUtils.openAccessibilitySettings(context)
-                            },
-                            isGranted = isAccessibilityEnabled,
-                        ),
-                    )
-
-                R.string.feat_snooze_notifications_title ->
-                    listOf(
-                        PermissionItem(
-                            iconRes = R.drawable.rounded_snooze_24,
-                            title = R.string.perm_notif_listener_title,
-                            description = R.string.perm_notif_listener_desc_snooze,
-                            dependentFeatures = PermissionRegistry.getFeatures("NOTIFICATION_LISTENER"),
-                            actionLabel = R.string.perm_action_grant,
-                            action = { viewModel.requestNotificationListenerPermission(context) },
-                            isGranted = isNotificationListenerEnabled,
-                        ),
-                    )
-
-                R.string.feat_dynamic_night_light_title ->
-                    listOf(
-                        PermissionItem(
-                            iconRes = R.drawable.rounded_settings_accessibility_24,
-                            title = R.string.perm_accessibility_title,
-                            description = R.string.perm_accessibility_desc_night_light,
-                            dependentFeatures = PermissionRegistry.getFeatures("ACCESSIBILITY"),
-                            actionLabel = R.string.perm_action_enable,
-                            action = {
-                                PermissionUtils.openAccessibilitySettings(context)
-                            },
-                            isGranted = isAccessibilityEnabled,
-                        ),
-                        PermissionItem(
-                            iconRes = R.drawable.rounded_security_24,
-                            title = R.string.perm_write_secure_title,
-                            description = R.string.perm_write_secure_desc_night_light,
-                            dependentFeatures = PermissionRegistry.getFeatures("WRITE_SECURE_SETTINGS"),
-                            actionLabel = R.string.perm_action_how_to,
-                            action = { /* instructions */ },
-                            isGranted = isWriteSecureSettingsEnabled,
-                        ),
-                    )
-
-                R.string.feat_screen_locked_security_title -> {
-                    val shellItems = mutableListOf<PermissionItem>()
-                    if (isRootEnabled) {
-                        if (!isRootPermissionGranted) {
-                            shellItems.add(
-                                PermissionItem(
-                                    iconRes = R.drawable.rounded_security_24,
-                                    title = R.string.perm_root_title,
-                                    description = R.string.perm_root_desc,
-                                    dependentFeatures = listOf(R.string.feat_screen_locked_security_title),
-                                    action = {
-                                        viewModel.isRootPermissionGranted.value =
-                                            RootUtils
-                                                .isRootPermissionGranted()
-                                    },
-                                    isGranted = isRootPermissionGranted,
-                                ),
-                            )
-                        }
-                    } else {
-                        if (!isShizukuAvailable) {
-                            shellItems.add(
-                                PermissionItem(
-                                    iconRes = R.drawable.rounded_adb_24,
-                                    title = R.string.perm_shizuku_title,
-                                    description = R.string.perm_shizuku_desc,
-                                    dependentFeatures = listOf(R.string.feat_screen_locked_security_title),
-                                    actionLabel = R.string.perm_shizuku_install_action,
-                                    action = {
-                                        val intent =
-                                            Intent(
-                                                Intent.ACTION_VIEW,
-                                                "https://github.com/rushiranpise/Shizuku-Next".toUri(),
-                                            )
-                                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                                        context.startActivity(intent)
-                                    },
-                                    secondaryActionLabel = R.string.perm_porter_install_action,
-                                    secondaryAction = {
-                                        val intent =
-                                            Intent(
-                                                Intent.ACTION_VIEW,
-                                                "https://github.com/d4rken-org/porter".toUri(),
-                                            )
-                                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                                        context.startActivity(intent)
-                                    },
-                                    isGranted = isShizukuAvailable,
-                                ),
-                            )
-                        } else if (!isShizukuPermissionGranted) {
-                            shellItems.add(
-                                PermissionItem(
-                                    iconRes = R.drawable.rounded_adb_24,
-                                    title = R.string.perm_shizuku_grant_title,
-                                    description = R.string.perm_shizuku_grant_desc,
-                                    dependentFeatures = listOf(R.string.feat_screen_locked_security_title),
-                                    actionLabel = R.string.perm_action_grant,
-                                    action = { viewModel.requestShizukuPermission() },
-                                    isGranted = isShizukuPermissionGranted,
-                                ),
-                            )
-                        }
-                    }
-                    shellItems
-                }
-
-                R.string.feat_app_lock_title ->
-                    listOf(
-                        PermissionItem(
-                            iconRes = R.drawable.rounded_settings_accessibility_24,
-                            title = R.string.perm_accessibility_title,
-                            description = R.string.perm_accessibility_desc_common,
-                            dependentFeatures = PermissionRegistry.getFeatures("ACCESSIBILITY"),
-                            actionLabel = R.string.perm_action_enable,
-                            action = {
-                                PermissionUtils.openAccessibilitySettings(context)
-                            },
-                            isGranted = isAccessibilityEnabled,
-                        ),
-                    )
-
-                R.string.feat_smart_pixels_title ->
-                    listOf(
-                        PermissionItem(
-                            iconRes = R.drawable.rounded_settings_accessibility_24,
-                            title = R.string.perm_accessibility_title,
-                            description = R.string.perm_accessibility_desc_common,
-                            dependentFeatures = PermissionRegistry.getFeatures("ACCESSIBILITY"),
-                            actionLabel = R.string.perm_action_enable,
-                            action = {
-                                val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
-                                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                                context.startActivity(intent)
-                            },
-                            isGranted = isAccessibilityEnabled,
-                        ),
-                    )
-
-                R.string.feat_call_vibrations_title ->
-                    listOf(
-                        PermissionItem(
-                            iconRes = R.drawable.rounded_mobile_24,
-                            title = R.string.permission_read_phone_state_title,
-                            description = R.string.permission_read_phone_state_desc_call_vibrations,
-                            dependentFeatures = PermissionRegistry.getFeatures("READ_PHONE_STATE"),
-                            actionLabel = R.string.perm_action_grant,
-                            action = { viewModel.requestReadPhoneStatePermission(context as Activity) },
-                            isGranted = isReadPhoneStateEnabled,
-                        ),
-                        PermissionItem(
-                            iconRes = R.drawable.rounded_notifications_unread_24,
-                            title = R.string.perm_notif_listener_title,
-                            description = R.string.perm_notif_listener_desc_lighting,
-                            dependentFeatures = PermissionRegistry.getFeatures("NOTIFICATION_LISTENER"),
-                            actionLabel = R.string.perm_action_grant,
-                            action = { viewModel.requestNotificationListenerPermission(context) },
-                            isGranted = isNotificationListenerEnabled,
-                        ),
-                    )
-
-                R.string.flashlight_pulse_title ->
-                    listOf(
-                        PermissionItem(
-                            iconRes = R.drawable.rounded_notifications_unread_24,
-                            title = R.string.perm_notif_listener_title,
-                            description = R.string.perm_notif_listener_desc_lighting,
-                            dependentFeatures = PermissionRegistry.getFeatures("NOTIFICATION_LISTENER"),
-                            actionLabel = R.string.perm_action_grant,
-                            action = { viewModel.requestNotificationListenerPermission(context) },
-                            isGranted = isNotificationListenerEnabled,
-                        ),
-                    )
-
-                R.string.feat_toolkit_on_display_title ->
-                    listOf(
-                        PermissionItem(
-                            iconRes = R.drawable.rounded_settings_accessibility_24,
-                            title = R.string.perm_accessibility_title,
-                            description = R.string.perm_accessibility_desc_toolkit_on_display,
-                            dependentFeatures = PermissionRegistry.getFeatures("ACCESSIBILITY"),
-                            actionLabel = R.string.perm_action_enable,
-                            action = {
-                                PermissionUtils.openAccessibilitySettings(context)
-                            },
-                            isGranted = isAccessibilityEnabled,
-                        ),
-                        PermissionItem(
-                            iconRes = R.drawable.rounded_notifications_unread_24,
-                            title = R.string.perm_notif_listener_title,
-                            description = R.string.perm_notif_listener_desc_lighting,
-                            dependentFeatures = PermissionRegistry.getFeatures("NOTIFICATION_LISTENER"),
-                            actionLabel = R.string.perm_action_grant,
-                            action = { viewModel.requestNotificationListenerPermission(context) },
-                            isGranted = isNotificationListenerEnabled,
-                        ),
-                    )
-
-                else -> emptyList()
-            }
-
-        if (showSheet && permissionItems.isNotEmpty() && currentFeature != null) {
+            PermissionUIHelper.getPermissionItems(sheetFeature.permissionKeys, context, viewModel, context as? Activity)
+        if (permissionItems.isNotEmpty()) {
             PermissionsBottomSheet(
                 onDismissRequest = { showSheet = false },
-                featureTitle = currentFeature!!,
+                featureTitle = sheetFeature.title,
                 permissions = permissionItems,
+                onTurnOn = {
+                    showSheet = false
+                    if (sheetFeature.showToggle && !sheetFeature.isEnabled(viewModel)) {
+                        BiometricSecurityHelper.runWithAuth(
+                            activity = context as FragmentActivity,
+                            feature = sheetFeature,
+                            isToggle = true,
+                            action = { sheetFeature.onToggle(viewModel, context, true) },
+                        )
+                    }
+                },
                 onHelpClick = {
                     showSheet = false
                     onHelpClick()
@@ -951,7 +258,7 @@ fun SetupFeatures(
     val isMotionBlurEnabled by viewModel.isMotionBlurEnabled
 
     val openPermissions: (Feature) -> Unit = {
-        currentFeature = it.title
+        currentFeature = it
         showSheet = true
     }
     val openHelp: (Feature) -> Unit = {
@@ -1091,7 +398,10 @@ fun SetupFeatures(
             } else if (!isFocused) {
                 val isOn: (Feature) -> Boolean = { it.isEnabled(viewModel) }
                 val active = activeNowFeatures(allFeatures, pinnedFeatureKeys, isOn)
-                val needsFix = featuresNeedingFix(active, isOn) { it.isToggleEnabled(viewModel, context) }
+                val needsFix =
+                    featuresNeedingFix(active, isOn) {
+                        missingPermissionItems(it, context, viewModel, context as? Activity).isNotEmpty()
+                    }
                 if (needsFix.isNotEmpty()) {
                     item {
                         HomeFixBanner(
@@ -1663,18 +973,24 @@ private fun HomeFeatureRow(
     onHelp: (Feature) -> Unit,
 ) {
     val context = LocalContext.current
+    val isOn = feature.isEnabled(viewModel)
+    val needsSetup = missingPermissionItems(feature, context, viewModel, context as? Activity).isNotEmpty()
     FeatureCard(
         title = feature.title,
-        isEnabled = feature.isEnabled(viewModel),
+        isEnabled = isOn,
         onToggle = { enabled ->
-            BiometricSecurityHelper.runWithAuth(
-                activity = context as FragmentActivity,
-                feature = feature,
-                isToggle = true,
-                action = {
-                    feature.onToggle(viewModel, context, enabled)
-                },
-            )
+            if (enabled && needsSetup) {
+                onNeedsPermission(feature)
+            } else {
+                BiometricSecurityHelper.runWithAuth(
+                    activity = context as FragmentActivity,
+                    feature = feature,
+                    isToggle = true,
+                    action = {
+                        feature.onToggle(viewModel, context, enabled)
+                    },
+                )
+            }
         },
         onClick = {
             BiometricSecurityHelper.runWithAuth(
@@ -1687,7 +1003,7 @@ private fun HomeFeatureRow(
         },
         iconRes = feature.iconRes,
         modifier = Modifier.padding(horizontal = 0.dp, vertical = 0.dp),
-        isToggleEnabled = feature.isToggleEnabled(viewModel, context),
+        isToggleEnabled = isOn || feature.isToggleEnabled(viewModel, context),
         showToggle = feature.showToggle,
         hasMoreSettings = feature.hasMoreSettings,
         onDisabledToggleClick = {
