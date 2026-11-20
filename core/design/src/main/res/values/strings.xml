@@ -2127,6 +2127,10 @@
         <item quantity="one">%1$d feature</item>
         <item quantity="other">%1$d features</item>
     </plurals>
+    <plurals name="feature_setup_needed">
+        <item quantity="one">%d permission needed</item>
+        <item quantity="other">%d permissions needed</item>
+    </plurals>
     <string name="category_summary">%1$s · %2$d on</string>
     <string name="category_filter_all">All</string>
     <string name="category_filter_on">On</string>

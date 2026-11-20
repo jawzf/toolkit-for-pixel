@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
@@ -15,7 +14,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -59,49 +57,6 @@ fun CategoryFilter.matches(
         CategoryFilter.On -> showToggle && isOn
         CategoryFilter.NeedsSetup -> needsSetup
     }
-
-@Composable
-fun CategoryTopBar(
-    onBack: () -> Unit,
-    onHelp: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    val view = LocalView.current
-    Row(
-        modifier =
-            modifier
-                .fillMaxWidth()
-                .height(56.dp)
-                .padding(horizontal = 8.dp),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        IconButton(
-            onClick = {
-                HapticUtil.performVirtualKeyHaptic(view)
-                onBack()
-            },
-        ) {
-            Icon(
-                painter = painterResource(R.drawable.rounded_arrow_back_24),
-                contentDescription = stringResource(R.string.content_desc_back),
-                tint = ToolkitTheme.colors.text,
-            )
-        }
-        Spacer(Modifier.weight(1f))
-        IconButton(
-            onClick = {
-                HapticUtil.performVirtualKeyHaptic(view)
-                onHelp()
-            },
-        ) {
-            Icon(
-                painter = painterResource(R.drawable.rounded_help_24),
-                contentDescription = stringResource(R.string.label_help_guide),
-                tint = ToolkitTheme.colors.text,
-            )
-        }
-    }
-}
 
 @Composable
 fun CategoryHeader(

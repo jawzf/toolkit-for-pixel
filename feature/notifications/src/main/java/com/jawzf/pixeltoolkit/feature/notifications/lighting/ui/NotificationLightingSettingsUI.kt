@@ -139,19 +139,6 @@ fun NotificationLightingSettingsUI(
     Column(modifier = modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
         RoundedCardContainer {
             IconToggleItem(
-                iconRes = R.drawable.rounded_magnify_fullscreen_24,
-                title = stringResource(R.string.feat_notification_lighting_title),
-                isChecked = isNotificationLightingEnabled,
-                onCheckedChange = { checked ->
-                    state.setNotificationLightingEnabled(checked)
-                },
-            )
-        }
-
-        Spacer(modifier = Modifier.height(4.dp))
-
-        RoundedCardContainer {
-            IconToggleItem(
                 iconRes = R.drawable.rounded_power_settings_new_24,
                 title = stringResource(R.string.notification_lighting_screen_off_title),
                 isChecked = state.onlyShowWhenScreenOff.value,

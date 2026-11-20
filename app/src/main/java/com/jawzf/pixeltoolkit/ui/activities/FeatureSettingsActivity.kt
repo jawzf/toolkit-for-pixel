@@ -141,7 +141,11 @@ import com.jawzf.pixeltoolkit.ui.composables.CategoryEmpty
 import com.jawzf.pixeltoolkit.ui.composables.CategoryFilter
 import com.jawzf.pixeltoolkit.ui.composables.CategoryFilterChips
 import com.jawzf.pixeltoolkit.ui.composables.CategoryHeader
-import com.jawzf.pixeltoolkit.ui.composables.CategoryTopBar
+import com.jawzf.pixeltoolkit.ui.composables.FLOATING_TOOLBAR_PAGE_IDS
+import com.jawzf.pixeltoolkit.ui.composables.FeatureMasterCard
+import com.jawzf.pixeltoolkit.ui.composables.FeatureSetupBanner
+import com.jawzf.pixeltoolkit.ui.composables.MASTER_CARD_FEATURE_IDS
+import com.jawzf.pixeltoolkit.ui.composables.PageTopBar
 import com.jawzf.pixeltoolkit.ui.composables.matches
 import com.jawzf.pixeltoolkit.ui.composables.missingPermissionItems
 import com.jawzf.pixeltoolkit.ui.core.sheets.ActivityIconSheet
@@ -287,13 +291,7 @@ class FeatureSettingsActivity : AppCompatActivity() {
                     var activityLauncherQuery by remember { mutableStateOf("") }
                     var isStandbyMoveSheetVisible by remember { mutableStateOf(false) }
 
-                    val isAccessibilityEnabled by viewModel.isAccessibilityEnabled
-                    val isWriteSecureSettingsEnabled by viewModel.isWriteSecureSettingsEnabled
-                    val isOverlayPermissionGranted by viewModel.isOverlayPermissionGranted
-                    val isNotificationLightingAccessibilityEnabled by viewModel.isNotificationLightingAccessibilityEnabled
                     val isNotificationListenerEnabled by viewModel.isNotificationListenerEnabled
-                    val isReadPhoneStateEnabled by viewModel.isReadPhoneStateEnabled
-                    val isShizukuPermissionGranted by viewModel.isShizukuPermissionGranted
 
                     // FAB State for Notification Lighting
                     var fabExpanded by remember { mutableStateOf(true) }
@@ -312,25 +310,6 @@ class FeatureSettingsActivity : AppCompatActivity() {
                         mutableStateOf<com.jawzf.pixeltoolkit.domain.model.Feature?>(
                             null,
                         )
-                    }
-
-                    // Show permission sheet if feature has missing permissions
-                    LaunchedEffect(
-                        featureId,
-                        isAccessibilityEnabled,
-                        isWriteSecureSettingsEnabled,
-                        isOverlayPermissionGranted,
-                        isNotificationLightingAccessibilityEnabled,
-                        isNotificationListenerEnabled,
-                        isReadPhoneStateEnabled,
-                        isShizukuPermissionGranted,
-                    ) {
-                        val hasMissingPermissions =
-                            featureObj != null &&
-                                missingPermissionItems(featureObj, context, viewModel, this@FeatureSettingsActivity).isNotEmpty()
-                        if (hasMissingPermissions) {
-                            showPermissionSheet = true
-                        }
                     }
 
                     if (showPermissionSheet) {
@@ -399,6 +378,7 @@ class FeatureSettingsActivity : AppCompatActivity() {
                         if (featureObj != null) stringResource(featureObj.title) else featureId
                     val hasMenu = featureObj != null && featureObj.aboutDescription != null
                     val isCategory = featureId in CATEGORY_FEATURE_IDS
+                    val isStandbyMultiSelecting = featureId == "Standby apps" && standbyAppsSelectedPackages.isNotEmpty()
                     var categoryFilter by rememberSaveable { mutableStateOf(CategoryFilter.All) }
                     val openPageHelp: () -> Unit = {
                         if (hasMenu) {
@@ -518,8 +498,75 @@ class FeatureSettingsActivity : AppCompatActivity() {
                                 )
                             }
 
+                                val isIslandPage = featureId == "Island" || featureId in ISLAND_SUB_PAGE_IDS
                                 if (isCategory) {
-                                    CategoryTopBar(onBack = { finish() }, onHelp = openPageHelp)
+                                    PageTopBar(onBack = { finish() }, onHelp = openPageHelp)
+                                } else if (featureId !in FLOATING_TOOLBAR_PAGE_IDS) {
+                                    PageTopBar(
+                                        title =
+                                            if (isStandbyMultiSelecting) {
+                                                stringResource(R.string.standby_apps_selected_count, standbyAppsSelectedPackages.size)
+                                            } else {
+                                                pageTitle
+                                            },
+                                        onBack = {
+                                            if (isStandbyMultiSelecting) standbyAppsSelectedPackages = emptySet() else finish()
+                                        },
+                                        onHelp = if (isStandbyMultiSelecting || isIslandPage) null else openPageHelp,
+                                        actionIconRes =
+                                            when {
+                                                isStandbyMultiSelecting -> R.drawable.rounded_mobiledata_arrows_24
+                                                isIslandPage -> R.drawable.rounded_play_arrow_24
+                                                else -> null
+                                            },
+                                        actionDescription =
+                                            when {
+                                                isStandbyMultiSelecting -> stringResource(R.string.action_move_bucket)
+                                                isIslandPage -> stringResource(R.string.action_preview)
+                                                else -> null
+                                            },
+                                        onAction =
+                                            when {
+                                                isStandbyMultiSelecting -> {
+                                                    { isStandbyMoveSheetVisible = true }
+                                                }
+                                                isIslandPage -> {
+                                                    { viewModel.triggerIslandPreview(context) }
+                                                }
+                                                else -> null
+                                            },
+                                    )
+                                }
+                                if (!isCategory && featureObj != null && featureId !in FLOATING_TOOLBAR_PAGE_IDS) {
+                                    val missingSteps =
+                                        missingPermissionItems(featureObj, context, viewModel, this@FeatureSettingsActivity)
+                                    if (featureObj.showToggle && featureObj.id in MASTER_CARD_FEATURE_IDS) {
+                                        FeatureMasterCard(
+                                            title = pageTitle,
+                                            description = featureObj.description.takeIf { it != 0 }?.let { stringResource(it) },
+                                            checked = featureObj.isEnabled(viewModel),
+                                            onCheckedChange = { enabled ->
+                                                if (enabled && missingSteps.isNotEmpty()) {
+                                                    showPermissionSheet = true
+                                                } else {
+                                                    BiometricSecurityHelper.runWithAuth(
+                                                        activity = this@FeatureSettingsActivity,
+                                                        feature = featureObj,
+                                                        isToggle = true,
+                                                        action = { featureObj.onToggle(viewModel, context, enabled) },
+                                                    )
+                                                }
+                                            },
+                                            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+                                        )
+                                    }
+                                    if (missingSteps.isNotEmpty()) {
+                                        FeatureSetupBanner(
+                                            missing = missingSteps,
+                                            onFix = { showPermissionSheet = true },
+                                            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+                                        )
+                                    }
                                 }
 
                             if (featureId == "AOD wallpaper") {
@@ -1679,7 +1726,7 @@ class FeatureSettingsActivity : AppCompatActivity() {
                             }
                             // Bottom padding for toolbar
                             if (featureId != "Quick settings tiles" && featureId != "Location reached") {
-                                if (isCategory) {
+                                if (featureId !in FLOATING_TOOLBAR_PAGE_IDS) {
                                     androidx.compose.foundation.layout.Spacer(
                                         modifier =
                                             Modifier
@@ -1697,9 +1744,7 @@ class FeatureSettingsActivity : AppCompatActivity() {
                             }
                         }
 
-                        val isStandbyMultiSelecting = featureId == "Standby apps" && standbyAppsSelectedPackages.isNotEmpty()
-
-                        if (!isCategory) {
+                        if (featureId in FLOATING_TOOLBAR_PAGE_IDS) {
                         ToolkitFloatingToolbar(
                             title =
                                 if (isStandbyMultiSelecting) {
