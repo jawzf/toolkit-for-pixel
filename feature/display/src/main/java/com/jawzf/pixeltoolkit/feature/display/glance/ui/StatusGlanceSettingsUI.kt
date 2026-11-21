@@ -43,7 +43,6 @@ import com.jawzf.pixeltoolkit.feature.display.glance.StatusGlanceState
 fun StatusGlanceSettingsUI(
     state: StatusGlanceState,
     isFoldableCameraDevice: Boolean,
-    isAccessibilityEnabled: Boolean,
     isCalendarPermissionGranted: Boolean,
     isNotificationListenerEnabled: Boolean,
     permissionItemsFor: (List<String>) -> List<PermissionItem>,
@@ -101,27 +100,6 @@ fun StatusGlanceSettingsUI(
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-        RoundedCardContainer {
-            IconToggleItem(
-                title = stringResource(R.string.status_glance_enable_title),
-                description = stringResource(R.string.status_glance_enable_desc),
-                iconRes = R.drawable.rounded_ad_units_24,
-                isChecked = state.isStatusGlanceEnabled.value,
-                onCheckedChange = { isChecked ->
-                    HapticUtil.performUIHaptic(view)
-                    if (isChecked && !isAccessibilityEnabled) {
-                        requestingPermissionsFor = Pair(
-                            R.string.feat_status_glance_title,
-                            listOf("ACCESSIBILITY")
-                        )
-                    } else {
-                        state.setStatusGlanceEnabled(isChecked)
-                    }
-                },
-                modifier = Modifier.highlight(highlightSetting == "status_glance_enabled"),
-            )
-        }
-
         AnimatedVisibility(
             visible = state.isStatusGlanceEnabled.value,
             enter = fadeIn() + expandVertically(),

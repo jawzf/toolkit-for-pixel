@@ -1287,7 +1287,6 @@ class FeatureSettingsActivity : AppCompatActivity() {
                                             state = viewModel.duo,
                                             isFoldableCameraDevice = viewModel.isFoldableCameraDevice.value,
                                             isUnsupportedFeaturesEnabled = viewModel.isEnableUnsupportedFeatures.value,
-                                            isAccessibilityEnabled = viewModel.isAccessibilityEnabled.value,
                                             isNotificationListenerEnabled = viewModel.isNotificationListenerEnabled.value,
                                             isIslandEnabled = viewModel.island.isIslandEnabled.value,
                                             isIslandBatteryIdleColorEnabled = viewModel.island.isIslandBatteryIdleColorEnabled.value,
@@ -1331,8 +1330,6 @@ class FeatureSettingsActivity : AppCompatActivity() {
                                             isDuoEnabled = viewModel.duo.isDuoEnabled.value,
                                             isDuoIslandCombined = viewModel.duo.isDuoIslandCombined.value,
                                             onDuoIslandCombinedChange = { viewModel.duo.setDuoIslandCombined(it) },
-                                            isAccessibilityEnabled = viewModel.isAccessibilityEnabled.value,
-                                            isNotificationListenerEnabled = viewModel.isNotificationListenerEnabled.value,
                                             isCalendarPermissionGranted = viewModel.isCalendarPermissionGranted.value,
                                             permissionItemsFor = { keys ->
                                                 PermissionUIHelper.getPermissionItems(keys, context, viewModel)
@@ -1453,7 +1450,6 @@ class FeatureSettingsActivity : AppCompatActivity() {
                                         StatusGlanceSettingsUI(
                                             state = viewModel.statusGlance,
                                             isFoldableCameraDevice = viewModel.isFoldableCameraDevice.value,
-                                            isAccessibilityEnabled = viewModel.isAccessibilityEnabled.value,
                                             isCalendarPermissionGranted = viewModel.isCalendarPermissionGranted.value,
                                             isNotificationListenerEnabled = viewModel.isNotificationListenerEnabled.value,
                                             permissionItemsFor = { keys ->

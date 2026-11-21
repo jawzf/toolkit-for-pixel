@@ -94,8 +94,6 @@ fun IslandSettingsUI(
     isDuoEnabled: Boolean,
     isDuoIslandCombined: Boolean,
     onDuoIslandCombinedChange: (Boolean) -> Unit,
-    isAccessibilityEnabled: Boolean,
-    isNotificationListenerEnabled: Boolean,
     isCalendarPermissionGranted: Boolean,
     permissionItemsFor: (List<String>) -> List<PermissionItem>,
     onRefreshPermissions: () -> Unit,
@@ -154,35 +152,6 @@ fun IslandSettingsUI(
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-        RoundedCardContainer {
-            IconToggleItem(
-                iconRes = R.drawable.rounded_notifications_unread_24,
-                title = stringResource(R.string.island_enable_title),
-                isChecked = state.isIslandEnabled.value,
-                onCheckedChange = { checked ->
-                    HapticUtil.performVirtualKeyHaptic(view)
-                    if (checked) {
-                        val missingPermissions = mutableListOf<String>()
-                        if (!isAccessibilityEnabled) {
-                            missingPermissions.add("ACCESSIBILITY")
-                        }
-                        if (!isNotificationListenerEnabled) {
-                            missingPermissions.add("NOTIFICATION_LISTENER")
-                        }
-
-                        if (missingPermissions.isNotEmpty()) {
-                            requestingPermissionsFor = Pair(R.string.island_title, missingPermissions)
-                        } else {
-                            state.setIslandEnabled(true)
-                        }
-                    } else {
-                        state.setIslandEnabled(false)
-                    }
-                },
-                modifier = Modifier.highlight(highlightSetting == "island_enabled"),
-            )
-        }
-
         RoundedCardContainer {
             ISLAND_SUB_PAGES.forEach { (featureId, titleRes, iconRes) ->
                 FeatureCard(
