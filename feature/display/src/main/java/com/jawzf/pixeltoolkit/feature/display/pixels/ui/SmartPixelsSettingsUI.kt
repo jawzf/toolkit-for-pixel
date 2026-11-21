@@ -20,8 +20,6 @@ import com.jawzf.pixeltoolkit.core.design.components.ConfigSliderItem
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.modifiers.highlight
-import com.jawzf.pixeltoolkit.core.design.sheets.PermissionItem
-import com.jawzf.pixeltoolkit.core.design.sheets.PermissionsBottomSheet
 import com.jawzf.pixeltoolkit.feature.display.pixels.SmartPixelsState
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
@@ -29,50 +27,18 @@ import com.jawzf.pixeltoolkit.feature.display.pixels.SmartPixelsState
 fun SmartPixelsSettingsUI(
     state: SmartPixelsState,
     isAccessibilityEnabled: Boolean,
-    permissionItems: List<PermissionItem>,
     onRefreshPermissions: () -> Unit,
     modifier: Modifier = Modifier,
     highlightSetting: String? = null,
 ) {
     val view = LocalView.current
     val isSmartPixelsEnabled by state.isSmartPixelsEnabled
-    var showPermissionSheet by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         onRefreshPermissions()
     }
 
-    if (showPermissionSheet) {
-        PermissionsBottomSheet(
-            onDismissRequest = {
-                showPermissionSheet = false
-                onRefreshPermissions()
-            },
-            featureTitle = R.string.feat_smart_pixels_title,
-            permissions = permissionItems,
-        )
-    }
-
     Column(modifier = modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
-        RoundedCardContainer {
-            IconToggleItem(
-                iconRes = R.drawable.rounded_grain_24,
-                title = stringResource(R.string.smart_pixels_enable_title),
-                isChecked = isSmartPixelsEnabled && isAccessibilityEnabled,
-                onCheckedChange = { checked ->
-                    HapticUtil.performUIHaptic(view)
-                    if (isAccessibilityEnabled) {
-                        state.setSmartPixelsEnabled(checked)
-                    } else {
-                        showPermissionSheet = true
-                    }
-                },
-                enabled = isAccessibilityEnabled,
-                onDisabledClick = { showPermissionSheet = true },
-                modifier = Modifier.highlight(highlightSetting == "smart_pixels_enable_toggle"),
-            )
-        }
-
         var sliderValue by remember(state.smartPixelsIntensity.floatValue) {
             mutableStateOf(state.smartPixelsIntensity.floatValue)
         }

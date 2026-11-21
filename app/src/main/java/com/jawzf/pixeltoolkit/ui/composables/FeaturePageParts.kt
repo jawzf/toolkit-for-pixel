@@ -50,11 +50,27 @@ val MASTER_CARD_FEATURE_IDS =
         "Auto-dismiss notifications",
         "Hilight notifications",
         "Hilight live progress",
+        "Always on Display",
+        "AOD wallpaper",
+        "Toolkit On Display",
+        "Dynamic night light",
+        "Smart pixels",
     )
 
 /** Search keys that pointed at a feature's old on/off row; the master card pulses for them instead. */
 val MASTER_CARD_SEARCH_KEYS =
-    setOf("flashlight_pulse", "flashlight_pulse_enabled", "snooze_enabled", "hilight_notifications", "hilight_progress")
+    setOf(
+        "flashlight_pulse",
+        "flashlight_pulse_enabled",
+        "snooze_enabled",
+        "hilight_notifications",
+        "hilight_progress",
+        "aod_toggle",
+        "aod_wallpaper",
+        "enable_toolkit_on_display",
+        "dynamic_night_light_toggle",
+        "smart_pixels_enable_toggle",
+    )
 
 @Composable
 fun PageTopBar(

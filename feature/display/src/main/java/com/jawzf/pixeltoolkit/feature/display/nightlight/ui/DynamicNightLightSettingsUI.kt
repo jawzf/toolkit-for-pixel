@@ -14,15 +14,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.core.design.R
-import com.jawzf.pixeltoolkit.core.design.cards.IconToggleItem
-import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
-import com.jawzf.pixeltoolkit.core.design.modifiers.highlight
 import com.jawzf.pixeltoolkit.feature.display.nightlight.NightLightState
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
@@ -31,29 +27,13 @@ fun DynamicNightLightSettingsUI(
     state: NightLightState,
     appSelectionSheet: @Composable (onDismiss: () -> Unit) -> Unit,
     modifier: Modifier = Modifier,
-    highlightSetting: String? = null,
 ) {
-    val context = LocalContext.current
     val view = LocalView.current
 
     // App selection state
     var showAppSelectionSheet by remember { mutableStateOf(false) }
 
     Column(modifier = modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-        RoundedCardContainer(
-            modifier = Modifier.padding(top = 8.dp),
-        ) {
-            IconToggleItem(
-                iconRes = R.drawable.rounded_nightlight_24,
-                title = stringResource(R.string.dynamic_night_light_enable_title),
-                isChecked = state.isDynamicNightLightEnabled.value,
-                onCheckedChange = { checked ->
-                    state.setDynamicNightLightEnabled(checked, context)
-                },
-                modifier = Modifier.highlight(highlightSetting == "dynamic_night_light_toggle"),
-            )
-        }
-
         Text(
             text = stringResource(R.string.dynamic_night_light_apps_section),
             style = MaterialTheme.typography.titleMedium,

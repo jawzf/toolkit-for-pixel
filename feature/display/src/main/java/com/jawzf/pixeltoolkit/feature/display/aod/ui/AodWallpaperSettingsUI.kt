@@ -22,7 +22,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -42,8 +41,6 @@ import com.jawzf.pixeltoolkit.feature.display.aod.AodState
 @Composable
 fun AodWallpaperSettingsUI(
     state: AodState,
-    isAccessibilityEnabled: Boolean,
-    isStoragePermissionGranted: Boolean,
     isNotificationListenerEnabled: Boolean,
     isWriteSecureSettingsEnabled: Boolean,
     permissionItemsFor: (List<String>) -> List<PermissionItem>,
@@ -52,7 +49,6 @@ fun AodWallpaperSettingsUI(
     modifier: Modifier = Modifier,
     highlightSetting: String? = null,
 ) {
-    val context = LocalContext.current
     val view = LocalView.current
 
     var showMediaAppSelectionSheet by remember { mutableStateOf(false) }
@@ -81,15 +77,6 @@ fun AodWallpaperSettingsUI(
     val vignetteIntensity = state.aodWallpaperVignette.floatValue
     val blackThreshold = state.aodWallpaperBlackThreshold.floatValue
 
-    fun requestMainPermissions() {
-        val missing = mutableListOf<String>()
-        if (!isAccessibilityEnabled) missing.add("ACCESSIBILITY")
-        if (!isStoragePermissionGranted) missing.add("STORAGE")
-        if (missing.isNotEmpty()) {
-            requestingPermissionsFor = Pair(R.string.feat_aod_wallpaper_title, missing)
-        }
-    }
-
     Column(
         modifier =
             modifier
@@ -98,28 +85,6 @@ fun AodWallpaperSettingsUI(
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         RoundedCardContainer {
-            IconToggleItem(
-                iconRes = R.drawable.rounded_wallpaper_24,
-                title = stringResource(R.string.feat_aod_wallpaper_title),
-                isChecked = isWallpaperEnabled,
-                onCheckedChange = { checked ->
-                    HapticUtil.performVirtualKeyHaptic(view)
-                    if (checked) {
-                        if (!isAccessibilityEnabled || !isStoragePermissionGranted) {
-                            requestMainPermissions()
-                        } else {
-                            state.toggleAodWallpaperEnabled(true)
-                            state.loadCurrentWallpaperBitmap(context)
-                        }
-                    } else {
-                        state.toggleAodWallpaperEnabled(false)
-                    }
-                },
-                enabled = true,
-                onDisabledClick = { requestMainPermissions() },
-                modifier = Modifier.highlight(highlightSetting == "aod_wallpaper"),
-            )
-
             AnimatedVisibility(
                 visible = isWallpaperEnabled,
                 enter = expandVertically(animationSpec = tween(durationMillis = 300)) + fadeIn(animationSpec = tween(durationMillis = 300)),
