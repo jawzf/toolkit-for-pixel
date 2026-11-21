@@ -131,18 +131,6 @@ fun HilightNotificationsSettingsUI(
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         RoundedCardContainer {
-            IconToggleItem(
-                iconRes = R.drawable.rounded_notifications_unread_24,
-                title = stringResource(R.string.hilight_notifications_title),
-                description = stringResource(R.string.hilight_notifications_desc),
-                isChecked = state.isHilightNotificationsEnabled.value,
-                onCheckedChange = { state.setHilightNotificationsEnabled(it) },
-                enabled = isHilightDevice,
-                onDisabledClick = {
-                    Toast.makeText(context, R.string.hilight_not_supported_toast, Toast.LENGTH_SHORT).show()
-                },
-                modifier = Modifier.highlight(highlightSetting == "hilight_notifications"),
-            )
             ConfigSliderItem(
                 title = stringResource(R.string.hilight_cooldown_title),
                 description = stringResource(R.string.hilight_cooldown_desc),
@@ -215,7 +203,6 @@ fun HilightNotificationsSettingsUI(
 fun HilightProgressSettingsUI(
     state: HilightState,
     modifier: Modifier = Modifier,
-    highlightSetting: String? = null,
 ) {
     Column(
         modifier =
@@ -227,7 +214,6 @@ fun HilightProgressSettingsUI(
         HilightProgressSection(
             state = state,
             isHilightDevice = remember { DeviceUtils.isHilightDevice() },
-            highlightSetting = highlightSetting,
         )
     }
 }
@@ -289,7 +275,6 @@ private fun formatCooldown(
 private fun HilightProgressSection(
     state: HilightState,
     isHilightDevice: Boolean,
-    highlightSetting: String?,
 ) {
     val context = LocalContext.current
     val view = LocalView.current
@@ -297,18 +282,6 @@ private fun HilightProgressSection(
     val color = state.hilightProgressColor.intValue
 
     RoundedCardContainer {
-        IconToggleItem(
-            iconRes = R.drawable.rounded_downloading_24,
-            title = stringResource(R.string.hilight_progress_toggle_title),
-            description = stringResource(R.string.hilight_progress_toggle_desc),
-            isChecked = state.isHilightProgressEnabled.value,
-            onCheckedChange = { state.setHilightProgressEnabled(it) },
-            enabled = isHilightDevice,
-            onDisabledClick = {
-                Toast.makeText(context, R.string.hilight_not_supported_toast, Toast.LENGTH_SHORT).show()
-            },
-            modifier = Modifier.highlight(highlightSetting == "hilight_progress"),
-        )
         SegmentedPicker(
             items = HilightProgressColorMode.entries,
             selectedItem = mode,

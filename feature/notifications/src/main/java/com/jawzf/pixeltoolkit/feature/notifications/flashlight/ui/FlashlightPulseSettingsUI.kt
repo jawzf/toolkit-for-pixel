@@ -25,16 +25,12 @@ import com.jawzf.pixeltoolkit.core.design.components.ConfigSliderItem
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
 import com.jawzf.pixeltoolkit.core.design.modifiers.highlight
-import com.jawzf.pixeltoolkit.core.design.sheets.PermissionItem
-import com.jawzf.pixeltoolkit.core.design.sheets.PermissionsBottomSheet
 import com.jawzf.pixeltoolkit.feature.notifications.flashlight.FlashlightPulseState
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun FlashlightPulseSettingsUI(
     state: FlashlightPulseState,
-    isNotificationListenerEnabled: Boolean,
-    permissionItems: List<PermissionItem>,
     onPreview: () -> Unit,
     appSelectionSheet: @Composable (onDismiss: () -> Unit) -> Unit,
     modifier: Modifier = Modifier,
@@ -43,7 +39,6 @@ fun FlashlightPulseSettingsUI(
     val view = LocalView.current
 
     var showAppSelectionSheet by remember { mutableStateOf(false) }
-    var showPermissionsSheet by remember { mutableStateOf(false) }
 
     Column(modifier = modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
         Text(
@@ -54,17 +49,6 @@ fun FlashlightPulseSettingsUI(
         )
 
         RoundedCardContainer {
-            IconToggleItem(
-                iconRes = R.drawable.rounded_flashlight_on_24,
-                title = stringResource(R.string.flashlight_pulse_title),
-                isChecked = state.isFlashlightPulseEnabled.value,
-                enabled = isNotificationListenerEnabled,
-                onDisabledClick = { showPermissionsSheet = true },
-                onCheckedChange = { checked ->
-                    state.setFlashlightPulseEnabled(checked)
-                },
-                modifier = Modifier.highlight(highlightSetting == "flashlight_pulse" || highlightSetting == "flashlight_pulse_enabled"),
-            )
             if (state.isFlashlightPulseEnabled.value) {
                 IconToggleItem(
                     iconRes = R.drawable.rounded_mobile_text_24,
@@ -142,14 +126,6 @@ fun FlashlightPulseSettingsUI(
 
         if (showAppSelectionSheet) {
             appSelectionSheet { showAppSelectionSheet = false }
-        }
-
-        if (showPermissionsSheet) {
-            PermissionsBottomSheet(
-                onDismissRequest = { showPermissionsSheet = false },
-                featureTitle = R.string.flashlight_pulse_title,
-                permissions = permissionItems,
-            )
         }
     }
 }

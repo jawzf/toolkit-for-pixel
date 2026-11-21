@@ -2,9 +2,7 @@ package com.jawzf.pixeltoolkit.feature.notifications.snooze.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -37,20 +35,6 @@ fun SnoozeNotificationsSettingsUI(
                 .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        RoundedCardContainer {
-            IconToggleItem(
-                iconRes = R.drawable.rounded_snooze_24,
-                title = stringResource(R.string.feat_snooze_notifications_title),
-                isChecked = isMasterEnabled,
-                onCheckedChange = { checked ->
-                    HapticUtil.performVirtualKeyHaptic(view)
-                    state.setSnoozeHeadsUpEnabled(checked, context)
-                },
-            )
-        }
-
-        Spacer(modifier = Modifier.height(4.dp))
-
         RoundedCardContainer(
             modifier = Modifier,
         ) {
