@@ -64,7 +64,6 @@ import com.jawzf.pixeltoolkit.core.design.modifiers.highlight
 import com.jawzf.pixeltoolkit.core.design.modifiers.progressiveBlur
 import com.jawzf.pixeltoolkit.core.design.modifiers.scrollMotionBlur
 import com.jawzf.pixeltoolkit.core.design.sheets.InstructionsBottomSheet
-import com.jawzf.pixeltoolkit.core.design.sheets.PermissionItem
 import com.jawzf.pixeltoolkit.core.design.sheets.PermissionsBottomSheet
 import com.jawzf.pixeltoolkit.core.design.state.LocalMenuStateManager
 import com.jawzf.pixeltoolkit.core.design.state.MenuStateManager
@@ -72,7 +71,6 @@ import com.jawzf.pixeltoolkit.core.design.theme.ToolkitTheme
 import com.jawzf.pixeltoolkit.core.platform.AppComponents.CONSCIOUS_GATE_FEATURE_ID
 import com.jawzf.pixeltoolkit.core.platform.device.DeviceUtils
 import com.jawzf.pixeltoolkit.domain.registry.FeatureRegistry
-import com.jawzf.pixeltoolkit.domain.registry.PermissionRegistry
 import com.jawzf.pixeltoolkit.feature.apps.applock.ui.AppLockSettingsUI
 import com.jawzf.pixeltoolkit.feature.apps.consciousgate.ui.ConsciousGateSettingsUI
 import com.jawzf.pixeltoolkit.feature.apps.freeze.ui.FreezeSettingsUI
@@ -145,6 +143,7 @@ import com.jawzf.pixeltoolkit.ui.composables.FLOATING_TOOLBAR_PAGE_IDS
 import com.jawzf.pixeltoolkit.ui.composables.FeatureMasterCard
 import com.jawzf.pixeltoolkit.ui.composables.FeatureSetupBanner
 import com.jawzf.pixeltoolkit.ui.composables.MASTER_CARD_FEATURE_IDS
+import com.jawzf.pixeltoolkit.ui.composables.MASTER_CARD_SEARCH_KEYS
 import com.jawzf.pixeltoolkit.ui.composables.PageTopBar
 import com.jawzf.pixeltoolkit.ui.composables.matches
 import com.jawzf.pixeltoolkit.ui.composables.missingPermissionItems
@@ -290,8 +289,6 @@ class FeatureSettingsActivity : AppCompatActivity() {
                     var standbyAppsSelectedPackages by remember { mutableStateOf(setOf<String>()) }
                     var activityLauncherQuery by remember { mutableStateOf("") }
                     var isStandbyMoveSheetVisible by remember { mutableStateOf(false) }
-
-                    val isNotificationListenerEnabled by viewModel.isNotificationListenerEnabled
 
                     // FAB State for Notification Lighting
                     var fabExpanded by remember { mutableStateOf(true) }
@@ -546,7 +543,9 @@ class FeatureSettingsActivity : AppCompatActivity() {
                                             description = featureObj.description.takeIf { it != 0 }?.let { stringResource(it) },
                                             checked = featureObj.isEnabled(viewModel),
                                             onCheckedChange = { enabled ->
-                                                if (enabled && missingSteps.isNotEmpty()) {
+                                                if (enabled && featureObj.id.startsWith("Hilight") && !DeviceUtils.isHilightDevice()) {
+                                                    Toast.makeText(context, R.string.hilight_not_supported_toast, Toast.LENGTH_SHORT).show()
+                                                } else if (enabled && missingSteps.isNotEmpty()) {
                                                     showPermissionSheet = true
                                                 } else {
                                                     BiometricSecurityHelper.runWithAuth(
@@ -557,6 +556,7 @@ class FeatureSettingsActivity : AppCompatActivity() {
                                                     )
                                                 }
                                             },
+                                            highlighted = highlightSetting in MASTER_CARD_SEARCH_KEYS,
                                             modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
                                         )
                                     }
@@ -904,7 +904,6 @@ class FeatureSettingsActivity : AppCompatActivity() {
                                         HilightProgressSettingsUI(
                                             state = viewModel.hilight,
                                             modifier = Modifier.padding(top = 16.dp),
-                                            highlightSetting = highlightSetting,
                                         )
                                     }
 
@@ -1105,7 +1104,6 @@ class FeatureSettingsActivity : AppCompatActivity() {
                                         NotificationSnoozingSettingsUI(
                                             state = viewModel.notifications,
                                             modifier = Modifier.padding(top = 16.dp),
-                                            highlightSetting = highlightSetting,
                                         )
                                     }
 
@@ -1503,19 +1501,6 @@ class FeatureSettingsActivity : AppCompatActivity() {
                                     "Flashlight pulse" -> {
                                         FlashlightPulseSettingsUI(
                                             state = viewModel.flashlightPulse,
-                                            isNotificationListenerEnabled = isNotificationListenerEnabled,
-                                            permissionItems =
-                                                listOf(
-                                                    PermissionItem(
-                                                        iconRes = R.drawable.rounded_notifications_unread_24,
-                                                        title = R.string.perm_notif_listener_title,
-                                                        description = R.string.perm_notif_listener_desc_lighting,
-                                                        dependentFeatures = PermissionRegistry.getFeatures("NOTIFICATION_LISTENER"),
-                                                        actionLabel = R.string.perm_action_grant,
-                                                        action = { viewModel.requestNotificationListenerPermission(context) },
-                                                        isGranted = isNotificationListenerEnabled,
-                                                    ),
-                                                ),
                                             onPreview = { viewModel.previewFlashlightPulse(context) },
                                             appSelectionSheet = { onDismiss ->
                                                 AppSelectionSheet(

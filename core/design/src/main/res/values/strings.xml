@@ -232,7 +232,6 @@
     <string name="hilight_status_no_leds">No Hilight LEDs were found on this phone.</string>
     <string name="hilight_status_no_device">Hilight is only available on phones with Hilight LEDs: the Pixel 11 Pro, Pro XL and Pro Fold.</string>
     <string name="hilight_not_supported_toast">This phone doesn\'t have Hilight LEDs</string>
-    <string name="hilight_notifications_title">Light up for notifications</string>
     <string name="hilight_notifications_desc">Play each app\'s own effect when its notifications arrive</string>
     <string name="hilight_apps_title">Apps</string>
     <string name="hilight_add_app">Add app</string>
@@ -271,8 +270,6 @@
     <string name="feat_hilight_notifications_title">Notification effects</string>
     <string name="feat_hilight_progress_desc">Show download and live update progress on the LEDs</string>
     <string name="about_desc_hilight_progress">Shows the progress of downloads and live updates on the Hilight LEDs, lighting one more LED each time progress passes another eighth and blinking all eight when it finishes. Needs Shizuku, which must be restarted after every reboot.</string>
-    <string name="hilight_progress_toggle_title">Show live progress</string>
-    <string name="hilight_progress_toggle_desc">Light one more LED each time a download or live update passes another eighth, and blink when it finishes</string>
     <string name="hilight_progress_mode_monochrome">Monochrome</string>
     <string name="hilight_progress_mode_sequential">Sequential</string>
     <string name="hilight_progress_mode_vibgyor">VIBGYOR</string>

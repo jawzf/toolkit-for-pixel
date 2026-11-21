@@ -19,18 +19,15 @@ import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.core.design.R
-import com.jawzf.pixeltoolkit.core.design.cards.IconToggleItem
 import com.jawzf.pixeltoolkit.core.design.components.ConfigSliderItem
 import com.jawzf.pixeltoolkit.core.design.containers.RoundedCardContainer
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
-import com.jawzf.pixeltoolkit.core.design.modifiers.highlight
 import com.jawzf.pixeltoolkit.feature.notifications.NotificationState
 
 @Composable
 fun NotificationSnoozingSettingsUI(
     state: NotificationState,
     modifier: Modifier = Modifier,
-    highlightSetting: String? = null,
 ) {
     val context = LocalContext.current
     val view = LocalView.current
@@ -46,20 +43,6 @@ fun NotificationSnoozingSettingsUI(
                 .padding(horizontal = 16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-        RoundedCardContainer {
-            IconToggleItem(
-                title = stringResource(R.string.feat_notification_snoozing_title),
-                description = stringResource(R.string.feat_notification_snoozing_desc),
-                isChecked = isSnoozeEnabled,
-                onCheckedChange = {
-                    state.setShowNotificationSnoozeEnabled(context, it)
-                    HapticUtil.performUIHaptic(view)
-                },
-                iconRes = R.drawable.rounded_notifications_paused_24,
-                modifier = Modifier.highlight(highlightSetting == "snooze_enabled"),
-            )
-        }
-
         AnimatedVisibility(
             visible = isSnoozeEnabled,
             enter = expandVertically(),

@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import com.jawzf.pixeltoolkit.core.design.R
 import com.jawzf.pixeltoolkit.core.design.cards.PermissionCard
 import com.jawzf.pixeltoolkit.core.design.haptics.HapticUtil
+import com.jawzf.pixeltoolkit.core.design.modifiers.highlight
 import com.jawzf.pixeltoolkit.core.design.sheets.PermissionItem
 import com.jawzf.pixeltoolkit.core.design.theme.ToolkitShapes
 import com.jawzf.pixeltoolkit.core.design.theme.ToolkitTheme
@@ -40,7 +41,20 @@ import com.jawzf.pixeltoolkit.core.design.theme.ToolkitTheme
 val FLOATING_TOOLBAR_PAGE_IDS = setOf("Quick settings tiles", "Activity launcher", "Location reached")
 
 /** Feature pages that show [FeatureMasterCard]; their settings UI no longer draws its own on/off row. */
-val MASTER_CARD_FEATURE_IDS = setOf("Notification lighting")
+val MASTER_CARD_FEATURE_IDS =
+    setOf(
+        "Notification lighting",
+        "Flashlight pulse",
+        "Snooze system notifications",
+        "Notification snoozing",
+        "Auto-dismiss notifications",
+        "Hilight notifications",
+        "Hilight live progress",
+    )
+
+/** Search keys that pointed at a feature's old on/off row; the master card pulses for them instead. */
+val MASTER_CARD_SEARCH_KEYS =
+    setOf("flashlight_pulse", "flashlight_pulse_enabled", "snooze_enabled", "hilight_notifications", "hilight_progress")
 
 @Composable
 fun PageTopBar(
@@ -123,6 +137,7 @@ fun FeatureMasterCard(
     checked: Boolean,
     onCheckedChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
+    highlighted: Boolean = false,
 ) {
     val colors = ToolkitTheme.colors
     val view = LocalView.current
@@ -131,6 +146,7 @@ fun FeatureMasterCard(
             modifier
                 .fillMaxWidth()
                 .clip(ToolkitShapes.group)
+                .highlight(highlighted)
                 .background(colors.accent)
                 .toggleable(
                     value = checked,
