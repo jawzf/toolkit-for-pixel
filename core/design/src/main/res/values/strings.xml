@@ -375,7 +375,6 @@
     <string name="caffeinate_live_channel_desc">Persistent notification for Caffeinate</string>
 
     <!-- Dynamic Night Light -->
-    <string name="dynamic_night_light_enable_title">Enable Dynamic Night Light</string>
     <string name="dynamic_night_light_apps_section">Apps that toggle off night light</string>
     <string name="action_select_apps">Select apps</string>
 
@@ -1796,7 +1795,6 @@
     <string name="feat_smart_pixels_title">Smart pixels</string>
     <string name="feat_smart_pixels_desc">Black out pixels to save power</string>
     <string name="about_desc_smart_pixels">Overlay a customizable checkered pattern of blacked-out pixels across the screen using accessibility service to save display power on OLED screens.</string>
-    <string name="smart_pixels_enable_title">Enable smart pixels</string>
     <string name="smart_pixels_intensity_title">Intensity</string>
     <string name="smart_pixels_disable_on_cast_title">Disable during screen casting</string>
     <string name="smart_pixels_disable_on_cast_desc">Automatically pause pixel grid overlay while casting or recording screen</string>
