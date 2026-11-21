@@ -80,17 +80,6 @@ fun ToolkitOnDisplaySettingsUI(
     ) {
         RoundedCardContainer {
             IconToggleItem(
-                iconRes = R.drawable.rounded_blur_on_24,
-                title = stringResource(R.string.feat_toolkit_on_display_title),
-                description = stringResource(R.string.feat_toolkit_on_display_desc),
-                isChecked = state.isAmbientMusicGlanceEnabled.value,
-                onCheckedChange = { state.setAmbientMusicGlanceEnabled(it) },
-                enabled = isPermissionGranted,
-                onDisabledClick = { showPermissionSheet = true },
-                modifier = Modifier.highlight(highlightSetting == "enable_toolkit_on_display"),
-            )
-
-            IconToggleItem(
                 iconRes = R.drawable.rounded_mobile_charge_24,
                 title = stringResource(R.string.toolkit_on_display_docked_mode_title),
                 description = stringResource(R.string.toolkit_on_display_docked_mode_desc),

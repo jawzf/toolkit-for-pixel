@@ -1051,7 +1051,6 @@ class FeatureSettingsActivity : AppCompatActivity() {
                                                 )
                                             },
                                             modifier = Modifier.padding(top = 16.dp),
-                                            highlightSetting = highlightSetting,
                                         )
                                     }
 
@@ -1059,12 +1058,6 @@ class FeatureSettingsActivity : AppCompatActivity() {
                                         SmartPixelsSettingsUI(
                                             state = viewModel.smartPixels,
                                             isAccessibilityEnabled = viewModel.isAccessibilityEnabled.value,
-                                            permissionItems =
-                                                PermissionUIHelper.getPermissionItems(
-                                                    listOf("ACCESSIBILITY"),
-                                                    context,
-                                                    viewModel,
-                                                ),
                                             onRefreshPermissions = { viewModel.check(context) },
                                             modifier = Modifier.padding(top = 16.dp),
                                             highlightSetting = highlightSetting,
@@ -1553,8 +1546,6 @@ class FeatureSettingsActivity : AppCompatActivity() {
                                     "AOD wallpaper" -> {
                                         AodWallpaperSettingsUI(
                                             state = viewModel.aod,
-                                            isAccessibilityEnabled = viewModel.isAccessibilityEnabled.value,
-                                            isStoragePermissionGranted = viewModel.isStoragePermissionGranted.value,
                                             isNotificationListenerEnabled = viewModel.isNotificationListenerEnabled.value,
                                             isWriteSecureSettingsEnabled = viewModel.isWriteSecureSettingsEnabled.value,
                                             permissionItemsFor = { keys ->
@@ -1581,7 +1572,6 @@ class FeatureSettingsActivity : AppCompatActivity() {
                                         AlwaysOnDisplaySettingsUI(
                                             state = viewModel.aod,
                                             isAccessibilityEnabled = viewModel.isAccessibilityEnabled.value,
-                                            isWriteSecureSettingsEnabled = viewModel.isWriteSecureSettingsEnabled.value,
                                             permissionItemsFor = { keys ->
                                                 PermissionUIHelper.getPermissionItems(keys, context, viewModel)
                                             },

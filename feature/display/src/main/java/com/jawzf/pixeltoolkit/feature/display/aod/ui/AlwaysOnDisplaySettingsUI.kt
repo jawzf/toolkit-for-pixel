@@ -34,7 +34,6 @@ import com.jawzf.pixeltoolkit.feature.display.aod.AodState
 fun AlwaysOnDisplaySettingsUI(
     state: AodState,
     isAccessibilityEnabled: Boolean,
-    isWriteSecureSettingsEnabled: Boolean,
     permissionItemsFor: (List<String>) -> List<PermissionItem>,
     onRefreshPermissions: () -> Unit,
     appSelectionSheet: @Composable (onDismiss: () -> Unit) -> Unit,
@@ -70,26 +69,6 @@ fun AlwaysOnDisplaySettingsUI(
                 .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-        RoundedCardContainer(
-            modifier = Modifier,
-        ) {
-            IconToggleItem(
-                iconRes = R.drawable.rounded_mobile_text_2_24,
-                title = stringResource(R.string.feat_always_on_display_title),
-                isChecked = state.isAodEnabled.value,
-                onCheckedChange = { checked ->
-                    HapticUtil.performVirtualKeyHaptic(view)
-                    if (checked && !isWriteSecureSettingsEnabled) {
-                        requestingPermissionsFor =
-                            Pair(R.string.feat_always_on_display_title, listOf("WRITE_SECURE_SETTINGS"))
-                    } else {
-                        state.setAodEnabled(checked)
-                    }
-                },
-                modifier = Modifier.highlight(highlightSetting == "aod_toggle"),
-            )
-        }
-
         Text(
             text = stringResource(R.string.feat_notification_glance_title),
             style = MaterialTheme.typography.titleMedium,
