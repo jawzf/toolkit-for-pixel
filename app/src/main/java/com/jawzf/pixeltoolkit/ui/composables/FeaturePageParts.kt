@@ -55,6 +55,10 @@ val MASTER_CARD_FEATURE_IDS =
         "Toolkit On Display",
         "Dynamic night light",
         "Smart pixels",
+        "Statusbar icons",
+        "Status glance",
+        "Duo",
+        "Island",
     )
 
 /** Search keys that pointed at a feature's old on/off row; the master card pulses for them instead. */
@@ -70,6 +74,9 @@ val MASTER_CARD_SEARCH_KEYS =
         "enable_toolkit_on_display",
         "dynamic_night_light_toggle",
         "smart_pixels_enable_toggle",
+        "status_glance_enabled",
+        "duo_enabled",
+        "island_enabled",
     )
 
 @Composable

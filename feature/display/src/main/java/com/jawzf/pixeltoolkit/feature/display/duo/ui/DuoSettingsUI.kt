@@ -46,7 +46,6 @@ fun DuoSettingsUI(
     state: DuoState,
     isFoldableCameraDevice: Boolean,
     isUnsupportedFeaturesEnabled: Boolean,
-    isAccessibilityEnabled: Boolean,
     isNotificationListenerEnabled: Boolean,
     isIslandEnabled: Boolean,
     isIslandBatteryIdleColorEnabled: Boolean,
@@ -115,24 +114,6 @@ fun DuoSettingsUI(
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-        RoundedCardContainer {
-            IconToggleItem(
-                iconRes = R.drawable.rounded_motion_play_24,
-                title = stringResource(R.string.duo_enable_title),
-                description = stringResource(R.string.duo_enable_desc),
-                isChecked = state.isDuoEnabled.value,
-                onCheckedChange = { checked ->
-                    HapticUtil.performVirtualKeyHaptic(view)
-                    if (checked && !isAccessibilityEnabled) {
-                        requestingPermissionsFor = Pair(R.string.duo_title, listOf("ACCESSIBILITY"))
-                    } else {
-                        state.setDuoEnabled(checked)
-                    }
-                },
-                modifier = Modifier.highlight(highlightSetting == "duo_enabled"),
-            )
-        }
-
         Text(
             text = stringResource(R.string.duo_section_position),
             style = MaterialTheme.typography.titleSmall,
